@@ -138,143 +138,24 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 * 
 	 */
 	public static final int METHOD_NAME_REFERENCE = 10;
-
+	
 	/**
-	 * Completion is a reference to annotation's attribute. This kind of
-	 * completion might occur in a context like
-	 * <code>"@Annot(attr^=value)"</code> and complete it to
-	 * <code>"@Annot(attribute^=value)"</code>.
-	 * 
-	 * @see #getKind()
-	 * 
+	 * Private method declarations.
 	 */
-	public static final int ANNOTATION_ATTRIBUTE_REF = 11;
-
-	/**
-	 * Completion is a link reference to a field in a documentation text. This
-	 * kind of completion might occur in a context like
-	 * <code>"	* blabla System.o^ blabla"</code> and complete it to
-	 * <code>"	* blabla {&#64;link System#out } blabla"</code>.
-	 * 
-	 * @see #getKind()
-	 * 
-	 */
-	public static final int DOC_FIELD_REF = 12;
-
-	/**
-	 * Completion is a link reference to a method in a documentation text. This
-	 * kind of completion might occur in a context like
-	 * <code>"	* blabla Runtime.get^ blabla"</code> and complete it to
-	 * <code>"	* blabla {&#64;link Runtime#getRuntime() }"</code>.
-	 * 
-	 * @see #getKind()
-	 * 
-	 */
-	public static final int DOC_METHOD_REF = 13;
-
-	/**
-	 * Completion is a link reference to a type in a doc text. Any kind of type
-	 * is allowed, including primitive types, reference types, array types,
-	 * parameterized types, and type variables. This kind of completion might
-	 * occur in a context like <code>"	* blabla Str^ blabla"</code> and
-	 * complete it to <code>"	* blabla {&#64;link String } blabla"</code>.
-	 * 
-	 * @see #getKind()
-	 * 
-	 */
-	public static final int DOC_TYPE_REF = 14;
-
-	/**
-	 * Completion is a value reference to a static field in a doc text. This
-	 * kind of completion might occur in a context like
-	 * <code>"	* blabla System.o^ blabla"</code> and complete it to
-	 * <code>"	* blabla {&#64;value System#out } blabla"</code>.
-	 * 
-	 * @see #getKind()
-	 * 
-	 */
-	public static final int DOC_VALUE_REF = 15;
-
-	/**
-	 * Completion is a method argument or a class/method type parameter in doc
-	 * param tag. This kind of completion might occur in a context like
-	 * <code>"	* @param arg^ blabla"</code> and complete it to
-	 *            <code>"	* @param argument blabla"</code>. or <code>"	* @param &lt;T^ blabla"</code> and complete it to
-	 *            <code>"	* @param &lt;TT&gt; blabla"</code>.
-	 *            <p>
-	 *            The following additional context information is available for
-	 *            this kind of completion proposal at little extra cost:
-	 *            <ul>            
-	 *            <li>{@link #getFlags()} - the modifiers flags (including
-	 *            ACC_ENUM) of the field that is referenced </li>
-	 *            <li>{@link #getName()} - the simple name of the field that is
-	 *            referenced </li>            
-	 *            </ul>
-	 *            </p>
-	 * 
-	 * @see #getKind()
-	 * 
-	 */
-	public static final int DOC_PARAM_REF = 16;
-
-	/**
-	 * Completion is a doc block tag. This kind of completion might occur in a
-	 * context like <code>"	* @s^ blabla"</code> and complete it to <code>"	* @see blabla"</code>.
-	 *      <p>
-	 *      The following additional context information is available for this
-	 *      kind of completion proposal at little extra cost:
-	 *      <ul>      
-	 *      <li>{@link #getFlags()} - the modifiers flags (including ACC_ENUM)
-	 *      of the field that is referenced </li>
-	 *      <li>{@link #getName()} - the simple name of the field that is
-	 *      referenced </li>      
-	 *      </ul>
-	 *      </p>
-	 * 
-	 * @see #getKind()
-	 * 
-	 */
-	public static final int DOC_BLOCK_TAG = 17;
-
-	/**
-	 * Completion is a doc inline tag. This kind of completion might occur in a
-	 * context like <code>"	* Insert @l^ Object"</code> and complete it to
-	 *     <code>"	* Insert {&#64;link Object }"</code>.
-	 *     <p>
-	 *     The following additional context information is available for this
-	 *     kind of completion proposal at little extra cost:
-	 *     <ul>     
-	 *     <li>{@link #getFlags()} - the modifiers flags (including ACC_ENUM)
-	 *     of the field that is referenced </li>
-	 *     <li>{@link #getName()} - the simple name of the field that is
-	 *     referenced </li>     
-	 *     </ul>
-	 *     </p>
-	 * 
-	 * @see #getKind()
-	 * 
-	 */
-	public static final int DOC_INLINE_TAG = 18;
+	public static final int METHOD_DECLARATION_PRIVATE = 6;
 
 	public static final int PACKAGE_REF = 22;
 
 	/**
 	 * First valid completion kind.
-	 * 
-	 * 
 	 */
 	protected static final int FIRST_KIND = FIELD_REF;
 
 	/**
 	 * Last valid completion kind.
-	 * 
-	 * 
 	 */
 	protected static final int LAST_KIND = PACKAGE_REF;
-	
-	/**
-	 * 
-	 */
+
 	private boolean updateCompletion = false;
 
 	/**
@@ -356,8 +237,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	/**
 	 * Indicates whether parameter names have been computed.
 	 */
-//	private boolean parameterNamesComputed = false;
-
+	// private boolean parameterNamesComputed = false;
 	private IModelElement modelElement;
 
 	/**
@@ -398,7 +278,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 				|| (kind > CompletionProposal.LAST_KIND)) {
 			throw new IllegalArgumentException();
 		}
-		
+
 		if (this.completion == null || completionLocation < 0) {
 			// Work around for bug 132558
 			// (https://bugs.eclipse.org/bugs/show_bug.cgi?id=132558).
@@ -411,7 +291,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 			}
 			completionLocation = 0;
 		}
-		
+
 		this.completionKind = kind;
 		this.completionLocation = completionLocation;
 	}
@@ -490,7 +370,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 		if (startIndex < 0 || endIndex < startIndex) {
 			throw new IllegalArgumentException();
 		}
-		
+
 		this.tokenStart = startIndex;
 		this.tokenEnd = endIndex;
 	}
@@ -618,7 +498,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 		if (startIndex < 0 || endIndex < startIndex) {
 			throw new IllegalArgumentException();
 		}
-		
+
 		this.replaceStart = startIndex;
 		this.replaceEnd = endIndex;
 	}
@@ -651,7 +531,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 		if (rating <= 0) {
 			throw new IllegalArgumentException();
 		}
-		
+
 		this.relevance = rating;
 	}
 
@@ -676,7 +556,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	public char[] getDeclarationKey() {
 		return this.declarationKey;
 	}
-	
+
 	/**
 	 * Sets the type or package key of the relevant declaration in the context,
 	 * or <code>null</code> if none.
@@ -879,7 +759,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 */
 	public void setParameterNames(char[][] parameterNames) {
 		this.parameterNames = parameterNames;
-//		this.parameterNamesComputed = true;
+		// this.parameterNamesComputed = true;
 	}
 
 	public String toString() {
@@ -921,30 +801,6 @@ public final class CompletionProposal extends InternalCompletionProposal {
 			break;
 		case CompletionProposal.METHOD_NAME_REFERENCE:
 			buffer.append("METHOD_IMPORT"); //$NON-NLS-1$
-			break;
-		case CompletionProposal.ANNOTATION_ATTRIBUTE_REF:
-			buffer.append("ANNOTATION_ATTRIBUTE_REF"); //$NON-NLS-1$
-			break;
-		case CompletionProposal.DOC_BLOCK_TAG:
-			buffer.append("JAVADOC_BLOCK_TAG"); //$NON-NLS-1$
-			break;
-		case CompletionProposal.DOC_INLINE_TAG:
-			buffer.append("JAVADOC_INLINE_TAG"); //$NON-NLS-1$
-			break;
-		case CompletionProposal.DOC_FIELD_REF:
-			buffer.append("JAVADOC_FIELD_REF"); //$NON-NLS-1$
-			break;
-		case CompletionProposal.DOC_METHOD_REF:
-			buffer.append("JAVADOC_METHOD_REF"); //$NON-NLS-1$
-			break;
-		case CompletionProposal.DOC_TYPE_REF:
-			buffer.append("JAVADOC_TYPE_REF"); //$NON-NLS-1$
-			break;
-		case CompletionProposal.DOC_PARAM_REF:
-			buffer.append("JAVADOC_PARAM_REF"); //$NON-NLS-1$
-			break;
-		case CompletionProposal.DOC_VALUE_REF:
-			buffer.append("JAVADOC_VALUE_REF"); //$NON-NLS-1$
 			break;
 		default:
 			buffer.append("PROPOSAL"); //$NON-NLS-1$

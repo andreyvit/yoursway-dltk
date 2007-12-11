@@ -19,7 +19,6 @@ public class TclNoTypeCompletionProposalComputer extends ScriptCompletionProposa
 	protected ScriptCompletionProposalCollector createCollector(ScriptContentAssistInvocationContext context) {
 		ScriptCompletionProposalCollector collector =	new TclCompletionProposalCollector(context.getSourceModule());
 		
-		collector.setIgnored(CompletionProposal.ANNOTATION_ATTRIBUTE_REF, false);
 		collector.setIgnored(CompletionProposal.FIELD_REF, false);
 		collector.setIgnored(CompletionProposal.KEYWORD, false);
 		collector.setIgnored(CompletionProposal.PACKAGE_REF, false);

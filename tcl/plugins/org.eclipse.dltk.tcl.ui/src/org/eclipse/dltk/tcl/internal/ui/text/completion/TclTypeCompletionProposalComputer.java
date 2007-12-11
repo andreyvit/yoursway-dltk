@@ -24,7 +24,6 @@ public class TclTypeCompletionProposalComputer extends
 		ScriptCompletionProposalCollector collector = new TclCompletionProposalCollector(
 				context.getSourceModule());
 
-		collector.setIgnored(CompletionProposal.ANNOTATION_ATTRIBUTE_REF, true);
 		collector.setIgnored(CompletionProposal.FIELD_REF, true);
 		collector.setIgnored(CompletionProposal.KEYWORD, true);
 		collector.setIgnored(CompletionProposal.LABEL_REF, true);

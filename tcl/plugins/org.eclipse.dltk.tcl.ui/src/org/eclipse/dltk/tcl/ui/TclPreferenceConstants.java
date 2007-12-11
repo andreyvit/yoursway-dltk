@@ -433,6 +433,8 @@ public class TclPreferenceConstants extends PreferenceConstants {
 	public static final String DOC_MAN_PAGES_LOCATIONS = "doc_man_pages_locations";
 
 	public static final String EDITOR_FOLDING_COMMENTS_FOLDING = "editor_folding_comments";
+	
+	public static final String CODEASSIST_FILTER_INTERNAL_API = "tcl_filter_internal_api";
 
 	public static void initializeDefaultValues(IPreferenceStore store) {
 		PreferenceConstants.initializeDefaultValues(store);
@@ -525,5 +527,7 @@ public class TclPreferenceConstants extends PreferenceConstants {
 
 		store.setDefault(
 				PreferenceConstants.CODEASSIST_AUTOACTIVATION_TRIGGERS, ":$");
+		
+		store.setDefault(CODEASSIST_FILTER_INTERNAL_API, true);
 	}
 }

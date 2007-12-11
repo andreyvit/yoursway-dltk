@@ -2,7 +2,6 @@ package org.eclipse.dltk.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,14 +32,14 @@ public abstract class DLTKContributionExtensionManager {
 	public static final String CLASS_TAG = "class";
 
 	private IDLTKContributionSelector defaultSelector;
-	
+
 	private Map natureToContribMap = new HashMap();
 	private Map natureToSelectorMap = new HashMap();
 
 	protected DLTKContributionExtensionManager() {
 		this.defaultSelector = new DLTKPriorityContributionSelector();
-		
-		loadExtensionPoints();		
+
+		loadExtensionPoints();
 	}
 
 	public IDLTKContributedExtension[] getContributions(String natureId) {
@@ -51,9 +50,9 @@ public abstract class DLTKContributionExtensionManager {
 
 	public IDLTKContributedExtension getSelectedContribution(String natureId) {
 		IDLTKContributedExtension[] contributions = getContributions(natureId);
-		
+
 		if (contributions.length > 0) {
-			
+
 			IDLTKContributionSelector selector = getSelector(natureId);
 			if (selector == null) {
 				selector = defaultSelector;
@@ -61,10 +60,10 @@ public abstract class DLTKContributionExtensionManager {
 
 			return selector.select(contributions);
 		}
-	
+
 		return null;
 	}
-	
+
 	/**
 	 * Get the contributions registered for the given nature id
 	 * 
@@ -80,27 +79,7 @@ public abstract class DLTKContributionExtensionManager {
 			return Collections.EMPTY_LIST;
 		}
 
-		List contributions = (List) natureToContribMap.get(natureId);
-	
-		Collections.sort(contributions, new Comparator() {
-			public int compare(Object arg0, Object arg1) {
-				if (arg0 instanceof IDLTKContributedExtension
-						&& arg1 instanceof IDLTKContributedExtension) {
-					IDLTKContributedExtension e1 = (IDLTKContributedExtension) arg0;
-					IDLTKContributedExtension e2 = (IDLTKContributedExtension) arg1;
-					if (e1.getPriority() == e2.getPriority()) {
-						return 0;
-					}
-					if (e1.getPriority() < e2.getPriority()) {
-						return -1;
-					}
-					return 1;
-				}
-				return 0;
-			}
-		});
-
-		return contributions;
+		return (List) natureToContribMap.get(natureId);
 	}
 
 	protected final IDLTKContributionSelector getSelector(String natureId) {
@@ -170,7 +149,7 @@ public abstract class DLTKContributionExtensionManager {
 	 * Returns the name of the extension point to load
 	 */
 	protected abstract String getExtensionPoint();
-	
+
 	/**
 	 * Checks if the passed object is valid for the given contribution.
 	 * 

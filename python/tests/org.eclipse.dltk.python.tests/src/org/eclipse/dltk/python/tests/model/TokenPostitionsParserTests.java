@@ -9,6 +9,7 @@ import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.NumericLiteral;
+import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.core.tests.model.SuiteOfTestCases;
 import org.eclipse.dltk.python.internal.core.parser.PythonSourceParser;
@@ -16,7 +17,9 @@ import org.eclipse.dltk.python.parser.ast.PythonClassDeclaration;
 import org.eclipse.dltk.python.parser.ast.PythonWhileStatement;
 import org.eclipse.dltk.python.parser.ast.expressions.PrintExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonDictExpression;
+import org.eclipse.dltk.python.parser.ast.expressions.PythonForListExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonListExpression;
+import org.eclipse.dltk.python.parser.ast.expressions.PythonListForExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonTestListExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonTupleExpression;
 
@@ -30,6 +33,7 @@ public class TokenPostitionsParserTests extends SuiteOfTestCases {
 	private static final String testListExprScript = "[ [],[] ]";
 	private static final String testBackQuotesScript  = "` 0 `";
 	private static final String testSuperClassDeclScript = "class A (object) : pass";
+	private static final String testForList = "[i for i in []]";
 	
 	private static final String msg = "Invalid token displacement";
 
@@ -136,5 +140,18 @@ public class TokenPostitionsParserTests extends SuiteOfTestCases {
 		List children = module.getChilds();
 		ASTListNode supers = ((PythonClassDeclaration)((Block)children.get(0)).getChilds().get(0)).getSuperClasses();
 		assertTrue(msg,9 == supers.sourceStart() && 15 == supers.sourceEnd());
+	}
+	public void testForList() {
+		PythonSourceParser parser = new PythonSourceParser();
+		ModuleDeclaration module = parser.parse(null, testForList.toCharArray(), null);
+		Block block = (Block)module.getChilds().get(0);
+		PythonListExpression list = (PythonListExpression) block.getChilds().get(0);
+		PythonListForExpression listFor = (PythonListForExpression) list.getChilds().get(0);
+		assertTrue(listFor.sourceStart()==1 && listFor.sourceEnd() == 14);
+		assertTrue(listFor.getChilds().get(0) instanceof VariableReference && listFor.getChilds().get(1) instanceof PythonForListExpression);
+		VariableReference var = (VariableReference) listFor.getChilds().get(0);
+		assertTrue(var.sourceStart() == 1 && var.sourceEnd() == 2);
+		PythonForListExpression forList = (PythonForListExpression) listFor.getChilds().get(1);
+		assertTrue(forList.sourceStart() == 3 && forList.sourceEnd() == 14);
 	}
 }

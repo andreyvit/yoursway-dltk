@@ -184,7 +184,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		
 		String[] cmdLine = renderCommandLine(config);
 		File workingDirectory = config.getWorkingDirectoryPath().toFile();
-		String[] environment = config.getEnvironmentAsStrings();
+		String[] environment = config.getEnvironmentAsStringsIncluding(interpreterInstall.getEnvironmentVariables());
 
 		final String cmdLineLabel = renderCommandLineLabel(cmdLine);
 		final String processLabel = renderProcessLabel(cmdLine);

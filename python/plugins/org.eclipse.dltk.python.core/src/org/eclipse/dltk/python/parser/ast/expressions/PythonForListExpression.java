@@ -37,6 +37,8 @@ public class PythonForListExpression extends Expression
 		super( );
 		this.fVars = vars;
 		this.fFrom = from;
+		this.setStart(vars.sourceStart());
+		this.setEnd(from.sourceEnd());
 	}
 
 	
@@ -89,6 +91,7 @@ public class PythonForListExpression extends Expression
 	public void setIfListExpression( ExpressionList ifBlock ) {
 
 		this.fIfList = ifBlock;
+		this.setEnd(ifBlock.sourceEnd());
 	}
 
 }

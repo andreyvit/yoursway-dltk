@@ -371,6 +371,7 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 				install.setName(file.toString());
 				install.setInstallLocation(file);
 				install.setLibraryLocations(null);
+				install.setEnvironmentVariables(null);
 
 				installs.add(install);
 			}

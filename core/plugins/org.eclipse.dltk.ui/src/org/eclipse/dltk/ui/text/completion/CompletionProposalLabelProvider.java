@@ -254,7 +254,6 @@ public abstract class CompletionProposalLabelProvider {
 			// return createJavadocSimpleProposalLabel(proposal);
 			// case CompletionProposal.JAVADOC_METHOD_REF:
 			// return createJavadocMethodProposalLabel(proposal);
-		case CompletionProposal.ANNOTATION_ATTRIBUTE_REF:
 		case CompletionProposal.FIELD_REF:
 			return createLabelWithTypeAndDeclaration(proposal);
 		case CompletionProposal.LOCAL_VARIABLE_REF:
@@ -285,7 +284,6 @@ public abstract class CompletionProposalLabelProvider {
 		case CompletionProposal.METHOD_DECLARATION:
 		case CompletionProposal.METHOD_NAME_REFERENCE:
 		case CompletionProposal.METHOD_REF:
-		case CompletionProposal.ANNOTATION_ATTRIBUTE_REF:
 		case CompletionProposal.POTENTIAL_METHOD_DECLARATION:
 			descriptor = ScriptElementImageProvider.getMethodImageDescriptor(proposal.getFlags());
 			break;

@@ -55,6 +55,7 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 	private IInterpreterInstall fEditedInterpreter;
 
 	private AbstractInterpreterLibraryBlock fLibraryBlock;
+	private AbstractInterpreterEnvironmentVariablesBlock fEnvironmentVariablesBlock;
 
 	private StringButtonDialogField fInterpreterPath;
 
@@ -154,12 +155,17 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 		return fInterpreterName.getText();
 	}
 
-// protected File getInstallLocation() {
-// return new File(fInterpreterPath.getText()).getAbsoluteFile();
-// }
+	// protected File getInstallLocation() {
+	// return new File(fInterpreterPath.getText()).getAbsoluteFile();
+	// }
 
 	protected abstract AbstractInterpreterLibraryBlock createLibraryBlock(
 			AddScriptInterpreterDialog dialog);
+
+	protected AbstractInterpreterEnvironmentVariablesBlock createEnvironmentVariablesBlock(
+			AddScriptInterpreterDialog dialog) {
+		return null;
+	}
 
 	protected Control createDialogArea(Composite ancestor) {
 		createDialogFields();
@@ -191,6 +197,19 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 		gd.horizontalSpan = 3;
 		block.setLayoutData(gd);
 
+		l = new Label(parent, SWT.NONE);
+		l.setText("Interpreter environment variables");
+		gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalSpan = 3;
+		l.setLayoutData(gd);
+		fEnvironmentVariablesBlock = createEnvironmentVariablesBlock(this);
+		if (fEnvironmentVariablesBlock != null) {
+			block = fEnvironmentVariablesBlock.createControl(parent);
+			gd = new GridData(GridData.FILL_BOTH);
+			gd.horizontalSpan = 3;
+			block.setLayoutData(gd);
+		}
+
 		Text t = fInterpreterPath.getTextControl(parent);
 		gd = (GridData) t.getLayoutData();
 		gd.grabExcessHorizontalSpace = true;
@@ -214,6 +233,10 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 		setInterpreterLocationStatus(validateInterpreterLocation());
 		fLibraryBlock.initializeFrom(fEditedInterpreter,
 				fSelectedInterpreterType);
+		if (fEnvironmentVariablesBlock != null) {
+			fEnvironmentVariablesBlock.initializeFrom(fEditedInterpreter,
+					fSelectedInterpreterType);
+		}
 		updateStatusLine();
 	}
 
@@ -246,6 +269,10 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 			fInterpreterName.setText(""); //$NON-NLS-1$
 			fInterpreterPath.setText(""); //$NON-NLS-1$
 			fLibraryBlock.initializeFrom(null, fSelectedInterpreterType);
+			if (fEnvironmentVariablesBlock != null) {
+				fEnvironmentVariablesBlock.initializeFrom(null,
+						fSelectedInterpreterType);
+			}
 			if (this.useInterpreterArgs()) {
 				fInterpreterArgs.setText(""); //$NON-NLS-1$
 			}
@@ -256,6 +283,10 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 					.toString());
 			fLibraryBlock.initializeFrom(fEditedInterpreter,
 					fSelectedInterpreterType);
+			if (fEnvironmentVariablesBlock != null) {
+				fEnvironmentVariablesBlock.initializeFrom(fEditedInterpreter,
+						fSelectedInterpreterType);
+			}
 			String InterpreterArgs = fEditedInterpreter.getInterpreterArgs();
 			if (InterpreterArgs != null) {
 				fInterpreterArgs.setText(InterpreterArgs);
@@ -300,6 +331,7 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 		}
 		if (s.isOK()) {
 			fLibraryBlock.setHomeDirectory(file);
+
 			String name = fInterpreterName.getText();
 			if (name == null || name.trim().length() == 0) {
 				// auto-generate interpreter name
@@ -323,6 +355,9 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 			fLibraryBlock.setHomeDirectory(null);
 		}
 		fLibraryBlock.restoreDefaultLibraries();
+		if (fEnvironmentVariablesBlock != null) {
+			fEnvironmentVariablesBlock.restoreDefaultVariables();
+		}
 		return s;
 	}
 
@@ -400,12 +435,12 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 
 	protected void setFieldValuesToInterpreter(IInterpreterInstall install) {
 		File dir = new File(fInterpreterPath.getText());
-// try {
+		// try {
 		install.setInstallLocation(dir);
-// } catch (IOException e) {
-// // Interpreter.setInstallLocation(dir.getAbsoluteFile());
-// Interpreter.setInstallLocation(dir);
-// }
+		// } catch (IOException e) {
+		// // Interpreter.setInstallLocation(dir.getAbsoluteFile());
+		// Interpreter.setInstallLocation(dir);
+		// }
 		install.setName(fInterpreterName.getText());
 
 		if (this.useInterpreterArgs()) {
@@ -421,14 +456,17 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 		}
 
 		fLibraryBlock.performApply(install);
+		if (fEnvironmentVariablesBlock != null) {
+			fEnvironmentVariablesBlock.performApply(install);
+		}
 	}
 
-// protected File getAbsoluteFileOrEmpty(String path) {
-// if (path == null || path.length() == 0) {
-// return new File(""); //$NON-NLS-1$
-// }
-// return new File(path).getAbsoluteFile();
-// }
+	// protected File getAbsoluteFileOrEmpty(String path) {
+	// if (path == null || path.length() == 0) {
+	// return new File(""); //$NON-NLS-1$
+	// }
+	// return new File(path).getAbsoluteFile();
+	// }
 
 	private void setInterpreterNameStatus(IStatus status) {
 		fStati[0] = status;

@@ -297,6 +297,27 @@ public class InterpreterConfig implements Cloneable {
 		return (String[]) list.toArray(new String[list.size()]);
 	}
 
+	public String[] getEnvironmentAsStringsIncluding(
+			EnvironmentVariable[] variables) {
+		ArrayList list = new ArrayList();
+		if (variables != null) {
+			for (int i = 0; i < variables.length; i++) {
+				list
+						.add(variables[i].getName() + "="
+								+ variables[i].getValue());
+			}
+		}
+
+		Iterator it = environment.keySet().iterator();
+		while (it.hasNext()) {
+			String key = (String) it.next();
+			String value = (String) environment.get(key);
+			list.add(key + "=" + value);
+		}
+
+		return (String[]) list.toArray(new String[list.size()]);
+	}
+
 	// Properties
 	public Object setProperty(String name, Object value) {
 		return properties.put(name, value);
@@ -333,12 +354,12 @@ public class InterpreterConfig implements Cloneable {
 
 		items.add(interpreter.getInstallLocation().getAbsolutePath());
 		items.addAll(interpreterArgs);
-		
+
 		String[] interpreterOwnArgs = interpreter.getInterpreterArguments();
 		if (interpreterOwnArgs != null) {
 			items.addAll(Arrays.asList(interpreterOwnArgs));
 		}
-		
+
 		items.add(scriptFile.toPortableString());
 		items.addAll(scriptArgs);
 

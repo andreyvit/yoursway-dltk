@@ -32,6 +32,7 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 	private File fInstallLocation;
 	private LibraryLocation[] fSystemLibraryDescriptions;
 	private String fInterpreterArgs;
+	private EnvironmentVariable[] fEnvironmentVariables;
 
 	// whether change events should be fired
 	private boolean fNotify = true;
@@ -255,5 +256,13 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 		}
 
 		return null;
+	}
+
+	public EnvironmentVariable[] getEnvironmentVariables() {
+		return fEnvironmentVariables;
+	}
+
+	public void setEnvironmentVariables(EnvironmentVariable[] variables) {
+		this.fEnvironmentVariables = variables;
 	}
 }

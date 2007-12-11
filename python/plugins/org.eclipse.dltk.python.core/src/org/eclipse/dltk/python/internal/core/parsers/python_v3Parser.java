@@ -1,4 +1,4 @@
-// $ANTLR 3.0 /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g 2007-08-24 12:59:05
+// $ANTLR 3.0.1 /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g 2007-12-11 14:45:51
 
 package org.eclipse.dltk.python.internal.core.parsers;
 
@@ -71,71 +71,71 @@ public class python_v3Parser extends Parser {
     public static final String[] tokenNames = new String[] {
         "<invalid>", "<EOR>", "<DOWN>", "<UP>", "INDENT", "DEDENT", "NEWLINE", "DECORATOR_S", "LPAREN", "RPAREN", "NAME", "COLON", "COMMA", "STAR", "DOUBLESTAR", "ASSIGN", "SEMI", "PLUSEQUAL", "MINUSEQUAL", "STAREQUAL", "SLASHEQUAL", "PERCENTEQUAL", "AMPEREQUAL", "VBAREQUAL", "CIRCUMFLEXEQUAL", "LEFTSHIFTEQUAL", "RIGHTSHIFTEQUAL", "DOUBLESTAREQUAL", "DOUBLESLASHEQUAL", "RIGHTSHIFT", "DOT", "LESS", "GREATER", "EQUAL", "GREATEREQUAL", "LESSEQUAL", "ALT_NOTEQUAL", "NOTEQUAL", "VBAR", "CIRCUMFLEX", "AMPER", "LEFTSHIFT", "PLUS", "MINUS", "SLASH", "PERCENT", "DOUBLESLASH", "TILDE", "LBRACK", "RBRACK", "LCURLY", "RCURLY", "BACKQUOTE", "INT", "LONGINT", "FLOAT", "COMPLEX", "STRING", "POINTFLOAT", "EXPONENTFLOAT", "DIGITS", "FRACTION", "Exponent", "ESC", "CONTINUED_LINE", "WS", "LEADING_WS", "COMMENT", "'def'", "'print'", "'del'", "'pass'", "'break'", "'continue'", "'return'", "'yield'", "'raise'", "'import'", "'from'", "'as'", "'global'", "'exec'", "'in'", "'assert'", "'if'", "'elif'", "'else'", "'while'", "'for'", "'try'", "'except'", "'finally'", "'or'", "'and'", "'not'", "'is'", "'lambda'", "'with'", "'class'"
     };
-    public static final int COMMA=12;
-    public static final int MINUS=43;
-    public static final int DEDENT=5;
-    public static final int PERCENT=45;
-    public static final int DECORATOR_S=7;
-    public static final int FLOAT=55;
-    public static final int DOUBLESTAR=14;
-    public static final int SLASHEQUAL=20;
-    public static final int FRACTION=61;
-    public static final int COMPLEX=56;
-    public static final int TILDE=47;
-    public static final int DOUBLESLASHEQUAL=28;
-    public static final int NOTEQUAL=37;
-    public static final int NEWLINE=6;
-    public static final int DOT=30;
-    public static final int CIRCUMFLEX=39;
-    public static final int RCURLY=51;
-    public static final int PLUSEQUAL=17;
-    public static final int RIGHTSHIFTEQUAL=26;
-    public static final int LESS=31;
-    public static final int LCURLY=50;
-    public static final int LONGINT=54;
-    public static final int INT=53;
-    public static final int LEADING_WS=66;
-    public static final int ASSIGN=15;
-    public static final int RPAREN=9;
-    public static final int LPAREN=8;
-    public static final int GREATER=32;
-    public static final int VBAR=38;
-    public static final int PLUS=42;
-    public static final int BACKQUOTE=52;
-    public static final int CONTINUED_LINE=64;
-    public static final int Exponent=62;
-    public static final int DIGITS=60;
-    public static final int SLASH=44;
-    public static final int WS=65;
-    public static final int STRING=57;
-    public static final int COMMENT=67;
-    public static final int POINTFLOAT=58;
-    public static final int AMPEREQUAL=22;
-    public static final int ESC=63;
-    public static final int LBRACK=48;
-    public static final int SEMI=16;
-    public static final int EXPONENTFLOAT=59;
-    public static final int EQUAL=33;
-    public static final int LESSEQUAL=35;
-    public static final int RIGHTSHIFT=29;
-    public static final int MINUSEQUAL=18;
-    public static final int PERCENTEQUAL=21;
-    public static final int LEFTSHIFTEQUAL=25;
-    public static final int EOF=-1;
-    public static final int CIRCUMFLEXEQUAL=24;
-    public static final int INDENT=4;
-    public static final int RBRACK=49;
-    public static final int ALT_NOTEQUAL=36;
-    public static final int COLON=11;
-    public static final int GREATEREQUAL=34;
-    public static final int AMPER=40;
     public static final int DOUBLESLASH=46;
-    public static final int STAREQUAL=19;
+    public static final int EXPONENTFLOAT=59;
+    public static final int BACKQUOTE=52;
+    public static final int SLASHEQUAL=20;
+    public static final int CONTINUED_LINE=64;
+    public static final int LBRACK=48;
     public static final int STAR=13;
-    public static final int VBAREQUAL=23;
+    public static final int CIRCUMFLEXEQUAL=24;
+    public static final int DOUBLESTAR=14;
+    public static final int ESC=63;
+    public static final int DIGITS=60;
+    public static final int Exponent=62;
+    public static final int GREATEREQUAL=34;
+    public static final int COMPLEX=56;
+    public static final int FLOAT=55;
+    public static final int DEDENT=5;
+    public static final int RIGHTSHIFTEQUAL=26;
+    public static final int EOF=-1;
+    public static final int POINTFLOAT=58;
+    public static final int LPAREN=8;
+    public static final int INDENT=4;
+    public static final int PLUSEQUAL=17;
+    public static final int LEADING_WS=66;
+    public static final int NOTEQUAL=37;
+    public static final int MINUSEQUAL=18;
+    public static final int VBAR=38;
+    public static final int RPAREN=9;
     public static final int NAME=10;
+    public static final int SLASH=44;
+    public static final int GREATER=32;
+    public static final int COMMA=12;
+    public static final int AMPER=40;
     public static final int DOUBLESTAREQUAL=27;
+    public static final int EQUAL=33;
+    public static final int TILDE=47;
+    public static final int LESS=31;
+    public static final int LEFTSHIFTEQUAL=25;
     public static final int LEFTSHIFT=41;
+    public static final int PLUS=42;
+    public static final int COMMENT=67;
+    public static final int DOT=30;
+    public static final int RBRACK=49;
+    public static final int PERCENT=45;
+    public static final int LCURLY=50;
+    public static final int INT=53;
+    public static final int MINUS=43;
+    public static final int RIGHTSHIFT=29;
+    public static final int SEMI=16;
+    public static final int COLON=11;
+    public static final int DOUBLESLASHEQUAL=28;
+    public static final int WS=65;
+    public static final int NEWLINE=6;
+    public static final int AMPEREQUAL=22;
+    public static final int VBAREQUAL=23;
+    public static final int RCURLY=51;
+    public static final int ASSIGN=15;
+    public static final int LONGINT=54;
+    public static final int DECORATOR_S=7;
+    public static final int FRACTION=61;
+    public static final int PERCENTEQUAL=21;
+    public static final int LESSEQUAL=35;
+    public static final int STAREQUAL=19;
+    public static final int CIRCUMFLEX=39;
+    public static final int STRING=57;
+    public static final int ALT_NOTEQUAL=36;
 
         public python_v3Parser(TokenStream input) {
             super(input);
@@ -143,7 +143,7 @@ public class python_v3Parser extends Parser {
         
 
     public String[] getTokenNames() { return tokenNames; }
-    public String getGrammarFileName() { return "/home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g"; }
+    public String getGrammarFileName() { return "/home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g"; }
 
 
     public DLTKPythonErrorReporter reporter;
@@ -172,16 +172,16 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start file_input
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:134:1: file_input : ( NEWLINE | s= stmt )* EOF ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:134:1: file_input : ( NEWLINE | s= stmt )* EOF ;
     public final void file_input() throws RecognitionException {
         ArrayList s = null;
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:134:11: ( ( NEWLINE | s= stmt )* EOF )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:135:6: ( NEWLINE | s= stmt )* EOF
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:134:11: ( ( NEWLINE | s= stmt )* EOF )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:135:6: ( NEWLINE | s= stmt )* EOF
             {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:135:6: ( NEWLINE | s= stmt )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:135:6: ( NEWLINE | s= stmt )*
             loop1:
             do {
                 int alt1=3;
@@ -197,14 +197,14 @@ public class python_v3Parser extends Parser {
 
                 switch (alt1) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:136:7: NEWLINE
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:136:7: NEWLINE
             	    {
             	    match(input,NEWLINE,FOLLOW_NEWLINE_in_file_input101); 
 
             	    }
             	    break;
             	case 2 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:138:7: s= stmt
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:138:7: s= stmt
             	    {
             	    pushFollow(FOLLOW_stmt_in_file_input126);
             	    s=stmt();
@@ -257,7 +257,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start decorator
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:163:1: decorator returns [ Decorator decorator = null ] : dec= DECORATOR_S dottedName= dot_name (lp0= LPAREN arguments= arglist rp0= RPAREN )? NEWLINE ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:163:1: decorator returns [ Decorator decorator = null ] : dec= DECORATOR_S dottedName= dot_name (lp0= LPAREN arguments= arglist rp0= RPAREN )? NEWLINE ;
     public final Decorator decorator() throws RecognitionException {
         Decorator decorator =  null;
 
@@ -270,8 +270,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:163:49: (dec= DECORATOR_S dottedName= dot_name (lp0= LPAREN arguments= arglist rp0= RPAREN )? NEWLINE )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:164:2: dec= DECORATOR_S dottedName= dot_name (lp0= LPAREN arguments= arglist rp0= RPAREN )? NEWLINE
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:163:49: (dec= DECORATOR_S dottedName= dot_name (lp0= LPAREN arguments= arglist rp0= RPAREN )? NEWLINE )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:164:2: dec= DECORATOR_S dottedName= dot_name (lp0= LPAREN arguments= arglist rp0= RPAREN )? NEWLINE
             {
             dec=(Token)input.LT(1);
             match(input,DECORATOR_S,FOLLOW_DECORATOR_S_in_decorator185); 
@@ -279,7 +279,7 @@ public class python_v3Parser extends Parser {
             dottedName=dot_name();
             _fsp--;
 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:166:2: (lp0= LPAREN arguments= arglist rp0= RPAREN )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:166:2: (lp0= LPAREN arguments= arglist rp0= RPAREN )?
             int alt2=2;
             int LA2_0 = input.LA(1);
 
@@ -288,7 +288,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt2) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:167:4: lp0= LPAREN arguments= arglist rp0= RPAREN
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:167:4: lp0= LPAREN arguments= arglist rp0= RPAREN
                     {
                     lp0=(Token)input.LT(1);
                     match(input,LPAREN,FOLLOW_LPAREN_in_decorator204); 
@@ -338,7 +338,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start decoraror_list
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:183:1: decoraror_list returns [List decorators = new ArrayList() ] : (dec= decorator )+ ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:183:1: decoraror_list returns [List decorators = new ArrayList() ] : (dec= decorator )+ ;
     public final List decoraror_list() throws RecognitionException {
         List decorators =  new ArrayList();
 
@@ -346,10 +346,10 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:183:60: ( (dec= decorator )+ )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:184:2: (dec= decorator )+
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:183:60: ( (dec= decorator )+ )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:184:2: (dec= decorator )+
             {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:184:2: (dec= decorator )+
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:184:2: (dec= decorator )+
             int cnt3=0;
             loop3:
             do {
@@ -363,7 +363,7 @@ public class python_v3Parser extends Parser {
 
                 switch (alt3) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:185:3: dec= decorator
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:185:3: dec= decorator
             	    {
             	    pushFollow(FOLLOW_decorator_in_decoraror_list259);
             	    dec=decorator();
@@ -412,7 +412,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start funcdef
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:195:1: funcdef returns [ MethodDeclaration methodDeclaration = null; ] : (decorators= decoraror_list )? w= 'def' tu= NAME parameters[ params ] e= COLON body= suite ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:195:1: funcdef returns [ MethodDeclaration methodDeclaration = null; ] : (decorators= decoraror_list )? w= 'def' tu= NAME parameters[ params ] e= COLON body= suite ;
     public final MethodDeclaration funcdef() throws RecognitionException {
         MethodDeclaration methodDeclaration =  null;;
 
@@ -425,10 +425,10 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:195:64: ( (decorators= decoraror_list )? w= 'def' tu= NAME parameters[ params ] e= COLON body= suite )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:196:2: (decorators= decoraror_list )? w= 'def' tu= NAME parameters[ params ] e= COLON body= suite
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:195:64: ( (decorators= decoraror_list )? w= 'def' tu= NAME parameters[ params ] e= COLON body= suite )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:196:2: (decorators= decoraror_list )? w= 'def' tu= NAME parameters[ params ] e= COLON body= suite
             {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:196:2: (decorators= decoraror_list )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:196:2: (decorators= decoraror_list )?
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -437,7 +437,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt4) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:197:3: decorators= decoraror_list
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:197:3: decorators= decoraror_list
                     {
                     pushFollow(FOLLOW_decoraror_list_in_funcdef294);
                     decorators=decoraror_list();
@@ -505,14 +505,14 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start parameters
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:224:1: parameters[ List params ] : LPAREN ( varargslist[ params ] )? RPAREN ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:224:1: parameters[ List params ] : LPAREN ( varargslist[ params ] )? RPAREN ;
     public final void parameters(List params) throws RecognitionException {
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:224:26: ( LPAREN ( varargslist[ params ] )? RPAREN )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:225:2: LPAREN ( varargslist[ params ] )? RPAREN
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:224:26: ( LPAREN ( varargslist[ params ] )? RPAREN )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:225:2: LPAREN ( varargslist[ params ] )? RPAREN
             {
             match(input,LPAREN,FOLLOW_LPAREN_in_parameters374); 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:226:2: ( varargslist[ params ] )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:226:2: ( varargslist[ params ] )?
             int alt5=2;
             int LA5_0 = input.LA(1);
 
@@ -521,7 +521,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt5) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:226:3: varargslist[ params ]
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:226:3: varargslist[ params ]
                     {
                     pushFollow(FOLLOW_varargslist_in_parameters379);
                     varargslist( params  );
@@ -559,7 +559,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start varargslist
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:231:1: varargslist[ List params ] : ( defparameter[params] ( options {greedy=true; } : COMMA defparameter[ params ] )* ( COMMA ( STAR tu= NAME ( COMMA DOUBLESTAR t1= NAME )? | DOUBLESTAR t2= NAME )? )? | STAR m= NAME ( COMMA DOUBLESTAR m1= NAME )? | DOUBLESTAR m2= NAME );
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:231:1: varargslist[ List params ] : ( defparameter[params] ( options {greedy=true; } : COMMA defparameter[ params ] )* ( COMMA ( STAR tu= NAME ( COMMA DOUBLESTAR t1= NAME )? | DOUBLESTAR t2= NAME )? )? | STAR m= NAME ( COMMA DOUBLESTAR m1= NAME )? | DOUBLESTAR m2= NAME );
     public final void varargslist(List params) throws RecognitionException {
         Token tu=null;
         Token t1=null;
@@ -569,7 +569,7 @@ public class python_v3Parser extends Parser {
         Token m2=null;
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:231:27: ( defparameter[params] ( options {greedy=true; } : COMMA defparameter[ params ] )* ( COMMA ( STAR tu= NAME ( COMMA DOUBLESTAR t1= NAME )? | DOUBLESTAR t2= NAME )? )? | STAR m= NAME ( COMMA DOUBLESTAR m1= NAME )? | DOUBLESTAR m2= NAME )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:231:27: ( defparameter[params] ( options {greedy=true; } : COMMA defparameter[ params ] )* ( COMMA ( STAR tu= NAME ( COMMA DOUBLESTAR t1= NAME )? | DOUBLESTAR t2= NAME )? )? | STAR m= NAME ( COMMA DOUBLESTAR m1= NAME )? | DOUBLESTAR m2= NAME )
             int alt11=3;
             switch ( input.LA(1) ) {
             case LPAREN:
@@ -597,13 +597,13 @@ public class python_v3Parser extends Parser {
 
             switch (alt11) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:232:2: defparameter[params] ( options {greedy=true; } : COMMA defparameter[ params ] )* ( COMMA ( STAR tu= NAME ( COMMA DOUBLESTAR t1= NAME )? | DOUBLESTAR t2= NAME )? )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:232:2: defparameter[params] ( options {greedy=true; } : COMMA defparameter[ params ] )* ( COMMA ( STAR tu= NAME ( COMMA DOUBLESTAR t1= NAME )? | DOUBLESTAR t2= NAME )? )?
                     {
                     pushFollow(FOLLOW_defparameter_in_varargslist397);
                     defparameter(params);
                     _fsp--;
 
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:233:2: ( options {greedy=true; } : COMMA defparameter[ params ] )*
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:233:2: ( options {greedy=true; } : COMMA defparameter[ params ] )*
                     loop6:
                     do {
                         int alt6=2;
@@ -622,7 +622,7 @@ public class python_v3Parser extends Parser {
 
                         switch (alt6) {
                     	case 1 :
-                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:234:28: COMMA defparameter[ params ]
+                    	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:234:28: COMMA defparameter[ params ]
                     	    {
                     	    match(input,COMMA,FOLLOW_COMMA_in_varargslist414); 
                     	    pushFollow(FOLLOW_defparameter_in_varargslist419);
@@ -638,7 +638,7 @@ public class python_v3Parser extends Parser {
                         }
                     } while (true);
 
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:237:9: ( COMMA ( STAR tu= NAME ( COMMA DOUBLESTAR t1= NAME )? | DOUBLESTAR t2= NAME )? )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:237:9: ( COMMA ( STAR tu= NAME ( COMMA DOUBLESTAR t1= NAME )? | DOUBLESTAR t2= NAME )? )?
                     int alt9=2;
                     int LA9_0 = input.LA(1);
 
@@ -647,10 +647,10 @@ public class python_v3Parser extends Parser {
                     }
                     switch (alt9) {
                         case 1 :
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:237:10: COMMA ( STAR tu= NAME ( COMMA DOUBLESTAR t1= NAME )? | DOUBLESTAR t2= NAME )?
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:237:10: COMMA ( STAR tu= NAME ( COMMA DOUBLESTAR t1= NAME )? | DOUBLESTAR t2= NAME )?
                             {
                             match(input,COMMA,FOLLOW_COMMA_in_varargslist435); 
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:238:14: ( STAR tu= NAME ( COMMA DOUBLESTAR t1= NAME )? | DOUBLESTAR t2= NAME )?
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:238:14: ( STAR tu= NAME ( COMMA DOUBLESTAR t1= NAME )? | DOUBLESTAR t2= NAME )?
                             int alt8=3;
                             int LA8_0 = input.LA(1);
 
@@ -662,7 +662,7 @@ public class python_v3Parser extends Parser {
                             }
                             switch (alt8) {
                                 case 1 :
-                                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:238:16: STAR tu= NAME ( COMMA DOUBLESTAR t1= NAME )?
+                                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:238:16: STAR tu= NAME ( COMMA DOUBLESTAR t1= NAME )?
                                     {
                                     match(input,STAR,FOLLOW_STAR_in_varargslist452); 
                                     tu=(Token)input.LT(1);
@@ -670,7 +670,7 @@ public class python_v3Parser extends Parser {
                                      
                                     				params.add( new PythonArgument( toDLTK( tu ) ) ); 
                                     			
-                                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:242:15: ( COMMA DOUBLESTAR t1= NAME )?
+                                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:242:15: ( COMMA DOUBLESTAR t1= NAME )?
                                     int alt7=2;
                                     int LA7_0 = input.LA(1);
 
@@ -679,7 +679,7 @@ public class python_v3Parser extends Parser {
                                     }
                                     switch (alt7) {
                                         case 1 :
-                                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:242:16: COMMA DOUBLESTAR t1= NAME
+                                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:242:16: COMMA DOUBLESTAR t1= NAME
                                             {
                                             match(input,COMMA,FOLLOW_COMMA_in_varargslist493); 
                                             match(input,DOUBLESTAR,FOLLOW_DOUBLESTAR_in_varargslist495); 
@@ -698,7 +698,7 @@ public class python_v3Parser extends Parser {
                                     }
                                     break;
                                 case 2 :
-                                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:247:17: DOUBLESTAR t2= NAME
+                                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:247:17: DOUBLESTAR t2= NAME
                                     {
                                     match(input,DOUBLESTAR,FOLLOW_DOUBLESTAR_in_varargslist543); 
                                     t2=(Token)input.LT(1);
@@ -722,7 +722,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:253:4: STAR m= NAME ( COMMA DOUBLESTAR m1= NAME )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:253:4: STAR m= NAME ( COMMA DOUBLESTAR m1= NAME )?
                     {
                     match(input,STAR,FOLLOW_STAR_in_varargslist587); 
                     m=(Token)input.LT(1);
@@ -730,7 +730,7 @@ public class python_v3Parser extends Parser {
                      
                     			params.add( new PythonArgument( toDLTK( m ) ) );
                     		
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:257:2: ( COMMA DOUBLESTAR m1= NAME )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:257:2: ( COMMA DOUBLESTAR m1= NAME )?
                     int alt10=2;
                     int LA10_0 = input.LA(1);
 
@@ -739,7 +739,7 @@ public class python_v3Parser extends Parser {
                     }
                     switch (alt10) {
                         case 1 :
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:257:3: COMMA DOUBLESTAR m1= NAME
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:257:3: COMMA DOUBLESTAR m1= NAME
                             {
                             match(input,COMMA,FOLLOW_COMMA_in_varargslist602); 
                             match(input,DOUBLESTAR,FOLLOW_DOUBLESTAR_in_varargslist607); 
@@ -758,7 +758,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:263:4: DOUBLESTAR m2= NAME
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:263:4: DOUBLESTAR m2= NAME
                     {
                     match(input,DOUBLESTAR,FOLLOW_DOUBLESTAR_in_varargslist627); 
                     m2=(Token)input.LT(1);
@@ -793,7 +793,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start defparameter
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:270:1: defparameter[ List params ] : lastParam= fpdef[ params ] ( ASSIGN initExpr= test )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:270:1: defparameter[ List params ] : lastParam= fpdef[ params ] ( ASSIGN initExpr= test )? ;
     public final void defparameter(List params) throws RecognitionException {
         PythonArgument lastParam = null;
 
@@ -801,14 +801,14 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:270:28: (lastParam= fpdef[ params ] ( ASSIGN initExpr= test )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:271:2: lastParam= fpdef[ params ] ( ASSIGN initExpr= test )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:270:28: (lastParam= fpdef[ params ] ( ASSIGN initExpr= test )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:271:2: lastParam= fpdef[ params ] ( ASSIGN initExpr= test )?
             {
             pushFollow(FOLLOW_fpdef_in_defparameter652);
             lastParam=fpdef( params );
             _fsp--;
 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:272:2: ( ASSIGN initExpr= test )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:272:2: ( ASSIGN initExpr= test )?
             int alt12=2;
             int LA12_0 = input.LA(1);
 
@@ -817,7 +817,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt12) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:272:3: ASSIGN initExpr= test
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:272:3: ASSIGN initExpr= test
                     {
                     match(input,ASSIGN,FOLLOW_ASSIGN_in_defparameter657); 
                     pushFollow(FOLLOW_test_in_defparameter663);
@@ -860,14 +860,14 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start fpdef
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:283:1: fpdef[ List params ] returns [ PythonArgument argument = null ] : (tu= NAME | LPAREN fplist[params] RPAREN );
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:283:1: fpdef[ List params ] returns [ PythonArgument argument = null ] : (tu= NAME | LPAREN fplist[params] RPAREN );
     public final PythonArgument fpdef(List params) throws RecognitionException {
         PythonArgument argument =  null;
 
         Token tu=null;
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:283:65: (tu= NAME | LPAREN fplist[params] RPAREN )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:283:65: (tu= NAME | LPAREN fplist[params] RPAREN )
             int alt13=2;
             int LA13_0 = input.LA(1);
 
@@ -885,7 +885,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt13) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:284:6: tu= NAME
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:284:6: tu= NAME
                     {
                     tu=(Token)input.LT(1);
                     match(input,NAME,FOLLOW_NAME_in_fpdef695); 
@@ -897,7 +897,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:289:3: LPAREN fplist[params] RPAREN
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:289:3: LPAREN fplist[params] RPAREN
                     {
                     match(input,LPAREN,FOLLOW_LPAREN_in_fpdef706); 
                     pushFollow(FOLLOW_fplist_in_fpdef708);
@@ -932,17 +932,17 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start fplist
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:293:1: fplist[List params ] : fpdef[ params ] ( options {greedy=true; } : COMMA fpdef[ params ] )* ( COMMA )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:293:1: fplist[List params ] : fpdef[ params ] ( options {greedy=true; } : COMMA fpdef[ params ] )* ( COMMA )? ;
     public final void fplist(List params) throws RecognitionException {
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:293:22: ( fpdef[ params ] ( options {greedy=true; } : COMMA fpdef[ params ] )* ( COMMA )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:294:2: fpdef[ params ] ( options {greedy=true; } : COMMA fpdef[ params ] )* ( COMMA )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:293:22: ( fpdef[ params ] ( options {greedy=true; } : COMMA fpdef[ params ] )* ( COMMA )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:294:2: fpdef[ params ] ( options {greedy=true; } : COMMA fpdef[ params ] )* ( COMMA )?
             {
             pushFollow(FOLLOW_fpdef_in_fplist726);
             fpdef( params );
             _fsp--;
 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:295:2: ( options {greedy=true; } : COMMA fpdef[ params ] )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:295:2: ( options {greedy=true; } : COMMA fpdef[ params ] )*
             loop14:
             do {
                 int alt14=2;
@@ -961,7 +961,7 @@ public class python_v3Parser extends Parser {
 
                 switch (alt14) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:296:3: COMMA fpdef[ params ]
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:296:3: COMMA fpdef[ params ]
             	    {
             	    match(input,COMMA,FOLLOW_COMMA_in_fplist744); 
             	    pushFollow(FOLLOW_fpdef_in_fplist746);
@@ -977,7 +977,7 @@ public class python_v3Parser extends Parser {
                 }
             } while (true);
 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:298:2: ( COMMA )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:298:2: ( COMMA )?
             int alt15=2;
             int LA15_0 = input.LA(1);
 
@@ -986,7 +986,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt15) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:298:3: COMMA
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:298:3: COMMA
                     {
                     match(input,COMMA,FOLLOW_COMMA_in_fplist755); 
 
@@ -1020,17 +1020,17 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start simple_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:306:1: simple_stmt[ List stmts ] : small_stmt[ stmts ] ( options {greedy=true; } : SEMI small_stmt[ stmts ] )* ( SEMI )? NEWLINE ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:306:1: simple_stmt[ List stmts ] : small_stmt[ stmts ] ( options {greedy=true; } : SEMI small_stmt[ stmts ] )* ( SEMI )? NEWLINE ;
     public final void simple_stmt(List stmts) throws RecognitionException {
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:306:27: ( small_stmt[ stmts ] ( options {greedy=true; } : SEMI small_stmt[ stmts ] )* ( SEMI )? NEWLINE )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:307:2: small_stmt[ stmts ] ( options {greedy=true; } : SEMI small_stmt[ stmts ] )* ( SEMI )? NEWLINE
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:306:27: ( small_stmt[ stmts ] ( options {greedy=true; } : SEMI small_stmt[ stmts ] )* ( SEMI )? NEWLINE )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:307:2: small_stmt[ stmts ] ( options {greedy=true; } : SEMI small_stmt[ stmts ] )* ( SEMI )? NEWLINE
             {
             pushFollow(FOLLOW_small_stmt_in_simple_stmt773);
             small_stmt( stmts );
             _fsp--;
 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:308:2: ( options {greedy=true; } : SEMI small_stmt[ stmts ] )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:308:2: ( options {greedy=true; } : SEMI small_stmt[ stmts ] )*
             loop16:
             do {
                 int alt16=2;
@@ -1049,7 +1049,7 @@ public class python_v3Parser extends Parser {
 
                 switch (alt16) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:309:3: SEMI small_stmt[ stmts ]
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:309:3: SEMI small_stmt[ stmts ]
             	    {
             	    match(input,SEMI,FOLLOW_SEMI_in_simple_stmt792); 
             	    pushFollow(FOLLOW_small_stmt_in_simple_stmt794);
@@ -1065,7 +1065,7 @@ public class python_v3Parser extends Parser {
                 }
             } while (true);
 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:310:6: ( SEMI )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:310:6: ( SEMI )?
             int alt17=2;
             int LA17_0 = input.LA(1);
 
@@ -1074,7 +1074,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt17) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:310:7: SEMI
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:310:7: SEMI
                     {
                     match(input,SEMI,FOLLOW_SEMI_in_simple_stmt804); 
 
@@ -1109,7 +1109,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:312:4: stmt returns [ ArrayList statements = new ArrayList( ) ] : ( simple_stmt[ simpleStatements ] | compoundStatement= compound_stmt ) ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:312:4: stmt returns [ ArrayList statements = new ArrayList( ) ] : ( simple_stmt[ simpleStatements ] | compoundStatement= compound_stmt ) ;
     public final ArrayList stmt() throws RecognitionException {
         ArrayList statements =  new ArrayList( );
 
@@ -1117,10 +1117,10 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:312:60: ( ( simple_stmt[ simpleStatements ] | compoundStatement= compound_stmt ) )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:313:2: ( simple_stmt[ simpleStatements ] | compoundStatement= compound_stmt )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:312:60: ( ( simple_stmt[ simpleStatements ] | compoundStatement= compound_stmt ) )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:313:2: ( simple_stmt[ simpleStatements ] | compoundStatement= compound_stmt )
             {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:313:2: ( simple_stmt[ simpleStatements ] | compoundStatement= compound_stmt )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:313:2: ( simple_stmt[ simpleStatements ] | compoundStatement= compound_stmt )
             int alt18=2;
             int LA18_0 = input.LA(1);
 
@@ -1138,7 +1138,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt18) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:314:3: simple_stmt[ simpleStatements ]
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:314:3: simple_stmt[ simpleStatements ]
                     {
 
                     		List simpleStatements = new ArrayList();
@@ -1152,7 +1152,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:319:3: compoundStatement= compound_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:319:3: compoundStatement= compound_stmt
                     {
                     pushFollow(FOLLOW_compound_stmt_in_stmt850);
                     compoundStatement=compound_stmt();
@@ -1190,7 +1190,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start small_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:326:1: small_stmt[ List stmts ] returns [ Statement rstatement = null ] : (statement1= expr_stmt | statement2= print_stmt | statement3= del_stmt | statement4= pass_stmt | statement5= flow_stmt | statement6= import_stmt | statement7= global_stmt | statement8= exec_stmt | statement9= assert_stmt ) ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:326:1: small_stmt[ List stmts ] returns [ Statement rstatement = null ] : (statement1= expr_stmt | statement2= print_stmt | statement3= del_stmt | statement4= pass_stmt | statement5= flow_stmt | statement6= import_stmt | statement7= global_stmt | statement8= exec_stmt | statement9= assert_stmt ) ;
     public final Statement small_stmt(List stmts) throws RecognitionException {
         Statement rstatement =  null;
 
@@ -1214,10 +1214,10 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:326:66: ( (statement1= expr_stmt | statement2= print_stmt | statement3= del_stmt | statement4= pass_stmt | statement5= flow_stmt | statement6= import_stmt | statement7= global_stmt | statement8= exec_stmt | statement9= assert_stmt ) )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:327:2: (statement1= expr_stmt | statement2= print_stmt | statement3= del_stmt | statement4= pass_stmt | statement5= flow_stmt | statement6= import_stmt | statement7= global_stmt | statement8= exec_stmt | statement9= assert_stmt )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:326:66: ( (statement1= expr_stmt | statement2= print_stmt | statement3= del_stmt | statement4= pass_stmt | statement5= flow_stmt | statement6= import_stmt | statement7= global_stmt | statement8= exec_stmt | statement9= assert_stmt ) )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:327:2: (statement1= expr_stmt | statement2= print_stmt | statement3= del_stmt | statement4= pass_stmt | statement5= flow_stmt | statement6= import_stmt | statement7= global_stmt | statement8= exec_stmt | statement9= assert_stmt )
             {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:327:2: (statement1= expr_stmt | statement2= print_stmt | statement3= del_stmt | statement4= pass_stmt | statement5= flow_stmt | statement6= import_stmt | statement7= global_stmt | statement8= exec_stmt | statement9= assert_stmt )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:327:2: (statement1= expr_stmt | statement2= print_stmt | statement3= del_stmt | statement4= pass_stmt | statement5= flow_stmt | statement6= import_stmt | statement7= global_stmt | statement8= exec_stmt | statement9= assert_stmt )
             int alt19=9;
             switch ( input.LA(1) ) {
             case LPAREN:
@@ -1293,7 +1293,7 @@ public class python_v3Parser extends Parser {
 
             switch (alt19) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:328:4: statement1= expr_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:328:4: statement1= expr_stmt
                     {
                     pushFollow(FOLLOW_expr_stmt_in_small_stmt884);
                     statement1=expr_stmt();
@@ -1304,7 +1304,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:329:4: statement2= print_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:329:4: statement2= print_stmt
                     {
                     pushFollow(FOLLOW_print_stmt_in_small_stmt895);
                     statement2=print_stmt();
@@ -1315,7 +1315,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:330:4: statement3= del_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:330:4: statement3= del_stmt
                     {
                     pushFollow(FOLLOW_del_stmt_in_small_stmt905);
                     statement3=del_stmt();
@@ -1326,7 +1326,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:331:4: statement4= pass_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:331:4: statement4= pass_stmt
                     {
                     pushFollow(FOLLOW_pass_stmt_in_small_stmt915);
                     statement4=pass_stmt();
@@ -1337,7 +1337,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:332:4: statement5= flow_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:332:4: statement5= flow_stmt
                     {
                     pushFollow(FOLLOW_flow_stmt_in_small_stmt925);
                     statement5=flow_stmt();
@@ -1348,7 +1348,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 6 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:333:4: statement6= import_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:333:4: statement6= import_stmt
                     {
                     pushFollow(FOLLOW_import_stmt_in_small_stmt935);
                     statement6=import_stmt();
@@ -1359,7 +1359,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 7 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:334:4: statement7= global_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:334:4: statement7= global_stmt
                     {
                     pushFollow(FOLLOW_global_stmt_in_small_stmt945);
                     statement7=global_stmt();
@@ -1370,7 +1370,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 8 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:335:4: statement8= exec_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:335:4: statement8= exec_stmt
                     {
                     pushFollow(FOLLOW_exec_stmt_in_small_stmt955);
                     statement8=exec_stmt();
@@ -1381,7 +1381,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 9 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:336:4: statement9= assert_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:336:4: statement9= assert_stmt
                     {
                     pushFollow(FOLLOW_assert_stmt_in_small_stmt965);
                     statement9=assert_stmt();
@@ -1423,7 +1423,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start expr_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:344:1: expr_stmt returns [ Expression exp = null ] : exp0= testlist (type= augassign right= testlist | (a= ASSIGN right= testlist )+ )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:344:1: expr_stmt returns [ Expression exp = null ] : exp0= testlist (type= augassign right= testlist | (a= ASSIGN right= testlist )+ )? ;
     public final Expression expr_stmt() throws RecognitionException {
         Expression exp =  null;
 
@@ -1436,15 +1436,15 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:344:45: (exp0= testlist (type= augassign right= testlist | (a= ASSIGN right= testlist )+ )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:345:2: exp0= testlist (type= augassign right= testlist | (a= ASSIGN right= testlist )+ )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:344:45: (exp0= testlist (type= augassign right= testlist | (a= ASSIGN right= testlist )+ )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:345:2: exp0= testlist (type= augassign right= testlist | (a= ASSIGN right= testlist )+ )?
             {
             pushFollow(FOLLOW_testlist_in_expr_stmt993);
             exp0=testlist();
             _fsp--;
 
              exp = exp0; 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:346:2: (type= augassign right= testlist | (a= ASSIGN right= testlist )+ )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:346:2: (type= augassign right= testlist | (a= ASSIGN right= testlist )+ )?
             int alt21=3;
             int LA21_0 = input.LA(1);
 
@@ -1456,7 +1456,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt21) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:347:3: type= augassign right= testlist
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:347:3: type= augassign right= testlist
                     {
                     pushFollow(FOLLOW_augassign_in_expr_stmt1007);
                     type=augassign();
@@ -1479,9 +1479,9 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:359:3: (a= ASSIGN right= testlist )+
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:359:3: (a= ASSIGN right= testlist )+
                     {
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:359:3: (a= ASSIGN right= testlist )+
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:359:3: (a= ASSIGN right= testlist )+
                     int cnt20=0;
                     loop20:
                     do {
@@ -1495,7 +1495,7 @@ public class python_v3Parser extends Parser {
 
                         switch (alt20) {
                     	case 1 :
-                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:360:4: a= ASSIGN right= testlist
+                    	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:360:4: a= ASSIGN right= testlist
                     	    {
                     	    a=(Token)input.LT(1);
                     	    match(input,ASSIGN,FOLLOW_ASSIGN_in_expr_stmt1038); 
@@ -1560,12 +1560,12 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start augassign
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:379:1: augassign returns [ int type = 0 ] : ( PLUSEQUAL | MINUSEQUAL | STAREQUAL | SLASHEQUAL | PERCENTEQUAL | AMPEREQUAL | VBAREQUAL | CIRCUMFLEXEQUAL | LEFTSHIFTEQUAL | RIGHTSHIFTEQUAL | DOUBLESTAREQUAL | DOUBLESLASHEQUAL );
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:379:1: augassign returns [ int type = 0 ] : ( PLUSEQUAL | MINUSEQUAL | STAREQUAL | SLASHEQUAL | PERCENTEQUAL | AMPEREQUAL | VBAREQUAL | CIRCUMFLEXEQUAL | LEFTSHIFTEQUAL | RIGHTSHIFTEQUAL | DOUBLESTAREQUAL | DOUBLESLASHEQUAL );
     public final int augassign() throws RecognitionException {
         int type =  0;
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:379:35: ( PLUSEQUAL | MINUSEQUAL | STAREQUAL | SLASHEQUAL | PERCENTEQUAL | AMPEREQUAL | VBAREQUAL | CIRCUMFLEXEQUAL | LEFTSHIFTEQUAL | RIGHTSHIFTEQUAL | DOUBLESTAREQUAL | DOUBLESLASHEQUAL )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:379:35: ( PLUSEQUAL | MINUSEQUAL | STAREQUAL | SLASHEQUAL | PERCENTEQUAL | AMPEREQUAL | VBAREQUAL | CIRCUMFLEXEQUAL | LEFTSHIFTEQUAL | RIGHTSHIFTEQUAL | DOUBLESTAREQUAL | DOUBLESLASHEQUAL )
             int alt22=12;
             switch ( input.LA(1) ) {
             case PLUSEQUAL:
@@ -1637,7 +1637,7 @@ public class python_v3Parser extends Parser {
 
             switch (alt22) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:380:2: PLUSEQUAL
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:380:2: PLUSEQUAL
                     {
                     match(input,PLUSEQUAL,FOLLOW_PLUSEQUAL_in_augassign1080); 
 
@@ -1647,7 +1647,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:384:4: MINUSEQUAL
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:384:4: MINUSEQUAL
                     {
                     match(input,MINUSEQUAL,FOLLOW_MINUSEQUAL_in_augassign1089); 
                     					
@@ -1657,7 +1657,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:388:4: STAREQUAL
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:388:4: STAREQUAL
                     {
                     match(input,STAREQUAL,FOLLOW_STAREQUAL_in_augassign1099); 
 
@@ -1667,7 +1667,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:392:4: SLASHEQUAL
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:392:4: SLASHEQUAL
                     {
                     match(input,SLASHEQUAL,FOLLOW_SLASHEQUAL_in_augassign1108); 
 
@@ -1677,7 +1677,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:396:4: PERCENTEQUAL
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:396:4: PERCENTEQUAL
                     {
                     match(input,PERCENTEQUAL,FOLLOW_PERCENTEQUAL_in_augassign1118); 
 
@@ -1687,7 +1687,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 6 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:400:4: AMPEREQUAL
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:400:4: AMPEREQUAL
                     {
                     match(input,AMPEREQUAL,FOLLOW_AMPEREQUAL_in_augassign1127); 
 
@@ -1697,7 +1697,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 7 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:404:4: VBAREQUAL
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:404:4: VBAREQUAL
                     {
                     match(input,VBAREQUAL,FOLLOW_VBAREQUAL_in_augassign1136); 
 
@@ -1707,7 +1707,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 8 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:408:4: CIRCUMFLEXEQUAL
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:408:4: CIRCUMFLEXEQUAL
                     {
                     match(input,CIRCUMFLEXEQUAL,FOLLOW_CIRCUMFLEXEQUAL_in_augassign1145); 
 
@@ -1717,7 +1717,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 9 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:412:4: LEFTSHIFTEQUAL
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:412:4: LEFTSHIFTEQUAL
                     {
                     match(input,LEFTSHIFTEQUAL,FOLLOW_LEFTSHIFTEQUAL_in_augassign1154); 
 
@@ -1727,7 +1727,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 10 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:416:4: RIGHTSHIFTEQUAL
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:416:4: RIGHTSHIFTEQUAL
                     {
                     match(input,RIGHTSHIFTEQUAL,FOLLOW_RIGHTSHIFTEQUAL_in_augassign1163); 
 
@@ -1737,7 +1737,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 11 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:420:4: DOUBLESTAREQUAL
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:420:4: DOUBLESTAREQUAL
                     {
                     match(input,DOUBLESTAREQUAL,FOLLOW_DOUBLESTAREQUAL_in_augassign1172); 
 
@@ -1747,7 +1747,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 12 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:424:4: DOUBLESLASHEQUAL
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:424:4: DOUBLESLASHEQUAL
                     {
                     match(input,DOUBLESLASHEQUAL,FOLLOW_DOUBLESLASHEQUAL_in_augassign1181); 
 
@@ -1780,7 +1780,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start print_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:430:1: print_stmt returns [ Statement statement = null ] : tu= 'print' (ex= testlist | RIGHTSHIFT ex= testlist )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:430:1: print_stmt returns [ Statement statement = null ] : tu= 'print' (ex= testlist | RIGHTSHIFT ex= testlist )? ;
     public final Statement print_stmt() throws RecognitionException {
         Statement statement =  null;
 
@@ -1789,12 +1789,12 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:430:50: (tu= 'print' (ex= testlist | RIGHTSHIFT ex= testlist )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:432:9: tu= 'print' (ex= testlist | RIGHTSHIFT ex= testlist )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:430:50: (tu= 'print' (ex= testlist | RIGHTSHIFT ex= testlist )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:432:9: tu= 'print' (ex= testlist | RIGHTSHIFT ex= testlist )?
             {
             tu=(Token)input.LT(1);
             match(input,69,FOLLOW_69_in_print_stmt1215); 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:433:2: (ex= testlist | RIGHTSHIFT ex= testlist )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:433:2: (ex= testlist | RIGHTSHIFT ex= testlist )?
             int alt23=3;
             int LA23_0 = input.LA(1);
 
@@ -1806,7 +1806,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt23) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:434:3: ex= testlist
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:434:3: ex= testlist
                     {
                     pushFollow(FOLLOW_testlist_in_print_stmt1226);
                     ex=testlist();
@@ -1816,7 +1816,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:435:12: RIGHTSHIFT ex= testlist
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:435:12: RIGHTSHIFT ex= testlist
                     {
                     match(input,RIGHTSHIFT,FOLLOW_RIGHTSHIFT_in_print_stmt1239); 
                     pushFollow(FOLLOW_testlist_in_print_stmt1255);
@@ -1860,7 +1860,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start del_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:447:1: del_stmt returns [ Statement statement = null ] : sa= 'del' tu= exprlist ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:447:1: del_stmt returns [ Statement statement = null ] : sa= 'del' tu= exprlist ;
     public final Statement del_stmt() throws RecognitionException {
         Statement statement =  null;
 
@@ -1869,8 +1869,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:447:48: (sa= 'del' tu= exprlist )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:448:2: sa= 'del' tu= exprlist
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:447:48: (sa= 'del' tu= exprlist )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:448:2: sa= 'del' tu= exprlist
             {
             sa=(Token)input.LT(1);
             match(input,70,FOLLOW_70_in_del_stmt1286); 
@@ -1906,15 +1906,15 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start pass_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:456:1: pass_stmt returns [ Statement statement = null] : tu= 'pass' ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:456:1: pass_stmt returns [ Statement statement = null] : tu= 'pass' ;
     public final Statement pass_stmt() throws RecognitionException {
         Statement statement =  null;
 
         Token tu=null;
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:456:48: (tu= 'pass' )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:457:2: tu= 'pass'
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:456:48: (tu= 'pass' )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:457:2: tu= 'pass'
             {
             tu=(Token)input.LT(1);
             match(input,71,FOLLOW_71_in_pass_stmt1317); 
@@ -1946,7 +1946,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start flow_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:464:1: flow_stmt returns [ Statement statement = null ] : (statement0= break_stmt | statement1= continue_stmt | statement2= return_stmt | statement3= raise_stmt | statement4= yield_stmt );
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:464:1: flow_stmt returns [ Statement statement = null ] : (statement0= break_stmt | statement1= continue_stmt | statement2= return_stmt | statement3= raise_stmt | statement4= yield_stmt );
     public final Statement flow_stmt() throws RecognitionException {
         Statement statement =  null;
 
@@ -1962,7 +1962,7 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:464:49: (statement0= break_stmt | statement1= continue_stmt | statement2= return_stmt | statement3= raise_stmt | statement4= yield_stmt )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:464:49: (statement0= break_stmt | statement1= continue_stmt | statement2= return_stmt | statement3= raise_stmt | statement4= yield_stmt )
             int alt24=5;
             switch ( input.LA(1) ) {
             case 72:
@@ -1999,7 +1999,7 @@ public class python_v3Parser extends Parser {
 
             switch (alt24) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:465:4: statement0= break_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:465:4: statement0= break_stmt
                     {
                     pushFollow(FOLLOW_break_stmt_in_flow_stmt1343);
                     statement0=break_stmt();
@@ -2010,7 +2010,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:466:4: statement1= continue_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:466:4: statement1= continue_stmt
                     {
                     pushFollow(FOLLOW_continue_stmt_in_flow_stmt1354);
                     statement1=continue_stmt();
@@ -2021,7 +2021,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:467:4: statement2= return_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:467:4: statement2= return_stmt
                     {
                     pushFollow(FOLLOW_return_stmt_in_flow_stmt1364);
                     statement2=return_stmt();
@@ -2032,7 +2032,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:468:4: statement3= raise_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:468:4: statement3= raise_stmt
                     {
                     pushFollow(FOLLOW_raise_stmt_in_flow_stmt1374);
                     statement3=raise_stmt();
@@ -2043,7 +2043,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:469:4: statement4= yield_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:469:4: statement4= yield_stmt
                     {
                     pushFollow(FOLLOW_yield_stmt_in_flow_stmt1384);
                     statement4=yield_stmt();
@@ -2077,15 +2077,15 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start break_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:472:1: break_stmt returns [ Statement statement = null ] : ta= 'break' ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:472:1: break_stmt returns [ Statement statement = null ] : ta= 'break' ;
     public final Statement break_stmt() throws RecognitionException {
         Statement statement =  null;
 
         Token ta=null;
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:472:50: (ta= 'break' )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:473:2: ta= 'break'
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:472:50: (ta= 'break' )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:473:2: ta= 'break'
             {
             ta=(Token)input.LT(1);
             match(input,72,FOLLOW_72_in_break_stmt1405); 
@@ -2117,15 +2117,15 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start continue_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:479:1: continue_stmt returns [ Statement statement = null ] : ta= 'continue' ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:479:1: continue_stmt returns [ Statement statement = null ] : ta= 'continue' ;
     public final Statement continue_stmt() throws RecognitionException {
         Statement statement =  null;
 
         Token ta=null;
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:479:53: (ta= 'continue' )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:480:2: ta= 'continue'
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:479:53: (ta= 'continue' )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:480:2: ta= 'continue'
             {
             ta=(Token)input.LT(1);
             match(input,73,FOLLOW_73_in_continue_stmt1429); 
@@ -2157,7 +2157,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start return_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:486:1: return_stmt returns [ Statement statement = null ] : ra= 'return' (tu= testlist )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:486:1: return_stmt returns [ Statement statement = null ] : ra= 'return' (tu= testlist )? ;
     public final Statement return_stmt() throws RecognitionException {
         Statement statement =  null;
 
@@ -2166,12 +2166,12 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:486:51: (ra= 'return' (tu= testlist )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:487:2: ra= 'return' (tu= testlist )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:486:51: (ra= 'return' (tu= testlist )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:487:2: ra= 'return' (tu= testlist )?
             {
             ra=(Token)input.LT(1);
             match(input,74,FOLLOW_74_in_return_stmt1454); 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:488:3: (tu= testlist )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:488:3: (tu= testlist )?
             int alt25=2;
             int LA25_0 = input.LA(1);
 
@@ -2180,7 +2180,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt25) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:488:5: tu= testlist
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:488:5: tu= testlist
                     {
                     pushFollow(FOLLOW_testlist_in_return_stmt1465);
                     tu=testlist();
@@ -2225,7 +2225,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start yield_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:500:1: yield_stmt returns [ PythonYieldStatement statement = null ] : tu= 'yield' r= testlist ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:500:1: yield_stmt returns [ PythonYieldStatement statement = null ] : tu= 'yield' r= testlist ;
     public final PythonYieldStatement yield_stmt() throws RecognitionException {
         PythonYieldStatement statement =  null;
 
@@ -2234,8 +2234,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:500:61: (tu= 'yield' r= testlist )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:501:2: tu= 'yield' r= testlist
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:500:61: (tu= 'yield' r= testlist )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:501:2: tu= 'yield' r= testlist
             {
             tu=(Token)input.LT(1);
             match(input,75,FOLLOW_75_in_yield_stmt1493); 
@@ -2271,7 +2271,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start raise_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:508:1: raise_stmt returns [ PythonRaiseStatement statement = null ] : tu= 'raise' (e1= test ( COMMA e2= test ( COMMA e3= test )? )? )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:508:1: raise_stmt returns [ PythonRaiseStatement statement = null ] : tu= 'raise' (e1= test ( COMMA e2= test ( COMMA e3= test )? )? )? ;
     public final PythonRaiseStatement raise_stmt() throws RecognitionException {
         PythonRaiseStatement statement =  null;
 
@@ -2284,8 +2284,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:508:61: (tu= 'raise' (e1= test ( COMMA e2= test ( COMMA e3= test )? )? )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:509:2: tu= 'raise' (e1= test ( COMMA e2= test ( COMMA e3= test )? )? )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:508:61: (tu= 'raise' (e1= test ( COMMA e2= test ( COMMA e3= test )? )? )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:509:2: tu= 'raise' (e1= test ( COMMA e2= test ( COMMA e3= test )? )? )?
             {
             tu=(Token)input.LT(1);
             match(input,76,FOLLOW_76_in_raise_stmt1522); 
@@ -2293,7 +2293,7 @@ public class python_v3Parser extends Parser {
             		statement = new PythonRaiseStatement( toDLTK( tu ) );
             		int end = -1;
             	
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:514:2: (e1= test ( COMMA e2= test ( COMMA e3= test )? )? )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:514:2: (e1= test ( COMMA e2= test ( COMMA e3= test )? )? )?
             int alt28=2;
             int LA28_0 = input.LA(1);
 
@@ -2302,7 +2302,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt28) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:515:3: e1= test ( COMMA e2= test ( COMMA e3= test )? )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:515:3: e1= test ( COMMA e2= test ( COMMA e3= test )? )?
                     {
                     pushFollow(FOLLOW_test_in_raise_stmt1536);
                     e1=test();
@@ -2314,7 +2314,7 @@ public class python_v3Parser extends Parser {
                     				end = e1.sourceEnd();
                     			}
                     		
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:522:3: ( COMMA e2= test ( COMMA e3= test )? )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:522:3: ( COMMA e2= test ( COMMA e3= test )? )?
                     int alt27=2;
                     int LA27_0 = input.LA(1);
 
@@ -2323,7 +2323,7 @@ public class python_v3Parser extends Parser {
                     }
                     switch (alt27) {
                         case 1 :
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:522:5: COMMA e2= test ( COMMA e3= test )?
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:522:5: COMMA e2= test ( COMMA e3= test )?
                             {
                             match(input,COMMA,FOLLOW_COMMA_in_raise_stmt1547); 
                             pushFollow(FOLLOW_test_in_raise_stmt1556);
@@ -2336,7 +2336,7 @@ public class python_v3Parser extends Parser {
                             					end = e2.sourceEnd();
                             				}
                             			
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:530:4: ( COMMA e3= test )?
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:530:4: ( COMMA e3= test )?
                             int alt26=2;
                             int LA26_0 = input.LA(1);
 
@@ -2345,7 +2345,7 @@ public class python_v3Parser extends Parser {
                             }
                             switch (alt26) {
                                 case 1 :
-                                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:530:6: COMMA e3= test
+                                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:530:6: COMMA e3= test
                                     {
                                     match(input,COMMA,FOLLOW_COMMA_in_raise_stmt1569); 
                                     pushFollow(FOLLOW_test_in_raise_stmt1579);
@@ -2401,7 +2401,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start import_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:544:1: import_stmt returns [ Statement statement = null ] : ( (tu= 'import' expr0= module_imp ( COMMA expr0= module_imp )* ) | r= 'from' moduleName= dot_name 'import' ( (expr0= module_imp ( COMMA expr0= module_imp )* ) | ( STAR ) ) ) ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:544:1: import_stmt returns [ Statement statement = null ] : ( (tu= 'import' expr0= module_imp ( COMMA expr0= module_imp )* ) | r= 'from' moduleName= dot_name 'import' ( (expr0= module_imp ( COMMA expr0= module_imp )* ) | ( STAR ) ) ) ;
     public final Statement import_stmt() throws RecognitionException {
         Statement statement =  null;
 
@@ -2413,8 +2413,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:544:52: ( ( (tu= 'import' expr0= module_imp ( COMMA expr0= module_imp )* ) | r= 'from' moduleName= dot_name 'import' ( (expr0= module_imp ( COMMA expr0= module_imp )* ) | ( STAR ) ) ) )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:545:6: ( (tu= 'import' expr0= module_imp ( COMMA expr0= module_imp )* ) | r= 'from' moduleName= dot_name 'import' ( (expr0= module_imp ( COMMA expr0= module_imp )* ) | ( STAR ) ) )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:544:52: ( ( (tu= 'import' expr0= module_imp ( COMMA expr0= module_imp )* ) | r= 'from' moduleName= dot_name 'import' ( (expr0= module_imp ( COMMA expr0= module_imp )* ) | ( STAR ) ) ) )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:545:6: ( (tu= 'import' expr0= module_imp ( COMMA expr0= module_imp )* ) | r= 'from' moduleName= dot_name 'import' ( (expr0= module_imp ( COMMA expr0= module_imp )* ) | ( STAR ) ) )
             {
 
                 		Expression impExpr;
@@ -2424,7 +2424,7 @@ public class python_v3Parser extends Parser {
                 		
                 		PythonTestListExpression importNames = new PythonTestListExpression();    		
                 	
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:554:6: ( (tu= 'import' expr0= module_imp ( COMMA expr0= module_imp )* ) | r= 'from' moduleName= dot_name 'import' ( (expr0= module_imp ( COMMA expr0= module_imp )* ) | ( STAR ) ) )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:554:6: ( (tu= 'import' expr0= module_imp ( COMMA expr0= module_imp )* ) | r= 'from' moduleName= dot_name 'import' ( (expr0= module_imp ( COMMA expr0= module_imp )* ) | ( STAR ) ) )
             int alt32=2;
             int LA32_0 = input.LA(1);
 
@@ -2442,10 +2442,10 @@ public class python_v3Parser extends Parser {
             }
             switch (alt32) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:555:7: (tu= 'import' expr0= module_imp ( COMMA expr0= module_imp )* )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:555:7: (tu= 'import' expr0= module_imp ( COMMA expr0= module_imp )* )
                     {
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:555:7: (tu= 'import' expr0= module_imp ( COMMA expr0= module_imp )* )
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:556:8: tu= 'import' expr0= module_imp ( COMMA expr0= module_imp )*
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:555:7: (tu= 'import' expr0= module_imp ( COMMA expr0= module_imp )* )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:556:8: tu= 'import' expr0= module_imp ( COMMA expr0= module_imp )*
                     {
                     tu=(Token)input.LT(1);
                     match(input,77,FOLLOW_77_in_import_stmt1696); 
@@ -2465,7 +2465,7 @@ public class python_v3Parser extends Parser {
                         						statement.setEnd( expr0.sourceEnd() );
                         					}
                         				
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:571:8: ( COMMA expr0= module_imp )*
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:571:8: ( COMMA expr0= module_imp )*
                     loop29:
                     do {
                         int alt29=2;
@@ -2478,7 +2478,7 @@ public class python_v3Parser extends Parser {
 
                         switch (alt29) {
                     	case 1 :
-                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:571:10: COMMA expr0= module_imp
+                    	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:571:10: COMMA expr0= module_imp
                     	    {
                     	    match(input,COMMA,FOLLOW_COMMA_in_import_stmt1747); 
                     	    pushFollow(FOLLOW_module_imp_in_import_stmt1761);
@@ -2508,7 +2508,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:583:3: r= 'from' moduleName= dot_name 'import' ( (expr0= module_imp ( COMMA expr0= module_imp )* ) | ( STAR ) )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:583:3: r= 'from' moduleName= dot_name 'import' ( (expr0= module_imp ( COMMA expr0= module_imp )* ) | ( STAR ) )
                     {
                     r=(Token)input.LT(1);
                     match(input,78,FOLLOW_78_in_import_stmt1797); 
@@ -2517,7 +2517,7 @@ public class python_v3Parser extends Parser {
                     _fsp--;
 
                     match(input,77,FOLLOW_77_in_import_stmt1812); 
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:587:3: ( (expr0= module_imp ( COMMA expr0= module_imp )* ) | ( STAR ) )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:587:3: ( (expr0= module_imp ( COMMA expr0= module_imp )* ) | ( STAR ) )
                     int alt31=2;
                     int LA31_0 = input.LA(1);
 
@@ -2535,10 +2535,10 @@ public class python_v3Parser extends Parser {
                     }
                     switch (alt31) {
                         case 1 :
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:588:11: (expr0= module_imp ( COMMA expr0= module_imp )* )
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:588:11: (expr0= module_imp ( COMMA expr0= module_imp )* )
                             {
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:588:11: (expr0= module_imp ( COMMA expr0= module_imp )* )
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:589:6: expr0= module_imp ( COMMA expr0= module_imp )*
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:588:11: (expr0= module_imp ( COMMA expr0= module_imp )* )
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:589:6: expr0= module_imp ( COMMA expr0= module_imp )*
                             {
 
                             						//moduleName.setColumn(moduleName.getColumn()-1);
@@ -2557,7 +2557,7 @@ public class python_v3Parser extends Parser {
                                 							statement.setEnd( expr0.sourceEnd() );
                                 						}
                                 					
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:603:9: ( COMMA expr0= module_imp )*
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:603:9: ( COMMA expr0= module_imp )*
                             loop30:
                             do {
                                 int alt30=2;
@@ -2570,7 +2570,7 @@ public class python_v3Parser extends Parser {
 
                                 switch (alt30) {
                             	case 1 :
-                            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:603:11: COMMA expr0= module_imp
+                            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:603:11: COMMA expr0= module_imp
                             	    {
                             	    match(input,COMMA,FOLLOW_COMMA_in_import_stmt1875); 
                             	    pushFollow(FOLLOW_module_imp_in_import_stmt1890);
@@ -2600,10 +2600,10 @@ public class python_v3Parser extends Parser {
                             }
                             break;
                         case 2 :
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:615:8: ( STAR )
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:615:8: ( STAR )
                             {
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:615:8: ( STAR )
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:616:5: STAR
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:615:8: ( STAR )
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:616:5: STAR
                             {
                             match(input,STAR,FOLLOW_STAR_in_import_stmt1947); 
 
@@ -2650,7 +2650,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start dotted_name
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:626:1: dotted_name returns [ Token token = null ] : n= NAME ( DOT n2= NAME )+ ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:626:1: dotted_name returns [ Token token = null ] : n= NAME ( DOT n2= NAME )+ ;
     public final Token dotted_name() throws RecognitionException {
         Token token =  null;
 
@@ -2658,8 +2658,8 @@ public class python_v3Parser extends Parser {
         Token n2=null;
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:626:43: (n= NAME ( DOT n2= NAME )+ )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:627:2: n= NAME ( DOT n2= NAME )+
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:626:43: (n= NAME ( DOT n2= NAME )+ )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:627:2: n= NAME ( DOT n2= NAME )+
             {
             		
             		String value = "";
@@ -2669,7 +2669,7 @@ public class python_v3Parser extends Parser {
 
             		value += n.getText();
             	
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:634:2: ( DOT n2= NAME )+
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:634:2: ( DOT n2= NAME )+
             int cnt33=0;
             loop33:
             do {
@@ -2683,7 +2683,7 @@ public class python_v3Parser extends Parser {
 
                 switch (alt33) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:635:3: DOT n2= NAME
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:635:3: DOT n2= NAME
             	    {
             	    match(input,DOT,FOLLOW_DOT_in_dotted_name2007); 
             	    n2=(Token)input.LT(1);
@@ -2734,7 +2734,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start dot_name
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:648:1: dot_name returns [ Token token = null ] : ( (moduleName1= dotted_name ) | (moduleName2= NAME ) );
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:648:1: dot_name returns [ Token token = null ] : ( (moduleName1= dotted_name ) | (moduleName2= NAME ) );
     public final Token dot_name() throws RecognitionException {
         Token token =  null;
 
@@ -2743,18 +2743,18 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:648:40: ( (moduleName1= dotted_name ) | (moduleName2= NAME ) )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:648:40: ( (moduleName1= dotted_name ) | (moduleName2= NAME ) )
             int alt34=2;
             int LA34_0 = input.LA(1);
 
             if ( (LA34_0==NAME) ) {
                 int LA34_1 = input.LA(2);
 
-                if ( (LA34_1==DOT) ) {
-                    alt34=1;
-                }
-                else if ( (LA34_1==NEWLINE||LA34_1==LPAREN||LA34_1==COMMA||LA34_1==SEMI||LA34_1==77||LA34_1==79) ) {
+                if ( (LA34_1==NEWLINE||LA34_1==LPAREN||LA34_1==COMMA||LA34_1==SEMI||LA34_1==77||LA34_1==79) ) {
                     alt34=2;
+                }
+                else if ( (LA34_1==DOT) ) {
+                    alt34=1;
                 }
                 else {
                     NoViableAltException nvae =
@@ -2771,10 +2771,10 @@ public class python_v3Parser extends Parser {
             }
             switch (alt34) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:649:2: (moduleName1= dotted_name )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:649:2: (moduleName1= dotted_name )
                     {
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:649:2: (moduleName1= dotted_name )
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:650:3: moduleName1= dotted_name
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:649:2: (moduleName1= dotted_name )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:650:3: moduleName1= dotted_name
                     {
                     pushFollow(FOLLOW_dotted_name_in_dot_name2049);
                     moduleName1=dotted_name();
@@ -2790,10 +2790,10 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:656:2: (moduleName2= NAME )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:656:2: (moduleName2= NAME )
                     {
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:656:2: (moduleName2= NAME )
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:657:3: moduleName2= NAME
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:656:2: (moduleName2= NAME )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:657:3: moduleName2= NAME
                     {
                     moduleName2=(Token)input.LT(1);
                     match(input,NAME,FOLLOW_NAME_in_dot_name2069); 
@@ -2836,7 +2836,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start module_imp
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:669:1: module_imp returns [ Expression expr = null ] : impName= dot_name ( 'as' as= NAME )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:669:1: module_imp returns [ Expression expr = null ] : impName= dot_name ( 'as' as= NAME )? ;
     public final Expression module_imp() throws RecognitionException {
         Expression expr =  null;
 
@@ -2845,8 +2845,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:669:46: (impName= dot_name ( 'as' as= NAME )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:670:2: impName= dot_name ( 'as' as= NAME )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:669:46: (impName= dot_name ( 'as' as= NAME )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:670:2: impName= dot_name ( 'as' as= NAME )?
             {
             pushFollow(FOLLOW_dot_name_in_module_imp2099);
             impName=dot_name();
@@ -2855,7 +2855,7 @@ public class python_v3Parser extends Parser {
 
             		expr = new PythonImportExpression( toDLTK( impName ) );
             	
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:674:2: ( 'as' as= NAME )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:674:2: ( 'as' as= NAME )?
             int alt35=2;
             int LA35_0 = input.LA(1);
 
@@ -2864,7 +2864,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt35) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:675:3: 'as' as= NAME
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:675:3: 'as' as= NAME
                     {
                     match(input,79,FOLLOW_79_in_module_imp2111); 
                     as=(Token)input.LT(1);
@@ -2903,17 +2903,17 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start global_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:684:1: global_stmt returns [ Statement statement = null ] : 'global' NAME ( COMMA NAME )* ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:684:1: global_stmt returns [ Statement statement = null ] : 'global' NAME ( COMMA NAME )* ;
     public final Statement global_stmt() throws RecognitionException {
         Statement statement =  null;
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:684:51: ( 'global' NAME ( COMMA NAME )* )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:685:3: 'global' NAME ( COMMA NAME )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:684:51: ( 'global' NAME ( COMMA NAME )* )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:685:3: 'global' NAME ( COMMA NAME )*
             {
             match(input,80,FOLLOW_80_in_global_stmt2145); 
             match(input,NAME,FOLLOW_NAME_in_global_stmt2147); 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:685:17: ( COMMA NAME )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:685:17: ( COMMA NAME )*
             loop36:
             do {
                 int alt36=2;
@@ -2926,7 +2926,7 @@ public class python_v3Parser extends Parser {
 
                 switch (alt36) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:685:18: COMMA NAME
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:685:18: COMMA NAME
             	    {
             	    match(input,COMMA,FOLLOW_COMMA_in_global_stmt2150); 
             	    match(input,NAME,FOLLOW_NAME_in_global_stmt2152); 
@@ -2964,7 +2964,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start exec_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:689:1: exec_stmt returns [ Statement statement = null] : e= 'exec' ex= expr ( 'in' ex= test ( COMMA ex= test )? )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:689:1: exec_stmt returns [ Statement statement = null] : e= 'exec' ex= expr ( 'in' ex= test ( COMMA ex= test )? )? ;
     public final Statement exec_stmt() throws RecognitionException {
         Statement statement =  null;
 
@@ -2973,8 +2973,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:689:49: (e= 'exec' ex= expr ( 'in' ex= test ( COMMA ex= test )? )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:690:2: e= 'exec' ex= expr ( 'in' ex= test ( COMMA ex= test )? )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:689:49: (e= 'exec' ex= expr ( 'in' ex= test ( COMMA ex= test )? )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:690:2: e= 'exec' ex= expr ( 'in' ex= test ( COMMA ex= test )? )?
             {
             e=(Token)input.LT(1);
             match(input,81,FOLLOW_81_in_exec_stmt2177); 
@@ -2983,7 +2983,7 @@ public class python_v3Parser extends Parser {
             _fsp--;
 
              statement = new ExecStatement(this.converter.convert(e), ex); 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:691:2: ( 'in' ex= test ( COMMA ex= test )? )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:691:2: ( 'in' ex= test ( COMMA ex= test )? )?
             int alt38=2;
             int LA38_0 = input.LA(1);
 
@@ -2992,7 +2992,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt38) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:691:3: 'in' ex= test ( COMMA ex= test )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:691:3: 'in' ex= test ( COMMA ex= test )?
                     {
                     match(input,82,FOLLOW_82_in_exec_stmt2190); 
                     pushFollow(FOLLOW_test_in_exec_stmt2199);
@@ -3000,7 +3000,7 @@ public class python_v3Parser extends Parser {
                     _fsp--;
 
                      ((ExecStatement)statement).acceptIn(ex); 
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:693:3: ( COMMA ex= test )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:693:3: ( COMMA ex= test )?
                     int alt37=2;
                     int LA37_0 = input.LA(1);
 
@@ -3009,7 +3009,7 @@ public class python_v3Parser extends Parser {
                     }
                     switch (alt37) {
                         case 1 :
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:693:4: COMMA ex= test
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:693:4: COMMA ex= test
                             {
                             match(input,COMMA,FOLLOW_COMMA_in_exec_stmt2207); 
                             pushFollow(FOLLOW_test_in_exec_stmt2213);
@@ -3054,7 +3054,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start assert_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:697:1: assert_stmt returns [ PythonAssertStatement statement = null ] : tu= 'assert' exp1= test ( COMMA exp2= test )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:697:1: assert_stmt returns [ PythonAssertStatement statement = null ] : tu= 'assert' exp1= test ( COMMA exp2= test )? ;
     public final PythonAssertStatement assert_stmt() throws RecognitionException {
         PythonAssertStatement statement =  null;
 
@@ -3065,8 +3065,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:697:63: (tu= 'assert' exp1= test ( COMMA exp2= test )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:698:2: tu= 'assert' exp1= test ( COMMA exp2= test )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:697:63: (tu= 'assert' exp1= test ( COMMA exp2= test )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:698:2: tu= 'assert' exp1= test ( COMMA exp2= test )?
             {
             tu=(Token)input.LT(1);
             match(input,83,FOLLOW_83_in_assert_stmt2240); 
@@ -3074,7 +3074,7 @@ public class python_v3Parser extends Parser {
             exp1=test();
             _fsp--;
 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:700:2: ( COMMA exp2= test )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:700:2: ( COMMA exp2= test )?
             int alt39=2;
             int LA39_0 = input.LA(1);
 
@@ -3083,7 +3083,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt39) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:700:4: COMMA exp2= test
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:700:4: COMMA exp2= test
                     {
                     match(input,COMMA,FOLLOW_COMMA_in_assert_stmt2253); 
                     pushFollow(FOLLOW_test_in_assert_stmt2259);
@@ -3124,7 +3124,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start compound_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:707:1: compound_stmt returns [ Statement statement = null ] : (statement0= if_stmt | statement1= while_stmt | statement2= for_stmt | statement3= try_stmt | statement4= funcdef | statement5= classdef | statement6= with_stmt );
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:707:1: compound_stmt returns [ Statement statement = null ] : (statement0= if_stmt | statement1= while_stmt | statement2= for_stmt | statement3= try_stmt | statement4= funcdef | statement5= classdef | statement6= with_stmt );
     public final Statement compound_stmt() throws RecognitionException {
         Statement statement =  null;
 
@@ -3144,7 +3144,7 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:707:53: (statement0= if_stmt | statement1= while_stmt | statement2= for_stmt | statement3= try_stmt | statement4= funcdef | statement5= classdef | statement6= with_stmt )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:707:53: (statement0= if_stmt | statement1= while_stmt | statement2= for_stmt | statement3= try_stmt | statement4= funcdef | statement5= classdef | statement6= with_stmt )
             int alt40=7;
             switch ( input.LA(1) ) {
             case 84:
@@ -3192,7 +3192,7 @@ public class python_v3Parser extends Parser {
 
             switch (alt40) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:708:2: statement0= if_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:708:2: statement0= if_stmt
                     {
                     pushFollow(FOLLOW_if_stmt_in_compound_stmt2287);
                     statement0=if_stmt();
@@ -3203,7 +3203,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:709:4: statement1= while_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:709:4: statement1= while_stmt
                     {
                     pushFollow(FOLLOW_while_stmt_in_compound_stmt2298);
                     statement1=while_stmt();
@@ -3214,7 +3214,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:710:4: statement2= for_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:710:4: statement2= for_stmt
                     {
                     pushFollow(FOLLOW_for_stmt_in_compound_stmt2308);
                     statement2=for_stmt();
@@ -3225,7 +3225,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:711:4: statement3= try_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:711:4: statement3= try_stmt
                     {
                     pushFollow(FOLLOW_try_stmt_in_compound_stmt2318);
                     statement3=try_stmt();
@@ -3236,7 +3236,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:712:4: statement4= funcdef
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:712:4: statement4= funcdef
                     {
                     pushFollow(FOLLOW_funcdef_in_compound_stmt2328);
                     statement4=funcdef();
@@ -3247,7 +3247,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 6 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:713:4: statement5= classdef
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:713:4: statement5= classdef
                     {
                     pushFollow(FOLLOW_classdef_in_compound_stmt2338);
                     statement5=classdef();
@@ -3258,7 +3258,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 7 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:714:4: statement6= with_stmt
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:714:4: statement6= with_stmt
                     {
                     pushFollow(FOLLOW_with_stmt_in_compound_stmt2348);
                     statement6=with_stmt();
@@ -3292,7 +3292,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start if_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:717:1: if_stmt returns [ IfStatement statement = null ] : is= 'if' mn= test COLON body= suite (z= 'elif' mn= test COLON body= suite )* ( 'else' COLON body= suite )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:717:1: if_stmt returns [ IfStatement statement = null ] : is= 'if' mn= test COLON body= suite (z= 'elif' mn= test COLON body= suite )* ( 'else' COLON body= suite )? ;
     public final IfStatement if_stmt() throws RecognitionException {
         IfStatement statement =  null;
 
@@ -3304,8 +3304,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:717:49: (is= 'if' mn= test COLON body= suite (z= 'elif' mn= test COLON body= suite )* ( 'else' COLON body= suite )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:718:3: is= 'if' mn= test COLON body= suite (z= 'elif' mn= test COLON body= suite )* ( 'else' COLON body= suite )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:717:49: (is= 'if' mn= test COLON body= suite (z= 'elif' mn= test COLON body= suite )* ( 'else' COLON body= suite )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:718:3: is= 'if' mn= test COLON body= suite (z= 'elif' mn= test COLON body= suite )* ( 'else' COLON body= suite )?
             {
             is=(Token)input.LT(1);
             match(input,84,FOLLOW_84_in_if_stmt2371); 
@@ -3327,7 +3327,7 @@ public class python_v3Parser extends Parser {
             			base = statement;
             			t = statement; 
             		
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:732:3: (z= 'elif' mn= test COLON body= suite )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:732:3: (z= 'elif' mn= test COLON body= suite )*
             loop41:
             do {
                 int alt41=2;
@@ -3340,7 +3340,7 @@ public class python_v3Parser extends Parser {
 
                 switch (alt41) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:733:4: z= 'elif' mn= test COLON body= suite
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:733:4: z= 'elif' mn= test COLON body= suite
             	    {
             	    z=(Token)input.LT(1);
             	    match(input,85,FOLLOW_85_in_if_stmt2414); 
@@ -3370,7 +3370,7 @@ public class python_v3Parser extends Parser {
                 }
             } while (true);
 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:746:3: ( 'else' COLON body= suite )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:746:3: ( 'else' COLON body= suite )?
             int alt42=2;
             int LA42_0 = input.LA(1);
 
@@ -3379,7 +3379,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt42) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:747:4: 'else' COLON body= suite
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:747:4: 'else' COLON body= suite
                     {
                     match(input,86,FOLLOW_86_in_if_stmt2458); 
                     match(input,COLON,FOLLOW_COLON_in_if_stmt2464); 
@@ -3422,7 +3422,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start while_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:757:1: while_stmt returns [ PythonWhileStatement whileStatement = null ] : is= 'while' expression= test COLON body= suite ( 'else' COLON body= suite )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:757:1: while_stmt returns [ PythonWhileStatement whileStatement = null ] : is= 'while' expression= test COLON body= suite ( 'else' COLON body= suite )? ;
     public final PythonWhileStatement while_stmt() throws RecognitionException {
         PythonWhileStatement whileStatement =  null;
 
@@ -3433,8 +3433,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:757:66: (is= 'while' expression= test COLON body= suite ( 'else' COLON body= suite )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:758:3: is= 'while' expression= test COLON body= suite ( 'else' COLON body= suite )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:757:66: (is= 'while' expression= test COLON body= suite ( 'else' COLON body= suite )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:758:3: is= 'while' expression= test COLON body= suite ( 'else' COLON body= suite )?
             {
             is=(Token)input.LT(1);
             match(input,87,FOLLOW_87_in_while_stmt2510); 
@@ -3450,7 +3450,7 @@ public class python_v3Parser extends Parser {
              
             				whileStatement = new PythonWhileStatement( toDLTK( is ), expression, body ); 
             			
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:765:3: ( 'else' COLON body= suite )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:765:3: ( 'else' COLON body= suite )?
             int alt43=2;
             int LA43_0 = input.LA(1);
 
@@ -3459,7 +3459,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt43) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:766:4: 'else' COLON body= suite
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:766:4: 'else' COLON body= suite
                     {
                     match(input,86,FOLLOW_86_in_while_stmt2546); 
                     match(input,COLON,FOLLOW_COLON_in_while_stmt2548); 
@@ -3501,7 +3501,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start for_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:774:1: for_stmt returns [ PythonForStatement statement = null] : is= 'for' mains= exprlist 'in' conds= testlist COLON body= suite ( 'else' COLON body= suite )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:774:1: for_stmt returns [ PythonForStatement statement = null] : is= 'for' mains= exprlist 'in' conds= testlist COLON body= suite ( 'else' COLON body= suite )? ;
     public final PythonForStatement for_stmt() throws RecognitionException {
         PythonForStatement statement =  null;
 
@@ -3514,8 +3514,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:774:56: (is= 'for' mains= exprlist 'in' conds= testlist COLON body= suite ( 'else' COLON body= suite )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:775:3: is= 'for' mains= exprlist 'in' conds= testlist COLON body= suite ( 'else' COLON body= suite )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:774:56: (is= 'for' mains= exprlist 'in' conds= testlist COLON body= suite ( 'else' COLON body= suite )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:775:3: is= 'for' mains= exprlist 'in' conds= testlist COLON body= suite ( 'else' COLON body= suite )?
             {
             is=(Token)input.LT(1);
             match(input,88,FOLLOW_88_in_for_stmt2589); 
@@ -3536,7 +3536,7 @@ public class python_v3Parser extends Parser {
 
             				statement = new PythonForStatement( toDLTK( is ), mains, conds, body );
             			
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:784:3: ( 'else' COLON body= suite )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:784:3: ( 'else' COLON body= suite )?
             int alt44=2;
             int LA44_0 = input.LA(1);
 
@@ -3545,7 +3545,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt44) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:785:4: 'else' COLON body= suite
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:785:4: 'else' COLON body= suite
                     {
                     match(input,86,FOLLOW_86_in_for_stmt2639); 
                     match(input,COLON,FOLLOW_COLON_in_for_stmt2645); 
@@ -3587,7 +3587,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start try_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:796:1: try_stmt returns [ PythonTryStatement statement = null ] : is= 'try' COLON body= suite ( ( (ex_= 'except' (t1= test ( COMMA t2= test )? )? COLON su= suite )+ ( (elseT= 'else' COLON elseBlock= suite ) )? ) | (fin= 'finally' COLON su= suite ) ) ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:796:1: try_stmt returns [ PythonTryStatement statement = null ] : is= 'try' COLON body= suite ( ( (ex_= 'except' (t1= test ( COMMA t2= test )? )? COLON su= suite )+ ( (elseT= 'else' COLON elseBlock= suite ) )? ) | (fin= 'finally' COLON su= suite ) ) ;
     public final PythonTryStatement try_stmt() throws RecognitionException {
         PythonTryStatement statement =  null;
 
@@ -3607,8 +3607,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:796:58: (is= 'try' COLON body= suite ( ( (ex_= 'except' (t1= test ( COMMA t2= test )? )? COLON su= suite )+ ( (elseT= 'else' COLON elseBlock= suite ) )? ) | (fin= 'finally' COLON su= suite ) ) )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:797:2: is= 'try' COLON body= suite ( ( (ex_= 'except' (t1= test ( COMMA t2= test )? )? COLON su= suite )+ ( (elseT= 'else' COLON elseBlock= suite ) )? ) | (fin= 'finally' COLON su= suite ) )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:796:58: (is= 'try' COLON body= suite ( ( (ex_= 'except' (t1= test ( COMMA t2= test )? )? COLON su= suite )+ ( (elseT= 'else' COLON elseBlock= suite ) )? ) | (fin= 'finally' COLON su= suite ) ) )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:797:2: is= 'try' COLON body= suite ( ( (ex_= 'except' (t1= test ( COMMA t2= test )? )? COLON su= suite )+ ( (elseT= 'else' COLON elseBlock= suite ) )? ) | (fin= 'finally' COLON su= suite ) )
             {
             is=(Token)input.LT(1);
             match(input,89,FOLLOW_89_in_try_stmt2687); 
@@ -3622,7 +3622,7 @@ public class python_v3Parser extends Parser {
             body=suite();
             _fsp--;
 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:805:6: ( ( (ex_= 'except' (t1= test ( COMMA t2= test )? )? COLON su= suite )+ ( (elseT= 'else' COLON elseBlock= suite ) )? ) | (fin= 'finally' COLON su= suite ) )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:805:6: ( ( (ex_= 'except' (t1= test ( COMMA t2= test )? )? COLON su= suite )+ ( (elseT= 'else' COLON elseBlock= suite ) )? ) | (fin= 'finally' COLON su= suite ) )
             int alt49=2;
             int LA49_0 = input.LA(1);
 
@@ -3640,12 +3640,12 @@ public class python_v3Parser extends Parser {
             }
             switch (alt49) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:806:9: ( (ex_= 'except' (t1= test ( COMMA t2= test )? )? COLON su= suite )+ ( (elseT= 'else' COLON elseBlock= suite ) )? )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:806:9: ( (ex_= 'except' (t1= test ( COMMA t2= test )? )? COLON su= suite )+ ( (elseT= 'else' COLON elseBlock= suite ) )? )
                     {
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:806:9: ( (ex_= 'except' (t1= test ( COMMA t2= test )? )? COLON su= suite )+ ( (elseT= 'else' COLON elseBlock= suite ) )? )
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:807:3: (ex_= 'except' (t1= test ( COMMA t2= test )? )? COLON su= suite )+ ( (elseT= 'else' COLON elseBlock= suite ) )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:806:9: ( (ex_= 'except' (t1= test ( COMMA t2= test )? )? COLON su= suite )+ ( (elseT= 'else' COLON elseBlock= suite ) )? )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:807:3: (ex_= 'except' (t1= test ( COMMA t2= test )? )? COLON su= suite )+ ( (elseT= 'else' COLON elseBlock= suite ) )?
                     {
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:807:3: (ex_= 'except' (t1= test ( COMMA t2= test )? )? COLON su= suite )+
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:807:3: (ex_= 'except' (t1= test ( COMMA t2= test )? )? COLON su= suite )+
                     int cnt47=0;
                     loop47:
                     do {
@@ -3659,11 +3659,11 @@ public class python_v3Parser extends Parser {
 
                         switch (alt47) {
                     	case 1 :
-                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:808:4: ex_= 'except' (t1= test ( COMMA t2= test )? )? COLON su= suite
+                    	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:808:4: ex_= 'except' (t1= test ( COMMA t2= test )? )? COLON su= suite
                     	    {
                     	    ex_=(Token)input.LT(1);
                     	    match(input,90,FOLLOW_90_in_try_stmt2744); 
-                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:809:4: (t1= test ( COMMA t2= test )? )?
+                    	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:809:4: (t1= test ( COMMA t2= test )? )?
                     	    int alt46=2;
                     	    int LA46_0 = input.LA(1);
 
@@ -3672,13 +3672,13 @@ public class python_v3Parser extends Parser {
                     	    }
                     	    switch (alt46) {
                     	        case 1 :
-                    	            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:810:5: t1= test ( COMMA t2= test )?
+                    	            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:810:5: t1= test ( COMMA t2= test )?
                     	            {
                     	            pushFollow(FOLLOW_test_in_try_stmt2759);
                     	            t1=test();
                     	            _fsp--;
 
-                    	            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:811:5: ( COMMA t2= test )?
+                    	            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:811:5: ( COMMA t2= test )?
                     	            int alt45=2;
                     	            int LA45_0 = input.LA(1);
 
@@ -3687,7 +3687,7 @@ public class python_v3Parser extends Parser {
                     	            }
                     	            switch (alt45) {
                     	                case 1 :
-                    	                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:811:6: COMMA t2= test
+                    	                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:811:6: COMMA t2= test
                     	                    {
                     	                    match(input,COMMA,FOLLOW_COMMA_in_try_stmt2766); 
                     	                    pushFollow(FOLLOW_test_in_try_stmt2772);
@@ -3728,7 +3728,7 @@ public class python_v3Parser extends Parser {
                         cnt47++;
                     } while (true);
 
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:820:3: ( (elseT= 'else' COLON elseBlock= suite ) )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:820:3: ( (elseT= 'else' COLON elseBlock= suite ) )?
                     int alt48=2;
                     int LA48_0 = input.LA(1);
 
@@ -3737,10 +3737,10 @@ public class python_v3Parser extends Parser {
                     }
                     switch (alt48) {
                         case 1 :
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:821:4: (elseT= 'else' COLON elseBlock= suite )
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:821:4: (elseT= 'else' COLON elseBlock= suite )
                             {
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:821:4: (elseT= 'else' COLON elseBlock= suite )
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:821:6: elseT= 'else' COLON elseBlock= suite
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:821:4: (elseT= 'else' COLON elseBlock= suite )
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:821:6: elseT= 'else' COLON elseBlock= suite
                             {
                             elseT=(Token)input.LT(1);
                             match(input,86,FOLLOW_86_in_try_stmt2819); 
@@ -3768,10 +3768,10 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:833:9: (fin= 'finally' COLON su= suite )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:833:9: (fin= 'finally' COLON su= suite )
                     {
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:833:9: (fin= 'finally' COLON su= suite )
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:834:10: fin= 'finally' COLON su= suite
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:833:9: (fin= 'finally' COLON su= suite )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:834:10: fin= 'finally' COLON su= suite
                     {
                     fin=(Token)input.LT(1);
                     match(input,91,FOLLOW_91_in_try_stmt2946); 
@@ -3824,7 +3824,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start suite
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:851:1: suite returns [ Block statement = new Block() ] : ( simple_stmt[ l ] | NEWLINE ind= INDENT (k= stmt )+ d= DEDENT ) ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:851:1: suite returns [ Block statement = new Block() ] : ( simple_stmt[ l ] | NEWLINE ind= INDENT (k= stmt )+ d= DEDENT ) ;
     public final Block suite() throws RecognitionException {
         Block statement =  new Block();
 
@@ -3834,15 +3834,15 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:851:48: ( ( simple_stmt[ l ] | NEWLINE ind= INDENT (k= stmt )+ d= DEDENT ) )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:852:4: ( simple_stmt[ l ] | NEWLINE ind= INDENT (k= stmt )+ d= DEDENT )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:851:48: ( ( simple_stmt[ l ] | NEWLINE ind= INDENT (k= stmt )+ d= DEDENT ) )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:852:4: ( simple_stmt[ l ] | NEWLINE ind= INDENT (k= stmt )+ d= DEDENT )
             {
 
             	  	ArrayList l = new ArrayList();		
             	  	int startPos = -1;
             	  	int endPos = -1;
             	  
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:857:4: ( simple_stmt[ l ] | NEWLINE ind= INDENT (k= stmt )+ d= DEDENT )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:857:4: ( simple_stmt[ l ] | NEWLINE ind= INDENT (k= stmt )+ d= DEDENT )
             int alt51=2;
             int LA51_0 = input.LA(1);
 
@@ -3860,7 +3860,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt51) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:858:5: simple_stmt[ l ]
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:858:5: simple_stmt[ l ]
                     {
                     pushFollow(FOLLOW_simple_stmt_in_suite3043);
                     simple_stmt( l );
@@ -3885,7 +3885,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:875:5: NEWLINE ind= INDENT (k= stmt )+ d= DEDENT
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:875:5: NEWLINE ind= INDENT (k= stmt )+ d= DEDENT
                     {
                     match(input,NEWLINE,FOLLOW_NEWLINE_in_suite3064); 
                     ind=(Token)input.LT(1);
@@ -3900,7 +3900,7 @@ public class python_v3Parser extends Parser {
                     	  			}
                     	  			//ArrayList k;
                     	  		
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:887:5: (k= stmt )+
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:887:5: (k= stmt )+
                     int cnt50=0;
                     loop50:
                     do {
@@ -3914,7 +3914,7 @@ public class python_v3Parser extends Parser {
 
                         switch (alt50) {
                     	case 1 :
-                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:888:6: k= stmt
+                    	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:888:6: k= stmt
                     	    {
                     	    pushFollow(FOLLOW_stmt_in_suite3098);
                     	    k=stmt();
@@ -4001,7 +4001,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start or_test
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:935:1: or_test returns [ Expression exp = null ] : exp0= and_test (r= 'or' v= and_test )* ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:935:1: or_test returns [ Expression exp = null ] : exp0= and_test (r= 'or' v= and_test )* ;
     public final Expression or_test() throws RecognitionException {
         Expression exp =  null;
 
@@ -4012,8 +4012,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:935:43: (exp0= and_test (r= 'or' v= and_test )* )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:936:2: exp0= and_test (r= 'or' v= and_test )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:935:43: (exp0= and_test (r= 'or' v= and_test )* )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:936:2: exp0= and_test (r= 'or' v= and_test )*
             {
             pushFollow(FOLLOW_and_test_in_or_test3174);
             exp0=and_test();
@@ -4022,7 +4022,7 @@ public class python_v3Parser extends Parser {
 
             		exp = exp0;
             	
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:940:2: (r= 'or' v= and_test )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:940:2: (r= 'or' v= and_test )*
             loop52:
             do {
                 int alt52=2;
@@ -4035,7 +4035,7 @@ public class python_v3Parser extends Parser {
 
                 switch (alt52) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:941:3: r= 'or' v= and_test
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:941:3: r= 'or' v= and_test
             	    {
             	    r=(Token)input.LT(1);
             	    match(input,92,FOLLOW_92_in_or_test3188); 
@@ -4080,7 +4080,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start test
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:949:1: test returns [ Expression exp = null ] : (exp0= or_test | exp0= lambdef );
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:949:1: test returns [ Expression exp = null ] : (exp0= or_test | exp0= lambdef );
     public final Expression test() throws RecognitionException {
         Expression exp =  null;
 
@@ -4088,7 +4088,7 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:949:39: (exp0= or_test | exp0= lambdef )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:949:39: (exp0= or_test | exp0= lambdef )
             int alt53=2;
             int LA53_0 = input.LA(1);
 
@@ -4106,7 +4106,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt53) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:950:3: exp0= or_test
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:950:3: exp0= or_test
                     {
                     pushFollow(FOLLOW_or_test_in_test3226);
                     exp0=or_test();
@@ -4117,7 +4117,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:952:4: exp0= lambdef
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:952:4: exp0= lambdef
                     {
                     pushFollow(FOLLOW_lambdef_in_test3241);
                     exp0=lambdef();
@@ -4151,7 +4151,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start and_test
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:955:1: and_test returns [ Expression exp = null ] : exp0= not_test (m= 'and' v= not_test )* ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:955:1: and_test returns [ Expression exp = null ] : exp0= not_test (m= 'and' v= not_test )* ;
     public final Expression and_test() throws RecognitionException {
         Expression exp =  null;
 
@@ -4162,8 +4162,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:955:43: (exp0= not_test (m= 'and' v= not_test )* )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:956:2: exp0= not_test (m= 'and' v= not_test )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:955:43: (exp0= not_test (m= 'and' v= not_test )* )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:956:2: exp0= not_test (m= 'and' v= not_test )*
             {
             pushFollow(FOLLOW_not_test_in_and_test3264);
             exp0=not_test();
@@ -4172,7 +4172,7 @@ public class python_v3Parser extends Parser {
 
             		exp = exp0;
             	
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:960:2: (m= 'and' v= not_test )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:960:2: (m= 'and' v= not_test )*
             loop54:
             do {
                 int alt54=2;
@@ -4185,7 +4185,7 @@ public class python_v3Parser extends Parser {
 
                 switch (alt54) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:961:3: m= 'and' v= not_test
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:961:3: m= 'and' v= not_test
             	    {
             	    m=(Token)input.LT(1);
             	    match(input,93,FOLLOW_93_in_and_test3278); 
@@ -4230,7 +4230,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start not_test
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:969:1: not_test returns [ Expression exp = null ] : ( (n= 'not' v= not_test ) | exp0= comparison );
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:969:1: not_test returns [ Expression exp = null ] : ( (n= 'not' v= not_test ) | exp0= comparison );
     public final Expression not_test() throws RecognitionException {
         Expression exp =  null;
 
@@ -4241,7 +4241,7 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:969:43: ( (n= 'not' v= not_test ) | exp0= comparison )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:969:43: ( (n= 'not' v= not_test ) | exp0= comparison )
             int alt55=2;
             int LA55_0 = input.LA(1);
 
@@ -4259,10 +4259,10 @@ public class python_v3Parser extends Parser {
             }
             switch (alt55) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:970:2: (n= 'not' v= not_test )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:970:2: (n= 'not' v= not_test )
                     {
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:970:2: (n= 'not' v= not_test )
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:971:3: n= 'not' v= not_test
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:970:2: (n= 'not' v= not_test )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:971:3: n= 'not' v= not_test
                     {
                     n=(Token)input.LT(1);
                     match(input,94,FOLLOW_94_in_not_test3320); 
@@ -4280,7 +4280,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:977:4: exp0= comparison
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:977:4: exp0= comparison
                     {
                     pushFollow(FOLLOW_comparison_in_not_test3348);
                     exp0=comparison();
@@ -4314,7 +4314,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start comparison
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:980:1: comparison returns [ Expression exp = null ] : exp0= expr (tu= comp_op v= expr )* ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:980:1: comparison returns [ Expression exp = null ] : exp0= expr (tu= comp_op v= expr )* ;
     public final Expression comparison() throws RecognitionException {
         Expression exp =  null;
 
@@ -4326,8 +4326,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:980:45: (exp0= expr (tu= comp_op v= expr )* )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:981:2: exp0= expr (tu= comp_op v= expr )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:980:45: (exp0= expr (tu= comp_op v= expr )* )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:981:2: exp0= expr (tu= comp_op v= expr )*
             {
             pushFollow(FOLLOW_expr_in_comparison3371);
             exp0=expr();
@@ -4336,7 +4336,7 @@ public class python_v3Parser extends Parser {
 
             		exp = exp0;
             	
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:985:2: (tu= comp_op v= expr )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:985:2: (tu= comp_op v= expr )*
             loop56:
             do {
                 int alt56=2;
@@ -4349,7 +4349,7 @@ public class python_v3Parser extends Parser {
 
                 switch (alt56) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:986:3: tu= comp_op v= expr
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:986:3: tu= comp_op v= expr
             	    {
             	    pushFollow(FOLLOW_comp_op_in_comparison3385);
             	    tu=comp_op();
@@ -4396,7 +4396,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start comp_op
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:994:1: comp_op returns [ int t = Expression.E_EMPTY ] : (t1= LESS | t2= GREATER | t3= EQUAL | t4= GREATEREQUAL | t5= LESSEQUAL | t6= ALT_NOTEQUAL | t7= NOTEQUAL | t8= 'in' | t9= 'not' 'in' | t10= 'is' | t11= 'is' 'not' );
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:994:1: comp_op returns [ int t = Expression.E_EMPTY ] : (t1= LESS | t2= GREATER | t3= EQUAL | t4= GREATEREQUAL | t5= LESSEQUAL | t6= ALT_NOTEQUAL | t7= NOTEQUAL | t8= 'in' | t9= 'not' 'in' | t10= 'is' | t11= 'is' 'not' );
     public final int comp_op() throws RecognitionException {
         int t =  Expression.E_EMPTY;
 
@@ -4413,7 +4413,7 @@ public class python_v3Parser extends Parser {
         Token t11=null;
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:994:48: (t1= LESS | t2= GREATER | t3= EQUAL | t4= GREATEREQUAL | t5= LESSEQUAL | t6= ALT_NOTEQUAL | t7= NOTEQUAL | t8= 'in' | t9= 'not' 'in' | t10= 'is' | t11= 'is' 'not' )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:994:48: (t1= LESS | t2= GREATER | t3= EQUAL | t4= GREATEREQUAL | t5= LESSEQUAL | t6= ALT_NOTEQUAL | t7= NOTEQUAL | t8= 'in' | t9= 'not' 'in' | t10= 'is' | t11= 'is' 'not' )
             int alt57=11;
             switch ( input.LA(1) ) {
             case LESS:
@@ -4488,7 +4488,7 @@ public class python_v3Parser extends Parser {
 
             switch (alt57) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:995:3: t1= LESS
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:995:3: t1= LESS
                     {
                     t1=(Token)input.LT(1);
                     match(input,LESS,FOLLOW_LESS_in_comp_op3426); 
@@ -4497,7 +4497,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:996:3: t2= GREATER
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:996:3: t2= GREATER
                     {
                     t2=(Token)input.LT(1);
                     match(input,GREATER,FOLLOW_GREATER_in_comp_op3438); 
@@ -4506,7 +4506,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:997:3: t3= EQUAL
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:997:3: t3= EQUAL
                     {
                     t3=(Token)input.LT(1);
                     match(input,EQUAL,FOLLOW_EQUAL_in_comp_op3449); 
@@ -4515,7 +4515,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:998:3: t4= GREATEREQUAL
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:998:3: t4= GREATEREQUAL
                     {
                     t4=(Token)input.LT(1);
                     match(input,GREATEREQUAL,FOLLOW_GREATEREQUAL_in_comp_op3462); 
@@ -4524,7 +4524,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:999:3: t5= LESSEQUAL
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:999:3: t5= LESSEQUAL
                     {
                     t5=(Token)input.LT(1);
                     match(input,LESSEQUAL,FOLLOW_LESSEQUAL_in_comp_op3472); 
@@ -4533,7 +4533,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 6 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1000:3: t6= ALT_NOTEQUAL
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1000:3: t6= ALT_NOTEQUAL
                     {
                     t6=(Token)input.LT(1);
                     match(input,ALT_NOTEQUAL,FOLLOW_ALT_NOTEQUAL_in_comp_op3486); 
@@ -4542,7 +4542,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 7 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1001:3: t7= NOTEQUAL
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1001:3: t7= NOTEQUAL
                     {
                     t7=(Token)input.LT(1);
                     match(input,NOTEQUAL,FOLLOW_NOTEQUAL_in_comp_op3498); 
@@ -4551,7 +4551,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 8 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1002:3: t8= 'in'
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1002:3: t8= 'in'
                     {
                     t8=(Token)input.LT(1);
                     match(input,82,FOLLOW_82_in_comp_op3513); 
@@ -4560,7 +4560,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 9 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1003:3: t9= 'not' 'in'
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1003:3: t9= 'not' 'in'
                     {
                     t9=(Token)input.LT(1);
                     match(input,94,FOLLOW_94_in_comp_op3523); 
@@ -4570,7 +4570,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 10 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1004:3: t10= 'is'
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1004:3: t10= 'is'
                     {
                     t10=(Token)input.LT(1);
                     match(input,95,FOLLOW_95_in_comp_op3535); 
@@ -4579,7 +4579,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 11 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1005:3: t11= 'is' 'not'
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1005:3: t11= 'is' 'not'
                     {
                     t11=(Token)input.LT(1);
                     match(input,95,FOLLOW_95_in_comp_op3545); 
@@ -4612,7 +4612,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start expr
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1008:1: expr returns [ Expression e = null] : e0= xor_expr (tu= VBAR v= xor_expr )* ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1008:1: expr returns [ Expression e = null] : e0= xor_expr (tu= VBAR v= xor_expr )* ;
     public final Expression expr() throws RecognitionException {
         Expression e =  null;
 
@@ -4623,8 +4623,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1008:36: (e0= xor_expr (tu= VBAR v= xor_expr )* )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1009:2: e0= xor_expr (tu= VBAR v= xor_expr )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1008:36: (e0= xor_expr (tu= VBAR v= xor_expr )* )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1009:2: e0= xor_expr (tu= VBAR v= xor_expr )*
             {
             pushFollow(FOLLOW_xor_expr_in_expr3569);
             e0=xor_expr();
@@ -4633,7 +4633,7 @@ public class python_v3Parser extends Parser {
 
             		e = e0;
             	
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1013:2: (tu= VBAR v= xor_expr )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1013:2: (tu= VBAR v= xor_expr )*
             loop58:
             do {
                 int alt58=2;
@@ -4646,7 +4646,7 @@ public class python_v3Parser extends Parser {
 
                 switch (alt58) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1014:3: tu= VBAR v= xor_expr
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1014:3: tu= VBAR v= xor_expr
             	    {
             	    tu=(Token)input.LT(1);
             	    match(input,VBAR,FOLLOW_VBAR_in_expr3583); 
@@ -4691,7 +4691,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start xor_expr
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1022:1: xor_expr returns [ Expression e = null ] : e0= and_expr (tu= CIRCUMFLEX v= and_expr )* ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1022:1: xor_expr returns [ Expression e = null ] : e0= and_expr (tu= CIRCUMFLEX v= and_expr )* ;
     public final Expression xor_expr() throws RecognitionException {
         Expression e =  null;
 
@@ -4702,8 +4702,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1022:41: (e0= and_expr (tu= CIRCUMFLEX v= and_expr )* )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1023:2: e0= and_expr (tu= CIRCUMFLEX v= and_expr )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1022:41: (e0= and_expr (tu= CIRCUMFLEX v= and_expr )* )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1023:2: e0= and_expr (tu= CIRCUMFLEX v= and_expr )*
             {
             pushFollow(FOLLOW_and_expr_in_xor_expr3626);
             e0=and_expr();
@@ -4712,7 +4712,7 @@ public class python_v3Parser extends Parser {
 
             		e = e0;
             	
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1027:2: (tu= CIRCUMFLEX v= and_expr )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1027:2: (tu= CIRCUMFLEX v= and_expr )*
             loop59:
             do {
                 int alt59=2;
@@ -4725,7 +4725,7 @@ public class python_v3Parser extends Parser {
 
                 switch (alt59) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1028:3: tu= CIRCUMFLEX v= and_expr
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1028:3: tu= CIRCUMFLEX v= and_expr
             	    {
             	    tu=(Token)input.LT(1);
             	    match(input,CIRCUMFLEX,FOLLOW_CIRCUMFLEX_in_xor_expr3640); 
@@ -4770,7 +4770,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start and_expr
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1036:1: and_expr returns [ Expression e = null ] : e0= shift_expr (tu= AMPER v= shift_expr )* ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1036:1: and_expr returns [ Expression e = null ] : e0= shift_expr (tu= AMPER v= shift_expr )* ;
     public final Expression and_expr() throws RecognitionException {
         Expression e =  null;
 
@@ -4781,8 +4781,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1036:41: (e0= shift_expr (tu= AMPER v= shift_expr )* )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1037:2: e0= shift_expr (tu= AMPER v= shift_expr )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1036:41: (e0= shift_expr (tu= AMPER v= shift_expr )* )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1037:2: e0= shift_expr (tu= AMPER v= shift_expr )*
             {
             pushFollow(FOLLOW_shift_expr_in_and_expr3680);
             e0=shift_expr();
@@ -4791,7 +4791,7 @@ public class python_v3Parser extends Parser {
 
             		e = e0;
             	
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1041:2: (tu= AMPER v= shift_expr )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1041:2: (tu= AMPER v= shift_expr )*
             loop60:
             do {
                 int alt60=2;
@@ -4804,7 +4804,7 @@ public class python_v3Parser extends Parser {
 
                 switch (alt60) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1042:3: tu= AMPER v= shift_expr
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1042:3: tu= AMPER v= shift_expr
             	    {
             	    tu=(Token)input.LT(1);
             	    match(input,AMPER,FOLLOW_AMPER_in_and_expr3695); 
@@ -4849,7 +4849,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start shift_expr
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1049:1: shift_expr returns [ Expression e = null ] : e0= arith_expr ( (t1= LEFTSHIFT | t2= RIGHTSHIFT ) v= arith_expr )* ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1049:1: shift_expr returns [ Expression e = null ] : e0= arith_expr ( (t1= LEFTSHIFT | t2= RIGHTSHIFT ) v= arith_expr )* ;
     public final Expression shift_expr() throws RecognitionException {
         Expression e =  null;
 
@@ -4861,8 +4861,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1049:43: (e0= arith_expr ( (t1= LEFTSHIFT | t2= RIGHTSHIFT ) v= arith_expr )* )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1050:2: e0= arith_expr ( (t1= LEFTSHIFT | t2= RIGHTSHIFT ) v= arith_expr )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1049:43: (e0= arith_expr ( (t1= LEFTSHIFT | t2= RIGHTSHIFT ) v= arith_expr )* )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1050:2: e0= arith_expr ( (t1= LEFTSHIFT | t2= RIGHTSHIFT ) v= arith_expr )*
             {
             pushFollow(FOLLOW_arith_expr_in_shift_expr3735);
             e0=arith_expr();
@@ -4874,7 +4874,7 @@ public class python_v3Parser extends Parser {
 
             			Token tk = null;
             		
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1057:2: ( (t1= LEFTSHIFT | t2= RIGHTSHIFT ) v= arith_expr )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1057:2: ( (t1= LEFTSHIFT | t2= RIGHTSHIFT ) v= arith_expr )*
             loop62:
             do {
                 int alt62=2;
@@ -4887,9 +4887,9 @@ public class python_v3Parser extends Parser {
 
                 switch (alt62) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1058:3: (t1= LEFTSHIFT | t2= RIGHTSHIFT ) v= arith_expr
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1058:3: (t1= LEFTSHIFT | t2= RIGHTSHIFT ) v= arith_expr
             	    {
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1058:3: (t1= LEFTSHIFT | t2= RIGHTSHIFT )
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1058:3: (t1= LEFTSHIFT | t2= RIGHTSHIFT )
             	    int alt61=2;
             	    int LA61_0 = input.LA(1);
 
@@ -4907,7 +4907,7 @@ public class python_v3Parser extends Parser {
             	    }
             	    switch (alt61) {
             	        case 1 :
-            	            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1059:4: t1= LEFTSHIFT
+            	            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1059:4: t1= LEFTSHIFT
             	            {
             	            t1=(Token)input.LT(1);
             	            match(input,LEFTSHIFT,FOLLOW_LEFTSHIFT_in_shift_expr3759); 
@@ -4918,7 +4918,7 @@ public class python_v3Parser extends Parser {
             	            }
             	            break;
             	        case 2 :
-            	            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1064:4: t2= RIGHTSHIFT
+            	            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1064:4: t2= RIGHTSHIFT
             	            {
             	            t2=(Token)input.LT(1);
             	            match(input,RIGHTSHIFT,FOLLOW_RIGHTSHIFT_in_shift_expr3780); 
@@ -4975,7 +4975,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start arith_expr
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1079:1: arith_expr returns [ Expression e = null ] : e0= term ( (t1= PLUS | t2= MINUS ) v= term )* ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1079:1: arith_expr returns [ Expression e = null ] : e0= term ( (t1= PLUS | t2= MINUS ) v= term )* ;
     public final Expression arith_expr() throws RecognitionException {
         Expression e =  null;
 
@@ -4987,8 +4987,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1079:44: (e0= term ( (t1= PLUS | t2= MINUS ) v= term )* )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1080:2: e0= term ( (t1= PLUS | t2= MINUS ) v= term )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1079:44: (e0= term ( (t1= PLUS | t2= MINUS ) v= term )* )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1080:2: e0= term ( (t1= PLUS | t2= MINUS ) v= term )*
             {
             pushFollow(FOLLOW_term_in_arith_expr3838);
             e0=term();
@@ -5000,7 +5000,7 @@ public class python_v3Parser extends Parser {
 
             			Token tk = null;
             		
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1087:2: ( (t1= PLUS | t2= MINUS ) v= term )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1087:2: ( (t1= PLUS | t2= MINUS ) v= term )*
             loop64:
             do {
                 int alt64=2;
@@ -5013,9 +5013,9 @@ public class python_v3Parser extends Parser {
 
                 switch (alt64) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1088:3: (t1= PLUS | t2= MINUS ) v= term
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1088:3: (t1= PLUS | t2= MINUS ) v= term
             	    {
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1088:3: (t1= PLUS | t2= MINUS )
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1088:3: (t1= PLUS | t2= MINUS )
             	    int alt63=2;
             	    int LA63_0 = input.LA(1);
 
@@ -5033,7 +5033,7 @@ public class python_v3Parser extends Parser {
             	    }
             	    switch (alt63) {
             	        case 1 :
-            	            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1089:4: t1= PLUS
+            	            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1089:4: t1= PLUS
             	            {
             	            t1=(Token)input.LT(1);
             	            match(input,PLUS,FOLLOW_PLUS_in_arith_expr3862); 
@@ -5044,7 +5044,7 @@ public class python_v3Parser extends Parser {
             	            }
             	            break;
             	        case 2 :
-            	            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1094:4: t2= MINUS
+            	            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1094:4: t2= MINUS
             	            {
             	            t2=(Token)input.LT(1);
             	            match(input,MINUS,FOLLOW_MINUS_in_arith_expr3882); 
@@ -5101,7 +5101,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start term
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1109:1: term returns [ Expression e = null] : e0= factor ( (t1= STAR | t2= SLASH | t3= PERCENT | t4= DOUBLESLASH ) v= factor )* ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1109:1: term returns [ Expression e = null] : e0= factor ( (t1= STAR | t2= SLASH | t3= PERCENT | t4= DOUBLESLASH ) v= factor )* ;
     public final Expression term() throws RecognitionException {
         Expression e =  null;
 
@@ -5115,8 +5115,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1109:36: (e0= factor ( (t1= STAR | t2= SLASH | t3= PERCENT | t4= DOUBLESLASH ) v= factor )* )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1110:2: e0= factor ( (t1= STAR | t2= SLASH | t3= PERCENT | t4= DOUBLESLASH ) v= factor )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1109:36: (e0= factor ( (t1= STAR | t2= SLASH | t3= PERCENT | t4= DOUBLESLASH ) v= factor )* )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1110:2: e0= factor ( (t1= STAR | t2= SLASH | t3= PERCENT | t4= DOUBLESLASH ) v= factor )*
             {
             pushFollow(FOLLOW_factor_in_term3931);
             e0=factor();
@@ -5128,7 +5128,7 @@ public class python_v3Parser extends Parser {
 
             			int type = Expression.E_EMPTY;
             		
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1117:2: ( (t1= STAR | t2= SLASH | t3= PERCENT | t4= DOUBLESLASH ) v= factor )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1117:2: ( (t1= STAR | t2= SLASH | t3= PERCENT | t4= DOUBLESLASH ) v= factor )*
             loop66:
             do {
                 int alt66=2;
@@ -5141,9 +5141,9 @@ public class python_v3Parser extends Parser {
 
                 switch (alt66) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1118:3: (t1= STAR | t2= SLASH | t3= PERCENT | t4= DOUBLESLASH ) v= factor
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1118:3: (t1= STAR | t2= SLASH | t3= PERCENT | t4= DOUBLESLASH ) v= factor
             	    {
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1118:3: (t1= STAR | t2= SLASH | t3= PERCENT | t4= DOUBLESLASH )
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1118:3: (t1= STAR | t2= SLASH | t3= PERCENT | t4= DOUBLESLASH )
             	    int alt65=4;
             	    switch ( input.LA(1) ) {
             	    case STAR:
@@ -5175,7 +5175,7 @@ public class python_v3Parser extends Parser {
 
             	    switch (alt65) {
             	        case 1 :
-            	            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1119:5: t1= STAR
+            	            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1119:5: t1= STAR
             	            {
             	            t1=(Token)input.LT(1);
             	            match(input,STAR,FOLLOW_STAR_in_term3955); 
@@ -5186,7 +5186,7 @@ public class python_v3Parser extends Parser {
             	            }
             	            break;
             	        case 2 :
-            	            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1124:5: t2= SLASH
+            	            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1124:5: t2= SLASH
             	            {
             	            t2=(Token)input.LT(1);
             	            match(input,SLASH,FOLLOW_SLASH_in_term3979); 
@@ -5197,7 +5197,7 @@ public class python_v3Parser extends Parser {
             	            }
             	            break;
             	        case 3 :
-            	            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1129:6: t3= PERCENT
+            	            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1129:6: t3= PERCENT
             	            {
             	            t3=(Token)input.LT(1);
             	            match(input,PERCENT,FOLLOW_PERCENT_in_term4004); 
@@ -5208,7 +5208,7 @@ public class python_v3Parser extends Parser {
             	            }
             	            break;
             	        case 4 :
-            	            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1134:7: t4= DOUBLESLASH
+            	            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1134:7: t4= DOUBLESLASH
             	            {
             	            t4=(Token)input.LT(1);
             	            match(input,DOUBLESLASH,FOLLOW_DOUBLESLASH_in_term4032); 
@@ -5262,9 +5262,9 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start factor
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1146:1: factor returns [ Expression e = null ] : ( (t1= PLUS | t2= MINUS | t3= TILDE ) e0= factor | e0= power );
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1146:1: factor returns [ Expression e = new EmptyExpression() ] : ( (t1= PLUS | t2= MINUS | t3= TILDE ) e0= factor | e0= power );
     public final Expression factor() throws RecognitionException {
-        Expression e =  null;
+        Expression e =  new EmptyExpression();
 
         Token t1=null;
         Token t2=null;
@@ -5273,7 +5273,7 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1146:40: ( (t1= PLUS | t2= MINUS | t3= TILDE ) e0= factor | e0= power )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1146:57: ( (t1= PLUS | t2= MINUS | t3= TILDE ) e0= factor | e0= power )
             int alt68=2;
             int LA68_0 = input.LA(1);
 
@@ -5285,18 +5285,18 @@ public class python_v3Parser extends Parser {
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("1146:1: factor returns [ Expression e = null ] : ( (t1= PLUS | t2= MINUS | t3= TILDE ) e0= factor | e0= power );", 68, 0, input);
+                    new NoViableAltException("1146:1: factor returns [ Expression e = new EmptyExpression() ] : ( (t1= PLUS | t2= MINUS | t3= TILDE ) e0= factor | e0= power );", 68, 0, input);
 
                 throw nvae;
             }
             switch (alt68) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1147:4: (t1= PLUS | t2= MINUS | t3= TILDE ) e0= factor
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1147:4: (t1= PLUS | t2= MINUS | t3= TILDE ) e0= factor
                     {
 
                     	  	Token tk = null;
                     	  
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1150:4: (t1= PLUS | t2= MINUS | t3= TILDE )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1150:4: (t1= PLUS | t2= MINUS | t3= TILDE )
                     int alt67=3;
                     switch ( input.LA(1) ) {
                     case PLUS:
@@ -5323,7 +5323,7 @@ public class python_v3Parser extends Parser {
 
                     switch (alt67) {
                         case 1 :
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1151:5: t1= PLUS
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1151:5: t1= PLUS
                             {
                             t1=(Token)input.LT(1);
                             match(input,PLUS,FOLLOW_PLUS_in_factor4104); 
@@ -5334,7 +5334,7 @@ public class python_v3Parser extends Parser {
                             }
                             break;
                         case 2 :
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1156:5: t2= MINUS
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1156:5: t2= MINUS
                             {
                             t2=(Token)input.LT(1);
                             match(input,MINUS,FOLLOW_MINUS_in_factor4127); 
@@ -5345,7 +5345,7 @@ public class python_v3Parser extends Parser {
                             }
                             break;
                         case 3 :
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1161:5: t3= TILDE
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1161:5: t3= TILDE
                             {
                             t3=(Token)input.LT(1);
                             match(input,TILDE,FOLLOW_TILDE_in_factor4149); 
@@ -5380,7 +5380,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1182:2: e0= power
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1182:2: e0= power
                     {
                     pushFollow(FOLLOW_power_in_factor4188);
                     e0=power();
@@ -5416,7 +5416,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start power
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1187:1: power returns [ Expression exp = null; ] : (exp0= atom (ex= trailer[ exp ] )* ( options {greedy=true; } : DOUBLESTAR expr0= factor )? ) ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1187:1: power returns [ Expression exp = null; ] : (exp0= atom (ex= trailer[ exp ] )* ( options {greedy=true; } : DOUBLESTAR expr0= factor )? ) ;
     public final Expression power() throws RecognitionException {
         Expression exp =  null;;
 
@@ -5428,11 +5428,11 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1187:41: ( (exp0= atom (ex= trailer[ exp ] )* ( options {greedy=true; } : DOUBLESTAR expr0= factor )? ) )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1188:3: (exp0= atom (ex= trailer[ exp ] )* ( options {greedy=true; } : DOUBLESTAR expr0= factor )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1187:41: ( (exp0= atom (ex= trailer[ exp ] )* ( options {greedy=true; } : DOUBLESTAR expr0= factor )? ) )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1188:3: (exp0= atom (ex= trailer[ exp ] )* ( options {greedy=true; } : DOUBLESTAR expr0= factor )? )
             {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1188:3: (exp0= atom (ex= trailer[ exp ] )* ( options {greedy=true; } : DOUBLESTAR expr0= factor )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1189:3: exp0= atom (ex= trailer[ exp ] )* ( options {greedy=true; } : DOUBLESTAR expr0= factor )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1188:3: (exp0= atom (ex= trailer[ exp ] )* ( options {greedy=true; } : DOUBLESTAR expr0= factor )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1189:3: exp0= atom (ex= trailer[ exp ] )* ( options {greedy=true; } : DOUBLESTAR expr0= factor )?
             {
             pushFollow(FOLLOW_atom_in_power4215);
             exp0=atom();
@@ -5442,7 +5442,7 @@ public class python_v3Parser extends Parser {
             			//Expression ex = exp;
             			exp = exp0;
             		
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1194:3: (ex= trailer[ exp ] )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1194:3: (ex= trailer[ exp ] )*
             loop69:
             do {
                 int alt69=2;
@@ -5455,7 +5455,7 @@ public class python_v3Parser extends Parser {
 
                 switch (alt69) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1195:4: ex= trailer[ exp ]
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1195:4: ex= trailer[ exp ]
             	    {
             	    pushFollow(FOLLOW_trailer_in_power4233);
             	    ex=trailer( exp );
@@ -5473,7 +5473,7 @@ public class python_v3Parser extends Parser {
                 }
             } while (true);
 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1200:5: ( options {greedy=true; } : DOUBLESTAR expr0= factor )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1200:5: ( options {greedy=true; } : DOUBLESTAR expr0= factor )?
             int alt70=2;
             int LA70_0 = input.LA(1);
 
@@ -5482,7 +5482,7 @@ public class python_v3Parser extends Parser {
             }
             switch (alt70) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1201:29: DOUBLESTAR expr0= factor
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1201:29: DOUBLESTAR expr0= factor
                     {
                     match(input,DOUBLESTAR,FOLLOW_DOUBLESTAR_in_power4266); 
                     pushFollow(FOLLOW_factor_in_power4284);
@@ -5531,7 +5531,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start trailer
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1216:1: trailer[ Expression expr ] returns [ Expression returnExpression = null ] : (lp0= LPAREN (k= arglist )? rp0= RPAREN | lb1= LBRACK k= subscriptlist rb1= RBRACK | DOT ta= NAME ) ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1216:1: trailer[ Expression expr ] returns [ Expression returnExpression = null ] : (lp0= LPAREN (k= arglist )? rp0= RPAREN | lb1= LBRACK k= subscriptlist rb1= RBRACK | DOT ta= NAME ) ;
     public final Expression trailer(Expression expr) throws RecognitionException {
         Expression returnExpression =  null;
 
@@ -5544,8 +5544,8 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1216:74: ( (lp0= LPAREN (k= arglist )? rp0= RPAREN | lb1= LBRACK k= subscriptlist rb1= RBRACK | DOT ta= NAME ) )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1217:2: (lp0= LPAREN (k= arglist )? rp0= RPAREN | lb1= LBRACK k= subscriptlist rb1= RBRACK | DOT ta= NAME )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1216:74: ( (lp0= LPAREN (k= arglist )? rp0= RPAREN | lb1= LBRACK k= subscriptlist rb1= RBRACK | DOT ta= NAME ) )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1217:2: (lp0= LPAREN (k= arglist )? rp0= RPAREN | lb1= LBRACK k= subscriptlist rb1= RBRACK | DOT ta= NAME )
             {
 
             		//Expression k=null;
@@ -5554,7 +5554,7 @@ public class python_v3Parser extends Parser {
             			expr = new ExtendedVariableReference( expr );
             		ExtendedVariableReference exVariableReference = ( ExtendedVariableReference )expr;
             	
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1224:2: (lp0= LPAREN (k= arglist )? rp0= RPAREN | lb1= LBRACK k= subscriptlist rb1= RBRACK | DOT ta= NAME )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1224:2: (lp0= LPAREN (k= arglist )? rp0= RPAREN | lb1= LBRACK k= subscriptlist rb1= RBRACK | DOT ta= NAME )
             int alt72=3;
             switch ( input.LA(1) ) {
             case LPAREN:
@@ -5581,11 +5581,11 @@ public class python_v3Parser extends Parser {
 
             switch (alt72) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1225:3: lp0= LPAREN (k= arglist )? rp0= RPAREN
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1225:3: lp0= LPAREN (k= arglist )? rp0= RPAREN
                     {
                     lp0=(Token)input.LT(1);
                     match(input,LPAREN,FOLLOW_LPAREN_in_trailer4332); 
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1226:4: (k= arglist )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1226:4: (k= arglist )?
                     int alt71=2;
                     int LA71_0 = input.LA(1);
 
@@ -5594,7 +5594,7 @@ public class python_v3Parser extends Parser {
                     }
                     switch (alt71) {
                         case 1 :
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1226:6: k= arglist
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1226:6: k= arglist
                             {
                             pushFollow(FOLLOW_arglist_in_trailer4344);
                             k=arglist();
@@ -5619,7 +5619,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1236:3: lb1= LBRACK k= subscriptlist rb1= RBRACK
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1236:3: lb1= LBRACK k= subscriptlist rb1= RBRACK
                     {
                     lb1=(Token)input.LT(1);
                     match(input,LBRACK,FOLLOW_LBRACK_in_trailer4374); 
@@ -5640,7 +5640,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1247:3: DOT ta= NAME
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1247:3: DOT ta= NAME
                     {
                     match(input,DOT,FOLLOW_DOT_in_trailer4407); 
                     ta=(Token)input.LT(1);
@@ -5683,7 +5683,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start atom
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1259:1: atom returns [ Expression exp = null ] : (lb= LPAREN (exp0= tuplelist ) rb= RPAREN | lb= LPAREN rb= RPAREN | lb= LBRACK (exp0= listmaker ) rb= RBRACK | lb= LBRACK rb= RBRACK | a1= LCURLY (exp0= dictmaker ) rb= RCURLY | lb= LCURLY rb= RCURLY | lb= BACKQUOTE exp0= testlist rb= BACKQUOTE | n= NAME | i= INT | li= LONGINT | f= FLOAT | c= COMPLEX | (s= STRING )+ );
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1259:1: atom returns [ Expression exp = null ] : (lb= LPAREN (exp0= tuplelist ) rb= RPAREN | lb= LPAREN rb= RPAREN | lb= LBRACK (exp0= listmaker ) rb= RBRACK | lb= LBRACK rb= RBRACK | a1= LCURLY (exp0= dictmaker ) rb= RCURLY | lb= LCURLY rb= RCURLY | lb= BACKQUOTE exp0= testlist rb= BACKQUOTE | n= NAME | i= INT | li= LONGINT | f= FLOAT | c= COMPLEX | (s= STRING )+ );
     public final Expression atom() throws RecognitionException {
         Expression exp =  null;
 
@@ -5700,7 +5700,7 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1259:39: (lb= LPAREN (exp0= tuplelist ) rb= RPAREN | lb= LPAREN rb= RPAREN | lb= LBRACK (exp0= listmaker ) rb= RBRACK | lb= LBRACK rb= RBRACK | a1= LCURLY (exp0= dictmaker ) rb= RCURLY | lb= LCURLY rb= RCURLY | lb= BACKQUOTE exp0= testlist rb= BACKQUOTE | n= NAME | i= INT | li= LONGINT | f= FLOAT | c= COMPLEX | (s= STRING )+ )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1259:39: (lb= LPAREN (exp0= tuplelist ) rb= RPAREN | lb= LPAREN rb= RPAREN | lb= LBRACK (exp0= listmaker ) rb= RBRACK | lb= LBRACK rb= RBRACK | a1= LCURLY (exp0= dictmaker ) rb= RCURLY | lb= LCURLY rb= RCURLY | lb= BACKQUOTE exp0= testlist rb= BACKQUOTE | n= NAME | i= INT | li= LONGINT | f= FLOAT | c= COMPLEX | (s= STRING )+ )
             int alt74=13;
             switch ( input.LA(1) ) {
             case LPAREN:
@@ -5801,12 +5801,12 @@ public class python_v3Parser extends Parser {
 
             switch (alt74) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1260:4: lb= LPAREN (exp0= tuplelist ) rb= RPAREN
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1260:4: lb= LPAREN (exp0= tuplelist ) rb= RPAREN
                     {
                     lb=(Token)input.LT(1);
                     match(input,LPAREN,FOLLOW_LPAREN_in_atom4445); 
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1260:16: (exp0= tuplelist )
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1260:18: exp0= tuplelist
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1260:16: (exp0= tuplelist )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1260:18: exp0= tuplelist
                     {
                     pushFollow(FOLLOW_tuplelist_in_atom4453);
                     exp0=tuplelist();
@@ -5823,7 +5823,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1261:4: lb= LPAREN rb= RPAREN
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1261:4: lb= LPAREN rb= RPAREN
                     {
                     lb=(Token)input.LT(1);
                     match(input,LPAREN,FOLLOW_LPAREN_in_atom4474); 
@@ -5835,12 +5835,12 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1262:4: lb= LBRACK (exp0= listmaker ) rb= RBRACK
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1262:4: lb= LBRACK (exp0= listmaker ) rb= RBRACK
                     {
                     lb=(Token)input.LT(1);
                     match(input,LBRACK,FOLLOW_LBRACK_in_atom4494); 
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1262:16: (exp0= listmaker )
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1262:18: exp0= listmaker
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1262:16: (exp0= listmaker )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1262:18: exp0= listmaker
                     {
                     pushFollow(FOLLOW_listmaker_in_atom4502);
                     exp0=listmaker();
@@ -5857,7 +5857,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1263:4: lb= LBRACK rb= RBRACK
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1263:4: lb= LBRACK rb= RBRACK
                     {
                     lb=(Token)input.LT(1);
                     match(input,LBRACK,FOLLOW_LBRACK_in_atom4522); 
@@ -5869,13 +5869,13 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1264:4: a1= LCURLY (exp0= dictmaker ) rb= RCURLY
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1264:4: a1= LCURLY (exp0= dictmaker ) rb= RCURLY
                     {
                     a1=(Token)input.LT(1);
                     match(input,LCURLY,FOLLOW_LCURLY_in_atom4541); 
                     lb =a1;
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1264:24: (exp0= dictmaker )
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1264:26: exp0= dictmaker
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1264:24: (exp0= dictmaker )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1264:26: exp0= dictmaker
                     {
                     pushFollow(FOLLOW_dictmaker_in_atom4551);
                     exp0=dictmaker();
@@ -5892,7 +5892,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 6 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1265:4: lb= LCURLY rb= RCURLY
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1265:4: lb= LCURLY rb= RCURLY
                     {
                     lb=(Token)input.LT(1);
                     match(input,LCURLY,FOLLOW_LCURLY_in_atom4571); 
@@ -5904,7 +5904,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 7 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1266:4: lb= BACKQUOTE exp0= testlist rb= BACKQUOTE
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1266:4: lb= BACKQUOTE exp0= testlist rb= BACKQUOTE
                     {
                     lb=(Token)input.LT(1);
                     match(input,BACKQUOTE,FOLLOW_BACKQUOTE_in_atom4592); 
@@ -5920,7 +5920,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 8 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1267:4: n= NAME
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1267:4: n= NAME
                     {
                     n=(Token)input.LT(1);
                     match(input,NAME,FOLLOW_NAME_in_atom4617); 
@@ -5929,7 +5929,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 9 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1268:4: i= INT
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1268:4: i= INT
                     {
                     i=(Token)input.LT(1);
                     match(input,INT,FOLLOW_INT_in_atom4629); 
@@ -5938,7 +5938,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 10 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1269:8: li= LONGINT
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1269:8: li= LONGINT
                     {
                     li=(Token)input.LT(1);
                     match(input,LONGINT,FOLLOW_LONGINT_in_atom4646); 
@@ -5947,7 +5947,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 11 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1270:8: f= FLOAT
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1270:8: f= FLOAT
                     {
                     f=(Token)input.LT(1);
                     match(input,FLOAT,FOLLOW_FLOAT_in_atom4661); 
@@ -5956,7 +5956,7 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 12 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1271:8: c= COMPLEX
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1271:8: c= COMPLEX
                     {
                     c=(Token)input.LT(1);
                     match(input,COMPLEX,FOLLOW_COMPLEX_in_atom4679); 
@@ -5965,9 +5965,9 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 13 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1273:2: (s= STRING )+
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1273:2: (s= STRING )+
                     {
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1273:2: (s= STRING )+
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1273:2: (s= STRING )+
                     int cnt73=0;
                     loop73:
                     do {
@@ -5981,7 +5981,7 @@ public class python_v3Parser extends Parser {
 
                         switch (alt73) {
                     	case 1 :
-                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1274:3: s= STRING
+                    	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1274:3: s= STRING
                     	    {
                     	    s=(Token)input.LT(1);
                     	    match(input,STRING,FOLLOW_STRING_in_atom4696); 
@@ -6031,7 +6031,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start listmaker
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1284:1: listmaker returns [ PythonListExpression exp = new PythonListExpression() ] : firstExpr= test ( ( list_for[ listExpr ] ) | ( ( options {greedy=true; } : COMMA expr0= test )* ( COMMA )? ) ) ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1284:1: listmaker returns [ PythonListExpression exp = new PythonListExpression() ] : firstExpr= test ( ( list_for[ listExpr ] ) | ( ( options {greedy=true; } : COMMA expr0= test )* ( COMMA )? ) ) ;
     public final PythonListExpression listmaker() throws RecognitionException {
         PythonListExpression exp =  new PythonListExpression();
 
@@ -6041,14 +6041,14 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1284:76: (firstExpr= test ( ( list_for[ listExpr ] ) | ( ( options {greedy=true; } : COMMA expr0= test )* ( COMMA )? ) ) )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1285:2: firstExpr= test ( ( list_for[ listExpr ] ) | ( ( options {greedy=true; } : COMMA expr0= test )* ( COMMA )? ) )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1284:76: (firstExpr= test ( ( list_for[ listExpr ] ) | ( ( options {greedy=true; } : COMMA expr0= test )* ( COMMA )? ) ) )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1285:2: firstExpr= test ( ( list_for[ listExpr ] ) | ( ( options {greedy=true; } : COMMA expr0= test )* ( COMMA )? ) )
             {
             pushFollow(FOLLOW_test_in_listmaker4726);
             firstExpr=test();
             _fsp--;
 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1286:2: ( ( list_for[ listExpr ] ) | ( ( options {greedy=true; } : COMMA expr0= test )* ( COMMA )? ) )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1286:2: ( ( list_for[ listExpr ] ) | ( ( options {greedy=true; } : COMMA expr0= test )* ( COMMA )? ) )
             int alt77=2;
             int LA77_0 = input.LA(1);
 
@@ -6066,10 +6066,10 @@ public class python_v3Parser extends Parser {
             }
             switch (alt77) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1287:3: ( list_for[ listExpr ] )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1287:3: ( list_for[ listExpr ] )
                     {
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1287:3: ( list_for[ listExpr ] )
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1288:4: list_for[ listExpr ]
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1287:3: ( list_for[ listExpr ] )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1288:4: list_for[ listExpr ]
                     {
 
                     				PythonListForExpression listExpr = new PythonListForExpression( firstExpr );
@@ -6088,15 +6088,15 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1297:3: ( ( options {greedy=true; } : COMMA expr0= test )* ( COMMA )? )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1297:3: ( ( options {greedy=true; } : COMMA expr0= test )* ( COMMA )? )
                     {
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1297:3: ( ( options {greedy=true; } : COMMA expr0= test )* ( COMMA )? )
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1298:4: ( options {greedy=true; } : COMMA expr0= test )* ( COMMA )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1297:3: ( ( options {greedy=true; } : COMMA expr0= test )* ( COMMA )? )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1298:4: ( options {greedy=true; } : COMMA expr0= test )* ( COMMA )?
                     {
 
                     				exp.addExpression( firstExpr );
                     			
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1301:4: ( options {greedy=true; } : COMMA expr0= test )*
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1301:4: ( options {greedy=true; } : COMMA expr0= test )*
                     loop75:
                     do {
                         int alt75=2;
@@ -6115,7 +6115,7 @@ public class python_v3Parser extends Parser {
 
                         switch (alt75) {
                     	case 1 :
-                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1303:5: COMMA expr0= test
+                    	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1303:5: COMMA expr0= test
                     	    {
                     	    match(input,COMMA,FOLLOW_COMMA_in_listmaker4791); 
                     	    pushFollow(FOLLOW_test_in_listmaker4801);
@@ -6134,7 +6134,7 @@ public class python_v3Parser extends Parser {
                         }
                     } while (true);
 
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1309:4: ( COMMA )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1309:4: ( COMMA )?
                     int alt76=2;
                     int LA76_0 = input.LA(1);
 
@@ -6143,7 +6143,7 @@ public class python_v3Parser extends Parser {
                     }
                     switch (alt76) {
                         case 1 :
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1309:5: COMMA
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1309:5: COMMA
                             {
                             match(input,COMMA,FOLLOW_COMMA_in_listmaker4820); 
 
@@ -6186,8 +6186,9 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start list_for
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1315:1: list_for[PythonListForExpression list ] : ( 'for' expr1= exprlist 'in' expr2= testlist (expr0= list_if )* )+ ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1315:1: list_for[PythonListForExpression list ] : (forToken= 'for' expr1= exprlist 'in' expr2= testlist (expr0= list_if )* )+ ;
     public final void list_for(PythonListForExpression list) throws RecognitionException {
+        Token forToken=null;
         PythonTestListExpression expr1 = null;
 
         Expression expr2 = null;
@@ -6196,10 +6197,10 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1315:41: ( ( 'for' expr1= exprlist 'in' expr2= testlist (expr0= list_if )* )+ )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1316:2: ( 'for' expr1= exprlist 'in' expr2= testlist (expr0= list_if )* )+
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1315:41: ( (forToken= 'for' expr1= exprlist 'in' expr2= testlist (expr0= list_if )* )+ )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1316:2: (forToken= 'for' expr1= exprlist 'in' expr2= testlist (expr0= list_if )* )+
             {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1316:2: ( 'for' expr1= exprlist 'in' expr2= testlist (expr0= list_if )* )+
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1316:2: (forToken= 'for' expr1= exprlist 'in' expr2= testlist (expr0= list_if )* )+
             int cnt79=0;
             loop79:
             do {
@@ -6213,26 +6214,28 @@ public class python_v3Parser extends Parser {
 
                 switch (alt79) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1317:3: 'for' expr1= exprlist 'in' expr2= testlist (expr0= list_if )*
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1317:3: forToken= 'for' expr1= exprlist 'in' expr2= testlist (expr0= list_if )*
             	    {
-            	    match(input,88,FOLLOW_88_in_list_for4847); 
-            	    pushFollow(FOLLOW_exprlist_in_list_for4855);
+            	    forToken=(Token)input.LT(1);
+            	    match(input,88,FOLLOW_88_in_list_for4851); 
+            	    pushFollow(FOLLOW_exprlist_in_list_for4859);
             	    expr1=exprlist();
             	    _fsp--;
 
-            	    match(input,82,FOLLOW_82_in_list_for4859); 
-            	    pushFollow(FOLLOW_testlist_in_list_for4868);
+            	    match(input,82,FOLLOW_82_in_list_for4863); 
+            	    pushFollow(FOLLOW_testlist_in_list_for4872);
             	    expr2=testlist();
             	    _fsp--;
 
 
             	    			PythonForListExpression forListExpression = new PythonForListExpression( expr1, expr2 );
+            	    			forListExpression.setStart(toDLTK(forToken).getColumn());
             	    			list.addExpression( forListExpression );
             	    		
 
             	    			PythonListExpression ifList = null;
             	    		
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1328:3: (expr0= list_if )*
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1329:3: (expr0= list_if )*
             	    loop78:
             	    do {
             	        int alt78=2;
@@ -6245,9 +6248,9 @@ public class python_v3Parser extends Parser {
 
             	        switch (alt78) {
             	    	case 1 :
-            	    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1329:4: expr0= list_if
+            	    	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1330:4: expr0= list_if
             	    	    {
-            	    	    pushFollow(FOLLOW_list_if_in_list_for4891);
+            	    	    pushFollow(FOLLOW_list_if_in_list_for4895);
             	    	    expr0=list_if();
             	    	    _fsp--;
 
@@ -6255,6 +6258,8 @@ public class python_v3Parser extends Parser {
             	    	    				if( ifList == null )
             	    	    					ifList = new PythonListExpression();
             	    	    				ifList.addExpression( expr0 );
+            	    	    				ifList.setStart(expr0.sourceStart());
+            	    	    				ifList.setEnd(expr0.sourceEnd());
             	    	    			
 
             	    	    }
@@ -6307,7 +6312,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start list_if
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1343:1: list_if returns [ Expression expr = null ] : 'if' expr0= test ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1346:1: list_if returns [ Expression expr = null ] : 'if' expr0= test ;
     public final Expression list_if() throws RecognitionException {
         Expression expr =  null;
 
@@ -6315,11 +6320,11 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1343:42: ( 'if' expr0= test )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1344:2: 'if' expr0= test
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1346:42: ( 'if' expr0= test )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1347:2: 'if' expr0= test
             {
-            match(input,84,FOLLOW_84_in_list_if4924); 
-            pushFollow(FOLLOW_test_in_list_if4931);
+            match(input,84,FOLLOW_84_in_list_if4928); 
+            pushFollow(FOLLOW_test_in_list_if4935);
             expr0=test();
             _fsp--;
 
@@ -6351,7 +6356,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start lambdef
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1349:1: lambdef returns [ Expression e = null ] : lambda= 'lambda' ( varargslist[ params ] )? COLON statement= test ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1352:1: lambdef returns [ Expression e = null ] : lambda= 'lambda' ( varargslist[ params ] )? COLON statement= test ;
     public final Expression lambdef() throws RecognitionException {
         Expression e =  null;
 
@@ -6360,18 +6365,18 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1349:40: (lambda= 'lambda' ( varargslist[ params ] )? COLON statement= test )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1350:2: lambda= 'lambda' ( varargslist[ params ] )? COLON statement= test
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1352:40: (lambda= 'lambda' ( varargslist[ params ] )? COLON statement= test )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1353:2: lambda= 'lambda' ( varargslist[ params ] )? COLON statement= test
             {
             lambda=(Token)input.LT(1);
-            match(input,96,FOLLOW_96_in_lambdef4952); 
+            match(input,96,FOLLOW_96_in_lambdef4956); 
 
             		//ArrayList buf = this.fParameters;
             		//this.fParameters = new ArrayList();
             		List params = new ArrayList ();
             		//Expression statement;
             	
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1357:2: ( varargslist[ params ] )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1360:2: ( varargslist[ params ] )?
             int alt80=2;
             int LA80_0 = input.LA(1);
 
@@ -6380,9 +6385,9 @@ public class python_v3Parser extends Parser {
             }
             switch (alt80) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1357:4: varargslist[ params ]
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1360:4: varargslist[ params ]
                     {
-                    pushFollow(FOLLOW_varargslist_in_lambdef4960);
+                    pushFollow(FOLLOW_varargslist_in_lambdef4964);
                     varargslist( params );
                     _fsp--;
 
@@ -6392,8 +6397,8 @@ public class python_v3Parser extends Parser {
 
             }
 
-            match(input,COLON,FOLLOW_COLON_in_lambdef4967); 
-            pushFollow(FOLLOW_test_in_lambdef4975);
+            match(input,COLON,FOLLOW_COLON_in_lambdef4971); 
+            pushFollow(FOLLOW_test_in_lambdef4979);
             statement=test();
             _fsp--;
 
@@ -6428,7 +6433,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start subscriptlist
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1368:1: subscriptlist returns [ Expression expression = null ] : expression0= subscript ( options {greedy=true; } : COMMA k= subscript )* ( COMMA )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1371:1: subscriptlist returns [ Expression expression = null ] : expression0= subscript ( options {greedy=true; } : COMMA k= subscript )* ( COMMA )? ;
     public final Expression subscriptlist() throws RecognitionException {
         Expression expression =  null;
 
@@ -6438,14 +6443,14 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1368:56: (expression0= subscript ( options {greedy=true; } : COMMA k= subscript )* ( COMMA )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1369:2: expression0= subscript ( options {greedy=true; } : COMMA k= subscript )* ( COMMA )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1371:56: (expression0= subscript ( options {greedy=true; } : COMMA k= subscript )* ( COMMA )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1372:2: expression0= subscript ( options {greedy=true; } : COMMA k= subscript )* ( COMMA )?
             {
-            pushFollow(FOLLOW_subscript_in_subscriptlist4999);
+            pushFollow(FOLLOW_subscript_in_subscriptlist5003);
             expression0=subscript();
             _fsp--;
 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1370:2: ( options {greedy=true; } : COMMA k= subscript )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1373:2: ( options {greedy=true; } : COMMA k= subscript )*
             loop81:
             do {
                 int alt81=2;
@@ -6464,10 +6469,10 @@ public class python_v3Parser extends Parser {
 
                 switch (alt81) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1371:26: COMMA k= subscript
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1374:26: COMMA k= subscript
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_subscriptlist5015); 
-            	    pushFollow(FOLLOW_subscript_in_subscriptlist5024);
+            	    match(input,COMMA,FOLLOW_COMMA_in_subscriptlist5019); 
+            	    pushFollow(FOLLOW_subscript_in_subscriptlist5028);
             	    k=subscript();
             	    _fsp--;
 
@@ -6483,7 +6488,7 @@ public class python_v3Parser extends Parser {
                 }
             } while (true);
 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1377:2: ( COMMA )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1380:2: ( COMMA )?
             int alt82=2;
             int LA82_0 = input.LA(1);
 
@@ -6492,9 +6497,9 @@ public class python_v3Parser extends Parser {
             }
             switch (alt82) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1377:3: COMMA
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1380:3: COMMA
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_subscriptlist5039); 
+                    match(input,COMMA,FOLLOW_COMMA_in_subscriptlist5043); 
 
                     }
                     break;
@@ -6526,7 +6531,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start subscript
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1380:1: subscript returns [ PythonSubscriptExpression expression = null ] : (w= DOT DOT DOT | (tu= test ( COLON (tu1= test )? (tu= sliceop )? )? ) | ( COLON (tu1= test )? (tu= sliceop )? ) );
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1383:1: subscript returns [ PythonSubscriptExpression expression = null ] : (w= DOT DOT DOT | (tu= test ( COLON (tu1= test )? (tu= sliceop )? )? ) | ( COLON (tu1= test )? (tu= sliceop )? ) );
     public final PythonSubscriptExpression subscript() throws RecognitionException {
         PythonSubscriptExpression expression =  null;
 
@@ -6537,7 +6542,7 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1380:66: (w= DOT DOT DOT | (tu= test ( COLON (tu1= test )? (tu= sliceop )? )? ) | ( COLON (tu1= test )? (tu= sliceop )? ) )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1383:66: (w= DOT DOT DOT | (tu= test ( COLON (tu1= test )? (tu= sliceop )? )? ) | ( COLON (tu1= test )? (tu= sliceop )? ) )
             int alt88=3;
             switch ( input.LA(1) ) {
             case DOT:
@@ -6571,19 +6576,19 @@ public class python_v3Parser extends Parser {
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("1380:1: subscript returns [ PythonSubscriptExpression expression = null ] : (w= DOT DOT DOT | (tu= test ( COLON (tu1= test )? (tu= sliceop )? )? ) | ( COLON (tu1= test )? (tu= sliceop )? ) );", 88, 0, input);
+                    new NoViableAltException("1383:1: subscript returns [ PythonSubscriptExpression expression = null ] : (w= DOT DOT DOT | (tu= test ( COLON (tu1= test )? (tu= sliceop )? )? ) | ( COLON (tu1= test )? (tu= sliceop )? ) );", 88, 0, input);
 
                 throw nvae;
             }
 
             switch (alt88) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1381:2: w= DOT DOT DOT
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1384:2: w= DOT DOT DOT
                     {
                     w=(Token)input.LT(1);
-                    match(input,DOT,FOLLOW_DOT_in_subscript5063); 
-                    match(input,DOT,FOLLOW_DOT_in_subscript5065); 
                     match(input,DOT,FOLLOW_DOT_in_subscript5067); 
+                    match(input,DOT,FOLLOW_DOT_in_subscript5069); 
+                    match(input,DOT,FOLLOW_DOT_in_subscript5071); 
 
                     			expression = new PythonSubscriptExpression( toDLTK( w ) );
                     		
@@ -6591,22 +6596,22 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1387:2: (tu= test ( COLON (tu1= test )? (tu= sliceop )? )? )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1390:2: (tu= test ( COLON (tu1= test )? (tu= sliceop )? )? )
                     {
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1387:2: (tu= test ( COLON (tu1= test )? (tu= sliceop )? )? )
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1388:3: tu= test ( COLON (tu1= test )? (tu= sliceop )? )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1390:2: (tu= test ( COLON (tu1= test )? (tu= sliceop )? )? )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1391:3: tu= test ( COLON (tu1= test )? (tu= sliceop )? )?
                     {
 
                     			expression = new PythonSubscriptExpression( );	
                     		
-                    pushFollow(FOLLOW_test_in_subscript5092);
+                    pushFollow(FOLLOW_test_in_subscript5096);
                     tu=test();
                     _fsp--;
 
 
                     				expression.setTest( tu );
                     			
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1395:3: ( COLON (tu1= test )? (tu= sliceop )? )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1398:3: ( COLON (tu1= test )? (tu= sliceop )? )?
                     int alt85=2;
                     int LA85_0 = input.LA(1);
 
@@ -6615,10 +6620,10 @@ public class python_v3Parser extends Parser {
                     }
                     switch (alt85) {
                         case 1 :
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1396:4: COLON (tu1= test )? (tu= sliceop )?
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1399:4: COLON (tu1= test )? (tu= sliceop )?
                             {
-                            match(input,COLON,FOLLOW_COLON_in_subscript5107); 
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1397:4: (tu1= test )?
+                            match(input,COLON,FOLLOW_COLON_in_subscript5111); 
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1400:4: (tu1= test )?
                             int alt83=2;
                             int LA83_0 = input.LA(1);
 
@@ -6627,9 +6632,9 @@ public class python_v3Parser extends Parser {
                             }
                             switch (alt83) {
                                 case 1 :
-                                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1398:5: tu1= test
+                                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1401:5: tu1= test
                                     {
-                                    pushFollow(FOLLOW_test_in_subscript5123);
+                                    pushFollow(FOLLOW_test_in_subscript5127);
                                     tu1=test();
                                     _fsp--;
 
@@ -6642,7 +6647,7 @@ public class python_v3Parser extends Parser {
 
                             }
 
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1403:4: (tu= sliceop )?
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1406:4: (tu= sliceop )?
                             int alt84=2;
                             int LA84_0 = input.LA(1);
 
@@ -6651,9 +6656,9 @@ public class python_v3Parser extends Parser {
                             }
                             switch (alt84) {
                                 case 1 :
-                                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1404:5: tu= sliceop
+                                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1407:5: tu= sliceop
                                     {
-                                    pushFollow(FOLLOW_sliceop_in_subscript5153);
+                                    pushFollow(FOLLOW_sliceop_in_subscript5157);
                                     tu=sliceop();
                                     _fsp--;
 
@@ -6679,16 +6684,16 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1412:2: ( COLON (tu1= test )? (tu= sliceop )? )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1415:2: ( COLON (tu1= test )? (tu= sliceop )? )
                     {
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1412:2: ( COLON (tu1= test )? (tu= sliceop )? )
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1413:3: COLON (tu1= test )? (tu= sliceop )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1415:2: ( COLON (tu1= test )? (tu= sliceop )? )
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1416:3: COLON (tu1= test )? (tu= sliceop )?
                     {
 
                     			expression = new PythonSubscriptExpression( );
                     		
-                    match(input,COLON,FOLLOW_COLON_in_subscript5195); 
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1417:8: (tu1= test )?
+                    match(input,COLON,FOLLOW_COLON_in_subscript5199); 
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1420:8: (tu1= test )?
                     int alt86=2;
                     int LA86_0 = input.LA(1);
 
@@ -6697,9 +6702,9 @@ public class python_v3Parser extends Parser {
                     }
                     switch (alt86) {
                         case 1 :
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1418:9: tu1= test
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1421:9: tu1= test
                             {
-                            pushFollow(FOLLOW_test_in_subscript5219);
+                            pushFollow(FOLLOW_test_in_subscript5223);
                             tu1=test();
                             _fsp--;
 
@@ -6712,7 +6717,7 @@ public class python_v3Parser extends Parser {
 
                     }
 
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1423:8: (tu= sliceop )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1426:8: (tu= sliceop )?
                     int alt87=2;
                     int LA87_0 = input.LA(1);
 
@@ -6721,9 +6726,9 @@ public class python_v3Parser extends Parser {
                     }
                     switch (alt87) {
                         case 1 :
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1424:9: tu= sliceop
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1427:9: tu= sliceop
                             {
-                            pushFollow(FOLLOW_sliceop_in_subscript5265);
+                            pushFollow(FOLLOW_sliceop_in_subscript5269);
                             tu=sliceop();
                             _fsp--;
 
@@ -6766,7 +6771,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start sliceop
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1434:1: sliceop returns [ Expression e = null ] : COLON (e0= test )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1437:1: sliceop returns [ Expression e = null ] : COLON (e0= test )? ;
     public final Expression sliceop() throws RecognitionException {
         Expression e =  null;
 
@@ -6774,11 +6779,11 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1434:40: ( COLON (e0= test )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1435:2: COLON (e0= test )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1437:40: ( COLON (e0= test )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1438:2: COLON (e0= test )?
             {
-            match(input,COLON,FOLLOW_COLON_in_sliceop5325); 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1436:2: (e0= test )?
+            match(input,COLON,FOLLOW_COLON_in_sliceop5329); 
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1439:2: (e0= test )?
             int alt89=2;
             int LA89_0 = input.LA(1);
 
@@ -6787,9 +6792,9 @@ public class python_v3Parser extends Parser {
             }
             switch (alt89) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1436:4: e0= test
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1439:4: e0= test
                     {
-                    pushFollow(FOLLOW_test_in_sliceop5334);
+                    pushFollow(FOLLOW_test_in_sliceop5338);
                     e0=test();
                     _fsp--;
 
@@ -6825,7 +6830,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start exprlist
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1440:1: exprlist returns [ PythonTestListExpression p = new PythonTestListExpression( ); ] : e= expr ( options {k=2; greedy=true; } : COMMA e= expr )* ( COMMA )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1443:1: exprlist returns [ PythonTestListExpression p = new PythonTestListExpression( ); ] : e= expr ( options {k=2; greedy=true; } : COMMA e= expr )* ( COMMA )? ;
     public final PythonTestListExpression exprlist() throws RecognitionException {
         PythonTestListExpression p =  new PythonTestListExpression( );;
 
@@ -6833,10 +6838,10 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1440:84: (e= expr ( options {k=2; greedy=true; } : COMMA e= expr )* ( COMMA )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1441:2: e= expr ( options {k=2; greedy=true; } : COMMA e= expr )* ( COMMA )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1443:84: (e= expr ( options {k=2; greedy=true; } : COMMA e= expr )* ( COMMA )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1444:2: e= expr ( options {k=2; greedy=true; } : COMMA e= expr )* ( COMMA )?
             {
-            pushFollow(FOLLOW_expr_in_exprlist5361);
+            pushFollow(FOLLOW_expr_in_exprlist5365);
             e=expr();
             _fsp--;
 
@@ -6845,7 +6850,7 @@ public class python_v3Parser extends Parser {
             		p.setStart(e.sourceStart());
             		p.setEnd(e.sourceEnd());
             	
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1447:2: ( options {k=2; greedy=true; } : COMMA e= expr )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1450:2: ( options {k=2; greedy=true; } : COMMA e= expr )*
             loop90:
             do {
                 int alt90=2;
@@ -6864,10 +6869,10 @@ public class python_v3Parser extends Parser {
 
                 switch (alt90) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1448:3: COMMA e= expr
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1451:3: COMMA e= expr
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_exprlist5383); 
-            	    pushFollow(FOLLOW_expr_in_exprlist5392);
+            	    match(input,COMMA,FOLLOW_COMMA_in_exprlist5387); 
+            	    pushFollow(FOLLOW_expr_in_exprlist5396);
             	    e=expr();
             	    _fsp--;
 
@@ -6886,7 +6891,7 @@ public class python_v3Parser extends Parser {
                 }
             } while (true);
 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1457:2: ( COMMA )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1460:2: ( COMMA )?
             int alt91=2;
             int LA91_0 = input.LA(1);
 
@@ -6895,9 +6900,9 @@ public class python_v3Parser extends Parser {
             }
             switch (alt91) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1457:3: COMMA
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1460:3: COMMA
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_exprlist5406); 
+                    match(input,COMMA,FOLLOW_COMMA_in_exprlist5410); 
 
                     }
                     break;
@@ -6929,7 +6934,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start testlist
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1461:1: testlist returns [ Expression p = new EmptyExpression() ] : e0= test ( options {k=2; greedy=true; } : COMMA e0= test )* ( options {greedy=true; } : COMMA )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1464:1: testlist returns [ Expression p = new EmptyExpression() ] : e0= test ( options {k=2; greedy=true; } : COMMA e0= test )* ( options {greedy=true; } : COMMA )? ;
     public final Expression testlist() throws RecognitionException {
         Expression p =  new EmptyExpression();
 
@@ -6937,14 +6942,14 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1461:58: (e0= test ( options {k=2; greedy=true; } : COMMA e0= test )* ( options {greedy=true; } : COMMA )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1462:2: e0= test ( options {k=2; greedy=true; } : COMMA e0= test )* ( options {greedy=true; } : COMMA )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1464:58: (e0= test ( options {k=2; greedy=true; } : COMMA e0= test )* ( options {greedy=true; } : COMMA )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1465:2: e0= test ( options {k=2; greedy=true; } : COMMA e0= test )* ( options {greedy=true; } : COMMA )?
             {
 
             		PythonTestListExpression listExpression = new PythonTestListExpression();
             		int end = -1;
             	
-            pushFollow(FOLLOW_test_in_testlist5433);
+            pushFollow(FOLLOW_test_in_testlist5437);
             e0=test();
             _fsp--;
 
@@ -6957,7 +6962,7 @@ public class python_v3Parser extends Parser {
             			listExpression.setEnd(end);
             		}
             	
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1476:6: ( options {k=2; greedy=true; } : COMMA e0= test )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1479:6: ( options {k=2; greedy=true; } : COMMA e0= test )*
             loop92:
             do {
                 int alt92=2;
@@ -6979,10 +6984,10 @@ public class python_v3Parser extends Parser {
 
                 switch (alt92) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1477:7: COMMA e0= test
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1480:7: COMMA e0= test
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_testlist5462); 
-            	    pushFollow(FOLLOW_test_in_testlist5474);
+            	    match(input,COMMA,FOLLOW_COMMA_in_testlist5466); 
+            	    pushFollow(FOLLOW_test_in_testlist5478);
             	    e0=test();
             	    _fsp--;
 
@@ -7002,7 +7007,7 @@ public class python_v3Parser extends Parser {
                 }
             } while (true);
 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1487:9: ( options {greedy=true; } : COMMA )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1490:9: ( options {greedy=true; } : COMMA )?
             int alt93=2;
             int LA93_0 = input.LA(1);
 
@@ -7011,9 +7016,9 @@ public class python_v3Parser extends Parser {
             }
             switch (alt93) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1487:33: COMMA
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1490:33: COMMA
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_testlist5509); 
+                    match(input,COMMA,FOLLOW_COMMA_in_testlist5513); 
 
                     }
                     break;
@@ -7050,7 +7055,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start tuplelist
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1494:1: tuplelist returns [ Expression p = null ] : e0= test ( options {greedy=true; } : COMMA e0= test )* ( options {greedy=true; } : COMMA )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1497:1: tuplelist returns [ Expression p = null ] : e0= test ( options {greedy=true; } : COMMA e0= test )* ( options {greedy=true; } : COMMA )? ;
     public final Expression tuplelist() throws RecognitionException {
         Expression p =  null;
 
@@ -7058,10 +7063,10 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1494:42: (e0= test ( options {greedy=true; } : COMMA e0= test )* ( options {greedy=true; } : COMMA )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1495:2: e0= test ( options {greedy=true; } : COMMA e0= test )* ( options {greedy=true; } : COMMA )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1497:42: (e0= test ( options {greedy=true; } : COMMA e0= test )* ( options {greedy=true; } : COMMA )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1498:2: e0= test ( options {greedy=true; } : COMMA e0= test )* ( options {greedy=true; } : COMMA )?
             {
-            pushFollow(FOLLOW_test_in_tuplelist5543);
+            pushFollow(FOLLOW_test_in_tuplelist5547);
             e0=test();
             _fsp--;
 
@@ -7072,7 +7077,7 @@ public class python_v3Parser extends Parser {
             		}
             		//p.addExpression( e );
             	
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1503:6: ( options {greedy=true; } : COMMA e0= test )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1506:6: ( options {greedy=true; } : COMMA e0= test )*
             loop94:
             do {
                 int alt94=2;
@@ -7091,10 +7096,10 @@ public class python_v3Parser extends Parser {
 
                 switch (alt94) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1504:7: COMMA e0= test
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1507:7: COMMA e0= test
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_tuplelist5568); 
-            	    pushFollow(FOLLOW_test_in_tuplelist5580);
+            	    match(input,COMMA,FOLLOW_COMMA_in_tuplelist5572); 
+            	    pushFollow(FOLLOW_test_in_tuplelist5584);
             	    e0=test();
             	    _fsp--;
 
@@ -7116,7 +7121,7 @@ public class python_v3Parser extends Parser {
                 }
             } while (true);
 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1516:9: ( options {greedy=true; } : COMMA )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1519:9: ( options {greedy=true; } : COMMA )?
             int alt95=2;
             int LA95_0 = input.LA(1);
 
@@ -7125,9 +7130,9 @@ public class python_v3Parser extends Parser {
             }
             switch (alt95) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1516:33: COMMA
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1519:33: COMMA
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_tuplelist5616); 
+                    match(input,COMMA,FOLLOW_COMMA_in_tuplelist5620); 
 
                     }
                     break;
@@ -7159,7 +7164,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start with_stmt
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1518:1: with_stmt returns [Statement st = null] : w_token= 'with' exp_what= test ( 'as' exp_as= testlist )? COLON block= suite ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1521:1: with_stmt returns [Statement st = null] : w_token= 'with' exp_what= test ( 'as' exp_as= testlist )? COLON block= suite ;
     public final Statement with_stmt() throws RecognitionException {
         Statement st =  null;
 
@@ -7172,16 +7177,16 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1518:40: (w_token= 'with' exp_what= test ( 'as' exp_as= testlist )? COLON block= suite )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1519:2: w_token= 'with' exp_what= test ( 'as' exp_as= testlist )? COLON block= suite
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1521:40: (w_token= 'with' exp_what= test ( 'as' exp_as= testlist )? COLON block= suite )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1522:2: w_token= 'with' exp_what= test ( 'as' exp_as= testlist )? COLON block= suite
             {
             w_token=(Token)input.LT(1);
-            match(input,97,FOLLOW_97_in_with_stmt5648); 
-            pushFollow(FOLLOW_test_in_with_stmt5656);
+            match(input,97,FOLLOW_97_in_with_stmt5652); 
+            pushFollow(FOLLOW_test_in_with_stmt5660);
             exp_what=test();
             _fsp--;
 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1521:2: ( 'as' exp_as= testlist )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1524:2: ( 'as' exp_as= testlist )?
             int alt96=2;
             int LA96_0 = input.LA(1);
 
@@ -7190,10 +7195,10 @@ public class python_v3Parser extends Parser {
             }
             switch (alt96) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1522:4: 'as' exp_as= testlist
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1525:4: 'as' exp_as= testlist
                     {
-                    match(input,79,FOLLOW_79_in_with_stmt5664); 
-                    pushFollow(FOLLOW_testlist_in_with_stmt5670);
+                    match(input,79,FOLLOW_79_in_with_stmt5668); 
+                    pushFollow(FOLLOW_testlist_in_with_stmt5674);
                     exp_as=testlist();
                     _fsp--;
 
@@ -7203,8 +7208,8 @@ public class python_v3Parser extends Parser {
 
             }
 
-            match(input,COLON,FOLLOW_COLON_in_with_stmt5676); 
-            pushFollow(FOLLOW_suite_in_with_stmt5682);
+            match(input,COLON,FOLLOW_COLON_in_with_stmt5680); 
+            pushFollow(FOLLOW_suite_in_with_stmt5686);
             block=suite();
             _fsp--;
 
@@ -7237,7 +7242,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start dictmaker
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1530:1: dictmaker returns [ PythonDictExpression d = new PythonDictExpression() ] : t1= test COLON t2= test ( options {k=2; greedy=true; } : COMMA t3= test COLON t4= test )* ( COMMA )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1533:1: dictmaker returns [ PythonDictExpression d = new PythonDictExpression() ] : t1= test COLON t2= test ( options {k=2; greedy=true; } : COMMA t3= test COLON t4= test )* ( COMMA )? ;
     public final PythonDictExpression dictmaker() throws RecognitionException {
         PythonDictExpression d =  new PythonDictExpression();
 
@@ -7251,22 +7256,22 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1530:75: (t1= test COLON t2= test ( options {k=2; greedy=true; } : COMMA t3= test COLON t4= test )* ( COMMA )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1531:2: t1= test COLON t2= test ( options {k=2; greedy=true; } : COMMA t3= test COLON t4= test )* ( COMMA )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1533:75: (t1= test COLON t2= test ( options {k=2; greedy=true; } : COMMA t3= test COLON t4= test )* ( COMMA )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1534:2: t1= test COLON t2= test ( options {k=2; greedy=true; } : COMMA t3= test COLON t4= test )* ( COMMA )?
             {
-            pushFollow(FOLLOW_test_in_dictmaker5704);
+            pushFollow(FOLLOW_test_in_dictmaker5708);
             t1=test();
             _fsp--;
 
-            match(input,COLON,FOLLOW_COLON_in_dictmaker5707); 
-            pushFollow(FOLLOW_test_in_dictmaker5714);
+            match(input,COLON,FOLLOW_COLON_in_dictmaker5711); 
+            pushFollow(FOLLOW_test_in_dictmaker5718);
             t2=test();
             _fsp--;
 
 
             			d.putExpression( t1, t2 );
             		
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1537:9: ( options {k=2; greedy=true; } : COMMA t3= test COLON t4= test )*
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1540:9: ( options {k=2; greedy=true; } : COMMA t3= test COLON t4= test )*
             loop97:
             do {
                 int alt97=2;
@@ -7285,15 +7290,15 @@ public class python_v3Parser extends Parser {
 
                 switch (alt97) {
             	case 1 :
-            	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1538:37: COMMA t3= test COLON t4= test
+            	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1541:37: COMMA t3= test COLON t4= test
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_dictmaker5750); 
-            	    pushFollow(FOLLOW_test_in_dictmaker5765);
+            	    match(input,COMMA,FOLLOW_COMMA_in_dictmaker5754); 
+            	    pushFollow(FOLLOW_test_in_dictmaker5769);
             	    t3=test();
             	    _fsp--;
 
-            	    match(input,COLON,FOLLOW_COLON_in_dictmaker5776); 
-            	    pushFollow(FOLLOW_test_in_dictmaker5791);
+            	    match(input,COLON,FOLLOW_COLON_in_dictmaker5780); 
+            	    pushFollow(FOLLOW_test_in_dictmaker5795);
             	    t4=test();
             	    _fsp--;
 
@@ -7309,7 +7314,7 @@ public class python_v3Parser extends Parser {
                 }
             } while (true);
 
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1546:9: ( COMMA )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1549:9: ( COMMA )?
             int alt98=2;
             int LA98_0 = input.LA(1);
 
@@ -7318,9 +7323,9 @@ public class python_v3Parser extends Parser {
             }
             switch (alt98) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1546:10: COMMA
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1549:10: COMMA
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_dictmaker5826); 
+                    match(input,COMMA,FOLLOW_COMMA_in_dictmaker5830); 
 
                     }
                     break;
@@ -7352,7 +7357,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start classdef
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1550:1: classdef returns [ PythonClassDeclaration classDeclaration = null ] : c= 'class' tu= NAME (r= LPAREN (te= testlist )? m= RPAREN )? co= COLON sa= suite ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1553:1: classdef returns [ PythonClassDeclaration classDeclaration = null ] : c= 'class' tu= NAME (r= LPAREN (te= testlist )? m= RPAREN )? co= COLON sa= suite ;
     public final PythonClassDeclaration classdef() throws RecognitionException {
         PythonClassDeclaration classDeclaration =  null;
 
@@ -7367,17 +7372,17 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1550:68: (c= 'class' tu= NAME (r= LPAREN (te= testlist )? m= RPAREN )? co= COLON sa= suite )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1551:2: c= 'class' tu= NAME (r= LPAREN (te= testlist )? m= RPAREN )? co= COLON sa= suite
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1553:68: (c= 'class' tu= NAME (r= LPAREN (te= testlist )? m= RPAREN )? co= COLON sa= suite )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1554:2: c= 'class' tu= NAME (r= LPAREN (te= testlist )? m= RPAREN )? co= COLON sa= suite
             {
             c=(Token)input.LT(1);
-            match(input,98,FOLLOW_98_in_classdef5857); 
+            match(input,98,FOLLOW_98_in_classdef5861); 
             tu=(Token)input.LT(1);
-            match(input,NAME,FOLLOW_NAME_in_classdef5864); 
+            match(input,NAME,FOLLOW_NAME_in_classdef5868); 
 
             			classDeclaration = new PythonClassDeclaration( toDLTK( tu ), toDLTK(c) );
             		
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1556:2: (r= LPAREN (te= testlist )? m= RPAREN )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1559:2: (r= LPAREN (te= testlist )? m= RPAREN )?
             int alt100=2;
             int LA100_0 = input.LA(1);
 
@@ -7386,11 +7391,11 @@ public class python_v3Parser extends Parser {
             }
             switch (alt100) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1557:3: r= LPAREN (te= testlist )? m= RPAREN
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1560:3: r= LPAREN (te= testlist )? m= RPAREN
                     {
                     r=(Token)input.LT(1);
-                    match(input,LPAREN,FOLLOW_LPAREN_in_classdef5883); 
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1558:4: (te= testlist )?
+                    match(input,LPAREN,FOLLOW_LPAREN_in_classdef5887); 
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1561:4: (te= testlist )?
                     int alt99=2;
                     int LA99_0 = input.LA(1);
 
@@ -7399,9 +7404,9 @@ public class python_v3Parser extends Parser {
                     }
                     switch (alt99) {
                         case 1 :
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1558:5: te= testlist
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1561:5: te= testlist
                             {
-                            pushFollow(FOLLOW_testlist_in_classdef5893);
+                            pushFollow(FOLLOW_testlist_in_classdef5897);
                             te=testlist();
                             _fsp--;
 
@@ -7412,7 +7417,7 @@ public class python_v3Parser extends Parser {
                     }
 
                     m=(Token)input.LT(1);
-                    match(input,RPAREN,FOLLOW_RPAREN_in_classdef5904); 
+                    match(input,RPAREN,FOLLOW_RPAREN_in_classdef5908); 
 
                     				if (null != te)
                     				{
@@ -7436,8 +7441,8 @@ public class python_v3Parser extends Parser {
             }
 
             co=(Token)input.LT(1);
-            match(input,COLON,FOLLOW_COLON_in_classdef5920); 
-            pushFollow(FOLLOW_suite_in_classdef5927);
+            match(input,COLON,FOLLOW_COLON_in_classdef5924); 
+            pushFollow(FOLLOW_suite_in_classdef5931);
             sa=suite();
             _fsp--;
 
@@ -7469,7 +7474,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start arglist
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1584:1: arglist returns [ ExpressionList expressions = new ExpressionList() ] : (k= argument ( options {greedy=true; } : COMMA k= argument )* ( COMMA ( STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )? )? | STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test ) ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1587:1: arglist returns [ ExpressionList expressions = new ExpressionList() ] : (k= argument ( options {greedy=true; } : COMMA k= argument )* ( COMMA ( STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )? )? | STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test ) ;
     public final ExpressionList arglist() throws RecognitionException {
         ExpressionList expressions =  new ExpressionList();
 
@@ -7477,10 +7482,10 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1584:70: ( (k= argument ( options {greedy=true; } : COMMA k= argument )* ( COMMA ( STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )? )? | STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test ) )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1585:2: (k= argument ( options {greedy=true; } : COMMA k= argument )* ( COMMA ( STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )? )? | STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1587:70: ( (k= argument ( options {greedy=true; } : COMMA k= argument )* ( COMMA ( STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )? )? | STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test ) )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1588:2: (k= argument ( options {greedy=true; } : COMMA k= argument )* ( COMMA ( STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )? )? | STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )
             {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1585:2: (k= argument ( options {greedy=true; } : COMMA k= argument )* ( COMMA ( STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )? )? | STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1588:2: (k= argument ( options {greedy=true; } : COMMA k= argument )* ( COMMA ( STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )? )? | STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )
             int alt106=3;
             switch ( input.LA(1) ) {
             case LPAREN:
@@ -7514,23 +7519,23 @@ public class python_v3Parser extends Parser {
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("1585:2: (k= argument ( options {greedy=true; } : COMMA k= argument )* ( COMMA ( STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )? )? | STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )", 106, 0, input);
+                    new NoViableAltException("1588:2: (k= argument ( options {greedy=true; } : COMMA k= argument )* ( COMMA ( STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )? )? | STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )", 106, 0, input);
 
                 throw nvae;
             }
 
             switch (alt106) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1586:3: k= argument ( options {greedy=true; } : COMMA k= argument )* ( COMMA ( STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )? )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1589:3: k= argument ( options {greedy=true; } : COMMA k= argument )* ( COMMA ( STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )? )?
                     {
-                    pushFollow(FOLLOW_argument_in_arglist5959);
+                    pushFollow(FOLLOW_argument_in_arglist5963);
                     k=argument();
                     _fsp--;
 
 
                     				expressions.addExpression( k );
                     			
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1590:11: ( options {greedy=true; } : COMMA k= argument )*
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1593:11: ( options {greedy=true; } : COMMA k= argument )*
                     loop101:
                     do {
                         int alt101=2;
@@ -7549,10 +7554,10 @@ public class python_v3Parser extends Parser {
 
                         switch (alt101) {
                     	case 1 :
-                    	    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1591:35: COMMA k= argument
+                    	    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1594:35: COMMA k= argument
                     	    {
-                    	    match(input,COMMA,FOLLOW_COMMA_in_arglist5999); 
-                    	    pushFollow(FOLLOW_argument_in_arglist6017);
+                    	    match(input,COMMA,FOLLOW_COMMA_in_arglist6003); 
+                    	    pushFollow(FOLLOW_argument_in_arglist6021);
                     	    k=argument();
                     	    _fsp--;
 
@@ -7568,7 +7573,7 @@ public class python_v3Parser extends Parser {
                         }
                     } while (true);
 
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1597:3: ( COMMA ( STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )? )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1600:3: ( COMMA ( STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )? )?
                     int alt104=2;
                     int LA104_0 = input.LA(1);
 
@@ -7577,10 +7582,10 @@ public class python_v3Parser extends Parser {
                     }
                     switch (alt104) {
                         case 1 :
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1598:4: COMMA ( STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )?
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1601:4: COMMA ( STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )?
                             {
-                            match(input,COMMA,FOLLOW_COMMA_in_arglist6055); 
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1599:4: ( STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )?
+                            match(input,COMMA,FOLLOW_COMMA_in_arglist6059); 
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1602:4: ( STAR k= test ( COMMA DOUBLESTAR k= test )? | DOUBLESTAR k= test )?
                             int alt103=3;
                             int LA103_0 = input.LA(1);
 
@@ -7592,17 +7597,17 @@ public class python_v3Parser extends Parser {
                             }
                             switch (alt103) {
                                 case 1 :
-                                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1600:5: STAR k= test ( COMMA DOUBLESTAR k= test )?
+                                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1603:5: STAR k= test ( COMMA DOUBLESTAR k= test )?
                                     {
-                                    match(input,STAR,FOLLOW_STAR_in_arglist6067); 
-                                    pushFollow(FOLLOW_test_in_arglist6078);
+                                    match(input,STAR,FOLLOW_STAR_in_arglist6071); 
+                                    pushFollow(FOLLOW_test_in_arglist6082);
                                     k=test();
                                     _fsp--;
 
 
                                                 					expressions.addExpression( k );
                                                 				
-                                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1605:16: ( COMMA DOUBLESTAR k= test )?
+                                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1608:16: ( COMMA DOUBLESTAR k= test )?
                                     int alt102=2;
                                     int LA102_0 = input.LA(1);
 
@@ -7611,11 +7616,11 @@ public class python_v3Parser extends Parser {
                                     }
                                     switch (alt102) {
                                         case 1 :
-                                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1606:17: COMMA DOUBLESTAR k= test
+                                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1609:17: COMMA DOUBLESTAR k= test
                                             {
-                                            match(input,COMMA,FOLLOW_COMMA_in_arglist6134); 
-                                            match(input,DOUBLESTAR,FOLLOW_DOUBLESTAR_in_arglist6153); 
-                                            pushFollow(FOLLOW_test_in_arglist6176);
+                                            match(input,COMMA,FOLLOW_COMMA_in_arglist6138); 
+                                            match(input,DOUBLESTAR,FOLLOW_DOUBLESTAR_in_arglist6157); 
+                                            pushFollow(FOLLOW_test_in_arglist6180);
                                             k=test();
                                             _fsp--;
 
@@ -7632,10 +7637,10 @@ public class python_v3Parser extends Parser {
                                     }
                                     break;
                                 case 2 :
-                                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1614:14: DOUBLESTAR k= test
+                                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1617:14: DOUBLESTAR k= test
                                     {
-                                    match(input,DOUBLESTAR,FOLLOW_DOUBLESTAR_in_arglist6245); 
-                                    pushFollow(FOLLOW_test_in_arglist6265);
+                                    match(input,DOUBLESTAR,FOLLOW_DOUBLESTAR_in_arglist6249); 
+                                    pushFollow(FOLLOW_test_in_arglist6269);
                                     k=test();
                                     _fsp--;
 
@@ -7658,17 +7663,17 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1622:3: STAR k= test ( COMMA DOUBLESTAR k= test )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1625:3: STAR k= test ( COMMA DOUBLESTAR k= test )?
                     {
-                    match(input,STAR,FOLLOW_STAR_in_arglist6304); 
-                    pushFollow(FOLLOW_test_in_arglist6313);
+                    match(input,STAR,FOLLOW_STAR_in_arglist6308); 
+                    pushFollow(FOLLOW_test_in_arglist6317);
                     k=test();
                     _fsp--;
 
 
                     				expressions.addExpression( k );
                     			
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1627:3: ( COMMA DOUBLESTAR k= test )?
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1630:3: ( COMMA DOUBLESTAR k= test )?
                     int alt105=2;
                     int LA105_0 = input.LA(1);
 
@@ -7677,11 +7682,11 @@ public class python_v3Parser extends Parser {
                     }
                     switch (alt105) {
                         case 1 :
-                            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1628:4: COMMA DOUBLESTAR k= test
+                            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1631:4: COMMA DOUBLESTAR k= test
                             {
-                            match(input,COMMA,FOLLOW_COMMA_in_arglist6329); 
-                            match(input,DOUBLESTAR,FOLLOW_DOUBLESTAR_in_arglist6335); 
-                            pushFollow(FOLLOW_test_in_arglist6345);
+                            match(input,COMMA,FOLLOW_COMMA_in_arglist6333); 
+                            match(input,DOUBLESTAR,FOLLOW_DOUBLESTAR_in_arglist6339); 
+                            pushFollow(FOLLOW_test_in_arglist6349);
                             k=test();
                             _fsp--;
 
@@ -7698,10 +7703,10 @@ public class python_v3Parser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1636:3: DOUBLESTAR k= test
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1639:3: DOUBLESTAR k= test
                     {
-                    match(input,DOUBLESTAR,FOLLOW_DOUBLESTAR_in_arglist6365); 
-                    pushFollow(FOLLOW_test_in_arglist6374);
+                    match(input,DOUBLESTAR,FOLLOW_DOUBLESTAR_in_arglist6369); 
+                    pushFollow(FOLLOW_test_in_arglist6378);
                     k=test();
                     _fsp--;
 
@@ -7739,7 +7744,7 @@ public class python_v3Parser extends Parser {
 
 
     // $ANTLR start argument
-    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1644:1: argument returns [ Expression e = null ] : e0= test ( ASSIGN k= test )? ;
+    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1647:1: argument returns [ Expression e = null ] : e0= test ( ASSIGN k= test )? ;
     public final Expression argument() throws RecognitionException {
         Expression e =  null;
 
@@ -7749,17 +7754,17 @@ public class python_v3Parser extends Parser {
 
 
         try {
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1644:41: (e0= test ( ASSIGN k= test )? )
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1645:2: e0= test ( ASSIGN k= test )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1647:41: (e0= test ( ASSIGN k= test )? )
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1648:2: e0= test ( ASSIGN k= test )?
             {
-            pushFollow(FOLLOW_test_in_argument6412);
+            pushFollow(FOLLOW_test_in_argument6416);
             e0=test();
             _fsp--;
 
 
             		e = e0;
             	
-            // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1649:2: ( ASSIGN k= test )?
+            // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1652:2: ( ASSIGN k= test )?
             int alt107=2;
             int LA107_0 = input.LA(1);
 
@@ -7768,10 +7773,10 @@ public class python_v3Parser extends Parser {
             }
             switch (alt107) {
                 case 1 :
-                    // /home/leonty/eclipse_workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1650:3: ASSIGN k= test
+                    // /home/leon/workspace/org.eclipse.dltk.python.core/src/org/eclipse/dltk/python/internal/core/parsers/python_v3.g:1653:3: ASSIGN k= test
                     {
-                    match(input,ASSIGN,FOLLOW_ASSIGN_in_argument6422); 
-                    pushFollow(FOLLOW_test_in_argument6431);
+                    match(input,ASSIGN,FOLLOW_ASSIGN_in_argument6426); 
+                    pushFollow(FOLLOW_test_in_argument6435);
                     k=test();
                     _fsp--;
 
@@ -8098,86 +8103,86 @@ public class python_v3Parser extends Parser {
     public static final BitSet FOLLOW_COMMA_in_listmaker4791 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
     public static final BitSet FOLLOW_test_in_listmaker4801 = new BitSet(new long[]{0x0000000000001002L});
     public static final BitSet FOLLOW_COMMA_in_listmaker4820 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_88_in_list_for4847 = new BitSet(new long[]{0x03F58C0000000500L});
-    public static final BitSet FOLLOW_exprlist_in_list_for4855 = new BitSet(new long[]{0x0000000000000000L,0x0000000000040000L});
-    public static final BitSet FOLLOW_82_in_list_for4859 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
-    public static final BitSet FOLLOW_testlist_in_list_for4868 = new BitSet(new long[]{0x0000000000000002L,0x0000000001100000L});
-    public static final BitSet FOLLOW_list_if_in_list_for4891 = new BitSet(new long[]{0x0000000000000002L,0x0000000001100000L});
-    public static final BitSet FOLLOW_84_in_list_if4924 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
-    public static final BitSet FOLLOW_test_in_list_if4931 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_96_in_lambdef4952 = new BitSet(new long[]{0x0000000000006D00L});
-    public static final BitSet FOLLOW_varargslist_in_lambdef4960 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_COLON_in_lambdef4967 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
-    public static final BitSet FOLLOW_test_in_lambdef4975 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_subscript_in_subscriptlist4999 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_COMMA_in_subscriptlist5015 = new BitSet(new long[]{0x03F58C0040000D00L,0x0000000140000000L});
-    public static final BitSet FOLLOW_subscript_in_subscriptlist5024 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_COMMA_in_subscriptlist5039 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_subscript5063 = new BitSet(new long[]{0x0000000040000000L});
-    public static final BitSet FOLLOW_DOT_in_subscript5065 = new BitSet(new long[]{0x0000000040000000L});
-    public static final BitSet FOLLOW_DOT_in_subscript5067 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_test_in_subscript5092 = new BitSet(new long[]{0x0000000000000802L});
-    public static final BitSet FOLLOW_COLON_in_subscript5107 = new BitSet(new long[]{0x03F58C0000000D02L,0x0000000140000000L});
-    public static final BitSet FOLLOW_test_in_subscript5123 = new BitSet(new long[]{0x0000000000000802L});
-    public static final BitSet FOLLOW_sliceop_in_subscript5153 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_COLON_in_subscript5195 = new BitSet(new long[]{0x03F58C0000000D02L,0x0000000140000000L});
-    public static final BitSet FOLLOW_test_in_subscript5219 = new BitSet(new long[]{0x0000000000000802L});
-    public static final BitSet FOLLOW_sliceop_in_subscript5265 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_COLON_in_sliceop5325 = new BitSet(new long[]{0x03F58C0000000502L,0x0000000140000000L});
-    public static final BitSet FOLLOW_test_in_sliceop5334 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expr_in_exprlist5361 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_COMMA_in_exprlist5383 = new BitSet(new long[]{0x03F58C0000000500L});
-    public static final BitSet FOLLOW_expr_in_exprlist5392 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_COMMA_in_exprlist5406 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_test_in_testlist5433 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_COMMA_in_testlist5462 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
-    public static final BitSet FOLLOW_test_in_testlist5474 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_COMMA_in_testlist5509 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_test_in_tuplelist5543 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_COMMA_in_tuplelist5568 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
-    public static final BitSet FOLLOW_test_in_tuplelist5580 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_COMMA_in_tuplelist5616 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_97_in_with_stmt5648 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
-    public static final BitSet FOLLOW_test_in_with_stmt5656 = new BitSet(new long[]{0x0000000000000800L,0x0000000000008000L});
-    public static final BitSet FOLLOW_79_in_with_stmt5664 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
-    public static final BitSet FOLLOW_testlist_in_with_stmt5670 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_COLON_in_with_stmt5676 = new BitSet(new long[]{0x03F58C0000000540L,0x00000001400B7FE0L});
-    public static final BitSet FOLLOW_suite_in_with_stmt5682 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_test_in_dictmaker5704 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_COLON_in_dictmaker5707 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
-    public static final BitSet FOLLOW_test_in_dictmaker5714 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_COMMA_in_dictmaker5750 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
-    public static final BitSet FOLLOW_test_in_dictmaker5765 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_COLON_in_dictmaker5776 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
-    public static final BitSet FOLLOW_test_in_dictmaker5791 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_COMMA_in_dictmaker5826 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_98_in_classdef5857 = new BitSet(new long[]{0x0000000000000400L});
-    public static final BitSet FOLLOW_NAME_in_classdef5864 = new BitSet(new long[]{0x0000000000000900L});
-    public static final BitSet FOLLOW_LPAREN_in_classdef5883 = new BitSet(new long[]{0x03F58C0000000700L,0x0000000140000000L});
-    public static final BitSet FOLLOW_testlist_in_classdef5893 = new BitSet(new long[]{0x0000000000000200L});
-    public static final BitSet FOLLOW_RPAREN_in_classdef5904 = new BitSet(new long[]{0x0000000000000800L});
-    public static final BitSet FOLLOW_COLON_in_classdef5920 = new BitSet(new long[]{0x03F58C0000000540L,0x00000001400B7FE0L});
-    public static final BitSet FOLLOW_suite_in_classdef5927 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_argument_in_arglist5959 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_COMMA_in_arglist5999 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
-    public static final BitSet FOLLOW_argument_in_arglist6017 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_COMMA_in_arglist6055 = new BitSet(new long[]{0x0000000000006002L});
-    public static final BitSet FOLLOW_STAR_in_arglist6067 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
-    public static final BitSet FOLLOW_test_in_arglist6078 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_COMMA_in_arglist6134 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_DOUBLESTAR_in_arglist6153 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
-    public static final BitSet FOLLOW_test_in_arglist6176 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOUBLESTAR_in_arglist6245 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
-    public static final BitSet FOLLOW_test_in_arglist6265 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_STAR_in_arglist6304 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
-    public static final BitSet FOLLOW_test_in_arglist6313 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_COMMA_in_arglist6329 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_DOUBLESTAR_in_arglist6335 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
-    public static final BitSet FOLLOW_test_in_arglist6345 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOUBLESTAR_in_arglist6365 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
-    public static final BitSet FOLLOW_test_in_arglist6374 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_test_in_argument6412 = new BitSet(new long[]{0x0000000000008002L});
-    public static final BitSet FOLLOW_ASSIGN_in_argument6422 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
-    public static final BitSet FOLLOW_test_in_argument6431 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_88_in_list_for4851 = new BitSet(new long[]{0x03F58C0000000500L});
+    public static final BitSet FOLLOW_exprlist_in_list_for4859 = new BitSet(new long[]{0x0000000000000000L,0x0000000000040000L});
+    public static final BitSet FOLLOW_82_in_list_for4863 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
+    public static final BitSet FOLLOW_testlist_in_list_for4872 = new BitSet(new long[]{0x0000000000000002L,0x0000000001100000L});
+    public static final BitSet FOLLOW_list_if_in_list_for4895 = new BitSet(new long[]{0x0000000000000002L,0x0000000001100000L});
+    public static final BitSet FOLLOW_84_in_list_if4928 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
+    public static final BitSet FOLLOW_test_in_list_if4935 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_96_in_lambdef4956 = new BitSet(new long[]{0x0000000000006D00L});
+    public static final BitSet FOLLOW_varargslist_in_lambdef4964 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_COLON_in_lambdef4971 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
+    public static final BitSet FOLLOW_test_in_lambdef4979 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_subscript_in_subscriptlist5003 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_COMMA_in_subscriptlist5019 = new BitSet(new long[]{0x03F58C0040000D00L,0x0000000140000000L});
+    public static final BitSet FOLLOW_subscript_in_subscriptlist5028 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_COMMA_in_subscriptlist5043 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_subscript5067 = new BitSet(new long[]{0x0000000040000000L});
+    public static final BitSet FOLLOW_DOT_in_subscript5069 = new BitSet(new long[]{0x0000000040000000L});
+    public static final BitSet FOLLOW_DOT_in_subscript5071 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_test_in_subscript5096 = new BitSet(new long[]{0x0000000000000802L});
+    public static final BitSet FOLLOW_COLON_in_subscript5111 = new BitSet(new long[]{0x03F58C0000000D02L,0x0000000140000000L});
+    public static final BitSet FOLLOW_test_in_subscript5127 = new BitSet(new long[]{0x0000000000000802L});
+    public static final BitSet FOLLOW_sliceop_in_subscript5157 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_COLON_in_subscript5199 = new BitSet(new long[]{0x03F58C0000000D02L,0x0000000140000000L});
+    public static final BitSet FOLLOW_test_in_subscript5223 = new BitSet(new long[]{0x0000000000000802L});
+    public static final BitSet FOLLOW_sliceop_in_subscript5269 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_COLON_in_sliceop5329 = new BitSet(new long[]{0x03F58C0000000502L,0x0000000140000000L});
+    public static final BitSet FOLLOW_test_in_sliceop5338 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expr_in_exprlist5365 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_COMMA_in_exprlist5387 = new BitSet(new long[]{0x03F58C0000000500L});
+    public static final BitSet FOLLOW_expr_in_exprlist5396 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_COMMA_in_exprlist5410 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_test_in_testlist5437 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_COMMA_in_testlist5466 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
+    public static final BitSet FOLLOW_test_in_testlist5478 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_COMMA_in_testlist5513 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_test_in_tuplelist5547 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_COMMA_in_tuplelist5572 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
+    public static final BitSet FOLLOW_test_in_tuplelist5584 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_COMMA_in_tuplelist5620 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_97_in_with_stmt5652 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
+    public static final BitSet FOLLOW_test_in_with_stmt5660 = new BitSet(new long[]{0x0000000000000800L,0x0000000000008000L});
+    public static final BitSet FOLLOW_79_in_with_stmt5668 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
+    public static final BitSet FOLLOW_testlist_in_with_stmt5674 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_COLON_in_with_stmt5680 = new BitSet(new long[]{0x03F58C0000000540L,0x00000001400B7FE0L});
+    public static final BitSet FOLLOW_suite_in_with_stmt5686 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_test_in_dictmaker5708 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_COLON_in_dictmaker5711 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
+    public static final BitSet FOLLOW_test_in_dictmaker5718 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_COMMA_in_dictmaker5754 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
+    public static final BitSet FOLLOW_test_in_dictmaker5769 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_COLON_in_dictmaker5780 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
+    public static final BitSet FOLLOW_test_in_dictmaker5795 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_COMMA_in_dictmaker5830 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_98_in_classdef5861 = new BitSet(new long[]{0x0000000000000400L});
+    public static final BitSet FOLLOW_NAME_in_classdef5868 = new BitSet(new long[]{0x0000000000000900L});
+    public static final BitSet FOLLOW_LPAREN_in_classdef5887 = new BitSet(new long[]{0x03F58C0000000700L,0x0000000140000000L});
+    public static final BitSet FOLLOW_testlist_in_classdef5897 = new BitSet(new long[]{0x0000000000000200L});
+    public static final BitSet FOLLOW_RPAREN_in_classdef5908 = new BitSet(new long[]{0x0000000000000800L});
+    public static final BitSet FOLLOW_COLON_in_classdef5924 = new BitSet(new long[]{0x03F58C0000000540L,0x00000001400B7FE0L});
+    public static final BitSet FOLLOW_suite_in_classdef5931 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_argument_in_arglist5963 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_COMMA_in_arglist6003 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
+    public static final BitSet FOLLOW_argument_in_arglist6021 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_COMMA_in_arglist6059 = new BitSet(new long[]{0x0000000000006002L});
+    public static final BitSet FOLLOW_STAR_in_arglist6071 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
+    public static final BitSet FOLLOW_test_in_arglist6082 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_COMMA_in_arglist6138 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_DOUBLESTAR_in_arglist6157 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
+    public static final BitSet FOLLOW_test_in_arglist6180 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOUBLESTAR_in_arglist6249 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
+    public static final BitSet FOLLOW_test_in_arglist6269 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_STAR_in_arglist6308 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
+    public static final BitSet FOLLOW_test_in_arglist6317 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_COMMA_in_arglist6333 = new BitSet(new long[]{0x0000000000004000L});
+    public static final BitSet FOLLOW_DOUBLESTAR_in_arglist6339 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
+    public static final BitSet FOLLOW_test_in_arglist6349 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOUBLESTAR_in_arglist6369 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
+    public static final BitSet FOLLOW_test_in_arglist6378 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_test_in_argument6416 = new BitSet(new long[]{0x0000000000008002L});
+    public static final BitSet FOLLOW_ASSIGN_in_argument6426 = new BitSet(new long[]{0x03F58C0000000500L,0x0000000140000000L});
+    public static final BitSet FOLLOW_test_in_argument6435 = new BitSet(new long[]{0x0000000000000002L});
 
 }

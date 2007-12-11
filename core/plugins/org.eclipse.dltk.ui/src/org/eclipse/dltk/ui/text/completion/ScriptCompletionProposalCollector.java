@@ -352,7 +352,6 @@ public abstract class ScriptCompletionProposalCollector extends CompletionReques
 		case CompletionProposal.METHOD_REF:
 		case CompletionProposal.METHOD_NAME_REFERENCE:
 		case CompletionProposal.METHOD_DECLARATION:
-		case CompletionProposal.ANNOTATION_ATTRIBUTE_REF:
 			return baseRelevance + 3;
 		case CompletionProposal.POTENTIAL_METHOD_DECLARATION:
 			return baseRelevance + 3 /* + 99 */;
@@ -415,8 +414,8 @@ public abstract class ScriptCompletionProposalCollector extends CompletionReques
 		case CompletionProposal.LOCAL_VARIABLE_REF:
 		case CompletionProposal.VARIABLE_DECLARATION:
 			return createLocalVariableProposal(proposal);
-		case CompletionProposal.ANNOTATION_ATTRIBUTE_REF:
-			return createAnnotationAttributeReferenceProposal(proposal);
+//		case CompletionProposal.ANNOTATION_ATTRIBUTE_REF:
+//			return createAnnotationAttributeReferenceProposal(proposal);
 			// case CompletionProposal.JAVADOC_BLOCK_TAG:
 			// case CompletionProposal.JAVADOC_PARAM_REF:
 			// return createJavadocSimpleProposal(proposal);
@@ -563,17 +562,17 @@ public abstract class ScriptCompletionProposalCollector extends CompletionReques
 		}
 	}
 
-	private IScriptCompletionProposal createAnnotationAttributeReferenceProposal(
-			CompletionProposal proposal) {
-		String displayString = getLabelProvider()
-				.createLabelWithTypeAndDeclaration(proposal);
-		ImageDescriptor descriptor = getLabelProvider()
-				.createMethodImageDescriptor(proposal);
-		String completion = String.valueOf(proposal.getCompletion());
-		return createScriptCompletionProposal(completion, proposal
-				.getReplaceStart(), getLength(proposal), getImage(descriptor),
-				displayString, computeRelevance(proposal));
-	}
+//	private IScriptCompletionProposal createAnnotationAttributeReferenceProposal(
+//			CompletionProposal proposal) {
+//		String displayString = getLabelProvider()
+//				.createLabelWithTypeAndDeclaration(proposal);
+//		ImageDescriptor descriptor = getLabelProvider()
+//				.createMethodImageDescriptor(proposal);
+//		String completion = String.valueOf(proposal.getCompletion());
+//		return createScriptCompletionProposal(completion, proposal
+//				.getReplaceStart(), getLength(proposal), getImage(descriptor),
+//				displayString, computeRelevance(proposal));
+//	}
 
 	protected abstract ScriptCompletionProposal createScriptCompletionProposal(
 			String completion, int replaceStart, int length, Image image,

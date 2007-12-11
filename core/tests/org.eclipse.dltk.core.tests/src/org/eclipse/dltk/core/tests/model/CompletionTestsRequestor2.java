@@ -236,30 +236,6 @@ public class CompletionTestsRequestor2 extends CompletionRequestor {
 			case CompletionProposal.METHOD_NAME_REFERENCE :
 				buffer.append("METHOD_IMPORT"); //$NON-NLS-1$
 				break;
-			case CompletionProposal.ANNOTATION_ATTRIBUTE_REF :
-				buffer.append("ANNOTATION_ATTRIBUTE_REF"); //$NON-NLS-1$
-				break;
-			case CompletionProposal.DOC_BLOCK_TAG :
-				buffer.append("JAVADOC_BLOCK_TAG"); //$NON-NLS-1$
-				break;
-			case CompletionProposal.DOC_INLINE_TAG :
-				buffer.append("JAVADOC_INLINE_TAG"); //$NON-NLS-1$
-				break;
-			case CompletionProposal.DOC_FIELD_REF:
-				buffer.append("JAVADOC_FIELD_REF"); //$NON-NLS-1$
-				break;
-			case CompletionProposal.DOC_METHOD_REF :
-				buffer.append("JAVADOC_METHOD_REF"); //$NON-NLS-1$
-				break;
-			case CompletionProposal.DOC_TYPE_REF :
-				buffer.append("JAVADOC_TYPE_REF"); //$NON-NLS-1$
-				break;
-			case CompletionProposal.DOC_PARAM_REF :
-				buffer.append("JAVADOC_PARAM_REF"); //$NON-NLS-1$
-				break;
-			case CompletionProposal.DOC_VALUE_REF :
-				buffer.append("JAVADOC_VALUE_REF"); //$NON-NLS-1$
-				break;
 			default :
 				buffer.append("PROPOSAL"); //$NON-NLS-1$
 				break;
@@ -356,7 +332,6 @@ public class CompletionTestsRequestor2 extends CompletionRequestor {
 	protected String getElementName(CompletionProposal proposal) {
 		switch(proposal.getKind()) {
 			case CompletionProposal.TYPE_REF :
-			case CompletionProposal.DOC_TYPE_REF :
 			case CompletionProposal.FIELD_REF :
 			case CompletionProposal.KEYWORD:
 			case CompletionProposal.LABEL_REF:
@@ -366,13 +341,7 @@ public class CompletionTestsRequestor2 extends CompletionRequestor {
 			case CompletionProposal.VARIABLE_DECLARATION:
 			case CompletionProposal.POTENTIAL_METHOD_DECLARATION:
 			case CompletionProposal.METHOD_NAME_REFERENCE:
-			case CompletionProposal.ANNOTATION_ATTRIBUTE_REF:
-			case CompletionProposal.DOC_BLOCK_TAG :
-			case CompletionProposal.DOC_INLINE_TAG :
-			case CompletionProposal.DOC_FIELD_REF:
-			case CompletionProposal.DOC_METHOD_REF :
-			case CompletionProposal.DOC_PARAM_REF :
-			case CompletionProposal.DOC_VALUE_REF :
+			
 				return new String(proposal.getName());	
 		}
 		return "";

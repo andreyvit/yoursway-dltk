@@ -1143,7 +1143,7 @@ term returns [ Expression e = null]:
 	)*
 	;		
 
-factor returns [ Expression  e = null ]: 
+factor returns [ Expression  e = new EmptyExpression() ]: 
 	  {
 	  	Token tk = null;
 	  }
@@ -1314,12 +1314,13 @@ listmaker returns [ PythonListExpression exp = new PythonListExpression() ]:
 // Available only in python >=2.3.x
 list_for [PythonListForExpression list ]:
 	(
-		'for'
+		forToken = 'for'
 		expr1 = exprlist
 		'in' 
 		expr2 = testlist
 		{
 			PythonForListExpression forListExpression = new PythonForListExpression( expr1, expr2 );
+			forListExpression.setStart(toDLTK(forToken).getColumn());
 			list.addExpression( forListExpression );
 		}
 		{
@@ -1331,6 +1332,8 @@ list_for [PythonListForExpression list ]:
 				if( ifList == null )
 					ifList = new PythonListExpression();
 				ifList.addExpression( expr0 );
+				ifList.setStart(expr0.sourceStart());
+				ifList.setEnd(expr0.sourceEnd());
 			}
 		)*
 			{

@@ -294,6 +294,12 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		// findTypes(token, true, toList(types));
 		findMethods(token, false, toList(methods));
 	}
+	
+	protected void findMethods(char[] token, boolean canCompleteEmptyToken,
+			List methods) {
+		findMethods(token, canCompleteEmptyToken, methods,
+				CompletionProposal.METHOD_DECLARATION);
+	}
 
 	protected void removeSameFrom(final Set methodNames, final Set elements,
 			String to_) {

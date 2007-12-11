@@ -17,6 +17,8 @@ import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelStatus;
 
 public class RubyLanguageToolkit extends AbstractLanguageToolkit {
+	private static final String RB_EXTENSION = "rb";
+	private static final String[] RUBY_EXTENSION_ARRAY = new String[] { RB_EXTENSION };
 	protected static RubyLanguageToolkit sToolkit = new RubyLanguageToolkit();
 
 	public RubyLanguageToolkit() {
@@ -24,7 +26,7 @@ public class RubyLanguageToolkit extends AbstractLanguageToolkit {
 	}
 
 	public String getRubyExtension() {
-		return "rb";
+		return RB_EXTENSION;
 	}
 
 	public boolean languageSupportZIPBuildpath() {
@@ -56,7 +58,7 @@ public class RubyLanguageToolkit extends AbstractLanguageToolkit {
 	}
 
 	public String[] getLanguageFileExtensions() {
-		return new String[] { "rb" };
+		return RUBY_EXTENSION_ARRAY;
 	}
 
 	public String getLanguageName() {

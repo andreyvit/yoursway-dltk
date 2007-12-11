@@ -37,6 +37,9 @@ public interface IInterpreterInstall extends IBuiltinModuleProvider {
 
 	// Library locations
 	LibraryLocation[] getLibraryLocations();
+	
+	EnvironmentVariable[] getEnvironmentVariables();
+	void setEnvironmentVariables(EnvironmentVariable[] variables);
 
 	void setLibraryLocations(LibraryLocation[] locations);
 

@@ -33,12 +33,16 @@ public class PythonListForExpression extends ExpressionList
 	private Expression fMaker;
 
 	public PythonListForExpression( Expression maker ) {
-
-		super( );
+		super();
 		this.fMaker = maker;
+		this.setStart(maker.sourceStart());
+		this.setEnd(maker.sourceEnd());
 	}
 
-	
+	public void addExpression(Expression ex) {
+		super.addExpression(ex);
+		setEnd(ex.sourceEnd());
+	}
 	public int getKind( ) {
 
 		return PythonConstants.E_LISTFOR;

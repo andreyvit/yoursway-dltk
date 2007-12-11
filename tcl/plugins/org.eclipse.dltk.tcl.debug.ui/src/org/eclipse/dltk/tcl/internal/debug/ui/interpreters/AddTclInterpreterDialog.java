@@ -10,6 +10,7 @@
 package org.eclipse.dltk.tcl.internal.debug.ui.interpreters;
 
 
+import org.eclipse.dltk.internal.debug.ui.interpreters.AbstractInterpreterEnvironmentVariablesBlock;
 import org.eclipse.dltk.internal.debug.ui.interpreters.AbstractInterpreterLibraryBlock;
 import org.eclipse.dltk.internal.debug.ui.interpreters.AddScriptInterpreterDialog;
 import org.eclipse.dltk.internal.debug.ui.interpreters.IAddInterpreterDialogRequestor;
@@ -25,6 +26,12 @@ public class AddTclInterpreterDialog extends AddScriptInterpreterDialog {
 
 	protected AbstractInterpreterLibraryBlock createLibraryBlock(AddScriptInterpreterDialog dialog) {
 		return new TclInterpreterLibraryBlock(dialog);
+	}
+	
+
+	protected AbstractInterpreterEnvironmentVariablesBlock createEnvironmentVariablesBlock(
+			AddScriptInterpreterDialog dialog) {
+		return new TclInterpreterEnvironmentVariablesBlock(dialog);
 	}
 
 	protected boolean useInterpreterArgs() {

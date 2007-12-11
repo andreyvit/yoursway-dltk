@@ -81,6 +81,7 @@ public class InterpreterStandin extends AbstractInterpreterInstall {
 		setInstallLocation(realInterpreter.getInstallLocation());
 		setLibraryLocations(realInterpreter.getLibraryLocations());
 		setInterpreterArgs(realInterpreter.getInterpreterArgs());
+		setEnvironmentVariables(realInterpreter.getEnvironmentVariables());
 	}
 
 	/**
@@ -111,6 +112,7 @@ public class InterpreterStandin extends AbstractInterpreterInstall {
 		realInterpreter.setName(getName());
 		realInterpreter.setInstallLocation(getInstallLocation());
 		realInterpreter.setLibraryLocations(getLibraryLocations());
+		realInterpreter.setEnvironmentVariables(getEnvironmentVariables());
 		realInterpreter.setInterpreterArgs(getInterpreterArgs());
 
 		if (realInterpreter instanceof AbstractInterpreterInstall) {

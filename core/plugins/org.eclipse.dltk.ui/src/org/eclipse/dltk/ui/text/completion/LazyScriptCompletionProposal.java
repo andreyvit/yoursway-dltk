@@ -344,7 +344,6 @@ public abstract class LazyScriptCompletionProposal extends
 		case CompletionProposal.METHOD_REF:
 		case CompletionProposal.METHOD_NAME_REFERENCE:
 		case CompletionProposal.METHOD_DECLARATION:
-		case CompletionProposal.ANNOTATION_ATTRIBUTE_REF:
 			return baseRelevance + 3;
 		case CompletionProposal.POTENTIAL_METHOD_DECLARATION:
 			return baseRelevance + 3 /* + 99 */;
