@@ -32,7 +32,7 @@ public class IndentingTest extends SuiteOfTestCases {
 	private RubyAutoEditStrategy tabStrategy, spaceStrategy;
 
 	private void waitWorkbenchCreated() throws InterruptedException {
-		for(int i=0;i<60;i++) {
+		for(int i=0;i<40;i++) {
 			Thread.sleep(1000);
 			if(PlatformUI.isWorkbenchRunning()) {
 				return;
@@ -42,7 +42,7 @@ public class IndentingTest extends SuiteOfTestCases {
 	}
 
 	protected void setUp() throws Exception {
-		//waitWorkbenchCreated();
+		waitWorkbenchCreated();
 		tabStrategy = createStrategy(true);
 		spaceStrategy = createStrategy(false);
         super.setUp();
