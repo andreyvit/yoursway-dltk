@@ -58,6 +58,9 @@ public final class DLTKUIMessages extends NLS {
 	public static String ResourceTransferDragAdapter_moving_resource;
 	public static String ResourceTransferDragAdapter_cannot_delete_files;
 
+	public static String CoreUtility_job_title;
+	public static String CoreUtility_buildall_taskname;
+	public static String CoreUtility_buildproject_taskname;
 	
 	public static String ScriptAnnotationHover_multipleMarkersAtThisLine;
 	public static String ScriptEditor_codeassist_noCompletions;

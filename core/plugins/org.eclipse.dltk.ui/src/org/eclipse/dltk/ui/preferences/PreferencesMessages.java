@@ -249,10 +249,12 @@ public final class PreferencesMessages extends NLS {
 //	public static String TodoTaskInputDialog_error_comma;
 //	public static String TodoTaskInputDialog_error_entryExists;
 //	public static String TodoTaskInputDialog_error_noSpace;
-//	public static String PropertyAndPreferencePage_useworkspacesettings_change;
-//	public static String PropertyAndPreferencePage_showprojectspecificsettings_label;
-//	public static String PropertyAndPreferencePage_useprojectsettings_label;
-//	public static String DLTKBuildPreferencePage_title;
+
+	public static String PropertyAndPreferencePage_useworkspacesettings_change;
+	public static String PropertyAndPreferencePage_showprojectspecificsettings_label;
+	public static String PropertyAndPreferencePage_useprojectsettings_label;
+
+	//	public static String DLTKBuildPreferencePage_title;
 //	public static String DLTKBuildPreferencePage_description;
 //	public static String DLTKBuildConfigurationBlock_section_general;
 //	public static String DLTKBuildConfigurationBlock_section_output_folder;
@@ -626,11 +628,10 @@ public final class PreferencesMessages extends NLS {
 	public static String DLTKEditorPreferencePage_coloring_category_DLTK;
 	public static String DLTKEditorPreferencePage_coloring_category_DLTKdoc;
 	public static String DLTKEditorPreferencePage_coloring_category_comments;
-//	public static String ProjectSelectionDialog_title;
-//	public static String ProjectSelectionDialog_desciption;
-//	public static String ProjectSelectionDialog_filter;
-
 	
+	public static String ProjectSelectionDialog_title;
+	public static String ProjectSelectionDialog_desciption;
+	public static String ProjectSelectionDialog_filter;
 
 //	public static String NameConventionConfigurationBlock_use_override_annotation_label;
 //	public static String ProblemSeveritiesConfigurationBlock_pb_unhandled_surpresswarning_tokens;
