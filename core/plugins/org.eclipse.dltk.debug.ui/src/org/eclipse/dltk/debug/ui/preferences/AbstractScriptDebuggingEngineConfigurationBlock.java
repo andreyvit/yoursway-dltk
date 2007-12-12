@@ -11,6 +11,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.PreferenceLinkArea;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
+/**
+ * @deprecated use AbstractDebuggingOptionsBlock instead
+ */
 public abstract class AbstractScriptDebuggingEngineConfigurationBlock extends
 		ContributedExtensionConfigurationBlock {
 

@@ -19,6 +19,9 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
+/**
+ * @deprecated use ExternalDebuggingEngineOptionsBlock instead
+ */
 public abstract class ExternalDebuggingEngineConfigurationBlock extends
 		ImprovedAbstractConfigurationBlock {
 
