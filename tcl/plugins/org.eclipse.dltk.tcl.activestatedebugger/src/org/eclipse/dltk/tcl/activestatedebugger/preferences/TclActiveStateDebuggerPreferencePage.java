@@ -10,101 +10,97 @@
 
 package org.eclipse.dltk.tcl.activestatedebugger.preferences;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import org.eclipse.dltk.debug.ui.preferences.ExternalDebuggingEngineConfigurationBlock;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.dltk.debug.ui.preferences.ExternalDebuggingEngineOptionsBlock;
 import org.eclipse.dltk.tcl.activestatedebugger.TclActiveStateDebuggerConstants;
 import org.eclipse.dltk.tcl.activestatedebugger.TclActiveStateDebuggerPlugin;
-import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPreferencePage;
-import org.eclipse.dltk.ui.preferences.IPreferenceConfigurationBlock;
-import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
-import org.eclipse.dltk.ui.util.SWTFactory;
-import org.eclipse.jface.preference.PreferencePage;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
+import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage;
+import org.eclipse.dltk.ui.preferences.AbstractOptionsBlock;
+import org.eclipse.dltk.ui.preferences.PreferenceKey;
+import org.eclipse.dltk.ui.util.IStatusChangeListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Link;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.browser.IWebBrowser;
+import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
+/**
+ * Tcl ActiveState debugging engine preference page
+ */
 public class TclActiveStateDebuggerPreferencePage extends
-		AbstractConfigurationBlockPreferencePage {
-	public static final String PAGE_ID = "org.eclipse.dltk.tcl.preferences.debug.activestatedebugger";
+		AbstractConfigurationBlockPropertyAndPreferencePage {
 
-	private static class TclDebuggingEngineConfigurationBlock extends
-			ExternalDebuggingEngineConfigurationBlock {
+	static PreferenceKey ENGINE_PATH = new PreferenceKey(
+			TclActiveStateDebuggerPlugin.PLUGIN_ID,
+			TclActiveStateDebuggerConstants.DEBUGGING_ENGINE_PATH_KEY);
 
-		protected void openExternalUrl(String url) {
-			try {
-				final IWebBrowser browser = PlatformUI.getWorkbench()
-						.getBrowserSupport().getExternalBrowser();
-				browser.openURL(new URL(url));
-			} catch (PartInitException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	private static String PREFERENCE_PAGE_ID = "org.eclipse.dltk.tcl.preferences.debug.activestatedebugger";
+	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.tcl.debug.ui.propertyPage.debug.engines.activestatedebugger";
+
+	/*
+	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#createOptionsBlock(org.eclipse.dltk.ui.util.IStatusChangeListener,
+	 *      org.eclipse.core.resources.IProject,
+	 *      org.eclipse.ui.preferences.IWorkbenchPreferenceContainer)
+	 */
+	protected AbstractOptionsBlock createOptionsBlock(
+			IStatusChangeListener newStatusChangedListener, IProject project,
+			IWorkbenchPreferenceContainer container) {
+
+		return new ExternalDebuggingEngineOptionsBlock(
+				newStatusChangedListener, project,
+				new PreferenceKey[] { ENGINE_PATH }, container) {
+			protected void createEngineBlock(Composite parent) {
+
+				super.createEngineBlock(parent);
+				addDownloadLink(parent,
+						PreferenceMessages.DebuggingEngineDownloadPage,
+						PreferenceMessages.DebuggingEngineDownloadPageLink);
 			}
-		}
 
-		public TclDebuggingEngineConfigurationBlock(
-				OverlayPreferenceStore store, PreferencePage preferencePage) {
-			super(store, preferencePage);
-		}
-
-		protected void createInfo(final Composite parent) {
-			final Link link = new Link(parent, SWT.NONE);
-			link.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e) {
-					openExternalUrl(PreferenceMessages.DebuggingEngineDownloadPageLink);
-				}
-			});
-
-			link.setText(PreferenceMessages.DebuggingEngineDownloadPage);
-		}
-
-		protected String getDebuggingEnginePathKey() {
-			return TclActiveStateDebuggerConstants.DEBUGGING_ENGINE_PATH_KEY;
-		}
-
-		public Control createControl(Composite parent) {
-			final Composite composite = SWTFactory.createComposite(parent,
-					parent.getFont(), 1, 1, GridData.FILL);
-
-			createEnginePath(composite);
-			createInfo(composite);
-
-			return composite;
-		}
+			protected PreferenceKey getDebuggingEnginePathKey() {
+				return ENGINE_PATH;
+			}
+		};
 	}
 
-	protected IPreferenceConfigurationBlock createConfigurationBlock(
-			OverlayPreferenceStore store) {
-		return new TclDebuggingEngineConfigurationBlock(store, this);
-	}
-
+	/*
+	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getHelpId()
+	 */
 	protected String getHelpId() {
 		return null;
 	}
 
-	protected void setDescription() {
-		setDescription(PreferenceMessages.PreferencesDescription);
+	/*
+	 * @see org.eclipse.dltk.internal.ui.preferences.PropertyAndPreferencePage#getPreferencePageId()
+	 */
+	protected String getPreferencePageId() {
+		return PREFERENCE_PAGE_ID;
 	}
 
+	/*
+	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getProjectHelpId()
+	 */
+	protected String getProjectHelpId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.internal.ui.preferences.PropertyAndPreferencePage#getPropertyPageId()
+	 */
+	protected String getPropertyPageId() {
+		return PROPERTY_PAGE_ID;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setDescription()
+	 */
+	protected void setDescription() {
+		setDescription(PreferenceMessages.DebuggingEngineDescription);
+	}
+
+	/*
+	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setPreferenceStore()
+	 */
 	protected void setPreferenceStore() {
 		setPreferenceStore(TclActiveStateDebuggerPlugin.getDefault()
 				.getPreferenceStore());
-	}
-
-	public boolean performOk() {
-		super.performOk();
-		TclActiveStateDebuggerPlugin.getDefault().savePluginPreferences();
-		return true;
 	}
 }

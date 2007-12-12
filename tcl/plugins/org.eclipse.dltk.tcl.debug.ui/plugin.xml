@@ -112,16 +112,47 @@
 		</consolePatternMatchListener>
 
 	</extension>
-	
+<!--	
+ <extension
+    point="org.eclipse.ui.propertyPages">
+    <page
+      class="org.eclipse.dltk.tcl.internal.debug.ui.preferences.TclDebugPreferencePage"
+      category="org.eclipse.dltk.tcl.ui.propertyPage"
+      id="org.eclipse.dltk.tcl.debug.ui.propertyPage.debug"
+      name="%Debug.PropertyPage">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test property="org.eclipse.core.resources.projectNature" value="org.eclipse.dltk.tcl.core.nature"/>
+        </adapt>         
+      </enabledWhen>
+   </page>
+   <page
+      class="org.eclipse.dltk.tcl.internal.debug.ui.preferences.TclDebuggingEnginePreferencePage"
+      category="org.eclipse.dltk.tcl.debug.ui.propertyPage.debug"
+      id="org.eclipse.dltk.tcl.debug.ui.propertyPage.debug.engines"
+      name="%Engines.PropertyPage">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test property="org.eclipse.core.resources.projectNature" value="org.eclipse.dltk.tcl.core.nature"/>
+        </adapt>         
+      </enabledWhen>
+   </page>        
+   </extension>
+	-->
 	<extension point="org.eclipse.ui.preferencePages">
 		<page category="org.eclipse.dltk.tcl.preferences"
 			class="org.eclipse.dltk.tcl.internal.debug.ui.interpreters.TclInterpreterPreferencePage"
 			id="org.eclipse.dltk.tcl.preferences.interpreters"
 			name="%InterpretersPreferencePage" />
-		<page category="org.eclipse.dltk.tcl.preferences"
-			class="org.eclipse.dltk.tcl.internal.debug.ui.preferences.TclDebugPreferencePage"
-			id="org.eclipse.dltk.tcl.preferences.debug"
-			name="%Debug.PreferencePage" />
+        <page category="org.eclipse.dltk.tcl.preferences"
+            class="org.eclipse.dltk.tcl.internal.debug.ui.preferences.TclDebugPreferencePage"
+            id="org.eclipse.dltk.tcl.preferences.debug"
+            name="%Debug.PreferencePage" />
+        <page 
+            category="org.eclipse.dltk.tcl.preferences.debug"
+            class="org.eclipse.dltk.tcl.internal.debug.ui.preferences.TclDebuggingEnginePreferencePage"
+            id="org.eclipse.dltk.tcl.preferences.debug.engines"
+            name="%Engines.PreferencePage" />
 		<page category="org.eclipse.dltk.tcl.preferences"
 			class="org.eclipse.dltk.tcl.internal.console.ui.preferences.TclConsolePreferencePage"
 			id="org.eclipse.dltk.tcl.preferences.console"

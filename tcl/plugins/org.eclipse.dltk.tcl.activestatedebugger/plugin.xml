@@ -10,6 +10,7 @@
          id="org.eclipse.dltk.tcl.avtivestatedebugger"
          name="%ActiveStateDebuggingEngine.name"
          preferencePageId="org.eclipse.dltk.tcl.preferences.debug.activestatedebugger"
+         propertyPageId="org.eclipse.dltk.tcl.debug.ui.propertyPage.debug.engines.activestatedebugger"
          priority="0">
 			</engine>
 		</engineContribution>
@@ -17,10 +18,26 @@
  <extension
        point="org.eclipse.ui.preferencePages">
     <page
-          category="org.eclipse.dltk.tcl.preferences.debug"
+          category="org.eclipse.dltk.tcl.preferences.debug.engines"
           class="org.eclipse.dltk.tcl.activestatedebugger.preferences.TclActiveStateDebuggerPreferencePage"
           id="org.eclipse.dltk.tcl.preferences.debug.activestatedebugger"
           name="%TclActiveStateDebuggerPreferencePage.name">
     </page>
  </extension>
+ <!--
+  <extension
+    point="org.eclipse.ui.propertyPages">
+    <page
+      class="org.eclipse.dltk.tcl.activestatedebugger.preferences.TclActiveStateDebuggerPreferencePage"
+      category="org.eclipse.dltk.tcl.debug.ui.propertyPage.debug.engines"
+      id="org.eclipse.dltk.tcl.debug.ui.propertyPage.debug.engines.activestatedebugger"
+      name="%TclActiveStateDebuggerPropertyPage.name">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test property="org.eclipse.core.resources.projectNature" value="org.eclipse.dltk.tcl.core.nature"/>
+        </adapt>         
+      </enabledWhen>
+   </page>
+  </extension>
+ -->
 </plugin>

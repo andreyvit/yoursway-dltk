@@ -9,5 +9,7 @@ public class TclDebugPreferencesMessages {
 		NLS.initializeMessages(BUNDLE_NAME, TclDebugPreferencesMessages.class);
 	}
 
-	public static String PreferencesDescription;
+	public static String TclDebugPreferencePage_description;
+	public static String TclDebugEnginePreferencePage_description;
+
 }

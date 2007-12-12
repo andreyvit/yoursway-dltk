@@ -2,6 +2,9 @@ package org.eclipse.dltk.tcl.internal.debug.ui.preferences;
 
 import org.eclipse.core.resources.IProject;
 
+import org.eclipse.dltk.debug.ui.preferences.AbstractDebuggingEngineOptionsBlock;
+import org.eclipse.dltk.tcl.core.TclNature;
+import org.eclipse.dltk.tcl.internal.debug.TclDebugConstants;
 import org.eclipse.dltk.tcl.internal.debug.TclDebugPlugin;
 import org.eclipse.dltk.ui.PreferencesAdapter;
 import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage;
@@ -9,19 +12,19 @@ import org.eclipse.dltk.ui.preferences.AbstractOptionsBlock;
 import org.eclipse.dltk.ui.preferences.PreferenceKey;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
 /**
- * Tcl debug preference page
+ * Tcl debugging engine preference page
  */
-public class TclDebugPreferencePage extends
+public class TclDebuggingEnginePreferencePage extends
 		AbstractConfigurationBlockPropertyAndPreferencePage {
-	
-	private static final String PREFERENCE_PAGE_ID = "org.eclipse.dltk.tcl.preferences.debug";
-	private static final String PROPERTY_PAGE_ID = "org.eclipse.dltk.tcl.debug.ui.propertyPage.debug";
+
+	static PreferenceKey DEBUGGING_ENGINE = new PreferenceKey(
+			TclDebugPlugin.PLUGIN_ID, TclDebugConstants.DEBUGGING_ENGINE_ID_KEY);
+
+	private final String PREFERENCE_PAGE_ID = "org.eclipse.dltk.tcl.preferences.debug.engines";
+	private final String PROPERTY_PAGE_ID = "org.eclipse.dltk.tcl.debug.ui.propertyPage.debug.engines";
 
 	/*
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#createOptionsBlock(org.eclipse.dltk.ui.util.IStatusChangeListener,
@@ -31,11 +34,15 @@ public class TclDebugPreferencePage extends
 	protected AbstractOptionsBlock createOptionsBlock(
 			IStatusChangeListener newStatusChangedListener, IProject project,
 			IWorkbenchPreferenceContainer container) {
-		return new AbstractOptionsBlock(newStatusChangedListener, project,
-				new PreferenceKey[0], container) {
+		return new AbstractDebuggingEngineOptionsBlock(
+				newStatusChangedListener, project, getKeys(), container) {
 
-			protected Control createOptionsBlock(Composite parent) {
-				return parent;
+			protected String getNatureId() {
+				return TclNature.NATURE_ID;
+			}
+
+			protected PreferenceKey getSavedContributionKey() {
+				return DEBUGGING_ENGINE;
 			}
 		};
 	}
@@ -44,6 +51,7 @@ public class TclDebugPreferencePage extends
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getHelpId()
 	 */
 	protected String getHelpId() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -58,6 +66,7 @@ public class TclDebugPreferencePage extends
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getProjectHelpId()
 	 */
 	protected String getProjectHelpId() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -72,7 +81,7 @@ public class TclDebugPreferencePage extends
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setDescription()
 	 */
 	protected void setDescription() {
-		setDescription(TclDebugPreferencesMessages.TclDebugPreferencePage_description);
+		setDescription(TclDebugPreferencesMessages.TclDebugEnginePreferencePage_description);
 	}
 
 	/*
@@ -82,4 +91,9 @@ public class TclDebugPreferencePage extends
 		setPreferenceStore(new PreferencesAdapter(TclDebugPlugin.getDefault()
 				.getPluginPreferences()));
 	}
+
+	private PreferenceKey[] getKeys() {
+		return new PreferenceKey[] { DEBUGGING_ENGINE };
+	}
+
 }

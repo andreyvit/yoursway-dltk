@@ -9,5 +9,6 @@ public class PythonDebugPreferencesMessages {
 		NLS.initializeMessages(BUNDLE_NAME, PythonDebugPreferencesMessages.class);
 	}
 
-	public static String PreferencesDescription;
+	public static String PythonDebugPreferencePage_description;
+	public static String PythonDebugEnginePreferencePage_description;
 }
