@@ -112,13 +112,13 @@
 		</consolePatternMatchListener>
 
 	</extension>
-<!--	
+<!--
  <extension
     point="org.eclipse.ui.propertyPages">
     <page
       class="org.eclipse.dltk.tcl.internal.debug.ui.preferences.TclDebugPreferencePage"
-      category="org.eclipse.dltk.tcl.ui.propertyPage"
-      id="org.eclipse.dltk.tcl.debug.ui.propertyPage.debug"
+      category="org.eclipse.dltk.tcl.propertyPage"
+      id="org.eclipse.dltk.tcl.propertyPage.debug"
       name="%Debug.PropertyPage">
       <enabledWhen>
         <adapt type="org.eclipse.core.resources.IProject">
@@ -128,8 +128,8 @@
    </page>
    <page
       class="org.eclipse.dltk.tcl.internal.debug.ui.preferences.TclDebuggingEnginePreferencePage"
-      category="org.eclipse.dltk.tcl.debug.ui.propertyPage.debug"
-      id="org.eclipse.dltk.tcl.debug.ui.propertyPage.debug.engines"
+      category="org.eclipse.dltk.tcl.propertyPage.debug"
+      id="org.eclipse.dltk.tcl.propertyPage.debug.engines"
       name="%Engines.PropertyPage">
       <enabledWhen>
         <adapt type="org.eclipse.core.resources.IProject">
@@ -138,7 +138,7 @@
       </enabledWhen>
    </page>        
    </extension>
-	-->
+-->
 	<extension point="org.eclipse.ui.preferencePages">
 		<page category="org.eclipse.dltk.tcl.preferences"
 			class="org.eclipse.dltk.tcl.internal.debug.ui.interpreters.TclInterpreterPreferencePage"

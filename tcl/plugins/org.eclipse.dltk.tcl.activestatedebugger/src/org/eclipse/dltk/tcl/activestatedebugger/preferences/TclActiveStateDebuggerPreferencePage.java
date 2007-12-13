@@ -32,7 +32,7 @@ public class TclActiveStateDebuggerPreferencePage extends
 			TclActiveStateDebuggerConstants.DEBUGGING_ENGINE_PATH_KEY);
 
 	private static String PREFERENCE_PAGE_ID = "org.eclipse.dltk.tcl.preferences.debug.activestatedebugger";
-	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.tcl.debug.ui.propertyPage.debug.engines.activestatedebugger";
+	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.tcl.propertyPage.debug.engines.activestatedebugger";
 
 	/*
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#createOptionsBlock(org.eclipse.dltk.ui.util.IStatusChangeListener,

@@ -29,8 +29,8 @@ public class PythonActiveStateDebuggerPreferencePage extends
 			PythonActiveStateDebuggerPlugin.PLUGIN_ID,
 			PythonActiveStateDebuggerConstants.DEBUGGING_ENGINE_PATH_KEY);
 
-	private static String PREFERENCE_PAGE_ID = "org.eclipse.dltk.python.preferences.debug.activestatedebugger";
-	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.python.debug.ui.propertyPage.debug.engines.activestatedebugger";
+	private static String PREFERENCE_PAGE_ID = "org.eclipse.dltk.python.preferences.debug.engines.activestatedebugger";
+	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.python.propertyPage.debug.engines.activestatedebugger";
 
 	protected AbstractOptionsBlock createOptionsBlock(
 			IStatusChangeListener newStatusChangedListener, IProject project,

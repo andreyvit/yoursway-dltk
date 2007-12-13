@@ -21,7 +21,7 @@ public class TclDebugPreferencePage extends
 		AbstractConfigurationBlockPropertyAndPreferencePage {
 	
 	private static final String PREFERENCE_PAGE_ID = "org.eclipse.dltk.tcl.preferences.debug";
-	private static final String PROPERTY_PAGE_ID = "org.eclipse.dltk.tcl.debug.ui.propertyPage.debug";
+	private static final String PROPERTY_PAGE_ID = "org.eclipse.dltk.tcl.propertyPage.debug";
 
 	/*
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#createOptionsBlock(org.eclipse.dltk.ui.util.IStatusChangeListener,

@@ -25,7 +25,7 @@ public class PythonDebuggingEnginePreferencePage extends
 			PythonDebugConstants.DEBUGGING_ENGINE_ID_KEY);
 
 	private static String PREFERENCE_PAGE_ID = "org.eclipse.dltk.python.preferences.debug.engines";
-	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.python.debug.propertyPage.debug.engines";
+	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.python.propertyPage.debug.engines";
 
 	/*
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#createOptionsBlock(org.eclipse.dltk.ui.util.IStatusChangeListener,

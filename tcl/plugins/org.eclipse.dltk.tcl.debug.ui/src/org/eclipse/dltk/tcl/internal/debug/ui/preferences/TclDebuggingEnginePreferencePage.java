@@ -24,7 +24,7 @@ public class TclDebuggingEnginePreferencePage extends
 			TclDebugPlugin.PLUGIN_ID, TclDebugConstants.DEBUGGING_ENGINE_ID_KEY);
 
 	private final String PREFERENCE_PAGE_ID = "org.eclipse.dltk.tcl.preferences.debug.engines";
-	private final String PROPERTY_PAGE_ID = "org.eclipse.dltk.tcl.debug.ui.propertyPage.debug.engines";
+	private final String PROPERTY_PAGE_ID = "org.eclipse.dltk.tcl.propertyPage.debug.engines";
 
 	/*
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#createOptionsBlock(org.eclipse.dltk.ui.util.IStatusChangeListener,

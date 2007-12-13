@@ -119,8 +119,8 @@
     point="org.eclipse.ui.propertyPages">
     <page
       class="org.eclipse.dltk.python.internal.debug.ui.preferences.PythonDebugPreferencePage"
-      category="org.eclipse.dltk.python.ui.propertyPage"
-      id="org.eclipse.dltk.python.ui.propertyPage.debug"
+      category="org.eclipse.dltk.python.propertyPage"
+      id="org.eclipse.dltk.python.propertyPage.debug"
       name="%Debug.PropertyPage">
       <enabledWhen>
         <adapt type="org.eclipse.core.resources.IProject">
@@ -130,8 +130,8 @@
    </page>
    <page
       class="org.eclipse.dltk.python.internal.debug.ui.preferences.PythonDebuggingEnginePreferencePage"
-      category="org.eclipse.dltk.python.ui.propertyPage.debug"
-      id="org.eclipse.dltk.python.debug.propertyPage.debug.engines"
+      category="org.eclipse.dltk.python.propertyPage.debug"
+      id="org.eclipse.dltk.python.propertyPage.debug.engines"
       name="%Engines.PropertyPage">
       <enabledWhen>
         <adapt type="org.eclipse.core.resources.IProject">

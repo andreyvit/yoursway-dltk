@@ -10,7 +10,7 @@
          id="org.eclipse.dltk.tcl.avtivestatedebugger"
          name="%ActiveStateDebuggingEngine.name"
          preferencePageId="org.eclipse.dltk.tcl.preferences.debug.activestatedebugger"
-         propertyPageId="org.eclipse.dltk.tcl.debug.ui.propertyPage.debug.engines.activestatedebugger"
+         propertyPageId="org.eclipse.dltk.tcl.propertyPage.debug.engines.activestatedebugger"
          priority="0">
 			</engine>
 		</engineContribution>
@@ -24,13 +24,13 @@
           name="%TclActiveStateDebuggerPreferencePage.name">
     </page>
  </extension>
- <!--
+ 
   <extension
     point="org.eclipse.ui.propertyPages">
     <page
       class="org.eclipse.dltk.tcl.activestatedebugger.preferences.TclActiveStateDebuggerPreferencePage"
-      category="org.eclipse.dltk.tcl.debug.ui.propertyPage.debug.engines"
-      id="org.eclipse.dltk.tcl.debug.ui.propertyPage.debug.engines.activestatedebugger"
+      category="org.eclipse.dltk.tcl.propertyPage.debug.engines"
+      id="org.eclipse.dltk.tcl.propertyPage.debug.engines.activestatedebugger"
       name="%TclActiveStateDebuggerPropertyPage.name">
       <enabledWhen>
         <adapt type="org.eclipse.core.resources.IProject">
@@ -39,5 +39,5 @@
       </enabledWhen>
    </page>
   </extension>
- -->
+ 
 </plugin>
