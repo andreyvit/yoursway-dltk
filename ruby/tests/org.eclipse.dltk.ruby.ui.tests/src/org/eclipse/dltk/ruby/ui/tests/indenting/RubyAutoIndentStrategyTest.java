@@ -9,11 +9,11 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.ui.tests.indenting;
 
-import org.eclipse.dltk.core.tests.model.SuiteOfTestCases;
 import org.eclipse.dltk.ruby.internal.ui.RubyPreferenceConstants;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyAutoEditStrategy;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitionScanner;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
+import org.eclipse.dltk.ruby.ui.tests.RubyUITests;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceStore;
@@ -23,7 +23,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.rules.FastPartitioner;
 
 
-public class RubyAutoIndentStrategyTest extends SuiteOfTestCases {
+public class RubyAutoIndentStrategyTest extends RubyUITests {
 	/*
 	 * Tests with _ in the beginning relies on features, not
 	 * presented now, and may be will be implemented in future

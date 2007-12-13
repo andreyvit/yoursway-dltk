@@ -10,8 +10,8 @@
 package org.eclipse.dltk.ruby.ui.tests.text;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.dltk.core.tests.model.SuiteOfTestCases;
 import org.eclipse.dltk.ruby.internal.ui.RubyPreferenceConstants;
+import org.eclipse.dltk.ruby.ui.tests.RubyUITests;
 import org.eclipse.dltk.ruby.ui.tests.internal.TestUtils;
 import org.eclipse.dltk.ui.text.blocks.Balance;
 import org.eclipse.dltk.ui.text.blocks.BlocksConfiguration;
@@ -21,7 +21,7 @@ import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.TextUtilities;
 
-public class BalanceTest extends SuiteOfTestCases {
+public class BalanceTest extends RubyUITests {
 	
 	public BalanceTest(String name) {
 		super(name);
