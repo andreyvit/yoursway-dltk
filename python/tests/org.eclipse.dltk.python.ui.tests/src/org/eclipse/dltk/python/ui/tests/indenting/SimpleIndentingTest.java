@@ -9,18 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.python.ui.tests.indenting;
 
-import java.io.FileWriter;
-import java.io.IOException;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.dltk.core.IScriptProject;
-import org.eclipse.dltk.core.IMethod;
-import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.core.IType;
-import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.core.tests.model.AbstractModelTests;
 import org.eclipse.dltk.python.internal.ui.text.PythonAutoEditStrategy;
 import org.eclipse.dltk.python.internal.ui.text.PythonPartitionScanner;
 import org.eclipse.dltk.python.ui.PythonPreferenceConstants;
@@ -38,13 +26,9 @@ import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.jface.text.rules.FastPartitioner;
 
 
-public class SimpleIndentingTest extends AbstractModelTests {
+public class SimpleIndentingTest extends PyUITest {
 
-	public SimpleIndentingTest(String name) {
-		super(PythonUITestsPlugin.PLUGIN_NAME, name);
-	}
-
-	IPreferenceStore fStore;
+	private IPreferenceStore fStore;
 	
 	/**
 	 * Installs a partitioner with <code>document</code>.
@@ -282,7 +266,7 @@ public class SimpleIndentingTest extends AbstractModelTests {
 		
 		assertIndentingEquals(d2, temp);
 	}
-	
+/*	
 	public void nottestIndent08_pasting() throws Exception {
 		String textIn = PythonUITestsPlugin.getDefault().getPluginFileContent( "/tests/test_builtin.py" );		
 		Document temp = new Document("");
@@ -311,7 +295,7 @@ public class SimpleIndentingTest extends AbstractModelTests {
 		
 		assertModelsEquals(textIn, temp.get());
 	}
-	
+*/	
 	
 	private void assertIndentingEquals (IDocument exp, IDocument act) {
 		int line = 0;		
@@ -333,7 +317,7 @@ public class SimpleIndentingTest extends AbstractModelTests {
 		} catch (BadLocationException e) {		
 		}		
 	}
-	
+	/*
 	private void saveTempFile (String name, String content) {
 		try {					
 			FileWriter wf = new FileWriter (name);
@@ -387,5 +371,5 @@ public class SimpleIndentingTest extends AbstractModelTests {
 		assertModelsEquals(module1, module2);
 		deleteProject(prj);
 	}
-	
+*/	
 }

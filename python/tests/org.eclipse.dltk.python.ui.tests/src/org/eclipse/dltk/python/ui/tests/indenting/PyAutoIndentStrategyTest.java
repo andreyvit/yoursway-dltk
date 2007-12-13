@@ -22,7 +22,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.rules.FastPartitioner;
 
 
-public class PyAutoIndentStrategyTest extends TestCase {
+public class PyAutoIndentStrategyTest extends PyUITest {
 	/*
 	 * Tests with _ in the beginning relies on features, not
 	 * presented now, and may be will be implemented in future
@@ -54,11 +54,11 @@ public class PyAutoIndentStrategyTest extends TestCase {
      * @see TestCase#setUp()
      */
     protected void setUp() throws Exception {
+        super.setUp();
     	fStore = PythonUITestsPlugin.getDefault().getPreferenceStore();
 		PythonPreferenceConstants.initializeDefaultValues(fStore);
 		String fPartitioning = IPythonPartitions.PYTHON_PARTITIONING;
     	strategy = new PythonAutoEditStrategy(fStore, fPartitioning);
-        super.setUp();
     }
 
     /*
