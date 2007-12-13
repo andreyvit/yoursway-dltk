@@ -10,6 +10,7 @@ public abstract class DLTKContributedExtension implements
 	private String id;
 	private String name;
 	private String natureId;
+	private String propertyPageId;
 	private String preferencePageId;
 	private int priority;
 	
@@ -54,6 +55,13 @@ public abstract class DLTKContributedExtension implements
 	public int getPriority() {
 		return priority;
 	}
+	
+	/*
+	 * @see org.eclipse.dltk.core.IDLTKContributedExtension#getPropertyPageId()
+	 */
+	public String getPropertyPageId() {
+		return propertyPageId;
+	}
 
 	/*
 	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
@@ -65,6 +73,8 @@ public abstract class DLTKContributedExtension implements
 		name = config.getAttribute(NAME);
 		description = config.getAttribute(DESCRIPTION);
 		priority = Integer.parseInt(config.getAttribute(PRIORITY));
+		
+		propertyPageId = config.getAttribute(PROP_PAGE_ID);
 		preferencePageId = config.getAttribute(PREF_PAGE_ID);
 
 		// get the natureId from the parent

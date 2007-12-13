@@ -89,14 +89,7 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="supportsSuspendOnEntry" type="boolean" use="default" value="true">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="supportsSuspendOnExit" type="boolean" use="default" value="true">
+         <attribute name="propertyPageId" type="string">
             <annotation>
                <documentation>
                   

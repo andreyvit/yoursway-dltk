@@ -18,6 +18,7 @@ public interface IDLTKContributedExtension {
 	static final String NAME = "name";
 	static final String DESCRIPTION = "description";
 	static final String PREF_PAGE_ID = "preferencePageId";
+	static final String PROP_PAGE_ID = "propertyPageId";
 	static final String PRIORITY = "priority";
 	static final String NATURE_ID = "natureId";
 
@@ -47,6 +48,12 @@ public interface IDLTKContributedExtension {
 	 */
 	String getPreferencePageId();
 
+	/**
+	 * Returns the contributions property page id, or <code>null</code> if one 
+	 * has not been set.
+	 */
+	String getPropertyPageId();
+	
 	/**
 	 * Returns the contribution priority
 	 */
