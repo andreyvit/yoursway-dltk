@@ -15,11 +15,11 @@ import junit.framework.TestCase;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.IBuffer;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
@@ -27,6 +27,7 @@ import org.eclipse.dltk.core.IOpenable;
 import org.eclipse.dltk.core.IPackageDeclaration;
 import org.eclipse.dltk.core.IProblemRequestor;
 import org.eclipse.dltk.core.IScriptModel;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.IType;
@@ -43,10 +44,11 @@ public class CodeCompletion extends TestCase {
 	private final class TestModule extends ModelElement implements ISourceModule,org.eclipse.dltk.core.ISourceModule {
 
 		String content;
-
+		String elementName;
 		public TestModule(String string) {
 			super(null);
 			this.content = string;
+			this.elementName = "noname.js";
 		}
 
 		public TestModule(URL resource) {
@@ -54,6 +56,7 @@ public class CodeCompletion extends TestCase {
 			try {
 				StringBuffer bf = new StringBuffer();
 				DataInputStream str = new DataInputStream(resource.openStream());
+				this.elementName = new Path( resource.getPath() ).lastSegment();
 				ByteArrayOutputStream bs = new ByteArrayOutputStream();
 				while (str.available() >= 0) {
 					int k = str.read();
@@ -209,7 +212,7 @@ public class CodeCompletion extends TestCase {
 
 		public String getElementName() {
 			// TODO Auto-generated method stub
-			return null;
+			return elementName;
 		}
 
 		public int getElementType() {
@@ -478,11 +481,11 @@ public class CodeCompletion extends TestCase {
 
 	public JavaScriptCompletionEngine createEngine(LinkedList results) {
 		ISearchableEnvironment env = new NullEnvironment();
-		//JavaScriptCompletionEngine engine = new JavaScriptCompletionEngine(env,
-			//	new TestCompletionRequetor(results), new HashMap(), null);
-		//return engine;
+		JavaScriptCompletionEngine engine = new JavaScriptCompletionEngine();
+		engine.setRequestor(new TestCompletionRequetor(results));
+		return engine;
 		
-		throw new Error("Unimplemented, please fix");
+//		throw new Error("Unimplemented, please fix");
 	}
 	
 	private void compareNames(LinkedList results, String[] names) {

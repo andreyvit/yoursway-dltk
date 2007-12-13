@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'dbgp/managers/source.rb'
+require 'dbgp/SourceManager.rb'
 
 module XoredDebugger    
 	class SourceManagerTest < Test::Unit::TestCase

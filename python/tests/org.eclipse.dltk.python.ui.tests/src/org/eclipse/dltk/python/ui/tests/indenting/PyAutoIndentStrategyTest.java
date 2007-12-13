@@ -9,8 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.python.ui.tests.indenting;
 
-import junit.framework.TestCase;
-
 import org.eclipse.dltk.python.internal.ui.text.PythonAutoEditStrategy;
 import org.eclipse.dltk.python.internal.ui.text.PythonPartitionScanner;
 import org.eclipse.dltk.python.ui.PythonPreferenceConstants;
@@ -76,7 +74,7 @@ public class PyAutoIndentStrategyTest extends PyUITest {
             "                ";
         DocCmd docCmd = new DocCmd(str.length(), 0, "\t");
         strategy.customizeDocumentCommand(new Document(str), docCmd);
-        assertEquals("    ", docCmd.text);
+        assertEquals("\t", docCmd.text);
     }
     
     public void _testSpaces() { System.out.println("Spaces\n");
@@ -386,7 +384,7 @@ public class PyAutoIndentStrategyTest extends PyUITest {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength()-"print 'done'".length(), 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n    ", docCmd.text); 
+    	assertEquals("\n\t", docCmd.text); 
     }
     
 
@@ -397,7 +395,7 @@ public class PyAutoIndentStrategyTest extends PyUITest {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength()-4, 0, "\n");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("\n    ", docCmd.text); 
+    	assertEquals("\n\t", docCmd.text); 
     	
     	String expected = "for a in b:    ";
     	assertEquals(expected, doc.get());
@@ -510,7 +508,7 @@ public class PyAutoIndentStrategyTest extends PyUITest {
         final Document doc = new Document(str);
         DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\n");
         strategy.customizeDocumentCommand(doc, docCmd);
-        assertEquals("\n        ", docCmd.text); 
+        assertEquals("\n    \t", docCmd.text); 
     }
     
     public void testNewLine4() { System.out.println("NewLine4\n");
@@ -578,7 +576,7 @@ public class PyAutoIndentStrategyTest extends PyUITest {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\t");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("    ", docCmd.text); // a single tab should go to the correct indent
+    	assertEquals("\t", docCmd.text); // a single tab should go to the correct indent
     	
     }
     
@@ -590,7 +588,7 @@ public class PyAutoIndentStrategyTest extends PyUITest {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\t");
 		strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("        ", docCmd.text); // a single tab should go to the correct indent
+    	assertEquals("    \t", docCmd.text); // a single tab should go to the correct indent
     }
     
     public void testIndentingWithTab2() { System.out.println("IndentingWithTab2\n");
@@ -602,7 +600,7 @@ public class PyAutoIndentStrategyTest extends PyUITest {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\t");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("    ", docCmd.text); // a single tab should go to the correct indent
+    	assertEquals("\t", docCmd.text); // a single tab should go to the correct indent
     }
     
     public void testIndentingWithTab3() { System.out.println("IndentingWithTab3\n");
@@ -643,7 +641,7 @@ public class PyAutoIndentStrategyTest extends PyUITest {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength(), 0, "\t");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("    ", docCmd.text); // a single tab should go to the correct indent
+    	assertEquals("\t", docCmd.text); // a single tab should go to the correct indent
     }
     
     public void testIndentingWithTab5() { System.out.println("IndentingWithTab5\n");
@@ -673,7 +671,7 @@ public class PyAutoIndentStrategyTest extends PyUITest {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength()-"print 'a'".length(), 0, "\t");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("        ", docCmd.text); // a single tab should go to the correct indent
+    	assertEquals("    \t", docCmd.text); // a single tab should go to the correct indent
     }
     
     public void testIndentingWithTab7() { System.out.println("IndentingWithTab7\n");
@@ -686,7 +684,7 @@ public class PyAutoIndentStrategyTest extends PyUITest {
     	final Document doc = new Document(str);
     	DocCmd docCmd = new DocCmd(doc.getLength()-"  print 'a'".length(), 0, "\t");
     	strategy.customizeDocumentCommand(doc, docCmd);
-    	assertEquals("        ", docCmd.text); // a single tab should go to the correct indent
+    	assertEquals("    \t", docCmd.text); // a single tab should go to the correct indent
     	assertEquals(2, docCmd.length); // the spaces after the indent should be removed
     }
     
@@ -720,7 +718,7 @@ public class PyAutoIndentStrategyTest extends PyUITest {
         docCmd = new DocCmd(doc.length(), 0, "\n");
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         expected = "\n" +
-                   "    ";
+                   "\t";
         assertEquals(expected, docCmd.text);
     }
     
@@ -777,7 +775,7 @@ public class PyAutoIndentStrategyTest extends PyUITest {
         "               b):";
         DocCmd docCmd = new DocCmd(doc.length(), 0, "\n");
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
-        String expected = "\n        ";
+        String expected = "\n    \t";
         assertEquals(expected, docCmd.text);
     }
     
@@ -817,7 +815,7 @@ public class PyAutoIndentStrategyTest extends PyUITest {
         DocCmd docCmd = new DocCmd(doc.length(), 0, "\n");
         strategy.customizeDocumentCommand(new Document(doc), docCmd);
         String expected = "\n" +
-        		          "    ";
+        		          "\t";
         assertEquals(expected, docCmd.text);
         
         //test regular

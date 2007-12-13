@@ -107,12 +107,12 @@ public class SimpleIndentingTest extends PyUITest {
 		
 		//check document
 		String correct = "class Foo:\n" +
-			"    ";
+			"\t";
 		String result = temp.get();		
 		assertEquals(correct, result);
 		
 		//check caret position
-		assertEquals(offset + 5, newOffset);
+		assertEquals(offset + 1, newOffset);
 	}
 	
 	public void testIndent01_strings() throws Exception {

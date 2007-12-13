@@ -78,6 +78,8 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	
 	private final Object terminatedLock = new Object();
 	private boolean terminated = false;
+
+	private boolean initialized = false;
 	
 	public static List getAllTargets() {
 		return new ArrayList(targets.keySet());
@@ -156,9 +158,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 	// ITerminate
 	public boolean canTerminate() {
-		if (process != null && process.isTerminated())
-			return false;
-		return threadManager.canTerminate();
+		return !terminated;
 	}
 
 	public boolean isTerminated() {
@@ -306,6 +306,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 			manager.addBreakpointManagerListener(breakpointManager);
 
 			// DebugEventHelper.fireCreateEvent(this);
+			initialized  = true;
 			fireTargetInitialized();
 		}
 	}
@@ -333,8 +334,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	public boolean isInitialized() {
-		return !threadManager.isWaitingForThreads()
-				&& threadManager.hasThreads();
+		return initialized;
 	}
 
 	protected void fireTargetInitialized() {

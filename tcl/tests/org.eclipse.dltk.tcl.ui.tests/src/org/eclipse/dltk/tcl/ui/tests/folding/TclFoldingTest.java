@@ -151,7 +151,7 @@ public class TclFoldingTest extends TestCase {
 		fStore.setValue(TclPreferenceConstants.EDITOR_FOLDING_BLOCKS, TclPreferenceConstants.EDITOR_FOLDING_BLOCKS_EXCLUDE);
 		fStore.setValue(TclPreferenceConstants.EDITOR_FOLDING_EXCLUDE_LIST, "");
 		Map result = provider.testComputeFoldingStructure(content, provider.createInitialContext());
-		assertEquals(5, result.size());
+		assertEquals(4, result.size());
 		removeDocumentStuff(document);
 	}
 	
@@ -177,7 +177,7 @@ public class TclFoldingTest extends TestCase {
 		fStore.setValue(TclPreferenceConstants.EDITOR_FOLDING_BLOCKS, TclPreferenceConstants.EDITOR_FOLDING_BLOCKS_INCLUDE);
 		fStore.setValue(TclPreferenceConstants.EDITOR_FOLDING_INCLUDE_LIST, "anothercmdblock");
 		Map result = provider.testComputeFoldingStructure(content, provider.createInitialContext());
-		assertEquals(2, result.size());
+		assertEquals(1, result.size());
 		removeDocumentStuff(document);
 	}
 	

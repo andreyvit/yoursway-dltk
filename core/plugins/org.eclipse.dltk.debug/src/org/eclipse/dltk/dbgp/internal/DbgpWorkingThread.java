@@ -39,7 +39,9 @@ public abstract class DbgpWorkingThread extends DbgpTermination {
 	}
 
 	public void requestTermination() {
-		thread.interrupt();
+		if (thread != null && thread.isAlive()) {
+			thread.interrupt();
+		}
 	}
 
 	public void waitTerminated() throws InterruptedException {

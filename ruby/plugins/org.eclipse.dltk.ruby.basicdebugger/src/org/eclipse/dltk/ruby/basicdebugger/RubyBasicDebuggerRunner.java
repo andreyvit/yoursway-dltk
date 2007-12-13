@@ -28,7 +28,7 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 	private static final String RUBY_SCRIPT_VAR = "DBGP_RUBY_SCRIPT";
 	private static final String RUBY_LOG_VAR = "DBGP_RUBY_LOG";
 
-	private static final String DEBUGGER_SCRIPT = "simple_runner.rb";
+	private static final String DEBUGGER_SCRIPT = "BasicRunner.rb";
 
 	private final boolean logging;
 

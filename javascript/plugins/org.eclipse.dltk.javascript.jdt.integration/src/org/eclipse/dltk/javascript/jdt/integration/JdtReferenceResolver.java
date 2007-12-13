@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
@@ -66,7 +67,11 @@ public class JdtReferenceResolver implements IExecutableExtension,
 	}
 
 	public boolean canResolve(ISourceModule module) {
-		IProject pr = module.getResource().getProject();
+		IResource resource = module.getResource();
+		if( resource == null ) {
+			return false;
+		}
+		IProject pr = resource.getProject();
 		return JavaCore.create(pr).exists();
 	}
 

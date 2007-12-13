@@ -23,7 +23,7 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 	private static final String RUBY_SCRIPT_VAR = "DBGP_RUBY_SCRIPT";
 	private static final String RUBY_LOG_VAR = "DBGP_RUBY_LOG";
 
-	private static final String DEBUGGER_SCRIPT = "fast_runner.rb";
+	private static final String DEBUGGER_SCRIPT = "FastRunner.rb";
 
 	protected IPath getLogFilename() {
 		Preferences preferences = FastDebuggerPlugin.getDefault()
