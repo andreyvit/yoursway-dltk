@@ -10,10 +10,10 @@
 package org.eclipse.dltk.ruby.ui.tests.text.indenting;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.dltk.core.tests.model.SuiteOfTestCases;
 import org.eclipse.dltk.ruby.internal.ui.RubyPreferenceConstants;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyAutoEditStrategy;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
+import org.eclipse.dltk.ruby.ui.tests.RubyUITests;
 import org.eclipse.dltk.ruby.ui.tests.internal.TestUtils;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.jface.preference.PreferenceStore;
@@ -22,7 +22,7 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.ui.PlatformUI;
 
-public class IndentingTest extends SuiteOfTestCases {
+public class IndentingTest extends RubyUITests {
 
     public IndentingTest(String name) {
 		super(name);
@@ -42,10 +42,10 @@ public class IndentingTest extends SuiteOfTestCases {
 	}
 
 	protected void setUp() throws Exception {
+        super.setUp();
 		waitWorkbenchCreated();
 		tabStrategy = createStrategy(true);
 		spaceStrategy = createStrategy(false);
-        super.setUp();
     }
 
 	private RubyAutoEditStrategy createStrategy(boolean useTabs) {

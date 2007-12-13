@@ -30,9 +30,9 @@ public class BalanceTest extends RubyUITests {
 	IPreferenceStore fStore;
 	
 	protected void setUp() throws Exception {
+        super.setUp();
     	fStore = new PreferenceStore();
     	RubyPreferenceConstants.initializeDefaultValues(fStore);
-        super.setUp();
     }
 
     protected void tearDown() throws Exception {

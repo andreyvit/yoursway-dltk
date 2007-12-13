@@ -64,12 +64,12 @@ public class RubyAutoIndentStrategyTest extends RubyUITests {
 	}
 
     protected void setUp() throws Exception {
+        super.setUp();
     	fStore = new PreferenceStore();
     	RubyPreferenceConstants.initializeDefaultValues(fStore);
     	fStore.setValue(CodeFormatterConstants.FORMATTER_TAB_CHAR, CodeFormatterConstants.SPACE);
 		String fPartitioning = RubyPartitions.RUBY_PARTITIONING;
     	strategy = new RubyAutoEditStrategy(fStore, fPartitioning);
-        super.setUp();
     }
 
     protected void tearDown() throws Exception {
