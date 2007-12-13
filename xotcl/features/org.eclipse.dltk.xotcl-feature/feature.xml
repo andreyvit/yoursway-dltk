@@ -36,14 +36,14 @@ http://www.eclipse.org/legal/epl-v10.html
       %license
    </license>
 
-   <requires>
-      <import feature="org.eclipse.dltk.tcl" version="1.0.0" match="compatible"/>
-   </requires>
-
    <url>
       <update label="%updateSiteName" url="http://download.eclipse.org/technology/dltk/updates/"/>
       <discovery label="%updateSiteName" url="http://download.eclipse.org/technology/dltk/updates/"/>
    </url>
+
+   <requires>
+      <import feature="org.eclipse.dltk.tcl" version="1.0.0" match="compatible"/>
+   </requires>
 
    <plugin
          id="org.eclipse.dltk.xotcl.core"
@@ -54,6 +54,13 @@ http://www.eclipse.org/legal/epl-v10.html
 
    <plugin
          id="org.eclipse.dltk.xotcl.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.dltk.xotcl.testing.xounit"
          download-size="0"
          install-size="0"
          version="0.0.0"
