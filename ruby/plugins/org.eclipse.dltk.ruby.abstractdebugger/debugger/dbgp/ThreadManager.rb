@@ -74,7 +74,7 @@ module XoredDebugger
         end
  
         def at_catchpoint(context, excpt)
-            log('at_catchpoint: ' + excpt.name)                        
+            log('at_catchpoint: ' + excpt.class.name)                        
             dbgp_thread = Thread.current[ :dbgp_thread_wrapper ]
             dbgp_thread.at_catchpoint(context, excpt) unless dbgp_thread.nil?
         end
