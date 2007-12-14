@@ -25,6 +25,7 @@ public class RubyLanguageToolkit extends AbstractLanguageToolkit {
 	protected static RubyLanguageToolkit sToolkit = new RubyLanguageToolkit();
 	protected static Pattern[] header_patterns = {
 		Pattern.compile("#!\\s*/usr/bin/ruby", Pattern.MULTILINE),
+		Pattern.compile("#!\\s*/usr/bin/env\\s*ruby", Pattern.MULTILINE),
 	};
 	public RubyLanguageToolkit() {
 
