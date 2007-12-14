@@ -41,4 +41,9 @@ public final class DebugEventHelper {
 	public static void fireChangeEvent(IDebugElement element) {
 		fireEvent(new DebugEvent(element, DebugEvent.CHANGE));
 	}
+
+	public static void fireExtendedEvent(Object eventSource, int details) {
+		fireEvent(new DebugEvent(eventSource, DebugEvent.MODEL_SPECIFIC,
+				details));
+	}
 }

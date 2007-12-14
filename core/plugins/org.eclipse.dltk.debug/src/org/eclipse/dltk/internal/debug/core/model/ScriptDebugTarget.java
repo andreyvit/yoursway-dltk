@@ -37,6 +37,7 @@ import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
+import org.eclipse.dltk.debug.core.ExtendedDebugEventDetails;
 import org.eclipse.dltk.debug.core.IDbgpService;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTargetListener;
@@ -297,6 +298,9 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	// IDbgpThreadManagerListener
 	public void threadAccepted(IScriptThread thread, boolean first) {
 		if (first) {
+			DebugEventHelper.fireExtendedEvent(this,
+					ExtendedDebugEventDetails.BEFORE_CODE_LOADED);
+
 			breakpointManager.setupDeferredBreakpoints();
 
 			IBreakpointManager manager = DebugPlugin.getDefault()

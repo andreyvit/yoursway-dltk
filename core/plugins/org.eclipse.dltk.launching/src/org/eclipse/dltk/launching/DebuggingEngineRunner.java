@@ -9,9 +9,11 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.dltk.dbgp.DbgpSessionIdGenerator;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
+import org.eclipse.dltk.debug.core.ExtendedDebugEventDetails;
 import org.eclipse.dltk.debug.core.IDbgpService;
 import org.eclipse.dltk.debug.core.ScriptDebugManager;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
+import org.eclipse.dltk.internal.debug.core.model.DebugEventHelper;
 import org.eclipse.dltk.internal.debug.core.model.ScriptDebugTarget;
 import org.eclipse.dltk.internal.launching.InterpreterMessages;
 import org.eclipse.dltk.launching.debug.DbgpInterpreterConfig;
@@ -96,6 +98,9 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			// Starting debugging engine
 			IProcess process = null;
 			try {
+				DebugEventHelper.fireExtendedEvent(newConfig,
+						ExtendedDebugEventDetails.BEFORE_VM_STARTED);
+
 				// Running
 				monitor.subTask("Running");
 				process = rawRun(launch, newConfig);

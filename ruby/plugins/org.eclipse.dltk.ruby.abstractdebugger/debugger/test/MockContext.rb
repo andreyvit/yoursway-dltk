@@ -68,6 +68,11 @@ module XoredDebugger
             end                         
         end
                     
+        def thread
+            Thread.current
+        end
+            
+        
         # Stack depth
         def stack_frames_num
             if (@status == BREAK)

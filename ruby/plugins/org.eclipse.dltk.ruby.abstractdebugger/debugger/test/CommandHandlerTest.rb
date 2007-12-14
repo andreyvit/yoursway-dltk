@@ -155,14 +155,14 @@ module XoredDebugger
             response = @handler.handle(Command.new("breakpoint_get -i 5 -d " + bp.breakpoint_id.to_s))
             assert_equal("<response command=\"breakpoint_get\" transaction_id=\"5\">" +
                 "<breakpoint type=\"line\" hit_value=\"0\" id=\"" + bp.breakpoint_id.to_s + "\" filename=\"test.rb\" " +
-                "hit_count=\"0\" hit_condition=\">=\" lineno=\"100\" state=\"true\"/>" + 
+                "hit_count=\"0\" hit_condition=\"&gt;=\" lineno=\"100\" state=\"true\"/>" + 
                 "</response>", response.to_xml)            
             
             bp = @breakpoint_manager.add_exception_breakpoint('Exception')
             response = @handler.handle(Command.new("breakpoint_get -i 5 -d " + bp.breakpoint_id.to_s))
             assert_equal("<response command=\"breakpoint_get\" transaction_id=\"5\">" +
                 "<breakpoint exception=\"Exception\" type=\"exception\" hit_value=\"0\" id=\"" + bp.breakpoint_id.to_s + "\" " +
-                "hit_count=\"0\" hit_condition=\">=\" state=\"true\"/>" + 
+                "hit_count=\"0\" hit_condition=\"&gt;=\" state=\"true\"/>" + 
                 "</response>", response.to_xml)            
                 
             response = @handler.handle(Command.new("breakpoint_get -i 5 -d 97575795"))

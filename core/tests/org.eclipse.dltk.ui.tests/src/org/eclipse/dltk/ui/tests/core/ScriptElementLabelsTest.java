@@ -68,7 +68,7 @@ public class ScriptElementLabelsTest extends AbstractModelTests {
 
 		IModelElement elem= cu.getElementAt(content.indexOf("Outer"));
 		String lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_FULLY_QUALIFIED);
-		assertEqualString(lab, "Outer");
+		assertEqualString(lab, "src Outer");
 
 		lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_CONTAINER_QUALIFIED);
 		assertEqualString(lab, "Outer");
@@ -77,7 +77,8 @@ public class ScriptElementLabelsTest extends AbstractModelTests {
 		assertEqualString(lab, "Outer");
 		
 		lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_FULLY_QUALIFIED | ScriptElementLabels.APPEND_ROOT_PATH);
-		assertEqualString(lab, "Outer - TestSetupProject/src/Outer.txt");
+		assertEqualString(lab, "src Outer - TestSetupProject/src");
+		
 		
 		lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_FULLY_QUALIFIED | ScriptElementLabels.PREPEND_ROOT_PATH);
 		assertEqualString(lab, "TestSetupProject/src/Outer.txt - Outer");

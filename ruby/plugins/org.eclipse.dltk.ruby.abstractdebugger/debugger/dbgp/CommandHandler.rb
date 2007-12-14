@@ -62,17 +62,13 @@ module XoredDebugger
                 err_command_not_available(command)
             
             rescue ArgumentError       
-                logException($!, 'in command handler:')
                 err_invalid_option(command)
             
             rescue NotImplementedError
                 err_unimplemented_command(command)
             
             rescue Exception
-                logException($!, 'in command handler:')
-                puts($!.class.name + ' in command handler:')
-                puts("\tMessage: " + $!.message)
-                puts("\tBacktrace: " + $!.backtrace.join("\n"))         
+                logException($!, 'in command handler:')     
                 err_parse_error(command)  
             end
         end

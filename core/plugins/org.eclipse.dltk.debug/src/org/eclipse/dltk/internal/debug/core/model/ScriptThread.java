@@ -28,6 +28,7 @@ import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.dbgp.internal.IDbgpTerminationListener;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
+import org.eclipse.dltk.debug.core.ExtendedDebugEventDetails;
 import org.eclipse.dltk.debug.core.ISmartStepEvaluator;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
@@ -63,6 +64,9 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	// ScriptThreadStateManager.IStateChangeHandler
 	public void handleSuspend(int detail) {
+		DebugEventHelper.fireExtendedEvent(this,
+				ExtendedDebugEventDetails.BEFORE_SUSPEND);
+
 		stack.update();
 
 		if( handleSmartStepInto() ) {
@@ -101,6 +105,9 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	}
 
 	public void handleResume(int detail) {
+		DebugEventHelper.fireExtendedEvent(this,
+				ExtendedDebugEventDetails.BEFORE_RESUME);
+
 		DebugEventHelper.fireResumeEvent(this, detail);
 		DebugEventHelper.fireChangeEvent(this);
 	}
