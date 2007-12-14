@@ -43,7 +43,6 @@ module XoredDebugger
                      
         def start
             log('Setting tracing function')
-            @depth = 1
             xored_debugger_set_trace_func proc { |event, file, line, id, binding, klass, *rest|
                 trace(event, file, line, id, binding, klass)
             }
@@ -115,19 +114,13 @@ module XoredDebugger
                             handler.at_line(context, file, line) unless handler.nil?
                         end
                                             
-                    when 'call', 'c-call'                       
+                    when 'call'                       
                         context.stack_push(binding, file, line)
-                        if (Thread.current == Thread.main)
-                            @depth += 1
-                        end    
                         
-                    when 'return', 'c-return' 
+                    when 'return'
                         context.stack_pop                                           
-                        if (Thread.current == Thread.main)
-                            @depth -= 1
-                        end
 
-                    when 'class', 'end'
+                    when 'class', 'end', 'c-call', 'c-return'
                         #TODO: Do something useful
 
 	                else
