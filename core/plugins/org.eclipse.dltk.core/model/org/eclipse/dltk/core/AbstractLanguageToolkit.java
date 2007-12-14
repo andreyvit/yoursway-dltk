@@ -253,7 +253,7 @@ public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 				if (checkHeader(file, headerPatterns, footerPatterns)) {
 					return IModelStatus.VERIFIED_OK;
 				}
-				if (file.length() > bufferLength
+				if (footerPatterns != null && file.length() > bufferLength
 						&& checkFooter(file, footerPatterns)) {
 					return IModelStatus.VERIFIED_OK;
 				}
