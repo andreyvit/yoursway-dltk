@@ -124,7 +124,7 @@ public class ContextTest extends SuiteOfTestCases {
 	}
 
 	public void testModuleDefinition() throws Exception {
-		doTest("module ", RubyContext.EXPRESSION_START,
+		doTest("module ", RubyContext.COMMAND_START,
 				RubyContext.INSIDE_IDENTIFIER);
 	}
 

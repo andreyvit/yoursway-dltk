@@ -9,8 +9,15 @@
  *******************************************************************************/
 package org.eclipse.dltk.core;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.text.MessageFormat;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -168,5 +175,97 @@ public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 		return new Status(IStatus.ERROR, getCorePluginID(), -1, MessageFormat
 				.format(Messages.convention_unit_notScriptName, new String[] {
 						getLanguageFileExtensions().toString(), "Tcl" }), null);
+	}
+
+	private final int bufferLength = 2 * 1024;
+	private byte buf[] = new byte[bufferLength + 1];
+
+	private boolean checkHeader(File file, Pattern[] headerPaterns,
+			Pattern[] footerPatterns) throws FileNotFoundException, IOException {
+		FileInputStream reader = null;
+		try {
+			reader = new FileInputStream(file);
+			reader.read(buf);
+
+			String header = new String(buf);
+
+			if (header != null) {
+				if (checkBufferForPatterns(header, headerPaterns)) {
+					return true;
+				}
+				if (file.length() < bufferLength && footerPatterns != null) {
+					if (checkBufferForPatterns(header, footerPatterns)) {
+						return true;
+					}
+				}
+			}
+			return false;
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+	}
+
+	private boolean checkFooter(File file, Pattern[] footerPatterns)
+			throws FileNotFoundException, IOException {
+		RandomAccessFile raFile = new RandomAccessFile(file, "r");
+		try {
+			long len = bufferLength;
+			long fileSize = raFile.length();
+			long offset = fileSize - len;
+			if (offset < 0) {
+				offset = 0;
+			}
+			raFile.seek(offset);
+			int code = raFile.read(buf);
+			if (code != -1) {
+				String content = new String(buf, 0, code);
+				if (checkBufferForPatterns(content, footerPatterns)) {
+					return true;
+				}
+			}
+			return false;
+		} finally {
+			raFile.close();
+		}
+
+	}
+
+	private boolean checkBufferForPatterns(CharSequence header,
+			Pattern[] patterns) {
+		for (int i = 0; i < patterns.length; i++) {
+			Matcher m = patterns[i].matcher(header);
+			if (m.find()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public IStatus checkPatterns(File file, Pattern[] headerPatterns,
+			Pattern[] footerPatterns) {
+		synchronized (buf) {
+			try {
+				if (checkHeader(file, headerPatterns, footerPatterns)) {
+					return IModelStatus.VERIFIED_OK;
+				}
+				if (file.length() > bufferLength
+						&& checkFooter(file, footerPatterns)) {
+					return IModelStatus.VERIFIED_OK;
+				}
+			} catch (FileNotFoundException e) {
+				return new Status(IStatus.ERROR, DLTKCore.PLUGIN_ID, -1,
+						"Can't open file", null);
+			} catch (IOException e) {
+				return new Status(IStatus.ERROR, DLTKCore.PLUGIN_ID, -1,
+						"Can't read file", null);
+			}
+		}
+		return new Status(IStatus.ERROR, DLTKCore.PLUGIN_ID, -1,
+				"Header not found", null);
 	}
 }

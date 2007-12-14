@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <script>
-<command start="0" end="86">
-<word start="0" end="2" text="set">
+<command end="86" start="0">
+<word end="2" start="0" text="set">
 <string text="set"/>
 </word>
-<word start="4" end="29" text="date(DAY_OF_WEEK_IN_MONTH)">
+<word end="29" start="4" text="date(DAY_OF_WEEK_IN_MONTH)">
 <string text="date(DAY_OF_WEEK_IN_MONTH)"/>
 </word>
-<word start="38" end="86" text="[expr { ( ( $date(DAY_OF_MONTH) - 1 ) / 7) + 1 }]">
+<word end="86" start="38" text="[expr { ( ( $date(DAY_OF_MONTH) - 1 ) / 7) + 1 }]">
 <command text="[expr { ( ( $date(DAY_OF_MONTH) - 1 ) / 7) + 1 }]"/>
 </word>
 </command>

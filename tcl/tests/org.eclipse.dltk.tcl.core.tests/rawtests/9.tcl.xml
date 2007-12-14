@@ -1,43 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <script>
-<command start="0" end="8">
-<word start="0" end="3" text="puts">
+<command end="7" start="0">
+<word end="3" start="0" text="puts">
 <string text="puts"/>
 </word>
-<word start="8" end="8" text="a">
+<word end="7" start="7" text="a">
 <string text="a"/>
 </word>
 </command>
-<command start="11" end="19">
-<word start="11" end="14" text="puts">
+<command end="17" start="9">
+<word end="12" start="9" text="puts">
 <string text="puts"/>
 </word>
-<word start="16" end="19" text="\123">
+<word end="17" start="14" text="\123">
 <normalbs text="\123"/>
 </word>
 </command>
-<command start="22" end="30">
-<word start="22" end="25" text="puts">
+<command end="27" start="19">
+<word end="22" start="19" text="puts">
 <string text="puts"/>
 </word>
-<word start="27" end="30" text="\999">
+<word end="27" start="24" text="\999">
 <normalbs text="\9"/>
 <string text="99"/>
 </word>
 </command>
-<command start="55" end="63">
-<word start="55" end="58" text="puts">
+<command end="59" start="51">
+<word end="54" start="51" text="puts">
 <string text="puts"/>
 </word>
-<word start="60" end="63" text="\xFF">
+<word end="59" start="56" text="\xFF">
 <normalbs text="\xFF"/>
 </word>
 </command>
-<command start="66" end="77">
-<word start="66" end="69" text="puts">
+<command end="72" start="61">
+<word end="64" start="61" text="puts">
 <string text="puts"/>
 </word>
-<word start="71" end="77" text="\u12345">
+<word end="72" start="66" text="\u12345">
 <normalbs text="\u1234"/>
 <string text="5"/>
 </word>

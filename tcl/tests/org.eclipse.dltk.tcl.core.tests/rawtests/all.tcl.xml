@@ -1,305 +1,305 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <script>
-<command start="0" end="16">
-<word start="0" end="4" text="word0">
+<command end="16" start="0">
+<word end="4" start="0" text="word0">
 <string text="word0"/>
 </word>
-<word start="6" end="10" text="word1">
+<word end="10" start="6" text="word1">
 <string text="word1"/>
 </word>
-<word start="12" end="16" text="word2">
+<word end="16" start="12" text="word2">
 <string text="word2"/>
 </word>
 </command>
-<command start="42" end="81">
-<word start="42" end="59" text="fakeCommentWordCmd">
+<command end="80" start="41">
+<word end="58" start="41" text="fakeCommentWordCmd">
 <string text="fakeCommentWordCmd"/>
 </word>
-<word start="61" end="64" text="#and">
+<word end="63" start="60" text="#and">
 <string text="#and"/>
 </word>
-<word start="66" end="68" text="lot">
+<word end="67" start="65" text="lot">
 <string text="lot"/>
 </word>
-<word start="70" end="71" text="of">
+<word end="70" start="69" text="of">
 <string text="of"/>
 </word>
-<word start="73" end="76" text="fake">
+<word end="75" start="72" text="fake">
 <string text="fake"/>
 </word>
-<word start="78" end="81" text="word">
+<word end="80" start="77" text="word">
 <string text="word"/>
 </word>
 </command>
-<command start="86" end="94">
-<word start="86" end="89" text="puts">
+<command end="90" start="83">
+<word end="86" start="83" text="puts">
 <string text="puts"/>
 </word>
-<word start="93" end="94" text="42">
+<word end="90" start="89" text="42">
 <string text="42"/>
 </word>
 </command>
-<command start="99" end="135">
-<word start="100" end="118" text="tabSeparatedCommand">
+<command end="129" start="93">
+<word end="112" start="94" text="tabSeparatedCommand">
 <string text="tabSeparatedCommand"/>
 </word>
-<word start="121" end="135" text="tabSeparatedArg">
+<word end="129" start="115" text="tabSeparatedArg">
 <string text="tabSeparatedArg"/>
 </word>
 </command>
-<command start="140" end="208">
-<word start="140" end="142" text="set">
+<command end="199" start="132">
+<word end="134" start="132" text="set">
 <string text="set"/>
 </word>
-<word start="144" end="144" text="a">
+<word end="136" start="136" text="a">
 <string text="a"/>
 </word>
-<word start="146" end="208" text="&quot;simple\t(it was a tab)text\nwow!\&#10;space should go before it.&quot;">
+<word end="199" start="138" text="&quot;simple\t(it was a tab)text\nwow!\&#10;space should go before it.&quot;">
 <quotes text="&quot;simple\t(it was a tab)text\nwow!\&#10;space should go before it.&quot;"/>
 </word>
 </command>
-<command start="213" end="253">
-<word start="213" end="215" text="set">
+<command end="241" start="202">
+<word end="204" start="202" text="set">
 <string text="set"/>
 </word>
-<word start="217" end="217" text="a">
+<word end="206" start="206" text="a">
 <string text="a"/>
 </word>
-<word start="219" end="253" text="{braces leave &#10;everything exactly}">
+<word end="241" start="208" text="{braces leave &#10;everything exactly}">
 <braces text="{braces leave &#10;everything exactly}"/>
 </word>
 </command>
-<command start="258" end="273">
-<word start="258" end="261" text="proc">
+<command end="258" start="244">
+<word end="247" start="244" text="proc">
 <string text="proc"/>
 </word>
-<word start="263" end="265" text="foo">
+<word end="251" start="249" text="foo">
 <string text="foo"/>
 </word>
-<word start="267" end="268" text="{}">
+<word end="254" start="253" text="{}">
 <braces text="{}"/>
 </word>
-<word start="270" end="273" text="{&#10;}">
+<word end="258" start="256" text="{&#10;}">
 <braces text="{&#10;}"/>
 </word>
 </command>
-<command start="278" end="343">
-<word start="278" end="286" text="namespace">
+<command end="322" start="261">
+<word end="269" start="261" text="namespace">
 <string text="namespace"/>
 </word>
-<word start="288" end="291" text="eval">
+<word end="274" start="271" text="eval">
 <string text="eval"/>
 </word>
-<word start="293" end="295" text="Moo">
+<word end="278" start="276" text="Moo">
 <string text="Moo"/>
 </word>
-<word start="297" end="343" text="{&#10;	proc bar {} {&#10;		return [expr {2+2}]&#10;	}&#10;}">
-<braces text="{&#10;	proc bar {} {&#10;		return [expr {2+2}]&#10;	}&#10;}"/>
+<word end="322" start="280" text="{&#10;&#9;proc bar {} {&#10;&#9;&#9;return [expr {2+2}]&#10;&#9;}&#10;}">
+<braces text="{&#10;&#9;proc bar {} {&#10;&#9;&#9;return [expr {2+2}]&#10;&#9;}&#10;}"/>
 </word>
 </command>
-<command start="348" end="354">
-<word start="348" end="351" text="puts">
+<command end="331" start="325">
+<word end="328" start="325" text="puts">
 <string text="puts"/>
 </word>
-<word start="353" end="354" text="$a">
-<variable start="353" end="354" kind="0" name="a"/>
+<word end="331" start="330" text="$a">
+<variable end="331" kind="0" name="a" start="330"/>
 </word>
 </command>
-<command start="357" end="366">
-<word start="357" end="360" text="puts">
+<command end="342" start="333">
+<word end="336" start="333" text="puts">
 <string text="puts"/>
 </word>
-<word start="362" end="366" text="$(10)">
-<variable start="362" end="366" kind="1" name="">
-<word start="0" end="0" text="w">
+<word end="342" start="338" text="$(10)">
+<variable end="342" kind="1" name="" start="338">
+<word end="0" start="0" text="w">
 <string text="10"/>
 </word>
 </variable>
 </word>
 </command>
-<command start="369" end="379">
-<word start="369" end="372" text="puts">
+<command end="354" start="344">
+<word end="347" start="344" text="puts">
 <string text="puts"/>
 </word>
-<word start="374" end="379" text="$a(\))">
-<variable start="374" end="379" kind="1" name="a">
-<word start="0" end="0" text="w">
+<word end="354" start="349" text="$a(\))">
+<variable end="354" kind="1" name="a" start="349">
+<word end="0" start="0" text="w">
 <normalbs text="\)"/>
 </word>
 </variable>
 </word>
 </command>
-<command start="382" end="389">
-<word start="382" end="385" text="puts">
+<command end="363" start="356">
+<word end="359" start="356" text="puts">
 <string text="puts"/>
 </word>
-<word start="387" end="389" text="$()">
-<variable start="387" end="389" kind="1" name="">
-<word start="0" end="0" text="w"/>
+<word end="363" start="361" text="$()">
+<variable end="363" kind="1" name="" start="361">
+<word end="0" start="0" text="w"/>
 </variable>
 </word>
 </command>
-<command start="428" end="446">
-<word start="428" end="431" text="puts">
+<command end="419" start="401">
+<word end="404" start="401" text="puts">
 <string text="puts"/>
 </word>
-<word start="433" end="446" text="$abcdef_XYZ(1)">
-<variable start="433" end="446" kind="1" name="abcdef_XYZ">
-<word start="0" end="0" text="w">
+<word end="419" start="406" text="$abcdef_XYZ(1)">
+<variable end="419" kind="1" name="abcdef_XYZ" start="406">
+<word end="0" start="0" text="w">
 <string text="1"/>
 </word>
 </variable>
 </word>
 </command>
-<command start="449" end="480">
-<word start="449" end="452" text="puts">
+<command end="452" start="421">
+<word end="424" start="421" text="puts">
 <string text="puts"/>
 </word>
-<word start="454" end="480" text="$abcdef_XYZ([expr {2+2}]$a)">
-<variable start="454" end="480" kind="1" name="abcdef_XYZ">
-<word start="0" end="0" text="w">
+<word end="452" start="426" text="$abcdef_XYZ([expr {2+2}]$a)">
+<variable end="452" kind="1" name="abcdef_XYZ" start="426">
+<word end="0" start="0" text="w">
 <command text="[expr {2+2}]"/>
-<variable start="478" end="479" kind="0" name="a"/>
+<variable end="451" kind="0" name="a" start="450"/>
 </word>
 </variable>
 </word>
 </command>
-<command start="483" end="519">
-<word start="483" end="486" text="puts">
+<command end="490" start="454">
+<word end="457" start="454" text="puts">
 <string text="puts"/>
 </word>
-<word start="488" end="519" text="${!@#$%^&amp;*().,/?:;'&quot;[]{-=_+\|~`}">
-<variable start="488" end="519" kind="2" name="!@#$%^&amp;*().,/?:;'&quot;[]{-=_+\|~`"/>
+<word end="490" start="459" text="${!@#$%^&amp;*().,/?:;'&quot;[]{-=_+\|~`}">
+<variable end="490" kind="2" name="!@#$%^&amp;*().,/?:;'&quot;[]{-=_+\|~`" start="459"/>
 </word>
 </command>
-<command start="522" end="550">
-<word start="522" end="525" text="puts">
+<command end="520" start="492">
+<word end="495" start="492" text="puts">
 <string text="puts"/>
 </word>
-<word start="527" end="550" text="$___::___::___::____(12)">
-<variable start="527" end="550" kind="1" name="___::___::___::____">
-<word start="0" end="0" text="w">
+<word end="520" start="497" text="$___::___::___::____(12)">
+<variable end="520" kind="1" name="___::___::___::____" start="497">
+<word end="0" start="0" text="w">
 <string text="12"/>
 </word>
 </variable>
 </word>
 </command>
-<command start="553" end="619">
-<word start="553" end="556" text="puts">
+<command end="588" start="522">
+<word end="525" start="522" text="puts">
 <string text="puts"/>
 </word>
-<word start="558" end="619" text="$a$b$c[doo 4]$b(123)[foo]${$%@#$^@!!!!}.$___::___::___::____()">
-<variable start="558" end="559" kind="0" name="a"/>
-<variable start="560" end="561" kind="0" name="b"/>
-<variable start="562" end="563" kind="0" name="c"/>
+<word end="588" start="527" text="$a$b$c[doo 4]$b(123)[foo]${$%@#$^@!!!!}.$___::___::___::____()">
+<variable end="528" kind="0" name="a" start="527"/>
+<variable end="530" kind="0" name="b" start="529"/>
+<variable end="532" kind="0" name="c" start="531"/>
 <command text="[doo 4]"/>
-<variable start="571" end="577" kind="1" name="b">
-<word start="0" end="0" text="w">
+<variable end="546" kind="1" name="b" start="540">
+<word end="0" start="0" text="w">
 <string text="123"/>
 </word>
 </variable>
 <command text="[foo]"/>
-<variable start="583" end="596" kind="2" name="$%@#$^@!!!!"/>
+<variable end="565" kind="2" name="$%@#$^@!!!!" start="552"/>
 <string text="."/>
-<variable start="598" end="619" kind="1" name="___::___::___::____">
-<word start="0" end="0" text="w"/>
+<variable end="588" kind="1" name="___::___::___::____" start="567">
+<word end="0" start="0" text="w"/>
 </variable>
 </word>
 </command>
-<command start="626" end="657">
-<word start="626" end="629" text="word">
+<command end="623" start="592">
+<word end="595" start="592" text="word">
 <string text="word"/>
 </word>
-<word start="631" end="639" text="[command]">
+<word end="605" start="597" text="[command]">
 <command text="[command]"/>
 </word>
-<word start="641" end="648" text="&quot;string&quot;">
+<word end="614" start="607" text="&quot;string&quot;">
 <quotes text="&quot;string&quot;"/>
 </word>
-<word start="650" end="657" text="{braces}">
+<word end="623" start="616" text="{braces}">
 <braces text="{braces}"/>
 </word>
 </command>
-<command start="662" end="691">
-<word start="662" end="665" text="proc">
+<command end="654" start="626">
+<word end="629" start="626" text="proc">
 <string text="proc"/>
 </word>
-<word start="667" end="670" text="{&#10;}">
+<word end="633" start="631" text="{&#10;}">
 <braces text="{&#10;}"/>
 </word>
-<word start="672" end="673" text="{}">
+<word end="636" start="635" text="{}">
 <braces text="{}"/>
 </word>
-<word start="675" end="691" text="{ puts newline! }">
+<word end="654" start="638" text="{ puts newline! }">
 <braces text="{ puts newline! }"/>
 </word>
 </command>
-<command start="696" end="699">
-<word start="696" end="699" text="{&#10;}">
+<command end="659" start="657">
+<word end="659" start="657" text="{&#10;}">
 <braces text="{&#10;}"/>
 </word>
 </command>
-<command start="704" end="711">
-<word start="704" end="705" text="$a">
-<variable start="704" end="705" kind="0" name="a"/>
+<command end="669" start="662">
+<word end="663" start="662" text="$a">
+<variable end="663" kind="0" name="a" start="662"/>
 </word>
-<word start="707" end="708" text="$b">
-<variable start="707" end="708" kind="0" name="b"/>
+<word end="666" start="665" text="$b">
+<variable end="666" kind="0" name="b" start="665"/>
 </word>
-<word start="710" end="711" text="$c">
-<variable start="710" end="711" kind="0" name="c"/>
+<word end="669" start="668" text="$c">
+<variable end="669" kind="0" name="c" start="668"/>
 </word>
 </command>
-<command start="754" end="762">
-<word start="754" end="757" text="puts">
+<command end="714" start="707">
+<word end="710" start="707" text="puts">
 <string text="puts"/>
 </word>
-<word start="762" end="762" text="a">
+<word end="714" start="714" text="a">
 <string text="a"/>
 </word>
 </command>
-<command start="765" end="773">
-<word start="765" end="768" text="puts">
+<command end="724" start="716">
+<word end="719" start="716" text="puts">
 <string text="puts"/>
 </word>
-<word start="770" end="773" text="\123">
+<word end="724" start="721" text="\123">
 <normalbs text="\123"/>
 </word>
 </command>
-<command start="776" end="784">
-<word start="776" end="779" text="puts">
+<command end="734" start="726">
+<word end="729" start="726" text="puts">
 <string text="puts"/>
 </word>
-<word start="781" end="784" text="\999">
+<word end="734" start="731" text="\999">
 <normalbs text="\9"/>
 <string text="99"/>
 </word>
 </command>
-<command start="809" end="817">
-<word start="809" end="812" text="puts">
+<command end="766" start="758">
+<word end="761" start="758" text="puts">
 <string text="puts"/>
 </word>
-<word start="814" end="817" text="\xFF">
+<word end="766" start="763" text="\xFF">
 <normalbs text="\xFF"/>
 </word>
 </command>
-<command start="820" end="831">
-<word start="820" end="823" text="puts">
+<command end="779" start="768">
+<word end="771" start="768" text="puts">
 <string text="puts"/>
 </word>
-<word start="825" end="831" text="\u12345">
+<word end="779" start="773" text="\u12345">
 <normalbs text="\u1234"/>
 <string text="5"/>
 </word>
 </command>
-<command start="838" end="868">
-<word start="838" end="840" text="set">
+<command end="813" start="783">
+<word end="785" start="783" text="set">
 <string text="set"/>
 </word>
-<word start="842" end="842" text="y">
+<word end="787" start="787" text="y">
 <string text="y"/>
 </word>
-<word start="844" end="868" text="[set x 0][incr x][incr x]">
+<word end="813" start="789" text="[set x 0][incr x][incr x]">
 <command text="[set x 0]"/>
 <command text="[incr x]"/>
 <command text="[incr x]"/>

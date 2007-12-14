@@ -69,6 +69,7 @@ public class XOTclCompletionEngine extends TclCompletionEngine {
 			processCompletionOnVariables(astNode);
 		} else if (astNode instanceof CompletionOnKeywordArgumentOrFunctionArgument) {
 			CompletionOnKeywordArgumentOrFunctionArgument compl = (CompletionOnKeywordArgumentOrFunctionArgument) astNode;
+			Set methodNames = new HashSet();
 			if (compl.argumentIndex() == 1) {
 				// Completion on two argument keywords
 				TclStatement st = compl.getStatement();
@@ -77,7 +78,6 @@ public class XOTclCompletionEngine extends TclCompletionEngine {
 					String name = ((SimpleReference) at).getName();
 					String prefix = name + " " + new String(compl.getToken());
 
-					Set methodNames = new HashSet();
 					processPartOfKeywords(compl, prefix, methodNames);
 					// Check for class and its methods.
 					completeClassMethods(name, compl.getToken(), methodNames);
@@ -97,6 +97,16 @@ public class XOTclCompletionEngine extends TclCompletionEngine {
 					}
 				}
 			}
+			// Variables completion here.
+			char[] varToken = new char[0];
+			boolean provideDollar = true;
+			if( compl.getToken().length > 0 && compl.getToken()[0] == '$') {
+				varToken = compl.getToken();
+				provideDollar = false;
+			}
+			findVariables(compl.getToken(), astNodeParent,
+					true, astNode.sourceStart(),
+					provideDollar, null);
 		}
 		return true;
 	}

@@ -1,24 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <script>
-<command start="0" end="29">
-<word start="0" end="7" text="variable">
+<command end="29" start="0">
+<word end="7" start="0" text="variable">
 <string text="variable"/>
 </word>
-<word start="9" end="19" text="punctuation">
+<word end="19" start="9" text="punctuation">
 <string text="punctuation"/>
 </word>
-<word start="21" end="29" text="{[&lt;&gt;#%&quot;]}">
+<word end="29" start="21" text="{[&lt;&gt;#%&quot;]}">
 <braces text="{[&lt;&gt;#%&quot;]}"/>
 </word>
 </command>
-<command start="53" end="67">
-<word start="53" end="60" text="variable">
+<command end="66" start="52">
+<word end="59" start="52" text="variable">
 <string text="variable"/>
 </word>
-<word start="62" end="64" text="bar">
+<word end="63" start="61" text="bar">
 <string text="bar"/>
 </word>
-<word start="66" end="67" text="12">
+<word end="66" start="65" text="12">
 <string text="12"/>
 </word>
 </command>

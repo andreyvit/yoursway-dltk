@@ -1,24 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <script>
-<command start="0" end="6">
-<word start="0" end="2" text="set">
+<command end="6" start="0">
+<word end="2" start="0" text="set">
 <string text="set"/>
 </word>
-<word start="4" end="4" text="x">
+<word end="4" start="4" text="x">
 <string text="x"/>
 </word>
-<word start="6" end="6" text="2">
+<word end="6" start="6" text="2">
 <string text="2"/>
 </word>
 </command>
-<command start="9" end="15">
-<word start="9" end="11" text="set">
+<command end="15" start="9">
+<word end="11" start="9" text="set">
 <string text="set"/>
 </word>
-<word start="13" end="13" text="y">
+<word end="13" start="13" text="y">
 <string text="y"/>
 </word>
-<word start="15" end="15" text="2">
+<word end="15" start="15" text="2">
 <string text="2"/>
 </word>
 </command>

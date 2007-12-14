@@ -61,7 +61,7 @@ namespace eval ::a::f::q::t {
 }
 
 #1
-::a::c::f 
+::a::c::f
 #2
 ::a::c::fa
 #3

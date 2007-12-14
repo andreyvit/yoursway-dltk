@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <script>
-<command start="0" end="23">
-<word start="0" end="3" text="proc">
+<command end="23" start="0">
+<word end="3" start="0" text="proc">
 <string text="proc"/>
 </word>
-<word start="5" end="9" text="ffoo]">
+<word end="9" start="5" text="ffoo]">
 <string text="ffoo]"/>
 </word>
-<word start="11" end="12" text="{}">
+<word end="12" start="11" text="{}">
 <braces text="{}"/>
 </word>
-<word start="14" end="23" text="{&#10;    &#10;}">
-<braces text="{&#10;    &#10;}"/>
+<word end="23" start="14" text="{&#13;&#10;    &#13;&#10;}">
+<braces text="{&#13;&#10;    &#13;&#10;}"/>
 </word>
 </command>
 </script>

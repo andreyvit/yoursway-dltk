@@ -1,28 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <script>
-<command start="0" end="75">
-<word start="0" end="1" text="$w">
-<variable start="0" end="1" kind="0" name="w"/>
+<command end="75" start="0">
+<word end="1" start="0" text="$w">
+<variable end="1" kind="0" name="w" start="0"/>
 </word>
-<word start="3" end="8" text="delete">
+<word end="8" start="3" text="delete">
 <string text="delete"/>
 </word>
-<word start="10" end="28" text="$EXP(row).$EXP(col)">
-<variable start="10" end="18" kind="1" name="EXP">
-<word start="0" end="0" text="$">
+<word end="28" start="10" text="$EXP(row).$EXP(col)">
+<variable end="18" kind="1" name="EXP" start="10">
+<word end="0" start="0" text="$">
 <string text="row"/>
 </word>
 </variable>
 <string text="."/>
-<variable start="20" end="28" kind="1" name="EXP">
-<word start="0" end="0" text="$">
+<variable end="28" kind="1" name="EXP" start="20">
+<word end="0" start="0" text="$">
 <string text="col"/>
 </word>
 </variable>
 </word>
-<word start="30" end="75" text="$EXP(row).[expr {$EXP(col) + $chars_to_write}]">
-<variable start="30" end="38" kind="1" name="EXP">
-<word start="0" end="0" text="$">
+<word end="75" start="30" text="$EXP(row).[expr {$EXP(col) + $chars_to_write}]">
+<variable end="38" kind="1" name="EXP" start="30">
+<word end="0" start="0" text="$">
 <string text="row"/>
 </word>
 </variable>
@@ -30,17 +30,17 @@
 <command text="[expr {$EXP(col) + $chars_to_write}]"/>
 </word>
 </command>
-<command start="81" end="102">
-<word start="81" end="84" text="proc">
+<command end="98" start="79">
+<word end="82" start="79" text="proc">
 <string text="proc"/>
 </word>
-<word start="86" end="88" text="mmm">
+<word end="86" start="84" text="mmm">
 <string text="mmm"/>
 </word>
-<word start="90" end="91" text="{}">
+<word end="89" start="88" text="{}">
 <braces text="{}"/>
 </word>
-<word start="93" end="102" text="{&#10;    &#10;}">
+<word end="98" start="91" text="{&#10;    &#10;}">
 <braces text="{&#10;    &#10;}"/>
 </word>
 </command>

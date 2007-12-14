@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <script>
-<command start="0" end="8">
-<word start="0" end="2" text="set">
+<command end="8" start="0">
+<word end="2" start="0" text="set">
 <string text="set"/>
 </word>
-<word start="4" end="5" text="a&quot;">
+<word end="5" start="4" text="a&quot;">
 <string text="a&quot;"/>
 </word>
-<word start="7" end="8" text="34">
+<word end="8" start="7" text="34">
 <string text="34"/>
 </word>
 </command>

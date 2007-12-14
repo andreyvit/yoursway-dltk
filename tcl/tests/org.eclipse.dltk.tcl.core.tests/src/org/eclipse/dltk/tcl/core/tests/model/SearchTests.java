@@ -94,7 +94,6 @@ public class SearchTests extends AbstractDLTKSearchTests implements IDLTKSearchC
 				"src/p3/X.tcl p3/Z$T2\n" +
 				"src/p3/X.tcl p3/Z$T2$T3\n" +
 				"src/p3/X.tcl p3/Z$T2$T3$T4\n" +
-				"src/p3/X.tcl p3/global2$namespace2\n"+
 				"src/p4/t.tcl p4/alfa\n"+
 				"src/q5/AQ.tcl q5/I\n"+
 				"src/q5/AQ.tcl q5/I2"
@@ -148,8 +147,8 @@ public class SearchTests extends AbstractDLTKSearchTests implements IDLTKSearchC
 			"src/p3/X.tcl  p3/Y$foo()\n"+
 			"src/p3/X.tcl  p3/Y$T2$T3$T4$src_p3_X_Y_T2_T3_T4_function(arg1, arg2, arg3)\n"+
 			"src/p3/X.tcl  p3/Z$foo()\n"+
-			"src/p3/X.tcl  p3/global2$namespace2$function(arg1, arg2, arg3)\n"+
 			"src/p3/X.tcl  $src_p3_X_function(arg1, arg2, arg3)\n"+
+			"src/p3/X.tcl  p3/global2$namespace2$function(arg1, arg2, arg3)\n"+
 			"src/q5/AQ.tcl  q5/I$k(arg)\n"+
 			"src/q5/AQ.tcl  q5/I2$k(arg)\n"+
 			"src/q5/AQ.tcl  $m()"
@@ -206,7 +205,6 @@ public class SearchTests extends AbstractDLTKSearchTests implements IDLTKSearchC
 		assertSearchResults(
 			"src/q5/AQ.tcl q5/I\n"+
 			"src/q5/AQ.tcl q5/I\n"+
-			"src/q5/AQ.tcl  $m()\n" +
 			"src/q5/AQ.tcl\n" +
 			"src/q5/AQ.tcl",
 			this.resultCollector);
@@ -249,7 +247,6 @@ public class SearchTests extends AbstractDLTKSearchTests implements IDLTKSearchC
 		assertSearchResults(
 			"src/q5/AQ.tcl q5/I\n"+
 			"src/q5/AQ.tcl q5/I2\n"+
-			"src/q5/AQ.tcl  $m()\n"+
 			"src/q5/AQ.tcl\n" +
 			"src/q5/AQ.tcl",
 			this.resultCollector);
@@ -283,7 +280,6 @@ public class SearchTests extends AbstractDLTKSearchTests implements IDLTKSearchC
 			"src/p3/X.tcl p3/X$v2\n"+
 			"src/p3/X.tcl p3/X$v3\n"+
 			"src/p3/X.tcl p3/X$v4\n" +
-			"src/p3/X.tcl v8\n"+
 			"src/p3/X.tcl p3/Y$T2$T3$v10\n"+
 			"src/p3/X.tcl p3/Y$T2$v9\n"+
 			"src/p3/X.tcl p3/Y$v7\n"+

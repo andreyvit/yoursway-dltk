@@ -1,57 +1,57 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <script>
-<command start="0" end="19">
-<word start="0" end="3" text="puts">
+<command end="19" start="0">
+<word end="3" start="0" text="puts">
 <string text="puts"/>
 </word>
-<word start="5" end="19" text="[expr {$x + 1}]">
+<word end="19" start="5" text="[expr {$x + 1}]">
 <command text="[expr {$x + 1}]"/>
 </word>
 </command>
-<command start="24" end="31">
-<word start="24" end="27" text="puts">
+<command end="31" start="24">
+<word end="27" start="24" text="puts">
 <string text="puts"/>
 </word>
-<word start="29" end="31" text="wow">
+<word end="31" start="29" text="wow">
 <string text="wow"/>
 </word>
 </command>
-<command start="36" end="42">
-<word start="36" end="38" text="set">
+<command end="42" start="36">
+<word end="38" start="36" text="set">
 <string text="set"/>
 </word>
-<word start="40" end="40" text="y">
+<word end="40" start="40" text="y">
 <string text="y"/>
 </word>
-<word start="42" end="42" text="5">
+<word end="42" start="42" text="5">
 <string text="5"/>
 </word>
 </command>
-<command start="44" end="51">
-<word start="45" end="48" text="puts">
+<command end="51" start="44">
+<word end="48" start="45" text="puts">
 <string text="puts"/>
 </word>
-<word start="50" end="51" text="$y">
-<variable start="50" end="51" kind="0" name="y"/>
+<word end="51" start="50" text="$y">
+<variable end="51" kind="0" name="y" start="50"/>
 </word>
 </command>
-<command start="54" end="60">
-<word start="54" end="56" text="set">
+<command end="60" start="54">
+<word end="56" start="54" text="set">
 <string text="set"/>
 </word>
-<word start="58" end="58" text="y">
+<word end="58" start="58" text="y">
 <string text="y"/>
 </word>
-<word start="60" end="60" text="5">
+<word end="60" start="60" text="5">
 <string text="5"/>
 </word>
 </command>
-<command start="63" end="69">
-<word start="63" end="66" text="puts">
+<command end="69" start="63">
+<word end="66" start="63" text="puts">
 <string text="puts"/>
 </word>
-<word start="68" end="69" text="$y">
-<variable start="68" end="69" kind="0" name="y"/>
+<word end="69" start="68" text="$y">
+<variable end="69" kind="0" name="y" start="68"/>
 </word>
 </command>
 </script>

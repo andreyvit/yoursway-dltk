@@ -12,10 +12,15 @@ package org.eclipse.dltk.tcl.parser.tests;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.channels.WritableByteChannel;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -32,6 +37,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.dltk.launching.LaunchingMessages;
 import org.eclipse.dltk.tcl.core.tests.model.Activator;
 import org.eclipse.dltk.tcl.internal.parsers.raw.BracesSubstitution;
@@ -312,9 +318,24 @@ public class SimpleParserTests extends TestCase {
 			Document docFromFile = parseXML(rightXML);
 			rightXML = serializeDocument(docFromFile);
 			
+			// Some operations
+//			resXML = resXML.replaceAll(" ", "");
+//			rightXML = rightXML.replaceAll(" ", "");
+//			resXML = resXML.replaceAll("\n", "");
+//			rightXML = rightXML.replaceAll("\n", "");
+//			resXML = resXML.replaceAll("\t", "");
+//			rightXML = rightXML.replaceAll("\t", "");
+			
 			// compare results
+//			assertDocumentsEquals(docFromFile, docFromSource);
 			assertEquals(rightXML.trim(), resXML.trim());
+//			URL resolve = FileLocator.resolve(ans);
+//			File file = new File( resolve.getFile() );
+//			FileWriter fileWriter = new FileWriter(file);
+//			fileWriter.write(resXML);
+//			fileWriter.close();
 //			assertTrue (docFromFile.equals(docFromSource));
+			
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

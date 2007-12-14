@@ -33,7 +33,7 @@ public class RubyAutoIndentStrategyTest extends RubyUITests {
 		super(name);
 	}
 
-	private static final String FOUR = "    ";
+	private static final String FOUR = "  ";
 	
 	private static final String EIGHT = FOUR + FOUR;
 	
@@ -144,7 +144,7 @@ public class RubyAutoIndentStrategyTest extends RubyUITests {
     	String s1 = "\tputs " + opening + "\n";
     	String s2 = "\t        2+2\n";
     	doTestLineReindent(s1 + s2, "\t        ", closing, "", 
-    			s1 + s2 + "\t     " + closing);
+    			s1 + s2 + "\t        " + closing);
     }
     
     public void testIndentingOfClosingParenToOpeningOne() throws Exception {

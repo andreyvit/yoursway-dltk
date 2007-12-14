@@ -30,13 +30,14 @@ public class CompletionTests extends AbstractModelCompletionTests {
 		PROJECT = setUpScriptProject("Completion");
 
 		super.setUpSuite();
-//		InternalDLTKLanguageManager.setPrefferedPriority(TclNature.NATURE_ID, 0);
+		// InternalDLTKLanguageManager.setPrefferedPriority(TclNature.NATURE_ID,
+		// 0);
 	}
-	
 
 	public void tearDownSuite() throws Exception {
 		super.tearDownSuite();
-//		InternalDLTKLanguageManager.setPrefferedPriority(TclNature.NATURE_ID, -1);
+		// InternalDLTKLanguageManager.setPrefferedPriority(TclNature.NATURE_ID,
+		// -1);
 	}
 
 	public static Test suite() {
@@ -86,9 +87,12 @@ public class CompletionTests extends AbstractModelCompletionTests {
 				+ completeBehind.length();
 		cu.codeComplete(cursorLocation, requestor);
 
-		assertEquals(
-				makeResult(new String[] { "namespace", "namespace eval" }),
-				requestor.getResults());
+		assertEquals(makeResult(new String[] { "namespace",
+				"namespace children", "namespace code", "namespace current",
+				"namespace delete", "namespace eval", "namespace export",
+				"namespace forget", "namespace import", "namespace inscope",
+				"namespace parent", "namespace qualifiers", "namespace tail",
+				"namespace which" }), requestor.getResults());
 	}
 
 	public void testCompletion002() throws ModelException {
@@ -122,7 +126,7 @@ public class CompletionTests extends AbstractModelCompletionTests {
 		int cursorLocation = str.indexOf("#2") + 4 + add;
 		cu.codeComplete(cursorLocation, requestor);
 
-		assertEquals(makeResult(new String[] { "::a::c::fac" },
+		assertEquals(makeResult(new String[] { "::a::c::fac()" }, new String[] { "::a::c::fac" },
 				new int[] { 18 }), requestor.getResults());
 	}
 
@@ -132,11 +136,12 @@ public class CompletionTests extends AbstractModelCompletionTests {
 				"Completion002.tcl");
 
 		String str = cu.getSource();
-		int cursorLocation = str.indexOf("#1") + 4 + 9;
+		int cursorLocation = str.indexOf("#1") + 4 + 8;
 		cu.codeComplete(cursorLocation, requestor);
 
-		assertEquals(makeResult(new String[] { "::a::c::fac", "::a::c::fbac",
-				"::a::c::feac()" }), requestor.getResults());
+		assertEquals(makeResult(new String[] { "::a::c::fac()", "::a::c::fbac()",
+		"::a::c::feac()" }, new String[] { "::a::c::fac", "::a::c::fbac",
+				"::a::c::feac" }, new int[] {18,18,18}), requestor.getResults());
 
 	}
 
@@ -164,7 +169,7 @@ public class CompletionTests extends AbstractModelCompletionTests {
 		int cursorLocation = str.indexOf("#4") + 4 + 6;
 		cu.codeComplete(cursorLocation, requestor);
 
-		assertEquals(makeResult(new String[] { "::b::fb" }, new int[] { 22 }),
+		assertEquals(makeResult(new String[] { "::b::fb()" }, new String[] { "::b::fb" }, new int[] { 22 }),
 				requestor.getResults());
 
 	}

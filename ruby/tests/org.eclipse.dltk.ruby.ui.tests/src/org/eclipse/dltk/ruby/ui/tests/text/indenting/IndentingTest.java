@@ -114,7 +114,7 @@ public class IndentingTest extends RubyUITests {
 		String name = getName();
 		String fileName = name.substring(4, 5).toLowerCase() + name.substring(5) + ".rb";
 		String data = TestUtils.getData(PATH + fileName);
-		String moreData = data.replaceAll("\t", "    ");
+		String moreData = data.replaceAll("\t", "  ");
 		if (!moreData.equals(data))
 			doTest(moreData, spaceStrategy);
 		doTest(data, tabStrategy);

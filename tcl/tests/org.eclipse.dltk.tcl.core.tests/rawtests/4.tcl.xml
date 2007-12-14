@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <script>
-<command start="0" end="9">
-<word start="0" end="3" text="puts">
+<command end="9" start="0">
+<word end="3" start="0" text="puts">
 <string text="puts"/>
 </word>
-<word start="5" end="9" text="&quot;wow&quot;">
+<word end="9" start="5" text="&quot;wow&quot;">
 <quotes text="&quot;wow&quot;"/>
 </word>
 </command>

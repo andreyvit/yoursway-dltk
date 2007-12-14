@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <script>
-<command start="0" end="29">
-<word start="0" end="7" text="variable">
+<command end="29" start="0">
+<word end="7" start="0" text="variable">
 <string text="variable"/>
 </word>
-<word start="9" end="17" text="{[&lt;&gt;#%&quot;]}">
+<word end="17" start="9" text="{[&lt;&gt;#%&quot;]}">
 <braces text="{[&lt;&gt;#%&quot;]}"/>
 </word>
-<word start="19" end="29" text="punctuation">
+<word end="29" start="19" text="punctuation">
 <string text="punctuation"/>
 </word>
 </command>
