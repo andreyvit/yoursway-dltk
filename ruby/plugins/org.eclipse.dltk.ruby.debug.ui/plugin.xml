@@ -4,6 +4,14 @@
 	<extension point="org.eclipse.ui.actionSets">
 		<actionSet id="org.eclipse.dltk.ruby.debug.ui.ScriptDebugActionSet"
 			label="Ruby debugger action set" visible="true">
+			<menu
+         		id="org.eclipse.ui.run"
+         		label="&amp;Run"
+         		path="additions">
+      			<separator
+        	  		 name="scriptGroup">
+		        </separator>
+   			</menu>
 			<action
 				label="%exceptionAction.accel.label"
 				icon="$nl$/icons/elcl16/exc_catch.gif"

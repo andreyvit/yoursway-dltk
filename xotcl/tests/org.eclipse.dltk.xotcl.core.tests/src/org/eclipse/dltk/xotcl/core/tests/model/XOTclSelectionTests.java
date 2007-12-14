@@ -1020,7 +1020,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 	public void testSelection064() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection006.tcl");
-		String s = "n1::n2::C1";
+		String s = "n1::n2::C1 create";
 		IModelElement element = process041(cu, s, 0, 2);
 		IType type = cu.getType("n1");
 		assertEquals(type, element);
@@ -1029,7 +1029,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 	public void testSelection058() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection006.tcl");
-		String s = "n1::n2::C1";
+		String s = "n1::n2::C1 create";
 		IModelElement element = process041(cu, s, 4, 2);
 		IType type = cu.getType("n1").getType("n2");
 		assertEquals(type, element);

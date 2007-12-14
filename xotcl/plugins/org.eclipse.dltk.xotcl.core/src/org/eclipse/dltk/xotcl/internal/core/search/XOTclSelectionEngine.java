@@ -441,11 +441,11 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 					}
 				}
 			}
-			if (this.selectionElements.size() == 0) {
-				if (instName.sourceStart() <= position
-						&& position <= instName.sourceEnd()) {
-					addElementFromASTNode(instanceVar);
-				}
+		}
+		if (this.selectionElements.size() == 0) {
+			if (instName.sourceStart() <= position
+					&& position <= instName.sourceEnd()) {
+				addElementFromASTNode(instanceVar);
 			}
 		}
 	}
