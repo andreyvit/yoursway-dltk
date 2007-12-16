@@ -133,21 +133,53 @@
 	</extension>
 
 	<extension point="org.eclipse.ui.preferencePages">
-		<page category="org.eclipse.dltk.ruby.preferences"
-			class="org.eclipse.dltk.ruby.internal.debug.ui.interpreters.RubyInterpreterPreferencePage"
-			id="org.eclipse.dltk.ruby.preferences.interpreters"
-			name="%RubyInterpretersPreferencePage.name" />
-
-		<page category="org.eclipse.dltk.ruby.preferences"
-			class="org.eclipse.dltk.ruby.internal.debug.ui.preferences.RubyDebugPreferencePage"
-			id="org.eclipse.dltk.ruby.preferences.debug" name="%RubyDebugPreferencePage.name" />
-  <page
+      <page 
+        category="org.eclipse.dltk.ruby.preferences"
+		class="org.eclipse.dltk.ruby.internal.debug.ui.interpreters.RubyInterpreterPreferencePage"
+		id="org.eclipse.dltk.ruby.preferences.interpreters"
+		name="%RubyInterpretersPreferencePage.name" />
+  	  <page 
+  	    category="org.eclipse.dltk.ruby.preferences"
+		class="org.eclipse.dltk.ruby.internal.debug.ui.preferences.RubyDebugPreferencePage"
+		id="org.eclipse.dltk.ruby.preferences.debug" 
+		name="%RubyDebugPreferencePage.name" />
+	  <page
+	    category="org.eclipse.dltk.ruby.preferences.debug"
+	    class="org.eclipse.dltk.ruby.internal.debug.ui.preferences.RubyDebuggingEnginePreferencePage"
+	    id="org.eclipse.dltk.ruby.preferences.debug.engines"
+	    name="%RubyDebuggingEnginePreferencePage.name" />
+      <page
         category="org.eclipse.dltk.ruby.preferences.debug"
         class="org.eclipse.dltk.debug.ui.preferences.ScriptStepFilterPreferencePage:org.eclipse.dltk.ruby.core.nature"
         id="org.eclipse.dltk.ruby.debug.ui.stepfilter"
-        name="Step filters">
-  </page>
+        name="%RubyStepFiltersPreferencePage.name" />
 	</extension>
+
+    <extension point="org.eclipse.ui.propertyPages">
+      <page
+        class="org.eclipse.dltk.ruby.internal.debug.ui.preferences.RubyDebugPreferencePage"
+        category="org.eclipse.dltk.ruby.propertyPage"
+        id="org.eclipse.dltk.ruby.propertyPage.debug"
+        name="%Debug.PropertyPage">
+        <enabledWhen>
+          <adapt type="org.eclipse.core.resources.IProject">
+            <test property="org.eclipse.core.resources.projectNature" value="org.eclipse.dltk.ruby.core.nature"/>
+          </adapt>         
+        </enabledWhen>
+      </page>    
+      <page
+        class="org.eclipse.dltk.ruby.internal.debug.ui.preferences.RubyDebuggingEnginePreferencePage"
+        category="org.eclipse.dltk.ruby.propertyPage.debug"
+        id="org.eclipse.dltk.ruby.propertyPage.debug.engines"
+        name="%Engines.PropertyPage">
+        <enabledWhen>
+          <adapt type="org.eclipse.core.resources.IProject">
+            <test property="org.eclipse.core.resources.projectNature" value="org.eclipse.dltk.ruby.core.nature"/>
+          </adapt>         
+        </enabledWhen>
+      </page> 
+    </extension>   
+
 
 	<extension
 		point="org.eclipse.ui.console.consolePatternMatchListeners">

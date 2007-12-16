@@ -10,4 +10,5 @@ public class PreferenceMessages {
 	}
 
 	public static String PreferencesDescription;
+	public static String NoSettingsAvailable;
 }

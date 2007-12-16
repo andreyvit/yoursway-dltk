@@ -1,51 +1,81 @@
 package org.eclipse.dltk.ruby.internal.debug.ui.preferences;
 
-import org.eclipse.dltk.debug.ui.preferences.AbstractScriptDebuggingEngineConfigurationBlock;
-import org.eclipse.dltk.internal.ui.text.PreferencesAdapter;
-import org.eclipse.dltk.ruby.core.RubyNature;
-import org.eclipse.dltk.ruby.debug.RubyDebugConstants;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.dltk.ruby.debug.RubyDebugPlugin;
-import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPreferencePage;
-import org.eclipse.dltk.ui.preferences.IPreferenceConfigurationBlock;
-import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
+import org.eclipse.dltk.ui.PreferencesAdapter;
+import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage;
+import org.eclipse.dltk.ui.preferences.AbstractOptionsBlock;
+import org.eclipse.dltk.ui.preferences.PreferenceKey;
+import org.eclipse.dltk.ui.util.IStatusChangeListener;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
 /**
  * Ruby debug preference page
  */
 public class RubyDebugPreferencePage extends
-		AbstractConfigurationBlockPreferencePage {
-	public static final String PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug";
+		AbstractConfigurationBlockPropertyAndPreferencePage {
 
-	protected IPreferenceConfigurationBlock createConfigurationBlock(
-			OverlayPreferenceStore overlayPreferenceStore) {
-		return new AbstractScriptDebuggingEngineConfigurationBlock(
-				overlayPreferenceStore, this) {
-			protected String getContributionPrefKey() {
-				return RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY;
-			}
+	// ~ Static fields/initializers
 
-			protected String getNatureId() {
-				return RubyNature.NATURE_ID;
+	private static String PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug";
+	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.ruby.propertyPage.debug";
+
+	// ~ Methods
+
+	protected AbstractOptionsBlock createOptionsBlock(
+			IStatusChangeListener newStatusChangedListener, IProject project,
+			IWorkbenchPreferenceContainer container) {
+		return new AbstractOptionsBlock(newStatusChangedListener, project,
+				new PreferenceKey[] {}, container) {
+			protected Control createOptionsBlock(Composite parent) {
+				return parent;
 			}
 		};
 	}
 
+	/*
+	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getHelpId()
+	 */
 	protected String getHelpId() {
 		return null;
 	}
 
-	protected void setDescription() {
-		setDescription(RubyDebugPreferencesMessages.PreferencesDescription);
+	/*
+	 * @see org.eclipse.dltk.internal.ui.preferences.PropertyAndPreferencePage#getPreferencePageId()
+	 */
+	protected String getPreferencePageId() {
+		return PREFERENCE_PAGE_ID;
 	}
 
+	/*
+	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getProjectHelpId()
+	 */
+	protected String getProjectHelpId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.internal.ui.preferences.PropertyAndPreferencePage#getPropertyPageId()
+	 */
+	protected String getPropertyPageId() {
+		return PROPERTY_PAGE_ID;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setDescription()
+	 */
+	protected void setDescription() {
+		setDescription(RubyDebugPreferencesMessages.RubyDebugEnginePreferencePage_description);
+	}
+
+	/*
+	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setPreferenceStore()
+	 */
 	protected void setPreferenceStore() {
 		setPreferenceStore(new PreferencesAdapter(RubyDebugPlugin.getDefault()
 				.getPluginPreferences()));
-	}
-
-	public boolean performOk() {
-		super.performOk();
-		RubyDebugPlugin.getDefault().savePluginPreferences();
-		return true;
 	}
 }

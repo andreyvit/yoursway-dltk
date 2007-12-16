@@ -9,5 +9,6 @@ public class RubyDebugPreferencesMessages {
 		NLS.initializeMessages(BUNDLE_NAME, RubyDebugPreferencesMessages.class);
 	}
 
-	public static String PreferencesDescription;
+	public static String RubyDebugPreferencePage_description;
+	public static String RubyDebugEnginePreferencePage_description;
 }

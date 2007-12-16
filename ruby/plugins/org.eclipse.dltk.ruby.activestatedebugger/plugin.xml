@@ -1,30 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension
-         point="org.eclipse.dltk.launching.debuggingEngine">
-      <engineContribution
-            natureId="org.eclipse.dltk.ruby.core.nature">
-         <engine
-              class="org.eclipse.dltk.ruby.activestatedebugger.RubyActiveStateDebuggerRunnerFactory"
-              description="%ActiveStateDebuggingEngine.description"
-              id="org.eclipse.dltk.ruby.activestatedebugger"
-              name="%ActiveStateDebuggingEngine.name"
-              priority="0"
-              preferencePageId="org.eclipse.dltk.ruby.preferences.debug.activestatedebugger">
-        </engine>    
-      </engineContribution>
-   </extension>
-   <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            category="org.eclipse.dltk.ruby.preferences.debug"
-            class="org.eclipse.dltk.ruby.activestatedebugger.preferences.RubyActiveStateDebuggerPreferencePage"
-            id="org.eclipse.dltk.ruby.preferences.debug.activestatedebugger"
-            name="%RubyActiveStateDebuggerPreferencePage.name">
-      </page>
-   </extension>
-   
-        
+
+  <extension point="org.eclipse.core.runtime.preferences">
+    <initializer
+      class="org.eclipse.dltk.ruby.activestatedebugger.preferences.RubyActiveStateDebuggerPreferenceInitializer" />
+  </extension>
+
+  <extension point="org.eclipse.dltk.launching.debuggingEngine">
+    <engineContribution natureId="org.eclipse.dltk.ruby.core.nature">
+      <engine
+        class="org.eclipse.dltk.ruby.activestatedebugger.RubyActiveStateDebuggerRunnerFactory"
+        description="%ActiveStateDebuggingEngine.description"
+        id="org.eclipse.dltk.ruby.activestatedebugger"
+        name="%ActiveStateDebuggingEngine.name"
+        priority="0"
+        propertyPageId="org.eclipse.dltk.ruby.propertyPage.debug.engines.activestatedebugger"
+        preferencePageId="org.eclipse.dltk.ruby.preferences.debug.activestatedebugger">
+      </engine>
+    </engineContribution>
+  </extension>
+
+  <extension point="org.eclipse.ui.preferencePages">
+    <page
+      category="org.eclipse.dltk.ruby.preferences.debug.engines"
+      class="org.eclipse.dltk.ruby.activestatedebugger.preferences.RubyActiveStateDebuggerPreferencePage"
+      id="org.eclipse.dltk.ruby.preferences.debug.activestatedebugger"
+      name="%RubyActiveStateDebuggerPreferencePage.name">
+    </page>
+  </extension>
+
+  <extension point="org.eclipse.ui.propertyPages">
+    <page
+      class="org.eclipse.dltk.ruby.activestatedebugger.preferences.RubyActiveStateDebuggerPreferencePage"
+      category="org.eclipse.dltk.ruby.propertyPage.debug.engines"
+      id="org.eclipse.dltk.ruby.propertyPage.debug.engines.activestatedebugger"
+      name="%RubyActiveStateDebuggerPropertyPage.name">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test
+            property="org.eclipse.core.resources.projectNature"
+            value="org.eclipse.dltk.ruby.core.nature" />
+        </adapt>
+      </enabledWhen>
+    </page>
+  </extension>
 
 </plugin>

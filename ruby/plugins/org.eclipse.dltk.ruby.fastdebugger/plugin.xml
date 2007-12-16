@@ -18,7 +18,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            category="org.eclipse.dltk.ruby.preferences.debug"
+            category="org.eclipse.dltk.ruby.preferences.debug.engines"
             class="org.eclipse.dltk.ruby.fastdebugger.preferences.FastDebuggerPreferencePage"
             id="org.eclipse.dltk.ruby.preferences.debug.railsdebugger"
             name="%RailsDebuggerPreferencePage.name">

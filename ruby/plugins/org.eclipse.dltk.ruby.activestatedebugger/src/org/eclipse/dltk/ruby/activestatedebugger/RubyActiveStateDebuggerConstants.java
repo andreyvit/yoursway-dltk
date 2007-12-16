@@ -10,10 +10,18 @@
 
 package org.eclipse.dltk.ruby.activestatedebugger;
 
-public final class RubyActiveStateDebuggerConstants {
-	private RubyActiveStateDebuggerConstants() {
+import org.eclipse.jface.preference.IPreferenceStore;
 
-	}
+public final class RubyActiveStateDebuggerConstants {
 
 	public static final String DEBUGGING_ENGINE_PATH_KEY = "debugging_engine_path";
+
+	public static void initializeDefaults(IPreferenceStore store) {
+		store.setDefault(DEBUGGING_ENGINE_PATH_KEY, "");
+	}
+	
+	private RubyActiveStateDebuggerConstants() {
+		// private constructor
+	}
+
 }
