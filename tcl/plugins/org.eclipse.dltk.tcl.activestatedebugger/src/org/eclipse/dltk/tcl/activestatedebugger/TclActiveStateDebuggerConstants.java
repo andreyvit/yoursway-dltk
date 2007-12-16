@@ -10,10 +10,18 @@
 
 package org.eclipse.dltk.tcl.activestatedebugger;
 
-public final class TclActiveStateDebuggerConstants {
-	private TclActiveStateDebuggerConstants() {
+import org.eclipse.jface.preference.IPreferenceStore;
 
-	}
+public final class TclActiveStateDebuggerConstants {
 
 	public static final String DEBUGGING_ENGINE_PATH_KEY = "debugging_engine_path";
+
+	public static void initalizeDefaults(IPreferenceStore store) {
+		store.setDefault(DEBUGGING_ENGINE_PATH_KEY, "");
+	}
+	
+	private TclActiveStateDebuggerConstants() {
+		// private constructor
+	}
+
 }

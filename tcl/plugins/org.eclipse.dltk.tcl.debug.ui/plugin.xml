@@ -1,120 +1,124 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-	<extension point="org.eclipse.core.runtime.preferences">
-		<initializer
-			class="org.eclipse.dltk.tcl.internal.console.ui.preferences.TclConsolePreferenceInitializer" />
-	</extension>
-	
-	<extension point="org.eclipse.ui.commands">
-		<command name="%ActionDefinition.RunTclScript.name"
-			description="%ActionDefinition.RunTclScript.description"
-			categoryId="org.eclipse.debug.ui.category.run"
-			id="org.eclipse.dltk.tcl.debug.ui.launchShortcut.run">
-		</command>
-		<command name="%ActionDefinition.DebugTclScript.name"
-			description="%ActionDefinition.DebugTclScript.description"
-			categoryId="org.eclipse.debug.ui.category.run"
-			id="org.eclipse.dltk.tcl.debug.ui.launchShortcut.debug">
-		</command>
-	</extension>
-	
-	<extension point="org.eclipse.ui.bindings">
-		<key
-			commandId="org.eclipse.dltk.tcl.debug.ui.launchShortcut.run"
-			contextId="org.eclipse.ui.globalScope"
-			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-			sequence="M3+M2+X F">
-		</key>
-		<key
-			commandId="org.eclipse.dltk.tcl.debug.ui.launchShortcut.debug"
-			contextId="org.eclipse.ui.globalScope"
-			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-			sequence="M3+M2+D F">
-		</key>
-	</extension>
-	
+  <extension point="org.eclipse.core.runtime.preferences">
+    <initializer
+      class="org.eclipse.dltk.tcl.internal.console.ui.preferences.TclConsolePreferenceInitializer" />
+  </extension>
 
-	<extension point="org.eclipse.ui.popupMenus">
-		<objectContribution adaptable="false"
-			id="org.eclipse.dltk.tcl.console.ui.objectContribution1"
-			nameFilter="*" objectClass="org.eclipse.dltk.core.ISourceModule">
-			<action
-				class="org.eclipse.dltk.tcl.internal.console.ui.actions.PasteTclScriptToConsole"
-				id="org.eclipse.dltk.tcl.console.ui.internal.actions.PasteTclTextToConsoleAction"
-				label="%TclConsole.Actions.PasteToTclConsole" />
-		</objectContribution>
+  <extension point="org.eclipse.ui.commands">
+    <command
+      name="%ActionDefinition.RunTclScript.name"
+      description="%ActionDefinition.RunTclScript.description"
+      categoryId="org.eclipse.debug.ui.category.run"
+      id="org.eclipse.dltk.tcl.debug.ui.launchShortcut.run">
+    </command>
+    <command
+      name="%ActionDefinition.DebugTclScript.name"
+      description="%ActionDefinition.DebugTclScript.description"
+      categoryId="org.eclipse.debug.ui.category.run"
+      id="org.eclipse.dltk.tcl.debug.ui.launchShortcut.debug">
+    </command>
+  </extension>
 
-		<viewerContribution
-			id="org.eclipse.dltk.tcl.debug.ui.viewerContribution1"
-			targetID="#TclEditorContext">
-			<!--action
-				class="org.eclipse.dltk.debug.ui.actions.WatchExpressionAction"
-				id="org.eclipse.dltk.tcl.debug.ui.WatchExpressionAction"
-				label="%WatchVariable"
-				menubarPath="additions"/-->
-			<action
-				id="org.eclipse.dltk.tcl.console.ui.internal.actions.PasteToTclConsoleAction"
-				label="%TclConsole.Actions.PasteToTclConsole"
-				menubarPath="additions"
-				class="org.eclipse.dltk.tcl.internal.console.ui.actions.PasteTclTextToConsoleAction">
-			</action>
-		</viewerContribution>
-		<viewerContribution
-			id="org.eclipse.dltk.tcl.debug.ui.rulerContribution"
-			targetID="#TclRulerContext">
+  <extension point="org.eclipse.ui.bindings">
+    <key
+      commandId="org.eclipse.dltk.tcl.debug.ui.launchShortcut.run"
+      contextId="org.eclipse.ui.globalScope"
+      schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+      sequence="M3+M2+X F">
+    </key>
+    <key
+      commandId="org.eclipse.dltk.tcl.debug.ui.launchShortcut.debug"
+      contextId="org.eclipse.ui.globalScope"
+      schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+      sequence="M3+M2+D F">
+    </key>
+  </extension>
 
-			<action label="%EnableDisableBreakpoint.label"
-				id="org.eclipse.dltk.tcl.ui.actions.RulerEnableDisableBreakpointActionDelegate"
-				class="org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
-				menubarPath="debug">
-			</action>
 
-			<action label="%ToggleBreakpoint.label"
-				id="org.eclipse.dltk.tcl.ui.actions.RulerToggleBreakpointActionDelegate"
-				class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
-				menubarPath="debug">
-			</action>
+  <extension point="org.eclipse.ui.popupMenus">
+    <objectContribution
+      adaptable="false"
+      id="org.eclipse.dltk.tcl.console.ui.objectContribution1"
+      nameFilter="*"
+      objectClass="org.eclipse.dltk.core.ISourceModule">
+      <action
+        class="org.eclipse.dltk.tcl.internal.console.ui.actions.PasteTclScriptToConsole"
+        id="org.eclipse.dltk.tcl.console.ui.internal.actions.PasteTclTextToConsoleAction"
+        label="%TclConsole.Actions.PasteToTclConsole" />
+    </objectContribution>
 
-			<action
-				class="org.eclipse.dltk.debug.ui.actions.ScriptBreakpointPropertiesRulerActionDelegate"
-				id="org.eclipse.dltk.tcl.debug.ui.ScriptBreakpointPropertiesRulerActionDelegate"
-				label="%BreakpointProperties.label" 
-				menubarPath="group.properties" />
-		</viewerContribution>
-	</extension>
+    <viewerContribution
+      id="org.eclipse.dltk.tcl.debug.ui.viewerContribution1"
+      targetID="#TclEditorContext">
+      <!--action
+        class="org.eclipse.dltk.debug.ui.actions.WatchExpressionAction"
+        id="org.eclipse.dltk.tcl.debug.ui.WatchExpressionAction"
+        label="%WatchVariable"
+        menubarPath="additions"/-->
+      <action
+        id="org.eclipse.dltk.tcl.console.ui.internal.actions.PasteToTclConsoleAction"
+        label="%TclConsole.Actions.PasteToTclConsole"
+        menubarPath="additions"
+        class="org.eclipse.dltk.tcl.internal.console.ui.actions.PasteTclTextToConsoleAction">
+      </action>
+    </viewerContribution>
+    <viewerContribution
+      id="org.eclipse.dltk.tcl.debug.ui.rulerContribution"
+      targetID="#TclRulerContext">
 
-	<extension point="org.eclipse.ui.actionSetPartAssociations">
-		<actionSetPartAssociation
-			targetID="org.eclipse.debug.ui.launchActionSet">
-			<part id="org.eclipse.dltk.tcl.ui.editor.TclEditor"></part>
-		</actionSetPartAssociation>
-		<actionSetPartAssociation
-			targetID="org.eclipse.debug.ui.launchActionSet">
-			<part id="org.eclipse.dltk.ui.ScriptExplorer"></part>
-			<part id="org.eclipse.dltk.tcl.ui.editor.TclEditor"></part>
-		</actionSetPartAssociation>
-	</extension>
-	
-	<extension
-		point="org.eclipse.ui.console.consolePatternMatchListeners">
-		<consolePatternMatchListener
-			class="org.eclipse.dltk.tcl.internal.debug.ui.console.TclConsoleTracker"
-			regex="\(file &quot;.*&quot; line .*\)"
-			id="org.eclipse.dltk.tcl.debug.ui.TclConsoleTracker">
-			<enablement>
-				<or>
-					<test
-						property="org.eclipse.debug.ui.processTypeTest"
-						value="tclInterpreter" />
-				</or>
-			</enablement>
-		</consolePatternMatchListener>
+      <action
+        label="%EnableDisableBreakpoint.label"
+        id="org.eclipse.dltk.tcl.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+        class="org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+        menubarPath="debug">
+      </action>
 
-	</extension>
-<!--
- <extension
-    point="org.eclipse.ui.propertyPages">
+      <action
+        label="%ToggleBreakpoint.label"
+        id="org.eclipse.dltk.tcl.ui.actions.RulerToggleBreakpointActionDelegate"
+        class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+        menubarPath="debug">
+      </action>
+
+      <action
+        class="org.eclipse.dltk.debug.ui.actions.ScriptBreakpointPropertiesRulerActionDelegate"
+        id="org.eclipse.dltk.tcl.debug.ui.ScriptBreakpointPropertiesRulerActionDelegate"
+        label="%BreakpointProperties.label"
+        menubarPath="group.properties" />
+    </viewerContribution>
+  </extension>
+
+  <extension point="org.eclipse.ui.actionSetPartAssociations">
+    <actionSetPartAssociation
+      targetID="org.eclipse.debug.ui.launchActionSet">
+      <part id="org.eclipse.dltk.tcl.ui.editor.TclEditor"></part>
+    </actionSetPartAssociation>
+    <actionSetPartAssociation
+      targetID="org.eclipse.debug.ui.launchActionSet">
+      <part id="org.eclipse.dltk.ui.ScriptExplorer"></part>
+      <part id="org.eclipse.dltk.tcl.ui.editor.TclEditor"></part>
+    </actionSetPartAssociation>
+  </extension>
+
+  <extension point="org.eclipse.ui.console.consolePatternMatchListeners">
+    <consolePatternMatchListener
+      class="org.eclipse.dltk.tcl.internal.debug.ui.console.TclConsoleTracker"
+      regex="\(file &quot;.*&quot; line .*\)"
+      id="org.eclipse.dltk.tcl.debug.ui.TclConsoleTracker">
+      <enablement>
+        <or>
+          <test
+            property="org.eclipse.debug.ui.processTypeTest"
+            value="tclInterpreter" />
+        </or>
+      </enablement>
+    </consolePatternMatchListener>
+
+  </extension>
+
+  <extension point="org.eclipse.ui.propertyPages">
     <page
       class="org.eclipse.dltk.tcl.internal.debug.ui.preferences.TclDebugPreferencePage"
       category="org.eclipse.dltk.tcl.propertyPage"
@@ -122,173 +126,183 @@
       name="%Debug.PropertyPage">
       <enabledWhen>
         <adapt type="org.eclipse.core.resources.IProject">
-          <test property="org.eclipse.core.resources.projectNature" value="org.eclipse.dltk.tcl.core.nature"/>
-        </adapt>         
+          <test
+            property="org.eclipse.core.resources.projectNature"
+            value="org.eclipse.dltk.tcl.core.nature" />
+        </adapt>
       </enabledWhen>
-   </page>
-   <page
+    </page>
+    <page
       class="org.eclipse.dltk.tcl.internal.debug.ui.preferences.TclDebuggingEnginePreferencePage"
       category="org.eclipse.dltk.tcl.propertyPage.debug"
       id="org.eclipse.dltk.tcl.propertyPage.debug.engines"
       name="%Engines.PropertyPage">
       <enabledWhen>
         <adapt type="org.eclipse.core.resources.IProject">
-          <test property="org.eclipse.core.resources.projectNature" value="org.eclipse.dltk.tcl.core.nature"/>
-        </adapt>         
+          <test
+            property="org.eclipse.core.resources.projectNature"
+            value="org.eclipse.dltk.tcl.core.nature" />
+        </adapt>
       </enabledWhen>
-   </page>        
-   </extension>
--->
-	<extension point="org.eclipse.ui.preferencePages">
-		<page category="org.eclipse.dltk.tcl.preferences"
-			class="org.eclipse.dltk.tcl.internal.debug.ui.interpreters.TclInterpreterPreferencePage"
-			id="org.eclipse.dltk.tcl.preferences.interpreters"
-			name="%InterpretersPreferencePage" />
-        <page category="org.eclipse.dltk.tcl.preferences"
-            class="org.eclipse.dltk.tcl.internal.debug.ui.preferences.TclDebugPreferencePage"
-            id="org.eclipse.dltk.tcl.preferences.debug"
-            name="%Debug.PreferencePage" />
-        <page 
-            category="org.eclipse.dltk.tcl.preferences.debug"
-            class="org.eclipse.dltk.tcl.internal.debug.ui.preferences.TclDebuggingEnginePreferencePage"
-            id="org.eclipse.dltk.tcl.preferences.debug.engines"
-            name="%Engines.PreferencePage" />
-		<page category="org.eclipse.dltk.tcl.preferences"
-			class="org.eclipse.dltk.tcl.internal.console.ui.preferences.TclConsolePreferencePage"
-			id="org.eclipse.dltk.tcl.preferences.console"
-			name="%TclConsole.PreferencePage" />
-	</extension>
+    </page>
+  </extension>
 
-	<extension point="org.eclipse.ui.editorActions">
-		<editorContribution
-			targetID="org.eclipse.dltk.tcl.ui.editor.TclEditor"
-			id="org.eclipse.dltk.tcl.debug.TclEditor.BreakpointRulerActions">
+  <extension point="org.eclipse.ui.preferencePages">
+    <page
+      category="org.eclipse.dltk.tcl.preferences"
+      class="org.eclipse.dltk.tcl.internal.debug.ui.interpreters.TclInterpreterPreferencePage"
+      id="org.eclipse.dltk.tcl.preferences.interpreters"
+      name="%InterpretersPreferencePage" />
+    <page
+      category="org.eclipse.dltk.tcl.preferences"
+      class="org.eclipse.dltk.tcl.internal.debug.ui.preferences.TclDebugPreferencePage"
+      id="org.eclipse.dltk.tcl.preferences.debug"
+      name="%Debug.PreferencePage" />
+    <page
+      category="org.eclipse.dltk.tcl.preferences.debug"
+      class="org.eclipse.dltk.tcl.internal.debug.ui.preferences.TclDebuggingEnginePreferencePage"
+      id="org.eclipse.dltk.tcl.preferences.debug.engines"
+      name="%Engines.PreferencePage" />
+    <page
+      category="org.eclipse.dltk.tcl.preferences"
+      class="org.eclipse.dltk.tcl.internal.console.ui.preferences.TclConsolePreferencePage"
+      id="org.eclipse.dltk.tcl.preferences.console"
+      name="%TclConsole.PreferencePage" />
+  </extension>
 
-			<action label="Toggle Breakpoint (label not used)"
-				class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
-				style="push" actionID="RulerDoubleClick"
-				id="TclEditor.doubleClickBreakpointAction" />
+  <extension point="org.eclipse.ui.editorActions">
+    <editorContribution
+      targetID="org.eclipse.dltk.tcl.ui.editor.TclEditor"
+      id="org.eclipse.dltk.tcl.debug.TclEditor.BreakpointRulerActions">
 
-		</editorContribution>
-	</extension>
-	
-	<extension point="org.eclipse.ui.console.consoleFactories">
-		<consoleFactory
-			class="org.eclipse.dltk.tcl.internal.console.ui.TclConsoleFactory"
-			icon="icons/obj16/console_obj.gif" label="%TclConsole.Console" />
-	</extension>
-	
-	<extension point="org.eclipse.ui.perspectiveExtensions">
-		<perspectiveExtension
-			targetID="org.eclipse.dltk.tcl.ui.TclPerspective">
-			<actionSet id="org.eclipse.debug.ui.breakpointActionSet">
-			</actionSet>
-		</perspectiveExtension>
-	</extension>
+      <action
+        label="Toggle Breakpoint (label not used)"
+        class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+        style="push"
+        actionID="RulerDoubleClick"
+        id="TclEditor.doubleClickBreakpointAction" />
 
-	<extension
-		point="org.eclipse.debug.ui.launchConfigurationTypeImages">
-		<launchConfigurationTypeImage
-			icon="$nl$/icons/obj16/tcl_obj.gif"
-			configTypeID="org.eclipse.dltk.tcl.launching.TCLLaunchConfigurationType"
-			id="org.eclipse.dltk.tcl.debug.ui.launchConfigurationTypeImage">
-		</launchConfigurationTypeImage>
-		<launchConfigurationTypeImage
-            icon="$nl$/icons/obj16/tcl_obj.gif"
-            configTypeID="org.eclipse.dltk.tcl.launching.TCLRemoteLaunchConfigurationType"
-            id="org.eclipse.dltk.tcl.debug.ui.remoteLaunchConfigurationTypeImage">
-        </launchConfigurationTypeImage>
-	</extension>
+    </editorContribution>
+  </extension>
 
-	<extension
-		point="org.eclipse.debug.ui.launchConfigurationTabGroups">
-		<launchConfigurationTabGroup
-			class="org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations.TclTabGroup"
-			id="org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations.TclTabGroup"
-			type="org.eclipse.dltk.tcl.launching.TCLLaunchConfigurationType">
-		</launchConfigurationTabGroup>
-        <launchConfigurationTabGroup
-            class="org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations.TclRemoteTabGroup"
-            id="org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations.TclRtemoteTabGroup"
-            type="org.eclipse.dltk.tcl.launching.TCLRemoteLaunchConfigurationType">
-        </launchConfigurationTabGroup>		
-	</extension>
+  <extension point="org.eclipse.ui.console.consoleFactories">
+    <consoleFactory
+      class="org.eclipse.dltk.tcl.internal.console.ui.TclConsoleFactory"
+      icon="icons/obj16/console_obj.gif"
+      label="%TclConsole.Console" />
+  </extension>
 
-	<extension point="org.eclipse.debug.ui.launchShortcuts">
-		<shortcut
-			class="org.eclipse.dltk.tcl.internal.debug.ui.launcher.TclLaunchShortcut"
-			description="%TclLaunchShortcut.description"
-			icon="icons/obj16/tcl_obj.gif"
-			id="org.eclipse.dltk.tcl.debug.ui.launchShortcut"
-			label="%TclLaunchShortcut.name" modes="run, debug">
-			<description description="%TclLaunchShortcut.runDescription"
-				mode="run">
-			</description>
-			<description
-				description="%TclLaunchShortcut.debugDescription" mode="debug">
-			</description>
-			<contextualLaunch>
-				<enablement>
-					<with variable="selection">
-						<count value="1" />
-						<iterate>
-							<or>
-								<test
-									args="org.eclipse.dltk.tcl.core.nature"
-									property="org.eclipse.dltk.launching.hasProjectNature" />
-							</or>
-						</iterate>
-					</with>
-				</enablement>
-				<contextLabel label="%TclLaunchShortcut.runName"
-					mode="run">
-				</contextLabel>
-				<contextLabel label="%TclLaunchShortcut.debugName"
-					mode="debug">
-				</contextLabel>
-			</contextualLaunch>
-		</shortcut>
-	</extension>
+  <extension point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension targetID="org.eclipse.dltk.tcl.ui.TclPerspective">
+      <actionSet id="org.eclipse.debug.ui.breakpointActionSet"></actionSet>
+    </perspectiveExtension>
+  </extension>
 
-	<extension point="org.eclipse.debug.ui.debugModelContextBindings">
-		<modelContextBinding
-			contextId="org.eclipse.dltk.debug.ui.debugging"
-			debugModelId="org.eclipse.dltk.debug.tclModel" />
-	</extension>
+  <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+    <launchConfigurationTypeImage
+      icon="$nl$/icons/obj16/tcl_obj.gif"
+      configTypeID="org.eclipse.dltk.tcl.launching.TCLLaunchConfigurationType"
+      id="org.eclipse.dltk.tcl.debug.ui.launchConfigurationTypeImage">
+    </launchConfigurationTypeImage>
+    <launchConfigurationTypeImage
+      icon="$nl$/icons/obj16/tcl_obj.gif"
+      configTypeID="org.eclipse.dltk.tcl.launching.TCLRemoteLaunchConfigurationType"
+      id="org.eclipse.dltk.tcl.debug.ui.remoteLaunchConfigurationTypeImage">
+    </launchConfigurationTypeImage>
+  </extension>
 
-	<extension point="org.eclipse.debug.ui.debugModelPresentations">
-		<debugModelPresentation
-			class="org.eclipse.dltk.tcl.internal.debug.ui.TclDebugModelPresentation"
-			id="org.eclipse.dltk.debug.tclModel" />
-	</extension>
+  <extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+    <launchConfigurationTabGroup
+      class="org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations.TclTabGroup"
+      id="org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations.TclTabGroup"
+      type="org.eclipse.dltk.tcl.launching.TCLLaunchConfigurationType">
+    </launchConfigurationTabGroup>
+    <launchConfigurationTabGroup
+      class="org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations.TclRemoteTabGroup"
+      id="org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations.TclRtemoteTabGroup"
+      type="org.eclipse.dltk.tcl.launching.TCLRemoteLaunchConfigurationType">
+    </launchConfigurationTabGroup>
+  </extension>
 
-	<extension
-		point="org.eclipse.debug.core.watchExpressionDelegates">
-		<watchExpressionDelegate
-			debugModel="org.eclipse.dltk.debug.tclModel"
-			delegateClass="org.eclipse.dltk.tcl.internal.debug.ui.TclWatchExpressionDelegate">
-		</watchExpressionDelegate>
-	</extension>
-	
-	<extension point="org.eclipse.dltk.ui.buildpathContainerPage">
-		<buildpathContainerPath
-			class="org.eclipse.dltk.tcl.internal.debug.ui.interpreters.TclInterpreterContainerWizardPage"
-			id="org.eclipse.dltk.tcl.launching.INTERPRETER_CONTAINER"
-			name="Tcl Interpreter Libraries"
-			nature="org.eclipse.dltk.tcl.core.nature" />
-	</extension>
-	
-	<extension point="org.eclipse.dltk.console.ui.scriptConsole">
-		<scriptConsole
-			class="org.eclipse.dltk.tcl.internal.console.ui.TclConsoleFactory"
-			natureID="org.eclipse.dltk.tcl.core.nature" />
-	</extension>
-	<extension point="org.eclipse.core.runtime.adapters">
-       <factory
-          adaptableType="org.eclipse.dltk.tcl.internal.ui.editor.TclEditor"
-          class="org.eclipse.dltk.tcl.internal.debug.ui.TclEditorDebugAdapterFactory">
-           <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
-           <adapter type="org.eclipse.debug.ui.actions.IRunToLineTarget"/>
-       </factory>         
-    </extension>
+  <extension point="org.eclipse.debug.ui.launchShortcuts">
+    <shortcut
+      class="org.eclipse.dltk.tcl.internal.debug.ui.launcher.TclLaunchShortcut"
+      description="%TclLaunchShortcut.description"
+      icon="icons/obj16/tcl_obj.gif"
+      id="org.eclipse.dltk.tcl.debug.ui.launchShortcut"
+      label="%TclLaunchShortcut.name"
+      modes="run, debug">
+      <description
+        description="%TclLaunchShortcut.runDescription"
+        mode="run">
+      </description>
+      <description
+        description="%TclLaunchShortcut.debugDescription"
+        mode="debug">
+      </description>
+      <contextualLaunch>
+        <enablement>
+          <with variable="selection">
+            <count value="1" />
+            <iterate>
+              <or>
+                <test
+                  args="org.eclipse.dltk.tcl.core.nature"
+                  property="org.eclipse.dltk.launching.hasProjectNature" />
+              </or>
+            </iterate>
+          </with>
+        </enablement>
+        <contextLabel
+          label="%TclLaunchShortcut.runName"
+          mode="run">
+        </contextLabel>
+        <contextLabel
+          label="%TclLaunchShortcut.debugName"
+          mode="debug">
+        </contextLabel>
+      </contextualLaunch>
+    </shortcut>
+  </extension>
+
+  <extension point="org.eclipse.debug.ui.debugModelContextBindings">
+    <modelContextBinding
+      contextId="org.eclipse.dltk.debug.ui.debugging"
+      debugModelId="org.eclipse.dltk.debug.tclModel" />
+  </extension>
+
+  <extension point="org.eclipse.debug.ui.debugModelPresentations">
+    <debugModelPresentation
+      class="org.eclipse.dltk.tcl.internal.debug.ui.TclDebugModelPresentation"
+      id="org.eclipse.dltk.debug.tclModel" />
+  </extension>
+
+  <extension point="org.eclipse.debug.core.watchExpressionDelegates">
+    <watchExpressionDelegate
+      debugModel="org.eclipse.dltk.debug.tclModel"
+      delegateClass="org.eclipse.dltk.tcl.internal.debug.ui.TclWatchExpressionDelegate">
+    </watchExpressionDelegate>
+  </extension>
+
+  <extension point="org.eclipse.dltk.ui.buildpathContainerPage">
+    <buildpathContainerPath
+      class="org.eclipse.dltk.tcl.internal.debug.ui.interpreters.TclInterpreterContainerWizardPage"
+      id="org.eclipse.dltk.tcl.launching.INTERPRETER_CONTAINER"
+      name="Tcl Interpreter Libraries"
+      nature="org.eclipse.dltk.tcl.core.nature" />
+  </extension>
+
+  <extension point="org.eclipse.dltk.console.ui.scriptConsole">
+    <scriptConsole
+      class="org.eclipse.dltk.tcl.internal.console.ui.TclConsoleFactory"
+      natureID="org.eclipse.dltk.tcl.core.nature" />
+  </extension>
+  <extension point="org.eclipse.core.runtime.adapters">
+    <factory
+      adaptableType="org.eclipse.dltk.tcl.internal.ui.editor.TclEditor"
+      class="org.eclipse.dltk.tcl.internal.debug.ui.TclEditorDebugAdapterFactory">
+      <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget" />
+      <adapter type="org.eclipse.debug.ui.actions.IRunToLineTarget" />
+    </factory>
+  </extension>
 </plugin>

@@ -100,25 +100,26 @@
   <extension
        point="org.eclipse.ui.propertyPages">
     <page
-          class="org.eclipse.dltk.python.internal.ui.preferences.PythonBuildPathPropertyPage"
-          id="org.eclipse.dltk.python.ui.BuildpathProperties"
-          name="%PythonBuildPathPropertyPage.name"
-          objectClass="org.eclipse.core.resources.IProject">
-       <filter
-             name="nature"
-             value="org.eclipse.dltk.python.core.nature"/>
-       <keywordReference id="org.eclipse.dltk.ui.buildpath"/>
-    </page>
-    <page
       class="org.eclipse.dltk.python.internal.ui.preferences.PythonBuildPathPropertyPage"
       id="org.eclipse.dltk.python.ui.BuildpathProperties"
-      name="%PythonBuildPathPropertyPage.name"
-      objectClass="org.eclipse.dltk.core.IScriptProject">
-      <filter
-        name="nature"
-        value="org.eclipse.dltk.python.core.nature" />
+      name="%PythonBuildPathPropertyPage.name">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test property="org.eclipse.core.resources.projectNature" value="org.eclipse.dltk.python.core.nature"/>
+        </adapt>         
+      </enabledWhen>
       <keywordReference
         id="org.eclipse.dltk.ui.buildpath" />
+    </page>    
+    <page
+      name="%PythonPropertyPage.name"
+      class="org.eclipse.dltk.python.internal.ui.preferences.PythonPropertyPage"
+      id="org.eclipse.dltk.python.propertyPage">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test property="org.eclipse.core.resources.projectNature" value="org.eclipse.dltk.python.core.nature"/>
+        </adapt>         
+      </enabledWhen>
     </page>    
  </extension>
  <extension

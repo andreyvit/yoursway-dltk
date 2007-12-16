@@ -228,24 +228,26 @@
     <page
           class="org.eclipse.dltk.tcl.internal.ui.preferences.TclBuildPathPropertyPage"
           id="org.eclipse.dltk.tcl.ui.BuildpathProperties"
-          name="%TclBuildPathPropertyPage.name"
-          objectClass="org.eclipse.core.resources.IProject">
-       <filter
-             name="nature"
-             value="org.eclipse.dltk.tcl.core.nature"/>
-       <keywordReference id="org.eclipse.dltk.tcl.ui.buildpath"/>
+          name="%TclBuildPathPropertyPage.name">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test property="org.eclipse.core.resources.projectNature" value="org.eclipse.dltk.tcl.core.nature"/>
+        </adapt>         
+      </enabledWhen>
+      <keywordReference id="org.eclipse.dltk.tcl.ui.buildpath"/>
     </page>
     <page
-          class="org.eclipse.dltk.tcl.internal.ui.preferences.TclBuildPathPropertyPage"
-          id="org.eclipse.dltk.tcl.ui.BuildpathProperties"
-          name="%TclBuildPathPropertyPage.name"
-          objectClass="org.eclipse.dltk.core.IScriptProject">
-       <filter
-             name="nature"
-             value="org.eclipse.dltk.tcl.core.nature"/>
-       <keywordReference id="org.eclipse.dltk.tcl.ui.buildpath"/>
-    </page>    
+      name="%TclPropertyPage.name"
+      class="org.eclipse.dltk.tcl.internal.ui.preferences.TclPropertyPage"
+      id="org.eclipse.dltk.tcl.propertyPage">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test property="org.eclipse.core.resources.projectNature" value="org.eclipse.dltk.tcl.core.nature"/>
+        </adapt>         
+      </enabledWhen>
+    </page>
  </extension>
+
  <extension
        point="org.eclipse.ui.views">        
     <category
