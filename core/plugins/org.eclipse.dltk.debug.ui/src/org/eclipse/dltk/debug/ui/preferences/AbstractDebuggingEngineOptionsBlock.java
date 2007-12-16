@@ -3,20 +3,20 @@ package org.eclipse.dltk.debug.ui.preferences;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.dltk.core.DLTKContributionExtensionManager;
 import org.eclipse.dltk.launching.debug.DebuggingEngineManager;
-import org.eclipse.dltk.ui.preferences.DLTKContributedExtensionOptionsBlock;
+import org.eclipse.dltk.ui.preferences.ContributedExtensionOptionsBlock;
 import org.eclipse.dltk.ui.preferences.PreferenceKey;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
 public abstract class AbstractDebuggingEngineOptionsBlock extends
-		DLTKContributedExtensionOptionsBlock {
+		ContributedExtensionOptionsBlock {
 
 	public AbstractDebuggingEngineOptionsBlock(IStatusChangeListener context,
 			IProject project, PreferenceKey[] allKeys,
 			IWorkbenchPreferenceContainer container) {
 		super(context, project, allKeys, container);
 	}
-
+	
 	/*
 	 * @see org.eclipse.dltk.ui.preferences.DLTKContributedExtensionOptionsBlock#getExtensionManager()
 	 */
@@ -37,4 +37,12 @@ public abstract class AbstractDebuggingEngineOptionsBlock extends
 	protected String getSelectorNameLabel() {
 		return ScriptDebugPreferencesMessages.NameLabel;
 	}
+
+	/*
+	 * @see org.eclipse.dltk.ui.preferences.ContributedExtensionOptionsBlock#getPreferenceLinkMessage()
+	 */
+	protected String getPreferenceLinkMessage() {
+		return ScriptDebugPreferencesMessages.LinkToDebuggingEnginePreferences;
+	}
+
 }

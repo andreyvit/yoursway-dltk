@@ -49,9 +49,9 @@ public class ScriptDebugPreferencesMessages {
 
 	public static String GeneralPreferencesDescription;
 
-	public static String LinkToGeneralPreferenses;
+	public static String LinkToGeneralPreferences;
 
-	public static String LingToDebuggingEnginePreferences;
+	public static String LinkToDebuggingEnginePreferences;
 
 	public static String DebuggingEngine;
 

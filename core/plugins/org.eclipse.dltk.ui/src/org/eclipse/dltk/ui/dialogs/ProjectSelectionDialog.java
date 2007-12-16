@@ -1,4 +1,4 @@
-package org.eclipse.dltk.ui.preferences;
+package org.eclipse.dltk.ui.dialogs;
 
 import java.util.Set;
 
@@ -11,6 +11,7 @@ import org.eclipse.dltk.internal.ui.StandardModelElementContentProvider;
 import org.eclipse.dltk.internal.ui.dialogs.StatusInfo;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.ModelElementLabelProvider;
+import org.eclipse.dltk.ui.preferences.PreferencesMessages;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.DoubleClickEvent;

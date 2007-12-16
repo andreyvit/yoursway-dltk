@@ -684,5 +684,5 @@ public final class PreferencesMessages extends NLS {
 	
 	public static String SourceParsers_groupLabel;
 	public static String SourceParsers_nameLabel;
-	public static String SourceParsers_descLabel;
+	public static String SourceParsers_LinkToPreferences;
 }

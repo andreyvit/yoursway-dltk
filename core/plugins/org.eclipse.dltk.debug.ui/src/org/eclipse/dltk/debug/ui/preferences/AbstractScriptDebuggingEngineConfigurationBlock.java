@@ -32,7 +32,7 @@ public abstract class AbstractScriptDebuggingEngineConfigurationBlock extends
 		// link to the general debugging preferences page
 		PreferenceLinkArea area = new PreferenceLinkArea(composite, SWT.NONE,
 				ScriptDebugPreferencePage.PAGE_ID,
-				ScriptDebugPreferencesMessages.LinkToGeneralPreferenses,
+				ScriptDebugPreferencesMessages.LinkToGeneralPreferences,
 				container, null);
 
 		area.getControl().setLayoutData(
@@ -71,7 +71,7 @@ public abstract class AbstractScriptDebuggingEngineConfigurationBlock extends
 				composite,
 				SWT.NONE,
 				prefPageId,
-				ScriptDebugPreferencesMessages.LingToDebuggingEnginePreferences,
+				ScriptDebugPreferencesMessages.LinkToDebuggingEnginePreferences,
 				container, null);
 
 		area.getControl().setLayoutData(

@@ -49,6 +49,10 @@ public abstract class AbstractOptionsBlock extends OptionsConfigurationBlock {
         // TODO Auto-generated method stub
         return null;
     }
+    
+    protected final boolean isProjectPreferencePage() {
+    	return fProject != null;
+    }
 	
 	/*
      * @see org.eclipse.dltk.ui.preferences.OptionsConfigurationBlock#validateSettings(org.eclipse.dltk.ui.preferences.OptionsConfigurationBlock.Key, java.lang.String, java.lang.String)
@@ -73,4 +77,5 @@ public abstract class AbstractOptionsBlock extends OptionsConfigurationBlock {
     protected IStatus validate(PreferenceKey changedKey, String oldValue, String newValue) {
     	return new StatusInfo();
     }
+  
 }
