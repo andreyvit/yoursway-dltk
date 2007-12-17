@@ -14,6 +14,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
@@ -56,8 +57,14 @@ public class ScriptLaunchUtil {
 	public static Process runScriptWithInterpreter(String interpreter,
 			InterpreterConfig config) throws CoreException {
 		String[] cmdLine = config.renderCommandLine(interpreter);
-		return DebugPlugin.exec(cmdLine, config.getWorkingDirectoryPath().toFile(), config
-				.getEnvironmentAsStrings());
+
+		String[] environmentAsStrings = config.getEnvironmentAsStrings();
+		IPath workingDirectoryPath = config.getWorkingDirectoryPath();
+		File file = null;
+		if (workingDirectoryPath != null) {
+			file = workingDirectoryPath.toFile();
+		}
+		return DebugPlugin.exec(cmdLine, file, environmentAsStrings);
 	}
 
 	public static Process runScriptWithInterpreter(String interpreter,

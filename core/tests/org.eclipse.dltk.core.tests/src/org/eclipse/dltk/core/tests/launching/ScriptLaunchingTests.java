@@ -34,13 +34,17 @@ import org.eclipse.debug.core.model.IStreamMonitor;
 import org.eclipse.debug.core.model.IStreamsProxy;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
+import org.eclipse.dltk.debug.core.ExtendedDebugEventDetails;
 import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
+import org.eclipse.dltk.internal.debug.core.model.ScriptDebugTarget;
 import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
+import org.eclipse.dltk.internal.debug.core.model.ScriptThread;
 import org.eclipse.dltk.internal.launching.InterpreterDefinitionsContainer;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
+import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.ScriptRuntime;
 
@@ -440,6 +444,10 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 	private static class DebugEventStats implements IDebugEventSetListener {
 		private int suspendCount;
 		private int resumeCount;
+		private int beforeSuspendCount;
+		private int beforeResumeCount;
+		private int beforeCodeLoaded;
+		private int beforeVmStarted;
 
 		public DebugEventStats() {
 			this.suspendCount = 0;
@@ -476,13 +484,55 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 					break;
 				case DebugEvent.CHANGE:
 					break;
+				case DebugEvent.MODEL_SPECIFIC:
+					handleExtendedEvent(event);
+					break;
 				}
 			}
+		}
+
+		private void handleExtendedEvent(DebugEvent event) {
+			int extendedType = event.getDetail();
+			switch (extendedType) {
+			case ExtendedDebugEventDetails.BEFORE_VM_STARTED:
+				handleBeforeVmStarted((InterpreterConfig) event.getSource());
+				break;
+			case ExtendedDebugEventDetails.BEFORE_CODE_LOADED:
+				handleBeforeCodeLoaded((ScriptDebugTarget) event.getSource());
+				break;
+			case ExtendedDebugEventDetails.BEFORE_RESUME:
+				handleBeforeResume((ScriptThread) event.getSource());
+				break;
+ 			case ExtendedDebugEventDetails.BEFORE_SUSPEND:
+				handleBeforeSuspend((ScriptThread) event.getSource());
+				break;
+			}
+			
+		}
+
+		private void handleBeforeSuspend(ScriptThread source) {			
+			beforeSuspendCount++;
+		}
+
+		private void handleBeforeResume(ScriptThread source) {
+			beforeResumeCount++;			
+		}
+
+		private void handleBeforeCodeLoaded(ScriptDebugTarget source) {
+			beforeCodeLoaded++;
+		}
+
+		private void handleBeforeVmStarted(InterpreterConfig source) {
+			beforeVmStarted++;			
 		}
 
 		public void reset() {
 			suspendCount = 0;
 			resumeCount = 0;
+			beforeSuspendCount = 0;
+			beforeResumeCount = 0;
+			beforeCodeLoaded = 0;
+			beforeVmStarted = 0;
 		}
 
 		public int getSuspendCount() {
@@ -492,6 +542,22 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 		public int getResumeCount() {
 			return resumeCount;
 		}
+
+		public int getBeforeSuspendCount() {
+			return beforeSuspendCount;
+		}
+
+		public int getBeforeResumeCount() {
+			return beforeResumeCount;
+		}
+
+		public int getBeforeCodeLoaded() {
+			return beforeCodeLoaded;
+		}
+
+		public int getBeforeVmStarted() {
+			return beforeVmStarted;
+		}
 	}
 
 	public void testDebug() throws Exception {
@@ -500,11 +566,11 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 		}
 
 		// Debug
-		final IFile file = getFile("/launching/src/test.rb");
+		final IFile file = getFile(getScriptFileName());
 
 		// Setting breakpoint
 		IScriptLineBreakpoint b = new ScriptLineBreakpoint(getDebugModelId(),
-				file, 1, -1, -1, 0, true);
+				file, 1, -1, -1, true);
 
 		DebugEventStats stats = new DebugEventStats();
 
@@ -525,17 +591,12 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			final ILaunch launch = new Launch(createLaunchConfiguration(""),
 					ILaunchManager.DEBUG_MODE, null);
 
-			final long time = System.currentTimeMillis();
-
 			startLaunch(launch);
 
 			IProcess[] processes = launch.getProcesses();
 			assertEquals(1, processes.length);
 
 			final IProcess process = processes[0];
-			final IStreamsProxy proxy = process.getStreamsProxy();
-			// assertNotNull(proxy);
-
 			while (!process.isTerminated()) {
 				Thread.sleep(200);
 			}
@@ -545,13 +606,22 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			int suspendCount = stats.getSuspendCount();
 			assertEquals(1, suspendCount);
 
-			int resumeCount = stats.getResumeCount();
+			assertEquals(2, stats.getResumeCount());
 
 			final int exitValue = process.getExitValue();
 			assertEquals(0, exitValue);
+			
+			// Checking extended events count
+			assertEquals(1, stats.getBeforeVmStarted());
+			assertEquals(1, stats.getBeforeCodeLoaded());
+			assertEquals(2, stats.getBeforeResumeCount());
+			assertEquals(1, stats.getBeforeSuspendCount());			
 		}
+		b.delete();
 	}
 
+	protected abstract String getScriptFileName();
+	
 	protected abstract String getProjectName();
 
 	protected abstract String getNatureId();

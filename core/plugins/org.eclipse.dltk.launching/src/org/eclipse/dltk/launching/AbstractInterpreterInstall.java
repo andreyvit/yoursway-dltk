@@ -263,6 +263,10 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 	}
 
 	public void setEnvironmentVariables(EnvironmentVariable[] variables) {
+		PropertyChangeEvent event = new PropertyChangeEvent(this,
+				IInterpreterInstallChangedListener.PROPERTY_ENVIRONMENT_VARIABLES,
+				this.fEnvironmentVariables, variables);
 		this.fEnvironmentVariables = variables;
+		firePropertyChangeEvent(event);
 	}
 }

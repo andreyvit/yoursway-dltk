@@ -56,4 +56,8 @@ public class RubyLaunchingTests extends ScriptLaunchingTests {
 
 		super.testDebug();
 	}
+
+	protected String getScriptFileName() {
+		return "/launching/src/test.rb";
+	}
 }

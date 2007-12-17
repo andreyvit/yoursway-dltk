@@ -10,7 +10,6 @@
 package org.eclipse.dltk.ruby.internal.launching;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.launching.AbstractInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
@@ -37,15 +37,18 @@ public class RubyGenericInstall extends AbstractInterpreterInstall {
 		private Map sources;
 
 		private String[] generateLines() throws IOException, CoreException {
-			final File builder = DeployHelper.deploy(
-					RubyLaunchingPlugin.getDefault(), "scripts/builtin.rb")
-					.toFile();
+			final IPath builder = DeployHelper.deploy(RubyLaunchingPlugin
+					.getDefault(), "scripts/builtin.rb");
 
 			final List lines = new ArrayList();
 
+			InterpreterConfig config = ScriptLaunchUtil
+					.createInterpreterConfig(builder.toFile(), builder
+							.removeLastSegments(1).toFile());
+			// config.addInterpreterArg("-KU");
 			Process process = ScriptLaunchUtil.runScriptWithInterpreter(
 					RubyGenericInstall.this.getInstallLocation()
-							.getAbsolutePath(), new InterpreterConfig(builder));
+							.getAbsolutePath(), config);
 
 			BufferedReader input = null;
 			try {

@@ -70,4 +70,9 @@ public class TclLaunchingTests extends ScriptLaunchingTests {
 	public void testDebug() throws Exception {
 		fail("Active State Tcl debugging engine not installed");
 	}
+
+	protected String getScriptFileName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

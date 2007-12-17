@@ -30,6 +30,10 @@ public interface IInterpreterInstallChangedListener {
 			.getUniqueIdentifier()
 			+ ".PROPERTY_LIBRARY_LOCATIONS"; //$NON-NLS-1$
 
+	public static final String PROPERTY_ENVIRONMENT_VARIABLES = DLTKLaunchingPlugin
+			.getUniqueIdentifier()
+			+ ".PROPERTY_ENVIRONMENT_VARIABLES"; //$NON-NLS-1$
+
 	/**
 	 * Property constant indicating the name associated with a Interpreter
 	 * install has changed.

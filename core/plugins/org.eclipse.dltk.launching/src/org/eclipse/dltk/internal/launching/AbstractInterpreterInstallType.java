@@ -273,7 +273,7 @@ public abstract class AbstractInterpreterInstallType implements
 		return result[0];
 	}
 
-	protected LibraryLocation[] correctLocations(final ArrayList locs) {
+	public static LibraryLocation[] correctLocations(final List locs) {
 		List resolvedLocs = new ArrayList();
 		for (Iterator iter = locs.iterator(); iter.hasNext();) {
 			LibraryLocation l = (LibraryLocation) iter.next();

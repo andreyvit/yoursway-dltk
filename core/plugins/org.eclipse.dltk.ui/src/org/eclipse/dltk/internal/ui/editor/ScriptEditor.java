@@ -1328,7 +1328,6 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 
 	/*
 	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createAnnotationRulerColumn(org.eclipse.jface.text.source.CompositeRuler)
-	 * @since 3.2
 	 */
 	protected IVerticalRulerColumn createAnnotationRulerColumn(
 			CompositeRuler ruler) {
