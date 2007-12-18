@@ -6,10 +6,12 @@ import java.lang.reflect.Member;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.dlkt.javascript.dom.support.IDesignTimeDOMProvider;
+import org.eclipse.dlkt.javascript.dom.support.IProposalHolder;
 import org.eclipse.dltk.core.ISourceModule;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.FunctionObject;
 import org.mozilla.javascript.NativeObject;
+import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
 public class SampleProvider implements IDesignTimeDOMProvider {
@@ -34,7 +36,7 @@ public class SampleProvider implements IDesignTimeDOMProvider {
 		System.out.println("Say Hello world ");
 	}
 
-	public ScriptableObject resolveTopLevelScope(ISourceModule module) {
+	public Scriptable resolveTopLevelScope(ISourceModule module) {
 		Context.enter();
 		ScriptableObject global = new NativeObject();
 		NativeObject sampleObject = new NativeObject();
@@ -67,5 +69,21 @@ public class SampleProvider implements IDesignTimeDOMProvider {
 
 	public boolean canResolve(ISourceModule module) {
 		return module.getElementName().endsWith(FORM_JS);
+	}
+
+	/**
+	 * @see org.eclipse.dlkt.javascript.dom.support.IDesignTimeDOMProvider#filter(org.mozilla.javascript.Scriptable, java.lang.Object[])
+	 */
+	public Object[] resolveIds(Scriptable scope)
+	{
+		return null;
+	}
+
+	/**
+	 * @see org.eclipse.dlkt.javascript.dom.support.IDesignTimeDOMProvider#getProposal(org.mozilla.javascript.Scriptable, java.lang.String)
+	 */
+	public IProposalHolder getProposal(Scriptable scope, String key)
+	{
+		return null;
 	}
 }

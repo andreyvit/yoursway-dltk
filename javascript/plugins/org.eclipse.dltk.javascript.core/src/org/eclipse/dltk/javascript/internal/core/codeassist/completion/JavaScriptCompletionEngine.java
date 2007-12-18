@@ -42,6 +42,7 @@ import org.eclipse.dltk.internal.javascript.reference.resolvers.SelfCompletingRe
 import org.eclipse.dltk.internal.javascript.typeinference.HostCollection;
 import org.eclipse.dltk.internal.javascript.typeinference.IClassReference;
 import org.eclipse.dltk.internal.javascript.typeinference.IReference;
+import org.eclipse.dltk.internal.javascript.typeinference.UncknownReference;
 import org.eclipse.dltk.javascript.core.JavaScriptKeywords;
 import org.eclipse.dltk.javascript.internal.core.codeassist.AssitUtils;
 import org.eclipse.dltk.javascript.internal.core.codeassist.AssitUtils.PositionCalculator;
@@ -250,15 +251,22 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 			choices[ia] = name.getName().toCharArray();
 			ia++;
 		}
-		findElements(token, choices, true, false, CompletionProposal.TYPE_REF);
+		findElements(token, choices, true, false, CompletionProposal.TYPE_REF, Collections.EMPTY_MAP,Collections.EMPTY_MAP);
 		choices = new char[functions.size()][];
 		ia = 0;
+		HashMap parameterNames = new HashMap();
+		HashMap proposalInfo = new HashMap();
 		for (Iterator iterator = functions.iterator(); iterator.hasNext();) {
 			IReference name = (IReference) iterator.next();
 			choices[ia] = name.getName().toCharArray();
+			if (name instanceof UncknownReference)
+			{
+				parameterNames.put(choices[ia], ((UncknownReference)name).getParameterNames());
+				proposalInfo.put(choices[ia], ((UncknownReference)name).getProposalInfo());
+			}
 			ia++;
 		}
-		findElements(token, choices, true, false, CompletionProposal.METHOD_REF);
+		findElements(token, choices, true, false, CompletionProposal.METHOD_REF,parameterNames,proposalInfo);
 	}
 
 	private void doCompletionOnMember(ReferenceResolverContext buildContext,
@@ -366,19 +374,27 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 			choices[ia++] = refa.toCharArray();
 		}
 		findElements(completionPart.toCharArray(), choices, true, false,
-				CompletionProposal.FIELD_REF);
+				CompletionProposal.FIELD_REF, Collections.EMPTY_MAP,Collections.EMPTY_MAP);
 		choices = new char[functions.size()][];
+		HashMap parameterNames = new HashMap();
+		HashMap proposalInfo = new HashMap();
 		ia = 0;
 		for (iterator = functions.values().iterator(); iterator.hasNext();) {
 			Object next = iterator.next();
 			if (next instanceof IReference) {
 				IReference name = (IReference) next;
 				String refa = name.getName();
-				choices[ia++] = refa.toCharArray();
+				choices[ia] = refa.toCharArray();
+				if (name instanceof UncknownReference)
+				{
+					parameterNames.put(choices[ia], ((UncknownReference)name).getParameterNames());
+					proposalInfo.put(choices[ia], ((UncknownReference)name).getProposalInfo());
+				}
+				ia++;
 			}
 		}
 		findElements(completionPart.toCharArray(), choices, true, false,
-				CompletionProposal.METHOD_REF);
+				CompletionProposal.METHOD_REF,parameterNames,proposalInfo);
 	}
 
 	private void completeFromMap(int position, String completionPart,

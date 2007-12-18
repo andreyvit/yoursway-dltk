@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.codeassist;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -181,7 +182,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 
 	// what about onDemand types? Ignore them since it does not happen!
 	// import p1.p2.A.*;
-	protected void findKeywords(char[] keyword, char[][] choices,
+	public void findKeywords(char[] keyword, char[][] choices,
 			boolean canCompleteEmptyToken) {
 		if (choices == null || choices.length == 0)
 			return;
@@ -231,11 +232,11 @@ public abstract class ScriptCompletionEngine extends Engine implements
 	protected void findLocalVariables(char[] token, char[][] choices,
 			boolean canCompleteEmptyToken, boolean provideDollar) {
 		int kind = CompletionProposal.LOCAL_VARIABLE_REF;
-		findElements(token, choices, canCompleteEmptyToken, provideDollar, kind);
+		findElements(token, choices, canCompleteEmptyToken, provideDollar, kind, Collections.EMPTY_MAP,Collections.EMPTY_MAP);
 	}
 
 	protected void findElements(char[] token, char[][] choices,
-			boolean canCompleteEmptyToken, boolean provideDollar, int kind) {
+			boolean canCompleteEmptyToken, boolean provideDollar, int kind, Map parameterNames, Map proposalInfos) {
 		if (choices == null || choices.length == 0)
 			return;
 
@@ -268,6 +269,13 @@ public abstract class ScriptCompletionEngine extends Engine implements
 						// proposal.setTypeName(displayName);
 						proposal.setName(co);
 						proposal.setCompletion(co);
+						proposal.setParameterNames((char[][]) parameterNames.get(choices[i]));
+						Object proposalInfo = proposalInfos.get(choices[i]);
+						if (proposalInfo != null)
+						{
+							proposal.extraInfo = proposalInfo;
+						}
+						
 						// proposal.setFlags(Flags.AccDefault);
 						proposal.setReplaceRange(this.startPosition
 								- this.offset, this.endPosition - this.offset);
@@ -282,7 +290,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 		}
 	}
 
-	protected void findMethods(char[] token, boolean canCompleteEmptyToken,
+	public void findMethods(char[] token, boolean canCompleteEmptyToken,
 			List methods, List methodNames) {
 		if (methods == null || methods.size() == 0)
 			return;
@@ -409,7 +417,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 				CompletionProposal.METHOD_DECLARATION);
 	}
 
-	protected void findFields(char[] token, boolean canCompleteEmptyToken,
+	public void findFields(char[] token, boolean canCompleteEmptyToken,
 			List methods, String prefix) {
 		findFields(token, canCompleteEmptyToken, methods,
 				CompletionProposal.FIELD_REF, prefix);
@@ -530,7 +538,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 		}
 	}
 
-	protected void findTypes(char[] token, boolean canCompleteEmptyToken,
+	public void findTypes(char[] token, boolean canCompleteEmptyToken,
 			List types) {
 		if (types == null || types.size() == 0)
 			return;

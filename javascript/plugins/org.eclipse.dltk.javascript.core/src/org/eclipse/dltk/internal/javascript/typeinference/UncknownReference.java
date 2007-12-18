@@ -67,6 +67,8 @@ public class UncknownReference implements IReference {
 	}
 
 	HashMap childs;
+	private char[][] parameterNames;
+	private Object proposalInfo;
 
 	public IReference getChild(String key, boolean resolveLocals) {
 		if (childs == null)
@@ -110,6 +112,32 @@ public class UncknownReference implements IReference {
 
 	public void setFunctionRef() {
 		fRef = true;
+	}
+	
+	public char[][] getParameterNames()
+	{
+		return parameterNames;
+	}
+	
+	/**
+	 * @param parameterNames the parameterNames to set
+	 */
+	public void setParameterNames(char[][] parameterNames)
+	{
+		this.parameterNames = parameterNames;
+	}
+
+	public Object getProposalInfo()
+	{
+		return proposalInfo;
+	}
+
+	/**
+	 * @param proposalInfo the proposalInfo to set
+	 */
+	public void setProposalInfo(Object proposalInfo)
+	{
+		this.proposalInfo = proposalInfo;
 	}
 
 	public boolean isLocal() {

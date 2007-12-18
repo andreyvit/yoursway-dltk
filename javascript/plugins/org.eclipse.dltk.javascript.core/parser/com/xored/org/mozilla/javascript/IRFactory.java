@@ -386,7 +386,7 @@ final class IRFactory
                 // See ECMA Ch. 13.  We add code to the beginning of the
                 // function to initialize a local variable of the
                 // function's name to the function value.
-                fnNode.addVar(name,fnNode.nameStart,fnNode.nameEnd);
+                fnNode.addVar(name,fnNode.nameStart,fnNode.nameEnd,null);
                 Node setFn = new Node(Token.EXPR_VOID,
                                  new Node(Token.SETNAME,
                                      Node.newString(Token.BINDNAME, name),

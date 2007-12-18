@@ -240,6 +240,8 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	// private boolean parameterNamesComputed = false;
 	private IModelElement modelElement;
 
+	private String proposalInfo;
+
 	/**
 	 * Creates a basic completion proposal. All instance field have plausible
 	 * default values unless otherwise noted.
@@ -388,6 +390,42 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 */
 	public char[] getCompletion() {
 		if (this.completionKind == METHOD_DECLARATION) {
+			this.findParameterNames(null);
+			if (this.updateCompletion) {
+				this.updateCompletion = false;
+
+				if (this.parameterNames != null) {
+					int length = this.parameterNames.length;
+					StringBuffer completionBuffer = new StringBuffer(
+							this.completion.length);
+
+					int start = 0;
+					int end = CharOperation.indexOf('%', this.completion);
+
+					completionBuffer
+							.append(this.completion, start, end - start);
+
+					for (int i = 0; i < length; i++) {
+						completionBuffer.append(this.parameterNames[i]);
+						start = end + 1;
+						end = CharOperation
+								.indexOf('%', this.completion, start);
+						if (end > -1) {
+							completionBuffer.append(this.completion, start, end
+									- start);
+						} else {
+							completionBuffer.append(this.completion, start,
+									this.completion.length - start);
+						}
+					}
+					int nameLength = completionBuffer.length();
+					this.completion = new char[nameLength];
+					completionBuffer
+							.getChars(0, nameLength, this.completion, 0);
+				}
+			}
+		}
+		else if (this.completionKind == METHOD_REF) {
 			this.findParameterNames(null);
 			if (this.updateCompletion) {
 				this.updateCompletion = false;

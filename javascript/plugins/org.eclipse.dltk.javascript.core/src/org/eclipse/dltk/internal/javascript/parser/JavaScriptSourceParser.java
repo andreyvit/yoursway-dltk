@@ -212,6 +212,7 @@ public class JavaScriptSourceParser extends AbstractSourceParser {
 			if (functionName.length() == 0)
 				continue;
 			methodInfo.name = functionName;
+			String functionComments = functionNode.getFunctionComments();
 			int declarationStart = functionNode.getEncodedSourceStart();
 			String[] paramsAndVars = functionNode.getParamAndVarNames();
 			String[] params = new String[functionNode.getParamCount()];
@@ -222,9 +223,11 @@ public class JavaScriptSourceParser extends AbstractSourceParser {
 			int nameSourceStart = functionNode.nameStart;
 			int nameSourceEnd = functionNode.nameEnd;			
 			processNode(functionNode,null);
-			MethodDeclaration decl=new MethodDeclaration(functionName,nameSourceStart,nameSourceEnd,declarationStart,functionNode.getEncodedSourceEnd());			
+			MethodDeclaration decl=new MethodDeclaration(functionName,nameSourceStart,nameSourceEnd,declarationStart,functionNode.getEncodedSourceEnd());
+			// TODO set decl.getArguments()
+			decl.setComments(functionComments);
 			if (moduleDeclaration!=null)
-			moduleDeclaration.addStatement(decl);
+				moduleDeclaration.addStatement(decl);
 		}
 		String[] paramsAndVars = parse.getParamAndVarNames();
 		String[] params = new String[parse.getParamCount()];
@@ -241,6 +244,7 @@ public class JavaScriptSourceParser extends AbstractSourceParser {
 			String name = paramsAndVars[i];
 			Position p=parse.getPosition(i);
 			FieldDeclaration decl=new FieldDeclaration(name,p.start,p.start + name.length(),p.start,p.start + name.length());
+			decl.setComments(parse.getParamComments(name));
 			//fRequestor.enterField(fieldInfo);
 			//fRequestor.exitField(fieldInfo.nameSourceEnd);
 			if (moduleDeclaration!=null)

@@ -35,6 +35,8 @@ public abstract class Declaration extends Statement implements Modifiers {
 	SimpleReference ref;
 
 	protected int modifiers;
+	
+	private String comments;
 
 	protected Declaration() {
 		this.modifiers = 0;
@@ -183,5 +185,21 @@ public abstract class Declaration extends Statement implements Modifiers {
 	}
 	public SimpleReference getRef() {
 		return this.ref;
+	}
+
+	/**
+	 * @param comments the comments to set
+	 */
+	public void setComments(String comments)
+	{
+		this.comments = comments;
+	}
+
+	/**
+	 * @return the comments
+	 */
+	public String getComments()
+	{
+		return comments;
 	}
 }

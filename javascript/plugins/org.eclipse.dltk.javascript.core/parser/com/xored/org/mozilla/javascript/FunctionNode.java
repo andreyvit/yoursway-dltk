@@ -81,7 +81,24 @@ public class FunctionNode extends ScriptOrFnNode {
         return itsFunctionType;
     }
 
-    String functionName;
+    /**
+	 * @param functionComments the functionComments to set
+	 */
+	public void setFunctionComments(String functionComments)
+	{
+		this.functionComments = functionComments;
+	}
+
+	/**
+	 * @return the functionComments
+	 */
+	public String getFunctionComments()
+	{
+		return functionComments;
+	}
+
+	 String functionName;
+    String functionComments;
     boolean itsNeedsActivation;
     int itsFunctionType;
     boolean itsIgnoreDynamicScope;

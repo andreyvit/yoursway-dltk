@@ -446,6 +446,7 @@ public class Parser
         int nameEnd=ts.getCursor();
         String name;
         Node memberExprNode = null;
+        String comment = decompiler.getLastBlockComment();
         decompiler.addFunction();
         if (matchToken(Token.NAME)) {
             name = ts.getString();
@@ -493,7 +494,7 @@ public class Parser
             // of with object.
             fnNode.itsIgnoreDynamicScope = true;
         }
-
+        fnNode.setFunctionComments(comment);
         int functionIndex = currentScriptOrFn.addFunction(fnNode);
 
         int functionSourceEnd;
@@ -1213,6 +1214,7 @@ public class Parser
         Node pn = nf.createVariables(ts.getLineno());
         boolean first = true;
 
+        String comment = decompiler.getLastBlockComment();
         decompiler.addToken(Token.VAR);
 
         for (;;) {
@@ -1227,7 +1229,7 @@ public class Parser
             first = false;
 
             decompiler.addName(s);
-            currentScriptOrFn.addVar(s,nameStart,nameEnd);
+            currentScriptOrFn.addVar(s,nameStart,nameEnd,comment);
             name = nf.createName(s);
             name.setPosition(nameStart);
             // omitted check for argument hiding

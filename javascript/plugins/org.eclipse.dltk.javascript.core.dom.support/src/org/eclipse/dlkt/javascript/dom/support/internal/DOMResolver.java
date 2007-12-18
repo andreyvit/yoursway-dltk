@@ -11,6 +11,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.dlkt.javascript.dom.support.IDesignTimeDOMProvider;
+import org.eclipse.dlkt.javascript.dom.support.IProposalHolder;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.javascript.reference.resolvers.IReferenceResolver;
 import org.eclipse.dltk.internal.javascript.reference.resolvers.IResolvableReference;
@@ -77,7 +78,7 @@ public class DOMResolver implements IReferenceResolver, IExecutableExtension {
 						if (construct instanceof ScriptableObject) {
 							ScriptableObject sm = (ScriptableObject) construct;
 							HashMap map = new HashMap();
-							fillMap(map, sm);
+							fillMap(map, sm,false);
 							createReferences("", map, result);
 						}
 					}
@@ -137,41 +138,64 @@ public class DOMResolver implements IReferenceResolver, IExecutableExtension {
 		HashMap mp = new HashMap();
 		for (int a = 0; a < providers.length; a++) {
 			if (providers[a].canResolve(module)) {
-				ScriptableObject resolveTopLevelScope = providers[a]
+				Scriptable resolveTopLevelScope = providers[a]
 						.resolveTopLevelScope(module);
 				if (resolveTopLevelScope == null)
 					continue;
-				fillMap(mp, resolveTopLevelScope);
+				fillMap(mp, resolveTopLevelScope, true);
 			}
 		}
 		scopeRef = new WeakReference(mp);
 		return mp;
 	}
 
-	private Object[] fillMap(HashMap mp, Scriptable resolveTopLevelScope) {
-		Scriptable prototype = resolveTopLevelScope.getPrototype();
+	private Object[] fillMap(HashMap mp, Scriptable scope, boolean walkParent) {
+		Scriptable prototype = scope.getPrototype();
 		if (prototype != null) {
-			if (prototype instanceof Scriptable) {
-				fillMap(mp, prototype);
+			fillMap(mp, prototype,walkParent);
+		}
+		if (walkParent)
+		{
+			Scriptable parentScope = scope.getParentScope();
+			if (parentScope != null) {
+				fillMap(mp, parentScope,walkParent);
 			}
 		}
 		Object[] allIds = null;
-		if (resolveTopLevelScope instanceof ScriptableObject && false)
-		{
-			allIds = ((ScriptableObject)resolveTopLevelScope).getAllIds();
+		for (int a = 0; a < providers.length; a++) {
+			if (providers[a].canResolve(module)) {
+				allIds = providers[a].resolveIds(scope);
+				if (allIds != null) break;
+			}
 		}
-		else
+		if (allIds == null)
 		{
-			allIds = resolveTopLevelScope.getIds();
+			if (scope instanceof ScriptableObject)
+			{
+				allIds = ((ScriptableObject)scope).getAllIds();
+			}
+			else
+			{
+				allIds = scope.getIds();
+			}
 		}
 		for (int b = 0; b < allIds.length; b++) {
 			String key = allIds[b].toString();
 			try {
-				Object object = resolveTopLevelScope.get(key,
-						resolveTopLevelScope);
+				Object object = null;
+				for (int a = 0; a < providers.length; a++) {
+					if (providers[a].canResolve(module)) {
+						object = providers[a].getProposal(scope,key);
+						if (object != null) break;
+					}
+				}
+				if (object == null)
+				{
+					object = scope.get(key, scope);
+				}
 				mp.put(key, object);
 			} catch (Throwable e) {
-
+				e.printStackTrace();
 			}
 
 		}
@@ -211,10 +235,14 @@ public class DOMResolver implements IReferenceResolver, IExecutableExtension {
 		} else {
 			while (pos != -1) {
 				Object object = globals.get(key);
+				if (object instanceof IProposalHolder)
+				{
+					object = ((IProposalHolder)object).getObject();
+				}
 				if (object instanceof Scriptable) {
 					Scriptable sc = (Scriptable) object;
 					globals.clear();
-					fillMap(globals, sc);
+					fillMap(globals, sc,false);
 				}
 				id = id.substring(pos + 1);
 				pos = id.indexOf('.');
@@ -233,6 +261,13 @@ public class DOMResolver implements IReferenceResolver, IExecutableExtension {
 			if (s.startsWith(key)) {
 				UncknownReference uref = new UncknownReference(s, false);
 				Object object = globals.get(s);
+				if (object instanceof IProposalHolder)
+				{
+					IProposalHolder fapn = (IProposalHolder)object;
+					uref.setParameterNames(fapn.getParameterNames());
+					uref.setProposalInfo(fapn.getProposalInfo());
+					object = fapn.getObject();
+				}
 				if (object instanceof Function) {
 					uref.setFunctionRef();
 				}

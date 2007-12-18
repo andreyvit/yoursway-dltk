@@ -103,6 +103,8 @@ public class Decompiler {
 	// the last RC of object literals in case of function expressions
 	private static final int FUNCTION_END = Token.LAST_TOKEN + 1;
 
+	private int lastToken;
+
 	String getEncodedSource() {
 		return sourceToString(0);
 	}
@@ -127,7 +129,7 @@ public class Decompiler {
 	void addToken(int token) {
 		if (!(0 <= token && token <= Token.LAST_TOKEN))
 			throw new IllegalArgumentException();
-
+		lastToken = token;
 		append((char) token);
 	}
 
@@ -1045,6 +1047,8 @@ public class Decompiler {
 	// nested functions source and uses function index as a reference instead.
 	private int sourceTop;
 
+	private String lastBlockComment;
+
 	// whether to do a debug print of the source information, when decompiling.
 	private static final boolean printSource = false;
 
@@ -1060,7 +1064,22 @@ public class Decompiler {
 	public void addBlockComment(String string) {
 		addToken(Token.LOCAL_BLOCK);
 		appendString(string);
+		lastBlockComment = string;
 	}
+	
+	/**
+	 * 
+	 */
+	public String getLastBlockComment()
+	{
+		if (lastToken == Token.LOCAL_BLOCK)
+		{
+			return lastBlockComment;
+		}
+		return null;
+	}
+
+
 
 	StringBuffer indentBuffer = new StringBuffer();
 

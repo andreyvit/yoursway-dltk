@@ -66,7 +66,10 @@ public final class CompletionProposalComparator implements Comparator {
 
 	private String getSortKey(ICompletionProposal p) {
 		if (p instanceof AbstractScriptCompletionProposal)
-			return ((AbstractScriptCompletionProposal) p).getSortString();
+		{
+			String sortString =((AbstractScriptCompletionProposal) p).getSortString();
+			if (sortString != null) return sortString;
+		}
 		return p.getDisplayString();
 	}
 

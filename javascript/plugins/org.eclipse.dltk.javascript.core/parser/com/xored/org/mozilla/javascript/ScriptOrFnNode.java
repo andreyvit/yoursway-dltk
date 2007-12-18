@@ -38,6 +38,8 @@
 
 package com.xored.org.mozilla.javascript;
 
+import java.util.HashMap;
+
 
 public class ScriptOrFnNode extends Node {
 
@@ -146,6 +148,10 @@ public class ScriptOrFnNode extends Node {
         itsVariables.toArray(array);
         return array;
     }
+    
+    public final String getParamComments(String name) {
+   	 return (String) itsVariableComment.get(name);
+    }
 
     public final void addParam(String name) {
         // Check addparam is not called after addLocal
@@ -166,7 +172,7 @@ public class ScriptOrFnNode extends Node {
 			this.end = end;
 		}
     }
-    public final void addVar(String name, int nameStart, int nameEnd) {
+    public final void addVar(String name, int nameStart, int nameEnd, String comment) {
         int vIndex = itsVariableNames.get(name, -1);
         if (vIndex != -1) {
             // There's already a variable or parameter with this name.
@@ -176,6 +182,7 @@ public class ScriptOrFnNode extends Node {
         variablePositins.add(new Position(nameStart,nameEnd));
         itsVariables.add(name);
         itsVariableNames.put(name, index);
+        itsVariableComment.put(name,comment);
     }
 
     public final void removeParamOrVar(String name) {
@@ -183,6 +190,7 @@ public class ScriptOrFnNode extends Node {
         if (i != -1) {
             itsVariables.remove(i);
             itsVariableNames.remove(name);
+            itsVariableComment.remove(name);
             ObjToIntMap.Iterator iter = itsVariableNames.newIterator();
             for (iter.start(); !iter.done(); iter.next()) {
                 int v = iter.getValue();
@@ -223,6 +231,8 @@ public class ScriptOrFnNode extends Node {
 
     // mapping from name to index in list
     private ObjToIntMap itsVariableNames = new ObjToIntMap(11);
+    // mapping from name to comment
+    private HashMap itsVariableComment = new HashMap(11);
 
     private int varStart;               // index in list of first variable
 

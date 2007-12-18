@@ -90,6 +90,10 @@ public class JavaScriptCompletionProposalCollector extends
 						return string;
 					}
 				}
+				else if (ref instanceof String)
+				{
+					return (String)ref;
+				}
 				return "Documentation not resolved";
 			}
 

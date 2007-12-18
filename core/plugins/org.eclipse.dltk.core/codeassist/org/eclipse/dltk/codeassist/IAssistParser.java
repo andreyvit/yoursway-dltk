@@ -33,4 +33,6 @@ public interface IAssistParser {
 	 * Called when element couldn't be found.
 	 */
 	void handleNotInElement(ASTNode unit, int position);
+
+	ModuleDeclaration getModule();
 }

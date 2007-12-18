@@ -16,7 +16,15 @@ import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.contentassist.IContextInformation;
+import org.eclipse.jface.text.link.LinkedModeModel;
+import org.eclipse.jface.text.link.LinkedModeUI;
+import org.eclipse.jface.text.link.LinkedPosition;
+import org.eclipse.jface.text.link.LinkedPositionGroup;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.ui.texteditor.link.EditorLinkedModeUI;
 
 public class ScriptMethodCompletionProposal extends
 		LazyScriptCompletionProposal {
@@ -35,6 +43,8 @@ public class ScriptMethodCompletionProposal extends
 	/** Triggers for method name proposals (static imports). Do not modify. */
 	protected final static char[] METHOD_NAME_TRIGGERS = new char[] { ';' };
 
+	private IRegion fSelectedRegion; // initialized by apply()
+
 	private boolean fHasParameters;
 	private boolean fHasParametersComputed = false;
 	private int fContextInformationPosition;
@@ -48,13 +58,67 @@ public class ScriptMethodCompletionProposal extends
 		if (trigger == ' ' || trigger == '(')
 			trigger = '\0';
 		super.apply(document, trigger, offset);
-		if (needsLinkedMode()) {
-			setUpLinkedMode(document, ')');
+
+		int baseOffset = getReplacementOffset() + getCursorPosition();
+		int exit = getReplacementOffset() + getReplacementString().length();
+
+		int[] fArgumentOffsets = null;
+		int[] fArgumentLengths = null;
+		char[][] findParameterNames = fProposal.findParameterNames(null);
+		if (findParameterNames != null && findParameterNames.length > 0) {
+			fArgumentOffsets = new int[findParameterNames.length];
+			fArgumentLengths = new int[findParameterNames.length];
+
+			int argumentOffset = 0;
+			for (int i = 0; i < findParameterNames.length; i++) {
+				fArgumentLengths[i] = findParameterNames[i].length;
+				fArgumentOffsets[i] = argumentOffset;
+				argumentOffset += findParameterNames[i].length + 1; // name and
+																	// COMMA
+			}
+		}
+
+		if (fArgumentOffsets != null && getTextViewer() != null) {
+			try {
+				LinkedModeModel model = new LinkedModeModel();
+				for (int i = 0; i != fArgumentOffsets.length; i++) {
+					LinkedPositionGroup group = new LinkedPositionGroup();
+					group.addPosition(new LinkedPosition(document, baseOffset
+							+ fArgumentOffsets[i], fArgumentLengths[i],
+							LinkedPositionGroup.NO_STOP));
+					model.addGroup(group);
+				}
+
+				model.forceInstall();
+
+				LinkedModeUI ui = new EditorLinkedModeUI(model, getTextViewer());
+				ui.setExitPosition(getTextViewer(), exit, 0, Integer.MAX_VALUE);
+				ui.setExitPolicy(new ExitPolicy(')', document));
+				ui.setCyclingMode(LinkedModeUI.CYCLE_WHEN_NO_PARENT);
+				ui.enter();
+
+				fSelectedRegion = ui.getSelectedRegion();
+
+			} catch (BadLocationException e) {
+			}
+		} else {
+			fSelectedRegion = new Region(exit, 0);
 		}
 	}
 
 	protected boolean needsLinkedMode() {
-		return hasArgumentList() && hasParameters();
+		return false; // we do it our selfs
+	}
+
+	/**
+	 * @see org.eclipse.dltk.ui.text.completion.AbstractScriptCompletionProposal#getSelection(org.eclipse.jface.text.IDocument)
+	 */
+	public Point getSelection(IDocument document) {
+		if (fSelectedRegion == null)
+			return new Point(getReplacementOffset(), 0);
+
+		return new Point(fSelectedRegion.getOffset(), fSelectedRegion
+				.getLength());
 	}
 
 	public CharSequence getPrefixCompletionText(IDocument document,
@@ -112,9 +176,9 @@ public class ScriptMethodCompletionProposal extends
 	protected final boolean hasParameters() {
 		if (!fHasParametersComputed) {
 			fHasParametersComputed = true;
-			// fHasParameters= computeHasParameters();
-
-			fHasParameters = false;
+			char[][] findParameterNames = fProposal.findParameterNames(null);
+			fHasParameters = findParameterNames != null
+					&& findParameterNames.length > 0;
 		}
 		return fHasParameters;
 	}
@@ -162,6 +226,16 @@ public class ScriptMethodCompletionProposal extends
 
 			// if (prefs.afterOpeningParen)
 			// buffer.append(SPACE);
+
+			char[][] findParameterNames = fProposal.findParameterNames(null);
+			for (int i = 0; i < findParameterNames.length;) {
+				buffer.append(findParameterNames[i]);
+
+				i++;
+				if (i < findParameterNames.length) {
+					buffer.append(COMMA);
+				}
+			}
 
 			// don't add the trailing space, but let the user type it in himself
 			// - typing the closing paren will exit

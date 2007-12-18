@@ -33,7 +33,6 @@ import org.eclipse.dltk.internal.ui.search.SearchUtil;
 import org.eclipse.dltk.ui.DLTKExecuteExtensionHelper;
 import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
-import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.ModelElementSorter;
 import org.eclipse.dltk.ui.actions.OpenEditorActionGroup;
 import org.eclipse.dltk.ui.actions.OpenViewActionGroup;
@@ -177,11 +176,9 @@ public class ExtendedClassesView extends ViewPart implements
 		};
 		browsingPane.setContentProvider(new ExtendedClasesContentProvider(this,
 				SearchEngine.createWorkspaceScope(this.fToolkit), parent));
-		IDLTKUILanguageToolkit languageToolkit = DLTKUILanguageManager
-				.getLanguageToolkit(this.fToolkit.getNatureId());
 
 		browsingPane.setLabelProvider(new ExtendedClasesLabelProvider(
-				languageToolkit.createScriptUILabelProvider()));
+				DLTKUILanguageManager.createLabelProvider(this.fToolkit.getNatureId())));
 
 		getSite().setSelectionProvider(this);
 		getViewSite().getPage().addPostSelectionListener(this);
