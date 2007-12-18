@@ -25,7 +25,6 @@ import org.eclipse.dltk.internal.ui.wizards.dialogfields.ITreeListAdapter;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.LayoutUtil;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.ListDialogField;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.TreeListDialogField;
-import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.ModelElementSorter;
 import org.eclipse.dltk.ui.util.PixelConverter;
@@ -388,8 +387,8 @@ public class ProjectsWorkbookPage extends BuildPathBasePage {
 			}
 			Object[] selectArr= selectable.toArray();
 			new ModelElementSorter().sort(null, selectArr);
-			IScriptProject project = elem.getScriptProject();
-			ScriptUILabelProvider labelProvider = DLTKUILanguageManager.createLabelProvider(project);
+//			IScriptProject project = elem.getScriptProject();
+			ScriptUILabelProvider labelProvider = new ScriptUILabelProvider();
 			ListSelectionDialog dialog= new ListSelectionDialog(getShell(), Arrays.asList(selectArr), new ArrayContentProvider(), labelProvider, NewWizardMessages.ProjectsWorkbookPage_chooseProjects_message); 
 			dialog.setTitle(NewWizardMessages.ProjectsWorkbookPage_chooseProjects_title); 
 			dialog.setHelpAvailable(false);
