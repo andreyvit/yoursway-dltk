@@ -636,7 +636,7 @@ module XoredDebugger
             end            
             exited = thread.join(5)
             if (exited.nil?)
-                thread.kill!
+                thread.kill
                 raise Exception, 'Thread not exited'
             end
             
