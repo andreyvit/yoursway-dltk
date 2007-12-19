@@ -148,7 +148,6 @@ public class XOTclSelectionEngine extends TclSelectionEngine {
 	}
 
 	private void processXOTclCommandCalls(TclStatement node) {
-		// System.out.println("CoOL:" + node);
 		if (node.getCount() == 0) {
 			return;
 		}

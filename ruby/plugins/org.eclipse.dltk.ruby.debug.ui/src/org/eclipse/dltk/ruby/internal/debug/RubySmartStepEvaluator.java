@@ -83,7 +83,6 @@ public class RubySmartStepEvaluator implements ISmartStepEvaluator {
 					}
 				}
 			}
-			System.out.println("COOL:");
 
 		} catch (DebugException e) {
 			if (DLTKCore.DEBUG) {
