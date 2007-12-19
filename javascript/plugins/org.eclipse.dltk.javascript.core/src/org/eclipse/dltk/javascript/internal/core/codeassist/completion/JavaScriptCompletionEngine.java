@@ -338,9 +338,9 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 			long currentTimeMillis = System.currentTimeMillis();
 			String[] findElements = JavaScriptMixinModel.getInstance()
 					.findElements(corePart);
-			long currentTimeMillis2 = System.currentTimeMillis();
-			System.out.println(currentTimeMillis2 - currentTimeMillis);
-			System.out.println(findElements.length);
+//			long currentTimeMillis2 = System.currentTimeMillis();
+//			System.out.println(currentTimeMillis2 - currentTimeMillis);
+//			System.out.println(findElements.length);
 		}
 		completeFromMap(position, completionPart, dubR);
 		HashMap functions = new HashMap();

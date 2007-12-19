@@ -419,7 +419,7 @@ public class RubyTypeInferencingUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println();
+//		System.out.println();
 		if (conditionals != null)
 			conditionals.addAll(visitor.getConditionals());
 		return visitor.getUnconditionalAssignment();

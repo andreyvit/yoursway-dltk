@@ -30,7 +30,7 @@ public class JavaElementReference extends UncknownReference{
 			IMethod m=(IMethod) element;
 			try {
 				String rType=m.getReturnType();
-				System.out.println(rType);
+//				System.out.println(rType);
 			} catch (JavaModelException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

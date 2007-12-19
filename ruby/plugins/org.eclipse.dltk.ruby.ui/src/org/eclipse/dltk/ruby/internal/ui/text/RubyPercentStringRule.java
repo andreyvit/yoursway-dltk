@@ -187,7 +187,7 @@ public class RubyPercentStringRule implements IPredicateRule {
 				if (--nestCount <= 0)
 					return true;
 			} else if (fBreaksOnEOL) {
-				System.out.println((char) c);
+//				System.out.println((char) c);
 				// Check for end of line since it can be used to terminate the pattern.
 				for (int i= 0; i < fSortedLineDelimiters.length; i++) {
 					if (c == fSortedLineDelimiters[i][0] && sequenceDetected(scanner, fSortedLineDelimiters[i], true))

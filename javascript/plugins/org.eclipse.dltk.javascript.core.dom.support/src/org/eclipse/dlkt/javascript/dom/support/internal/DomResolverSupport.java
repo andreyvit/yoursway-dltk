@@ -38,7 +38,7 @@ public class DomResolverSupport {
 				} catch (CoreException e) {
 					e.printStackTrace();
 				}
-				System.out.println(configurationElement.getName());
+//				System.out.println(configurationElement.getName());
 			}
 		}
 		IDesignTimeDOMProvider[] pr = new IDesignTimeDOMProvider[providerList

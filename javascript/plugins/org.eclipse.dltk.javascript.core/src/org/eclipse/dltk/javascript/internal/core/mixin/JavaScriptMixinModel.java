@@ -38,7 +38,7 @@ public class JavaScriptMixinModel {
 
 	public String[] findElements(String elements) {
 		String[] findKeys = model.findKeys(elements + "*");
-		System.out.println(findKeys.length);		
+//		System.out.println(findKeys.length);		
 		return findKeys;
 	}
 }

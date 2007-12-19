@@ -68,9 +68,11 @@ public abstract class DbgpOperation {
 					System.err.println("Timeout exception!!!");
 					e.printStackTrace();
 				} catch (DbgpException e) {
-					System.out.println("Exception: " + e.getMessage());
-					System.out.println(e.getClass());
-					e.printStackTrace();
+					if (DLTKCore.DEBUG) {
+						System.out.println("Exception: " + e.getMessage());
+						System.out.println(e.getClass());
+						e.printStackTrace();
+					}
 
 					resultHandler.finish(null, e);
 				}

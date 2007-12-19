@@ -200,9 +200,9 @@ public class TypeInferencer {
 						if (firstChild.getPosition() != 0) {
 							int start = firstChild.getPosition() - length;
 							int end = firstChild.getPosition() - 1;
-							if (start < 0) {
-								System.out.println("AA");
-							}
+//							if (start < 0) {
+//								System.out.println("AA");
+//							}
 							requestor.acceptMethodReference(call.toCharArray(),
 									0, start, end);
 						}
@@ -444,7 +444,7 @@ public class TypeInferencer {
 				if (queryElement != null)
 					queryElement.recordDelete(fieldId);
 			}
-			System.out.println(objId);
+//			System.out.println(objId);
 			return null;
 		}
 

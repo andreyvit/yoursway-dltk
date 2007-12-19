@@ -636,7 +636,7 @@ public class NodeSwitch {
 			if (type == Token.IFNE) {
 				int q = jm.getFirstChild().getType();
 			}
-			System.out.println(jm);
+//			System.out.println(jm);
 		}
 		return processScriptNode(node, arg);
 	}

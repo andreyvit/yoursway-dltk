@@ -2270,7 +2270,7 @@ public class Context
 
         if (debugger != null) {
             if (sourceString == null) Kit.codeBug();
-            System.out.println(bytecode.getClass());
+//            System.out.println(bytecode.getClass());
             if (bytecode instanceof DebuggableScript) {
                 DebuggableScript dscript = (DebuggableScript)bytecode;
                 notifyDebugger_r(this, dscript, sourceString);

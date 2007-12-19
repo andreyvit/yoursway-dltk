@@ -37,10 +37,10 @@ public class PythonASTUtil extends ASTUtil {
 		if (DLTKCore.DEBUG_COMPLETION) {
 			if (node.sourceEnd() != newValueEnd
 					|| node.sourceStart() != newValueStart) {
-				System.out.println("Node Extended from:'"
-						+ content.substring(node.sourceStart(), node
-								.sourceEnd()) + "'" + "to '"
-						+ content.substring(newValueStart, newValueEnd) + "'");
+//				System.out.println("Node Extended from:'"
+//						+ content.substring(node.sourceStart(), node
+//								.sourceEnd()) + "'" + "to '"
+//						+ content.substring(newValueStart, newValueEnd) + "'");
 			}
 		}
 		node.setStart(newValueStart);

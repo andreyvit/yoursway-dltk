@@ -257,7 +257,7 @@ final class JavaReferenceFakeField extends FakeField implements ISourceModule,IF
 			boolean lookIntoParents, boolean lookIntoExternal) {
 		try {
 			Reader contentReader = JavadocContentAccess.getHTMLContentReader((IMember) element, true, true);
-			System.out.println(element);
+//			System.out.println(element);
 			return contentReader;
 		} catch (JavaModelException e) {
 			return null;

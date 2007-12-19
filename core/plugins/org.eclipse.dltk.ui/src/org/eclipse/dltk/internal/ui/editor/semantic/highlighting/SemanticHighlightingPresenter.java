@@ -432,9 +432,9 @@ public class SemanticHighlightingPresenter implements ITextPresentationListener,
 						addedPosition= null;
 					}
 				}
-				if (newPositions.size()>2){
-					System.out.println("A");
-				}
+//				if (newPositions.size()>2){
+//					System.out.println("A");
+//				}
 				fPositions= newPositions;
 			}
 		} catch (BadPositionCategoryException e) {

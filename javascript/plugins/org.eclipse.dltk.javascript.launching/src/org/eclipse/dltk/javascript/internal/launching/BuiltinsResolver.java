@@ -35,7 +35,7 @@ public class BuiltinsResolver {
 			String string = allIds[a].toString();
 			try {
 				if (string.equals("XML")) {
-					System.out.println("A");
+//					System.out.println("A");
 				}
 				Object object = initStandardObjects.get(string,
 						initStandardObjects);
@@ -191,7 +191,7 @@ public class BuiltinsResolver {
 
 	public static void main(String[] args) {
 		String init2 = init();
-		System.out.println(init2);
+//		System.out.println(init2);
 		try {
 			FileOutputStream ds = new FileOutputStream("C:/ss");
 			PrintStream st = new PrintStream(ds);
