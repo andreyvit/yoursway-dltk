@@ -74,7 +74,6 @@ import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IBuiltinModuleProvider;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IParent;
@@ -82,6 +81,7 @@ import org.eclipse.dltk.core.IProblemRequestor;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.IScriptModel;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceModuleInfoCache;
 import org.eclipse.dltk.core.ModelException;
@@ -1285,9 +1285,19 @@ public class ModelManager implements ISaveParticipant {
 		DLTKCore.getDefault().savePluginPreferences();
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		workspace.removeResourceChangeListener(this.deltaState);
+		workspace.removeSaveParticipant(DLTKCore.getDefault());
 		
 		if( sourceModuleInfoCach !=null ) {
 			sourceModuleInfoCach.stop();
+		}
+		if (this.indexManager != null){ // no more indexing
+			this.indexManager.shutdown();
+		}
+		// wait for the initialization job to finish
+		try {
+			Job.getJobManager().join(DLTKCore.PLUGIN_ID, null);
+		} catch (InterruptedException e) {
+			// ignore
 		}
 	}
 
