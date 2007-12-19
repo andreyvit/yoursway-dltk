@@ -2,4 +2,5 @@
 <buildpath>
 	<buildpathentry kind="src" path="debugger"/>
 	<buildpathentry combineaccessrules="false" kind="prj" path="/org.eclipse.dltk.ruby.abstractdebugger"/>
+	<buildpathentry kind="con" path="org.eclipse.dltk.launching.INTERPRETER_CONTAINER"/>
 </buildpath>
