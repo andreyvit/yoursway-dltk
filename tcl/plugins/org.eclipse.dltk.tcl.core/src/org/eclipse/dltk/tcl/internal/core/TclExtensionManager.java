@@ -74,8 +74,8 @@ public class TclExtensionManager {
 		ITclLanguageExtension[] extensions = getExtensions();
 		List result = new ArrayList();
 		for (int i = 0; i < extensions.length; i++) {
-			IMixinBuildVisitorExtension visitorExtension = extensions[i]
-					.createMixinBuildVisitorExtension();
+			IMatchLocatorExtension visitorExtension = extensions[i]
+					.createMatchLocatorExtension();
 			if (visitorExtension != null) {
 				result.add(visitorExtension);
 			}
