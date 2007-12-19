@@ -7,10 +7,17 @@ module XoredDebugger
                 
         def initialize
             super
-        end
-                      
+        end      
+                   
         def create_context_impl(thread)            
             return MockContext.new()
+        end
+        
+        def terminate
+            super
+            Thread.list.each do |thread|
+                thread[ :mock_debug_thread ] = nil
+            end                 
         end
         
         def create_breakpoint_manager
@@ -18,11 +25,13 @@ module XoredDebugger
         end     
         
         def create_debug_thread(*args, &block)
-            Thread.new(*args, &block)
+            t = Thread.new(*args, &block)
+            t[ :mock_debug_thread ] = true
+            t
         end     
         
         def is_debug_thread?(thread)
-            false
+            thread[ :mock_debug_thread ] == true
         end     
 	end
 end

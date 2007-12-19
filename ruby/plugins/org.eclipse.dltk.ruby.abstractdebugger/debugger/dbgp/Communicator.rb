@@ -41,7 +41,10 @@ module XoredDebugger
         end	  
         
         def close()
-            @socket.close
+            begin
+                @socket.close
+            rescue Exception
+            end
         end  
 	end 
 end

@@ -25,13 +25,13 @@ import org.eclipse.dltk.tcl.core.ITclKeywords;
 import org.eclipse.dltk.tcl.core.TclNature;
 
 public abstract class TclAssistParser implements IAssistParser {
-	protected static final int MODULE = ITclKeywords.MODULE;
+	public static final int MODULE = ITclKeywords.MODULE;
 
-	protected static final int NAMESPACE = ITclKeywords.NAMESPACE;
+	public static final int NAMESPACE = ITclKeywords.NAMESPACE;
 
-	protected static final int FUNCTION = ITclKeywords.FUNCTION;
+	public static final int FUNCTION = ITclKeywords.FUNCTION;
 
-	protected static final int EXEC_EXPRESSION = ITclKeywords.EXEC_EXPRESSION;
+	public static final int EXEC_EXPRESSION = ITclKeywords.EXEC_EXPRESSION;
 
 	protected ISourceParser parser = null;
 

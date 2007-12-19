@@ -2,27 +2,11 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension
-         point="org.eclipse.dltk.core.language">
-      <language
-            class="org.eclipse.dltk.xotcl.internal.core.XOTclLanguageToolkit"
-            nature="org.eclipse.dltk.tcl.core.nature"
-            priority="1">
-      </language>
-   </extension>
-   <extension
          point="org.eclipse.dltk.tcl.core.tclkeywords">
       <keywords
             class="org.eclipse.dltk.xotcl.internal.core.XOTclKeywords"
             priority="1">
       </keywords>
-   </extension>
-   <extension 
-   		 point="org.eclipse.dltk.core.sourceElementParsers">
-      <parser
-            class="org.eclipse.dltk.xotcl.internal.core.parser.XOTclSourceElementParser"
-            nature="org.eclipse.dltk.tcl.core.nature"
-            priority="1">
-      </parser>
    </extension>
    <extension
          point="org.eclipse.dltk.tcl.core.tclCommandDetector">
@@ -79,43 +63,19 @@
       </processor>
    </extension>
    <extension
-         point="org.eclipse.dltk.core.search">
-      <seachFactory
-            class="org.eclipse.dltk.xotcl.internal.core.search.XOTclSearchFactory"
-            nature="org.eclipse.dltk.tcl.core.nature"
-            priority="1">
-      </seachFactory>
-   </extension>
-   <extension
-         point="org.eclipse.dltk.core.completionEngine">
-      <completionEngine
-            class="org.eclipse.dltk.xotcl.internal.core.XOTclCompletionEngine"
-            nature="org.eclipse.dltk.tcl.core.nature"
-            priority="1">
-      </completionEngine>
-   </extension>
-   <extension
-         point="org.eclipse.dltk.core.selectionEngine">
-      <selectionEngine
-            class="org.eclipse.dltk.xotcl.internal.core.search.XOTclSelectionEngine"
-            nature="org.eclipse.dltk.tcl.core.nature"
-            priority="1">
-      </selectionEngine>
-   </extension>
-   <extension
-         point="org.eclipse.dltk.core.mixin">
-      <mixin
-            class="org.eclipse.dltk.xotcl.internal.core.search.mixin.XOTclMixinParser"
-            nature="org.eclipse.dltk.tcl.core.nature"
-            priority="1">
-      </mixin>
-   </extension>
-   <extension
          point="org.eclipse.core.runtime.contentTypes">
       <file-association
             content-type="org.eclipse.dltk.tclContentType"
             file-extensions="xotcl">
       </file-association>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.tcl.core.tclExtension">
+      <tclExtension
+            class="org.eclipse.dltk.xotcl.internal.core.XOTclLanguageExtension"
+            language="XOTcl"
+            priority="0">
+      </tclExtension>
    </extension>
 
 </plugin>

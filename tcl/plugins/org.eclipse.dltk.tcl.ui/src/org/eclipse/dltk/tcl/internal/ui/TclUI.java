@@ -23,7 +23,7 @@ import org.osgi.framework.BundleContext;
  * The main plugin class to be used in the desktop.
  */
 public class TclUI extends AbstractUIPlugin {
-
+	public static final String PLUGIN_ID = "org.eclipse.dltk.tcl.ui";
 	public static final String ID_ACTION_SET = "org.eclipse.dltk.tcl.ui.TclActionSet";
 	
 	//The shared instance.

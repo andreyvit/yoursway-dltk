@@ -1,15 +1,18 @@
 require 'test/unit'
+require 'common/Logger'
 require 'dbgp/CommandHandler.rb'
 require 'dbgp/ThreadManager'
 require 'test/MockDebugger'
 
 module XoredDebugger    
-    class CommandHandlerTest < Test::Unit::TestCase        
+    class CommandHandlerTest < Test::Unit::TestCase
+        include Logger
+                
         def setup
             @debugger = MockDebugger.new()
             @thread_manager = ThreadManager.new(@debugger)
             @breakpoint_manager = @debugger.breakpoint_manager
-            @context = @debugger.current_context                         
+            @context = @debugger.current_context
             @handler = CommandHandler.new(@thread_manager, Thread.current)
             @capture_manager = @thread_manager.capture_manager
         end
@@ -380,9 +383,14 @@ module XoredDebugger
             assert_equal(expected.to_xml, response.get_data.to_s)            
             assert_equal('1', response.get_attribute('success'))                  
             
+            response = @handler.handle(Command.new("eval -i 5 -- " + Base64.encode64('loop { sleep 1 }')))
+            assert_equal(206, response.get_error)                  
+            assert_equal('0', response.get_attribute('success'))
+
+            
             response = @handler.handle(Command.new("eval -i 5 -- " + Base64.encode64('+!fpefnpwen')))
             assert_equal(206, response.get_error)                  
-            assert_equal('0', response.get_attribute('success'))                  
+            assert_equal('0', response.get_attribute('success'))                              
         end
 
         def test_handle_expr

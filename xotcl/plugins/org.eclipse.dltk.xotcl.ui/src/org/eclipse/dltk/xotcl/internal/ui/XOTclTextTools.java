@@ -10,27 +10,6 @@ public class XOTclTextTools extends TclTextTools {
 		super(autoDisposeOnDisplayDispose);
 	}
 
-	private final class SH extends SemanticHighlighting {
-
-		private String preferenceKey;
-
-		public String getBackgroundPreferenceKey() {
-			return bgColor;
-		}
-
-		private String bgColor;
-
-		public SH(String editorXmlTagNameColor, String bgColor) {
-			this.preferenceKey = editorXmlTagNameColor;
-			this.bgColor = bgColor;
-		}
-
-		public String getPreferenceKey() {
-			return preferenceKey;
-		}
-
-	}
-
 	public SemanticHighlighting[] getSemanticHighlightings() {
 		return new SemanticHighlighting[] { new SH(
 				TclPreferenceConstants.EDITOR_SINGLE_LINE_COMMENT_COLOR, null) };

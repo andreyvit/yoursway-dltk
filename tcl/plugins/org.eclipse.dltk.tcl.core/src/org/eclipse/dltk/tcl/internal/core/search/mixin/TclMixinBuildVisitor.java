@@ -14,6 +14,8 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.mixin.IMixinRequestor.ElementInfo;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
+import org.eclipse.dltk.tcl.core.extensions.IMixinBuildVisitorExtension;
+import org.eclipse.dltk.tcl.internal.core.TclExtensionManager;
 import org.eclipse.dltk.tcl.internal.core.search.mixin.model.TclField;
 import org.eclipse.dltk.tcl.internal.core.search.mixin.model.TclNamespace;
 import org.eclipse.dltk.tcl.internal.core.search.mixin.model.TclProc;
@@ -24,6 +26,8 @@ public class TclMixinBuildVisitor extends ASTVisitor {
 	protected ModuleDeclaration moduleDeclaration;
 	protected IMixinRequestor requestor;
 	protected Stack namespaceNames = new Stack();
+	
+	protected IMixinBuildVisitorExtension[] extensions;
 
 	public TclMixinBuildVisitor(ModuleDeclaration moduleDeclaration,
 			ISourceModule module, boolean signature, IMixinRequestor requestor) {
@@ -31,6 +35,7 @@ public class TclMixinBuildVisitor extends ASTVisitor {
 		this.sourceModule = module;
 		this.moduleDeclaration = moduleDeclaration;
 		this.requestor = requestor;
+		this.extensions = TclExtensionManager.getDefault().getMixinVisitorExtensions();
 	}
 
 	public boolean endvisit(TypeDeclaration s) throws Exception {
@@ -42,19 +47,12 @@ public class TclMixinBuildVisitor extends ASTVisitor {
 		return true;
 	}
 
-	protected String getKeyFromLevels(List nodes) {
+	public String getKeyFromLevels(List nodes) {
 		return TclParseUtil.getElementFQN(nodes,
 				IMixinRequestor.MIXIN_NAME_SEPARATOR, this.moduleDeclaration);
 	}
 
-	// private String getKeyFromLevelsName(List nodes, String nodeName) {
-	// String prefix = getKeyFromLevels(nodes);
-	// String[] split = nodeName.split("::");
-	// return prefix + IMixinRequestor.MIXIN_NAME_SEPARATOR
-	// + tclNameToKey(split[split.length - 1]);
-	// }
-
-	protected String getNamespacePrefix() {
+	public String getNamespacePrefix() {
 		StringBuffer prefix = new StringBuffer();
 		for (Iterator iterator = this.namespaceNames.iterator(); iterator
 				.hasNext();) {
@@ -71,12 +69,17 @@ public class TclMixinBuildVisitor extends ASTVisitor {
 		return prefix.toString();
 	}
 
-	protected String tclNameToKey(String name) {
+	public String tclNameToKey(String name) {
 		return TclParseUtil.tclNameTo(name,
 				IMixinRequestor.MIXIN_NAME_SEPARATOR);
 	}
 
 	public boolean visit(MethodDeclaration s) throws Exception {
+		for (int i = 0; i < this.extensions.length; i++) {
+			if( this.extensions[i].visit(s, this) ) {
+				return true;
+			}
+		}
 		// Other methods visit
 		ElementInfo info = new ElementInfo();
 		String name = s.getName();
@@ -96,6 +99,9 @@ public class TclMixinBuildVisitor extends ASTVisitor {
 							+ IMixinRequestor.MIXIN_NAME_SEPARATOR
 							+ mName[mName.length - 1];
 				}
+				else { // case of addint to unknown namespace.
+					info.key = tclNameToKey(name);
+				}
 			}
 		}
 		if (info.key != null) {
@@ -109,6 +115,11 @@ public class TclMixinBuildVisitor extends ASTVisitor {
 	}
 
 	public boolean visit(Statement s) throws Exception {
+		for (int i = 0; i < this.extensions.length; i++) {
+			if( this.extensions[i].visit(s, this) ) {
+				return false;
+			}
+		}
 		if (s instanceof FieldDeclaration) {
 			FieldDeclaration field = (FieldDeclaration) s;
 			ElementInfo info = new ElementInfo();
@@ -145,6 +156,12 @@ public class TclMixinBuildVisitor extends ASTVisitor {
 		if (s.getName().indexOf('[') != -1 || s.getName().indexOf('$') != -1) {
 			return true;
 		}
+		
+		for (int i = 0; i < this.extensions.length; i++) {
+			if( extensions[i].visit(s, this)) {
+				return true;
+			}
+		}
 		// This is Tcl namespaces
 		ElementInfo info = new ElementInfo();
 
@@ -160,5 +177,21 @@ public class TclMixinBuildVisitor extends ASTVisitor {
 		this.requestor.reportElement(info);
 
 		return true;
+	}
+
+	public boolean getSignature() {
+		return this.signature;
+	}
+
+	public IMixinRequestor getRequestor() {
+		return this.requestor;
+	}
+
+	public ModuleDeclaration getModuleDeclaration() {
+		return moduleDeclaration;
+	}
+
+	public void pushNamespaceName(TypeDeclaration s) {
+		this.namespaceNames.push(s);
 	}
 }

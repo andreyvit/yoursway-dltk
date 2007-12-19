@@ -38,8 +38,8 @@ module XoredDebugger
                
         def terminate()
             @terminated = true
-            @server.close unless @server.nil?
             begin
+                @server_thread.wakeup
                 @server_thread.join
             rescue Exception
             end
@@ -58,20 +58,29 @@ module XoredDebugger
                 sockaddr = Socket.pack_sockaddr_in( PORT, 'localhost' )
                 @server.bind( sockaddr )
                 @server.listen( 5 )
+                @read_array = [ @server ]
 	            while (! @terminated)
-			        client, client_addr = @server.accept
-	                
-			        begin
-			            while (! @terminated)
-			                @received << client.getc
-			            end
-			        rescue Exception
-			        ensure
-			            client.close
-			        end
+	                selected = IO.select(@read_array) 
+                    unless selected.nil?
+	                    selected[0].each do |socket|
+		                    if (socket == @server)
+	                            client, client_addr = @server.accept
+		                        @read_array.push(client)
+		                    else
+		                        begin
+		                            @received << socket.readpartial(1024)
+		                        rescue EOFError
+		                            @read_array.delete(socket)
+		                        end                                
+	                        end
+	                    end
+                        selected.clear
+                    end
 		        end
             rescue Exception
                 puts 'Exception in server_proc: ' + $!.message
+            ensure
+                @read_array.each { |s| s.close }
             end            
         end
                     

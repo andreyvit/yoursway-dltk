@@ -42,6 +42,8 @@ import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.core.TclLanguageToolkit;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
+import org.eclipse.dltk.tcl.core.extensions.ISelectionExtension;
+import org.eclipse.dltk.tcl.internal.core.TclExtensionManager;
 import org.eclipse.dltk.tcl.internal.core.codeassist.TclResolver.IResolveElementParent;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnAST;
 import org.eclipse.dltk.tcl.internal.core.codeassist.selection.SelectionOnKeywordOrFunction;
@@ -66,9 +68,12 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 	protected org.eclipse.dltk.core.ISourceModule sourceModule;
 
 	protected IDLTKLanguageToolkit toolkit;
+	
+	protected ISelectionExtension[] extensions;
 
 	public TclSelectionEngine() {
 		this.toolkit = TclLanguageToolkit.getDefault();
+		this.extensions = TclExtensionManager.getDefault().getSelectionExtensions();
 	}
 
 	public IModelElement[] select(ISourceModule sourceUnit,
@@ -182,19 +187,24 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 					// findMethodFromSearch(fqnName);
 				}
 			}
+			for (int i = 0; i < this.extensions.length; i++) {
+				this.extensions[i].selectionOnKeywordOrFunction(key, this);
+			}
 		} else if (astNode instanceof SelectionOnVariable) {
 			SelectionOnVariable completion = (SelectionOnVariable) astNode;
 			findVariables(completion.getName(), astNodeParent, astNode
 					.sourceStart());
 		} else if (astNode instanceof SelectionOnAST) {
 			ASTNode node = ((SelectionOnAST) astNode).getNode();
+			for (int i = 0; i < this.extensions.length; i++) {
+				this.extensions[i].selectionOnAST(node, this);
+			}
 			addElementFromASTNode(node);
 		} else if (astNode instanceof SelectionOnNode) {
 			ASTNode node = ((SelectionOnNode) astNode).getNode();
 			int position = ((SelectionOnNode) astNode).getPosition();
-			if (node instanceof TclStatement) {
-				// We need to check for XOTcl command calls.
-				// processXOTclCommandCalls((TclStatement) node);
+			for (int i = 0; i < this.extensions.length; i++) {
+				this.extensions[i].selectionOnNode(node,position,this);
 			}
 		}
 	}
@@ -213,7 +223,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		findMethodMixin(tclNameToKey(name), oName);
 	}
 
-	protected boolean checkMethodFrom(TypeDeclaration declaringType,
+	public boolean checkMethodFrom(TypeDeclaration declaringType,
 			SimpleReference callName, IModelElement parent) {
 		List methodList = declaringType.getMethodList();
 		for (Iterator iterator = methodList.iterator(); iterator.hasNext();) {
@@ -229,7 +239,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		return false;
 	}
 
-	protected void fillSuperClassesTo(TypeDeclaration declaringType,
+	public void fillSuperClassesTo(TypeDeclaration declaringType,
 			List supersToHandle) {
 		if (declaringType == null) {
 			return;
@@ -350,7 +360,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		}
 	}
 
-	protected String tclNameToKey(String name) {
+	public String tclNameToKey(String name) {
 		return TclParseUtil.tclNameTo(name,
 				IMixinRequestor.MIXIN_NAME_SEPARATOR);
 	}
@@ -371,7 +381,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		}
 	}
 
-	protected void findMethodMixin(String pattern, String name) {
+	public void findMethodMixin(String pattern, String name) {
 		IMixinElement[] find = TclMixinModel.getInstance().find(pattern);
 		for (int i = 0; i < find.length; i++) {
 			Object[] allObjects = find[i].getAllObjects();
@@ -622,7 +632,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 		}
 	}
 
-	protected void addElementFromASTNode(ASTNode nde) {
+	public void addElementFromASTNode(ASTNode nde) {
 		ModuleDeclaration module = parser.getModule();
 		List statements = module.getStatements();
 		new TclResolver(sourceModule, parser.module, parentResolver)
@@ -725,5 +735,17 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 
 	protected IParent getSourceModule() {
 		return this.sourceModule;
+	}
+
+	public int getActualSelectionStart() {
+		return this.actualSelectionStart;
+	}
+
+	public void addSelectionElement(IModelElement element) {
+		this.selectionElements.add(element);	
+	}
+
+	public int getSelectionElementsSize() {
+		return this.selectionElements.size();
 	}
 }

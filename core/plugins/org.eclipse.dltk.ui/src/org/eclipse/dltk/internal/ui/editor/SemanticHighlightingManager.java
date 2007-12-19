@@ -478,7 +478,7 @@ public class SemanticHighlightingManager implements IPropertyChangeListener {
 			fHighlightings[a] = new Highlighting(createTextAttribute(
 					fColorManager, fPreferenceStore, fSemanticHighlightings[a]
 							.getPreferenceKey(), fSemanticHighlightings[a]
-							.getBackgroundPreferenceKey()), true);
+							.getBackgroundPreferenceKey()), true, fSemanticHighlightings[a]);
 		}
 
 	}

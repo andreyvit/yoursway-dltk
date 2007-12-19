@@ -11,6 +11,9 @@ package org.eclipse.dltk.tcl.core;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IResource;
@@ -20,14 +23,15 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.dltk.core.AbstractLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelStatus;
+import org.eclipse.dltk.tcl.core.extensions.ITclLanguageExtension;
+import org.eclipse.dltk.tcl.internal.core.TclExtensionManager;
 
 public class TclLanguageToolkit extends AbstractLanguageToolkit {
 
 	private static final String[] FILTER_EXTS = { "so", "a", "la", "c", "h",
 			"log" };
 
-	private static final String[] EXTENSIONS = new String[] { "tcl", "exp",
-			"test" };
+	private String[] extensions = new String[] { "tcl", "exp", "test" };
 
 	protected static Pattern[] header_patterns = {
 			Pattern.compile("#!\\s*/usr/bin/tclsh", Pattern.MULTILINE),
@@ -67,7 +71,7 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 	protected static IDLTKLanguageToolkit sInstance = new TclLanguageToolkit();
 
 	public String[] getLanguageFileExtensions() {
-		return EXTENSIONS;
+		return extensions;
 	}
 
 	private boolean isSureNotTCLFile(IPath path) {
@@ -102,6 +106,20 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 	}
 
 	public TclLanguageToolkit() {
+		// Initialize all possible file extensions from all tclExtension's
+		List exts = new ArrayList();
+		ITclLanguageExtension[] languageExtensions = TclExtensionManager
+				.getDefault().getExtensions();
+		for (int i = 0; i < languageExtensions.length; i++) {
+			String[] fileExtensions = languageExtensions[i].getFileExtensions();
+			if (fileExtensions != null) {
+				exts.addAll(Arrays.asList(fileExtensions));
+			}
+		}
+		if (exts.size() > 0) {
+			exts.addAll(Arrays.asList(this.extensions));
+			this.extensions = (String[]) exts.toArray(new String[exts.size()]);
+		}
 	}
 
 	public IStatus validateSourceModule(IPath path) {
@@ -133,7 +151,7 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 				return status;
 			}
 
-			if (checkPatterns(path.toFile(), header_patterns, footer_patterns ) == IModelStatus.VERIFIED_OK) {
+			if (checkPatterns(path.toFile(), header_patterns, footer_patterns) == IModelStatus.VERIFIED_OK) {
 				return IModelStatus.VERIFIED_OK;
 			}
 		}

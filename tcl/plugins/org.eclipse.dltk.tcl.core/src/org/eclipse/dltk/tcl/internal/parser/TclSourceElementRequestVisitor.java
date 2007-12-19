@@ -33,12 +33,17 @@ import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.core.ast.TclGlobalVariableDeclaration;
 import org.eclipse.dltk.tcl.core.ast.TclPackageDeclaration;
 import org.eclipse.dltk.tcl.core.ast.TclUpvarVariableDeclaration;
+import org.eclipse.dltk.tcl.core.extensions.ISourceElementRequestVisitorExtension;
+import org.eclipse.dltk.tcl.internal.core.TclExtensionManager;
 
 public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor {
 
 	protected Stack namespacesLevel = new Stack();
 	protected Stack exitStack = new Stack();
 	protected IProblemReporter fReporter;
+
+	protected ISourceElementRequestVisitorExtension[] extensions = TclExtensionManager
+			.getDefault().getSourceElementRequestoVisitorExtensions();
 
 	public TclSourceElementRequestVisitor(ISourceElementRequestor requestor,
 			IProblemReporter reporter) {
@@ -118,7 +123,7 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 	 * @param onlyCurrent
 	 * @return ExitFromType object, that should be called to exit
 	 */
-	protected ExitFromType resolveType(Declaration decl, String name,
+	public ExitFromType resolveType(Declaration decl, String name,
 			boolean onlyCurrent) {
 		String type = this.removeLastSegment(name, "::");
 		while (type.length() > 2 && type.endsWith("::")) {
@@ -241,8 +246,12 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 		}
 		if ((s.getModifiers() & Modifiers.AccNameSpace) != 0
 				&& s instanceof TypeDeclaration) {
-			return Modifiers.AccNameSpace | flags;
+			flags |= Modifiers.AccNameSpace;
 		}
+		for (int i = 0; i < this.extensions.length; i++) {
+			flags |= this.extensions[i].getModifiers(s);
+		}
+
 		return flags;
 	}
 
@@ -265,6 +274,7 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 
 	public boolean visit(Statement statement) throws Exception {
 		this.fNodes.push(statement);
+
 		if (statement instanceof TclPackageDeclaration) {
 			this.processPackage(statement);
 			this.fNodes.pop();
@@ -276,6 +286,12 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 		} else if (statement instanceof FieldDeclaration) {
 			this.processField(statement);
 			return false;
+		}
+
+		for (int i = 0; i < extensions.length; i++) {
+			if (extensions[i].visit(statement, this)) {
+				return true;
+			}
 		}
 		return true;
 	}
@@ -292,8 +308,8 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 				if (name.length() > 0) {
 					if (name.charAt(0) != '$') {
 						this.fRequestor.acceptMethodReference(name
-								.toCharArray(), argCount, commandId.sourceStart(),
-								commandId.sourceEnd());
+								.toCharArray(), argCount, commandId
+								.sourceStart(), commandId.sourceEnd());
 					}
 				}
 			}
@@ -355,8 +371,7 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 						.toCharArray());
 			} else {
 				this.fRequestor.acceptPackage(pack.getNameStart(), pack
-						.getNameEnd(), (pack.getName() + "*")
-						.toCharArray());
+						.getNameEnd(), (pack.getName() + "*").toCharArray());
 			}
 		}
 	}
@@ -391,18 +406,18 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 		fi.name = name;
 		String fullName = TclParseUtil.escapeName(name);
 		ExitFromType exit = null;// this.resolveType(decl, fullName, false);
-		// if ((decl.getModifiers() & IXOTclModifiers.AccXOTcl) != 0
-		// && decl instanceof XOTclVariableDeclaration) {
-		// XOTclFieldDeclaration field = (XOTclFieldDeclaration) decl;
-		// String tName = field.getDeclaringTypeName();
-		// if (tName == null) {
-		// tName = "";
-		// }
-		// exit = this.resolveType(field, tName + "::dummy", false);
-		// } else {
-		exit = this.resolveType(decl, fullName, false);
-		// }
+
+		for (int i = 0; i < extensions.length; i++) {
+			if ((exit = extensions[i].processField(decl,this)) != null) {
+				continue;
+			}
+		}
+		if (exit == null) {
+			exit = this.resolveType(decl, fullName, false);
+		}
+
 		needExit = this.fRequestor.enterFieldCheckDuplicates(fi);
+
 		int end = decl.sourceEnd();
 		if (needExit) {
 			if (arrayName != null) {
@@ -429,10 +444,20 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 	}
 
 	protected ExitFromType getExitExtended(MethodDeclaration method) {
+		for (int i = 0; i < extensions.length; i++) {
+			if (extensions[i].extendedExitRequired(method, this)) {
+				return extensions[i].getExitExtended(method, this);
+			}
+		}
 		return null;
 	}
 
 	protected boolean extendedExitRequired(MethodDeclaration method) {
+		for (int i = 0; i < extensions.length; i++) {
+			if (extensions[i].extendedExitRequired(method, this)) {
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -524,5 +549,9 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 		ExitFromType exit = (ExitFromType) this.exitStack.pop();
 		exit.go();
 		return true;
+	}
+
+	public ISourceElementRequestor getRequestor() {
+		return this.fRequestor;
 	}
 }

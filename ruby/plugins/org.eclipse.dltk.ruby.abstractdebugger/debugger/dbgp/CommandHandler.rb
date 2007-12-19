@@ -28,11 +28,11 @@ module XoredDebugger
         include XoredDebuggerUtils
         		
         def initialize(thread_manager, thread)
-            debugger = thread_manager.debugger            
+            @debugger = thread_manager.debugger            
             @thread = thread
-            @context = debugger.thread_context(thread)
-            @feature_manager = debugger.feature_manager
-            @breakpoint_manager = debugger.breakpoint_manager
+            @context = @debugger.thread_context(thread)
+            @feature_manager = @debugger.feature_manager
+            @breakpoint_manager = @debugger.breakpoint_manager
             @capture_manager = thread_manager.capture_manager
         end
         
@@ -519,7 +519,7 @@ module XoredDebugger
             response = Response.new(command)
             begin
                 expression = command.data
-                result = @context.eval(expression, 0)
+                result = calculate_in_another_thread(expression)
                 response.add_attribute('success', 1)
                 response.set_data(PropertyElement.new(result, expression))
             
@@ -626,6 +626,21 @@ module XoredDebugger
                     raise ArgumentError, 'Required argument missed'
                 end 
             end 
-        end                           
+        end  
+        
+        def calculate_in_another_thread(expression)
+            result = nil
+            
+            thread = @debugger.create_debug_thread do
+                result = @context.eval(expression, 0)
+            end            
+            exited = thread.join(5)
+            if (exited.nil?)
+                thread.kill!
+                raise Exception, 'Thread not exited'
+            end
+            
+            result            
+        end                         
     end # class CommandHandler
 end # module XoredDebugger

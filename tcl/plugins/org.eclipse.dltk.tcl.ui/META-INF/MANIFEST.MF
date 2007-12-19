@@ -34,5 +34,6 @@ Export-Package: org.eclipse.dltk.tcl.internal.ui,
  org.eclipse.dltk.tcl.internal.ui.text.folding,
  org.eclipse.dltk.tcl.internal.ui.wizards,
  org.eclipse.dltk.tcl.ui,
+ org.eclipse.dltk.tcl.ui.semantilhighlighting,
  org.eclipse.dltk.tcl.ui.text
 Bundle-RequiredExecutionEnvironment: J2SE-1.4

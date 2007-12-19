@@ -18,12 +18,17 @@ import org.eclipse.dltk.core.search.matching.PatternLocator;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.core.BasicTclMatchLocatorParser;
+import org.eclipse.dltk.tcl.core.extensions.IMatchLocatorExtension;
+import org.eclipse.dltk.tcl.internal.core.TclExtensionManager;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 
 public class TclMatchLocatorParser extends BasicTclMatchLocatorParser {
+	IMatchLocatorExtension[] extensions;
 
 	public TclMatchLocatorParser(MatchLocator locator) {
 		super(locator);
+		this.extensions = TclExtensionManager.getDefault()
+				.getMatchLocatorExtensions();
 	}
 
 	private ASTVisitor visitor = new ASTVisitor() {
@@ -48,6 +53,9 @@ public class TclMatchLocatorParser extends BasicTclMatchLocatorParser {
 			} else if (node instanceof CallExpression) {
 				locator.match((CallExpression) node, TclMatchLocatorParser.this
 						.getNodeSet());
+			}
+			for (int i = 0; i < extensions.length; i++) {
+				extensions[i].visitGeneral(node, locator, TclMatchLocatorParser.this.getNodeSet());
 			}
 
 			return true;

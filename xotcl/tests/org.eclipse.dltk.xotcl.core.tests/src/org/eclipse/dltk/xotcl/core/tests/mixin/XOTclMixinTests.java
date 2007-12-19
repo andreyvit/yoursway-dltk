@@ -13,8 +13,8 @@ import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.mixin.IMixinRequestor.ElementInfo;
 import org.eclipse.dltk.tcl.core.ITclSourceParser;
+import org.eclipse.dltk.tcl.internal.core.search.mixin.TclMixinBuildVisitor;
 import org.eclipse.dltk.tcl.internal.parser.TclSourceParser;
-import org.eclipse.dltk.xotcl.internal.core.search.mixin.XOTclMixinBuildVisitor;
 
 public class XOTclMixinTests extends TestCase {
 	class TestMixinRequestorCollector implements IMixinRequestor {
@@ -61,7 +61,7 @@ public class XOTclMixinTests extends TestCase {
 		String expected = 
 			"MyModule : null\n" +
 			"MyModule{myInstanceProc : null\n" +
-			"MyModule{myModuleInstance : null\n" ;
+			"myModuleInstance : null\n" ;
 		checkMixin(content, expected);
 	}
 	
@@ -69,7 +69,7 @@ public class XOTclMixinTests extends TestCase {
 	private void checkMixin(String content, String expected) throws Exception {
 		ModuleDeclaration module = this.parser( content );
 		TestMixinRequestorCollector collector = new TestMixinRequestorCollector();
-		XOTclMixinBuildVisitor visitor = new XOTclMixinBuildVisitor(module, null,false, collector);
+		TclMixinBuildVisitor visitor = new TclMixinBuildVisitor(module, null,false, collector);
 		module.traverse(visitor);
 		ElementInfo[] info = collector.getInfo();
 		String actual = infoToString(info);

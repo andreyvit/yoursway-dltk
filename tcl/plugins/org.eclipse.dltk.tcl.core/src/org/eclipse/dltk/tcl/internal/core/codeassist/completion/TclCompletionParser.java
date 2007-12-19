@@ -27,6 +27,7 @@ import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.core.TclKeywordsManager;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
+import org.eclipse.dltk.tcl.core.extensions.ICompletionExtension;
 import org.eclipse.dltk.tcl.internal.core.codeassist.TclAssistParser;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 
@@ -35,6 +36,12 @@ public class TclCompletionParser extends TclAssistParser {
 		public TclEmptyCompleteStatement(List expressions) {
 			super(expressions);
 		}
+	}
+
+	private ICompletionExtension[] extensions;
+
+	public TclCompletionParser(ICompletionExtension[] extensions) {
+		this.extensions = extensions;
 	}
 
 	/**
@@ -283,10 +290,21 @@ public class TclCompletionParser extends TclAssistParser {
 
 		public boolean visit(Statement s) throws Exception {
 			if (s.sourceStart() <= position && s.sourceEnd() >= position) {
+				for (int i = 0; i < extensions.length; i++) {
+					extensions[i].visit(s, TclCompletionParser.this, position);
+				}
 				if (s instanceof TclStatement) {
 					ASTNode inNode = TclParseUtil.getScopeParent(module, s);
 					TclCompletionParser.this.parseBlockStatements(s, inNode,
 							position);
+				}
+			}
+			return super.visit(s);
+		}
+		public boolean visit(Expression s) throws Exception {
+			if (s.sourceStart() <= position && s.sourceEnd() >= position) {
+				for (int i = 0; i < extensions.length; i++) {
+					extensions[i].visit(s, TclCompletionParser.this, position);
 				}
 			}
 			return super.visit(s);
@@ -338,7 +356,7 @@ public class TclCompletionParser extends TclAssistParser {
 		return false;
 	}
 
-	protected String[] checkKeywords(String completionToken, int type) {
+	public String[] checkKeywords(String completionToken, int type) {
 		String[] keywords = TclKeywordsManager.getKeywords(type);
 		// TODO: Possible require cases.
 		if (type == MODULE || type == FUNCTION || type == NAMESPACE
@@ -351,5 +369,9 @@ public class TclCompletionParser extends TclAssistParser {
 			return kw;
 		}
 		return null;
+	}
+
+	public void setAssistNodeParent(ASTNode prevParent) {
+		this.assistNodeParent = prevParent;
 	}
 }

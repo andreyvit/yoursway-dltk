@@ -35,6 +35,7 @@ import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.compiler.env.lookup.Scope;
 import org.eclipse.dltk.core.CompletionContext;
 import org.eclipse.dltk.core.CompletionProposal;
+import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
@@ -53,6 +54,8 @@ import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
+import org.eclipse.dltk.tcl.core.extensions.ICompletionExtension;
+import org.eclipse.dltk.tcl.internal.core.TclExtensionManager;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeywordArgumentOrFunctionArgument;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeywordOrFunction;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnVariable;
@@ -66,14 +69,11 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 	protected TclCompletionParser parser;
 	protected org.eclipse.dltk.core.ISourceModule sourceModule;
 	protected final static boolean TRACE_COMPLETION_TIME = false;
-
-	public TclCompletionEngine(/*
-								 * ISearchableEnvironment environment,
-								 * CompletionRequestor requestor, Map options,
-								 * IScriptProject project
-								 */) {
-		// super(environment, requestor, options, project);
-		this.parser = new TclCompletionParser();
+	private ICompletionExtension[] extensions;
+	
+	public TclCompletionEngine() {
+		extensions = TclExtensionManager.getDefault().getCompletionExtensions();
+		this.parser = new TclCompletionParser(extensions); 
 	}
 
 	public void complete(ISourceModule sourceModule, int completionPosition,
@@ -173,20 +173,40 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 			CompletionOnKeywordOrFunction key = (CompletionOnKeywordOrFunction) astNode;
 			processCompletionOnKeywords(key);
 			processCompletionOnFunctions(astNodeParent, key);
+			
+			for (int i = 0; i < extensions.length; i++) {
+				extensions[i].completeOnKeywordOrFunction(key, astNodeParent, this);
+			}
 		} else if (astNode instanceof CompletionOnVariable) {
 			processCompletionOnVariables(astNode);
 		} else if (astNode instanceof CompletionOnKeywordArgumentOrFunctionArgument) {
 			CompletionOnKeywordArgumentOrFunctionArgument compl = (CompletionOnKeywordArgumentOrFunctionArgument) astNode;
+			Set methodNames = new HashSet();
 			if (compl.argumentIndex() == 1) {
 				// Completion on two argument keywords
 				TclStatement st = compl.getStatement();
 				Expression at = st.getAt(0);
 				if (at instanceof SimpleReference) {
+					String name = ((SimpleReference) at).getName();
 					String prefix = ((SimpleReference) at).getName() + " "
 							+ new String(compl.getToken());
-					processPartOfKeywords(compl, prefix, null);
+					processPartOfKeywords(compl, prefix, methodNames);
+					
+					for (int i = 0; i < extensions.length; i++) {
+						extensions[i].completeOnKeywordArgumentsOne(name, compl, methodNames, st, this);
+					}
 				}
 			}
+			// Variables completion here.
+//			char[] varToken = new char[0];
+			boolean provideDollar = true;
+			if( compl.getToken().length > 0 && compl.getToken()[0] == '$') {
+//				varToken = compl.getToken();
+				provideDollar = false;
+			}
+			findVariables(compl.getToken(), astNodeParent,
+					true, astNode.sourceStart(),
+					provideDollar, null);
 		}
 		return true;
 	}
@@ -263,7 +283,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		findKeywords(key.getToken(), choices, key.canCompleteEmptyToken());
 	}
 
-	protected char[] removeLastColonFromToken(char[] token) {
+	public char[] removeLastColonFromToken(char[] token) {
 		// remove : on the end.
 		if (token.length > 2 && token[token.length - 1] == ':'
 				&& token[token.length - 2] != ':') {
@@ -301,7 +321,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 				CompletionProposal.METHOD_DECLARATION);
 	}
 
-	protected void removeSameFrom(final Set methodNames, final Set elements,
+	public void removeSameFrom(final Set methodNames, final Set elements,
 			String to_) {
 		for (Iterator iterator = methodNames.iterator(); iterator.hasNext();) {
 			Object name = (Object) iterator.next();
@@ -333,7 +353,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		}
 	}
 
-	protected void findMixinTclElement(final Set completions, String tok,
+	public void findMixinTclElement(final Set completions, String tok,
 			Class mixinClass) {
 		String pattern = tok.replaceAll("::",
 				IMixinRequestor.MIXIN_NAME_SEPARATOR);
@@ -384,7 +404,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		return true;
 	}
 
-	protected List toList(Set types) {
+	public List toList(Set types) {
 		return Arrays.asList(types.toArray());
 	}
 
@@ -1000,5 +1020,17 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		}
 		return name;
 
+	}
+
+	public CompletionRequestor getRequestor() {
+		return this.requestor;
+	}
+
+	public org.eclipse.dltk.core.ISourceModule getSourceModule() {
+		return this.sourceModule;
+	}
+
+	public int getActualCompletionPosition() {
+		return this.actualCompletionPosition;
 	}
 }

@@ -4,6 +4,7 @@
    <extension-point id="tclCommandProcessor" name="tclCommandProcessor" schema="schema/tclCommandProcessor.exsd"/>
    <extension-point id="tclCommandDetector" name="tclCommandDetector" schema="schema/tclCommandDetector.exsd"/>
    <extension-point id="tclkeywords" name="tclkeywords" schema="schema/tclkeywords.exsd"/>
+   <extension-point id="tclExtension" name="tclExtension" schema="schema/tclExtension.exsd"/>
    <extension
          id="nature"
          point="org.eclipse.core.resources.natures">

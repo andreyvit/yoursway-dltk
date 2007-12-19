@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
+   <extension-point id="tclSemanticHighlighting" name="tclSemanticHighlighting" schema="schema/tclSemanticHighlighting.exsd"/>
    
 	<extension
       id="org.eclipse.dltk.tcl.ui.editor.DocumentSetupParticipant"
@@ -86,7 +87,7 @@
       <perspectiveExtension
             targetID="org.eclipse.debug.ui.DebugPerspective">
          <actionSet
-               id="org.eclipse.jdt.ui.DLTKActionSet">
+               id="org.eclipse.dltk.ui.DLTKActionSet">
          </actionSet>
       </perspectiveExtension>
       

@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension
-         point="org.eclipse.dltk.ui.language">
-      <language
-            class="org.eclipse.dltk.xotcl.internal.ui.XOTclUILanguageToolkit"
-            nature="org.eclipse.dltk.tcl.core.nature"
-            priority="1">
-      </language>
-   </extension>
 <extension
          point="org.eclipse.ui.newWizards">
       <wizard
@@ -106,4 +98,10 @@
          </description>
       </perspective>
    </extension>
+ <extension
+       point="org.eclipse.dltk.tcl.ui.tclSemanticHighlighting">
+    <highlightingExtension
+          class="org.eclipse.dltk.xotcl.ui.XOTclSemanticHighlightingExtension">
+    </highlightingExtension>
+ </extension>
 </plugin>
