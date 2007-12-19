@@ -29,6 +29,7 @@ public class DbgpBreakpointConfig {
 	private int hitCondition;
 
 	private String expression;
+	private int lineno;
 
 	// Constructors
 	public DbgpBreakpointConfig() {
@@ -41,16 +42,17 @@ public class DbgpBreakpointConfig {
 
 	public DbgpBreakpointConfig(boolean enabled, int hitValue,
 			int hitCondition, String expression) {
-		this(enabled, hitValue, hitCondition, false, expression);
+		this(enabled, hitValue, hitCondition, false, expression, -1);
 	}
 
 	public DbgpBreakpointConfig(boolean enabled, int hitValue,
-			int hitCondition, boolean temporary, String expression) {
+			int hitCondition, boolean temporary, String expression, int lineno) {
 		this.enabled = enabled;
 		this.hitValue = hitValue;
 		this.hitCondition = hitCondition;
 		this.temporary = temporary;
 		this.expression = expression;
+		this.lineno = lineno;
 	}
 
 	// Enabled
@@ -117,5 +119,13 @@ public class DbgpBreakpointConfig {
 		}
 
 		return null;
+	}
+	
+	public int getLineNo() {
+		return lineno;
+	}
+	
+	public void setLineNo(int value) {
+		lineno = value;
 	}
 }

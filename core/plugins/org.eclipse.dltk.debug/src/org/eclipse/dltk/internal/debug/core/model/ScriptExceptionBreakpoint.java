@@ -38,7 +38,6 @@ public class ScriptExceptionBreakpoint extends AbstractScriptBreakpoint
 	protected static final String UNCAUGHT = DLTKDebugPlugin.PLUGIN_ID + ".uncaught"; //$NON-NLS-1$	
 	/**
 	 * Allows the user to specify whether we should suspend if subclasses of the specified exception are thrown/caught
-	 * @since 3.2
 	 */
 	protected static final String SUSPEND_ON_SUBCLASSES = DLTKDebugPlugin.PLUGIN_ID + ".suspend_on_subclasses"; //$NON-NLS-1$
 
@@ -192,7 +191,7 @@ public class ScriptExceptionBreakpoint extends AbstractScriptBreakpoint
 
 	private static final String[] UPDATABLE_ATTRS = new String[] {
 			IBreakpoint.ENABLED, AbstractScriptBreakpoint.HIT_CONDITION,
-			AbstractScriptBreakpoint.HIT_VALUE, TYPE_NAME, CAUGHT, UNCAUGHT,
+			AbstractScriptBreakpoint.HIT_VALUE, CAUGHT, UNCAUGHT,
 			SUSPEND_ON_SUBCLASSES };
 
 	public String[] getUpdatableAttributes() {

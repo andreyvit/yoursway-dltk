@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.dltk.debug">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.dltk.debug" id="scriptDebugModel" name="Script Debug Model"/>
+         <meta.schema plugin="org.eclipse.dltk.debug" id="hotCodeReplaceProvider" name="Hot Code Replace Provider"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -12,8 +12,8 @@
 
    <element name="extension">
       <complexType>
-         <sequence>
-            <element ref="debugModel"/>
+         <sequence minOccurs="1" maxOccurs="unbounded">
+            <element ref="provider" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -42,30 +42,30 @@
       </complexType>
    </element>
 
-   <element name="debugModel">
+   <element name="provider">
       <complexType>
-         <attribute name="natureId" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="debugModelId" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="typeFactory" type="string">
+         <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.dltk.debug.core.model.IScriptTypeFactory"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.dltk.debug.core.IHotCodeReplaceProvider"/>
                </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="nature" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="priority" type="string" use="default" value="0">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
             </annotation>
          </attribute>
       </complexType>

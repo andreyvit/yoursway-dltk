@@ -30,7 +30,7 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
-import org.eclipse.dltk.debug.ui.preferences.dialogs.CreateStepFilterDialog;
+import org.eclipse.dltk.debug.ui.IDLTKDebugUIPreferenceConstants;
 import org.eclipse.dltk.internal.debug.ui.ScriptDebugOptionsManager;
 import org.eclipse.dltk.ui.DLTKExecuteExtensionHelper;
 import org.eclipse.dltk.ui.DLTKUILanguageManager;
@@ -347,19 +347,6 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 	}
 
 	/**
-	 * Allows a new filter to be added to the listing
-	 */
-	private void addFilter() {
-		Filter newfilter = CreateStepFilterDialog.showCreateStepFilterDialog(
-				getShell(), getAllFiltersFromTable());
-		if (newfilter != null) {
-			fTableViewer.add(newfilter);
-			fTableViewer.setChecked(newfilter, true);
-			fTableViewer.refresh(newfilter);
-		}
-	}
-
-	/**
 	 * add a new type to the listing of available filters
 	 */
 	private void addType() {
@@ -476,12 +463,12 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 		}
 		String pref = ScriptDebugOptionsManager.serializeList((String[]) active
 				.toArray(new String[active.size()]));
-		store.setValue(IDLTKDebugPreferenceConstants.PREF_ACTIVE_FILTERS_LIST,
+		store.setValue(IDLTKDebugUIPreferenceConstants.PREF_ACTIVE_FILTERS_LIST,
 				pref);
 		pref = ScriptDebugOptionsManager.serializeList((String[]) inactive
 				.toArray(new String[inactive.size()]));
 		store.setValue(
-				IDLTKDebugPreferenceConstants.PREF_INACTIVE_FILTERS_LIST, pref);
+				IDLTKDebugUIPreferenceConstants.PREF_INACTIVE_FILTERS_LIST, pref);
 		return super.performOk();
 	}
 
@@ -559,17 +546,17 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 		if (defaults) {
 			activefilters = ScriptDebugOptionsManager
 					.parseList(store
-							.getDefaultString(IDLTKDebugPreferenceConstants.PREF_ACTIVE_FILTERS_LIST));
+							.getDefaultString(IDLTKDebugUIPreferenceConstants.PREF_ACTIVE_FILTERS_LIST));
 			inactivefilters = ScriptDebugOptionsManager
 					.parseList(store
-							.getDefaultString(IDLTKDebugPreferenceConstants.PREF_INACTIVE_FILTERS_LIST));
+							.getDefaultString(IDLTKDebugUIPreferenceConstants.PREF_INACTIVE_FILTERS_LIST));
 		} else {
 			activefilters = ScriptDebugOptionsManager
 					.parseList(store
-							.getString(IDLTKDebugPreferenceConstants.PREF_ACTIVE_FILTERS_LIST));
+							.getString(IDLTKDebugUIPreferenceConstants.PREF_ACTIVE_FILTERS_LIST));
 			inactivefilters = ScriptDebugOptionsManager
 					.parseList(store
-							.getString(IDLTKDebugPreferenceConstants.PREF_INACTIVE_FILTERS_LIST));
+							.getString(IDLTKDebugUIPreferenceConstants.PREF_INACTIVE_FILTERS_LIST));
 		}
 		filters = new Filter[activefilters.length + inactivefilters.length];
 		for (int i = 0; i < activefilters.length; i++) {

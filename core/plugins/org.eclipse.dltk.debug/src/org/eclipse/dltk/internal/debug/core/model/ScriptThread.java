@@ -27,7 +27,7 @@ import org.eclipse.dltk.dbgp.commands.IDbgpExtendedCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.dbgp.internal.IDbgpTerminationListener;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
-import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
+import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
 import org.eclipse.dltk.debug.core.ExtendedDebugEventDetails;
 import org.eclipse.dltk.debug.core.ISmartStepEvaluator;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
@@ -143,8 +143,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		
 		this.propertyListener = new IPropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent event) {
-				if (event.getProperty().equals(DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL)
-						|| event.getProperty().equals(DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS)) {
+				if (event.getProperty().equals(DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL)
+						|| event.getProperty().equals(DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS)) {
 					stack.updateFrames();
 					DebugEventHelper.fireChangeEvent(ScriptThread.this
 							.getDebugTarget());

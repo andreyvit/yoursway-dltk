@@ -26,7 +26,7 @@ public class BreakpointTests extends AbstractDebugTests {
 				"src/test.rb");
 
 		breakpoint = new ScriptLineBreakpoint("test_debug_model", resource, 1,
-				-1, -1, 0, true);
+				-1, -1, true);
 	}
 
 	public void tearDownSuite() throws Exception {

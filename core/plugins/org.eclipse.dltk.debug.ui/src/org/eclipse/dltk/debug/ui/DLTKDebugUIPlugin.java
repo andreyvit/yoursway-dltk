@@ -25,7 +25,9 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
+import org.eclipse.dltk.internal.debug.core.model.HotCodeReplaceManager;
 import org.eclipse.dltk.internal.debug.ui.ScriptDebugOptionsManager;
+import org.eclipse.dltk.internal.debug.ui.ScriptHotCodeReplaceListener;
 import org.eclipse.dltk.internal.debug.ui.log.ScriptDebugLogManager;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -65,6 +67,8 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 	 * Whether this plugin is in the process of shutting down.
 	 */
 	private boolean fShuttingDown = false;
+
+	private ScriptHotCodeReplaceListener fHCRListener;
 
 	// private Object fUtilPresentation;
 
@@ -116,12 +120,12 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 													DLTKLaunchingPlugin.LAUNCH_COMMAND_LINE);
 
 									if (cmdLine != null) {
-									
-//										  try { stream.write(cmdLine.trim());
-//										  stream.write("\n"); stream.flush(); }
-//										  catch (IOException e) {
-//										  DLTKDebugUIPlugin.log(e); }
-										
+
+										// try { stream.write(cmdLine.trim());
+										// stream.write("\n"); stream.flush(); }
+										// catch (IOException e) {
+										// DLTKDebugUIPlugin.log(e); }
+
 									}
 								}
 							}
@@ -132,10 +136,15 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 							org.eclipse.ui.console.IConsole[] consoles) {
 					}
 				});
+		
+		fHCRListener= new ScriptHotCodeReplaceListener();
+		HotCodeReplaceManager.getDefault().addHotCodeReplaceListener(fHCRListener);
 	}
 
 	public void stop(BundleContext context) throws Exception {
 		try {
+			HotCodeReplaceManager.getDefault().removeHotCodeReplaceListener(fHCRListener);
+			
 			setShuttingDown(true);
 
 			ScriptDebugOptionsManager.getDefault().shutdown();

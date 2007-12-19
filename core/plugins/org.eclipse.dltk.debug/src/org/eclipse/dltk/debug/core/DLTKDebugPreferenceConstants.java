@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.core;
 
-public class DebugPreferenceConstants {
+public class DLTKDebugPreferenceConstants {
 	public static final int DBGP_DEFAULT_PORT = 9000;
 	public static final int DBGP_AVAILABLE_PORT = -1;
 

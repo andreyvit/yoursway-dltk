@@ -11,7 +11,10 @@ package org.eclipse.dltk.debug.ui.preferences;
 
 import java.util.ArrayList;
 
-import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
+import org.eclipse.core.runtime.Preferences;
+import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
+import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
+import org.eclipse.dltk.debug.ui.IDLTKDebugUIPreferenceConstants;
 import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.preferences.FieldValidators;
@@ -37,6 +40,7 @@ public class ScriptDebugConfigurationBlock extends
 		ImprovedAbstractConfigurationBlock {
 
 	private PreferencePage preferencePage;
+	private Preferences fUIPreferences;
 
 	private OverlayPreferenceStore.OverlayKey[] createOverlayStoreKeys() {
 
@@ -45,36 +49,44 @@ public class ScriptDebugConfigurationBlock extends
 		// Connection
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
 				OverlayPreferenceStore.INT,
-				DebugPreferenceConstants.PREF_DBGP_PORT));
+				DLTKDebugPreferenceConstants.PREF_DBGP_PORT));
 
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
 				OverlayPreferenceStore.INT,
-				DebugPreferenceConstants.PREF_DBGP_CONNECTION_TIMEOUT));
+				DLTKDebugPreferenceConstants.PREF_DBGP_CONNECTION_TIMEOUT));
 
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
 				OverlayPreferenceStore.INT,
-				DebugPreferenceConstants.PREF_DBGP_RESPONSE_TIMEOUT));
+				DLTKDebugPreferenceConstants.PREF_DBGP_RESPONSE_TIMEOUT));
 
 		// 
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
 				OverlayPreferenceStore.BOOLEAN,
-				DebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE));
+				DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE));
 
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
 				OverlayPreferenceStore.BOOLEAN,
-				DebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING));
+				DLTKDebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING));
 
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
 				OverlayPreferenceStore.BOOLEAN,
-				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL));
+				DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL));
 
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
 				OverlayPreferenceStore.BOOLEAN,
-				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL));
+				DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL));
 
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
 				OverlayPreferenceStore.BOOLEAN,
-				DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS));
+				DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS));
+
+		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
+				OverlayPreferenceStore.BOOLEAN,
+				DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS));
+
+		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
+				OverlayPreferenceStore.BOOLEAN,
+				DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS));
 
 		OverlayPreferenceStore.OverlayKey[] keys = new OverlayPreferenceStore.OverlayKey[overlayKeys
 				.size()];
@@ -89,6 +101,8 @@ public class ScriptDebugConfigurationBlock extends
 		store.addKeys(createOverlayStoreKeys());
 
 		this.preferencePage = mainPreferencePage;
+		this.fUIPreferences = DLTKDebugUIPlugin.getDefault()
+				.getPluginPreferences();
 	}
 
 	private static final int AUTO_SELECT_PORT_INDEX = 0;
@@ -96,6 +110,8 @@ public class ScriptDebugConfigurationBlock extends
 
 	private Combo portCombo;
 	private Text portText;
+	private Button fAlertHCRFailed;
+	private Button fAlertHCRNotSupported;
 
 	private Control createDbgpGroup(Composite parent) {
 		final Group group = SWTFactory.createGroup(parent, "Communication", 2,
@@ -124,7 +140,7 @@ public class ScriptDebugConfigurationBlock extends
 				boolean isCustom = portCombo.getSelectionIndex() == CUSTOM_PORT_INDEX;
 
 				portText.setEnabled(isCustom);
-				
+
 				if (!isCustom) {
 					portText.setText("");
 				} else {
@@ -138,7 +154,7 @@ public class ScriptDebugConfigurationBlock extends
 		final Text connectionTimeout = SWTFactory.createText(group, SWT.BORDER,
 				1, "");
 		bindControl(connectionTimeout,
-				DebugPreferenceConstants.PREF_DBGP_CONNECTION_TIMEOUT,
+				DLTKDebugPreferenceConstants.PREF_DBGP_CONNECTION_TIMEOUT,
 				FieldValidators.POSITIVE_NUMBER_VALIDATOR);
 
 		// Response timeout
@@ -146,7 +162,7 @@ public class ScriptDebugConfigurationBlock extends
 		final Text responseTimeout = SWTFactory.createText(group, SWT.BORDER,
 				1, "");
 		bindControl(responseTimeout,
-				DebugPreferenceConstants.PREF_DBGP_RESPONSE_TIMEOUT,
+				DLTKDebugPreferenceConstants.PREF_DBGP_RESPONSE_TIMEOUT,
 				FieldValidators.POSITIVE_NUMBER_VALIDATOR);
 
 		return group;
@@ -160,13 +176,14 @@ public class ScriptDebugConfigurationBlock extends
 		Button b = SWTFactory.createCheckButton(group,
 				ScriptDebugPreferencesMessages.BreakOnFirstLineLabel, null,
 				false, 1);
-		bindControl(b, DebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
+		bindControl(b,
+				DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
 
 		// Enable dbgp logging
 		b = SWTFactory.createCheckButton(group,
 				ScriptDebugPreferencesMessages.EnableDbgpLoggingLabel, null,
 				false, 1);
-		bindControl(b, DebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING);
+		bindControl(b, DLTKDebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING);
 
 		return group;
 	}
@@ -177,15 +194,36 @@ public class ScriptDebugConfigurationBlock extends
 
 		Button b = SWTFactory.createCheckButton(group, "Show Local Variables",
 				null, false, 1);
-		bindControl(b, DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL);
+		bindControl(b, DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL);
 
 		b = SWTFactory.createCheckButton(group, "Show Global Variables", null,
 				false, 1);
-		bindControl(b, DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL);
+		bindControl(b, DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL);
 
 		b = SWTFactory.createCheckButton(group, "Show Class Variables", null,
 				false, 1);
-		bindControl(b, DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS);
+		bindControl(b, DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS);
+
+		return group;
+	}
+
+	private Control createHotCodeReplaceGroup(Composite parent) {
+		final Group group = SWTFactory.createGroup(parent, "Hot Code Replace",
+				1, 1, GridData.FILL_HORIZONTAL);
+
+		boolean alertHcrFailed = fUIPreferences
+				.getBoolean(IDLTKDebugUIPreferenceConstants.PREF_ALERT_HCR_FAILED);
+		
+		fAlertHCRFailed = SWTFactory.createCheckButton(group,
+				"Show error when hot code replace fails", null, alertHcrFailed,
+				1);
+
+		boolean alertHcrNotSupported = fUIPreferences
+				.getBoolean(IDLTKDebugUIPreferenceConstants.PREF_ALERT_HCR_NOT_SUPPORTED);
+		
+		fAlertHCRNotSupported = SWTFactory.createCheckButton(group,
+				"Show error when hot code replace is not supported", null,
+				alertHcrNotSupported, 1);
 
 		return group;
 	}
@@ -226,6 +264,7 @@ public class ScriptDebugConfigurationBlock extends
 		createDbgpGroup(composite);
 		createSettingsGroup(composite);
 		createVariablesGroup(composite);
+		createHotCodeReplaceGroup(composite);
 		createScriptLanguagesLinks(composite);
 
 		return composite;
@@ -236,8 +275,8 @@ public class ScriptDebugConfigurationBlock extends
 
 		final IPreferenceStore store = getPreferenceStore();
 
-		int port = store.getInt(DebugPreferenceConstants.PREF_DBGP_PORT);
-		if (port == DebugPreferenceConstants.DBGP_AVAILABLE_PORT) {
+		int port = store.getInt(DLTKDebugPreferenceConstants.PREF_DBGP_PORT);
+		if (port == DLTKDebugPreferenceConstants.DBGP_AVAILABLE_PORT) {
 			portText.setEnabled(false);
 			portText.setText("");
 			portCombo.select(AUTO_SELECT_PORT_INDEX);
@@ -250,16 +289,30 @@ public class ScriptDebugConfigurationBlock extends
 
 	}
 
+	public void performDefaults() {
+		fAlertHCRFailed.setSelection(true);
+		fAlertHCRNotSupported.setSelection(true);
+		super.performDefaults();
+	}
+
 	public void performOk() {
 		super.performOk();
+
+		fUIPreferences.setValue(
+				IDLTKDebugUIPreferenceConstants.PREF_ALERT_HCR_FAILED,
+				fAlertHCRFailed.getSelection());
+
+		fUIPreferences.setValue(
+				IDLTKDebugUIPreferenceConstants.PREF_ALERT_HCR_NOT_SUPPORTED,
+				fAlertHCRNotSupported.getSelection());
 
 		final IPreferenceStore store = getPreferenceStore();
 
 		if (portCombo.getSelectionIndex() == AUTO_SELECT_PORT_INDEX) {
-			store.setValue(DebugPreferenceConstants.PREF_DBGP_PORT,
-					DebugPreferenceConstants.DBGP_AVAILABLE_PORT);
+			store.setValue(DLTKDebugPreferenceConstants.PREF_DBGP_PORT,
+					DLTKDebugPreferenceConstants.DBGP_AVAILABLE_PORT);
 		} else {
-			store.setValue(DebugPreferenceConstants.PREF_DBGP_PORT, Integer
+			store.setValue(DLTKDebugPreferenceConstants.PREF_DBGP_PORT, Integer
 					.parseInt(portText.getText()));
 		}
 	}

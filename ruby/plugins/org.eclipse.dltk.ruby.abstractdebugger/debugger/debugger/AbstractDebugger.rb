@@ -38,16 +38,7 @@ module XoredDebugger
         
         def current_context
             thread_context(Thread.current)
-        end
-        
-
-        # TODO: Why this is not printed by VM
-        def handle_exception(ex)
-            message = ex.backtrace.delete_if { |s| s.index(get_debugger_id) != nil }
-            message[0] += ': ' + ex.message + ' (' + ex.class.name + ')'
-            $stderr.write( message.join("\n")+"\n" )
-        end        
-        
+        end              
         
         def thread_context(thread)
             context = thread[ :debugger_context ]

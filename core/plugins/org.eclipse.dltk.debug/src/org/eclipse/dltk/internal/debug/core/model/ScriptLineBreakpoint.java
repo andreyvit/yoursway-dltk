@@ -24,7 +24,7 @@ import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
 
 public class ScriptLineBreakpoint extends AbstractScriptBreakpoint implements
 		IScriptLineBreakpoint {
-
+	
 	protected String getMarkerId() {
 		return ScriptMarkerFactory.LINE_BREAKPOINT_MARKER_ID;
 	}
@@ -38,16 +38,6 @@ public class ScriptLineBreakpoint extends AbstractScriptBreakpoint implements
 
 	public ScriptLineBreakpoint() {
 
-	}
-
-	/**
-	 * @deprecated
-	 */
-	public ScriptLineBreakpoint(final String debugModelId,
-			final IResource resource, final int lineNumber,
-			final int charStart, final int charEnd, final int hitCount,
-			final boolean add) throws DebugException {
-		this(debugModelId, resource, lineNumber, charStart, charEnd, add);
 	}
 
 	public ScriptLineBreakpoint(final String debugModelId,
@@ -103,6 +93,7 @@ public class ScriptLineBreakpoint extends AbstractScriptBreakpoint implements
 	}
 
 	private static final String[] UPDATABLE_ATTRS = new String[] {
+			IMarker.LINE_NUMBER,
 			IBreakpoint.ENABLED, AbstractScriptBreakpoint.HIT_CONDITION,
 			AbstractScriptBreakpoint.HIT_VALUE,
 			AbstractScriptBreakpoint.EXPRESSION,

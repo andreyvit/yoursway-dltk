@@ -7,6 +7,12 @@
 		name="%interpreterInstallTypePage"
 		schema="schema/interpreterInstallTypePage.exsd" />
  <extension-point id="scriptDetailFormatter" name="scriptDetailFormatter" schema="schema/scriptDetailFormatter.exsd"/>
+ <extension
+       point="org.eclipse.core.runtime.preferences">
+    <initializer
+          class="org.eclipse.dltk.debug.ui.DLTKDebugUIPluginPreferenceInitializer">
+    </initializer>
+ </extension>
 
 	<!-- Extensions -->
 

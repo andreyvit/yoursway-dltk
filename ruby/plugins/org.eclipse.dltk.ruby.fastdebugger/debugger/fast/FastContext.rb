@@ -99,12 +99,7 @@ module XoredDebugger
         
         # Evaluation
         def eval(text, index)
-            begin
-                Kernel.eval(text, @context.frame_binding(index))
-            rescue Exception
-                logException($!, 'in context')
-                raise OperationNotAvailableError 
-            end 
+            Kernel.eval(text, @context.frame_binding(index))
         end
                     
         # Stack depth

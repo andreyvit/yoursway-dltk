@@ -4,6 +4,7 @@
 	<extension-point id="scriptDebugModel" name="Script Debug Model"
 		schema="schema/scriptDebugModel.exsd" />
  <extension-point id="smartStepEvaluator" name="smartStepEvaluator" schema="schema/smartStepEvaluator.exsd"/>
+ <extension-point id="hotCodeReplaceProvider" name="Hot Code Replace Provider" schema="schema/hotCodeReplaceProvider.exsd"/>
 	
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer

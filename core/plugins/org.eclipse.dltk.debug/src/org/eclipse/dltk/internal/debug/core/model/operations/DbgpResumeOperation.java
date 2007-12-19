@@ -11,7 +11,7 @@ package org.eclipse.dltk.internal.debug.core.model.operations;
 
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
-import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
+import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 
 public class DbgpResumeOperation extends DbgpOperation {
@@ -25,7 +25,7 @@ public class DbgpResumeOperation extends DbgpOperation {
 
 		breakOnFirstLine = DLTKDebugPlugin.getDefault().getPluginPreferences()
 				.getBoolean(
-						DebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
+						DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
 	}
 
 	protected void process() throws DbgpException {

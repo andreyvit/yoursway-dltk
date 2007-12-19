@@ -19,7 +19,7 @@ import org.eclipse.debug.core.ILaunchListener;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.dltk.dbgp.IDbgpRawListener;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
-import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
+import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
@@ -54,7 +54,7 @@ public class ScriptDebugLogManager implements ILaunchListener,
 	public void launchChanged(ILaunch launch) {
 		Preferences prefs = DLTKDebugPlugin.getDefault().getPluginPreferences();
 		boolean enableLogging = prefs
-				.getBoolean(DebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING);
+				.getBoolean(DLTKDebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING);
 
 		if (!enableLogging) {
 			return;

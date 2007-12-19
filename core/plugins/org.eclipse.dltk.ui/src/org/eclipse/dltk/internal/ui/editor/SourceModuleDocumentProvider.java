@@ -110,23 +110,7 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 	private IPropertyChangeListener fPropertyListener;
 	/** Annotation model listener added to all created CU annotation models */
 	private GlobalAnnotationModelListener fGlobalAnnotationModelListener;
-	
-	
-	public boolean isReadOnly(Object element) {
-		// TODO Auto-generated method stub
-		//return super.isReadOnly(element);
-		
-	String value = System.getProperty("org.eclipse.dltk.debug.ui.debuggerActive");
-		if (value != null && value.equals("true")) {
-			return true;
-		}
-		
-		
-		return super.isReadOnly(element);
-	}
-	
-	
-	
+
 	/**
 	 * Annotation representing an <code>IProblem</code>.
 	 */
@@ -176,9 +160,9 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 				return IAnnotationAccessExtension.DEFAULT_LAYER + 1;
 		}
 
-//		private static Image fgQuickFixImage;
-//		private static Image fgQuickFixErrorImage;
-//		private static boolean fgQuickFixImagesInitialized = false;
+		// private static Image fgQuickFixImage;
+		// private static Image fgQuickFixErrorImage;
+		// private static boolean fgQuickFixImagesInitialized = false;
 
 		private ISourceModule fSourceModule;
 		private List fOverlaids;
@@ -248,10 +232,10 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 			}
 		}
 
-//		private boolean indicateQuixFixableProblems() {
-//			return DLTKUIPlugin.getDefault().getPreferenceStore().getBoolean(
-//					PreferenceConstants.EDITOR_CORRECTION_INDICATION);
-//		}
+		// private boolean indicateQuixFixableProblems() {
+		// return DLTKUIPlugin.getDefault().getPreferenceStore().getBoolean(
+		// PreferenceConstants.EDITOR_CORRECTION_INDICATION);
+		// }
 
 		/*
 		 * @see Annotation#paint
@@ -1434,8 +1418,9 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 
 			WorkingCopyOwner woc = new WorkingCopyOwner() {
 				public IBuffer createBuffer(ISourceModule workingCopy) {
-					//return new DocumentAdapter(workingCopy, documentPath);
-					return BufferManager.getDefaultBufferManager().createBuffer(workingCopy);
+					// return new DocumentAdapter(workingCopy, documentPath);
+					return BufferManager.getDefaultBufferManager()
+							.createBuffer(workingCopy);
 				}
 			};
 

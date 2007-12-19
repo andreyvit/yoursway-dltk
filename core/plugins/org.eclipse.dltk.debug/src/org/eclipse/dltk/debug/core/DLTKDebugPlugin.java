@@ -17,6 +17,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.dltk.internal.debug.core.model.DbgpService;
+import org.eclipse.dltk.internal.debug.core.model.HotCodeReplaceManager;
 import org.eclipse.dltk.internal.debug.core.model.ScriptDebugTarget;
 import org.osgi.framework.BundleContext;
 
@@ -39,9 +40,12 @@ public class DLTKDebugPlugin extends Plugin {
 
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		HotCodeReplaceManager.getDefault().startup();
 	}
 
 	public void stop(BundleContext context) throws Exception {
+		HotCodeReplaceManager.getDefault().shutdown();
+		
 		super.stop(context);
 
 		if (dbgpService != null) {

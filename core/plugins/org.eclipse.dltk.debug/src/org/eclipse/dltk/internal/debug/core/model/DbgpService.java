@@ -12,7 +12,7 @@ import org.eclipse.dltk.dbgp.IDbgpSession;
 import org.eclipse.dltk.dbgp.IDbgpThreadAcceptor;
 import org.eclipse.dltk.dbgp.internal.IDbgpTerminationListener;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
-import org.eclipse.dltk.debug.core.DebugPreferenceConstants;
+import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
 import org.eclipse.dltk.debug.core.IDbgpService;
 
 public class DbgpService implements IDbgpService, IPropertyChangeListener,
@@ -31,7 +31,7 @@ public class DbgpService implements IDbgpService, IPropertyChangeListener,
 
 	private int getPreferencePort() {
 		return DLTKDebugPlugin.getDefault().getPluginPreferences().getInt(
-				DebugPreferenceConstants.PREF_DBGP_PORT);
+				DLTKDebugPreferenceConstants.PREF_DBGP_PORT);
 	}
 
 	protected void restartServer(int port) {
@@ -64,7 +64,7 @@ public class DbgpService implements IDbgpService, IPropertyChangeListener,
 				.addPropertyChangeListener(this);
 
 		int port = getPreferencePort();
-		if (port == DebugPreferenceConstants.DBGP_AVAILABLE_PORT) {
+		if (port == DLTKDebugPreferenceConstants.DBGP_AVAILABLE_PORT) {
 			port = DbgpServer.findAvailablePort(FROM_PORT, TO_PORT);
 		}
 
@@ -102,9 +102,9 @@ public class DbgpService implements IDbgpService, IPropertyChangeListener,
 	public void propertyChange(PropertyChangeEvent event) {
 		final String property = event.getProperty();
 
-		if (DebugPreferenceConstants.PREF_DBGP_PORT.equals(property)) {
+		if (DLTKDebugPreferenceConstants.PREF_DBGP_PORT.equals(property)) {
 			final int port = getPreferencePort();
-			if (port != DebugPreferenceConstants.DBGP_AVAILABLE_PORT) {
+			if (port != DLTKDebugPreferenceConstants.DBGP_AVAILABLE_PORT) {
 				// Only restart if concrete port specified
 				restartServer(port);
 			}

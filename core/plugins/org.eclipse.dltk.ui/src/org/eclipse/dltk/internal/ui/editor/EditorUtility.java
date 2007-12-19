@@ -181,7 +181,9 @@ public class EditorUtility {
 						if (input != null) {
 							IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager
 									.getLanguageToolkit((IModelElement) inputElement);
-							editorId = toolkit.getEditorId(inputElement);
+							if (toolkit != null) {
+								editorId = toolkit.getEditorId(inputElement);
+							}
 						}
 					}
 

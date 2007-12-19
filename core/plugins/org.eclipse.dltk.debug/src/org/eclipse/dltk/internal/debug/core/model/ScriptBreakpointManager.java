@@ -59,6 +59,10 @@ public class ScriptBreakpointManager implements IBreakpointListener,
 			config.setExpression(breakpoint.getExpression());
 		}
 
+		if (breakpoint instanceof IScriptLineBreakpoint) {
+			IScriptLineBreakpoint lineBreakpoint = (IScriptLineBreakpoint) breakpoint;
+			config.setLineNo(lineBreakpoint.getLineNumber());			
+		}
 		return config;
 	}
 

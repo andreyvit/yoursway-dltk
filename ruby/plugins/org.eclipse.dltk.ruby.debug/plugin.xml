@@ -9,4 +9,11 @@
             typeFactory="org.eclipse.dltk.ruby.debug.RubyTypeFactory">
       </debugModel>
    </extension>
+   <extension
+         point="org.eclipse.dltk.debug.hotCodeReplaceProvider">
+      <provider
+            class="org.eclipse.dltk.ruby.debug.RubyHotCodeReplaceProvider"
+            nature="org.eclipse.dltk.ruby.core.nature">
+      </provider>
+   </extension>
 </plugin>

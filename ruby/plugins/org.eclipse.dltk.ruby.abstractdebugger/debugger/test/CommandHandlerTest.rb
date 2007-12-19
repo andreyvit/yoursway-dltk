@@ -177,7 +177,7 @@ module XoredDebugger
 
             response = @handler.handle(Command.new("breakpoint_update -i 5 -n 101 -d " + bp.breakpoint_id.to_s))
             assert_equal("<response command=\"breakpoint_update\" transaction_id=\"5\"/>", response.to_xml)            
-            assert_equal('101', bp.lineno)
+            assert_equal(101, bp.lineno)
             
             response = @handler.handle(Command.new("breakpoint_update -i 5 -d 868986086"))
             assert_equal(205, response.get_error)    

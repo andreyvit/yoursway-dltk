@@ -13,27 +13,27 @@ public class DLTKDebugPluginPreferenceInitializer extends
 	public void initializeDefaultPreferences() {
 		Preferences prefs = DLTKDebugPlugin.getDefault().getPluginPreferences();
 		prefs.setDefault(
-				DebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE, false);
+				DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE, false);
 
-		prefs.setDefault(DebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING,
+		prefs.setDefault(DLTKDebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING,
 				false);
 
 		// Connection
-		prefs.setDefault(DebugPreferenceConstants.PREF_DBGP_PORT, -1);
+		prefs.setDefault(DLTKDebugPreferenceConstants.PREF_DBGP_PORT, -1);
 
-		prefs.setDefault(DebugPreferenceConstants.PREF_DBGP_CONNECTION_TIMEOUT,
+		prefs.setDefault(DLTKDebugPreferenceConstants.PREF_DBGP_CONNECTION_TIMEOUT,
 				10000);
 
-		prefs.setDefault(DebugPreferenceConstants.PREF_DBGP_RESPONSE_TIMEOUT,
+		prefs.setDefault(DLTKDebugPreferenceConstants.PREF_DBGP_RESPONSE_TIMEOUT,
 				10000);
 
-		prefs.setDefault(DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL,
+		prefs.setDefault(DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL,
 				true);
 
-		prefs.setDefault(DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL,
+		prefs.setDefault(DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL,
 				false);
 
-		prefs.setDefault(DebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS,
+		prefs.setDefault(DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS,
 				false);
 	}
 }

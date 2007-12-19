@@ -230,7 +230,7 @@ module XoredDebugger
             end
             
             if (!lineno.nil? && (bp.is_a? LineBreakpointContract))
-                bp.lineno = lineno
+                bp.lineno = lineno.to_i
                 modified = true                
             end
                         

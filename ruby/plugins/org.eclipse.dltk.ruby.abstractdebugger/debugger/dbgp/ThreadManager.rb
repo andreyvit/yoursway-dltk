@@ -33,9 +33,10 @@ module XoredDebugger
             Thread.list.each do |thread|
                 dbgp_thread = thread[ :dbgp_thread_wrapper ]
                 dbgp_thread.exited(nil) unless dbgp_thread.nil? || Thread.main == thread
-            end              
-            @capture_manager.terminate
-            exited(excpt)           
+            end     
+            print_exception(excpt) unless excpt.nil?        
+            @capture_manager.terminate     
+            exited(excpt)                  
         end
         
         def get_dbgp_thread(thread)
@@ -65,7 +66,7 @@ module XoredDebugger
             dbgp_thread = Thread.current[ :dbgp_thread_wrapper ]
             Thread.current[ :dbgp_thread_wrapper ] = nil
             dbgp_thread.exited(excpt) unless dbgp_thread.nil?                      
-        end	   
+        end	  
         
         def at_breakpoint(context)
             log('at_breakpoint')                        
@@ -108,6 +109,16 @@ module XoredDebugger
                 end
             }
             false     
-        end                         
+        end       
+
+        # TODO: Why this is not printed by VM
+        def print_exception(ex)
+            message = ex.backtrace.delete_if { |s| s.index(@debugger.get_debugger_id) != nil }
+            message[0] += ': ' + ex.message + ' (' + ex.class.name + ')'
+            message.each_index {
+                |i| message[i] = (i==0 ? message[i] : "\t from " + message[i]) 
+            }
+            $stderr.write( message.join("\n")+"\n" )
+        end                                                   
     end 
 end
