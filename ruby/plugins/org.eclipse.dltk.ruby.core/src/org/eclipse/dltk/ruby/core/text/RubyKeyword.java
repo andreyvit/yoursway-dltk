@@ -44,7 +44,7 @@ public class RubyKeyword {
 		return getKeyword(name, name.length());
 	}
 	
-	private static String[] sKeywords = new String[] {"if", "else", "elseif", "unless", "while", "until", "in"
+	private static String[] sKeywords = new String[] {"if", "else", "elsif", "unless", "while", "until", "in"
 		,"case", "when", "begin", "ensure", "module", "for", "then", "do", "and", "or", "not"
 		,"rescue", "return", "break", "next", "yield", "defined?", "super", "def", "undef", "alias", "class"
 		,"end", "self", "false", "true", "retry", "nil", "redo", "BEGIN", "END", "__LINE__", "__FILE__",
@@ -54,7 +54,7 @@ public class RubyKeyword {
 	static {
 		sKeywordContext.put("if", RubyContext.EXPRESSION_START);
 		sKeywordContext.put("else", RubyContext.EXPRESSION_START);
-		sKeywordContext.put("elseif", RubyContext.EXPRESSION_START);
+		sKeywordContext.put("elsif", RubyContext.EXPRESSION_START);
 		sKeywordContext.put("unless", RubyContext.EXPRESSION_START);
 		sKeywordContext.put("while", RubyContext.EXPRESSION_START);
 		sKeywordContext.put("until", RubyContext.EXPRESSION_START);
