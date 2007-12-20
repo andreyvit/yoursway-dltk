@@ -48,7 +48,7 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 
 	protected InterpreterConfig alterConfig(InterpreterConfig config,
 			String debuggingEnginePath) throws CoreException {
-		final String exe = renderCommandLineLabel(config);
+		final String exe = getInstall().getInstallLocation().getAbsolutePath();
 		final String host = (String) config
 				.getProperty(DbgpConstants.HOST_PROP);
 		final String port = (String) config
