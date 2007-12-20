@@ -44,7 +44,6 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	private final IScriptThreadManager manager;
 
-
 	private final ScriptStack stack;
 
 	// Session
@@ -56,11 +55,10 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	private IScriptEvaluationEngine evalEngine;
 
 	private int currentStackLevel;
-	
+
 	private IPropertyChangeListener propertyListener;
 
 	private boolean terminated = false;
-
 
 	// ScriptThreadStateManager.IStateChangeHandler
 	public void handleSuspend(int detail) {
@@ -69,7 +67,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 		stack.update();
 
-		if( handleSmartStepInto() ) {
+		if (handleSmartStepInto()) {
 			return;
 		}
 
@@ -83,7 +81,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 			stateManager.setStepInto(false);
 			IScriptDebugTarget target = this.getScriptDebugTarget();
 			String[] filters = target.getFilters();
-			IDLTKLanguageToolkit toolkit = this.getScriptDebugTarget().getLanguageToolkit();
+			IDLTKLanguageToolkit toolkit = this.getScriptDebugTarget()
+					.getLanguageToolkit();
 			if (toolkit != null) {
 				ISmartStepEvaluator evaluator = SmartStepEvaluatorManager
 						.getEvaluator(toolkit.getNatureId());
@@ -140,11 +139,16 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 		this.stack = new ScriptStack(this);
 
-		
 		this.propertyListener = new IPropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent event) {
-				if (event.getProperty().equals(DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL)
-						|| event.getProperty().equals(DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS)) {
+				if (event
+						.getProperty()
+						.equals(
+								DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL)
+						|| event
+								.getProperty()
+								.equals(
+										DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS)) {
 					stack.updateFrames();
 					DebugEventHelper.fireChangeEvent(ScriptThread.this
 							.getDebugTarget());
@@ -153,7 +157,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		};
 		Preferences prefs = DLTKDebugPlugin.getDefault().getPluginPreferences();
 		prefs.addPropertyChangeListener(propertyListener);
-		
+
 		final DbgpDebugger engine = this.stateManager.getEngine();
 
 		if (DLTKCore.DEBUG) {
@@ -172,7 +176,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 		engine.redirectStdout();
 		engine.redirectStderr();
-		
+
 		// final IDbgpExtendedCommands extended = session.getExtendedCommands();
 		// session.getNotificationManager().addNotificationListener(
 		// new IDbgpNotificationListener() {
@@ -286,7 +290,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	// ITerminate
 	public boolean isTerminated() {
-		return terminated || stateManager.isTerminated();			
+		return terminated || stateManager.isTerminated();
 	}
 
 	public boolean canTerminate() {
@@ -296,7 +300,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	public void terminate() throws DebugException {
 		target.terminate();
 	}
-	
+
 	public void sendTerminationRequest() throws DebugException {
 		stateManager.terminate();
 	}
@@ -309,8 +313,9 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		try {
 			return session.getCoreCommands().getBreakpoint(id);
 		} catch (DbgpException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 
 		return null;
@@ -335,7 +340,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	// IDbgpTerminationListener
 	public void objectTerminated(Object object, Exception e) {
 		terminated = true;
-		Assert.isTrue(object == session);		
+		Assert.isTrue(object == session);
 		manager.terminateThread(this);
 		Preferences prefs = DLTKDebugPlugin.getDefault().getPluginPreferences();
 		prefs.removePropertyChangeListener(propertyListener);
@@ -346,7 +351,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		return "Thread (" + session.getInfo().getThreadId() + ")";
 	}
 
-	public void notifyModified() {		
+	public void notifyModified() {
 		stateManager.notifyModified();
 	}
 }
