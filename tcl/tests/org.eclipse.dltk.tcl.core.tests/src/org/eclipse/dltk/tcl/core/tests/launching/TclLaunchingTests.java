@@ -1,20 +1,48 @@
 package org.eclipse.dltk.tcl.core.tests.launching;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Test;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Plugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.dltk.core.tests.launching.IFileVisitor;
+import org.eclipse.dltk.core.tests.launching.PathFilesContainer;
 import org.eclipse.dltk.core.tests.launching.ScriptLaunchingTests;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
 import org.eclipse.dltk.launching.IInterpreterInstall;
+import org.eclipse.dltk.tcl.activestatedebugger.TclActiveStateDebuggerConstants;
+import org.eclipse.dltk.tcl.activestatedebugger.TclActiveStateDebuggerPlugin;
+import org.eclipse.dltk.tcl.activestatedebugger.TclActiveStateDebuggerRunner;
 import org.eclipse.dltk.tcl.core.TclNature;
+import org.eclipse.dltk.tcl.internal.debug.TclDebugConstants;
+import org.eclipse.dltk.tcl.internal.debug.TclDebugPlugin;
 import org.eclipse.dltk.tcl.launching.TclLaunchConfigurationDelegate;
 
 public class TclLaunchingTests extends ScriptLaunchingTests {
+	class Searcher implements IFileVisitor {
+		private String debuggingEnginePath;
+
+		public boolean visit(File file) {
+			if (file.isFile() && file.getName().startsWith("dbgp_tcldebug")) {
+				debuggingEnginePath = file.getAbsolutePath();
+			}
+
+			if (file.isDirectory() && debuggingEnginePath == null) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		public String getPath() {
+			return debuggingEnginePath;
+		}
+	};
 
 	public TclLaunchingTests(String name) {
 		super("org.eclipse.dltk.tcl.core.tests", name);
@@ -68,11 +96,24 @@ public class TclLaunchingTests extends ScriptLaunchingTests {
 	}
 
 	public void testDebug() throws Exception {
-		fail("Active State Tcl debugging engine not installed");
+		TclDebugPlugin.getDefault().getPluginPreferences().setValue(
+				TclDebugConstants.DEBUGGING_ENGINE_ID_KEY,
+				TclActiveStateDebuggerRunner.ENGINE_ID);
+
+		PathFilesContainer container = new PathFilesContainer();
+		Searcher searcher = new Searcher();
+		container.accept(searcher);
+
+		Plugin p = TclActiveStateDebuggerPlugin.getDefault();
+		p.getPluginPreferences().setValue(
+				TclActiveStateDebuggerConstants.DEBUGGING_ENGINE_PATH_KEY,
+				searcher.getPath());
+
+		super.testDebug();
 	}
 
-	protected String getScriptFileName() {
-		// TODO Auto-generated method stub
-		return null;
+	protected String[] getRequiredInterpreterNames() {
+		String[] required = { "tclsh", "wish", "expect" };		
+		return required;
 	}
 }

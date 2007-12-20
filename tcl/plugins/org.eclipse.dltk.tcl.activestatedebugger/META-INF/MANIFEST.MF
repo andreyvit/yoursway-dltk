@@ -15,3 +15,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.dltk.debug.ui,
  org.eclipse.debug.core
 Eclipse-LazyStart: true
+Export-Package: org.eclipse.dltk.tcl.activestatedebugger,
+ org.eclipse.dltk.tcl.activestatedebugger.preferences

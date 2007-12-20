@@ -476,21 +476,31 @@ public class TclCommandProcessorTests extends TestCase
 	
 	public void testTclForProcessor001() throws TclParseException {
 		String script = "for {set x 0} {$x < 10} {incr x} {puts $x}";
-		testTclForProcessor(script);
-	}
-	
-	public void testTclForProcessor002() throws TclParseException {
-		String script = "for {set x 0} $x<10 {incr x} pid";	//infinite loop actually
-		testTclForProcessor(script);
-	}
-	
-	private void testTclForProcessor(String script) throws TclParseException {
 		TclForCommandProcessor processor = new TclForCommandProcessor();
 		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), 0, null);
 		assertNotNull(node);
 		assertTrue(node instanceof TclForStatement);
 		TclForStatement forStatement = (TclForStatement)node;
-		assertEquals(4, forStatement.getChilds().size());
+		assertEquals(1, forStatement.getChilds().size());
+	}
+	
+	public void testTclForProcessor002() throws TclParseException {
+		String script = "for {set x 0} $x<10";	//infinite loop actually
+		TclForCommandProcessor processor = new TclForCommandProcessor();
+		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), 0, null);
+		assertNull(node);
+	}
+	public void testTclForProcessor003() throws TclParseException {
+		String script = "for {set x 0} { $x<10 }";	//infinite loop actually
+		TclForCommandProcessor processor = new TclForCommandProcessor();
+		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), 0, null);
+		assertNull(node);
+	}
+	public void testTclForProcessor004() throws TclParseException {
+		String script = "for {set x 0} { $x<10 } { incr x }";	//infinite loop actually
+		TclForCommandProcessor processor = new TclForCommandProcessor();
+		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), 0, null);
+		assertNull(node);
 	}
 	
 	public void testTclForeachProcessor001() throws TclParseException {

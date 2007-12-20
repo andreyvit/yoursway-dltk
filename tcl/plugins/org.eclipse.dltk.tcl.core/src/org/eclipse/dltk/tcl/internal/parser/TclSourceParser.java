@@ -27,12 +27,15 @@ import org.eclipse.dltk.tcl.internal.parsers.raw.TclParseException;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclScript;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclWord;
 
-public class TclSourceParser extends AbstractSourceParser implements ITclSourceParser, ITclParser {
+public class TclSourceParser extends AbstractSourceParser implements
+		ITclSourceParser, ITclParser {
 	private IProblemReporter problemReporter;
 	protected CodeModel codeModel;
 	protected String content;
 	private char[] fileName;
 	private int startPos = 0;
+	boolean useProcessors = true;
+
 	private ModuleDeclaration moduleDeclaration;
 
 	// private Map commandParserCache = new HashMap();
@@ -99,13 +102,13 @@ public class TclSourceParser extends AbstractSourceParser implements ITclSourceP
 		st.setExpressions(Arrays.asList(nodes));
 	}
 
-	public ASTNode processLocal(TclCommand command, int offset, ASTNode parent) {
-		ASTNode node = this.localProcessor.process(command, this, offset, null);
-		if (node instanceof TclStatement) {
-			TclParseUtil.addToDeclaration(parent, node);
-			this.convertExecuteToBlocks((TclStatement) node);
-			TclParseUtil.removeFromDeclaration(parent, node);
-		}
+	public TclStatement processLocal(TclCommand command, int offset,
+			ASTNode parent) {
+		TclStatement node = (TclStatement) this.localProcessor.process(command, this, offset, null);
+		TclParseUtil.addToDeclaration(parent, node);
+		this.convertExecuteToBlocks((TclStatement) node);
+		TclParseUtil.removeFromDeclaration(parent, node);
+
 		return node;
 	}
 
@@ -144,6 +147,10 @@ public class TclSourceParser extends AbstractSourceParser implements ITclSourceP
 
 	private ITclCommandProcessor locateProcessor(TclCommand command,
 			String content, int offset, ASTNode decl) {
+		if( this.useProcessors == false ) {
+			return localProcessor;
+		}
+		
 		List words = command.getWords();
 		if (words == null || words.size() == 0) {
 			return null;
@@ -222,5 +229,9 @@ public class TclSourceParser extends AbstractSourceParser implements ITclSourceP
 
 	public int getStartPos() {
 		return this.startPos;
+	}
+
+	public void setProcessorsState(boolean state) {
+		this.useProcessors = state;
 	}
 }

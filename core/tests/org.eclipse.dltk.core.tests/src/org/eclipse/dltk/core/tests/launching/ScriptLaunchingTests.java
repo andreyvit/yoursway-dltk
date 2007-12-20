@@ -273,7 +273,8 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			}
 
 			public IFile getFile() {
-				return null;
+				return ScriptLaunchingTests.this.getFile(projectName + '/'
+						+ script);
 			}
 
 			public IPath getLocation() {
@@ -383,6 +384,24 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 
 		return (IInterpreterInstall[]) installs
 				.toArray(new IInterpreterInstall[installs.size()]);
+	}
+
+	public void testRequiredInterpretersAvailable() {
+		String[] required = getRequiredInterpreterNames();
+		for (int i = 0; i < required.length; i++) {
+			String name = required[i];
+			assertTrue(isInterpreterAvailable(name));
+		}
+	}
+
+	private boolean isInterpreterAvailable(String interpreterName) {
+		for (int i = 0; i < interpreterInstalls.length; i++) {
+			String foundName = interpreterInstalls[i].getInstallLocation().getName();					
+			if (foundName.startsWith(interpreterName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void testRun() throws Exception {
@@ -503,19 +522,19 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			case ExtendedDebugEventDetails.BEFORE_RESUME:
 				handleBeforeResume((ScriptThread) event.getSource());
 				break;
- 			case ExtendedDebugEventDetails.BEFORE_SUSPEND:
+			case ExtendedDebugEventDetails.BEFORE_SUSPEND:
 				handleBeforeSuspend((ScriptThread) event.getSource());
 				break;
 			}
-			
+
 		}
 
-		private void handleBeforeSuspend(ScriptThread source) {			
+		private void handleBeforeSuspend(ScriptThread source) {
 			beforeSuspendCount++;
 		}
 
 		private void handleBeforeResume(ScriptThread source) {
-			beforeResumeCount++;			
+			beforeResumeCount++;
 		}
 
 		private void handleBeforeCodeLoaded(ScriptDebugTarget source) {
@@ -523,7 +542,7 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 		}
 
 		private void handleBeforeVmStarted(InterpreterConfig source) {
-			beforeVmStarted++;			
+			beforeVmStarted++;
 		}
 
 		public void reset() {
@@ -566,12 +585,6 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 		}
 
 		// Debug
-		final IFile file = getFile(getScriptFileName());
-
-		// Setting breakpoint
-		IScriptLineBreakpoint b = new ScriptLineBreakpoint(getDebugModelId(),
-				file, 1, -1, -1, true);
-
 		DebugEventStats stats = new DebugEventStats();
 
 		DebugPlugin.getDefault().addDebugEventListener(stats);
@@ -591,37 +604,48 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			final ILaunch launch = new Launch(createLaunchConfiguration(""),
 					ILaunchManager.DEBUG_MODE, null);
 
-			startLaunch(launch);
+			// Setting breakpoint
+			IScriptLineBreakpoint b = new ScriptLineBreakpoint(
+					getDebugModelId(), launch.getLaunchConfiguration()
+							.getFile(), 1, -1, -1, true);
 
-			IProcess[] processes = launch.getProcesses();
-			assertEquals(1, processes.length);
+			try {
+				startLaunch(launch);
 
-			final IProcess process = processes[0];
-			while (!process.isTerminated()) {
-				Thread.sleep(200);
+				IProcess[] processes = launch.getProcesses();
+				assertEquals(1, processes.length);
+
+				final IProcess process = processes[0];
+				while (!process.isTerminated()) {
+					Thread.sleep(200);
+				}
+
+				assertTrue(process.isTerminated());
+
+				int suspendCount = stats.getSuspendCount();
+				assertEquals(1, suspendCount);
+
+				assertEquals(2, stats.getResumeCount());
+
+				final int exitValue = process.getExitValue();
+				assertEquals(0, exitValue);
+
+				// Checking extended events count
+				assertEquals(1, stats.getBeforeVmStarted());
+				assertEquals(1, stats.getBeforeCodeLoaded());
+				assertEquals(2, stats.getBeforeResumeCount());
+				assertEquals(1, stats.getBeforeSuspendCount());
+			} finally {
+				b.delete();
 			}
-
-			assertTrue(process.isTerminated());
-
-			int suspendCount = stats.getSuspendCount();
-			assertEquals(1, suspendCount);
-
-			assertEquals(2, stats.getResumeCount());
-
-			final int exitValue = process.getExitValue();
-			assertEquals(0, exitValue);
-			
-			// Checking extended events count
-			assertEquals(1, stats.getBeforeVmStarted());
-			assertEquals(1, stats.getBeforeCodeLoaded());
-			assertEquals(2, stats.getBeforeResumeCount());
-			assertEquals(1, stats.getBeforeSuspendCount());			
 		}
-		b.delete();
+
+		DebugPlugin.getDefault().removeDebugEventListener(stats);
+
 	}
 
-	protected abstract String getScriptFileName();
-	
+	protected abstract String[] getRequiredInterpreterNames();
+
 	protected abstract String getProjectName();
 
 	protected abstract String getNatureId();

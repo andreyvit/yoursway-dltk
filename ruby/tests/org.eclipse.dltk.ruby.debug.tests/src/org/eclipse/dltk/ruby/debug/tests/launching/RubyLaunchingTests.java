@@ -52,12 +52,19 @@ public class RubyLaunchingTests extends ScriptLaunchingTests {
 	public void testDebug() throws Exception {
 		RubyDebugPlugin.getDefault().getPluginPreferences().setValue(
 				RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY,
+				"org.eclipse.dltk.ruby.fastdebugger");
+
+		super.testDebug();
+
+		RubyDebugPlugin.getDefault().getPluginPreferences().setValue(
+				RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY,
 				"org.eclipse.dltk.ruby.basicdebugger");
 
 		super.testDebug();
 	}
 
-	protected String getScriptFileName() {
-		return "/launching/src/test.rb";
+	protected String[] getRequiredInterpreterNames() {
+		String[] required = { "ruby", "jruby" };
+		return required;
 	}
 }

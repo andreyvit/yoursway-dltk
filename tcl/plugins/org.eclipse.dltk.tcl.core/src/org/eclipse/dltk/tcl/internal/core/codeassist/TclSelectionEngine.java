@@ -68,12 +68,13 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 	protected org.eclipse.dltk.core.ISourceModule sourceModule;
 
 	protected IDLTKLanguageToolkit toolkit;
-	
+
 	protected ISelectionExtension[] extensions;
 
 	public TclSelectionEngine() {
 		this.toolkit = TclLanguageToolkit.getDefault();
-		this.extensions = TclExtensionManager.getDefault().getSelectionExtensions();
+		this.extensions = TclExtensionManager.getDefault()
+				.getSelectionExtensions();
 	}
 
 	public IModelElement[] select(ISourceModule sourceUnit,
@@ -109,15 +110,10 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 					.parse(sourceUnit);
 			if (parsedUnit != null) {
 				try {
-					this.lookupEnvironment.buildTypeScope(parsedUnit, null);
-					if ((this.unitScope = parsedUnit.scope) != null) {
-						parseBlockStatements(parsedUnit,
-								this.actualSelectionStart);
-						if (DEBUG) {
-							System.out.println("COMPLETION - AST :"); //$NON-NLS-1$
-							System.out.println(parsedUnit.toString());
-						}
-						// parsedUnit.resolve();
+					parseBlockStatements(parsedUnit, this.actualSelectionStart);
+					if (DEBUG) {
+						System.out.println("COMPLETION - AST :"); //$NON-NLS-1$
+						System.out.println(parsedUnit.toString());
 					}
 				} catch (SelectionNodeFound e) {
 					// completionNodeFound = true;
@@ -204,7 +200,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 			ASTNode node = ((SelectionOnNode) astNode).getNode();
 			int position = ((SelectionOnNode) astNode).getPosition();
 			for (int i = 0; i < this.extensions.length; i++) {
-				this.extensions[i].selectionOnNode(node,position,this);
+				this.extensions[i].selectionOnNode(node, position, this);
 			}
 		}
 	}
@@ -702,7 +698,9 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 						while (end < source.length()
 								&& source.charAt(end) != '}')
 							end++;
-						end++;
+						if( end < source.length()) {
+							end++;
+						}
 					}
 				}
 			}
@@ -712,9 +710,41 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 			// array
 			while (end < source.length() && source.charAt(end) != ')')
 				end++;
-			end++;
+			if( end < source.length()) {
+				end++;
+			}
+		}
+		if (isVariable && start + 1 < source.length()
+				&& source.charAt(start + 1) == '{') {
+			int pos = start;
+			while (pos < source.length() && source.charAt(pos) != '}')
+				pos++;
+			if( pos < source.length()) {
+				pos++;
+			}
+			end = pos;
+		}
+		if( !(start <= end && end <= source.length() )) {
+			System.out.println();
 		}
 		String sub = source.substring(start, end);
+		// Lets check for variable with spaces selection
+		if (!isVariable && sub.endsWith("}")) {
+			int pos = end;
+			while (pos > 0) {
+				if (source.charAt(pos) == '{') {
+					break;
+				}
+				pos--;
+			}
+			if (pos > 0) {
+				if( source.charAt(pos-1) == '$') {
+					isVariable = true;
+					start = pos - 1;
+					sub = source.substring(start,end);
+				}
+			}
+		}
 		// If contain tabs or spaces, then from start.
 		if (!isVariable
 				&& (sub.indexOf(' ') != -1 || sub.indexOf('\t') != -1 || sub
@@ -742,7 +772,7 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 	}
 
 	public void addSelectionElement(IModelElement element) {
-		this.selectionElements.add(element);	
+		this.selectionElements.add(element);
 	}
 
 	public int getSelectionElementsSize() {

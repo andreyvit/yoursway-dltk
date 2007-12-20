@@ -19,14 +19,5 @@ public interface ITclCommandDetector {
 			this.parameter = parameter;
 		}
 	}
-	/**
-	 * 
-	 * @param command
-	 * @param offset
-	 * @param module
-	 * @param parser
-	 * @param nodes - current top level elements.
-	 * @return
-	 */
 	CommandInfo detectCommand( TclCommand command, int offset, ModuleDeclaration module, ITclParser parser, ASTNode decl);
 }

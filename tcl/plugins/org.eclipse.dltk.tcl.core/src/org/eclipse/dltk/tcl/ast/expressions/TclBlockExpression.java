@@ -38,13 +38,6 @@ public class TclBlockExpression extends Expression {
 
 	public void traverse(ASTVisitor visitor) throws Exception {
 		if (visitor.visit(this)) {
-			// List statements = this.parseBlock();
-			// if (statements != null) {
-			// for (int i = 0; i < statements.size(); i++) {
-			// ASTNode node = (ASTNode) statements.get(i);
-			// node.traverse(visitor);
-			// }
-			// }
 			visitor.endvisit(this);
 		}
 	}
@@ -64,8 +57,10 @@ public class TclBlockExpression extends Expression {
 	public void setFilename(char[] fileName) {
 		this.fileName = fileName;
 	}
-
 	public List parseBlockSimple() {
+		return parseBlockSimple(true);
+	}
+	public List parseBlockSimple(boolean useProcessors) {
 		try {
 			if (this.fBlockContent == null) {
 				return null;
@@ -76,6 +71,7 @@ public class TclBlockExpression extends Expression {
 			ITclSourceParser parser = null;
 			parser = (ITclSourceParser) DLTKLanguageManager
 					.getSourceParser(TclNature.NATURE_ID);
+			parser.setProcessorsState(useProcessors);
 			parser.setOffset(this.sourceStart() + 1);
 			ModuleDeclaration module = parser.parse(this.fileName, content
 					.toCharArray(), null);
@@ -86,5 +82,5 @@ public class TclBlockExpression extends Expression {
 			}
 		}
 		return null;
-	}
+	}	
 }
