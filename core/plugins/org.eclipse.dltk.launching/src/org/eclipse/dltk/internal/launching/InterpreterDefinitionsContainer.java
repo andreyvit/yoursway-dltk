@@ -707,7 +707,7 @@ public class InterpreterDefinitionsContainer {
 			return new EnvironmentVariable(name, value);
 		}
 		DLTKLaunchingPlugin
-				.log("Library location element is specified incorrectly."); //$NON-NLS-1$
+				.log("Environment variable element is specified incorrectly."); //$NON-NLS-1$
 		return null;
 	}
 
@@ -736,23 +736,23 @@ public class InterpreterDefinitionsContainer {
 	}
 
 	private static void setEnvironmentVariables(
-			IInterpreterInstall Interpreter, Element libLocationsElement) {
-		NodeList list = libLocationsElement.getChildNodes();
+			IInterpreterInstall Interpreter, Element environmentVariablesElement) {
+		NodeList list = environmentVariablesElement.getChildNodes();
 		int length = list.getLength();
-		List locations = new ArrayList(length);
+		List variables = new ArrayList(length);
 		for (int i = 0; i < length; ++i) {
 			Node node = list.item(i);
 			short type = node.getNodeType();
 			if (type == Node.ELEMENT_NODE) {
-				Element libraryLocationElement = (Element) node;
-				if (libraryLocationElement.getNodeName().equals(
+				Element envVarElement = (Element) node;
+				if (envVarElement.getNodeName().equals(
 						ENVIRONMENT_VARIABLE_TAG)) { //$NON-NLS-1$
-					locations.add(getEnvironmentVariable(libraryLocationElement));
+					variables.add(getEnvironmentVariable(envVarElement));
 				}
 			}
 		}
-		Interpreter.setEnvironmentVariables((EnvironmentVariable[]) locations
-				.toArray(new EnvironmentVariable[locations.size()]));
+		Interpreter.setEnvironmentVariables((EnvironmentVariable[]) variables
+				.toArray(new EnvironmentVariable[variables.size()]));
 	}
 
 	/**

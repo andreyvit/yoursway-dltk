@@ -19,6 +19,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IScriptModel;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.debug.ui.IDLTKDebugUIConstants;
+import org.eclipse.dltk.debug.ui.interpreters.InterpretersUpdater;
 import org.eclipse.dltk.internal.debug.ui.IScriptDebugHelpContextIds;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.LibraryLocation;

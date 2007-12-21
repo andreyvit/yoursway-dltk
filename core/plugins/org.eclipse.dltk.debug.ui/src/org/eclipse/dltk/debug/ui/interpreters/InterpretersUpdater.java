@@ -7,7 +7,7 @@
  *
  
  *******************************************************************************/
-package org.eclipse.dltk.internal.debug.ui.interpreters;
+package org.eclipse.dltk.debug.ui.interpreters;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -18,6 +18,7 @@ import javax.xml.transform.TransformerException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
+import org.eclipse.dltk.internal.debug.ui.interpreters.InterpretersMessages;
 import org.eclipse.dltk.internal.launching.InterpreterDefinitionsContainer;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
