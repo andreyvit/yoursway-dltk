@@ -661,10 +661,8 @@ public class InterpreterDefinitionsContainer {
 						LibraryLocation loc = getLibraryLocation(subElement);
 						standin
 								.setLibraryLocations(new LibraryLocation[] { loc });
-						break;
 					} else if (subElementName.equals(LIBRARY_LOCATIONS_TAG)) { //$NON-NLS-1$
 						setLibraryLocations(standin, subElement);
-						break;
 					} else if (subElementName.equals(ENVIRONMENT_VARIABLE_TAG)) {
 						EnvironmentVariable var = getEnvironmentVariable(subElement);
 						standin

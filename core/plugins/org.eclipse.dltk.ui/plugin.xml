@@ -1148,24 +1148,6 @@
             </separator>
          </menu>
          <action
-               definitionId="org.eclipse.dltk.ui.edit.text.script.search.implement.occurrences"
-               label="%ImplementOccurrences.label"
-               retarget="true"
-               id="org.eclipse.dltk.ui.actions.ImplementOccurrences">
-         </action>
-         <action
-               definitionId="org.eclipse.dltk.ui.edit.text.script.search.exception.occurrences"
-               label="%ExceptionOccurrences.label"
-               retarget="true"
-               id="org.eclipse.dltk.ui.actions.ExceptionOccurrences">
-         </action>
-         <action
-               definitionId="org.eclipse.dltk.ui.edit.text.script.search.occurrences.in.file"
-               label="%OccurrencesInFile.label"
-               retarget="true"
-               id="org.eclipse.dltk.ui.actions.OccurrencesInFile">
-         </action>
-         <action
                definitionId="org.eclipse.dltk.ui.edit.text.script.search.write.access.in.working.set"
                label="%InWorkingSet.label"
                retarget="true"

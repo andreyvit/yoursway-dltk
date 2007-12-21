@@ -36,8 +36,8 @@
    <extension
        point="org.eclipse.ui.actionSets">
         <actionSet
-            label="%CodingActionSet.label"
-            description="%CodingActionSet.description"
+            label="%ScriptCodingActionSet.label"
+            description="%ScriptCodingActionSet.description"
             visible="false"
             id="org.eclipse.dltk.javascript.ui.CodingActionSet">
 <!-- =========================================================================== -->
