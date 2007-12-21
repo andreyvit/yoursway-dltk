@@ -1,10 +1,10 @@
 !********* Eclipse Dynamic Languages Toolkit (DLTK)
 !
-! $Id: ruby-tests.map,v 1.5 2007/12/21 07:57:11 asobolev Exp $
+! $Id: ruby-tests.map,v 1.6 2007/12/21 12:02:24 aplatov Exp $
 !
 
 feature@org.eclipse.dltk.ruby.tests=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/features/org.eclipse.dltk.ruby.tests
 
 plugin@org.eclipse.dltk.ruby.core.tests=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/tests/org.eclipse.dltk.ruby.core.tests
 plugin@org.eclipse.dltk.ruby.ui.tests=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/tests/org.eclipse.dltk.ruby.ui.tests
-plugin@org.eclipse.dltk.ruby.debug.tests=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/tests/tests/org.eclipse.dltk.ruby.debug.tests
+plugin@org.eclipse.dltk.ruby.debug.tests=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/tests/org.eclipse.dltk.ruby.debug.tests
