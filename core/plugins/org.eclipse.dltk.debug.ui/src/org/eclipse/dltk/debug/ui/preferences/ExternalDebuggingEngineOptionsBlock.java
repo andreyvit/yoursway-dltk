@@ -100,7 +100,7 @@ public abstract class ExternalDebuggingEngineOptionsBlock extends
 				1);
 
 		enginePath = SWTFactory.createText(group, SWT.BORDER, 1, "");
-		bindControl(enginePath, getDebuggingEnginePathKey());
+		bindControl(enginePath, getDebuggingEnginePathKey(), FieldValidators.PATH_VALIDATOR);
 
 		// Browse
 		final Button button = SWTFactory.createPushButton(group,

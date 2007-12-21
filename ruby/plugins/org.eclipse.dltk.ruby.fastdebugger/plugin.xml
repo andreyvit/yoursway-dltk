@@ -1,27 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension
-         point="org.eclipse.dltk.launching.debuggingEngine">
-      <engineContribution
-            natureId="org.eclipse.dltk.ruby.core.nature">
-         <engine
-               class="org.eclipse.dltk.ruby.fastdebugger.FastDebuggerRunnerFactory"
-               description="%FastDebuggingEngine.description"
-               id="org.eclipse.dltk.ruby.fastdebugger"
-               name="%FastDebuggingEngine.name"
-               preferencePageId="org.eclipse.dltk.ruby.preferences.debug.railsdebugger"
-               priority="5">
-         </engine>
-      </engineContribution>
-   </extension>
-   <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            category="org.eclipse.dltk.ruby.preferences.debug.engines"
-            class="org.eclipse.dltk.ruby.fastdebugger.preferences.FastDebuggerPreferencePage"
-            id="org.eclipse.dltk.ruby.preferences.debug.railsdebugger"
-            name="%RailsDebuggerPreferencePage.name">
-      </page>
-   </extension>
+  
+  <extension point="org.eclipse.core.runtime.preferences">
+    <initializer
+      class="org.eclipse.dltk.ruby.fastdebugger.preferences.FastDebuggerPreferenceInitializer" />
+  </extension>
+  
+  <extension point="org.eclipse.dltk.launching.debuggingEngine">
+    <engineContribution natureId="org.eclipse.dltk.ruby.core.nature">
+      <engine
+        class="org.eclipse.dltk.ruby.fastdebugger.FastDebuggerRunnerFactory"
+        description="%FastDebuggingEngine.description"
+        id="org.eclipse.dltk.ruby.fastdebugger"
+        name="%FastDebuggingEngine.name"
+        propertyPageId="org.eclipse.dltk.ruby.propertyPage.debug.engines.railsdebugger"
+        preferencePageId="org.eclipse.dltk.ruby.preferences.debug.railsdebugger"
+        priority="5">
+      </engine>
+    </engineContribution>
+  </extension>
+  
+  <extension point="org.eclipse.ui.preferencePages">
+    <page
+      category="org.eclipse.dltk.ruby.preferences.debug.engines"
+      class="org.eclipse.dltk.ruby.fastdebugger.preferences.FastDebuggerPreferencePage"
+      id="org.eclipse.dltk.ruby.preferences.debug.engines.railsdebugger"
+      name="%RailsDebuggerPreferencePage.name">
+    </page>
+  </extension>
+
+  <extension point="org.eclipse.ui.propertyPages">
+    <page
+      class="org.eclipse.dltk.ruby.fastdebugger.preferences.FastDebuggerPreferencePage"
+      category="org.eclipse.dltk.ruby.propertyPage.debug.engines"
+      id="org.eclipse.dltk.ruby.propertyPage.debug.engines.railsdebugger"
+      name="%RailsDebuggerPropertyPage.name">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test
+            property="org.eclipse.core.resources.projectNature"
+            value="org.eclipse.dltk.ruby.core.nature" />
+        </adapt>
+      </enabledWhen>
+    </page>
+  </extension>
+  
 </plugin>

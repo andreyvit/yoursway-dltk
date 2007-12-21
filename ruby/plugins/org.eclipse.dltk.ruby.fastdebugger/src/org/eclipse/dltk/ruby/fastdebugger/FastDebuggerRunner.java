@@ -1,6 +1,7 @@
 package org.eclipse.dltk.ruby.fastdebugger;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -25,17 +26,20 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 
 	private static final String DEBUGGER_SCRIPT = "FastRunner.rb";
 
-	protected IPath getLogFilename() {
+	protected IPath getLogFilename(String sessionId) {
 		Preferences preferences = FastDebuggerPlugin.getDefault()
 				.getPluginPreferences();
-		
+
 		String logFilePath = preferences
 				.getString(FastDebuggerPreferenceConstants.LOG_FILE_PATH);
 
 		String logFileName = preferences
 				.getString(FastDebuggerPreferenceConstants.LOG_FILE_NAME);
 
-		return Path.fromOSString(logFilePath).append(logFileName);
+		String fileName = MessageFormat.format(logFileName,
+				new Object[] { sessionId });
+
+		return Path.fromOSString(logFilePath).append(fileName);
 	}
 
 	protected boolean isLoggingEnabled() {
@@ -69,20 +73,22 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 		InterpreterConfig newConfig = (InterpreterConfig) config.clone();
 		newConfig.addInterpreterArg("-r" + scriptFile.toPortableString());
 		newConfig.addInterpreterArg("-I" + sourceLocation.toPortableString());
-		
+
 		// Environment
 		final DbgpInterpreterConfig dbgpConfig = new DbgpInterpreterConfig(
 				config);
-		
+
 		newConfig.addEnvVar(RUBY_HOST_VAR, dbgpConfig.getHost());
 		newConfig.addEnvVar(RUBY_PORT_VAR, Integer.toString(dbgpConfig
 				.getPort()));
-		newConfig.addEnvVar(RUBY_KEY_VAR, dbgpConfig.getSessionId());
+
+		String sessionId = dbgpConfig.getSessionId();
+		newConfig.addEnvVar(RUBY_KEY_VAR, sessionId);
 		newConfig.addEnvVar(RUBY_SCRIPT_VAR, config.getScriptFilePath()
 				.toPortableString());
 
 		if (isLoggingEnabled()) {
-			newConfig.addEnvVar(RUBY_LOG_VAR, getLogFilename()
+			newConfig.addEnvVar(RUBY_LOG_VAR, getLogFilename(sessionId)
 					.toPortableString());
 		}
 

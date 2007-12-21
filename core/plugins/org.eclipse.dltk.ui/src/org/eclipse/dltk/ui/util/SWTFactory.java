@@ -1,5 +1,6 @@
 package org.eclipse.dltk.ui.util;
 
+import org.eclipse.dltk.internal.ui.preferences.ScrolledPageContent;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
@@ -10,6 +11,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -192,13 +194,26 @@ public class SWTFactory {
 	 */
 	public static Label createLabel(Composite parent, String text, Font font,
 			int hspan) {
+		return createLabel(parent, text, 0, font, hspan);
+	}
+
+	public static Label createLabel(Composite parent, String text, int indent,
+			Font font, int hspan) {
 		Label l = new Label(parent, SWT.NONE);
 		l.setFont(font);
 		l.setText(text);
+
 		GridData gd = new GridData();
 		gd.horizontalSpan = hspan;
+		gd.horizontalIndent = indent;
+
 		l.setLayoutData(gd);
 		return l;
+	}
+
+	public static Label createLabel(Composite parent, String text, int indent,
+			int hspan) {
+		return createLabel(parent, text, indent, parent.getFont(), hspan);
 	}
 
 	/**
@@ -213,13 +228,7 @@ public class SWTFactory {
 	 * @return the new label
 	 */
 	public static Label createLabel(Composite parent, String text, int hspan) {
-		Label l = new Label(parent, SWT.NONE);
-		l.setFont(parent.getFont());
-		l.setText(text);
-		GridData gd = new GridData();
-		gd.horizontalSpan = hspan;
-		l.setLayoutData(gd);
-		return l;
+		return createLabel(parent, text, 0, parent.getFont(), hspan);
 	}
 
 	/**
@@ -238,13 +247,9 @@ public class SWTFactory {
 	 */
 	public static Label createWrapLabel(Composite parent, String text,
 			int hspan, int wrapwidth) {
-		Label l = new Label(parent, SWT.WRAP);
-		l.setFont(parent.getFont());
-		l.setText(text);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = hspan;
-		gd.widthHint = wrapwidth;
-		l.setLayoutData(gd);
+		Label l = createLabel(parent, text, 0, parent.getFont(), hspan);
+		((GridData) l.getLayoutData()).widthHint = wrapwidth;
+
 		return l;
 	}
 
@@ -283,8 +288,12 @@ public class SWTFactory {
 			String text) {
 		Text t = new Text(parent, style);
 		t.setFont(parent.getFont());
+
+		makeScrollableCompositeAware(parent);
+
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = hspan;
+
 		t.setLayoutData(gd);
 		t.setText(text);
 		return t;
@@ -310,13 +319,18 @@ public class SWTFactory {
 	 */
 	public static Group createGroup(Composite parent, String text, int columns,
 			int hspan, int fill) {
+		GridData gd = new GridData(fill);
+		gd.horizontalSpan = hspan;
+		return createGroup(parent, text, columns, hspan, gd);
+	}
+
+	public static Group createGroup(Composite parent, String text, int columns,
+			int hspan, GridData data) {
 		Group g = new Group(parent, SWT.NONE);
 		g.setLayout(new GridLayout(columns, false));
 		g.setText(text);
 		g.setFont(parent.getFont());
-		GridData gd = new GridData(fill);
-		gd.horizontalSpan = hspan;
-		g.setLayoutData(gd);
+		g.setLayoutData(data);
 		return g;
 	}
 
@@ -524,6 +538,25 @@ public class SWTFactory {
 		gd.horizontalSpan = hspan;
 		ex.setLayoutData(gd);
 		return ex;
+	}
+
+	private static ScrolledPageContent getParentScrolledComposite(
+			Control control) {
+		Control parent = control.getParent();
+		while (!(parent instanceof ScrolledPageContent) && parent != null) {
+			parent = parent.getParent();
+		}
+		if (parent instanceof ScrolledPageContent) {
+			return (ScrolledPageContent) parent;
+		}
+		return null;
+	}
+
+	private static void makeScrollableCompositeAware(Control control) {
+		ScrolledPageContent parentScrolledComposite = getParentScrolledComposite(control);
+		if (parentScrolledComposite != null) {
+			parentScrolledComposite.adaptChild(control);
+		}
 	}
 
 }

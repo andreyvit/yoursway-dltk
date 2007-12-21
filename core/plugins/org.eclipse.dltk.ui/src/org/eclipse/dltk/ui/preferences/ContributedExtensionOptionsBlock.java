@@ -46,7 +46,6 @@ public abstract class ContributedExtensionOptionsBlock extends
 				.getFont(), 1, 1, GridData.FILL);
 
 		createSelectorBlock(composite);
-		initializeBlock();
 
 		return composite;
 	}
@@ -136,7 +135,8 @@ public abstract class ContributedExtensionOptionsBlock extends
 
 	protected abstract String getSelectorNameLabel();
 
-	protected void initializeBlock() {
+	protected void initialize() {
+		super.initialize();
 		IDLTKContributedExtension[] contributions = getContributions();
 
 		for (int i = 0; i < contributions.length; i++) {
