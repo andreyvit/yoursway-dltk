@@ -108,6 +108,7 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 	public TclLanguageToolkit() {
 		// Initialize all possible file extensions from all tclExtension's
 		List exts = new ArrayList();
+		exts.addAll(Arrays.asList(this.extensions));
 		ITclLanguageExtension[] languageExtensions = TclExtensionManager
 				.getDefault().getExtensions();
 		for (int i = 0; i < languageExtensions.length; i++) {
@@ -116,10 +117,7 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 				exts.addAll(Arrays.asList(fileExtensions));
 			}
 		}
-		if (exts.size() > 0) {
-			exts.addAll(Arrays.asList(this.extensions));
-			this.extensions = (String[]) exts.toArray(new String[exts.size()]);
-		}
+		this.extensions = (String[]) exts.toArray(new String[exts.size()]);
 	}
 
 	public IStatus validateSourceModule(IPath path) {
