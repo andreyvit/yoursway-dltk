@@ -149,7 +149,7 @@ public class DLTKLanguageManager {
 
 	public static ISourceParser getSourceParser(String natureID) 
 			throws CoreException {
-		return SourceParserManager.getInstance().getSourceParser(natureID);
+		return SourceParserManager.getInstance().getSourceParser(null, natureID);
 	}
 
 //	/**

@@ -1,5 +1,6 @@
 package org.eclipse.dltk.ast.parser;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.dltk.core.DLTKContributedExtension;
 import org.eclipse.dltk.core.DLTKContributionExtensionManager;
@@ -65,8 +66,8 @@ public class SourceParserManager extends DLTKContributionExtensionManager {
 		return new SourceParserContribution((ISourceParserFactory) object, config);
 	}
 
-	public ISourceParser getSourceParser(String natureId) {
-		return ((SourceParserContribution) getSelectedContribution(natureId)).getSourceParser();
+	public ISourceParser getSourceParser(IProject project, String natureId) {
+		return ((SourceParserContribution) getSelectedContribution(project, natureId)).getSourceParser();
 	}
 	
 	class SourceParserContribution extends DLTKContributedExtension {		

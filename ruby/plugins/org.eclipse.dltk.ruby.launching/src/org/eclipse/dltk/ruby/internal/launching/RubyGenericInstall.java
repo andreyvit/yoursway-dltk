@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchManager;
@@ -120,8 +121,9 @@ public class RubyGenericInstall extends AbstractInterpreterInstall {
 		super(type, id);
 	}
 
-	public IInterpreterRunner getInterpreterRunner(String mode) {
-		final IInterpreterRunner runner = super.getInterpreterRunner(mode);
+	public IInterpreterRunner getInterpreterRunner(String mode, IProject project) {
+		final IInterpreterRunner runner = super.getInterpreterRunner(mode,
+				project);
 
 		if (runner != null) {
 			return runner;

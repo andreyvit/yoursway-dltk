@@ -732,14 +732,13 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	}
 
 	protected void validateLaunchConfiguration(
-			ILaunchConfiguration configuration, String mode)
+			ILaunchConfiguration configuration, String mode, IProject project)
 			throws CoreException {
 
 		// Validation of available debugging engine
 		if (ILaunchManager.DEBUG_MODE.equals(mode)) {
-
 			if (!DebuggingEngineManager.getInstance()
-					.hasSelectedDebuggingEngine(getNatureId(configuration))) {
+					.hasSelectedDebuggingEngine(project, getNatureId(configuration))) {
 				abort(
 						"Debugging engine not selected.",
 						null,
@@ -752,6 +751,8 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 
 		try {
+			IProject project = ScriptRuntime.getScriptProject(configuration).getProject();
+			
 			if (monitor == null) {
 				monitor = new NullProgressMonitor();
 			}
@@ -766,7 +767,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			monitor.subTask(MessageFormat.format(
 					"Validating launch configuration {0}...",
 					new Object[] { configuration.getName() }));
-			validateLaunchConfiguration(configuration, mode);
+			validateLaunchConfiguration(configuration, mode, project);
 			monitor.worked(1);
 			if (monitor.isCanceled()) {
 				return;
@@ -788,7 +789,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			// Getting IInterpreterRunner
 			monitor.subTask("Getting interpreter runner...");
 			final IInterpreterRunner runner = getInterpreterRunner(
-					configuration, mode);
+					configuration, mode, project);
 			if (monitor.isCanceled()) {
 				return;
 			}
@@ -925,6 +926,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	 *            launch configuration
 	 * @param mode
 	 *            launch node
+	 * @param project project containing the launched resource            
 	 * @return Interpreter runner to use when launching the given configuration
 	 *         in the given mode
 	 * @throws CoreException
@@ -932,12 +934,11 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	 * 
 	 */
 	public IInterpreterRunner getInterpreterRunner(
-			ILaunchConfiguration configuration, String mode)
+			ILaunchConfiguration configuration, String mode, IProject project)
 			throws CoreException {
 
 		final IInterpreterInstall install = verifyInterpreterInstall(configuration);
-
-		final IInterpreterRunner runner = install.getInterpreterRunner(mode);
+		final IInterpreterRunner runner = install.getInterpreterRunner(mode, project);
 
 		if (runner == null) {
 			abort(

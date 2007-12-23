@@ -20,7 +20,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
 public abstract class ContributedExtensionConfigurationBlock extends
@@ -205,7 +204,7 @@ public abstract class ContributedExtensionConfigurationBlock extends
 	}
 	
 	private IDLTKContributedExtension getDefaultContribution() {
-		return getExtensionManager().getSelectedContribution(getNatureId());
+		return getExtensionManager().getSelectedContribution(null, getNatureId());
 	}
 	
 	private IDLTKContributedExtension getContributionById(String id) {

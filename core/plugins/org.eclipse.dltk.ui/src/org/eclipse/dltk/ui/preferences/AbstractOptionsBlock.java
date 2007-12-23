@@ -92,6 +92,10 @@ public abstract class AbstractOptionsBlock extends OptionsConfigurationBlock
 		setValue((PreferenceKey) key, value);
 	}
 	
+	protected final IProject getProject() {
+		return fProject;
+	}
+	
 	protected final void updateStatus(IStatus status) {
 		bindManager.updateStatus(status);
 	}

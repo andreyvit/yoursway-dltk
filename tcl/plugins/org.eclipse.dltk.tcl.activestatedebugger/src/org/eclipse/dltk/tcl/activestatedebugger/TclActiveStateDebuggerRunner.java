@@ -4,20 +4,24 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- 
  *******************************************************************************/
 
 package org.eclipse.dltk.tcl.activestatedebugger;
 
-import java.io.File;
-
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.launching.ExternalDebuggingEngineRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.launching.debug.DbgpConstants;
 
+/**
+ * Debugging engine implementation for ActiveState's tcl debugging engine.
+ * 
+ * <p>
+ * see: <a
+ * href="http://aspn.activestate.com/ASPN/docs/Komodo/komodo-doc-debugtcl.html">
+ * http://aspn.activestate.com/ASPN/docs/Komodo/komodo-doc-debugtcl.html</a>
+ * </p>
+ */
 public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner {
 	public static final String ENGINE_ID = "org.eclipse.dltk.tcl.avtivestatedebugger";
 
@@ -32,22 +36,12 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 		super(install);
 	}
 
-	protected File getDebuggingEnginePath() {
-		final String path = TclActiveStateDebuggerPlugin
-				.getDefault()
-				.getPreferenceStore()
-				.getString(
-						TclActiveStateDebuggerConstants.DEBUGGING_ENGINE_PATH_KEY);
-
-		if (path != null) {
-			return new File(path);
-		}
-
-		return null;
-	}
-
+	/*
+	 * @see org.eclipse.dltk.launching.ExternalDebuggingEngineRunner#alterConfig(org.eclipse.dltk.launching.InterpreterConfig,
+	 *      java.lang.String)
+	 */
 	protected InterpreterConfig alterConfig(InterpreterConfig config,
-			String debuggingEnginePath) throws CoreException {
+			String debuggingEnginePath) {
 		final String exe = getInstall().getInstallLocation().getAbsolutePath();
 		final String host = (String) config
 				.getProperty(DbgpConstants.HOST_PROP);
@@ -83,7 +77,24 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 		return newConfig;
 	}
 
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getDebuggingEngineId()
+	 */
 	protected String getDebuggingEngineId() {
 		return ENGINE_ID;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.ExternalDebuggingEngineRunner#getDebuggingEnginePreferenceKey()
+	 */
+	protected String getDebuggingEnginePreferenceKey() {
+		return TclActiveStateDebuggerConstants.DEBUGGING_ENGINE_PATH_KEY;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.ExternalDebuggingEngineRunner#getDebuggingEnginePreferenceQualifier()
+	 */
+	protected String getDebuggingEnginePreferenceQualifier() {
+		return TclActiveStateDebuggerPlugin.PLUGIN_ID;
 	}
 }

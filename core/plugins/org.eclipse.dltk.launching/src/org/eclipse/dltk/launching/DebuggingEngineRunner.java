@@ -7,6 +7,8 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.dltk.core.IScriptProject;
+import org.eclipse.dltk.core.PreferencesLookupDelegate;
 import org.eclipse.dltk.dbgp.DbgpSessionIdGenerator;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.ExtendedDebugEventDetails;
@@ -76,10 +78,12 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 		dbgpConfig.setHost(LOCALHOST);
 	}
 
-	protected InterpreterConfig alterConfig(InterpreterConfig config)
-			throws CoreException {
-		return config;
-	}
+	/**
+	 * Add the debugging engine configuration.
+	 */
+	protected abstract InterpreterConfig addEngineConfig(
+			InterpreterConfig config, PreferencesLookupDelegate delegate)
+			throws CoreException;
 
 	public void run(InterpreterConfig config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
@@ -92,8 +96,13 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			return;
 		}
 		try {
+			IScriptProject sProject = ScriptRuntime.getScriptProject(launch
+					.getLaunchConfiguration());
+			PreferencesLookupDelegate prefDelegate = new PreferencesLookupDelegate(sProject
+					.getProject());
+
 			initializeLaunch(launch, config);
-			InterpreterConfig newConfig = alterConfig(config);
+			InterpreterConfig newConfig = addEngineConfig(config, prefDelegate);
 
 			// Starting debugging engine
 			IProcess process = null;
@@ -124,9 +133,9 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 		String exe = (String) config.getProperty(OVERRIDE_EXE);
 		if (exe != null) {
 			return config.renderCommandLine(exe);
-		} else {
-			return config.renderCommandLine(getInstall());
 		}
+
+		return config.renderCommandLine(getInstall());
 	}
 
 	/**

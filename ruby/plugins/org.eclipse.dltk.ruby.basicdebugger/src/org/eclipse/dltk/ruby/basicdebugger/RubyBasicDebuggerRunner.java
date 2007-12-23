@@ -14,6 +14,7 @@ import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.dltk.core.PreferencesLookupDelegate;
 import org.eclipse.dltk.launching.DebuggingEngineRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
@@ -58,7 +59,7 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 		this.logging = true;
 	}
 
-	protected InterpreterConfig alterConfig(InterpreterConfig config)
+	protected InterpreterConfig addEngineConfig(InterpreterConfig config, PreferencesLookupDelegate delegate)
 			throws CoreException {
 		// Get debugger source location
 		final IPath sourceLocation = deploy();

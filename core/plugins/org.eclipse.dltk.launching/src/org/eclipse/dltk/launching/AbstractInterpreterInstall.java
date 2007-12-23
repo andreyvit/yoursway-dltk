@@ -11,6 +11,7 @@ package org.eclipse.dltk.launching;
 
 import java.io.File;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -238,10 +239,9 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 		return null;
 	}
 
-	protected IInterpreterRunner getDebugInterpreterRunner() {
+	protected IInterpreterRunner getDebugInterpreterRunner(IProject project) {
 		DebuggingEngineManager manager = DebuggingEngineManager.getInstance();
-		IDebuggingEngine engine = manager
-				.getSelectedDebuggingEngine(getNatureId());
+		IDebuggingEngine engine = manager.getSelectedDebuggingEngine(project, getNatureId());
 
 		if (engine != null) {
 			return engine.getRunner(this);
@@ -250,9 +250,9 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 		return null;
 	}
 
-	public IInterpreterRunner getInterpreterRunner(String mode) {
+	public IInterpreterRunner getInterpreterRunner(String mode, IProject project) {
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-			return getDebugInterpreterRunner();
+			return getDebugInterpreterRunner(project);
 		}
 
 		return null;

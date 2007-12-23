@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.javascript.core.JavaScriptNature;
 import org.eclipse.dltk.launching.AbstractInterpreterInstall;
@@ -41,8 +42,8 @@ public class GenericJavaScriptInstall extends AbstractInterpreterInstall {
 		super(type, id);
 	}
 
-	public IInterpreterRunner getInterpreterRunner(String mode) {
-		IInterpreterRunner runner = super.getInterpreterRunner(mode);
+	public IInterpreterRunner getInterpreterRunner(String mode, IProject project) {
+		IInterpreterRunner runner = super.getInterpreterRunner(mode, project);
 		if (runner != null) {
 			return runner;
 		}

@@ -1,7 +1,5 @@
 package org.eclipse.dltk.python.activestatedebugger;
 
-import java.io.File;
-
 import org.eclipse.dltk.launching.ExternalDebuggingEngineRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
@@ -18,8 +16,8 @@ import org.eclipse.dltk.launching.debug.DbgpInterpreterConfig;
  * 
  * <p>
  * see: <a
- * href="http://aspn.activestate.com/ASPN/docs/Komodo/4.1/komodo-doc-debugpython.html">
- * http://aspn.activestate.com/ASPN/docs/Komodo/4.1/komodo-doc-debugpython.html</a>
+ * href="http://aspn.activestate.com/ASPN/docs/Komodo/komodo-doc-debugpython.html">
+ * http://aspn.activestate.com/ASPN/docs/Komodo/komodo-doc-debugpython.html</a>
  * </p>
  */
 public class PythonActiveStateDebuggerRunner extends
@@ -55,27 +53,24 @@ public class PythonActiveStateDebuggerRunner extends
 	}
 
 	/*
-	 * @see org.eclipse.dltk.launching.ExternalDebugginEngineRunner#getDebuggingEnginePath()
-	 */
-	protected File getDebuggingEnginePath() {
-		String path = PythonActiveStateDebuggerPlugin
-				.getDefault()
-				.getPreferenceStore()
-				.getString(
-						PythonActiveStateDebuggerConstants.DEBUGGING_ENGINE_PATH_KEY);
-
-		if (path != null) {
-			return new File(path);
-		}
-
-		return null;
-	}
-
-	/*
 	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getDebuggingEngineId()
 	 */
 	protected String getDebuggingEngineId() {
 		return ENGINE_ID;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.ExternalDebuggingEngineRunner#getDebuggingEnginePreferenceKey()
+	 */
+	protected String getDebuggingEnginePreferenceKey() {
+		return PythonActiveStateDebuggerConstants.DEBUGGING_ENGINE_PATH_KEY;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.ExternalDebuggingEngineRunner#getDebuggingEnginePreferenceQualifier()
+	 */
+	protected String getDebuggingEnginePreferenceQualifier() {
+		return PythonActiveStateDebuggerPlugin.PLUGIN_ID;
 	}
 
 }

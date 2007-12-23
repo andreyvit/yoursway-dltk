@@ -184,7 +184,7 @@ public abstract class ContributedExtensionOptionsBlock extends
 	}
 
 	private IDLTKContributedExtension getDefaultContribution() {
-		return getExtensionManager().getSelectedContribution(getNatureId());
+		return getExtensionManager().getSelectedContribution(getProject(), getNatureId());
 	}
 
 	private boolean hasValidId(String id) {
