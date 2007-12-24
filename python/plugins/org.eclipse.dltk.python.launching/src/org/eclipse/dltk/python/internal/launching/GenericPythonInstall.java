@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.python.internal.launching;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.launching.AbstractInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
@@ -22,8 +21,8 @@ public class GenericPythonInstall extends AbstractInterpreterInstall {
 		super(type, id);
 	}
 
-	public IInterpreterRunner getInterpreterRunner(String mode, IProject project) {
-		IInterpreterRunner runner = super.getInterpreterRunner(mode, project);
+	public IInterpreterRunner getInterpreterRunner(String mode) {
+		IInterpreterRunner runner = super.getInterpreterRunner(mode);
 		if (runner != null) {
 			return runner;
 		}

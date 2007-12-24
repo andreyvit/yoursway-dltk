@@ -11,14 +11,12 @@ package org.eclipse.dltk.launching;
 
 import java.io.File;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
-import org.eclipse.dltk.launching.debug.DebuggingEngineManager;
-import org.eclipse.dltk.launching.debug.IDebuggingEngine;
+import org.eclipse.dltk.internal.launching.DebugRunnerDelegate;
 
 /**
  * Abstract implementation of a interpreter install.
@@ -239,20 +237,13 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 		return null;
 	}
 
-	protected IInterpreterRunner getDebugInterpreterRunner(IProject project) {
-		DebuggingEngineManager manager = DebuggingEngineManager.getInstance();
-		IDebuggingEngine engine = manager.getSelectedDebuggingEngine(project, getNatureId());
-
-		if (engine != null) {
-			return engine.getRunner(this);
-		}
-
-		return null;
+	protected IInterpreterRunner getDebugInterpreterRunner() {
+		return new DebugRunnerDelegate(this);
 	}
 
-	public IInterpreterRunner getInterpreterRunner(String mode, IProject project) {
+	public IInterpreterRunner getInterpreterRunner(String mode) {
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-			return getDebugInterpreterRunner(project);
+			return getDebugInterpreterRunner();
 		}
 
 		return null;

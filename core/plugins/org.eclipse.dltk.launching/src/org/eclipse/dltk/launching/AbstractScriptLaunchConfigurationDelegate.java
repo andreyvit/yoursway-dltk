@@ -789,7 +789,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			// Getting IInterpreterRunner
 			monitor.subTask("Getting interpreter runner...");
 			final IInterpreterRunner runner = getInterpreterRunner(
-					configuration, mode, project);
+					configuration, mode);
 			if (monitor.isCanceled()) {
 				return;
 			}
@@ -934,11 +934,11 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 	 * 
 	 */
 	public IInterpreterRunner getInterpreterRunner(
-			ILaunchConfiguration configuration, String mode, IProject project)
+			ILaunchConfiguration configuration, String mode)
 			throws CoreException {
 
 		final IInterpreterInstall install = verifyInterpreterInstall(configuration);
-		final IInterpreterRunner runner = install.getInterpreterRunner(mode, project);
+		final IInterpreterRunner runner = install.getInterpreterRunner(mode);
 
 		if (runner == null) {
 			abort(

@@ -117,7 +117,7 @@ public class ScriptLaunchUtil {
 
 		// will use 'instance scoped' interpreter here  
 		IInterpreterRunner runner = install.getInterpreterRunner(launch
-				.getLaunchMode(), null);
+				.getLaunchMode());
 
 		runner.run(config, launch, monitor);
 

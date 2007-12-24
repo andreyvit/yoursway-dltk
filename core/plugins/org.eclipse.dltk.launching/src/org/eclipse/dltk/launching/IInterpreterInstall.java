@@ -11,12 +11,11 @@ package org.eclipse.dltk.launching;
 
 import java.io.File;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.dltk.core.IBuiltinModuleProvider;
 
 public interface IInterpreterInstall extends IBuiltinModuleProvider {
 	// Runner
-	IInterpreterRunner getInterpreterRunner(String mode, IProject project);
+	IInterpreterRunner getInterpreterRunner(String mode);
 	
 	String getNatureId();
 

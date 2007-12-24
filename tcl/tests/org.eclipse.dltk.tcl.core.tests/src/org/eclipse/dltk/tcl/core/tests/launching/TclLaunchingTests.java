@@ -25,7 +25,7 @@ import org.eclipse.dltk.tcl.launching.TclLaunchConfigurationDelegate;
 
 public class TclLaunchingTests extends ScriptLaunchingTests {
 	class Searcher implements IFileVisitor {
-		private String debuggingEnginePath;
+		private String debuggingEnginePath = null;
 
 		public boolean visit(File file) {
 			if (file.isFile() && file.getName().startsWith("dbgp_tcldebug")) {
@@ -105,9 +105,11 @@ public class TclLaunchingTests extends ScriptLaunchingTests {
 		container.accept(searcher);
 
 		Plugin p = TclActiveStateDebuggerPlugin.getDefault();
+		String path = searcher.getPath();
+		assertNotNull("Couldn't find ActiveState debugger", path);
 		p.getPluginPreferences().setValue(
 				TclActiveStateDebuggerConstants.DEBUGGING_ENGINE_PATH_KEY,
-				searcher.getPath());
+				path);
 
 		super.testDebug();
 	}
