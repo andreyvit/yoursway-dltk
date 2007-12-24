@@ -220,6 +220,10 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 
 			public int getAttribute(String attributeName, int defaultValue)
 					throws CoreException {
+				if (attributeName
+						.equals(ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT)) {
+					return 10000;
+				}
 				return 0;
 			}
 
@@ -390,13 +394,15 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 		String[] required = getRequiredInterpreterNames();
 		for (int i = 0; i < required.length; i++) {
 			String name = required[i];
-			assertTrue(isInterpreterAvailable(name));
+			assertTrue("Interpreter " + name + " not available",
+					isInterpreterAvailable(name));
 		}
 	}
 
 	private boolean isInterpreterAvailable(String interpreterName) {
 		for (int i = 0; i < interpreterInstalls.length; i++) {
-			String foundName = interpreterInstalls[i].getInstallLocation().getName();					
+			String foundName = interpreterInstalls[i].getInstallLocation()
+					.getName();
 			if (foundName.startsWith(interpreterName)) {
 				return true;
 			}
