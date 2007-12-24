@@ -21,6 +21,7 @@ import org.eclipse.debug.core.IBreakpointManager;
 import org.eclipse.debug.core.IBreakpointManagerListener;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.model.IBreakpoint;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.dbgp.breakpoints.DbgpBreakpointConfig;
 import org.eclipse.dltk.dbgp.commands.IDbgpBreakpointCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
@@ -61,7 +62,7 @@ public class ScriptBreakpointManager implements IBreakpointListener,
 
 		if (breakpoint instanceof IScriptLineBreakpoint) {
 			IScriptLineBreakpoint lineBreakpoint = (IScriptLineBreakpoint) breakpoint;
-			config.setLineNo(lineBreakpoint.getLineNumber());			
+			config.setLineNo(lineBreakpoint.getLineNumber());
 		}
 		return config;
 	}
@@ -112,7 +113,8 @@ public class ScriptBreakpointManager implements IBreakpointListener,
 					lineBreakpoint.getLineNumber(), config);
 		} else if (breakpoint instanceof IScriptExceptionBreakpoint) {
 			IScriptExceptionBreakpoint lineBreakpoint = (IScriptExceptionBreakpoint) breakpoint;
-			id = commands.setExceptionBreakpoint(lineBreakpoint.getTypeName(), config);
+			id = commands.setExceptionBreakpoint(lineBreakpoint.getTypeName(),
+					config);
 		}
 
 		// Identifier
@@ -290,8 +292,9 @@ public class ScriptBreakpointManager implements IBreakpointListener,
 			try {
 				addBreakpoint(breakpoints[i]);
 			} catch (Exception e) {
-				// TODO: log
-				e.printStackTrace();
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
