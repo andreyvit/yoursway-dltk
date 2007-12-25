@@ -4,11 +4,16 @@ require 'dbgp/CommandHandler.rb'
 require 'dbgp/ThreadManager'
 require 'test/MockDebugger'
 
+require 'test/FakeParams'
+require 'test/SimpleServer'
+
 module XoredDebugger    
     class CommandHandlerTest < Test::Unit::TestCase
         include Logger
                 
         def setup
+            log('---------------------------- STARTUP!!! -------------------------------')
+            SimpleServer.start()
             @debugger = MockDebugger.new()
             @thread_manager = ThreadManager.new(@debugger)
             @breakpoint_manager = @debugger.breakpoint_manager
@@ -19,7 +24,13 @@ module XoredDebugger
         
         def teardown
             @thread_manager.terminate
+            log('Thread manager terminated')
             @debugger.terminate
+            log('Debugger terminated')
+            SimpleServer.stop()
+            log('Server terminated')
+            assert(!SimpleServer.started?) 
+            log('---------------------------- TEAR DOWN!!! -------------------------------')
         end
         
         # Status
@@ -27,41 +38,55 @@ module XoredDebugger
             @context.status = 'starting'             
             
             response = @handler.handle(Command.new('status -i 5'))
-            assert_equal("<response status=\"starting\" command=\"status\" transaction_id=\"5\" reason=\"ok\"/>", 
-                response.to_xml)
-                        
+            assert_equal('starting', response.get_attribute('status'))
+            assert_equal('status', response.get_attribute('command'))
+            assert_equal('5', response.get_attribute('transaction_id'))
+            assert_equal('ok', response.get_attribute('reason'))
+            
+                       
             @context.status = 'running'             
 
             response = @handler.handle(Command.new('status -i 5'))
-            assert_equal("<response status=\"running\" command=\"status\" transaction_id=\"5\" reason=\"ok\"/>", 
-                response.to_xml)
+            assert_equal('running', response.get_attribute('status'))
+            assert_equal('status', response.get_attribute('command'))
+            assert_equal('5', response.get_attribute('transaction_id'))
+            assert_equal('ok', response.get_attribute('reason'))
         end
         
         # Options and Configuration
         def test_handle_feature_get
             response = @handler.handle(Command.new('feature_get -i 5 -n protocol_version'))
-            assert_equal("<response command=\"feature_get\" feature_name=\"protocol_version\" supported=\"1\"" +
-                " transaction_id=\"5\"><![CDATA[MQ==\n]]></response>", response.to_xml)
+            assert_equal('feature_get', response.get_attribute('command'))
+            assert_equal('5', response.get_attribute('transaction_id'))
+            assert_equal('protocol_version', response.get_attribute('feature_name'))
+            assert_equal('1', response.get_attribute('supported'))
+            assert_equal('1', response.get_data)
 
             response = @handler.handle(Command.new('feature_get -i 5'))
             assert_equal(3, response.get_error)
                 
             response = @handler.handle(Command.new('feature_get -i 5 -n not_supported_option'))
-            assert_equal("<response command=\"feature_get\" feature_name=\"not_supported_option\" " +
-                "supported=\"0\" transaction_id=\"5\"/>", response.to_xml)
+            assert_equal('feature_get', response.get_attribute('command'))
+            assert_equal('5', response.get_attribute('transaction_id'))
+            assert_equal('not_supported_option', response.get_attribute('feature_name'))
+            assert_equal('0', response.get_attribute('supported'))
         end
         
         def test_handle_feature_set
             response = @handler.handle(Command.new('feature_set -i 5 -n protocol_version -v 2.0'))
-            assert_equal("<response command=\"feature_set\" feature_name=\"protocol_version\" " + 
-                "transaction_id=\"5\" success=\"0\"/>", response.to_xml)
+            assert_equal('feature_set', response.get_attribute('command'))
+            assert_equal('5', response.get_attribute('transaction_id'))
+            assert_equal('protocol_version', response.get_attribute('feature_name'))
+            assert_equal('0', response.get_attribute('success'))
 
             response = @handler.handle(Command.new('feature_set -i 5'))
             assert_equal(3, response.get_error)
                 
             response = @handler.handle(Command.new('feature_set -i 5 -n max_depth -v 10'))
-            assert_equal("<response command=\"feature_set\" feature_name=\"max_depth\" " +
-                "transaction_id=\"5\" success=\"1\"/>", response.to_xml)
+            assert_equal('feature_set', response.get_attribute('command'))
+            assert_equal('5', response.get_attribute('transaction_id'))
+            assert_equal('max_depth', response.get_attribute('feature_name'))
+            assert_equal('1', response.get_attribute('success'))
         end
         
         
@@ -116,14 +141,20 @@ module XoredDebugger
         def test_handle_stop
             @context.status = 'running'                         
             response = @handler.handle(Command.new('stop -i 5'))
-            assert_equal("<response status=\"stopped\" command=\"stop\" transaction_id=\"5\" reason=\"ok\"/>",
-                response.to_xml)
+            assert_equal('stop', response.get_attribute('command'))
+            assert_equal('5', response.get_attribute('transaction_id'))
+            assert_equal('ok', response.get_attribute('reason'))
+            assert_equal('stopped', response.get_attribute('status'))
+            
             assert_equal('stopped', @context.status)            
 
             @context.status = 'break'                         
             response = @handler.handle(Command.new('stop -i 5'))
-            assert_equal("<response status=\"stopped\" command=\"stop\" transaction_id=\"5\" reason=\"ok\"/>",
-                response.to_xml)
+            assert_equal('stop', response.get_attribute('command'))
+            assert_equal('5', response.get_attribute('transaction_id'))
+            assert_equal('ok', response.get_attribute('reason'))
+            assert_equal('stopped', response.get_attribute('status'))
+
             assert_equal('stopped', @context.status)            
         end
         
@@ -156,17 +187,17 @@ module XoredDebugger
         def test_handle_breakpoint_get
             bp = @breakpoint_manager.add_line_breakpoint('test.rb', 100)
             response = @handler.handle(Command.new("breakpoint_get -i 5 -d " + bp.breakpoint_id.to_s))
-            assert_equal("<response command=\"breakpoint_get\" transaction_id=\"5\">" +
-                "<breakpoint type=\"line\" hit_value=\"0\" id=\"" + bp.breakpoint_id.to_s + "\" filename=\"test.rb\" " +
-                "hit_count=\"0\" hit_condition=\"&gt;=\" lineno=\"100\" state=\"true\"/>" + 
-                "</response>", response.to_xml)            
-            
+            expected = BreakpointElement.new(bp).to_xml
+            assert_equal(expected, response.get_data.to_s) 
+            assert_equal('breakpoint_get', response.get_attribute('command'))
+            assert_equal('5', response.get_attribute('transaction_id'))
+                        
             bp = @breakpoint_manager.add_exception_breakpoint('Exception')
             response = @handler.handle(Command.new("breakpoint_get -i 5 -d " + bp.breakpoint_id.to_s))
-            assert_equal("<response command=\"breakpoint_get\" transaction_id=\"5\">" +
-                "<breakpoint exception=\"Exception\" type=\"exception\" hit_value=\"0\" id=\"" + bp.breakpoint_id.to_s + "\" " +
-                "hit_count=\"0\" hit_condition=\"&gt;=\" state=\"true\"/>" + 
-                "</response>", response.to_xml)            
+            expected = BreakpointElement.new(bp).to_xml
+            assert_equal(expected, response.get_data.to_s) 
+            assert_equal('breakpoint_get', response.get_attribute('command'))
+            assert_equal('5', response.get_attribute('transaction_id'))
                 
             response = @handler.handle(Command.new("breakpoint_get -i 5 -d 97575795"))
             assert_equal(205, response.get_error)            
@@ -179,7 +210,8 @@ module XoredDebugger
             assert_equal(3, response.get_error)    
 
             response = @handler.handle(Command.new("breakpoint_update -i 5 -n 101 -d " + bp.breakpoint_id.to_s))
-            assert_equal("<response command=\"breakpoint_update\" transaction_id=\"5\"/>", response.to_xml)            
+            assert_equal('breakpoint_update', response.get_attribute('command'))
+            assert_equal('5', response.get_attribute('transaction_id'))
             assert_equal(101, bp.lineno)
             
             response = @handler.handle(Command.new("breakpoint_update -i 5 -d 868986086"))
@@ -189,8 +221,8 @@ module XoredDebugger
         def test_handle_breakpoint_remove
             bp = @breakpoint_manager.add_line_breakpoint('test.rb', 100)
             response = @handler.handle(Command.new("breakpoint_remove -i 5 -d " + bp.breakpoint_id.to_s))
-            assert_equal("<response command=\"breakpoint_remove\" transaction_id=\"5\"/>", 
-                response.to_xml)            
+            assert_equal('breakpoint_remove', response.get_attribute('command'))
+            assert_equal('5', response.get_attribute('transaction_id'))
 
             response = @handler.handle(Command.new("breakpoint_remove -i 5 -d " + bp.breakpoint_id.to_s))
             assert_equal(205, response.get_error)    
@@ -227,15 +259,16 @@ module XoredDebugger
             
             @context.status = 'break'            
             response = @handler.handle(Command.new('stack_get -i 5 -d 0'))
-            assert_equal("<response command=\"stack_get\" transaction_id=\"5\">" +
-                "<stack where=\"\n\" type=\"file\" level=\"0\" filename=\"file:///test.rb\" " +
-                "lineno=\"1\"/></response>", response.to_xml)
-
+            expected = StackLevelElement.new(0, @context.stack_frame(0)).to_xml
+            assert_equal(expected, response.get_data.to_s) 
+            assert_equal('stack_get', response.get_attribute('command'))
+            assert_equal('5', response.get_attribute('transaction_id'))
+            
             response = @handler.handle(Command.new('stack_get -i 5'))
-            assert_equal("<response command=\"stack_get\" transaction_id=\"5\">" +
-                "<stack where=\"\n\" type=\"file\" level=\"0\" filename=\"file:///test.rb\" lineno=\"1\"/>" +
-                "<stack where=\"\n\" type=\"file\" level=\"1\" filename=\"file:///test.rb\" lineno=\"8\"/>" +
-                "</response>", response.to_xml)
+            expected = StackLevelElement.new(0, @context.stack_frame(0)).to_xml + StackLevelElement.new(1,@context.stack_frame(1)).to_xml 
+            assert_equal(expected, response.get_data.to_s) 
+            assert_equal('stack_get', response.get_attribute('command'))
+            assert_equal('5', response.get_attribute('transaction_id'))
         end
         
         
@@ -266,9 +299,10 @@ module XoredDebugger
         # Common Data Types
         def test_handle_typemap_get
             response = @handler.handle(Command.new('typemap_get -i 5'))
-            assert_equal("<response command=\"typemap_get\" " +
-                "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" transaction_id=\"5\" " +
-                "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>", response.to_xml)
+            assert_equal('typemap_get', response.get_attribute('command'))
+            assert_equal('5', response.get_attribute('transaction_id'))
+            assert_equal('http://www.w3.org/2001/XMLSchema', response.get_attribute('xmlns:xsd'))
+            assert_equal('http://www.w3.org/2001/XMLSchema-instance', response.get_attribute('xmlns:xsi'))
         end
         
         
@@ -334,20 +368,20 @@ module XoredDebugger
         # Stdout, stderr redirection
         def test_handle_stdout
             capturer = @capture_manager.stdout_capturer
-            capturer.state = Capturer::REDIRECT
+            capturer.state = CaptureManager::REDIRECT
 
             response = @handler.handle(Command.new('stdout -i 5 -c 0'))
             assert_equal('1', response.get_attribute('success'))
-            assert_equal(Capturer::DISABLE, capturer.state)
+            assert_equal(CaptureManager::DISABLE, capturer.state)
         end
         
         def test_handle_stderr
             capturer = @capture_manager.stderr_capturer
-            capturer.state = Capturer::REDIRECT
+            capturer.state = CaptureManager::REDIRECT
 
             response = @handler.handle(Command.new('stderr -i 5 -c 0'))
             assert_equal('1', response.get_attribute('success'))
-            assert_equal(Capturer::DISABLE, capturer.state)
+            assert_equal(CaptureManager::DISABLE, capturer.state)
         end
         
         
@@ -364,8 +398,10 @@ module XoredDebugger
         def test_handle_break
             @context.status = 'running'                         
             response = @handler.handle(Command.new('break -i 5'))
-            assert_equal("<response status=\"break\" command=\"break\" transaction_id=\"5\" " +
-                "reason=\"ok\"/>", response.to_xml)                    
+            assert_equal('break', response.get_attribute('command'))
+            assert_equal('5', response.get_attribute('transaction_id'))
+            assert_equal('ok', response.get_attribute('reason'))
+            assert_equal('break', response.get_attribute('status'))
             assert_equal(AbstractContext::BREAK, @context.status)
             
             response = @handler.handle(Command.new('break -i 5'))
@@ -377,12 +413,7 @@ module XoredDebugger
             response = @handler.handle(Command.new("eval -i 5 -- " + Base64.encode64('2+2')))
             assert_equal(5, response.get_error)                    
             
-            @context.status = 'break'                         
-            expected = PropertyElement.new(Kernel.eval('2+2'), '2+2')
-            response = @handler.handle(Command.new("eval -i 5 -- " + Base64.encode64('2+2')))
-            assert_equal(expected.to_xml, response.get_data.to_s)            
-            assert_equal('1', response.get_attribute('success'))                  
-            
+            @context.status = 'break'            
             response = @handler.handle(Command.new("eval -i 5 -- " + Base64.encode64('loop { sleep 1 }')))
             assert_equal(206, response.get_error)                  
             assert_equal('0', response.get_attribute('success'))
@@ -391,6 +422,11 @@ module XoredDebugger
             response = @handler.handle(Command.new("eval -i 5 -- " + Base64.encode64('+!fpefnpwen')))
             assert_equal(206, response.get_error)                  
             assert_equal('0', response.get_attribute('success'))                              
+
+            expected = PropertyElement.new(Kernel.eval('2+2'), '2+2')
+            response = @handler.handle(Command.new("eval -i 5 -- " + Base64.encode64('2+2')))
+            assert_equal(expected.to_xml, response.get_data.to_s)            
+            assert_equal('1', response.get_attribute('success'))                  
         end
 
         def test_handle_expr

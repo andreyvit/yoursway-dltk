@@ -3,9 +3,19 @@ require 'dbgp/CaptureManager'
 require 'dbgp/ThreadManager'
 require 'dbgp/StreamPacket'
 require 'test/MockDebugger'
+require 'test/FakeParams'
+require 'test/SimpleServer'
 
 module XoredDebugger
     class CaptureManagerTest < Test::Unit::TestCase
+        def setup
+            XoredDebugger::SimpleServer.start
+        end
+        
+        def teardown()
+            XoredDebugger::SimpleServer.stop
+            assert(!SimpleServer.started?) 
+        end            
         
         def test_capture
             assert(SimpleServer.started?)        

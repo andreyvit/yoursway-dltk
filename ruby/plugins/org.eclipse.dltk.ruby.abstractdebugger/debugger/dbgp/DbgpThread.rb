@@ -1,4 +1,5 @@
 require 'socket'
+require 'monitor'
 require 'common/Params'
 require 'common/Logger'
 require 'dbgp/CommandHandler'
@@ -20,7 +21,7 @@ module XoredDebugger
            @initialized = false
            @context = @debugger.thread_context(thread)
            @communicator = Communicator.new(thread)
-           
+           @monitor = Monitor.new
            # starting command handling
            log('creating control thread')
            @dispatcher = @debugger.create_debug_thread { handle_commands }                 
@@ -42,8 +43,10 @@ module XoredDebugger
        end
 
        def at_line(context, file, line)
-           context.suspend()           
-           send_answer(AbstractContext::BREAK)
+           @monitor.synchronize do
+               send_answer(AbstractContext::BREAK)
+           end           
+           context.suspend()
        end        	 
        
        def send_answer(status, exception = nil)
@@ -65,25 +68,18 @@ module XoredDebugger
                log('Started control thread for ' + @thread.object_id.to_s)
                params = Params.instance
                packet = InitPacket.new(params.key, get_thread_label(@thread), params.script)
-               @communicator.sendPacket(packet)
-               
+               @communicator.sendPacket(packet)               
                while (true)
-                   command = @communicator.receiveCommand
-                   response = @command_handler.handle(command)
-                   
-                   if (!response.nil?)
-                       @communicator.sendPacket(response)
-                   else 
-                       @unanswered = command
-                   end
-                   
-                   if (command.name == 'break' || command.name == 'stop')
-                       send_answer('break')
-                   end
-                   
-                   if (command.name == 'stop')
-                       send_answer('break')
-                       break
+                   command = @communicator.receive_command
+                                                        
+                   @monitor.synchronize do
+                       response = @command_handler.handle(command)                   
+                       if (!response.nil?)
+                           @communicator.sendPacket(response)
+                       else
+                           send_answer('break')                            
+                           @unanswered = command
+                       end                    
                    end
                end
            

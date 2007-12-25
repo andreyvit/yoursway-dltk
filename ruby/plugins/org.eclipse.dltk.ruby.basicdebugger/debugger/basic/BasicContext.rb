@@ -71,9 +71,10 @@ module XoredDebugger
 		
         def stop
             begin
+                reset_stepping
                 run if @suspended
             ensure 
-	            Kernel.exit!
+                Kernel.exit!
             end
             nil            
         end     

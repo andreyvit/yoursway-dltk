@@ -14,7 +14,7 @@ module XoredDebugger
             @monitor = Monitor.new()
 	    end
         
-	    def receiveCommand
+	    def receive_command
             #IDE: command [SPACE] [args] -- data [NULL]
             line = ''       
             while((ch = @socket.getc) != 0)

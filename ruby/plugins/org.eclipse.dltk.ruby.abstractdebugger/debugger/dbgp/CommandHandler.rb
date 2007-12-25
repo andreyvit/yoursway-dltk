@@ -39,7 +39,7 @@ module XoredDebugger
         # Handles DBGP command. Returns Responce to be sent to client, 
         # or nil if no responce required  
         def handle(command)
-            begin               
+            begin             
                 check_command_arguments(command, '-i')               
                 self.send('handle_' + command.name, command)
             
@@ -469,9 +469,9 @@ module XoredDebugger
         def handle_stdout(command)
             check_command_arguments(command, '-c')
             state = case command.arg('-c').to_i
-                when 0 : state = Capturer::DISABLE
-	            when 1 : state = Capturer::COPY
-	            when 2 : state = Capturer::REDIRECT
+                when 0 : state = CaptureManager::DISABLE
+                when 1 : state = CaptureManager::COPY
+	            when 2 : state = CaptureManager::REDIRECT
 	            else raise ArgumentError   
             end
                 
@@ -484,9 +484,9 @@ module XoredDebugger
         def handle_stderr(command)
             check_command_arguments(command, '-c')
             state = case command.arg('-c').to_i
-	            when 0 : state = Capturer::DISABLE
-	            when 1 : state = Capturer::COPY
-	            when 2 : state = Capturer::REDIRECT
+                when 0 : state = CaptureManager::DISABLE
+                when 1 : state = CaptureManager::COPY
+	            when 2 : state = CaptureManager::REDIRECT
 	            else raise ArgumentError   
             end
 
@@ -629,18 +629,16 @@ module XoredDebugger
         end  
         
         def calculate_in_another_thread(expression)
-            result = nil
-            
+            @result = nil
             thread = @debugger.create_debug_thread do
-                result = @context.eval(expression, 0)
+                @result = @context.eval(expression, 0)
             end            
             exited = thread.join(5)
-            if (exited.nil?)
+            if (thread.alive?)
                 thread.kill
                 raise Exception, 'Thread not exited'
             end
-            
-            result            
+            @result            
         end                         
     end # class CommandHandler
 end # module XoredDebugger

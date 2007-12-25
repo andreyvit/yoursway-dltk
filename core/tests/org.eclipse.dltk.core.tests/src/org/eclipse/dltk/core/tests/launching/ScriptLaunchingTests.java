@@ -373,6 +373,10 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			for (int i = 0; i < files.length; ++i) {
 				final File file = files[i];
 				final IInterpreterInstallType type = types[i];
+				
+				// Skip useless interpreters
+				if (!isInterpreterRequired(file))
+					continue;
 
 				final IInterpreterInstall install = type
 						.createInterpreterInstall(getNatureId() + "_"
@@ -388,6 +392,16 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 
 		return (IInterpreterInstall[]) installs
 				.toArray(new IInterpreterInstall[installs.size()]);
+	}
+
+	private boolean isInterpreterRequired(File file) {
+		String[] required = getRequiredInterpreterNames();
+		for (int i = 0; i < required.length; i++) {
+			if (file.getName().startsWith(required[i])) {
+				return true; 
+			}		
+		}
+		return false;
 	}
 
 	public void testRequiredInterpretersAvailable() {

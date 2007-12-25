@@ -7,6 +7,7 @@ module XoredDebugger
                 
         def initialize
             super
+            @monitor = Monitor.new
         end      
                    
         def create_context_impl(thread)            
@@ -15,9 +16,11 @@ module XoredDebugger
         
         def terminate
             super
-            Thread.list.each do |thread|
-                thread[ :mock_debug_thread ] = nil
-            end                 
+            @monitor.synchronize {
+                Thread.list.each do |thread|
+                    thread[ :mock_debug_thread ] = nil
+                end
+            }                
         end
         
         def create_breakpoint_manager
@@ -25,13 +28,17 @@ module XoredDebugger
         end     
         
         def create_debug_thread(*args, &block)
-            t = Thread.new(*args, &block)
-            t[ :mock_debug_thread ] = true
-            t
+            @monitor.synchronize {
+                thread = Thread.new(*args, &block)
+                thread[ :mock_debug_thread ] = true
+                thread
+            }
         end     
         
         def is_debug_thread?(thread)
-            thread[ :mock_debug_thread ] == true
+            @monitor.synchronize {
+                thread[ :mock_debug_thread ] == true
+            }
         end     
 	end
 end
