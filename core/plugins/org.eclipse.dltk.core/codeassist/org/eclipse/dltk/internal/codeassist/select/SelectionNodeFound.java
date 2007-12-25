@@ -14,7 +14,7 @@ import org.eclipse.dltk.ast.ASTNode;
 public class SelectionNodeFound extends RuntimeException {
 	
 	private static final long serialVersionUID = -4242506971248812583L;
-	private ASTNode node;	
+	private transient ASTNode node;	
 	private boolean isDeclaration;
 
 	public SelectionNodeFound(ASTNode node) {

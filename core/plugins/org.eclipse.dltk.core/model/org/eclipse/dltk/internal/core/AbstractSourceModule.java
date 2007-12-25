@@ -118,8 +118,11 @@ public abstract class AbstractSourceModule extends Openable implements
 	 * @see org.eclipse.dltk.internal.core.ModelElement#equals(java.lang.Object)
 	 */
 	public boolean equals(Object obj) {
-		AbstractSourceModule other = (AbstractSourceModule) obj;
-		return this.owner.equals(other.owner) && super.equals(obj);
+		if (obj instanceof AbstractSourceModule) {
+			AbstractSourceModule other = (AbstractSourceModule) obj;
+			return this.owner.equals(other.owner) && super.equals(obj);
+		}
+		return false;
 	}
 
 	public boolean exists() {
@@ -439,7 +442,7 @@ public abstract class AbstractSourceModule extends Openable implements
 			IBuffer buffer = getBufferManager().getBuffer(this);
 			if (buffer == null) {
 				buffer = openBuffer(pm, moduleInfo); // open buffer
-														// independently
+				// independently
 				// from the info, since we are building the info
 			}
 

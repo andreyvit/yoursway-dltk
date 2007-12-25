@@ -70,7 +70,7 @@ public class SourceParserManager extends DLTKContributionExtensionManager {
 		return ((SourceParserContribution) getSelectedContribution(project, natureId)).getSourceParser();
 	}
 	
-	class SourceParserContribution extends DLTKContributedExtension {		
+	static class SourceParserContribution extends DLTKContributedExtension {		
 
 		private ISourceParserFactory factory;
 		private IConfigurationElement config;

@@ -20,7 +20,7 @@ import org.eclipse.dltk.compiler.problem.CategorizedProblem;
 public class AbortCompilation extends RuntimeException {
 
 	public Throwable exception;
-	public CategorizedProblem problem;
+	public transient CategorizedProblem problem;
 	
 	/* special fields used to abort silently (e.g. when cancelling build process) */
 	public boolean isSilent;

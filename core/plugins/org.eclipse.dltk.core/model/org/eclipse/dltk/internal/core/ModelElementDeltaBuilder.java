@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.dltk.compiler.CharOperation;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IParent;
@@ -73,7 +74,7 @@ public class ModelElementDeltaBuilder {
 	/**
 	 * Doubly linked list item
 	 */
-	class ListItem {
+	static class ListItem {
 		public IModelElement previous;
 		public IModelElement next;
 
@@ -140,19 +141,19 @@ public class ModelElementDeltaBuilder {
 		}
 	}
 
-//	private boolean equals(char[][][] first, char[][][] second) {
-//		if (first == second)
-//			return true;
-//		if (first == null || second == null)
-//			return false;
-//		if (first.length != second.length)
-//			return false;
-//
-//		for (int i = first.length; --i >= 0;)
-//			if (!CharOperation.equals(first[i], second[i]))
-//				return false;
-//		return true;
-//	}
+	// private boolean equals(char[][][] first, char[][][] second) {
+	// if (first == second)
+	// return true;
+	// if (first == null || second == null)
+	// return false;
+	// if (first.length != second.length)
+	// return false;
+	//
+	// for (int i = first.length; --i >= 0;)
+	// if (!CharOperation.equals(first[i], second[i]))
+	// return false;
+	// return true;
+	// }
 
 	/**
 	 * Finds elements which have been added or changed.
@@ -177,6 +178,9 @@ public class ModelElementDeltaBuilder {
 			newInfo = (ModelElementInfo) ((ModelElement) newElement)
 					.getElementInfo();
 		} catch (ModelException npe) {
+			if (DLTKCore.DEBUG) {
+				npe.printStackTrace();
+			}
 			return;
 		}
 
@@ -212,6 +216,9 @@ public class ModelElementDeltaBuilder {
 				info = (ModelElementInfo) ((ModelElement) element)
 						.getElementInfo();
 			} catch (ModelException npe) {
+				if (DLTKCore.DEBUG) {
+					npe.printStackTrace();
+				}
 				return;
 			}
 
@@ -391,6 +398,9 @@ public class ModelElementDeltaBuilder {
 				info = (ModelElementInfo) ((ModelElement) newElement)
 						.getElementInfo();
 			} catch (ModelException npe) {
+				if (DLTKCore.DEBUG) {
+					npe.printStackTrace();
+				}
 				return;
 			}
 

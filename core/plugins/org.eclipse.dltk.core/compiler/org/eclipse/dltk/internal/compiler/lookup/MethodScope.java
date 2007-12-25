@@ -17,12 +17,4 @@ public class MethodScope extends BlockScope {
 	public MethodScope(Scope parent, MethodDeclaration referenceMethod ) {
 		super(METHOD_SCOPE, parent);
 	}
-	/*
-	 * Answer the reference type of this scope. It is the nearest enclosing type
-	 * of this scope.
-	 */
-	public MethodDeclaration referenceMethod() {
-		return referenceMethod;
-	}
-
 }

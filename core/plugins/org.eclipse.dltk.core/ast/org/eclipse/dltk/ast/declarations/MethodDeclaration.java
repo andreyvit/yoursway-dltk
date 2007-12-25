@@ -27,10 +27,6 @@ import org.eclipse.dltk.utils.CorePrinter;
 public class MethodDeclaration extends Declaration {
 	public MethodScope scope;
 
-	protected int bodyStart = -1;
-
-	protected int bodyEnd = -1;
-
 	protected List arguments = new ArrayList();
 
 	private Block body = new Block();
@@ -127,8 +123,6 @@ public class MethodDeclaration extends Declaration {
 		this.body = block;
 
 		if (block != null) {
-			this.bodyStart = block.sourceStart();
-			this.bodyEnd = block.sourceEnd();
 			if (replace) {
 				this.setEnd(block.sourceEnd());
 			}

@@ -20,7 +20,6 @@ import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.util.Messages;
 
-
 /**
  * This operation deletes a collection of resources and all of their children.
  * It does not delete resources which do not belong to the Script Model (eg GIF
@@ -32,7 +31,8 @@ public class DeleteResourceElementsOperation extends MultiOperation {
 	 * elements to delete cannot be <code>null</code> or empty, and must have
 	 * a corresponding resource.
 	 */
-	protected DeleteResourceElementsOperation(IModelElement[] elementsToProcess, boolean force) {
+	protected DeleteResourceElementsOperation(
+			IModelElement[] elementsToProcess, boolean force) {
 		super(elementsToProcess, force);
 	}
 
@@ -50,7 +50,8 @@ public class DeleteResourceElementsOperation extends MultiOperation {
 				IResource[] resources = new IResource[childrenOfInterest.length];
 				// remove the children
 				for (int i = 0; i < childrenOfInterest.length; i++) {
-					resources[i] = childrenOfInterest[i].getCorrespondingResource();
+					resources[i] = childrenOfInterest[i]
+							.getCorrespondingResource();
 				}
 				deleteResources(resources, force);
 			}
@@ -77,12 +78,13 @@ public class DeleteResourceElementsOperation extends MultiOperation {
 			}
 			boolean isEmpty = true;
 			for (int i = 0, length = remainingFiles.length; i < length; i++) {
-				//IResource file = remainingFiles[i];				
-//				if (file instanceof IFile ) {
-//					this.deleteResource(file, IResource.FORCE | IResource.KEEP_HISTORY);
-//				} else {
-					isEmpty = false;
-//				}
+				// IResource file = remainingFiles[i];
+				// if (file instanceof IFile ) {
+				// this.deleteResource(file, IResource.FORCE |
+				// IResource.KEEP_HISTORY);
+				// } else {
+				isEmpty = false;
+				// }
 			}
 			if (isEmpty && !frag.isRootFolder()/*
 												 * don't delete default
@@ -92,7 +94,8 @@ public class DeleteResourceElementsOperation extends MultiOperation {
 				// delete recursively empty folders
 				IResource fragResource = frag.getResource();
 				if (fragResource != null) {
-					deleteEmptyScriptFolder(frag, false, fragResource.getParent());
+					deleteEmptyScriptFolder(frag, false, fragResource
+							.getParent());
 				}
 			}
 		}
@@ -112,14 +115,16 @@ public class DeleteResourceElementsOperation extends MultiOperation {
 	 */
 	protected void processElement(IModelElement element) throws ModelException {
 		switch (element.getElementType()) {
-			case IModelElement.SOURCE_MODULE:
-				deleteResource(element.getResource(), force ? IResource.FORCE | IResource.KEEP_HISTORY : IResource.KEEP_HISTORY);
-				break;
-			case IModelElement.SCRIPT_FOLDER:
-				deleteScriptFolder((IScriptFolder) element);
-				break;
-			default:
-				throw new ModelException(new ModelStatus(IModelStatusConstants.INVALID_ELEMENT_TYPES, element));
+		case IModelElement.SOURCE_MODULE:
+			deleteResource(element.getResource(), force ? IResource.FORCE
+					| IResource.KEEP_HISTORY : IResource.KEEP_HISTORY);
+			break;
+		case IModelElement.SCRIPT_FOLDER:
+			deleteScriptFolder((IScriptFolder) element);
+			break;
+		default:
+			throw new ModelException(new ModelStatus(
+					IModelStatusConstants.INVALID_ELEMENT_TYPES, element));
 		}
 		// ensure the element is closed
 		if (element instanceof IOpenable) {
@@ -134,10 +139,11 @@ public class DeleteResourceElementsOperation extends MultiOperation {
 		if (element == null || !element.exists())
 			error(IModelStatusConstants.ELEMENT_DOES_NOT_EXIST, element);
 		int type = element.getElementType();
-		if (type <= IModelElement.PROJECT_FRAGMENT || type > IModelElement.SOURCE_MODULE)
+		if (type <= IModelElement.PROJECT_FRAGMENT
+				|| type > IModelElement.SOURCE_MODULE)
 			error(IModelStatusConstants.INVALID_ELEMENT_TYPES, element);
-		else if (type == IModelElement.SCRIPT_FOLDER && element instanceof ArchiveProjectFragment
-				&& element instanceof ExternalScriptFolder)
+		else if (type == IModelElement.SCRIPT_FOLDER
+				&& (element instanceof ArchiveProjectFragment || element instanceof ExternalScriptFolder))
 			error(IModelStatusConstants.INVALID_ELEMENT_TYPES, element);
 		IResource resource = element.getResource();
 		if (resource instanceof IFolder) {

@@ -45,4 +45,7 @@ public abstract class Statement extends ASTNode implements StatementConstants {
 
 		return false;
 	}
+	public int hashCode() {
+		return this.sourceStart()*1000 + this.sourceEnd();
+	}
 }

@@ -23,6 +23,7 @@ import org.eclipse.dltk.compiler.env.lookup.Scope;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
@@ -243,8 +244,11 @@ public class HandleFactory {
 
 		// not found in the scope, walk all projects
 		try {
-			projects = this.model.getScriptProjects(scope.getLanguageToolkit()
-					.getNatureId());
+			IDLTKLanguageToolkit toolkit = scope.getLanguageToolkit();
+			if (toolkit == null) {
+				return null;
+			}
+			projects = this.model.getScriptProjects(toolkit.getNatureId());
 		} catch (ModelException e) {
 			// script model is not accessible
 			return null;

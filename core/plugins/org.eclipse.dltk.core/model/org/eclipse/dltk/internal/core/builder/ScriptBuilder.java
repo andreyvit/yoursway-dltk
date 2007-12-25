@@ -57,7 +57,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 	ScriptProject scriptProject = null;
 	State lastState;
 
-	class ResourceVisitor implements IResourceDeltaVisitor, IResourceVisitor {
+	static class ResourceVisitor implements IResourceDeltaVisitor, IResourceVisitor {
 		private List resources;
 
 		public ResourceVisitor(List resources) {

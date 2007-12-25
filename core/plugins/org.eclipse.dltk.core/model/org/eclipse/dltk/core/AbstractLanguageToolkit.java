@@ -174,18 +174,21 @@ public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 	protected Status createNotScriptFileStatus() {
 		return new Status(IStatus.ERROR, getCorePluginID(), -1, MessageFormat
 				.format(Messages.convention_unit_notScriptName, new String[] {
-						getLanguageFileExtensions().toString(), "Tcl" }), null);
+						getLanguageFileExtensions()[0].toString(), "Tcl" }), null);
 	}
 
-	private final int bufferLength = 2 * 1024;
-	private byte buf[] = new byte[bufferLength + 1];
+	private final static int BUFFER_LENGTH = 2 * 1024;
+	private byte buf[] = new byte[BUFFER_LENGTH + 1];
 
 	private boolean checkHeader(File file, Pattern[] headerPaterns,
 			Pattern[] footerPatterns) throws FileNotFoundException, IOException {
 		FileInputStream reader = null;
 		try {
 			reader = new FileInputStream(file);
-			reader.read(buf);
+			int res = reader.read(buf);
+			if( res == -1 || res == 0 ) {
+				return false;
+			}
 
 			String header = new String(buf);
 
@@ -193,7 +196,7 @@ public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 				if (checkBufferForPatterns(header, headerPaterns)) {
 					return true;
 				}
-				if (file.length() < bufferLength && footerPatterns != null) {
+				if (file.length() < BUFFER_LENGTH && footerPatterns != null) {
 					if (checkBufferForPatterns(header, footerPatterns)) {
 						return true;
 					}
@@ -214,7 +217,7 @@ public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 			throws FileNotFoundException, IOException {
 		RandomAccessFile raFile = new RandomAccessFile(file, "r");
 		try {
-			long len = bufferLength;
+			long len = BUFFER_LENGTH;
 			long fileSize = raFile.length();
 			long offset = fileSize - len;
 			if (offset < 0) {
@@ -253,7 +256,7 @@ public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 				if (checkHeader(file, headerPatterns, footerPatterns)) {
 					return IModelStatus.VERIFIED_OK;
 				}
-				if (footerPatterns != null && file.length() > bufferLength
+				if (footerPatterns != null && file.length() > BUFFER_LENGTH
 						&& checkFooter(file, footerPatterns)) {
 					return IModelStatus.VERIFIED_OK;
 				}

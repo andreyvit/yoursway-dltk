@@ -34,7 +34,6 @@ import org.eclipse.dltk.compiler.util.SimpleLookupTable;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IMethod;
@@ -42,6 +41,7 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.IProjectFragment;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
@@ -67,13 +67,13 @@ import org.eclipse.dltk.internal.compiler.lookup.LookupEnvironment;
 import org.eclipse.dltk.internal.compiler.lookup.SourceModuleScope;
 import org.eclipse.dltk.internal.core.ArchiveProjectFragment;
 import org.eclipse.dltk.internal.core.BuiltinSourceModule;
-import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.ExternalSourceModule;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.ModelStatus;
 import org.eclipse.dltk.internal.core.NameLookup;
 import org.eclipse.dltk.internal.core.Openable;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.SourceField;
 import org.eclipse.dltk.internal.core.SourceMethod;
 import org.eclipse.dltk.internal.core.SourceModule;
@@ -184,7 +184,7 @@ public class MatchLocator implements ITypeRequestor {
 		}
 	}
 
-	public class WrappedCoreException extends RuntimeException {
+	static public class WrappedCoreException extends RuntimeException {
 		private static final long serialVersionUID = 8354329870126121212L; // backward
 
 		// compatible
@@ -385,7 +385,7 @@ public class MatchLocator implements ITypeRequestor {
 		// if (!(parent instanceof IType)) return parent;
 		if (parent instanceof IType) {
 			IType type = (IType) parent;
-			return createFieldHandle(type, new String(field.getName()));
+			return createFieldHandle(type, field.getName());
 		} else if (parent instanceof ISourceModule) {
 			return createFieldHandle((ISourceModule) parent, field.getName());
 		}
@@ -406,6 +406,7 @@ public class MatchLocator implements ITypeRequestor {
 		this.methodHandles.add(methodHandle);
 		return methodHandle;
 	}
+
 	protected IModelElement createTypeHandle(IType parent, String name) {
 		return parent.getType(name);
 	}
@@ -1462,9 +1463,9 @@ public class MatchLocator implements ITypeRequestor {
 								.println("TODO: Searching. Add scope support.");
 					}
 					this.patternLocator.matchReportReference(node,
-								enclosingElement, (Scope) null, level
-										.intValue(), this);
-					
+							enclosingElement, (Scope) null, level.intValue(),
+							this);
+
 				}
 
 			}
@@ -1489,7 +1490,7 @@ public class MatchLocator implements ITypeRequestor {
 		if (enclosingElement == null) {
 			enclosingElement = createTypeHandle(type.getName());
 		} else if (enclosingElement instanceof IType) {
-			enclosingElement = createTypeHandle((IType)parent, type.getName());
+			enclosingElement = createTypeHandle((IType) parent, type.getName());
 		} else if (enclosingElement instanceof IMember) {
 			IMember member = (IMember) parent;
 			enclosingElement = member.getType(type.getName(), occurrenceCount);
@@ -1576,9 +1577,9 @@ public class MatchLocator implements ITypeRequestor {
 								System.out
 										.println("TODO: Searching. Add scope support.");
 							}
-								this.patternLocator.matchReportReference(node,
-										enclosingElement, (Scope) null, level
-												.intValue(), this);
+							this.patternLocator.matchReportReference(node,
+									enclosingElement, (Scope) null, level
+											.intValue(), this);
 						}
 						return;
 					}

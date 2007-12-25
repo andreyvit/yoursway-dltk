@@ -234,8 +234,8 @@ public class Index {
 		int numberOfChanges = this.memoryIndex.docsToReferences.elementSize;
 		this.diskIndex = this.diskIndex.mergeWith(this.memoryIndex);
 		this.memoryIndex = new MemoryIndex();
-		if (numberOfChanges > 1000)
-			System.gc(); // reclaim space if the MemoryIndex was very BIG
+//		if (numberOfChanges > 1000)
+//			System.gc(); // reclaim space if the MemoryIndex was very BIG
 	}
 
 	public void startQuery() {

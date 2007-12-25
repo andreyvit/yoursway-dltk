@@ -1019,7 +1019,7 @@ public class ModelManager implements ISaveParticipant {
 	public synchronized String intern(String s) {
 		// make sure to copy the string (so that it doesn't hold on the
 		// underlying char[] that might be much bigger than necessary)
-		return (String) this.stringSymbols.add(new String(s));
+		return (String) this.stringSymbols.add(s);
 	}
 
 	public void startup() throws CoreException {
