@@ -43,6 +43,9 @@ public class FunctionType implements IFunctionType {
 		}
 		return false;
 	}
+	public int hashCode() {
+		return this.fMethod.hashCode()*10 + this.fModule.hashCode();
+	}
 
 	public String getTypeName() {
 		String add = "";

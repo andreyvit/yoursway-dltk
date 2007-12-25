@@ -29,6 +29,11 @@ public class ModelFunctionType implements IFunctionType {
 		}
 		return false;
 	}
+	
+
+	public int hashCode() {
+		return this.fMethod.hashCode();
+	}
 
 	public String getTypeName() {
 		if (fMethod != null) {

@@ -13,7 +13,6 @@ import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.xotcl.core.XOTclParseUtil;
-import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclObjectDeclaration;
 import org.eclipse.dltk.xotcl.internal.core.XOTclKeywords;
 import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclClass;

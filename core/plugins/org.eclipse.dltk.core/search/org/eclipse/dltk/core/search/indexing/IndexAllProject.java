@@ -138,7 +138,7 @@ public class IndexAllProject extends IndexRequest {
 														return false;
 												indexedFileNames.put(Util.relativePath(file.getFullPath(), 1/*remove project segment*/), file);
 											}
-											//return false;
+											return false;
 										case IResource.FOLDER :
 											if (exclusionPatterns != null && inclusionPatterns == null) {
 												// if there are inclusion patterns then we must walk the children

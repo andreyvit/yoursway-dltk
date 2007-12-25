@@ -57,7 +57,7 @@
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.dltk.tcl.core.ITclLanguageExtension"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.dltk.tcl.core.extensions.ITclLanguageExtension"/>
                </appInfo>
             </annotation>
          </attribute>

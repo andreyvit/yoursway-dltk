@@ -129,13 +129,6 @@ public class DLTKSearchPattern extends SearchPattern {
 	}
 
 	/**
-	 * @return Returns the typeArguments.
-	 */
-	final char[][][] getTypeArguments() {
-		return typeArguments;
-	}
-
-	/**
 	 * Returns whether the pattern has signatures or not.
 	 * If pattern {@link #typeArguments} field, this field shows that it was built
 	 * on a generic source type.

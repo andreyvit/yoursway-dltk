@@ -411,7 +411,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 			Object state = getIndexStates().get(indexLocation);
 			Integer currentIndexState = state == null ? UNKNOWN_STATE
 					: (Integer) state;
-			if (currentIndexState == UNKNOWN_STATE) {
+			if (currentIndexState.equals(UNKNOWN_STATE)) {
 				// should only be reachable for query jobs
 				// IF you put an index in the cache, then AddArchiveFileToIndex
 				// fails because it thinks there is nothing to do

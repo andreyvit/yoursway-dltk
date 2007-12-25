@@ -695,8 +695,7 @@ public class DLTKSearchScope extends AbstractSearchScope {
 					}
 					int toRemove = -1;
 					for (int i = 0; i < this.pathsCount; i++) {
-						if (this.relativePaths[i].equals(path)) {
-							// TODO (jerome) this compares String and IPath!
+						if (this.relativePaths[i].equals(path.toOSString())) {
 							toRemove = i;
 							break;
 						}

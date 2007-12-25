@@ -32,6 +32,11 @@ public class OldClassType implements IClassType {
 		}
 		return false;
 	}
+	
+
+	public int hashCode() {
+		return this.fClass.hashCode() * 10 + this.fModule.hashCode();
+	}
 
 	public String getTypeName() {
 		if (fClass != null) {

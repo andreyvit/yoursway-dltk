@@ -36,7 +36,7 @@ public abstract class JobManager implements Runnable {
 	    it cannot go beyond 1 */
 	private int enableCount = 1;
 
-	public static boolean VERBOSE = DLTKCore.VERBOSE_JOBMANAGER;
+	public final static boolean VERBOSE = DLTKCore.VERBOSE_JOBMANAGER;
 	/* flag indicating that the activation has completed */
 	public boolean activated = false;
 	

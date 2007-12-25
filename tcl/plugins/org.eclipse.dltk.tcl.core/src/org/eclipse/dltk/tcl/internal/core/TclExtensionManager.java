@@ -15,7 +15,7 @@ import org.eclipse.dltk.tcl.core.extensions.ITclLanguageExtension;
 
 public class TclExtensionManager {
 	PriorityClassDLTKExtensionManager manager = new PriorityClassDLTKExtensionManager(
-			TclPlugin.PLUGIN_ID + ".tclExtension", "langauge");
+			TclPlugin.PLUGIN_ID + ".tclExtension", "language");
 	private static TclExtensionManager sInstance;
 
 	public static TclExtensionManager getDefault() {
