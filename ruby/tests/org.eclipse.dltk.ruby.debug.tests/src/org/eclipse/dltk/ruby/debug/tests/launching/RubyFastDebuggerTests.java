@@ -20,7 +20,7 @@ public class RubyFastDebuggerTests extends RubyLaunchingTests {
 				RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY,
 				"org.eclipse.dltk.ruby.fastdebugger");
 
-		super.testDebug();
+		super.innerTestDebug();
 	}
 
 	protected String[] getRequiredInterpreterNames() {

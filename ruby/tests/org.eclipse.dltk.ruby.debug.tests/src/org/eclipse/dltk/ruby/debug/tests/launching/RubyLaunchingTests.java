@@ -54,6 +54,9 @@ public class RubyLaunchingTests extends ScriptLaunchingTests {
 				RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY,
 				"org.eclipse.dltk.ruby.basicdebugger");
 
+		this.innerTestDebug();
+	}
+	public void innerTestDebug() throws Exception {
 		super.testDebug();
 	}
 
