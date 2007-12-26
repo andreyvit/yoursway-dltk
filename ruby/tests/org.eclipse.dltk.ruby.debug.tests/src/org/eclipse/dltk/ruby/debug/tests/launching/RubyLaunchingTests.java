@@ -76,7 +76,17 @@ public class RubyLaunchingTests extends ScriptLaunchingTests {
 		RubyDebugPlugin.getDefault().getPluginPreferences().setValue(
 				RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY,
 				"org.eclipse.dltk.ruby.fastdebugger");
-		this.internalTestDebug("ruby");
+		DebugEventStats stats = this.internalTestDebug("ruby");
+		int suspendCount = stats.getSuspendCount();
+		assertEquals(1, suspendCount);
+
+		assertEquals(2, stats.getResumeCount());
+
+		// Checking extended events count
+		assertEquals(1, stats.getBeforeVmStarted());
+		assertEquals(1, stats.getBeforeCodeLoaded());
+		assertEquals(2, stats.getBeforeResumeCount());
+		assertEquals(1, stats.getBeforeSuspendCount());
 	}
 
 
@@ -85,7 +95,17 @@ public class RubyLaunchingTests extends ScriptLaunchingTests {
 				RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY,
 				"org.eclipse.dltk.ruby.basicdebugger");
 
-		this.internalTestDebug("jruby");
+		DebugEventStats stats = this.internalTestDebug("jruby");
+		int suspendCount = stats.getSuspendCount();
+		assertEquals(1, suspendCount);
+
+		assertEquals(3, stats.getResumeCount());
+
+		// Checking extended events count
+		assertEquals(1, stats.getBeforeVmStarted());
+		assertEquals(1, stats.getBeforeCodeLoaded());
+		assertEquals(2, stats.getBeforeResumeCount());
+		assertEquals(1, stats.getBeforeSuspendCount());
 	}
 
 	public void testRuby() throws Exception {
