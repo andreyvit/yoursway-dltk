@@ -99,24 +99,24 @@ public class RubyMixinClass implements IRubyMixinElement {
 		if (mixinElement == null)
 			return null;
 		Object[] allObjects = mixinElement.getAllObjects();
-// IType type = null;
+		// IType type = null;
 		for (int i = 0; i < allObjects.length; i++) {
 			RubyMixinElementInfo info = (RubyMixinElementInfo) allObjects[i];
 			if (info == null) {
 				continue;
 			}
-// if (info.getKind() == RubyMixinElementInfo.K_CLASS) {
-// type = (IType) info.getObject();
-// if (type == null)
-// continue;
-// String key = RubyModelUtils.evaluateSuperClass(type);
-// if (key == null)
-// continue;
-// if (!this.isMeta())
-// key = key + RubyMixin.INSTANCE_SUFFIX;
-// RubyMixinClass s = (RubyMixinClass) model.createRubyElement(key);
-// return s;
-// }
+			// if (info.getKind() == RubyMixinElementInfo.K_CLASS) {
+			// type = (IType) info.getObject();
+			// if (type == null)
+			// continue;
+			// String key = RubyModelUtils.evaluateSuperClass(type);
+			// if (key == null)
+			// continue;
+			// if (!this.isMeta())
+			// key = key + RubyMixin.INSTANCE_SUFFIX;
+			// RubyMixinClass s = (RubyMixinClass) model.createRubyElement(key);
+			// return s;
+			// }
 			if (info.getKind() == RubyMixinElementInfo.K_SUPER) {
 				SuperclassReferenceInfo sinfo = (SuperclassReferenceInfo) info
 						.getObject();
@@ -224,7 +224,8 @@ public class RubyMixinClass implements IRubyMixinElement {
 				}
 			}
 		} else {
-			String stdKey = this.key.substring(0, key.length() - RubyMixin.VIRTUAL_SUFFIX.length());
+			String stdKey = this.key.substring(0, key.length()
+					- RubyMixin.VIRTUAL_SUFFIX.length());
 			IRubyMixinElement realElement = model.createRubyElement(stdKey);
 			if (realElement instanceof RubyMixinClass) {
 				RubyMixinClass rubyMixinClass = (RubyMixinClass) realElement;
@@ -273,9 +274,11 @@ public class RubyMixinClass implements IRubyMixinElement {
 
 		RubyMixinClass[] included = this.getIncluded();
 		for (int i = 0; i < included.length; i++) {
-			RubyMixinMethod method = included[i].getMethod(name);
-			if (method != null)
-				return method;
+			if (!this.key.equals(included[i].key)) {
+				RubyMixinMethod method = included[i].getMethod(name);
+				if (method != null)
+					return method;
+			}
 		}
 
 		// search superclass

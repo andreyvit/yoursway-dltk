@@ -33,6 +33,8 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 	}
 
 	public void setUpSuite() throws Exception {
+		// We need to initialie at least one interpreter.
+		
 		PROJECT = setUpScriptProject("completion");
 		waitUntilIndexesReady();
 		ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());

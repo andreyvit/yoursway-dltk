@@ -77,7 +77,7 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests impleme
 	public void testTotalKeysCount() {
 		MixinModel model = new MixinModel(RubyLanguageToolkit.getDefault());
 		String[] keys = model.findKeys("*");
-		assertEquals(20, keys.length);
+		assertEquals(26, keys.length);
 	}
 	
 	// If fails, call ghostbusters, please
@@ -132,7 +132,7 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests impleme
 		IMixinElement mixinElement = model.get("Foo");
 		assertNotNull(mixinElement);
 		Object[] objs = mixinElement.getAllObjects();
-		assertEquals(1, objs.length);
+		assertEquals(2, objs.length);
 
 		IScriptFolder scriptFolder = getScriptFolder(PROJECT_NAME, "src",
 				new Path(""));
