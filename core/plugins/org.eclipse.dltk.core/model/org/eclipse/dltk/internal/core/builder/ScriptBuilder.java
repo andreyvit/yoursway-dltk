@@ -14,8 +14,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -44,10 +47,10 @@ import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.internal.core.BuiltinProjectFragment;
 import org.eclipse.dltk.internal.core.BuiltinSourceModule;
-import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.ExternalProjectFragment;
 import org.eclipse.dltk.internal.core.ExternalSourceModule;
 import org.eclipse.dltk.internal.core.ModelManager;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.util.HandleFactory;
 
 public class ScriptBuilder extends IncrementalProjectBuilder {
@@ -57,14 +60,21 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 	ScriptProject scriptProject = null;
 	State lastState;
 
-	static class ResourceVisitor implements IResourceDeltaVisitor, IResourceVisitor {
-		private List resources;
+	static class ResourceVisitor implements IResourceDeltaVisitor,
+			IResourceVisitor {
+		private Set resources;
+		private IProgressMonitor monitor;
 
-		public ResourceVisitor(List resources) {
+		public ResourceVisitor(Set resources, IProgressMonitor monitor) {
 			this.resources = resources;
+			this.monitor = monitor;
 		}
 
 		public boolean visit(IResourceDelta delta) throws CoreException {
+			// monitor.worked(1);
+			if (monitor.isCanceled()) {
+				return false;
+			}
 			IResource resource = delta.getResource();
 			switch (delta.getKind()) {
 			case IResourceDelta.ADDED:
@@ -80,6 +90,10 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 		}
 
 		public boolean visit(IResource resource) {
+			// monitor.worked(1);
+			if (monitor.isCanceled()) {
+				return false;
+			}
 			if (!this.resources.contains(resource)
 					&& resource.getType() == IResource.FILE) {
 				resources.add(resource);
@@ -90,16 +104,22 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 	}
 
 	class ExternalModuleVisitor implements IModelElementVisitor {
-		private List elements;
+		private Set elements;
+		private IProgressMonitor monitor;
 
-		public ExternalModuleVisitor(List elements) {
+		public ExternalModuleVisitor(Set elements, IProgressMonitor monitor) {
 			this.elements = elements;
+			this.monitor = monitor;
 		}
 
 		/**
 		 * Visit only external source modules, witch we aren't builded yet.
 		 */
 		public boolean visit(IModelElement element) {
+			// monitor.worked(1);
+			if (monitor.isCanceled()) {
+				return false;
+			}
 			if (element.getElementType() == IModelElement.PROJECT_FRAGMENT) {
 				if (!(element instanceof ExternalProjectFragment)
 						&& !(element instanceof BuiltinProjectFragment)) {
@@ -243,27 +263,53 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 		State newState = new State(this);
 		lastState = newState;
 		try {
-			List resources = new ArrayList();
-
-			currentProject.accept(new ResourceVisitor(resources));
-
+			Set resources = getResourcesFrom(currentProject, monitor);
 			// Project external resources should also be added into list. Only
 			// on full build we need to manage this.
-			List elements = new ArrayList();
-			scriptProject.accept(new ExternalModuleVisitor(elements));
-
+			Set elements = getExternalElementsFrom(scriptProject, monitor);
 			// Call builders for resources.
 			int count = resources.size() + elements.size();
-			monitor.beginTask("Indexing", count);
 			buildResources(resources, monitor);
-			buildElements(elements, monitor);
-			monitor.done();
+			List els = new ArrayList();
+			els.addAll(elements);
+			buildElements(els, monitor);
 		} catch (CoreException e) {
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		} finally {
 			ModelManager.getModelManager().setLastBuiltState(currentProject,
 					this.lastState);
 		}
+	}
+
+	private Set getResourcesFrom(Object el, final IProgressMonitor monitor)
+			throws CoreException {
+		Set resources = new HashSet();
+		monitor.subTask("Looking for resources...");
+		monitor.beginTask("Looking for resources...", IProgressMonitor.UNKNOWN);
+		ResourceVisitor resourceVisitor = new ResourceVisitor(resources,
+				monitor);
+		if (el instanceof IProject) {
+			IProject prj = (IProject) el;
+			prj.accept(resourceVisitor);
+		} else if (el instanceof IResourceDelta) {
+			IResourceDelta delta = (IResourceDelta) el;
+			delta.accept(resourceVisitor);
+		}
+		monitor.done();
+		return resources;
+	}
+
+	private Set getExternalElementsFrom(ScriptProject prj,
+			final IProgressMonitor monitor) throws ModelException {
+		Set elements = new HashSet();
+		monitor.subTask("Looking for external library changes...");
+		monitor.beginTask("Looking for library changes...",
+				IProgressMonitor.UNKNOWN);
+		prj.accept(new ExternalModuleVisitor(elements, monitor));
+		monitor.done();
+		return elements;
 	}
 
 	protected void incrementalBuild(IResourceDelta delta,
@@ -274,19 +320,16 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 		}
 		this.lastState = newState;
 		try {
-			List resources = new ArrayList();
-			delta.accept(new ResourceVisitor(resources));
+			Set resources = getResourcesFrom(delta, monitor);
 			// Call builders for resources.
-			List actualResourcesToBuild = findDependencies(resources);
+			Set actualResourcesToBuild = findDependencies(resources);
 
-			List elements = new ArrayList();
-			scriptProject.accept(new ExternalModuleVisitor(elements));
+			Set elements = getExternalElementsFrom(scriptProject, monitor);
 
-			monitor.beginTask("Indexing", actualResourcesToBuild.size()
-					+ elements.size());
 			buildResources(actualResourcesToBuild, monitor);
-			buildElements(elements, monitor);
-			monitor.done();
+			List els = new ArrayList();
+			els.addAll(elements);
+			buildElements(els, monitor);
 		} finally {
 			ModelManager.getModelManager().setLastBuiltState(currentProject,
 					this.lastState);
@@ -295,20 +338,22 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 
 	private HandleFactory factory = new HandleFactory();
 
-	protected void buildResources(List resources, IProgressMonitor monitor) {
+	protected void buildResources(Set resources, IProgressMonitor monitor) {
 		List status = new ArrayList();
 		IDLTKSearchScope scope = SearchEngine
 				.createSearchScope(new IModelElement[] { scriptProject });
 
 		List realResources = new ArrayList(); // real resources
 		List elements = new ArrayList(); // Model elements
+		monitor.subTask("Locate Elements");
+		monitor.beginTask("Locate Elements", resources.size());
+		for (Iterator iterator = resources.iterator(); iterator.hasNext();) {
+			IResource res = (IResource) iterator.next();
 
-		for (int i = 0; i < resources.size(); ++i) {
 			monitor.worked(1);
 			if (monitor.isCanceled()) {
 				return;
 			}
-			IResource res = (IResource) resources.get(i);
 			IModelElement element = factory.createOpenable(res.getFullPath()
 					.toString(), scope);
 			if (element != null
@@ -319,6 +364,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 				realResources.add(res);
 			}
 		}
+		monitor.done();
 		buildElements(elements, monitor);
 
 		// Else build as resource.
@@ -382,23 +428,25 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 
 			}
 		} catch (CoreException e) {
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 			return;
 		}
 		// TODO: Do something with status.
 	}
 
-	private List findDependencies(List resources) {
+	private Set findDependencies(Set resources) {
 		try {
 			IScriptBuilder[] builders = ScriptBuilderManager
 					.getAllScriptBuilders();
 
 			List elementsToCheck = new ArrayList();
 			elementsToCheck.addAll(resources);
-			List result = new ArrayList();
+			Set result = new HashSet();
 			result.addAll(resources);
 			while (elementsToCheck.size() > 0) {
-				List newElementsToCheck = new ArrayList();
+				Set newElementsToCheck = new HashSet();
 				for (int i = 0; i < builders.length; ++i) {
 					List newResources = builders[i].getDependencies(
 							this.scriptProject, elementsToCheck);
@@ -406,8 +454,10 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 						newElementsToCheck.addAll(newResources);
 					}
 				}
-				for (int i = 0; i < newElementsToCheck.size(); ++i) {
-					Object o = newElementsToCheck.get(i);
+
+				for (Iterator iterator = newElementsToCheck.iterator(); iterator
+						.hasNext();) {
+					Object o = iterator.next();
 					if (!result.contains(o)) {
 						result.add(o);
 					}
@@ -417,7 +467,9 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			}
 			return result;
 		} catch (CoreException e) {
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 		return resources;
 	}

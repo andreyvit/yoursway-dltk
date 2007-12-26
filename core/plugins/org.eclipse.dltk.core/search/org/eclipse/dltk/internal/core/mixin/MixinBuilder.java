@@ -89,13 +89,20 @@ public class MixinBuilder implements IScriptBuilder {
 			fullPath.toString(), fullPath.toOSString());
 			imon = mixinIndex.monitor;
 			imon.enterWrite();
-			for (int i = 0; i < elements.size(); ++i) {
+			monitor.subTask("Building runtime model");
+			monitor.beginTask("Building runtime model", elements.size());
+			for (Iterator iterator = elements.iterator(); iterator.hasNext();) {
+				ISourceModule element = (ISourceModule) iterator.next();
+			
 				Index currentIndex = mixinIndex;
 				monitor.worked(1);
 				if (monitor.isCanceled()) {
 					return null;
 				}
-				ISourceModule element = (ISourceModule) elements.get(i);
+			
+				String taskTitle = "Building runtime model:" + element.getElementName();
+				monitor.subTask(taskTitle);
+				monitor.beginTask(taskTitle, IProgressMonitor.UNKNOWN);
 
 				IProjectFragment projectFragment = (IProjectFragment) element
 						.getAncestor(IModelElement.PROJECT_FRAGMENT);
@@ -150,7 +157,9 @@ public class MixinBuilder implements IScriptBuilder {
 				((InternalSearchDocument) document).setIndex(currentIndex);
 
 				new MixinIndexer(document, element).indexDocument();
+				monitor.done();
 			}
+			monitor.done();
 		} catch (CoreException e) {
 			if (DLTKCore.DEBUG) {
 				e.printStackTrace();
