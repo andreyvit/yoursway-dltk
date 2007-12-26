@@ -3,6 +3,7 @@ package org.eclipse.dltk.core.tests.launching;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
@@ -178,7 +180,21 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 		description.setNatureIds(new String[] { getNatureId() });
 		project.setDescription(description, null);
 
-		interpreterInstalls = searchInstalls(getNatureId());
+		if (!hasPredefinedInterpreters()) {
+			interpreterInstalls = searchInstalls(getNatureId());
+		} else {
+			interpreterInstalls = getPredefinedInterpreterInstalls();
+		}
+	}
+
+	/**
+	 * Should return predefined interpreters. Used with
+	 * hasPredefinedInterpreters method as true.
+	 * 
+	 * @return Not null array of interpreter installs.
+	 */
+	protected IInterpreterInstall[] getPredefinedInterpreterInstalls() {
+		return new IInterpreterInstall[0];
 	}
 
 	public void tearDownSuite() throws Exception {
@@ -213,9 +229,12 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 				if (attributeName
 						.equals(ScriptLaunchConfigurationConstants.ATTR_DEFAULT_BUILDPATH)) {
 					return true;
+				} else if (attributeName
+						.equals(ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES)) {
+					return false;
 				}
 
-				return false;
+				return defaultValue;
 			}
 
 			public int getAttribute(String attributeName, int defaultValue)
@@ -224,22 +243,28 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 						.equals(ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT)) {
 					return 10000;
 				}
-				return 0;
+				return defaultValue;
 			}
 
 			public List getAttribute(String attributeName, List defaultValue)
 					throws CoreException {
-				return null;
+				return defaultValue;
 			}
 
 			public Set getAttribute(String attributeName, Set defaultValue)
 					throws CoreException {
-				return null;
+				return defaultValue;
 			}
 
 			public Map getAttribute(String attributeName, Map defaultValue)
 					throws CoreException {
-				return null;
+				if (attributeName
+						.equals(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES)) {
+					Map env = new HashMap();
+					configureEnvironment(env);
+					return env;
+				}
+				return defaultValue;
 			}
 
 			public String getAttribute(String attributeName, String defaultValue)
@@ -264,8 +289,7 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 						.equals(ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE)) {
 					return natureId;
 				}
-
-				return null;
+				return defaultValue;
 			}
 
 			public Map getAttributes() throws CoreException {
@@ -360,6 +384,9 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 		};
 	}
 
+	protected void configureEnvironment(Map env) {
+	}
+
 	public IInterpreterInstall[] searchInstalls(String natureId) {
 		final List installs = new ArrayList();
 		final InterpreterSearcher searcher = new InterpreterSearcher();
@@ -374,9 +401,9 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 				final File file = files[i];
 				final IInterpreterInstallType type = types[i];
 
-				// Skip useless interpreters
-				if (!isInterpreterRequired(file))
-					continue;
+				// // Skip useless interpreters
+				// if (!isInterpreterRequired(file))
+				// continue;
 
 				String installId = getNatureId() + "_" + Integer.toString(i);
 				IInterpreterInstall install = type
@@ -397,43 +424,46 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 				.toArray(new IInterpreterInstall[installs.size()]);
 	}
 
-	private boolean isInterpreterRequired(File file) {
-		String[] required = getRequiredInterpreterNames();
-		for (int i = 0; i < required.length; i++) {
-			if (file.getName().startsWith(required[i])) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public void testRequiredInterpretersAvailable() {
-		String[] required = getRequiredInterpreterNames();
-		for (int i = 0; i < required.length; i++) {
-			String name = required[i];
-			assertTrue("Interpreter " + name + " not available",
-					isInterpreterAvailable(name));
-		}
+	public void internalTestRequiredInterpreterAvailable(String name) {
+		assertTrue("Interpreter " + name + " not available",
+				isInterpreterAvailable(name));
 	}
 
 	private boolean isInterpreterAvailable(String interpreterName) {
 		for (int i = 0; i < interpreterInstalls.length; i++) {
-			String foundName = interpreterInstalls[i].getInstallLocation()
-					.getName();
-			if (foundName.startsWith(interpreterName)) {
+			File installLocation = interpreterInstalls[i].getInstallLocation();
+			if (isRequiredInstall(interpreterName, installLocation)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public void testRun() throws Exception {
+	private boolean isRequiredInstall(String interpreterName,
+			File installLocation) {
+		IPath path = new Path(installLocation.getAbsolutePath());
+		String executableName = path.lastSegment();
+		if (executableName.startsWith(interpreterName)) {
+			return true;
+		}
+		return false;
+	}
+
+	public final static int SKIP_STDOUT_TEST = 1;
+
+	protected void internalTestRun(String name) throws Exception {
+		internalTestRun(name, 0);
+	}
+	protected void internalTestRun(String name, int flags) throws Exception {
 		if (interpreterInstalls.length == 0) {
 			fail("No interperters found for nature " + getNatureId());
 		}
 
 		for (int i = 0; i < interpreterInstalls.length; ++i) {
 			final IInterpreterInstall install = interpreterInstalls[i];
+			if (!isRequiredInstall(name, install.getInstallLocation())) {
+				continue;
+			}
 			System.out.println("Interpreter install location (run): "
 					+ install.getInstallLocation().toString());
 
@@ -467,7 +497,7 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			assertNotNull(errorMonitor);
 
 			while (!process.isTerminated()) {
-				Thread.sleep(200);
+				Thread.sleep(20);
 			}
 
 			assertTrue(process.isTerminated());
@@ -475,15 +505,19 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			final int exitValue = process.getExitValue();
 			assertEquals(0, exitValue);
 
-			final String output = outputMonitor.getContents();
-			assertEquals(stdoutTest, output);
+			if ((flags & SKIP_STDOUT_TEST) == 0) {
+				final String output = outputMonitor.getContents();
+				assertEquals(stdoutTest, output);
+			}
 
 			final String error = errorMonitor.getContents();
 			assertEquals(stderrTest, error);
+			return;
 		}
+		assertTrue("Requied interpreter are't found" + name, false);
 	}
 
-	private static class DebugEventStats implements IDebugEventSetListener {
+	public static class DebugEventStats implements IDebugEventSetListener {
 		private int suspendCount;
 		private int resumeCount;
 		private int beforeSuspendCount;
@@ -602,19 +636,21 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 		}
 	}
 
-	public void testDebug() throws Exception {
+	public DebugEventStats internalTestDebug(String name) throws Exception {
 		if (interpreterInstalls.length == 0) {
 			fail("No interperters found for nature " + getNatureId());
 		}
 
 		// Debug
-		DebugEventStats stats = new DebugEventStats();
-
-		DebugPlugin.getDefault().addDebugEventListener(stats);
-
 		for (int i = 0; i < interpreterInstalls.length; ++i) {
 			final IInterpreterInstall install = interpreterInstalls[i];
+			if (!isRequiredInstall(name, install.getInstallLocation())) {
+				continue;
+			}
+			
+			DebugEventStats stats = new DebugEventStats();
 
+			DebugPlugin.getDefault().addDebugEventListener(stats);
 			System.out.println("Interperter install location (debug): "
 					+ install.getInstallLocation());
 
@@ -644,30 +680,33 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 				}
 
 				assertTrue(process.isTerminated());
-
-				int suspendCount = stats.getSuspendCount();
-				assertEquals(1, suspendCount);
-
-				assertEquals(2, stats.getResumeCount());
-
 				final int exitValue = process.getExitValue();
 				assertEquals(0, exitValue);
 
-				// Checking extended events count
-				assertEquals(1, stats.getBeforeVmStarted());
-				assertEquals(1, stats.getBeforeCodeLoaded());
-				assertEquals(2, stats.getBeforeResumeCount());
-				assertEquals(1, stats.getBeforeSuspendCount());
+//				int suspendCount = stats.getSuspendCount();
+//				assertEquals(1, suspendCount);
+//
+//				assertEquals(2, stats.getResumeCount());
+//
+//				final int exitValue = process.getExitValue();
+//				assertEquals(0, exitValue);
+//
+//				// Checking extended events count
+//				assertEquals(1, stats.getBeforeVmStarted());
+//				assertEquals(1, stats.getBeforeCodeLoaded());
+//				assertEquals(2, stats.getBeforeResumeCount());
+//				assertEquals(1, stats.getBeforeSuspendCount());
 			} finally {
 				b.delete();
+				
 			}
+			DebugPlugin.getDefault().removeDebugEventListener(stats);
+			return stats;
 		}
 
-		DebugPlugin.getDefault().removeDebugEventListener(stats);
-
+		assertTrue("Requied interpreter are't found " + name, false);
+		return null;
 	}
-
-	protected abstract String[] getRequiredInterpreterNames();
 
 	protected abstract String getProjectName();
 
@@ -679,4 +718,32 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 
 	protected abstract ILaunchConfiguration createLaunchConfiguration(
 			String arguments);
+
+	protected boolean hasPredefinedInterpreters() {
+		return false;
+	}
+	protected IInterpreterInstall createInstall(String path, String id,
+			IInterpreterInstallType type) {
+		File file = new File(path);
+		if (!file.exists()) {
+			return null;
+		}
+		IInterpreterInstall install = type.findInterpreterInstall(id);
+
+		if (install == null)
+			install = type.createInterpreterInstall(id);
+
+		install.setName("");
+		install.setInstallLocation(file);
+		install.setLibraryLocations(null);
+		install.setEnvironmentVariables(null);
+		return install;
+	}
+	protected void createAddInstall(List installs, String path, String id,
+			IInterpreterInstallType type) {
+		IInterpreterInstall install = createInstall(path, id, type);
+		if (install != null) {
+			installs.add(install);
+		}
+	}
 }

@@ -23,5 +23,4 @@ public final class TclActiveStateDebuggerConstants {
 	private TclActiveStateDebuggerConstants() {
 		// private constructor
 	}
-
 }

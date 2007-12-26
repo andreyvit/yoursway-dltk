@@ -1,0 +1,2 @@
+STDOUT.print ARGV[0]
+STDERR.print ARGV[1]
