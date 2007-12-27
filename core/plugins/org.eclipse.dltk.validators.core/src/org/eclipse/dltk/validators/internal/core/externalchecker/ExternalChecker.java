@@ -319,8 +319,7 @@ public class ExternalChecker extends AbstractValidator {
 
 		String user = replaceSequence(arguments.replaceAll("\t", "::")
 				.replaceAll(" ", "::"), 'f', path);
-		String result = "";
-		return result + "::" + user;
+		return user;
 	}
 
 	private String replaceSequence(String from, char pattern, String value) {
