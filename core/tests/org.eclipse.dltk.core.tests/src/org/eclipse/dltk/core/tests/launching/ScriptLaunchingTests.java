@@ -381,6 +381,12 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			public Object getAdapter(Class adapter) {
 				return null;
 			}
+			private final String[] mattrs = new String[] {	
+			};
+			public boolean hasAttribute(String attributeName)
+					throws CoreException {
+				return true;
+			}
 		};
 	}
 
