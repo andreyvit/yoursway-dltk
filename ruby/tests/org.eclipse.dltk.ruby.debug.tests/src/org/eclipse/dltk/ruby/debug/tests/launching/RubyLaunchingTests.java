@@ -64,7 +64,7 @@ public class RubyLaunchingTests extends ScriptLaunchingTests {
 		int suspendCount = stats.getSuspendCount();
 		assertEquals(1, suspendCount);
 
-		assertEquals(3, stats.getResumeCount());
+		assertEquals(2, stats.getResumeCount());
 
 		// Checking extended events count
 		assertEquals(1, stats.getBeforeVmStarted());
@@ -80,7 +80,7 @@ public class RubyLaunchingTests extends ScriptLaunchingTests {
 		int suspendCount = stats.getSuspendCount();
 		assertEquals(1, suspendCount);
 
-		assertEquals(3, stats.getResumeCount());
+		assertEquals(2, stats.getResumeCount());
 
 		// Checking extended events count
 		assertEquals(1, stats.getBeforeVmStarted());
@@ -99,7 +99,7 @@ public class RubyLaunchingTests extends ScriptLaunchingTests {
 		int suspendCount = stats.getSuspendCount();
 		assertEquals(1, suspendCount);
 
-		assertEquals(3, stats.getResumeCount());
+		assertEquals(2, stats.getResumeCount());
 
 		// Checking extended events count
 		assertEquals(1, stats.getBeforeVmStarted());
