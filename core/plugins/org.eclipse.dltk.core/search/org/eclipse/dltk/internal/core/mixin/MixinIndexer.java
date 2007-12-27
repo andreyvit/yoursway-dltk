@@ -62,9 +62,9 @@ public class MixinIndexer extends AbstractIndexer {
 		public void reportElement(ElementInfo info) {
 			if (info.key.length() > 0) {
 				// Thread safe support
-				synchronized (currentIndex) {
-					MixinIndexer.this.addMixin(info.key.toCharArray());
-				}
+//				synchronized (currentIndex) {
+				MixinIndexer.this.addMixin(info.key.toCharArray());
+//				}
 			}
 		}
 	}
