@@ -268,7 +268,6 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			// on full build we need to manage this.
 			Set elements = getExternalElementsFrom(scriptProject, monitor);
 			// Call builders for resources.
-			int count = resources.size() + elements.size();
 			buildResources(resources, monitor);
 			List els = new ArrayList();
 			els.addAll(elements);
@@ -286,8 +285,10 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 	private Set getResourcesFrom(Object el, final IProgressMonitor monitor)
 			throws CoreException {
 		Set resources = new HashSet();
-		monitor.subTask("Looking for resources...");
-		monitor.beginTask("Looking for resources...", IProgressMonitor.UNKNOWN);
+		String name = "Looking resources for "
+				+ this.scriptProject.getElementName() + "...";
+		monitor.subTask(name);
+		monitor.beginTask(name, IProgressMonitor.UNKNOWN);
 		ResourceVisitor resourceVisitor = new ResourceVisitor(resources,
 				monitor);
 		if (el instanceof IProject) {
@@ -304,9 +305,10 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 	private Set getExternalElementsFrom(ScriptProject prj,
 			final IProgressMonitor monitor) throws ModelException {
 		Set elements = new HashSet();
-		monitor.subTask("Looking for external library changes...");
-		monitor.beginTask("Looking for library changes...",
-				IProgressMonitor.UNKNOWN);
+		String name = "Looking external library element changes for "
+				+ this.scriptProject.getElementName() + "...";
+		monitor.subTask(name);
+		monitor.beginTask(name, IProgressMonitor.UNKNOWN);
 		prj.accept(new ExternalModuleVisitor(elements, monitor));
 		monitor.done();
 		return elements;
@@ -322,7 +324,11 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 		try {
 			Set resources = getResourcesFrom(delta, monitor);
 			// Call builders for resources.
+			String findDepTaskName = "Find dependencies " + this.scriptProject.getElementName();
+			monitor.subTask(findDepTaskName);
+			monitor.beginTask(findDepTaskName, IProgressMonitor.UNKNOWN);
 			Set actualResourcesToBuild = findDependencies(resources);
+			monitor.done();
 
 			Set elements = getExternalElementsFrom(scriptProject, monitor);
 
@@ -345,8 +351,10 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 
 		List realResources = new ArrayList(); // real resources
 		List elements = new ArrayList(); // Model elements
-		monitor.subTask("Locate Elements");
-		monitor.beginTask("Locate Elements", resources.size());
+		String name = "Locate Elements for "
+				+ this.scriptProject.getElementName();
+		monitor.subTask(name);
+		monitor.beginTask(name, resources.size());
 		for (Iterator iterator = resources.iterator(); iterator.hasNext();) {
 			IResource res = (IResource) iterator.next();
 

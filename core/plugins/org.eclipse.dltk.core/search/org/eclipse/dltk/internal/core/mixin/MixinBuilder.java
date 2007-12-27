@@ -10,6 +10,7 @@
 package org.eclipse.dltk.internal.core.mixin;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -58,9 +59,9 @@ public class MixinBuilder implements IScriptBuilder {
 	}
 
 	public IStatus[] buildModelElements(IScriptProject project, List elements,
-			IProgressMonitor monitor, boolean saveIndex) {
+			final IProgressMonitor monitor, boolean saveIndex) {
 		IndexManager manager = ModelManager.getModelManager().getIndexManager();
-
+		final int elementsSize = elements.size();
 		IDLTKLanguageToolkit toolkit = null;
 		IMixinParser parser = null;
 		try {
@@ -73,6 +74,7 @@ public class MixinBuilder implements IScriptBuilder {
 				e1.printStackTrace();
 			}
 		}
+		final IScriptProject finalProject = project;
 
 		if (parser == null || toolkit == null) {
 			return null;
@@ -89,20 +91,89 @@ public class MixinBuilder implements IScriptBuilder {
 			fullPath.toString(), fullPath.toOSString());
 			imon = mixinIndex.monitor;
 			imon.enterWrite();
-			monitor.subTask("Building runtime model");
-			monitor.beginTask("Building runtime model", elements.size());
+			String name = "Building runtime model for "
+					+ project.getElementName();
+			monitor.subTask(name);
+			monitor.beginTask(name, elements.size());
+			int fileIndex = 0;
+			final List operations = new ArrayList();
+			List threads = new ArrayList();
+
+			class MixinThread extends Thread {
+				private boolean isFinished = false;
+
+				public void run() {
+					while (!isFinished) {
+						MixinIndexer indexer = null;
+						synchronized (operations) {
+							if (operations.size() > 0) {
+								indexer = (MixinIndexer) operations.remove(0);
+							}
+							if (indexer == null) {
+								try {
+									operations.wait();
+								} catch (InterruptedException e) {
+									if (DLTKCore.DEBUG) {
+										e.printStackTrace();
+									}
+								}
+							}
+						}
+						if (indexer != null) {
+							synchronized (monitor) {
+								String taskTitle = "Building runtime model for "
+										+ finalProject.getElementName()
+										+ " ("
+										+ (elementsSize - indexer.index)
+										+ "):"
+										+ indexer.elementName;
+								monitor.subTask(taskTitle);
+								monitor.beginTask(taskTitle,
+										IProgressMonitor.UNKNOWN);
+							}
+							indexer.indexDocument();
+							synchronized (operations) {
+								// Notify all, so exit will be as fast as
+								// possible
+								operations.notifyAll();
+							}
+							synchronized (monitor) {
+								monitor.worked(1);
+								monitor.done();
+							}
+						}
+					}
+				}
+
+				public void finish() {
+					this.isFinished = true;
+				}
+			}
+			;
+			int availableProcessors = Runtime.getRuntime()
+					.availableProcessors();
+			for (int i = 0; i < availableProcessors + 1; i++) {
+				MixinThread t = new MixinThread();
+				t.start();
+				threads.add(t);
+			}
+
 			for (Iterator iterator = elements.iterator(); iterator.hasNext();) {
 				ISourceModule element = (ISourceModule) iterator.next();
-			
+
 				Index currentIndex = mixinIndex;
-				monitor.worked(1);
+				// monitor.worked(1);
 				if (monitor.isCanceled()) {
 					return null;
 				}
-			
-				String taskTitle = "Building runtime model:" + element.getElementName();
-				monitor.subTask(taskTitle);
-				monitor.beginTask(taskTitle, IProgressMonitor.UNKNOWN);
+
+				// String taskTitle = "Building runtime model for "
+				// + project.getElementName() + " ("
+				// + (elements.size() - fileIndex) + "):"
+				// + element.getElementName();
+				// ++fileIndex;
+				// monitor.subTask(taskTitle);
+				// monitor.beginTask(taskTitle, IProgressMonitor.UNKNOWN);
 
 				IProjectFragment projectFragment = (IProjectFragment) element
 						.getAncestor(IModelElement.PROJECT_FRAGMENT);
@@ -156,11 +227,37 @@ public class MixinBuilder implements IScriptBuilder {
 				currentIndex.remove(containerRelativePath);
 				((InternalSearchDocument) document).setIndex(currentIndex);
 
-				new MixinIndexer(document, element).indexDocument();
-				monitor.done();
+				MixinIndexer indexer = new MixinIndexer(document, element,
+						currentIndex);
+				indexer.index = ++fileIndex;
+				indexer.elementName = element.getElementName();
+				synchronized (operations) {
+					operations.add(indexer);
+					operations.notifyAll();
+				}
+				// monitor.done();
 			}
+			// We need to wait unit all elements are builded.
+			while (true) {
+				synchronized (operations) {
+					if (operations.size() == 0) {
+						break;
+					}
+					// Wait before thread operations.
+					operations.wait(20);
+				}
+			}
+			for (int i = 0; i < threads.size(); i++) {
+				MixinThread thread = (MixinThread) threads.get(i);
+				thread.finish();
+			}
+
 			monitor.done();
 		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+		} catch (InterruptedException e) {
 			if (DLTKCore.DEBUG) {
 				e.printStackTrace();
 			}
@@ -176,7 +273,6 @@ public class MixinBuilder implements IScriptBuilder {
 						}
 					}
 				}
-				// new SaveIndexJob(manager, mixinIndex).schedule();
 			}
 			Iterator iterator = indexes.values().iterator();
 			while (iterator.hasNext()) {
@@ -191,32 +287,12 @@ public class MixinBuilder implements IScriptBuilder {
 						}
 					}
 				}
-				// new SaveIndexJob(manager, index).schedule();
 			}
 		}
 
 		return null;
 	}
 
-	// private void waitUntilIndexReady(IDLTKLanguageToolkit toolkit,
-	// IProgressMonitor monitor) {
-	// // dummy query for waiting until the indexes are ready
-	// SearchEngine engine = new SearchEngine();
-	// IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit);
-	// try {
-	// engine.searchAllTypeNames(null, "!@$#!@".toCharArray(),
-	// SearchPattern.R_PATTERN_MATCH
-	// | SearchPattern.R_CASE_SENSITIVE,
-	// IDLTKSearchConstants.TYPE, scope, new TypeNameRequestor() {
-	// public void acceptType(int modifiers,
-	// char[] packageName, char[] simpleTypeName,
-	// char[][] enclosingTypeNames, String path) {
-	// }
-	// }, IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, monitor);
-	// } catch (CoreException e) {
-	// }
-	//
-	// }
 	private static MixinBuilder builder = new MixinBuilder();
 
 	public static MixinBuilder getDefault() {
