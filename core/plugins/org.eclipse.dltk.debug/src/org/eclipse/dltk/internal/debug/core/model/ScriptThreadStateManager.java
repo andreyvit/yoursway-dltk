@@ -177,8 +177,8 @@ public class ScriptThreadStateManager implements IDbgpDebuggerFeedback {
 	}
 
 	public void suspend() throws DebugException {
-		setSuspended(true, DebugEvent.CLIENT_REQUEST);
 		engine.suspend();
+		setSuspended(true, DebugEvent.CLIENT_REQUEST);
 	}
 
 	public int getModificationsCount() {

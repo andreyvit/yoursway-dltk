@@ -28,14 +28,12 @@ module XoredDebugger
             @thread             
         end        
         
-        def status()
-            if (!@thread.alive?)
-                return AbstractContext::STOPPED
-            elsif @suspended
-                return AbstractContext::BREAK
-            else 
-                return AbstractContext::RUNNING
-            end
+        def dead?
+            not @thread.alive?             
+        end
+
+        def suspended?
+	    	@suspended             
         end
         
         # Continuation Commands
@@ -113,22 +111,22 @@ module XoredDebugger
                     
                 
         # basic debugger specific methods
-        def stack_update(binding, file, line) 
+        def stack_update(file, line, binding, label)
             if (@levels.empty?)
-                stack_push(binding, file, line)
+                stack_push(file, line, binding, label)
             else
 	            new_frame = {
 	                :binding => binding,
-	                :info => StackLevelInfo.new(file, line, get_function_name(binding))
+	                :info => StackLevelInfo.new(file, line, label)
 	            }           
 	            @levels[stack_frames_num - 1] = new_frame
             end
         end           
 
-        def stack_push(binding, file, line)
+        def stack_push(file, line, binding, label)
             frame = {
                 :binding => binding,
-                :info => StackLevelInfo.new(file, line, get_function_name(binding))
+                :info => StackLevelInfo.new(file, line, label)
             }
             @levels.push(frame)
         end           
@@ -138,18 +136,7 @@ module XoredDebugger
             if (@stepping && (@stop_depth >= stack_frames_num))
                 @stop_depth = STOP_AT_ANY_DEPTH
             end
-        end  
-
-        def get_function_name(binding)
-            function = Kernel.eval("xored_debugger_current_method", binding)
-            object = Kernel.eval('self.class.name', binding)
-                
-            if function.nil? or function.empty?
-                object
-            else
-                object + '::' + function
-            end
-        end     
+        end
         
         def check_suspended
             if (Thread.current != @thread)

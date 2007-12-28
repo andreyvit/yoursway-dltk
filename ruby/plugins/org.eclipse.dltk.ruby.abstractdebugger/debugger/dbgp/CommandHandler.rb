@@ -39,7 +39,8 @@ module XoredDebugger
         # Handles DBGP command. Returns Responce to be sent to client, 
         # or nil if no responce required  
         def handle(command)
-            begin             
+            begin          
+                log('Command: ' + command.name)   
                 check_command_arguments(command, '-i')               
                 self.send('handle_' + command.name, command)
             
@@ -64,7 +65,7 @@ module XoredDebugger
             rescue ArgumentError       
                 err_invalid_option(command)
             
-            rescue NotImplementedError
+            rescue NotImplementedError  
                 err_unimplemented_command(command)
             
             rescue Exception
@@ -84,6 +85,8 @@ module XoredDebugger
         
         # Options and Configuration
         def handle_feature_get(command)
+            raise OperationNotAvailableError unless @context.suspended? 
+            
             check_command_arguments(command, '-n')
             name = command.arg('-n')
             supported = @feature_manager.supported?(name)
@@ -99,6 +102,8 @@ module XoredDebugger
         end
         
         def handle_feature_set(command)
+            raise OperationNotAvailableError unless @context.suspended? 
+            
             check_command_arguments(command, '-n', '-v')
             name = command.arg('-n')
             value = command.arg('-v')
@@ -113,21 +118,25 @@ module XoredDebugger
         
         # Continuation Commands
         def handle_run(command)
+            raise OperationNotAvailableError unless @context.suspended?             
             @context.run
             nil               
         end
         
         def handle_step_into(command)
+            raise OperationNotAvailableError unless @context.suspended?             
             @context.step_into
             nil               
         end
         
         def handle_step_over(command)
+            raise OperationNotAvailableError unless @context.suspended? 
             @context.step_over
             nil
         end
         
         def handle_step_out(command)
+            raise OperationNotAvailableError unless @context.suspended?             
             @context.step_out
             nil
         end
@@ -280,12 +289,14 @@ module XoredDebugger
         
         # Stack commands
         def handle_stack_depth(command)
+            raise OperationNotAvailableError unless @context.suspended? 
             response = Response.new(command)
             response.add_attribute('depth', get_stack_depth(@context))
             return response
         end
         
         def handle_stack_get(command)            
+            raise OperationNotAvailableError unless @context.suspended? 
             response = Response.new(command)
                                   
             depth = command.arg('-d')
@@ -312,6 +323,7 @@ module XoredDebugger
                          ['Class',  CLASS_CONTEXT_ID]]
                 
         def handle_context_names(command)
+            raise OperationNotAvailableError unless @context.suspended? 
             data = CONTEXT_NAMES.collect { |name, id| sprintf('<context name="%s" id="%d"/>', name, id)}
             
             response = Response.new(command)
@@ -319,7 +331,8 @@ module XoredDebugger
             return response
         end
         
-        def handle_context_get(command)            
+        def handle_context_get(command)
+            raise OperationNotAvailableError unless @context.suspended?            
             depth = command.arg_with_default('-d', '0').to_i
             context_id = command.arg_with_default('-c', '0').to_i            
                                     
@@ -373,6 +386,7 @@ module XoredDebugger
         
         # Common Data Types
         def handle_typemap_get(command)
+            raise OperationNotAvailableError unless @context.suspended? 
             response = Response.new(command)
             response.add_attribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
             response.add_attribute('xmlns:xsd', 'http://www.w3.org/2001/XMLSchema')
@@ -383,6 +397,7 @@ module XoredDebugger
         
         # Properties, variables and values
         def handle_property_get(command)
+            raise OperationNotAvailableError unless @context.suspended? 
             check_command_arguments(command, '-n')
             name = command.arg('-n')
             depth =  command.arg_with_default('-d', '0').to_i            
@@ -403,6 +418,7 @@ module XoredDebugger
         end
         
         def handle_property_set(command)
+            raise OperationNotAvailableError unless @context.suspended? 
             check_command_arguments(command, '-n', '--')
             name = command.arg('-n')
             depth = command.arg_with_default('-d', '0').to_i
@@ -426,6 +442,7 @@ module XoredDebugger
         end
         
         def handle_property_value(command)
+            raise OperationNotAvailableError unless @context.suspended? 
             check_command_arguments(command, '-n')
             name = command.arg('-n')
             depth = command.arg_with_default('-d', '0').to_i
@@ -507,6 +524,7 @@ module XoredDebugger
 
 	
         def handle_break(command)
+            raise OperationNotAvailableError if @context.suspended? 
             @context.suspend
             response = Response.new(command)
             response.add_attribute('status', @context.status)
@@ -639,6 +657,6 @@ module XoredDebugger
                 raise Exception, 'Thread not exited'
             end
             @result            
-        end                         
+        end  
     end # class CommandHandler
 end # module XoredDebugger

@@ -81,7 +81,7 @@ module XoredDebugger
             end            
 
             log('Debugger terminated')                    
-            shutdownLogger()                                                                   
+            Logger.shutdownLogger()                                                                   
         end
         
         def create_debugger

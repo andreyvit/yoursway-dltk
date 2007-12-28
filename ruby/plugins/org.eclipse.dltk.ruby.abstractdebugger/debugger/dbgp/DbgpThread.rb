@@ -18,7 +18,7 @@ module XoredDebugger
            @debugger = thread_manager.debugger
            @thread = thread
            @command_handler = CommandHandler.new(thread_manager, thread)
-           @initialized = false
+           @exited = false
            @context = @debugger.thread_context(thread)
            @communicator = Communicator.new(thread)
            @monitor = Monitor.new
@@ -28,10 +28,13 @@ module XoredDebugger
        end
        
        def exited(exception)
-           begin
-               send_answer(AbstractContext::STOPPED, exception)
-           ensure
-               @communicator.close
+           @monitor.synchronize do
+               begin
+                   send_answer(AbstractContext::STOPPED, exception)
+               ensure
+                   @exited = true
+                   @communicator.close
+               end
            end
            @dispatcher.join
        end
@@ -65,19 +68,31 @@ module XoredDebugger
        
        def handle_commands
            begin
+               # wait until thread is suspended
+               while not @context.suspended?
+                   sleep 0.1                   
+                   return if @exited
+               end
+               
                log('Started control thread for ' + @thread.object_id.to_s)
                params = Params.instance
                packet = InitPacket.new(params.key, get_thread_label(@thread), params.script)
                @communicator.sendPacket(packet)               
                while (true)
+                   log('waiting command')
                    command = @communicator.receive_command
                                                         
                    @monitor.synchronize do
-                       response = @command_handler.handle(command)                   
+                       log('processing')
+                       response = @command_handler.handle(command)
+                       
+                       if (command.name == 'break')
+                           send_answer('break')                            
+                       end                       
+
                        if (!response.nil?)
                            @communicator.sendPacket(response)
                        else
-                           send_answer('break')                            
                            @unanswered = command
                        end                    
                    end

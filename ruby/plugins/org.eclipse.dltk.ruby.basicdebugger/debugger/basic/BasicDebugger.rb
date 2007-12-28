@@ -75,7 +75,7 @@ module XoredDebugger
         end
 
             # Tracing
-        def trace(event, file, line, id, binding, klass)               
+        def trace(event, file, line, id, binding, klass)            
             begin 	           
 	            # Don't debug debugger intenal threads
 	            # NOTE: To disable tracing of thread create it from tracing
@@ -93,7 +93,7 @@ module XoredDebugger
                 case event
                     when 'line'                                                                                                                                    
                         # checking line breakpoint                               
-                        context.stack_update(binding, file, line)                                                          
+                        context.stack_update(file, line, binding, get_label(binding, klass, id))                                                          
                         if (breakpoint_manager.check_line_breakpoint(file, line, context))
                             context.reset_stepping
                             handler.at_breakpoint(context) unless handler.nil?
@@ -107,28 +107,47 @@ module XoredDebugger
 
                     when 'raise'
                         # checking exception breakpoint                       
-                        context.stack_update(binding, file, line)                                              
+                        context.stack_update(file, line, binding, get_label(binding, klass, id))                                              
                         if (breakpoint_manager.check_exception_breakpoint($!, context))
                             context.reset_stepping
                             handler.at_catchpoint(context, $!) unless handler.nil?   
                             handler.at_line(context, file, line) unless handler.nil?
                         end
                                             
-                    when 'call'                       
-                        context.stack_push(binding, file, line)
+                    when 'call', 'c-call', 'class'
+                        context.stack_push(file, line, binding, get_label(binding, klass, id))
                         
-                    when 'return'
+                    when 'return', 'c-return', 'end'
                         context.stack_pop                                           
 
-                    when 'class', 'end', 'c-call', 'c-return'
-                        #TODO: Do something useful
-
-	                else
+                    else
 	                    log('Warning: unknown event type "' + event + '"')    
                 end
             rescue Exception
                 logException($!, 'in tracing function')    	                
             end				
-        end                       
-    end #  class FastRubyDebugger
+        end   
+        
+        def get_label(binding, klass, id)
+            label = ''
+            label += klass.to_s if klass != false            
+            label += '::' +  id.id2name unless id.nil?
+            label = get_module_name(binding) if label.empty?
+            return label
+        end     
+        
+        def get_module_name(binding)
+            modules = Kernel.eval('Module.nesting', binding)
+            if (!modules.empty?) 
+                mod = modules[0].to_s
+                if (mod.is_a? Class)
+                    mod.name
+                else
+                    mod.to_s
+                end
+            else
+                'toplevel'
+            end
+        end                            
+    end #  class BasicDebugger
 end # module

@@ -16,15 +16,14 @@ module XoredDebugger
 		attr_reader :source_manager
         
         def initialize(debugger)
+            Thread.set_event_handler(self)  
             @debugger = debugger
             @debugger.handler = self
 	        @capture_manager = CaptureManager.new(self)         		               
             @source_manager = SourceManager.instance
 
             # fake started event for main thread
-            started()
-                          
-            Thread.set_event_handler(self)             
+            started()                                    
         end
 
         def terminate(excpt = nil)    
@@ -51,7 +50,7 @@ module XoredDebugger
             log('Application thread started')            
             thread = Thread.current
             thread[ :dbgp_thread_wrapper ] = DbgpThread.new(thread, self)
-            
+
             # suspending current context, till wrapper initialized
             @debugger.current_context.suspend                            
 	    end
