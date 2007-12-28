@@ -162,8 +162,8 @@ public class MixinBuilder implements IScriptBuilder {
 				currentIndex.remove(containerRelativePath);
 				((InternalSearchDocument) document).setIndex(currentIndex);
 
-//				new MixinIndexer(document, element,
-//						currentIndex).indexDocument();
+				new MixinIndexer(document, element,
+						currentIndex).indexDocument();
 				monitor.worked(1);
 			}
 			monitor.done();
