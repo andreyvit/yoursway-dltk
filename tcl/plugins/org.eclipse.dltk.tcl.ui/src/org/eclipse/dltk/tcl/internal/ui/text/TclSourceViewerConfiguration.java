@@ -64,11 +64,6 @@ public class TclSourceViewerConfiguration extends
 		return new String[] { "\t", "    " }; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	public String[] getDefaultPrefixes(ISourceViewer sourceViewer,
-			String contentType) {
-		return new String[] { "#", "" }; //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
 	public int getTabWidth(ISourceViewer sourceViewer) {
 		if (fPreferenceStore == null)
 			return super.getTabWidth(sourceViewer);

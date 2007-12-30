@@ -83,25 +83,46 @@ public abstract class ScriptSourceViewerConfiguration extends
 
 	public IReconciler getReconciler(ISourceViewer sourceViewer) {
 		final ITextEditor editor = getEditor();
-//		if (editor != null && editor.isEditable()) {
+		// if (editor != null && editor.isEditable()) {
 
-			ScriptCompositeReconcilingStrategy strategy = new ScriptCompositeReconcilingStrategy(
-					editor, getConfiguredDocumentPartitioning(sourceViewer));
-			ScriptReconciler reconciler = new ScriptReconciler(editor,
-					strategy, false);
-			reconciler.setIsIncrementalReconciler(false);
-			reconciler.setProgressMonitor(new NullProgressMonitor());
-			reconciler.setDelay(500);
+		ScriptCompositeReconcilingStrategy strategy = new ScriptCompositeReconcilingStrategy(
+				editor, getConfiguredDocumentPartitioning(sourceViewer));
+		ScriptReconciler reconciler = new ScriptReconciler(editor, strategy,
+				false);
+		reconciler.setIsIncrementalReconciler(false);
+		reconciler.setProgressMonitor(new NullProgressMonitor());
+		reconciler.setDelay(500);
 
-			return reconciler;
-//		}
-//		return null;
+		return reconciler;
+		// }
+		// return null;
 	}
 
 	public abstract boolean affectsTextPresentation(PropertyChangeEvent event);
 
 	public abstract void handlePropertyChangeEvent(PropertyChangeEvent event);
-	
+
+	/*
+	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getDefaultPrefixes(org.eclipse.jface.text.source.ISourceViewer,
+	 *      java.lang.String)
+	 */
+	public String[] getDefaultPrefixes(ISourceViewer sourceViewer,
+			String contentType) {
+		return new String[] { getCommentPrefix(), "" };
+	}
+
+	/**
+	 * Returns the comment prefix.
+	 * 
+	 * <p>
+	 * Default implementation returns a <code>#</code>, sub-classes may
+	 * override if their language uses a different prefix.
+	 * </p>
+	 */
+	protected String getCommentPrefix() {
+		return "#";
+	}
+
 	/**
 	 * Returns the outline presenter control creator. The creator is a factory
 	 * creating outline presenter controls for the given source viewer. This
@@ -137,13 +158,13 @@ public abstract class ScriptSourceViewerConfiguration extends
 		presenter.setInformationProvider(provider,
 				IDocument.DEFAULT_CONTENT_TYPE);
 		initializeQuickOutlineContexts(presenter, provider);
-		
+
 		presenter.setSizeConstraints(50, 20, true, false);
 		return presenter;
 	}
 
-	protected void initializeQuickOutlineContexts(InformationPresenter presenter,
-			IInformationProvider provider) {
+	protected void initializeQuickOutlineContexts(
+			InformationPresenter presenter, IInformationProvider provider) {
 	}
 
 	public IInformationPresenter getHierarchyPresenter(
