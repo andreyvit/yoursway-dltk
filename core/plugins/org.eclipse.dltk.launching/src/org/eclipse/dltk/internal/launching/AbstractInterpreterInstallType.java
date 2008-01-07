@@ -272,7 +272,7 @@ public abstract class AbstractInterpreterInstallType implements
 
 		synchronized (lock) {
 			try {
-				lock.wait(5000);
+				lock.wait(10000);
 			} catch (InterruptedException e) {
 
 			}
