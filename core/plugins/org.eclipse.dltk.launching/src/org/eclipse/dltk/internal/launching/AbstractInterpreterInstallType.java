@@ -64,6 +64,8 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
  */
 public abstract class AbstractInterpreterInstallType implements
 		IInterpreterInstallType, IExecutableExtension {
+	private static final String DLTK_PATH_PREFIX = "DLTK:";
+
 	private List fInterpreters;
 
 	private String fId;
@@ -237,18 +239,26 @@ public abstract class AbstractInterpreterInstallType implements
 	 * @param p
 	 * @return
 	 */
-	protected String readPathsFromProcess(IProgressMonitor monitor, Process p) {
+	protected String[] readPathsFromProcess(IProgressMonitor monitor, Process p) {
 		final BufferedReader dataIn = new BufferedReader(new InputStreamReader(
 				p.getInputStream()));
 
-		final String[] result = new String[] { null };
+		final List result = new ArrayList();
 
 		final Object lock = new Object();
 
 		Thread tReading = new Thread(new Runnable() {
 			public void run() {
 				try {
-					result[0] = dataIn.readLine();
+					while (true) {
+						String line = dataIn.readLine();
+						if (line != null) {
+							result.add(line);
+						}
+						else {
+							break;
+						}
+					}
 
 					synchronized (lock) {
 						lock.notifyAll();
@@ -270,7 +280,7 @@ public abstract class AbstractInterpreterInstallType implements
 			p.destroy();
 		}
 
-		return result[0];
+		return (String[]) result.toArray(new String[result.size()]);
 	}
 
 	public static LibraryLocation[] correctLocations(final List locs) {
@@ -360,6 +370,30 @@ public abstract class AbstractInterpreterInstallType implements
 
 	}
 
+	/**
+	 * Then multiple lines of output are provided, we parse only paths started
+	 * from "DLTK:" sequence.
+	 * 
+	 * @param result
+	 * @return
+	 */
+	protected String[] parsePaths(String[] result) {
+		List filtered = new ArrayList();
+		for (int k = 0; k < result.length; ++k) {
+			String res = result[k];
+			if (res.startsWith(DLTK_PATH_PREFIX)) {
+				res = res.substring(DLTK_PATH_PREFIX.length());
+				String[] paths = res.split(getBuildPathDelimeter());
+				for (int i = 0; i < paths.length; ++i) {
+					if (!paths[i].equals(".")) {
+						filtered.add(paths[i].trim());
+					}
+				}
+			}
+		}
+		return (String[]) filtered.toArray(new String[filtered.size()]);
+	}
+
 	public IStatus validateInstallLocation(File installLocation) {
 		if (!installLocation.exists() || !installLocation.isFile()
 				|| installLocation.isHidden()) {
@@ -416,12 +450,16 @@ public abstract class AbstractInterpreterInstallType implements
 			try {
 				process = DebugPlugin.exec(cmdLine, null, env);
 				if (process != null) {
-					String result = readPathsFromProcess(monitor, process);
+					String result[] = readPathsFromProcess(monitor, process);
 					if (result == null) {
 						throw new IOException("null result from process");
 					}
-
-					String[] paths = parsePaths(result);
+					String[] paths = null;
+					if (result.length == 1) {
+						paths = parsePaths(result[0]);
+					} else {
+						paths = parsePaths(result);
+					}
 
 					IPath path = new Path(pathFile.getCanonicalPath())
 							.removeLastSegments(1);

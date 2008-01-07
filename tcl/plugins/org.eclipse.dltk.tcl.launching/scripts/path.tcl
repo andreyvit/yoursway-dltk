@@ -1,15 +1,9 @@
-###############################################################################
 #!/bin/sh
 # find-pkg-src.tcl \
 exec tclsh "$0" ${1+"$@"}
 
-###############################################################################
-# Copyright (c) 2005, 2007 IBM Corporation and others.
-# All rights reserved. This program and the accompanying materials
-# are made available under the terms of the Eclipse Public License v1.0
-# which accompanies this distribution, and is available at
-# http://www.eclipse.org/legal/epl-v10.html
-#
+set env(ATS_EASY) {} 
+set env(AUTOTEST) {} 
 
 rename package package-org
 proc package {subcmd args} {
@@ -31,7 +25,6 @@ proc package {subcmd args} {
 				set vers [lindex $args 2]
 			}
 			set pkg_stack [linsert $pkg_stack 0 $name]
-			
 			set retCode [catch {uplevel 1 "::package-org $subcmd $args"} vers]
 			set pkg_stack [lrange $pkg_stack 1 end]
 			
@@ -71,32 +64,46 @@ proc process-pkg-info {args} {
 		catch {package require $name} err
 	}
 }
-
-proc print-pkg-info {args} {
-	global pkg
+set roots ""
+proc add-path {path} {
+	global roots
 	
-	puts "+++++++++ Begin Pkg Info +++++++++++++++++++"
+	set ind [string last / $path]
+	if {$ind != -1} {
+		set dir [string range $path 0 $ind]
+		if {[lsearch -exact $roots $dir] == -1} {
+			lappend roots $dir
+		}
+	}
+}
+proc print-pkg-info {args} {
+	global pkg roots
+	
+	#puts "+++++++++ Begin Pkg Info +++++++++++++++++++"
 	foreach elm [lsort [array names pkg]] {
 		set name [lindex $elm 0]
 		set vers [lindex $elm 1]
 		set files $pkg($elm)
-		puts "$name $vers: $files"
+		
+		# add unical paths to roots
+		foreach path $files {
+			add-path $path
+		}
 	}
-	puts "+++++++++ End Pkg Info +++++++++++++++++++"
+	#puts "+++++++++ End Pkg Info +++++++++++++++++++"
+	puts "DLTK:$roots"
 }
 
 proc main {argv} {
-	global pkg pkg_stack
+	global pkg pkg_stack roots
 	set pkg_stack {} ;# initialize to null
 	
 	# try to load an unknown pkg, so that it discovers all packages
 	catch {package-org require unknown-random-[clock seconds]}
-
 	# Process pkg ifneeded bodies
 	process-pkg-info
-	puts "$::auto_path"
-	# Print pkg names and corresponding src files
-	#print-pkg-info
+	# Print pkg root folders
+	print-pkg-info
 }
 main $argv
 

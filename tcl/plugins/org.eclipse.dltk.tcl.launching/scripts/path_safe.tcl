@@ -94,7 +94,7 @@ proc main {argv} {
 	
 	# Process pkg ifneeded bodies
 	#process-pkg-info
-	puts "$::auto_path"
+	puts "DLTK:$::auto_path"
 
 	# Print pkg names and corresponding src files
 	#print-pkg-info
