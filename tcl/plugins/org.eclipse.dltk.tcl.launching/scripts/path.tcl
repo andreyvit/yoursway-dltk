@@ -2,9 +2,6 @@
 # find-pkg-src.tcl \
 exec tclsh "$0" ${1+"$@"}
 
-set env(ATS_EASY) {} 
-set env(AUTOTEST) {} 
-
 rename package package-org
 proc package {subcmd args} {
 	global pkg pkg_list pkg_stack

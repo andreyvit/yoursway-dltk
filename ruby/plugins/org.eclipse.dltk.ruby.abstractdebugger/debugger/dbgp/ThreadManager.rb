@@ -33,7 +33,7 @@ module XoredDebugger
                 dbgp_thread = thread[ :dbgp_thread_wrapper ]
                 dbgp_thread.exited(nil) unless dbgp_thread.nil? || Thread.main == thread
             end     
-            print_exception(excpt) unless excpt.nil?        
+            print_exception(excpt) unless excpt.nil? || excpt.is_a?(SystemExit)       
             @capture_manager.terminate     
             exited(excpt)                  
         end

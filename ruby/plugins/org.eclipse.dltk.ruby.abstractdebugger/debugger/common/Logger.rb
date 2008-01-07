@@ -15,6 +15,10 @@ module XoredDebugger
             @@logger = logger
         end
 
+        def Logger.shutdownLogger
+            @@logger.close
+        end            
+
         def log(s)
             @@logger.puts("[" + Thread.current.object_id.to_s + "]\t" + s)
         end
@@ -24,10 +28,6 @@ module XoredDebugger
             @@logger.puts(ex.class.name.to_s + ' ' + where)
             @@logger.puts("\tMessage: " + $!.message)
             @@logger.puts("\tBacktrace: " + $!.backtrace.join("\n"))
-        end
-
-        def shutdownLogger
-            @@logger.close
-        end            
+        end                
     end # module XoredDebugger
 end # module XoredDebugger

@@ -64,7 +64,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
  */
 public abstract class AbstractInterpreterInstallType implements
 		IInterpreterInstallType, IExecutableExtension {
-	private static final String DLTK_PATH_PREFIX = "DLTK:";
+	public static final String DLTK_PATH_PREFIX = "DLTK:";
 
 	private List fInterpreters;
 
@@ -386,11 +386,12 @@ public abstract class AbstractInterpreterInstallType implements
 			String res = result[k];
 			if (res.startsWith(DLTK_PATH_PREFIX)) {
 				res = res.substring(DLTK_PATH_PREFIX.length());
-			}
-			String[] paths = res.split(getBuildPathDelimeter());
-			for (int i = 0; i < paths.length; ++i) {
-				if (!paths[i].equals(".")) {
-					filtered.add(paths[i].trim());
+
+				String[] paths = parsePaths(res);
+				for (int i = 0; i < paths.length; ++i) {
+					if (!paths[i].equals(".")) {
+						filtered.add(paths[i].trim());
+					}
 				}
 			}
 		}

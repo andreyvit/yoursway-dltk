@@ -94,10 +94,14 @@ public class GenericTclInstallType extends AbstractInterpreterInstallType {
 		};
 	}
 
-	protected String[] parsePaths(String result) {
+	protected String[] parsePaths(String res) {
 		ArrayList paths = new ArrayList();
 		String subs = null;
 		int index = 0;
+		String result = res;
+		if (result.startsWith(DLTK_PATH_PREFIX)) {
+			result = result.substring(DLTK_PATH_PREFIX.length());
+		}
 		while (index < result.length()) {
 			// skip whitespaces
 			while (index < result.length()

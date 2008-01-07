@@ -381,8 +381,6 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			public Object getAdapter(Class adapter) {
 				return null;
 			}
-			private final String[] mattrs = new String[] {	
-			};
 			public boolean hasAttribute(String attributeName)
 					throws CoreException {
 				return true;
@@ -687,21 +685,16 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 
 				assertTrue(process.isTerminated());
 				final int exitValue = process.getExitValue();
-//				assertEquals(0, exitValue);
+				assertEquals(0, exitValue);
 
-//				int suspendCount = stats.getSuspendCount();
-//				assertEquals(1, suspendCount);
-//
-//				assertEquals(2, stats.getResumeCount());
-//
-//				final int exitValue = process.getExitValue();
-//				assertEquals(0, exitValue);
-//
-//				// Checking extended events count
-//				assertEquals(1, stats.getBeforeVmStarted());
-//				assertEquals(1, stats.getBeforeCodeLoaded());
-//				assertEquals(2, stats.getBeforeResumeCount());
-//				assertEquals(1, stats.getBeforeSuspendCount());
+				assertEquals(1, stats.getSuspendCount());
+				assertEquals(2, stats.getResumeCount());
+
+				// Checking extended events count
+				assertEquals(1, stats.getBeforeVmStarted());
+				assertEquals(1, stats.getBeforeCodeLoaded());
+				assertEquals(2, stats.getBeforeResumeCount());
+				assertEquals(1, stats.getBeforeSuspendCount());
 			} finally {
 				b.delete();
 				
