@@ -254,8 +254,7 @@ public abstract class AbstractInterpreterInstallType implements
 						String line = dataIn.readLine();
 						if (line != null) {
 							result.add(line);
-						}
-						else {
+						} else {
 							break;
 						}
 					}
@@ -358,7 +357,11 @@ public abstract class AbstractInterpreterInstallType implements
 	}
 
 	protected String[] parsePaths(String result) {
-		String[] paths = result.split(getBuildPathDelimeter());
+		String res = result;
+		if (res.startsWith(DLTK_PATH_PREFIX)) {
+			res = res.substring(DLTK_PATH_PREFIX.length());
+		}
+		String[] paths = res.split(getBuildPathDelimeter());
 		List filtered = new ArrayList();
 		for (int i = 0; i < paths.length; ++i) {
 			if (!paths[i].equals(".")) {
@@ -383,11 +386,11 @@ public abstract class AbstractInterpreterInstallType implements
 			String res = result[k];
 			if (res.startsWith(DLTK_PATH_PREFIX)) {
 				res = res.substring(DLTK_PATH_PREFIX.length());
-				String[] paths = res.split(getBuildPathDelimeter());
-				for (int i = 0; i < paths.length; ++i) {
-					if (!paths[i].equals(".")) {
-						filtered.add(paths[i].trim());
-					}
+			}
+			String[] paths = res.split(getBuildPathDelimeter());
+			for (int i = 0; i < paths.length; ++i) {
+				if (!paths[i].equals(".")) {
+					filtered.add(paths[i].trim());
 				}
 			}
 		}
