@@ -22,7 +22,7 @@ public class DLTKProblemReporter implements IProblemReporter {
 	protected IMarker reportProblem(IResource res, int line, int start,
 			int end, String msg, int severity, int priority)
 			throws CoreException {
-		IMarker m = res.createMarker(IMarker.PROBLEM);
+		IMarker m = res.createMarker(DefaultProblem.MARKER_TYPE_PROBLEM);
 
 		m.setAttribute(IMarker.LINE_NUMBER, line);
 		m.setAttribute(IMarker.MESSAGE, msg);
