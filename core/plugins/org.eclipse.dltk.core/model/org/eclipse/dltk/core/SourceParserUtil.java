@@ -80,6 +80,9 @@ public class SourceParserUtil {
 		ModuleDeclaration moduleDeclaration = SourceParserUtil
 				.getModuleFromCache(mifo);
 		if (moduleDeclaration == null) {
+			if (reporter != null) {
+				reporter.clearMarkers();
+			}
 			moduleDeclaration = sourceParser.parse(filename, content, reporter);
 			SourceParserUtil.putModuleToCache(mifo, moduleDeclaration);
 		}

@@ -12,8 +12,6 @@ package org.eclipse.dltk.compiler.problem;
 import java.util.Locale;
 
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.DLTKCore;
 
 public class DefaultProblemFactory implements IProblemFactory {
 	private Locale locale;
@@ -60,14 +58,7 @@ public class DefaultProblemFactory implements IProblemFactory {
 	}
 
 	public IProblemReporter createReporter(IResource resource) {
-		try {
-			resource.deleteMarkers(DefaultProblem.MARKER_TYPE_PROBLEM, true,
-					IResource.DEPTH_INFINITE);
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
+
 		return new DLTKProblemReporter(resource, this);
 	}
 }
