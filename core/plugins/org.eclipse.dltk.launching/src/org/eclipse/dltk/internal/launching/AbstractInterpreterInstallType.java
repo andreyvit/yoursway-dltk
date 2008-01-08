@@ -207,13 +207,23 @@ public abstract class AbstractInterpreterInstallType implements
 		Iterator it = systemEnv.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry entry = (Map.Entry) it.next();
+			// Skip all in variables.
+			if (variables != null) {
+				for (int i = 0; i < variables.length; i++) {
+					if (variables[i].getName().equals(entry.getKey())) {
+						continue;
+					}
+				}
+			}
 			list.add(entry.getKey() + "=" + entry.getValue());
 		}
 
 		// Overwrite from variables with updates values.
 		if (variables != null) {
 			for (int i = 0; i < variables.length; i++) {
-				list.add(variables[i].getName() + "=" + variables[i].getValue());
+				list
+						.add(variables[i].getName() + "="
+								+ variables[i].getValue());
 			}
 		}
 
@@ -521,7 +531,7 @@ public abstract class AbstractInterpreterInstallType implements
 
 	public synchronized LibraryLocation[] getDefaultLibraryLocations(
 			final File installLocation, EnvironmentVariable[] variables) {
-		Object cacheKey = makeKey(installLocation,variables);
+		Object cacheKey = makeKey(installLocation, variables);
 		if (fCachedLocations.containsKey(cacheKey)) {
 			return (LibraryLocation[]) fCachedLocations.get(cacheKey);
 		}
@@ -553,9 +563,10 @@ public abstract class AbstractInterpreterInstallType implements
 
 	private Object makeKey(File installLocation, EnvironmentVariable[] variables) {
 		String key = installLocation.getAbsolutePath();
-		if( variables != null ) {
+		if (variables != null) {
 			for (int i = 0; i < variables.length; i++) {
-				key += "|" +variables[i].getName() + ":" + variables[i].getValue();
+				key += "|" + variables[i].getName() + ":"
+						+ variables[i].getValue();
 			}
 		}
 		return key;

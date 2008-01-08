@@ -293,12 +293,14 @@ public abstract class AbstractInterpreterEnvironmentVariablesBlock implements
 			fEnvironmentVariablesContentProvider
 					.remove((IStructuredSelection) fVariablesViewer
 							.getSelection());
+			fDialog.validateInterpreterLocation();
 		} else if (source == fAddExistedButton) {
 			addExisted((IStructuredSelection) fVariablesViewer.getSelection());
 		} else if (source == fAddButton) {
 			add((IStructuredSelection) fVariablesViewer.getSelection());
 		} else if (source == fEditButton) {
 			edit((IStructuredSelection) fVariablesViewer.getSelection());
+			fDialog.validateInterpreterLocation();
 		}
 		/*
 		 * else if (source == fDefaultButton) { restoreDefaultVariables(); }
