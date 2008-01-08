@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.internal.launching.AbstractInterpreterInstallType;
 import org.eclipse.dltk.javascript.core.JavaScriptNature;
 import org.eclipse.dltk.javascript.launching.JavaScriptLaunchingPlugin;
+import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.LibraryLocation;
 import org.osgi.framework.Bundle;
@@ -35,7 +36,7 @@ public class GenericJavaScriptInstallType extends
 		return "Generic Rhino install";
 	}
 
-	public LibraryLocation[] getDefaultLibraryLocations(File installLocation) {
+	public LibraryLocation[] getDefaultLibraryLocations(File installLocation, EnvironmentVariable[] variables) {
 		if (true) {
 			Bundle bundle = Platform.getBundle(EMBEDDED_RHINO_BUNDLE_ID);
 
@@ -61,7 +62,7 @@ public class GenericJavaScriptInstallType extends
 
 		}
 		// TODO Auto-generated method stub
-		return super.getDefaultLibraryLocations(installLocation);
+		return super.getDefaultLibraryLocations(installLocation, variables);
 	}
 
 	private static String[] possibleExes = { "js" };

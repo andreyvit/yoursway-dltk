@@ -112,12 +112,12 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 		LibraryLocation[] newLocations = locations;
 		if (newLocations == null) {
 			newLocations = getInterpreterInstallType()
-					.getDefaultLibraryLocations(getInstallLocation());
+					.getDefaultLibraryLocations(getInstallLocation(), getEnvironmentVariables());
 		}
 		LibraryLocation[] prevLocations = fSystemLibraryDescriptions;
 		if (prevLocations == null) {
 			prevLocations = getInterpreterInstallType()
-					.getDefaultLibraryLocations(getInstallLocation());
+					.getDefaultLibraryLocations(getInstallLocation(), getEnvironmentVariables());
 		}
 
 		if (newLocations.length == prevLocations.length) {

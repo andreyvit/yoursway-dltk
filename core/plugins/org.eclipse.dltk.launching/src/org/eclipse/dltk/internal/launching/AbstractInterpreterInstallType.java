@@ -42,6 +42,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ScriptUtils;
+import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.LaunchingMessages;
@@ -196,7 +197,7 @@ public abstract class AbstractInterpreterInstallType implements
 		}
 	}
 
-	protected String[] extractEnvironment() {
+	protected String[] extractEnvironment(EnvironmentVariable[] variables) {
 		Map systemEnv = DebugPlugin.getDefault().getLaunchManager()
 				.getNativeEnvironmentCasePreserved();
 
@@ -207,6 +208,13 @@ public abstract class AbstractInterpreterInstallType implements
 		while (it.hasNext()) {
 			Map.Entry entry = (Map.Entry) it.next();
 			list.add(entry.getKey() + "=" + entry.getValue());
+		}
+
+		// Overwrite from variables with updates values.
+		if (variables != null) {
+			for (int i = 0; i < variables.length; i++) {
+				list.add(variables[i].getName() + "=" + variables[i].getValue());
+			}
 		}
 
 		return (String[]) list.toArray(new String[list.size()]);
@@ -440,7 +448,8 @@ public abstract class AbstractInterpreterInstallType implements
 	}
 
 	protected void retrivePaths(final File installLocation,
-			final List locations, IProgressMonitor monitor, File pathFile) {
+			final List locations, IProgressMonitor monitor, File pathFile,
+			EnvironmentVariable[] variables) {
 		Process process = null;
 		try {
 			monitor.beginTask(InterpreterMessages.statusFetchingLibs, 1);
@@ -448,7 +457,7 @@ public abstract class AbstractInterpreterInstallType implements
 				return;
 			}
 			String[] cmdLine;
-			String[] env = extractEnvironment();
+			String[] env = extractEnvironment(variables);
 
 			cmdLine = buildCommandLine(installLocation, pathFile);
 			try {
@@ -489,12 +498,13 @@ public abstract class AbstractInterpreterInstallType implements
 	}
 
 	protected IRunnableWithProgress createLookupRunnable(
-			final File installLocation, final List locations) {
+			final File installLocation, final List locations,
+			final EnvironmentVariable[] variables) {
 		return new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) {
 				try {
 					retrivePaths(installLocation, locations, monitor,
-							createPathFile());
+							createPathFile(), variables);
 				} catch (IOException e) {
 					if (DLTKCore.DEBUG) {
 						e.printStackTrace();
@@ -506,14 +516,20 @@ public abstract class AbstractInterpreterInstallType implements
 
 	public synchronized LibraryLocation[] getDefaultLibraryLocations(
 			final File installLocation) {
-		if (fCachedLocations.containsKey(installLocation)) {
-			return (LibraryLocation[]) fCachedLocations.get(installLocation);
+		return getDefaultLibraryLocations(installLocation, null);
+	}
+
+	public synchronized LibraryLocation[] getDefaultLibraryLocations(
+			final File installLocation, EnvironmentVariable[] variables) {
+		Object cacheKey = makeKey(installLocation,variables);
+		if (fCachedLocations.containsKey(cacheKey)) {
+			return (LibraryLocation[]) fCachedLocations.get(cacheKey);
 		}
 
 		final ArrayList locations = new ArrayList();
 
 		final IRunnableWithProgress runnable = createLookupRunnable(
-				installLocation, locations);
+				installLocation, locations, variables);
 
 		try {
 			runLibraryLookup(runnable);
@@ -529,10 +545,20 @@ public abstract class AbstractInterpreterInstallType implements
 
 		LibraryLocation[] libs = correctLocations(locations);
 		if (libs.length != 0) {
-			fCachedLocations.put(installLocation, libs);
+			fCachedLocations.put(cacheKey, libs);
 		}
 
 		return libs;
+	}
+
+	private Object makeKey(File installLocation, EnvironmentVariable[] variables) {
+		String key = installLocation.getAbsolutePath();
+		if( variables != null ) {
+			for (int i = 0; i < variables.length; i++) {
+				key += "|" +variables[i].getName() + ":" + variables[i].getValue();
+			}
+		}
+		return key;
 	}
 
 	protected IStatus createStatus(int severity, String message,

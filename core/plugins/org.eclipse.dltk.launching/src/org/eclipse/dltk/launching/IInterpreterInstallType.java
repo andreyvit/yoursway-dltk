@@ -107,7 +107,9 @@ public interface IInterpreterInstallType {
 	 * @return default library locations based on the given <code>installLocation</code>.
 	 *
 	 */
-	LibraryLocation[] getDefaultLibraryLocations(File installLocation);	
+	
+	LibraryLocation[] getDefaultLibraryLocations(File installLocation);
+	LibraryLocation[] getDefaultLibraryLocations(File installLocation, EnvironmentVariable[] variables);
 	
 	/**
 	 * Return string id of supported language.

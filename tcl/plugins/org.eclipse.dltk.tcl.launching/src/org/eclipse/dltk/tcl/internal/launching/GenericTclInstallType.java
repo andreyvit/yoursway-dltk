@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.internal.launching.AbstractInterpreterInstallType;
+import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.launching.TclLaunchingPlugin;
@@ -73,17 +74,17 @@ public class GenericTclInstallType extends AbstractInterpreterInstallType {
 	}
 
 	protected IRunnableWithProgress createLookupRunnable(
-			final File installLocation, final List locations) {
+			final File installLocation, final List locations, final EnvironmentVariable[] variables) {
 		return new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) {
 				try {
 					// This retrieval could not receive paths in some cases.
 					retrivePaths(installLocation, locations, monitor,
-							createPathFile());
+							createPathFile(), variables);
 					// This is safe retrieval
 					if (locations.size() == 0) {
 						retrivePaths(installLocation, locations, monitor,
-								createSafePathFile());
+								createSafePathFile(), variables);
 					}
 				} catch (IOException e) {
 					if (DLTKCore.DEBUG) {

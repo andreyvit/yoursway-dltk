@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.ui.interpreters;
 
-
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
@@ -21,6 +20,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.debug.ui.IDLTKDebugUIConstants;
+import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.LibraryLocation;
@@ -45,11 +45,13 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
 
+import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
 /**
  * Control used to edit the libraries associated with a Interpreter install
  */
-public abstract class AbstractInterpreterLibraryBlock implements SelectionListener, ISelectionChangedListener {
+public abstract class AbstractInterpreterLibraryBlock implements
+		SelectionListener, ISelectionChangedListener {
 
 	/**
 	 * Attribute name for the last path used to open a file/directory chooser
@@ -67,7 +69,7 @@ public abstract class AbstractInterpreterLibraryBlock implements SelectionListen
 	protected IInterpreterInstallType fInterpreterInstallType;
 	protected File fHome;
 
-	//widgets
+	// widgets
 	protected LibraryContentProvider fLibraryContentProvider;
 	protected TreeViewer fLibraryViewer;
 	private Button fUpButton;
@@ -78,15 +80,15 @@ public abstract class AbstractInterpreterLibraryBlock implements SelectionListen
 
 	protected AddScriptInterpreterDialog fDialog;
 
-    protected AbstractInterpreterLibraryBlock(AddScriptInterpreterDialog dialog)
-    {
-        this.fDialog = dialog;
-    }
+	protected AbstractInterpreterLibraryBlock(AddScriptInterpreterDialog dialog) {
+		this.fDialog = dialog;
+	}
 
 	/**
 	 * Creates and returns the source lookup control.
-	 *
-	 * @param parent the parent widget of this control
+	 * 
+	 * @param parent
+	 *            the parent widget of this control
 	 */
 	public Control createControl(Composite parent) {
 		Font font = parent.getFont();
@@ -100,11 +102,11 @@ public abstract class AbstractInterpreterLibraryBlock implements SelectionListen
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		comp.setLayoutData(gd);
 
-		fLibraryViewer= new TreeViewer(comp);
+		fLibraryViewer = new TreeViewer(comp);
 		gd = new GridData(GridData.FILL_BOTH);
 		gd.heightHint = 6;
 		fLibraryViewer.getControl().setLayoutData(gd);
-		fLibraryContentProvider= new LibraryContentProvider();
+		fLibraryContentProvider = new LibraryContentProvider();
 		fLibraryViewer.setContentProvider(fLibraryContentProvider);
 		fLibraryViewer.setLabelProvider(getLabelProvider());
 		fLibraryViewer.setInput(this);
@@ -115,33 +117,39 @@ public abstract class AbstractInterpreterLibraryBlock implements SelectionListen
 		pathButtonLayout.marginHeight = 0;
 		pathButtonLayout.marginWidth = 0;
 		pathButtonComp.setLayout(pathButtonLayout);
-		gd = new GridData(GridData.VERTICAL_ALIGN_BEGINNING | GridData.HORIZONTAL_ALIGN_FILL);
+		gd = new GridData(GridData.VERTICAL_ALIGN_BEGINNING
+				| GridData.HORIZONTAL_ALIGN_FILL);
 		pathButtonComp.setLayoutData(gd);
 		pathButtonComp.setFont(font);
 
-		fAddButton= createPushButton(pathButtonComp, InterpretersMessages.InterpreterLibraryBlock_7);
+		fAddButton = createPushButton(pathButtonComp,
+				InterpretersMessages.InterpreterLibraryBlock_7);
 		fAddButton.addSelectionListener(this);
 
-		fRemoveButton= createPushButton(pathButtonComp, InterpretersMessages.InterpreterLibraryBlock_6);
+		fRemoveButton = createPushButton(pathButtonComp,
+				InterpretersMessages.InterpreterLibraryBlock_6);
 		fRemoveButton.addSelectionListener(this);
 
-		fUpButton= createPushButton(pathButtonComp, InterpretersMessages.InterpreterLibraryBlock_4);
+		fUpButton = createPushButton(pathButtonComp,
+				InterpretersMessages.InterpreterLibraryBlock_4);
 		fUpButton.addSelectionListener(this);
 
-		fDownButton= createPushButton(pathButtonComp, InterpretersMessages.InterpreterLibraryBlock_5);
+		fDownButton = createPushButton(pathButtonComp,
+				InterpretersMessages.InterpreterLibraryBlock_5);
 		fDownButton.addSelectionListener(this);
 
-		fDefaultButton= createPushButton(pathButtonComp, InterpretersMessages.InterpreterLibraryBlock_9);
+		fDefaultButton = createPushButton(pathButtonComp,
+				InterpretersMessages.InterpreterLibraryBlock_9);
 		fDefaultButton.addSelectionListener(this);
 
 		return comp;
 	}
-	
+
 	/**
 	 * The "default" button has been toggled
 	 */
-	public void restoreDefaultLibraries()  {
-		final LibraryLocation[][] libs = new LibraryLocation[][] { null};
+	public void restoreDefaultLibraries() {
+		final LibraryLocation[][] libs = new LibraryLocation[][] { null };
 		final File installLocation = getHomeDirectory();
 		if (installLocation == null) {
 			libs[0] = new LibraryLocation[0];
@@ -151,27 +159,33 @@ public abstract class AbstractInterpreterLibraryBlock implements SelectionListen
 				dialog.run(false, false, new IRunnableWithProgress() {
 
 					public void run(IProgressMonitor monitor)
-							throws InvocationTargetException, InterruptedException {
-						libs[0] = getInterpreterInstallType().getDefaultLibraryLocations(installLocation);					
+							throws InvocationTargetException,
+							InterruptedException {
+						libs[0] = getInterpreterInstallType()
+								.getDefaultLibraryLocations(installLocation,
+										fDialog.getEnvironmentVariables());
 					}
-					
+
 				});
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 		if (libs != null)
 			fLibraryContentProvider.setLibraries(libs[0]);
 		update();
 	}
+
 	/**
 	 * Creates and returns a button
-	 *
-	 * @param parent parent widget
-	 * @param label label
+	 * 
+	 * @param parent
+	 *            parent widget
+	 * @param label
+	 *            label
 	 * @return Button
 	 */
 	protected Button createPushButton(Composite parent, String label) {
@@ -191,7 +205,6 @@ public abstract class AbstractInterpreterLibraryBlock implements SelectionListen
 		gd.horizontalSpan = colSpan;
 		label.setLayoutData(gd);
 	}
-
 
 	/**
 	 * Sets the home directory of the Interpreter Install the user has chosen
@@ -213,9 +226,15 @@ public abstract class AbstractInterpreterLibraryBlock implements SelectionListen
 	public void update() {
 		updateButtons();
 		IStatus status = Status.OK_STATUS;
-		if (fLibraryContentProvider.getLibraries().length == 0) { // && !isDefaultSystemLibrary()) {
-			status = new Status(IStatus.ERROR, DLTKDebugUIPlugin.getUniqueIdentifier(), IDLTKDebugUIConstants.INTERNAL_ERROR,
-				InterpretersMessages.InterpreterLibraryBlock_Libraries_cannot_be_empty__1, null);
+		if (fLibraryContentProvider.getLibraries().length == 0) { // &&
+			// !isDefaultSystemLibrary())
+			// {
+			status = new Status(
+					IStatus.ERROR,
+					DLTKDebugUIPlugin.getUniqueIdentifier(),
+					IDLTKDebugUIConstants.INTERNAL_ERROR,
+					InterpretersMessages.InterpreterLibraryBlock_Libraries_cannot_be_empty__1,
+					null);
 		}
 		LibraryStandin[] standins = fLibraryContentProvider.getStandins();
 		for (int i = 0; i < standins.length; i++) {
@@ -225,7 +244,7 @@ public abstract class AbstractInterpreterLibraryBlock implements SelectionListen
 				break;
 			}
 		}
-		updateDialogStatus (status);
+		updateDialogStatus(status);
 	}
 
 	/**
@@ -241,19 +260,25 @@ public abstract class AbstractInterpreterLibraryBlock implements SelectionListen
 	}
 
 	/**
-	 * Determines if the present setup is the default location s for this InterpreterEnvironment
-	 * @return true if the current set of locations are the defaults, false otherwise
+	 * Determines if the present setup is the default location s for this
+	 * InterpreterEnvironment
+	 * 
+	 * @return true if the current set of locations are the defaults, false
+	 *         otherwise
 	 */
 	protected boolean isDefaultLocations() {
-		LibraryLocation[] libraryLocations = fLibraryContentProvider.getLibraries();
-        IInterpreterInstall install = getInterpreterInstall();
+		LibraryLocation[] libraryLocations = fLibraryContentProvider
+				.getLibraries();
+		IInterpreterInstall install = getInterpreterInstall();
 
 		if (install == null || libraryLocations == null) {
 			return true;
 		}
 		File installLocation = install.getInstallLocation();
 		if (installLocation != null) {
-			LibraryLocation[] def = getInterpreterInstallType().getDefaultLibraryLocations(installLocation);
+			LibraryLocation[] def = getInterpreterInstallType()
+					.getDefaultLibraryLocations(installLocation,
+							install.getEnvironmentVariables());
 			if (def.length == libraryLocations.length) {
 				for (int i = 0; i < def.length; i++) {
 					if (!def[i].equals(libraryLocations[i])) {
@@ -268,7 +293,7 @@ public abstract class AbstractInterpreterLibraryBlock implements SelectionListen
 
 	/**
 	 * Returns the Interpreter install associated with this library block.
-	 *
+	 * 
 	 * @return Interpreter install
 	 */
 	protected IInterpreterInstall getInterpreterInstall() {
@@ -277,48 +302,57 @@ public abstract class AbstractInterpreterLibraryBlock implements SelectionListen
 
 	/**
 	 * Returns the Interpreter install type associated with this library block.
-	 *
+	 * 
 	 * @return Interpreter install
 	 */
 	protected IInterpreterInstallType getInterpreterInstallType() {
 		return fInterpreterInstallType;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
 	 */
 	public void widgetSelected(SelectionEvent e) {
-		Object source= e.getSource();
+		Object source = e.getSource();
 		if (source == fUpButton) {
-			fLibraryContentProvider.up((IStructuredSelection) fLibraryViewer.getSelection());
+			fLibraryContentProvider.up((IStructuredSelection) fLibraryViewer
+					.getSelection());
 		} else if (source == fDownButton) {
-			fLibraryContentProvider.down((IStructuredSelection) fLibraryViewer.getSelection());
+			fLibraryContentProvider.down((IStructuredSelection) fLibraryViewer
+					.getSelection());
 		} else if (source == fRemoveButton) {
-			fLibraryContentProvider.remove((IStructuredSelection) fLibraryViewer.getSelection());
+			fLibraryContentProvider
+					.remove((IStructuredSelection) fLibraryViewer
+							.getSelection());
 		} else if (source == fAddButton) {
 			add((IStructuredSelection) fLibraryViewer.getSelection());
-		}
-		else if (source == fDefaultButton) {
+		} else if (source == fDefaultButton) {
 			restoreDefaultLibraries();
 		}
 		update();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
 	 */
-	public void widgetDefaultSelected(SelectionEvent e) {}
-
+	public void widgetDefaultSelected(SelectionEvent e) {
+	}
 
 	private void add(IStructuredSelection selection) {
 		LibraryLocation libs = add();
 		if (libs == null)
 			return;
-		fLibraryContentProvider.add(new LibraryLocation[] {libs}, selection);
-		update ();
+		fLibraryContentProvider.add(new LibraryLocation[] { libs }, selection);
+		update();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.viewers.ISelectionChangedListener#selectionChanged(org.eclipse.jface.viewers.SelectionChangedEvent)
 	 */
 	public void selectionChanged(SelectionChangedEvent event) {
@@ -329,10 +363,10 @@ public abstract class AbstractInterpreterLibraryBlock implements SelectionListen
 	 * Refresh the enable/disable state for the buttons.
 	 */
 	private void updateButtons() {
-		IStructuredSelection selection = (IStructuredSelection) fLibraryViewer.getSelection();
+		IStructuredSelection selection = (IStructuredSelection) fLibraryViewer
+				.getSelection();
 		fRemoveButton.setEnabled(!selection.isEmpty());
-		boolean enableUp = true,
-				enableDown = true;
+		boolean enableUp = true, enableDown = true;
 		Object[] libraries = fLibraryContentProvider.getElements(null);
 		if (selection.isEmpty() || libraries.length == 0) {
 			enableUp = false;
@@ -340,8 +374,8 @@ public abstract class AbstractInterpreterLibraryBlock implements SelectionListen
 		} else {
 			Object first = libraries[0];
 			Object last = libraries[libraries.length - 1];
-			for (Iterator iter= selection.iterator(); iter.hasNext();) {
-				Object element= iter.next();
+			for (Iterator iter = selection.iterator(); iter.hasNext();) {
+				Object element = iter.next();
 				Object lib;
 				lib = element;
 				if (lib == first) {
@@ -357,22 +391,27 @@ public abstract class AbstractInterpreterLibraryBlock implements SelectionListen
 	}
 
 	/**
-	 * Initializes this control based on the settings in the given
-	 * Interpreter install and type.
-	 *
-	 * @param Interpreter Interpreter or <code>null</code> if none
-	 * @param type type of Interpreter install
+	 * Initializes this control based on the settings in the given Interpreter
+	 * install and type.
+	 * 
+	 * @param Interpreter
+	 *            Interpreter or <code>null</code> if none
+	 * @param type
+	 *            type of Interpreter install
 	 */
 
-	public void initializeFrom(IInterpreterInstall Interpreter, IInterpreterInstallType type)  {
+	public void initializeFrom(IInterpreterInstall Interpreter,
+			IInterpreterInstallType type) {
 		fInterpreterInstall = Interpreter;
 		fInterpreterInstallType = type;
 		if (Interpreter != null) {
 			setHomeDirectory(Interpreter.getInstallLocation());
-			fLibraryContentProvider.setLibraries(ScriptRuntime.getLibraryLocations(getInterpreterInstall()));
+			fLibraryContentProvider.setLibraries(ScriptRuntime
+					.getLibraryLocations(getInterpreterInstall()));
 		}
 		update();
 	}
+
 	protected abstract IBaseLabelProvider getLabelProvider();
 
 	protected void updateDialogStatus(IStatus status) {
@@ -385,27 +424,26 @@ public abstract class AbstractInterpreterLibraryBlock implements SelectionListen
 	}
 
 	protected abstract IDialogSettings getDialogSettions();
+
 	protected LibraryLocation add() {
-		IDialogSettings dialogSettings= getDialogSettions();
-		String lastUsedPath= dialogSettings.get(LAST_PATH_SETTING);
+		IDialogSettings dialogSettings = getDialogSettions();
+		String lastUsedPath = dialogSettings.get(LAST_PATH_SETTING);
 		if (lastUsedPath == null) {
-			lastUsedPath= ""; //$NON-NLS-1$
+			lastUsedPath = ""; //$NON-NLS-1$
 		}
-		DirectoryDialog dialog= new DirectoryDialog(fLibraryViewer.getControl().getShell(), SWT.MULTI);
+		DirectoryDialog dialog = new DirectoryDialog(fLibraryViewer
+				.getControl().getShell(), SWT.MULTI);
 		dialog.setMessage(InterpretersMessages.InterpreterLibraryBlock_10);
 		dialog.setFilterPath(lastUsedPath);
-		String res= dialog.open();
+		String res = dialog.open();
 		if (res == null) {
 			return null;
 		}
 
-		IPath path= new Path(res);
-		LibraryLocation lib= new LibraryLocation(path.makeAbsolute());
+		IPath path = new Path(res);
+		LibraryLocation lib = new LibraryLocation(path.makeAbsolute());
 		dialogSettings.put(LAST_PATH_SETTING, path.toOSString());
 		return lib;
 	}
-
-
-
 
 }

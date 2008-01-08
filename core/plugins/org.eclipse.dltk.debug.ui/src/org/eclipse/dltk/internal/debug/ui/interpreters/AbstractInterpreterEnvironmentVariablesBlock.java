@@ -446,6 +446,7 @@ public abstract class AbstractInterpreterEnvironmentVariablesBlock implements
 
 	protected void updateDialogStatus(IStatus status) {
 		fDialog.setSystemLibraryStatus(status);
+		fDialog.validateInterpreterLocation();
 		fDialog.updateStatusLine();
 	}
 

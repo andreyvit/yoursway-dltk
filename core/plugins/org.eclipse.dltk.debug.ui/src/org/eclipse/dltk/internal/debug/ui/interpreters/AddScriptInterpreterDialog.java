@@ -24,6 +24,7 @@ import org.eclipse.dltk.internal.ui.wizards.dialogfields.IDialogFieldListener;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.IStringButtonAdapter;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.StringButtonDialogField;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.StringDialogField;
+import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.InterpreterStandin;
@@ -300,7 +301,7 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 		return fSelectedInterpreterType;
 	}
 
-	private IStatus validateInterpreterLocation() {
+	IStatus validateInterpreterLocation() {
 		String locationName = fInterpreterPath.getText();
 		IStatus s = null;
 		File file = null;
@@ -355,9 +356,9 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 			fLibraryBlock.setHomeDirectory(null);
 		}
 		fLibraryBlock.restoreDefaultLibraries();
-		if (fEnvironmentVariablesBlock != null) {
-			fEnvironmentVariablesBlock.restoreDefaultVariables();
-		}
+		// if (fEnvironmentVariablesBlock != null) {
+		// fEnvironmentVariablesBlock.restoreDefaultVariables();
+		// }
 		return s;
 	}
 
@@ -527,6 +528,15 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 			section = settings.addNewSection(getDialogSettingsSectionName());
 		}
 		return section;
+	}
+
+	public EnvironmentVariable[] getEnvironmentVariables() {
+		AbstractInterpreterEnvironmentVariablesBlock environmentVariablesBlock = this.fEnvironmentVariablesBlock;
+		if (environmentVariablesBlock != null) {
+			return environmentVariablesBlock.fEnvironmentVariablesContentProvider
+					.getVariables();
+		}
+		return null;
 	}
 
 }

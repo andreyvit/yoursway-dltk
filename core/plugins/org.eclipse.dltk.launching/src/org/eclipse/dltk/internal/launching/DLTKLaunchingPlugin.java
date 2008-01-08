@@ -300,8 +300,9 @@ public class DLTKLaunchingPlugin extends Plugin implements
 								if (installs[j] != null) {
 									File path = installs[j]
 											.getInstallLocation();
-									installTypes[i]
-											.getDefaultLibraryLocations(path);
+									installTypes[i].getDefaultLibraryLocations(
+											path, installs[j]
+													.getEnvironmentVariables());
 								}
 							}
 						}
