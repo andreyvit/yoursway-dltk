@@ -105,10 +105,12 @@ public class HotCodeReplaceManager implements IResourceChangeListener,
 		for (int i = 0; i < debugTargets.length; i++) {
 			IScriptDebugTarget target = (IScriptDebugTarget) debugTargets[i]
 					.getAdapter(IScriptDebugTarget.class);
-			if (supportsHotCodeReplace(target)) {
-				addHotSwapTarget(target);
-			} else {
-				addNonHotSwapTarget(target);
+			if (target != null) {
+				if (supportsHotCodeReplace(target)) {
+					addHotSwapTarget(target);
+				} else {
+					addNonHotSwapTarget(target);
+				}
 			}
 		}
 	}
