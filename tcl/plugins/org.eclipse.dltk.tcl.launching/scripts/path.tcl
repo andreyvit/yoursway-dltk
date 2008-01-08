@@ -4,7 +4,7 @@ exec tclsh "$0" ${1+"$@"}
 
 rename package package-org
 proc package {subcmd args} {
-	global pkg pkg_list pkg_stack
+    global pkg_list pkg_stack
 	
 	switch -exact -- $subcmd {
 		"ifneeded" {
@@ -35,14 +35,19 @@ proc package {subcmd args} {
 
 rename source source-org
 proc source {args} {
-	global pkg pkg_stack
+	global tcl_version
+	global pkg_files pkg_stack
 	
 	set fname [lindex $args end]
 	set pname [lindex $pkg_stack 0]
 	# Skip pkgIndex.tcl file or if pkg name is null
 	if {![string equal $pname ""] && 
 		![string equal [file tail $fname] "pkgIndex.tcl"]} {
-		lappend pkg($pname) [file normalize $fname]
+		# [file normalize] cmd was introduced in tcl8.4 version
+		if {$tcl_version >= 8.4} {
+			set fname [file normalize $fname]
+		}
+		lappend pkg_files($pname) $fname
 	}
 	
 	return [uplevel 1 "::source-org $args"]
@@ -61,38 +66,36 @@ proc process-pkg-info {args} {
 		catch {package require $name} err
 	}
 }
-set roots ""
-proc add-path {path} {
-	global roots
-	
-	set ind [string last / $path]
-	if {$ind != -1} {
-		set dir [string range $path 0 $ind]
-		if {[lsearch -exact $roots $dir] == -1} {
-			lappend roots $dir
-		}
+proc pkg-add-path {path} {
+	global pkg_paths
+
+	# Get the directory name for the specified path
+	if {![file isdirectory $path]} {
+		set path [file dirname $path]
 	}
+	set pkg_paths($path) 1
 }
 proc print-pkg-info {args} {
-	global pkg roots
+	global pkg_files pkg_paths
 	
 	#puts "+++++++++ Begin Pkg Info +++++++++++++++++++"
-	foreach elm [lsort [array names pkg]] {
+	foreach elm [lsort [array names pkg_files]] {
 		set name [lindex $elm 0]
 		set vers [lindex $elm 1]
-		set files $pkg($elm)
+		set files $pkg_files($elm)
 		
 		# add unical paths to roots
 		foreach path $files {
-			add-path $path
+			pkg-add-path $path
 		}
 	}
 	#puts "+++++++++ End Pkg Info +++++++++++++++++++"
-	puts "DLTK:$roots"
+	puts "DLTK:[array names pkg_paths]"
+	#puts "Number of pkgs found: [llength [array names pkg_paths]]"
 }
 
 proc main {argv} {
-	global pkg pkg_stack roots
+	global pkg_stack
 	set pkg_stack {} ;# initialize to null
 	
 	# try to load an unknown pkg, so that it discovers all packages
