@@ -471,6 +471,10 @@ public abstract class AbstractInterpreterInstallType implements
 
 			cmdLine = buildCommandLine(installLocation, pathFile);
 			try {
+				if (DLTKLaunchingPlugin.TRACE_EXECUTION) {
+					traceExecution("Tcl library discovery script", cmdLine, 
+							env);
+				}
 				process = DebugPlugin.exec(cmdLine, null, env);
 				if (process != null) {
 					String result[] = readPathsFromProcess(monitor, process);
@@ -506,7 +510,24 @@ public abstract class AbstractInterpreterInstallType implements
 			monitor.done();
 		}
 	}
-
+	private void traceExecution(String processLabel,
+			String[] cmdLineLabel, String[] environment) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("-----------------------------------------------\n");
+		sb.append("Running ").append(processLabel).append('\n');
+//		sb.append("Command line: ").append(cmdLineLabel).append('\n');
+		sb.append("Command line: ");
+		for (int i = 0; i < cmdLineLabel.length; i++) {
+			sb.append(" " + cmdLineLabel[i]);
+		}
+		sb.append("\n");
+		sb.append("Environment:\n");
+		for (int i=0; i<environment.length; i++) {
+			sb.append('\t').append(environment[i]).append('\n');
+		}
+		sb.append("-----------------------------------------------\n");
+		System.out.println(sb);
+	}
 	protected IRunnableWithProgress createLookupRunnable(
 			final File installLocation, final List locations,
 			final EnvironmentVariable[] variables) {
