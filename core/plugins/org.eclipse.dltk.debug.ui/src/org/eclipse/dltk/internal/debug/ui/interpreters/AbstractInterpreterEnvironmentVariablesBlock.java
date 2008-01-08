@@ -220,13 +220,9 @@ public abstract class AbstractInterpreterEnvironmentVariablesBlock implements
 	 * Saves settings in the given working copy
 	 */
 	public void performApply(IInterpreterInstall install) {
-		if (isDefaultLocations()) {
-			install.setEnvironmentVariables(null);
-		} else {
-			EnvironmentVariable[] libs = fEnvironmentVariablesContentProvider
-					.getVariables();
-			install.setEnvironmentVariables(libs);
-		}
+		EnvironmentVariable[] libs = fEnvironmentVariablesContentProvider
+				.getVariables();
+		install.setEnvironmentVariables(libs);
 	}
 
 	/**
