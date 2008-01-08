@@ -46,10 +46,10 @@ module XoredDebugger
        end
 
        def at_line(context, file, line)
+           context.suspend()
            @monitor.synchronize do
                send_answer(AbstractContext::BREAK)
            end           
-           context.suspend()
        end        	 
        
        def send_answer(status, exception = nil)
