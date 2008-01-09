@@ -686,15 +686,6 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 				assertTrue(process.isTerminated());
 				final int exitValue = process.getExitValue();
 				assertEquals(0, exitValue);
-
-				assertEquals(1, stats.getSuspendCount());
-				assertEquals(2, stats.getResumeCount());
-
-				// Checking extended events count
-				assertEquals(1, stats.getBeforeVmStarted());
-				assertEquals(1, stats.getBeforeCodeLoaded());
-				assertEquals(2, stats.getBeforeResumeCount());
-				assertEquals(1, stats.getBeforeSuspendCount());
 			} finally {
 				b.delete();
 				
