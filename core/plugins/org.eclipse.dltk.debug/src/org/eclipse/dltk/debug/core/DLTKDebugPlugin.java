@@ -64,7 +64,7 @@ public class DLTKDebugPlugin extends Plugin {
 
 	private DbgpService dbgpService;
 
-	public IDbgpService getDbgpService() {
+	public synchronized IDbgpService getDbgpService() {
 		if (dbgpService == null) {
 			dbgpService = new DbgpService();
 		}

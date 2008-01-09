@@ -30,6 +30,8 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 	private static final String SHELL_KEY = "-app-shell";
 	private static final String IDE_KEY = "-ide-key";
 	private static final String SCRIPT_KEY = "-app-file";
+	private static final String LOG_KEY = "-log";
+	private static final String LOG_FILE_KEY = "-logfile";
 	private static final String ARGS_SEPARATOR = "--";
 
 	public TclActiveStateDebuggerRunner(IInterpreterInstall install) {
@@ -49,7 +51,7 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 				.getProperty(DbgpConstants.PORT_PROP);
 		final String sessionId = (String) config
 				.getProperty(DbgpConstants.SESSION_ID_PROP);
-
+		
 		InterpreterConfig newConfig = (InterpreterConfig) config.clone();
 
 		// Additional property
@@ -68,6 +70,12 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 		newConfig.addInterpreterArg(IDE_KEY);
 		newConfig.addInterpreterArg(sessionId);
 
+		if (TclActiveStateDebuggerPlugin.LOG_ENABLED) { 
+			newConfig.addInterpreterArg(LOG_KEY);
+			newConfig.addInterpreterArg(LOG_FILE_KEY);
+			newConfig.addInterpreterArg(getLogFileName(sessionId));
+		}
+		
 		newConfig.addInterpreterArg(SCRIPT_KEY);
 
 		// Script arguments
@@ -75,6 +83,12 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 		newConfig.addScriptArgs(config.getScriptArgs());
 
 		return newConfig;
+	}
+
+	private String getLogFileName(String sessionId) {
+		String filename = "log_" + sessionId + ".txt";
+		return TclActiveStateDebuggerPlugin.getDefault().getStateLocation()
+				.append(filename).toPortableString();
 	}
 
 	/*

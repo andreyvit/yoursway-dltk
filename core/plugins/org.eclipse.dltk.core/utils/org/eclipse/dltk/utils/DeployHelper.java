@@ -36,7 +36,11 @@ public class DeployHelper {
 		try {
 			output = new BufferedOutputStream(new FileOutputStream(file));
 			copy(input, output);
-		} finally {
+		}
+		catch( IOException e) {
+			throw e;
+		}
+		finally {
 			if (output != null) {
 				output.close();
 			}
@@ -61,9 +65,14 @@ public class DeployHelper {
 		final Enumeration paths = bundle.getEntryPaths(bundlePath);
 		final IPath result = diskPath.append(bundlePath);
 
+		File dirFile = result.toFile();
 		if (paths != null) {
 			// result is a directory
-			result.toFile().mkdirs();
+			dirFile.mkdirs();
+			if (!dirFile.exists()) {
+				throw new IOException("Failed to create folder for:"
+						+ dirFile.toString());
+			}
 
 			while (paths.hasMoreElements()) {
 				final String path = (String) paths.nextElement();
@@ -78,7 +87,7 @@ public class DeployHelper {
 		} else {
 			final URL url = bundle.getEntry(bundlePath);
 			if (url != null) {
-				final File file = result.toFile();
+				final File file = dirFile;
 
 				if (!file.exists()) {
 					file.getParentFile().mkdirs();

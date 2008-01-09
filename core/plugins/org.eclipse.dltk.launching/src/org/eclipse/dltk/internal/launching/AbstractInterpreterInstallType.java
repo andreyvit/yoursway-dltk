@@ -41,13 +41,13 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.ScriptUtils;
 import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.LaunchingMessages;
 import org.eclipse.dltk.launching.LibraryLocation;
 import org.eclipse.dltk.launching.ScriptRuntime;
+import org.eclipse.dltk.utils.DeployHelper;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
 /**
@@ -246,7 +246,8 @@ public abstract class AbstractInterpreterInstallType implements
 
 	protected File storeToMetadata(Plugin plugin, String name, String path)
 			throws IOException {
-		return ScriptUtils.storeToMetadata(plugin, name, path);
+		return DeployHelper.deploy(plugin, path).toFile();
+		// return ScriptUtils.storeToMetadata(plugin, name, path);
 	}
 
 	/**
@@ -292,7 +293,6 @@ public abstract class AbstractInterpreterInstallType implements
 			try {
 				lock.wait(10000);
 			} catch (InterruptedException e) {
-
 			}
 			p.destroy();
 		}
@@ -457,14 +457,14 @@ public abstract class AbstractInterpreterInstallType implements
 		}
 	}
 
-	protected void retrivePaths(final File installLocation,
+	protected String retrivePaths(final File installLocation,
 			final List locations, IProgressMonitor monitor, File pathFile,
 			EnvironmentVariable[] variables) {
 		Process process = null;
 		try {
 			monitor.beginTask(InterpreterMessages.statusFetchingLibs, 1);
 			if (monitor.isCanceled()) {
-				return;
+				return null;
 			}
 			String[] cmdLine;
 			String[] env = extractEnvironment(variables);
@@ -472,14 +472,16 @@ public abstract class AbstractInterpreterInstallType implements
 			cmdLine = buildCommandLine(installLocation, pathFile);
 			try {
 				if (DLTKLaunchingPlugin.TRACE_EXECUTION) {
-					traceExecution("Tcl library discovery script", cmdLine, 
-							env);
+					traceExecution("Tcl library discovery script", cmdLine, env);
 				}
 				process = DebugPlugin.exec(cmdLine, null, env);
 				if (process != null) {
 					String result[] = readPathsFromProcess(monitor, process);
 					if (result == null) {
 						throw new IOException("null result from process");
+					}
+					if (DLTKLaunchingPlugin.TRACE_EXECUTION) {
+						traceDiscoveryOutput(process, result);
 					}
 					String[] paths = null;
 					if (result.length == 1) {
@@ -492,9 +494,19 @@ public abstract class AbstractInterpreterInstallType implements
 							.removeLastSegments(1);
 
 					fillLocationsExceptOne(locations, paths, path);
+					if (result != null) {
+						StringBuffer resultBuffer = new StringBuffer();
+						for (int i = 0; i < result.length; i++) {
+							resultBuffer.append(result[i]).append("\n");
+						}
+						return resultBuffer.toString();
+					}
 				}
 			} catch (CoreException e) {
-				// TODO: handle
+				DLTKLaunchingPlugin.log(e);
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
 			}
 
 		} catch (IOException e) {
@@ -509,34 +521,67 @@ public abstract class AbstractInterpreterInstallType implements
 			}
 			monitor.done();
 		}
+		return null;
 	}
-	private void traceExecution(String processLabel,
-			String[] cmdLineLabel, String[] environment) {
+
+	private void traceDiscoveryOutput(Process process, String[] result) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("-----------------------------------------------\n");
+		sb.append("Discovery script output:").append('\n');
+		sb.append("Output Result:");
+		if (result != null) {
+			for (int i = 0; i < result.length; i++) {
+				sb.append(" " + result[i]);
+			}
+		} else {
+			sb.append("Null");
+		}
+		sb.append("\n-----------------------------------------------\n");
+		System.out.println(sb);
+	}
+
+	private void traceExecution(String processLabel, String[] cmdLineLabel,
+			String[] environment) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("-----------------------------------------------\n");
 		sb.append("Running ").append(processLabel).append('\n');
-//		sb.append("Command line: ").append(cmdLineLabel).append('\n');
+		// sb.append("Command line: ").append(cmdLineLabel).append('\n');
 		sb.append("Command line: ");
 		for (int i = 0; i < cmdLineLabel.length; i++) {
 			sb.append(" " + cmdLineLabel[i]);
 		}
 		sb.append("\n");
 		sb.append("Environment:\n");
-		for (int i=0; i<environment.length; i++) {
+		for (int i = 0; i < environment.length; i++) {
 			sb.append('\t').append(environment[i]).append('\n');
 		}
 		sb.append("-----------------------------------------------\n");
 		System.out.println(sb);
 	}
+
 	protected IRunnableWithProgress createLookupRunnable(
 			final File installLocation, final List locations,
 			final EnvironmentVariable[] variables) {
 		return new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) {
 				try {
-					retrivePaths(installLocation, locations, monitor,
-							createPathFile(), variables);
+					File locator = createPathFile();
+					String result = retrivePaths(installLocation, locations,
+							monitor, locator, variables);
+					String message = "Failed to obtain library locations for "
+							+ installLocation.getName() + " with "
+							+ locator.toString();
+					if (locations.size() == 0) {
+						if (result == null) {
+							DLTKLaunchingPlugin.log(message);
+						} else {
+							DLTKLaunchingPlugin.logWarning(message,
+									new Exception("Output:\n" + result));
+						}
+					}
 				} catch (IOException e) {
+					DLTKLaunchingPlugin.log(
+							"Problem while obtaining interpreter libraries", e);
 					if (DLTKCore.DEBUG) {
 						e.printStackTrace();
 					}
