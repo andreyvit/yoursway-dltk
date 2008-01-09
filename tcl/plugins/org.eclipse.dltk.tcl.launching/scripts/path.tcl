@@ -1,5 +1,5 @@
 #!/bin/sh
-# find-pkg-src.tcl \
+# path.tcl \
 exec tclsh "$0" ${1+"$@"}
 
 rename package package-org
@@ -11,8 +11,8 @@ proc package {subcmd args} {
 			set name [lindex $args 0]
 			set vers [lindex $args 1]
 			set body [lindex $args 2]
-						set pkg_list([list $name $vers]) {}
-			return [uplevel 1 "package-org $subcmd $args"]
+			set pkg_list([list $name $vers]) {}
+			return [uplevel 1 "::package-org $subcmd $args"]
 		}
 		"require" {
 			set name [lindex $args 0]
@@ -24,7 +24,6 @@ proc package {subcmd args} {
 			set pkg_stack [linsert $pkg_stack 0 $name]
 			set retCode [catch {uplevel 1 "::package-org $subcmd $args"} vers]
 			set pkg_stack [lrange $pkg_stack 1 end]
-			
 			return -code $retCode $vers
 		}
 		default {}
@@ -53,11 +52,17 @@ proc source {args} {
 	return [uplevel 1 "::source-org $args"]
 }
 
+# Some pkgs rename exit proc when it is loaded or they may explicitly
+# terminate this script by explicitly calling exit. We prevent this
+# by renaming exit cmd as per below.
+rename exit exit-org
+proc exit args {}
+
 proc process-pkg-info {args} {
 	global pkg_list
 	
 	# load all pkgs
-	foreach elm [lsort [array names pkg_list]] {
+	foreach elm [array names pkg_list] {
 		set name [lindex $elm 0]
 		set vers [lindex $elm 1]
 		#puts "$name $vers:"
@@ -79,7 +84,7 @@ proc print-pkg-info {args} {
 	global pkg_files pkg_paths
 	
 	#puts "+++++++++ Begin Pkg Info +++++++++++++++++++"
-	foreach elm [lsort [array names pkg_files]] {
+	foreach elm [array names pkg_files] {
 		set name [lindex $elm 0]
 		set vers [lindex $elm 1]
 		set files $pkg_files($elm)
@@ -91,23 +96,32 @@ proc print-pkg-info {args} {
 	}
 	#puts "+++++++++ End Pkg Info +++++++++++++++++++"
 	puts "DLTK:[array names pkg_paths]"
-	#puts "Number of pkgs found: [llength [array names pkg_paths]]"
+	#puts "Number of pkgs names found: [llength [array names pkg_files]]"
+	#puts "Number of pkgs paths found: [llength [array names pkg_paths]]"
 }
 
 proc main {argv} {
 	global pkg_stack
 	set pkg_stack {} ;# initialize to null
-	
+
+	# We could use tcl's time cmd below but we don't need
+	# microsecond resolution
+	set start_time [clock seconds]
+
 	# try to load an unknown pkg, so that it discovers all packages
-	catch {package-org require unknown-random-[clock seconds]}
+	catch {::package-org require unknown-random-[clock seconds]}
 	# Process pkg ifneeded bodies
 	process-pkg-info
 	# Print pkg root folders
 	print-pkg-info
+
+	set stop_time [clock seconds]
+
+	#puts "Run time = [expr {$stop_time-$start_time}] secs"
 }
 main $argv
 
 
 # Exit needs to be called explicitly because some package may endup
-# invoke Tk pkg which in turn may create a GUI window and wait forever.
-::exit
+# invoking Tk pkg which in turn may create a GUI window and wait forever.
+::exit-org
