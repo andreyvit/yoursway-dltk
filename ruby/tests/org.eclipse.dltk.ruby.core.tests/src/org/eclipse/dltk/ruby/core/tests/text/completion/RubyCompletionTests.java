@@ -955,4 +955,136 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 		cu.codeComplete(cursorLocation, requestor);
 		assertTrue(requestor.getResults().length() > 0); 
 	}
+
+	public void testCompletion060() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b193898.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "as.methods.so";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		assertTrue(requestor.getResults().indexOf("sort") > -1); 
+	}
+
+	public void testCompletion061() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b194725.rb");
+
+		String str = cu.getSource();
+		String completeBehind = "__FILE_";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		int lineIndex = requestor.getResults().indexOf("__LINE__");
+		assertTrue(lineIndex == -1); 
+	}
+
+	public void testCompletion062() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b195463.rb");
+		
+		String str = cu.getSource();
+		String completeBehind = "String.new.";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		int resultsLength = requestor.getResults().length();
+		assertTrue(resultsLength > 0); 
+	}
+
+	public void testCompletion063() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b196781.rb");
+		
+		String str = cu.getSource();
+		String completeBehind = "protecte";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		int resultsLength = requestor.getResults().length();
+		assertTrue(resultsLength > 0); 
+	}
+
+	public void testCompletion064() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b198381.rb");
+		
+		String str = cu.getSource();
+		String completeBehind = "med";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		String completionResults = requestor.getResults();
+		int methodIndex = completionResults.indexOf("medved(a,b,c,d)");
+		assertTrue(methodIndex > -1); 
+	}
+
+	/* It does NOT work in the editor */
+	public void testCompletion065() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b180167.rb");
+		
+		String str = cu.getSource();
+		String completeBehind = "x";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		String completionResults = requestor.getResults();
+		int resultsLength = completionResults.length();
+		assertTrue(resultsLength > 0); 
+	}
+	
+	public void testCompletion066() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b180147.rb");
+		
+		String str = cu.getSource();
+		String completeBehind = ".";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		String completionResults = requestor.getResults();
+		int resultsLength = completionResults.length();
+		assertTrue(resultsLength > 0); 
+	}
+	
+	public void testCompletion067() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b194564.rb");
+		
+		String str = cu.getSource();
+		String completeBehind = "3.";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		String completionResults = requestor.getResults();
+		int resultsLength = completionResults.length();
+		assertTrue(resultsLength > 0); 
+	}
+	
+	/* Test is not full, more examples of differences may be provided */
+	public void testCompletion068() throws ModelException {
+		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
+		ISourceModule cu = getSourceModule("completion", "src", "b191448.rb");
+		
+		String str = cu.getSource();
+		String completeBehind = "str1.";
+		int cursorLocation = str.lastIndexOf(completeBehind) + completeBehind.length();
+		
+		waitForAutoBuild();
+		cu.codeComplete(cursorLocation, requestor);
+		String completionResults = requestor.getResults();
+		int scanfIndex = completionResults.indexOf("scanf");
+		assertTrue(scanfIndex == -1); 
+	}
 }
