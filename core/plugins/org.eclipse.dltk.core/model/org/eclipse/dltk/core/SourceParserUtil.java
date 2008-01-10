@@ -42,12 +42,17 @@ public class SourceParserUtil {
 			moduleDeclaration = (ModuleDeclaration) mifo.get(AST);
 		}
 		if (moduleDeclaration == null) {
+			if( reporter != null ) {
+				reporter.clearMarkers();
+			}
 			ISourceParser sourceParser = null;
 			try {
 				sourceParser = DLTKLanguageManager.getSourceParser(toolkit
 						.getNatureId());
 			} catch (CoreException e) {
-				e.printStackTrace();
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
 			}
 			if (sourceParser != null) {
 				try {

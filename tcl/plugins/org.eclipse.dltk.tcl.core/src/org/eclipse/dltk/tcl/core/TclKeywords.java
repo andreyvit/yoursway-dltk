@@ -95,7 +95,29 @@ public class TclKeywords implements ITclKeywords {
 		} else if (type == EXEC_EXPRESSION) {
 			return fgExecKeywords;
 		}
-		return null;
+		return getKeywords();
 	}
-
+	public static String[] append(String prefix, String[] a, String[] b) {
+		int len = 0;
+		if( a != null ) {
+			len = a.length;
+		}
+		String[] ns = new String[len + b.length];
+		if( a != null ) {
+			System.arraycopy(a, 0, ns, 0, len);
+		}
+		for (int i = 0; i < b.length; i++) {
+			ns[len + i] = prefix + b[i];
+		}
+		return ns;
+	}
+	public static String[] append(String[] a, String[] b) {
+		if( b == null ) {
+			return a;
+		}
+		String[] ns = new String[a.length + b.length];
+		System.arraycopy(a, 0, ns, 0, a.length);
+		System.arraycopy(b, 0, ns, a.length, b.length);
+		return ns;
+	}
 }

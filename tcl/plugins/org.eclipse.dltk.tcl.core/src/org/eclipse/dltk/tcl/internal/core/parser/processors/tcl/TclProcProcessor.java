@@ -7,6 +7,7 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
@@ -43,6 +44,10 @@ public class TclProcProcessor extends AbstractTclCommandProcessor {
 			sName = ((TclBlockExpression) procName).getBlock();
 		} else if (procName instanceof TclExecuteExpression) {
 			sName = ((TclExecuteExpression) procName).getExpression();
+		}
+		else if (procName instanceof StringLiteral) {
+			sName = ((StringLiteral) procName).getValue();
+			sName = sName.substring(1,sName.length() - 1);
 		}
 		if (sName == null || sName.length() == 0) {
 			this.report(parser, Messages.TclProcProcessor_Empty_Proc_Name,

@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
@@ -98,5 +99,10 @@ public class TclCheckerImpl extends AbstractValidator {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void setProgressMonitor(IProgressMonitor monitor) {
+		// TODO Auto-generated method stub
+		
 	}
 }

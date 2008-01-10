@@ -21,13 +21,13 @@ public class ValidatorBuilder implements IScriptBuilder {
 
 	public IStatus[] buildModelElements(IScriptProject project, List elements,
 			IProgressMonitor monitor) {
-		ValidatorRuntime.executeActiveValidatorsWithConsole(null, elements, null);
+		ValidatorRuntime.executeActiveValidatorsWithConsole(null, elements, null, monitor);
 		return null;
 	}
 
 	public IStatus[] buildResources(IScriptProject project, List resources,
 			IProgressMonitor monitor) {
-		ValidatorRuntime.executeActiveValidatorsWithConsole(null, null, resources);
+		ValidatorRuntime.executeActiveValidatorsWithConsole(null, null, resources, monitor);
 		return null;
 	}
 
@@ -35,5 +35,4 @@ public class ValidatorBuilder implements IScriptBuilder {
 		//We don't provide dependencies here.
 		return null;
 	}
-
 }

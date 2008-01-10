@@ -269,9 +269,10 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			Set resources = getResourcesFrom(currentProject, monitor, 5);
 			// Project external resources should also be added into list. Only
 			// on full build we need to manage this.
-			Set elements = getExternalElementsFrom(scriptProject, monitor, 5);
 			// Call builders for resources.
 			buildResources(resources, monitor, 60);
+			
+			Set elements = getExternalElementsFrom(scriptProject, monitor, 5);
 			List els = new ArrayList();
 			els.addAll(elements);
 			buildElements(els, monitor, 30);
@@ -333,9 +334,9 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			Set actualResourcesToBuild = findDependencies(resources);
 			monitor.done();
 
-			Set elements = getExternalElementsFrom(scriptProject, monitor, 5);
-
 			buildResources(actualResourcesToBuild, monitor, 60);
+			
+			Set elements = getExternalElementsFrom(scriptProject, monitor, 5);
 			List els = new ArrayList();
 			els.addAll(elements);
 			buildElements(els, monitor, 30);

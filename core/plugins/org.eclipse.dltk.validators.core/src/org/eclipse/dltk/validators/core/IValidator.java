@@ -12,6 +12,7 @@ package org.eclipse.dltk.validators.core;
 import java.io.OutputStream;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.core.ISourceModule;
 import org.w3c.dom.Document;
@@ -46,4 +47,6 @@ public interface IValidator {
 	 */
 	void clean(ISourceModule module);
 	void clean(IResource resource);
+	
+	public void setProgressMonitor(IProgressMonitor monitor);
 }

@@ -278,11 +278,11 @@ public abstract class AbstractInterpreterInstallType implements
 						}
 					}
 
+				} catch (IOException e) {
+				} finally {
 					synchronized (lock) {
 						lock.notifyAll();
 					}
-
-				} catch (IOException e) {
 				}
 			}
 		});

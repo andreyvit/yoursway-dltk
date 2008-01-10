@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.ISourceModule;
@@ -62,5 +63,9 @@ public class SimpleValidator extends AbstractValidator {
 		
 	}
 	public void clean(IResource resource) {
+	}
+	public void setProgressMonitor(IProgressMonitor monitor) {
+		// TODO Auto-generated method stub
+		
 	}
 }

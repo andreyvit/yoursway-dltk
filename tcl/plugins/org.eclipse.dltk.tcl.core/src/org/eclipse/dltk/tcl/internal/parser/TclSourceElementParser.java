@@ -8,12 +8,12 @@ import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.tcl.core.TclNature;
 
 public class TclSourceElementParser extends AbstractSourceElementParser {
-	public void parseSourceModule(char[] contents,
-			ISourceModuleInfo astCache, char[] filename) {
+	public void parseSourceModule(char[] contents, ISourceModuleInfo astCache,
+			char[] filename) {
 
 		ModuleDeclaration moduleDeclaration = SourceParserUtil
-		.getModuleDeclaration(filename, contents, TclNature.NATURE_ID,
-				this.getProblemReporter(), astCache);
+				.getModuleDeclaration(filename, contents, TclNature.NATURE_ID,
+						this.getProblemReporter(), astCache);
 
 		TclSourceElementRequestVisitor requestor = createVisitor();
 
@@ -28,6 +28,7 @@ public class TclSourceElementParser extends AbstractSourceElementParser {
 	}
 
 	protected TclSourceElementRequestVisitor createVisitor() {
-		return new TclSourceElementRequestVisitor(this.getRequestor(), this.getProblemReporter());
+		return new TclSourceElementRequestVisitor(this.getRequestor(), this
+				.getProblemReporter());
 	}
 }
