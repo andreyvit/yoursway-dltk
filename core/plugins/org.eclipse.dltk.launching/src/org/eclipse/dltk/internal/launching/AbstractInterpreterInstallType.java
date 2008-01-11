@@ -259,6 +259,9 @@ public abstract class AbstractInterpreterInstallType implements
 	 * @return
 	 */
 	protected String[] readPathsFromProcess(IProgressMonitor monitor, Process p) {
+		DLTKLaunchingPlugin.log(new Status(IStatus.INFO,
+				DLTKLaunchingPlugin.PLUGIN_ID, IStatus.INFO,
+				"Start reading discovery script library paths", null));
 		final BufferedReader dataIn = new BufferedReader(new InputStreamReader(
 				p.getInputStream()));
 
@@ -279,25 +282,55 @@ public abstract class AbstractInterpreterInstallType implements
 					}
 
 				} catch (IOException e) {
+					DLTKLaunchingPlugin.log(new Status(IStatus.INFO,
+							DLTKLaunchingPlugin.PLUGIN_ID, IStatus.INFO,
+							"Failed to read from discovert script output stream:"
+									+ e.getMessage(), e));
 				} finally {
 					synchronized (lock) {
 						lock.notifyAll();
 					}
 				}
+				DLTKLaunchingPlugin.log(new Status(IStatus.INFO,
+						DLTKLaunchingPlugin.PLUGIN_ID, IStatus.INFO,
+						"Successfuly finish reading discovery script library paths:"
+								+ combine(result), null));
 			}
+
 		});
 
 		tReading.start();
 
 		synchronized (lock) {
 			try {
-				lock.wait(10000);
+				lock.wait(100000);
 			} catch (InterruptedException e) {
+				DLTKLaunchingPlugin
+						.log(new Status(
+								IStatus.INFO,
+								DLTKLaunchingPlugin.PLUGIN_ID,
+								IStatus.INFO,
+								"Reading of discovery script library paths are interrupted",
+								e));
 			}
 			p.destroy();
 		}
 
 		return (String[]) result.toArray(new String[result.size()]);
+	}
+
+	/**
+	 * Combine list of strings
+	 * 
+	 * @param result
+	 * @return
+	 */
+	private String combine(List result) {
+		StringBuffer buffer = new StringBuffer();
+		for (int i = 0; i < result.size(); i++) {
+			buffer.append(" " + result.get(i));
+		}
+		return buffer.toString();
 	}
 
 	public static LibraryLocation[] correctLocations(final List locs) {
