@@ -580,4 +580,6 @@ public class PreferenceConstants {
 	
 	public final static String EDITOR_SOURCE_HOVER_BACKGROUND_COLOR_SYSTEM_DEFAULT= "sourceHoverBackgroundColor.SystemDefault";
 	public final static String EDITOR_SOURCE_HOVER_BACKGROUND_COLOR= "sourceHoverBackgroundColor";
+
+	public static final String APPEARANCE_DOCUMENTATION_FONT = "org.eclipse.dltk.ui.documentationFont";
 }

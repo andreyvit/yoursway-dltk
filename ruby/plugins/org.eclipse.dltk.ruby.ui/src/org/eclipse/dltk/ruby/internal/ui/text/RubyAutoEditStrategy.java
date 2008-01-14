@@ -410,6 +410,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 			String line = document.get(c.offset, lineStart + lineLength - c.offset);
 			String indent = indenter.forciblyCalculateLineIndent(document, lineIndex + 1,
 					lineStart, line, c.offset);
+			c.length += getLeadingWhitespaceNumber(line);
 			if (line.trim().equals("}") && c.offset  >= 0 && document.getChar(c.offset -1) == '{') {
 				StringBuffer buf = new StringBuffer(c.text);
 				buf.append(indent);
@@ -425,6 +426,16 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 			e.printStackTrace();		
 			super.customizeDocumentCommand(document, c);
 		}		
+	}
+
+	private int getLeadingWhitespaceNumber(String line) {
+		int i;
+		for (i=0; i<line.length(); i++) {
+			if (line.charAt(i) != ' ' && line.charAt(i) != '\t') {
+				return i;
+			}
+		}
+		return i;
 	}
 
 	private void handeSingleCharacterTyped(IDocument d, DocumentCommand c) {

@@ -22,16 +22,16 @@ import org.eclipse.dltk.core.ICodeAssist;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
 import org.eclipse.dltk.internal.ui.text.HTMLTextPresenter;
 import org.eclipse.dltk.internal.ui.text.ScriptWordFinder;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.IWorkingCopyManager;
 import org.eclipse.dltk.ui.PreferenceConstants;
-import org.eclipse.dltk.ui.actions.IScriptEditorActionDefinitionIds;
+import org.eclipse.dltk.ui.text.completion.HTMLPrinter;
 import org.eclipse.dltk.ui.text.hover.IScriptEditorTextHover;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IInformationControl;
@@ -39,15 +39,12 @@ import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextHoverExtension;
 import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.Region;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.editors.text.EditorsUI;
-import org.eclipse.ui.keys.IBindingService;
 import org.osgi.framework.Bundle;
 
 /**
@@ -59,15 +56,9 @@ public abstract class AbstractScriptEditorTextHover implements
 	/**
 	 * The style sheet (css).
 	 */
-	private static String fgStyleSheet;
+	private static String fgCSSStyles;
 	private IEditorPart fEditor;
 	private IPreferenceStore fStore;
-
-	private IBindingService fBindingService;
-	{
-		fBindingService = (IBindingService) PlatformUI.getWorkbench()
-				.getAdapter(IBindingService.class);
-	}
 
 	public void setPreferenceStore(IPreferenceStore store) {
 		fStore = store;
@@ -243,15 +234,14 @@ public abstract class AbstractScriptEditorTextHover implements
 	 * 
 	 */
 	protected static String getStyleSheet() {
-		if (fgStyleSheet == null) {
+		if (fgCSSStyles == null) {
 			Bundle bundle = Platform.getBundle(DLTKUIPlugin.getPluginId());
-			URL styleSheetURL = bundle
-					.getEntry("/DocumentationHoverStyleSheet.css"); //$NON-NLS-1$
-			if (styleSheetURL != null) {
+			URL url = bundle.getEntry("/DocumentationHoverStyleSheet.css"); //$NON-NLS-1$
+			if (url != null) {
 				try {
-					styleSheetURL = FileLocator.toFileURL(styleSheetURL);
+					url = FileLocator.toFileURL(url);
 					BufferedReader reader = new BufferedReader(
-							new InputStreamReader(styleSheetURL.openStream()));
+							new InputStreamReader(url.openStream()));
 					StringBuffer buffer = new StringBuffer(200);
 					String line = reader.readLine();
 					while (line != null) {
@@ -259,13 +249,18 @@ public abstract class AbstractScriptEditorTextHover implements
 						buffer.append('\n');
 						line = reader.readLine();
 					}
-					fgStyleSheet = buffer.toString();
+					fgCSSStyles = buffer.toString();
 				} catch (IOException ex) {
 					DLTKUIPlugin.log(ex);
-					fgStyleSheet = ""; //$NON-NLS-1$
 				}
 			}
 		}
-		return fgStyleSheet;
+		String css = fgCSSStyles;
+		if (css != null) {
+			FontData fontData = JFaceResources.getFontRegistry().getFontData(
+					PreferenceConstants.APPEARANCE_DOCUMENTATION_FONT)[0];
+			css = HTMLPrinter.convertTopLevelFont(css, fontData);
+		}
+		return css;
 	}
 }

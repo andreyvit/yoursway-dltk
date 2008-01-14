@@ -9,10 +9,15 @@
  *******************************************************************************/
 package org.eclipse.dltk.ui.text.completion;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IModelElement;
@@ -24,6 +29,7 @@ import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.AbstractReusableInformationControlCreator;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.BadPositionCategoryException;
@@ -56,11 +62,13 @@ import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.texteditor.link.EditorLinkedModeUI;
+import org.osgi.framework.Bundle;
 
 public abstract class AbstractScriptCompletionProposal implements
 		IScriptCompletionProposal, ICompletionProposalExtension,
@@ -190,9 +198,9 @@ public abstract class AbstractScriptCompletionProposal implements
 	private IInformationControlCreator fCreator;
 
 	/**
-	 * The URL of the style sheet (css).
+	 * The style sheet (css).
 	 */
-	private URL fStyleSheetURL;
+	private static String fgCSSStyles;
 
 	protected AbstractScriptCompletionProposal() {
 	}
@@ -423,7 +431,7 @@ public abstract class AbstractScriptCompletionProposal implements
 			String info = getProposalInfo().getInfo(null);
 			if (info != null && info.length() > 0) {
 				StringBuffer buffer = new StringBuffer();
-				HTMLPrinter.insertPageProlog(buffer, 0, getStyleSheetURL());
+				HTMLPrinter.insertPageProlog(buffer, 0, getCSSStyles());
 				buffer.append(info);
 				HTMLPrinter.addPageEpilog(buffer);
 				info = buffer.toString();
@@ -441,7 +449,7 @@ public abstract class AbstractScriptCompletionProposal implements
 			String info = getProposalInfo().getInfo(monitor);
 			if (info != null && info.length() > 0) {
 				StringBuffer buffer = new StringBuffer();
-				HTMLPrinter.insertPageProlog(buffer, 0, getStyleSheetURL());
+				HTMLPrinter.insertPageProlog(buffer, 0, getCSSStyles());
 				buffer.append(info);
 				HTMLPrinter.addPageEpilog(buffer);
 				info = buffer.toString();
@@ -456,24 +464,35 @@ public abstract class AbstractScriptCompletionProposal implements
 	 * 
 	 * 
 	 */
-	protected URL getStyleSheetURL() {
-		if (fStyleSheetURL == null) {
-			if (DLTKCore.DEBUG) {
-				System.err
-						.println("TODO: Add AbstractDLTKCompletionProposal Stylesheed.");
+	protected String getCSSStyles() {
+		if (fgCSSStyles == null) {
+			Bundle bundle = Platform.getBundle(DLTKUIPlugin.getPluginId());
+			URL url = bundle.getEntry("/DocumentationHoverStyleSheet.css"); //$NON-NLS-1$
+			if (url != null) {
+				try {
+					url = FileLocator.toFileURL(url);
+					BufferedReader reader = new BufferedReader(
+							new InputStreamReader(url.openStream()));
+					StringBuffer buffer = new StringBuffer(200);
+					String line = reader.readLine();
+					while (line != null) {
+						buffer.append(line);
+						buffer.append('\n');
+						line = reader.readLine();
+					}
+					fgCSSStyles = buffer.toString();
+				} catch (IOException ex) {
+					DLTKUIPlugin.log(ex);
+				}
 			}
-			// Bundle bundle= Platform.getBundle(DLTKUIPlugin.getPluginId());
-			// fStyleSheetURL= bundle.getEntry("/JavadocHoverStyleSheet.css");
-			// //$NON-NLS-1$
-			// if (fStyleSheetURL != null) {
-			// try {
-			// fStyleSheetURL= FileLocator.toFileURL(fStyleSheetURL);
-			// } catch (IOException ex) {
-			// DLTKUIPlugin.log(ex);
-			// }
-			// }
 		}
-		return fStyleSheetURL;
+		String css = fgCSSStyles;
+		if (css != null) {
+			FontData fontData = JFaceResources.getFontRegistry().getFontData(
+					PreferenceConstants.APPEARANCE_DOCUMENTATION_FONT)[0];
+			css = HTMLPrinter.convertTopLevelFont(css, fontData);
+		}
+		return css;
 	}
 
 	/*
@@ -753,7 +772,7 @@ public abstract class AbstractScriptCompletionProposal implements
 		RGB rgb = PreferenceConverter.getColor(preference,
 				PreferenceConstants.CODEASSIST_REPLACEMENT_FOREGROUND);
 		ScriptTextTools textTools = getTextTools();
-		if( textTools == null ) {
+		if (textTools == null) {
 			return null;
 		}
 		return textTools.getColorManager().getColor(rgb);
@@ -868,8 +887,8 @@ public abstract class AbstractScriptCompletionProposal implements
 		repairPresentation(viewer);
 		fRememberedStyleRange = null;
 	}
-		
-	public IInformationControlCreator getInformationControlCreator() {	
+
+	public IInformationControlCreator getInformationControlCreator() {
 		if (fCreator == null) {
 			fCreator = new AbstractReusableInformationControlCreator() {
 
@@ -964,7 +983,7 @@ public abstract class AbstractScriptCompletionProposal implements
 			} catch (ModelException x) {
 				DLTKUIPlugin.log(x);
 			}
-			
+
 		return null;
 	}
 }
