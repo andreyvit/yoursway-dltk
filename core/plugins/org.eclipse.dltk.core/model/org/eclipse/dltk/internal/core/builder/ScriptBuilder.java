@@ -329,31 +329,19 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 		this.lastState = newState;
 		try {
 			monitor.beginTask("Incremental building", 100);
-			long s = System.currentTimeMillis();
-			System.out.println("Find resources:");
+
 			Set resources = getResourcesFrom(delta, monitor, 5);
-			System.out.println("Find resources:" + resources.size() + ":"
-					+ Long.toString(System.currentTimeMillis() - s));
-			s = System.currentTimeMillis();
+			
 			// Call builders for resources.
-			System.out.println("Find dependencies:"
-					+ Long.toString(System.currentTimeMillis() - s));
-			s = System.currentTimeMillis();
 			Set actualResourcesToBuild = findDependencies(resources);
 			monitor.done();
 
 			buildResources(actualResourcesToBuild, monitor, 60);
-			System.out.println("Building resources time:"
-					+ Long.toString(System.currentTimeMillis() - s));
 			//
-			System.out.println("Building external:");
-			s = System.currentTimeMillis();
 			Set elements = getExternalElementsFrom(scriptProject, monitor, 5);
 			List els = new ArrayList();
 			els.addAll(elements);
 			buildElements(els, monitor, 30);
-			System.out.println("Building external time:"
-					+ Long.toString(System.currentTimeMillis() - s));
 		} finally {
 			ModelManager.getModelManager().setLastBuiltState(currentProject,
 					this.lastState);
