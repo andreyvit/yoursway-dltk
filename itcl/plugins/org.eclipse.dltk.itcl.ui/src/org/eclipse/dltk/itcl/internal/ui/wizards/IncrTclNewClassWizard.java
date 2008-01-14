@@ -41,7 +41,7 @@ public class IncrTclNewClassWizard extends NewSourceModuleWizard {
 				String text = getFileText();
 				String className = Character.toUpperCase(text.charAt(0))
 						+ text.substring(1);
-				return IncrTclWizardMessages.XOTcl_module_prefix + "Class " + className + "\n";
+				return IncrTclWizardMessages.XOTcl_module_prefix + "class " + className + " {\n}\n";
 			}
 		};
 	}
