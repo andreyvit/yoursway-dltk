@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.eclipse.dltk.itcl.core.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: %pluginProvider
+Require-Bundle: org.eclipse.core.runtime,
+ org.junit,
+ org.eclipse.dltk.xotcl.core,
+ org.eclipse.dltk.core,
+ org.eclipse.dltk.tcl.core,
+ org.eclipse.dltk.core.tests,
+ org.eclipse.core.resources
+Eclipse-LazyStart: true
+Bundle-RequiredExecutionEnvironment: J2SE-1.4
