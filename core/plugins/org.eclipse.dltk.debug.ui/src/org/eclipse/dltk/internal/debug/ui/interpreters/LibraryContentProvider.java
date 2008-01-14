@@ -21,12 +21,11 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 
-
 public class LibraryContentProvider implements ITreeContentProvider {
-	
+
 	private Viewer fViewer;
-	
-	private LibraryStandin[] fLibraries= new LibraryStandin[0];
+
+	private LibraryStandin[] fLibraries = new LibraryStandin[0];
 
 	public void dispose() {
 	}
@@ -39,11 +38,15 @@ public class LibraryContentProvider implements ITreeContentProvider {
 		return fLibraries;
 	}
 
-
 	public void setLibraries(LibraryLocation[] libs) {
-		fLibraries = new LibraryStandin[libs.length];
-		for (int i = 0; i < libs.length; i++) {
-			fLibraries[i] = new LibraryStandin(libs[i]);
+		if (libs != null) {
+			fLibraries = new LibraryStandin[libs.length];
+			for (int i = 0; i < libs.length; i++) {
+				fLibraries[i] = new LibraryStandin(libs[i]);
+			}
+		}
+		else {
+			fLibraries = new LibraryStandin[0];
 		}
 		fViewer.refresh();
 	}
@@ -57,13 +60,13 @@ public class LibraryContentProvider implements ITreeContentProvider {
 	}
 
 	/**
-	 * Returns the list of libraries in the given selection. SubElements
-	 * are replaced by their parent libraries.
+	 * Returns the list of libraries in the given selection. SubElements are
+	 * replaced by their parent libraries.
 	 */
 	private Set getSelectedLibraries(IStructuredSelection selection) {
-		Set libraries= new HashSet();
-		for (Iterator iter= selection.iterator(); iter.hasNext();) {
-			Object element= iter.next();
+		Set libraries = new HashSet();
+		for (Iterator iter = selection.iterator(); iter.hasNext();) {
+			Object element = iter.next();
 			if (element instanceof LibraryStandin) {
 				libraries.add(element);
 			}
@@ -75,12 +78,12 @@ public class LibraryContentProvider implements ITreeContentProvider {
 	 * Move the libraries of the given selection up.
 	 */
 	public void up(IStructuredSelection selection) {
-		Set libraries= getSelectedLibraries(selection);
-		for (int i= 0; i < fLibraries.length - 1; i++) {
+		Set libraries = getSelectedLibraries(selection);
+		for (int i = 0; i < fLibraries.length - 1; i++) {
 			if (libraries.contains(fLibraries[i + 1])) {
-				LibraryStandin temp= fLibraries[i];
-				fLibraries[i]= fLibraries[i + 1];
-				fLibraries[i + 1]= temp;
+				LibraryStandin temp = fLibraries[i];
+				fLibraries[i] = fLibraries[i + 1];
+				fLibraries[i + 1] = temp;
 			}
 		}
 		fViewer.refresh();
@@ -91,12 +94,12 @@ public class LibraryContentProvider implements ITreeContentProvider {
 	 * Move the libraries of the given selection down.
 	 */
 	public void down(IStructuredSelection selection) {
-		Set libraries= getSelectedLibraries(selection);
-		for (int i= fLibraries.length - 1; i > 0; i--) {
+		Set libraries = getSelectedLibraries(selection);
+		for (int i = fLibraries.length - 1; i > 0; i--) {
 			if (libraries.contains(fLibraries[i - 1])) {
-				LibraryStandin temp= fLibraries[i];
-				fLibraries[i]= fLibraries[i - 1];
-				fLibraries[i - 1]= temp;
+				LibraryStandin temp = fLibraries[i];
+				fLibraries[i] = fLibraries[i - 1];
+				fLibraries[i - 1] = temp;
 			}
 		}
 		fViewer.refresh();
@@ -116,15 +119,16 @@ public class LibraryContentProvider implements ITreeContentProvider {
 			Object element = iterator.next();
 			if (element instanceof LibraryStandin) {
 				newLibraries.remove(element);
-			} 
+			}
 		}
-		fLibraries= (LibraryStandin[]) newLibraries.toArray(new LibraryStandin[newLibraries.size()]);
+		fLibraries = (LibraryStandin[]) newLibraries
+				.toArray(new LibraryStandin[newLibraries.size()]);
 		fViewer.refresh();
 	}
 
 	/**
-	 * Add the given libraries before the selection, or after the existing libraries
-	 * if the selection is empty.
+	 * Add the given libraries before the selection, or after the existing
+	 * libraries if the selection is empty.
 	 */
 	public void add(LibraryLocation[] libs, IStructuredSelection selection) {
 		List newLibraries = new ArrayList(fLibraries.length + libs.length);
@@ -138,12 +142,13 @@ public class LibraryContentProvider implements ITreeContentProvider {
 		if (selection.isEmpty()) {
 			newLibraries.addAll(toAdd);
 		} else {
-			Object element= selection.getFirstElement();
-			LibraryStandin firstLib = (LibraryStandin) element;			 
+			Object element = selection.getFirstElement();
+			LibraryStandin firstLib = (LibraryStandin) element;
 			int index = newLibraries.indexOf(firstLib);
 			newLibraries.addAll(index, toAdd);
 		}
-		fLibraries= (LibraryStandin[]) newLibraries.toArray(new LibraryStandin[newLibraries.size()]);
+		fLibraries = (LibraryStandin[]) newLibraries
+				.toArray(new LibraryStandin[newLibraries.size()]);
 		fViewer.refresh();
 		fViewer.setSelection(new StructuredSelection(libs), true);
 	}
@@ -171,5 +176,5 @@ public class LibraryContentProvider implements ITreeContentProvider {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 }

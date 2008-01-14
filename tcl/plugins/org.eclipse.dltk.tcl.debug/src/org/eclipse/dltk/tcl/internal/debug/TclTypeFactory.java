@@ -7,7 +7,7 @@ import org.eclipse.dltk.debug.core.model.IScriptTypeFactory;
 
 
 public class TclTypeFactory implements IScriptTypeFactory {
-	private static final String[] atomicTypes = { };
+	private static final String[] atomicTypes = { "string" };
 	
 	public TclTypeFactory() {
 		
