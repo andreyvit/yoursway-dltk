@@ -1,0 +1,11 @@
+
+! itcl
+! Copyright (c) 2004, 2007 xored software, Inc.
+!
+! $Id: itcl.map,v 1.1 2008/01/14 13:17:42 aplatov Exp $ 
+
+feature@org.eclipse.dltk.itcl=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/itcl/features/org.eclipse.dltk.itcl-feature
+feature@org.eclipse.dltk.itcl.sdk=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/itcl/features/org.eclipse.dltk.itcl.sdk
+
+plugin@org.eclipse.dltk.itcl.core=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/itcl/plugins/org.eclipse.dltk.itcl.core
+plugin@org.eclipse.dltk.itcl.ui=HEAD,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/itcl/plugins/org.eclipse.dltk.itcl.ui
