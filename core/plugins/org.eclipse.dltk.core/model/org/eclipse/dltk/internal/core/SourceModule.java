@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.DLTKCore;
@@ -422,8 +423,11 @@ public class SourceModule extends AbstractSourceModule implements ISourceModule 
 	 */
 	protected char[] getBufferContent() throws ModelException {
 		IFile file = (IFile) this.getResource();
-		if (file == null || !file.exists())
-			throw newNotPresentException();
+		if (file == null || !file.exists()) {
+			// throw newNotPresentException();
+			// initialize buffer with empty contents
+			return CharOperation.NO_CHAR;
+		}
 
 		return Util.getResourceContentsAsCharArray(file);
 	}

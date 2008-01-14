@@ -122,14 +122,17 @@ public class DLTKLaunchingPlugin extends Plugin implements
 		log(new Status(IStatus.ERROR, getUniqueIdentifier(), IStatus.ERROR,
 				message, null));
 	}
+
 	public static void logWarning(String message) {
 		log(new Status(IStatus.WARNING, getUniqueIdentifier(), IStatus.ERROR,
 				message, null));
 	}
+
 	public static void logWarning(Throwable t) {
-		log(new Status(IStatus.WARNING, getUniqueIdentifier(), IStatus.ERROR,
-				t.getMessage(), t));
+		log(new Status(IStatus.WARNING, getUniqueIdentifier(), IStatus.ERROR, t
+				.getMessage(), t));
 	}
+
 	public static void logWarning(String message, Throwable t) {
 		log(new Status(IStatus.WARNING, getUniqueIdentifier(), IStatus.ERROR,
 				message, t));
@@ -139,8 +142,10 @@ public class DLTKLaunchingPlugin extends Plugin implements
 		log(new Status(IStatus.ERROR, getUniqueIdentifier(), IStatus.ERROR, e
 				.getMessage(), e));
 	}
+
 	public static void log(String message, Throwable e) {
-		log(new Status(IStatus.ERROR, getUniqueIdentifier(), IStatus.ERROR, message, e));
+		log(new Status(IStatus.ERROR, getUniqueIdentifier(), IStatus.ERROR,
+				message, e));
 	}
 
 	/**
@@ -327,7 +332,7 @@ public class DLTKLaunchingPlugin extends Plugin implements
 			}
 
 		};
-//		libPrefetch.setSystem(true);
+		// libPrefetch.setSystem(true);
 		libPrefetch.schedule();
 	}
 

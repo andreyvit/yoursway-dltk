@@ -13,9 +13,7 @@ public class XOTclUI extends AbstractUIPlugin {
 
 	// The shared instance
 	private static XOTclUI plugin;
-
-	XOTclTextTools fTools;
-
+	
 	/**
 	 * The constructor
 	 */
@@ -50,12 +48,4 @@ public class XOTclUI extends AbstractUIPlugin {
 	public static XOTclUI getDefault() {
 		return plugin;
 	}
-
-	public XOTclTextTools getTextTools() {
-		if (fTools == null) {
-			fTools = new XOTclTextTools(true);
-		}
-		return fTools;
-	}
-
 }

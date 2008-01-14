@@ -11,9 +11,11 @@ package org.eclipse.dltk.internal.core.mixin;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -59,6 +61,9 @@ public class MixinBuilder implements IScriptBuilder {
 
 	public IStatus[] buildModelElements(IScriptProject project, List elements,
 			final IProgressMonitor monitor, boolean saveIndex) {
+		if (elements.size() == 0) {
+			return null;
+		}
 		IndexManager manager = ModelManager.getModelManager().getIndexManager();
 		final int elementsSize = elements.size();
 		IDLTKLanguageToolkit toolkit = null;
@@ -162,8 +167,8 @@ public class MixinBuilder implements IScriptBuilder {
 				currentIndex.remove(containerRelativePath);
 				((InternalSearchDocument) document).setIndex(currentIndex);
 
-				new MixinIndexer(document, element,
-						currentIndex).indexDocument();
+				new MixinIndexer(document, element, currentIndex)
+						.indexDocument();
 				monitor.worked(1);
 			}
 			monitor.done();
@@ -172,29 +177,36 @@ public class MixinBuilder implements IScriptBuilder {
 				e.printStackTrace();
 			}
 		} finally {
+			final Set saveIndexesSet = new HashSet();
+
 			if (mixinIndex != null) {
-				imon.exitWrite();
 				if (saveIndex) {
-					try {
-						manager.saveIndex(mixinIndex);
-					} catch (IOException e) {
-						if (DLTKCore.DEBUG) {
-							e.printStackTrace();
-						}
-					}
+					saveIndexesSet.add(mixinIndex);
+				} else {
+					imon.exitWrite();
 				}
 			}
 			Iterator iterator = indexes.values().iterator();
 			while (iterator.hasNext()) {
 				Index index = (Index) iterator.next();
-				index.monitor.exitWrite();
 				if (saveIndex) {
+					saveIndexesSet.add(index);
+				} else {
+					index.monitor.exitWrite();
+				}
+			}
+			if (saveIndex) {
+
+				for (Iterator ind = saveIndexesSet.iterator(); ind.hasNext();) {
+					Index index = (Index) ind.next();
 					try {
-						manager.saveIndex(index);
+						index.save();
 					} catch (IOException e) {
 						if (DLTKCore.DEBUG) {
 							e.printStackTrace();
 						}
+					} finally {
+						index.monitor.exitWrite();
 					}
 				}
 			}
