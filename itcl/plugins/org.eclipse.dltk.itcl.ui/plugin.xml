@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+<extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+             category="org.eclipse.dltk.tcl.ui"
+             class="org.eclipse.dltk.itcl.internal.ui.wizards.IncrTclNewFileWizard"
+             icon="$nl$/icons/etool16/newfile_wiz.gif"
+             id="org.eclipse.dltk.itcl.wizards.newfile"
+             name="%NewFileWizard.name">
+          <description>%NewFileWizard.description</description>
+       </wizard>
+       <wizard
+             category="org.eclipse.dltk.tcl.ui"
+             class="org.eclipse.dltk.itcl.internal.ui.wizards.IncrTclNewClassWizard"
+             icon="$nl$/icons/etool16/newclass_wiz.gif"
+             id="org.eclipse.dltk.itcl.wizards.newclass"
+             name="%NewClassWizard.name">
+          <description>%NewClassWizard.description</description>
+       </wizard>
+	</extension>
+<extension
+      point="org.eclipse.ui.perspectiveExtensions">
+   <perspectiveExtension
+         targetID="org.eclipse.dltk.tcl.ui.TclPerspective">
+      <newWizardShortcut
+            id="org.eclipse.dltk.itcl.wizards.newfile">
+      </newWizardShortcut>
+      <newWizardShortcut
+            id="org.eclipse.dltk.itcl.wizards.newclass">
+      </newWizardShortcut>
+   </perspectiveExtension>
+</extension>
+<extension
+      point="org.eclipse.ui.actionSetPartAssociations">
+   <actionSetPartAssociation
+         targetID="org.eclipse.dltk.itcl.ui.itcl">
+      <part
+            id="org.eclipse.dltk.tcl.ui.editor.TclEditor">
+      </part>
+   </actionSetPartAssociation>
+</extension>
+</plugin>
