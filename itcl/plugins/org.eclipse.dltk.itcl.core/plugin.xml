@@ -25,6 +25,14 @@
             class="org.eclipse.dltk.itcl.internal.core.parser.processors.IncrTclEnsembleCommandProcessor"
             id="#itcl#ensemble">
       </processor>
+      <processor
+            class="org.eclipse.dltk.itcl.internal.core.parser.processors.IncrTclClassNewInstanceCommandProcessor"
+            id="#itcl#$newInstance">
+      </processor>
+      <processor
+            class="org.eclipse.dltk.itcl.internal.core.parser.processors.IncrTclClassMethodCallCommandProcessor"
+            id="#itcl#$methodCall">
+      </processor>
    </extension>
    <extension
          point="org.eclipse.dltk.tcl.core.tclExtension">

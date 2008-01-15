@@ -1,4 +1,4 @@
-package org.eclipse.dltk.xotcl.internal.core.parser.processors.xotcl;
+package org.eclipse.dltk.itcl.internal.core.parser.processors;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.FieldDeclaration;
@@ -6,15 +6,16 @@ import org.eclipse.dltk.ast.expressions.CallArgumentsList;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
+import org.eclipse.dltk.itcl.internal.core.parser.ast.IncrTclMethodCallStatement;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
-import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodCallStatement;
 
-public class XOTclClassMethodCallProcessor extends AbstractTclCommandProcessor {
+public class IncrTclClassMethodCallCommandProcessor extends
+		AbstractTclCommandProcessor {
 
-	public XOTclClassMethodCallProcessor() {
+	public IncrTclClassMethodCallCommandProcessor() {
 	}
 
 	public ASTNode process(TclCommand command, ITclParser parser, int offset,
@@ -40,7 +41,7 @@ public class XOTclClassMethodCallProcessor extends AbstractTclCommandProcessor {
 				args.addNode(statement.getAt(i));
 			}
 		}
-		XOTclMethodCallStatement call = new XOTclMethodCallStatement(statement
+		IncrTclMethodCallStatement call = new IncrTclMethodCallStatement(statement
 				.sourceStart(), statement.sourceEnd(), name, inst, args);
 		call.setInstNameRef((SimpleReference) statement.getAt(0));
 		call.setStart(statement.sourceStart());
@@ -48,4 +49,5 @@ public class XOTclClassMethodCallProcessor extends AbstractTclCommandProcessor {
 		this.addToParent(parent, call);
 		return call;
 	}
+
 }

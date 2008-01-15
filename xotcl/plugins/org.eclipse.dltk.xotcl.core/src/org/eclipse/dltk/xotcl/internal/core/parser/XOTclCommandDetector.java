@@ -12,6 +12,7 @@ import org.eclipse.dltk.tcl.core.ITclCommandDetector;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
+import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
 import org.eclipse.dltk.xotcl.core.XOTclParseUtil;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclObjectDeclaration;
 import org.eclipse.dltk.xotcl.internal.core.XOTclKeywords;
@@ -84,7 +85,7 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 		Expression arg = statement.getAt(1);
 		if (type != null) {
 			if (arg instanceof SimpleReference) {
-				return check(type, arg);
+				return check(type, (SimpleReference)arg);
 			}
 		}
 
@@ -101,7 +102,7 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 			// Method call
 			return new CommandInfo("#Class#$ProcCall", type);
 		}
-		// Letch check possibly this is method call for existing instance
+		// Lets check possibly this is method call for existing instance
 		// variable.
 		FieldDeclaration variable = XOTclParseUtil
 				.findXOTclInstanceVariableDeclarationFrom(module, parent,
@@ -110,8 +111,7 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 			// Add support of procs etc.
 			return new CommandInfo("#Class#$MethodCall", variable);
 		}
-		// Eurictics
-
+		
 		// Class instance field declaration
 		if( statement.getCount() < 3) {
 			return null;
@@ -135,8 +135,11 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 		return null;
 	}
 
-	private CommandInfo check(TypeDeclaration type, Expression arg) {
-		String value = ((SimpleReference) arg).getName();
+	private CommandInfo check(TypeDeclaration type, SimpleReference arg) {
+		if( (type.getModifiers() & IXOTclModifiers.AccXOTcl) == 0) {
+			return null;
+		}
+		String value = arg.getName();
 		if (!value.equals("create")) {
 			CommandInfo info = checkCommands(value, type);
 			if (info != null) {

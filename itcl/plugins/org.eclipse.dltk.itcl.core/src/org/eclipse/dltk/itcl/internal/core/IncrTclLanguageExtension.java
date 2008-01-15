@@ -1,5 +1,6 @@
 package org.eclipse.dltk.itcl.internal.core;
 
+import org.eclipse.dltk.itcl.internal.core.search.mixin.IncrTclMixinBuildVisitorExtension;
 import org.eclipse.dltk.tcl.core.extensions.ICompletionExtension;
 import org.eclipse.dltk.tcl.core.extensions.IMatchLocatorExtension;
 import org.eclipse.dltk.tcl.core.extensions.IMixinBuildVisitorExtension;
@@ -23,7 +24,7 @@ public class IncrTclLanguageExtension implements ITclLanguageExtension {
 	}
 
 	public IMixinBuildVisitorExtension createMixinBuildVisitorExtension() {
-		return null;
+		return new IncrTclMixinBuildVisitorExtension();
 	}
 
 	public ISelectionExtension createSelectionExtension() {

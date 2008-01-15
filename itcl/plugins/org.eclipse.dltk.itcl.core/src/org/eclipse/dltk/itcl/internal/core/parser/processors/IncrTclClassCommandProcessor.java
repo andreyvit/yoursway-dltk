@@ -11,12 +11,13 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.itcl.internal.core.IIncrTclModifiers;
+import org.eclipse.dltk.itcl.internal.core.parser.ast.IncrTclFieldDeclaration;
+import org.eclipse.dltk.itcl.internal.core.parser.ast.IncrTclMethodDeclaration;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
-import org.eclipse.dltk.tcl.core.ast.TclVariableDeclaration;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
 public class IncrTclClassCommandProcessor extends AbstractTclCommandProcessor {
@@ -73,8 +74,8 @@ public class IncrTclClassCommandProcessor extends AbstractTclCommandProcessor {
 					}
 				}
 			}
+			return type;
 		}
-
 		return null;
 	}
 
@@ -193,17 +194,18 @@ public class IncrTclClassCommandProcessor extends AbstractTclCommandProcessor {
 		}
 		SimpleReference variable = TclParseUtil.makeVariable(variableName);
 		if (variable != null) {
-			TclVariableDeclaration var = new TclVariableDeclaration(variable,
-					variableValue, statement.sourceStart(), statement
-							.sourceEnd());
+			IncrTclFieldDeclaration var = new IncrTclFieldDeclaration(variable
+					.getName(), variable.sourceStart(), variable.sourceEnd(),
+					statement.sourceStart(), statement.sourceEnd());
 			var.setModifier(IIncrTclModifiers.AccIncrTcl | modifier);
+			var.setDeclaringType(type);
 			this.addToParent(type, var);
 		}
 	}
 
 	private void handleArray(TclStatement statement, TypeDeclaration type,
 			int modifier) {
-//		processVariable(statement, type, modifier, parser);
+		// processVariable(statement, type, modifier, parser);
 	}
 
 	private void handleCommon(TclStatement statement, TypeDeclaration type,
@@ -219,9 +221,11 @@ public class IncrTclClassCommandProcessor extends AbstractTclCommandProcessor {
 		}
 		SimpleReference variable = TclParseUtil.makeVariable(variableName);
 		if (variable != null) {
-			TclVariableDeclaration var = new TclVariableDeclaration(variable,
-					null, statement.sourceStart(), statement.sourceEnd());
+			IncrTclFieldDeclaration var = new IncrTclFieldDeclaration(variable
+					.getName(), variable.sourceStart(), variable.sourceEnd(),
+					statement.sourceStart(), statement.sourceEnd());
 			var.setModifier(IIncrTclModifiers.AccIncrTcl | modifier);
+			var.setDeclaringType(type);
 			this.addToParent(type, var);
 		}
 	}
@@ -261,8 +265,8 @@ public class IncrTclClassCommandProcessor extends AbstractTclCommandProcessor {
 
 		List arguments = IncrTclUtils.extractMethodArguments(procArguments);
 
-		MethodDeclaration method = new MethodDeclaration(statement
-				.sourceStart(), statement.sourceEnd());
+		IncrTclMethodDeclaration method = new IncrTclMethodDeclaration(
+				statement.sourceStart(), statement.sourceEnd());
 		method.setName(sName);
 		method.setNameStart(procName.sourceStart());
 		method.setNameEnd(procName.sourceEnd());
