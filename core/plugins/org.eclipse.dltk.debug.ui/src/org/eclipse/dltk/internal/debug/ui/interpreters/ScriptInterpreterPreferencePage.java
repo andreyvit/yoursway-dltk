@@ -10,8 +10,6 @@
 package org.eclipse.dltk.internal.debug.ui.interpreters;
 
 
-import java.io.File;
-
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -22,7 +20,6 @@ import org.eclipse.dltk.debug.ui.IDLTKDebugUIConstants;
 import org.eclipse.dltk.debug.ui.interpreters.InterpretersUpdater;
 import org.eclipse.dltk.internal.debug.ui.IScriptDebugHelpContextIds;
 import org.eclipse.dltk.launching.IInterpreterInstall;
-import org.eclipse.dltk.launching.LibraryLocation;
 import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -177,11 +174,12 @@ public abstract class ScriptInterpreterPreferencePage extends PreferencePage imp
 	private void verifyDefaultInterpreter(IInterpreterInstall Interpreter) {
 		if (Interpreter != null) {			
 			// Verify that all of the specified Interpreter's library locations actually exist
-			LibraryLocation[] locations= ScriptRuntime.getLibraryLocations(Interpreter);
+//			LibraryLocation[] locations= ScriptRuntime.getLibraryLocations(Interpreter);
 			boolean exist = true;
-			for (int i = 0; i < locations.length; i++) {
-				exist = exist && new File(locations[i].getLibraryPath().toOSString()).exists();
-			}
+			exist = Interpreter.getInstallLocation().exists();
+//			for (int i = 0; i < locations.length; i++) {
+//				exist = exist && new File(locations[i].getLibraryPath().toOSString()).exists();
+//			}
 			
 			// If all library locations exist, check the corresponding entry in the list,
 			// otherwise remove the Interpreter
