@@ -19,6 +19,7 @@ import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuffer;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.IProblemRequestor;
@@ -404,7 +405,11 @@ public class SourceModule extends AbstractSourceModule implements ISourceModule 
 		IResource resource = this.getResource();
 		Object lookup = (resource == null) ? (Object) getPath() : resource;
 
-		return lookupLanguageToolkit(lookup).getNatureId();
+		IDLTKLanguageToolkit lookupLanguageToolkit = lookupLanguageToolkit(lookup);
+		if( lookupLanguageToolkit == null ) {
+			return null;
+		}
+		return lookupLanguageToolkit.getNatureId();
 	}
 
 	/*

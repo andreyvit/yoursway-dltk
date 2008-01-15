@@ -91,22 +91,24 @@ public class ScriptDetailFormattersManager {
 					final IScriptEvaluationCommand command = value
 							.createEvaluationCommand(formatter.getSnippet(),
 									thread);
+					if (command != null) {
+						command.asyncEvaluate(new IScriptEvaluationListener() {
+							public void evaluationComplete(
+									IScriptEvaluationResult result) {
+								if (result == null)
+									return;
 
-					command.asyncEvaluate(new IScriptEvaluationListener() {
-						public void evaluationComplete(
-								IScriptEvaluationResult result) {
-							if (result == null)
-								return;
-
-							IScriptValue resultValue = result.getValue();
-							if (resultValue != null) {
-								listener.detailComputed(value,
-										getValueText(resultValue));
-							} else {
-								listener.detailComputed(value, CANNOT_EVALUATE);
+								IScriptValue resultValue = result.getValue();
+								if (resultValue != null) {
+									listener.detailComputed(value,
+											getValueText(resultValue));
+								} else {
+									listener.detailComputed(value,
+											CANNOT_EVALUATE);
+								}
 							}
-						}
-					});
+						});
+					}
 				}
 			}
 		};

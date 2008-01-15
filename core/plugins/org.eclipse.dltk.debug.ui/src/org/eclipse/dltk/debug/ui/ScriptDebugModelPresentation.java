@@ -232,7 +232,7 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	public String getVariableText(IScriptVariable variable) {
 		try {
 			String name = variable.getName();
-			IScriptValue value = (IScriptValue) variable.getValue();			
+			IScriptValue value = (IScriptValue) variable.getValue();
 			if (value != null) {
 				String valueText = getValueText(value);
 				if (valueText != null && valueText.length() > 0) {
@@ -257,7 +257,8 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		return value.toString();
 	}
 
-	protected String renderUnknownValue(IScriptValue value) throws DebugException {
+	protected String renderUnknownValue(IScriptValue value)
+			throws DebugException {
 		return value.getValueString();
 	}
 
@@ -293,34 +294,24 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			} else if (breakpoint instanceof IScriptExceptionBreakpoint) {
 				IScriptExceptionBreakpoint b = (IScriptExceptionBreakpoint) breakpoint;
 				String typeName = b.getTypeName();
-				if(b.isSuspendOnSubclasses()) {
+				if (b.isSuspendOnSubclasses()) {
 					typeName += " [Include Subclasses]";
 				}
 
-				sb.append(MessageFormat
-						.format("{0}: {1}", new Object[] {
-								language, typeName}));
+				sb.append(MessageFormat.format("{0}: {1}", new Object[] {
+						language, typeName }));
 
-				
-				/* TODO: Uncomment this comment when add support for
-				 * caught and uncaught exceptions
-				   
-				String state;
-				boolean c= b.isCaught();
-				boolean u= b.isUncaught();
-				if (c && u) {
-					state= "caught and uncaught"; 
-				} else if (c) {
-					state= "caught"; 
-				} else if (u) {
-					state= "uncaught"; 
-				} else {
-					state= ": must specify caught or uncaught exception";
-				}
-				sb.append(MessageFormat
-						.format("{0}: {1}: {2}", new Object[] {
-								language, typeName, state}));
-				*/
+				/*
+				 * TODO: Uncomment this comment when add support for caught and
+				 * uncaught exceptions
+				 * 
+				 * String state; boolean c= b.isCaught(); boolean u=
+				 * b.isUncaught(); if (c && u) { state= "caught and uncaught"; }
+				 * else if (c) { state= "caught"; } else if (u) { state=
+				 * "uncaught"; } else { state= ": must specify caught or
+				 * uncaught exception"; } sb.append(MessageFormat .format("{0}:
+				 * {1}: {2}", new Object[] { language, typeName, state}));
+				 */
 			}
 
 			if (hitCount != -1) {
@@ -376,13 +367,14 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 
 	// Details
 	public void computeDetail(IValue value, IValueDetailListener listener) {
-		IScriptDebugTarget target = (IScriptDebugTarget)value.getDebugTarget();
+		IScriptDebugTarget target = (IScriptDebugTarget) value.getDebugTarget();
 		IScriptThread thread = getEvaluationThread(target);
 		if (thread == null) {
-			listener.detailComputed(value, getValueText((IScriptValue) value)); 
+			listener.detailComputed(value, getValueText((IScriptValue) value));
 		} else {
 			String natureId = target.getLanguageToolkit().getNatureId();
-			ScriptDetailFormattersManager.getDefault(natureId).computeValueDetail((IScriptValue)value, thread, listener);
+			ScriptDetailFormattersManager.getDefault(natureId)
+					.computeValueDetail((IScriptValue) value, thread, listener);
 		}
 	}
 
@@ -429,8 +421,7 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		} else if (element instanceof ILineBreakpoint) {
 			return new FileEditorInput((IFile) ((ILineBreakpoint) element)
 					.getMarker().getResource());
-		}
-		else if( element instanceof IStorage ) {
+		} else if (element instanceof IStorage) {
 			return new ExternalStorageEditorInput((IStorage) element);
 		}
 		return null;

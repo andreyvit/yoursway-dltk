@@ -781,15 +781,7 @@ public class DefaultRubyParser {
     */
   public void yyerror (String message, String[] expected, String found) {
     StringBuffer text = new StringBuffer(message);
-
-    if (expected != null && expected.length > 0) {
-      text.append(", expecting");
-      for (int n = 0; n < expected.length; ++ n) {
-        text.append("\t").append(expected[n]);
-      }
-      text.append(" but found " + found + " instead\n");
-    }
-
+    text.append(", unexpected " + found + "\n");
     throw new SyntaxException(getPosition(null), text.toString());
   }
 

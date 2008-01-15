@@ -286,17 +286,23 @@ public abstract class AbstractInterpreterEnvironmentVariablesBlock implements
 		 * (source == fDownButton) { fEnvironmentVariablesContentProvider
 		 * .down((IStructuredSelection) fLibraryViewer.getSelection()); } else
 		 */if (source == fRemoveButton) {
+			EnvironmentVariable[] old = this.fEnvironmentVariablesContentProvider
+					.getVariables();
 			fEnvironmentVariablesContentProvider
 					.remove((IStructuredSelection) fVariablesViewer
 							.getSelection());
-			fDialog.validateInterpreterLocation();
+			fDialog.updateLibraries(this.fEnvironmentVariablesContentProvider
+					.getVariables(), old);
 		} else if (source == fAddExistedButton) {
 			addExisted((IStructuredSelection) fVariablesViewer.getSelection());
 		} else if (source == fAddButton) {
 			add((IStructuredSelection) fVariablesViewer.getSelection());
 		} else if (source == fEditButton) {
+			EnvironmentVariable[] old = this.fEnvironmentVariablesContentProvider
+					.getVariables();
 			edit((IStructuredSelection) fVariablesViewer.getSelection());
-			fDialog.validateInterpreterLocation();
+			fDialog.updateLibraries(this.fEnvironmentVariablesContentProvider
+					.getVariables(), old);
 		}
 		/*
 		 * else if (source == fDefaultButton) { restoreDefaultVariables(); }
@@ -344,7 +350,11 @@ public abstract class AbstractInterpreterEnvironmentVariablesBlock implements
 		EnvironmentVariable[] libs = add();
 		if (libs == null)
 			return;
+		EnvironmentVariable[] old = this.fEnvironmentVariablesContentProvider
+				.getVariables();
 		fEnvironmentVariablesContentProvider.add(libs, selection);
+		fDialog.updateLibraries(this.fEnvironmentVariablesContentProvider
+				.getVariables(), old);
 		update();
 	}
 
@@ -373,7 +383,11 @@ public abstract class AbstractInterpreterEnvironmentVariablesBlock implements
 		EnvironmentVariable[] libs = addExisted();
 		if (libs == null)
 			return;
+		EnvironmentVariable[] old = this.fEnvironmentVariablesContentProvider
+				.getVariables();
 		fEnvironmentVariablesContentProvider.add(libs, selection);
+		fDialog.updateLibraries(this.fEnvironmentVariablesContentProvider
+				.getVariables(), old);
 		update();
 	}
 
@@ -444,7 +458,6 @@ public abstract class AbstractInterpreterEnvironmentVariablesBlock implements
 
 	protected void updateDialogStatus(IStatus status) {
 		fDialog.setSystemLibraryStatus(status);
-		fDialog.validateInterpreterLocation();
 		fDialog.updateStatusLine();
 	}
 

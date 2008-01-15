@@ -539,4 +539,13 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 		return null;
 	}
 
+	/**
+	 * Re discover libraries if environment variables are changed.
+	 * 
+	 * @param environmentVariables
+	 */
+	public void updateLibraries(EnvironmentVariable[] newVars,
+			EnvironmentVariable[] oldVars) {
+		fLibraryBlock.reDiscover(newVars, oldVars);
+	}
 }

@@ -11,7 +11,13 @@ package org.eclipse.dltk.internal.debug.ui.interpreters;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -20,6 +26,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.debug.ui.IDLTKDebugUIConstants;
+import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.LibraryLocation;
@@ -146,6 +153,15 @@ public abstract class AbstractInterpreterLibraryBlock implements
 	 * The "default" button has been toggled
 	 */
 	public void restoreDefaultLibraries() {
+		LibraryLocation[] libs = getLibrariesWithEnvironment(fDialog
+				.getEnvironmentVariables());
+		if (libs != null)
+			fLibraryContentProvider.setLibraries(libs);
+		update();
+	}
+
+	private LibraryLocation[] getLibrariesWithEnvironment(
+			final EnvironmentVariable[] environmentVariables) {
 		final LibraryLocation[][] libs = new LibraryLocation[][] { null };
 		final File installLocation = getHomeDirectory();
 		if (installLocation == null) {
@@ -160,7 +176,7 @@ public abstract class AbstractInterpreterLibraryBlock implements
 							InterruptedException {
 						libs[0] = getInterpreterInstallType()
 								.getDefaultLibraryLocations(installLocation,
-										fDialog.getEnvironmentVariables());
+										environmentVariables);
 					}
 
 				});
@@ -169,11 +185,8 @@ public abstract class AbstractInterpreterLibraryBlock implements
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-
 		}
-		if (libs != null)
-			fLibraryContentProvider.setLibraries(libs[0]);
-		update();
+		return libs[0];
 	}
 
 	/**
@@ -443,4 +456,82 @@ public abstract class AbstractInterpreterLibraryBlock implements
 		return lib;
 	}
 
+	/**
+	 * Rediscover using following technicue:
+	 * 
+	 * 1) Keep all user added entries.
+	 * 
+	 * 2) Remove all default entries.
+	 * 
+	 * 3) Rediscover
+	 * 
+	 * 4) Add all new entries to list.
+	 * 
+	 * @param environmentVariables
+	 * @param oldVars
+	 */
+	public void reDiscover(EnvironmentVariable[] environmentVariables,
+			EnvironmentVariable[] oldVars) {
+		// Skip re discover if variables are same.
+		if (equals(environmentVariables, oldVars)) {
+			return;
+		}
+		LibraryLocation[] currentLibraries = this.fLibraryContentProvider
+				.getLibraries();
+
+		LibraryLocation[] oldLibs = getLibrariesWithEnvironment(oldVars);
+		LibraryLocation[] newLibs = getLibrariesWithEnvironment(environmentVariables);
+		// If current are equal to old, we could easy set new libs.
+		if (equals(currentLibraries, oldLibs)) {
+			if (newLibs != null)
+				fLibraryContentProvider.setLibraries(newLibs);
+		} else { // We need to build delta.
+			Set delta = new HashSet();
+			delta.addAll(Arrays.asList(currentLibraries));
+			delta.removeAll(Arrays.asList(oldLibs));
+			delta.addAll(Arrays.asList(newLibs));
+			LibraryLocation[] aNew = (LibraryLocation[]) delta
+					.toArray(new LibraryLocation[delta.size()]);
+			fLibraryContentProvider.setLibraries(aNew);
+		}
+
+		update();
+	}
+
+	private boolean equals(EnvironmentVariable[] a, EnvironmentVariable[] b) {
+		Map vars = new HashMap();
+		if( a.length != b.length ) {
+			return false;
+		}
+		for (int i = 0; i < a.length; i++) {
+			vars.put(a[i].getName(), a[i]);
+		}
+		for (int i = 0; i < b.length; i++) {
+			EnvironmentVariable v = (EnvironmentVariable) vars.get(b[i]
+					.getName());
+			if (v == null) {
+				return false;
+			}
+			if (!v.getValue().equals(b[i].getValue())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean equals(LibraryLocation[] a, LibraryLocation[] b) {
+		Set libs = new HashSet();
+		if( a.length != b.length ) {
+			return false;
+		}
+		for (int i = 0; i < a.length; i++) {
+			libs.add(a[i]);
+		}
+		for (int i = 0; i < b.length; i++) {
+			if (!libs.contains(b[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
