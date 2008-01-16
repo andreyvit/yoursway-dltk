@@ -102,7 +102,7 @@ public class DbgpDebuggingEngineException extends DbgpException {
 	}
 
 	public DbgpDebuggingEngineException(int code, String message) {
-		super(message + ", code = " + code);
+		super("Execution error:" + code +"\n" + message);
 		this.code = code;
 	}
 

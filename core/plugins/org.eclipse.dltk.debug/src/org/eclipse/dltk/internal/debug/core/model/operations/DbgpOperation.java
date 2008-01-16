@@ -73,7 +73,6 @@ public abstract class DbgpOperation {
 						System.out.println(e.getClass());
 						e.printStackTrace();
 					}
-
 					resultHandler.finish(null, e);
 				}
 

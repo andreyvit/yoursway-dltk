@@ -9,6 +9,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.core.model;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Preferences;
@@ -32,6 +35,7 @@ import org.eclipse.dltk.debug.core.ExtendedDebugEventDetails;
 import org.eclipse.dltk.debug.core.ISmartStepEvaluator;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
+import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.internal.debug.core.eval.ScriptEvaluationEngine;
 import org.eclipse.dltk.internal.debug.core.model.operations.DbgpDebugger;
@@ -114,6 +118,31 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	public void handleTermination(DbgpException e) {
 		if (e != null) {
 			DLTKDebugPlugin.log(e);
+			IScriptDebugTarget scriptDebugTarget = this.getScriptDebugTarget();
+			OutputStream stdout = scriptDebugTarget.getStreamProxy()
+					.getStderr();
+			try {
+				String message = "\n" + e.getMessage() + "\n";
+				stdout.write(message.getBytes());
+				stack.update();
+				IStackFrame[] frames = stack.getFrames();
+				stdout.write("\nStack trace:\n".getBytes());
+				for (int i = 0; i < frames.length; i++) {
+					IScriptStackFrame frame = (IScriptStackFrame) frames[i];
+					String line = "\t#" + frame.getLevel() + " file:"
+							+ frame.getSourceURI().getPath() + " line:"
+							+ frame.getLineNumber() + "\n";
+					stdout.write(line.getBytes());
+				}
+			} catch (IOException e1) {
+				if (DLTKCore.DEBUG) {
+					e1.printStackTrace();
+				}
+			} catch (DebugException e2) {
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
+			}
 		}
 
 		session.requestTermination();
