@@ -7,6 +7,7 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.ui.IValueDetailListener;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.SimpleDLTKExtensionManager;
 import org.eclipse.dltk.core.SimpleDLTKExtensionManager.ElementInfo;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationCommand;
@@ -103,8 +104,16 @@ public class ScriptDetailFormattersManager {
 									listener.detailComputed(value,
 											getValueText(resultValue));
 								} else {
-									listener.detailComputed(value,
-											CANNOT_EVALUATE);
+									try {
+										listener.detailComputed(value,
+												value.getValueString()/*CANNOT_EVALUATE*/);
+									} catch (DebugException e) {
+										if( DLTKCore.DEBUG ) {
+											e.printStackTrace();
+										}
+										listener.detailComputed(value,
+												CANNOT_EVALUATE);
+									}
 								}
 							}
 						});

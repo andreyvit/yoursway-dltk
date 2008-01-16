@@ -11,7 +11,6 @@ package org.eclipse.dltk.internal.launching;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -47,7 +46,9 @@ import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallChangedListener;
@@ -305,34 +306,35 @@ public class DLTKLaunchingPlugin extends Plugin implements
 		// DebugPlugin.getDefault().getLaunchManager().addLaunchListener(this);
 		// DebugPlugin.getDefault().addDebugEventListener(this);
 
-		// prefetch library locations
+//		 prefetch library locations for default interpreters
 		Job libPrefetch = new Job("Inializing DLTK launching") {
-
 			protected IStatus run(IProgressMonitor monitor) {
-				IInterpreterInstallType[] installTypes = ScriptRuntime
-						.getInterpreterInstallTypes();
-				for (int i = 0; i < installTypes.length; i++) {
-					if (installTypes[i] != null) {
-						IInterpreterInstall[] installs = installTypes[i]
-								.getInterpreterInstalls();
-						if (installs != null) {
-							for (int j = 0; j < installs.length; j++) {
-								if (installs[j] != null) {
-									File path = installs[j]
-											.getInstallLocation();
-									installTypes[i].getDefaultLibraryLocations(
-											path, installs[j]
-													.getEnvironmentVariables());
-								}
-							}
+				try {
+					IDLTKLanguageToolkit[] toolkits = DLTKLanguageManager
+							.getLanguageToolkits();
+					for (int i = 0; i < toolkits.length; i++) {
+						String natureId = toolkits[i].getNatureId();
+						IInterpreterInstall install = ScriptRuntime
+								.getDefaultInterpreterInstall(natureId);
+						if (install != null) {
+							IInterpreterInstallType type = install
+									.getInterpreterInstallType();
+							// cache library locations.
+							type.getDefaultLibraryLocations(install
+									.getInstallLocation(), install
+									.getEnvironmentVariables());
 						}
+					}
+				} catch (CoreException e) {
+					if (DLTKCore.DEBUG) {
+						e.printStackTrace();
 					}
 				}
 				return Status.OK_STATUS;
 			}
 
 		};
-		// libPrefetch.setSystem(true);
+//		// libPrefetch.setSystem(true);
 		libPrefetch.schedule();
 	}
 

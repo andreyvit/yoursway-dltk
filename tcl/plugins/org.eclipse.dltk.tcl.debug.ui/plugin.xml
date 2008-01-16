@@ -305,4 +305,12 @@
       <adapter type="org.eclipse.debug.ui.actions.IRunToLineTarget" />
     </factory>
   </extension>
+  <extension
+        point="org.eclipse.dltk.debug.ui.scriptDetailFormatter">
+      <detailFormatter
+	          nature="org.eclipse.dltk.tcl.core.nature"
+	          snippet="expr { (%variable%) }"
+	          type="#DEFAULT#">
+	    </detailFormatter>
+  </extension>
 </plugin>
