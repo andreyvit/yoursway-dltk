@@ -200,9 +200,9 @@ public class TclTestingLaunchShortcut implements ILaunchShortcut {
 		dialog.setElements(configList.toArray());
 		dialog.setTitle("Select a Test Configuration");
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-			dialog.setMessage("Select XUnit configuration to debug");
+			dialog.setMessage("Select configuration to debug");
 		} else {
-			dialog.setMessage("Select XUnit configuration to run");
+			dialog.setMessage("Select configuration to run");
 		}
 		dialog.setMultipleSelection(false);
 		int result= dialog.open();
@@ -278,9 +278,9 @@ public class TclTestingLaunchShortcut implements ILaunchShortcut {
 				break;
 			}
 		}
-		if( engineFound == false ) {
-			return null;
-		}
+//		if( engineFound == false ) {
+//			return null;
+//		}
 
 		return wc;
 	}
@@ -295,7 +295,7 @@ public class TclTestingLaunchShortcut implements ILaunchShortcut {
 		return new String[] {
 			ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
 			ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
-			IDLTKTestingConstants.ENGINE_ID_ATR,
+//			IDLTKTestingConstants.ENGINE_ID_ATR,
 			ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE
 //			XUnitLaunchConfigurationConstants.ATTR_TEST_NAME,
 //			XUnitLaunchConfigurationConstants.ATTR_TEST_CONTAINER,
