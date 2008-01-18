@@ -855,6 +855,10 @@ public final class ScriptRuntime {
 	 */
 	public static LibraryLocation[] getLibraryLocations(
 			IInterpreterInstall interperterInstall) {
+		return getLibraryLocations(interperterInstall, null);
+	}
+	public static LibraryLocation[] getLibraryLocations(
+			IInterpreterInstall interperterInstall, IProgressMonitor monitor) {
 
 		LibraryLocation[] locations = interperterInstall.getLibraryLocations();
 		if (locations != null) {
@@ -864,7 +868,7 @@ public final class ScriptRuntime {
 		LibraryLocation[] defaultLocations = interperterInstall
 				.getInterpreterInstallType().getDefaultLibraryLocations(
 						interperterInstall.getInstallLocation(),
-						interperterInstall.getEnvironmentVariables());
+						interperterInstall.getEnvironmentVariables(), monitor);
 
 		List existingDefaultLocations = new ArrayList();
 		for (int i = 0; i < defaultLocations.length; ++i) {

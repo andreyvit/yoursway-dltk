@@ -162,7 +162,7 @@
             class="org.eclipse.dltk.tcl.internal.ui.editor.TclEditor"
             contributorClass="org.eclipse.dltk.internal.ui.editor.SourceModuleEditorActionContributor"
             default="true"
-            extensions="tcl,exp"
+            extensions="tcl,exp,test,xotcl,itcl"
             icon="$nl$/icons/obj16/tcl_obj.gif"
             id="org.eclipse.dltk.tcl.ui.editor.TclEditor"
             name="%TclEditor.name">

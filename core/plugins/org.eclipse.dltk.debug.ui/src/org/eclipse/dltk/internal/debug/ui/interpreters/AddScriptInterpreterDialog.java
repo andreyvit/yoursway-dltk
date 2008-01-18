@@ -546,6 +546,6 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 	 */
 	public void updateLibraries(EnvironmentVariable[] newVars,
 			EnvironmentVariable[] oldVars) {
-		fLibraryBlock.reDiscover(newVars, oldVars);
+//		fLibraryBlock.reDiscover(newVars, oldVars);
 	}
 }

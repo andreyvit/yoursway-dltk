@@ -34,11 +34,11 @@ import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.launching.EnvironmentVariable;
@@ -65,6 +65,13 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
  */
 public abstract class AbstractInterpreterInstallType implements
 		IInterpreterInstallType, IExecutableExtension {
+	private static final int NOT_WORK_COUNT = -2;
+
+	private static final String DLTK_TOTAL_WORK_START = "%DLTK_TOTAL_WORK_START%:";
+	private static final String DLTK_TOTAL_WORK_END = "%DLTK_TOTAL_WORK_END%";
+	private static final String DLTK_TOTAL_WORK_INC = "%DLTK_TOTAL_WORK_INCREMENT%";
+
+
 	public static final String DLTK_PATH_PREFIX = "DLTK:";
 
 	private List fInterpreters;
@@ -258,7 +265,8 @@ public abstract class AbstractInterpreterInstallType implements
 	 * @param p
 	 * @return
 	 */
-	protected String[] readPathsFromProcess(IProgressMonitor monitor, Process p) {
+	protected String[] readPathsFromProcess(final IProgressMonitor monitor,
+			Process p) {
 		DLTKLaunchingPlugin.log(new Status(IStatus.INFO,
 				DLTKLaunchingPlugin.PLUGIN_ID, IStatus.INFO,
 				"Start reading discovery script library paths", null));
@@ -267,56 +275,75 @@ public abstract class AbstractInterpreterInstallType implements
 
 		final List result = new ArrayList();
 
-		final Object lock = new Object();
+		// final Object lock = new Object();
 
-		Thread tReading = new Thread(new Runnable() {
-			public void run() {
-				try {
-					while (true) {
-						String line = dataIn.readLine();
-						if (line != null) {
-							result.add(line);
-						} else {
-							break;
-						}
-					}
-
-				} catch (IOException e) {
-					DLTKLaunchingPlugin.log(new Status(IStatus.INFO,
-							DLTKLaunchingPlugin.PLUGIN_ID, IStatus.INFO,
-							"Failed to read from discovert script output stream:"
-									+ e.getMessage(), e));
-				} finally {
-					synchronized (lock) {
-						lock.notifyAll();
+		// Thread tReading = new Thread(new Runnable() {
+		// public void run() {
+		boolean workReceived = false;
+		try {
+			while (true) {
+				if (monitor != null && monitor.isCanceled()) {
+					monitor.worked(1);
+					break;
+				}
+				String line = dataIn.readLine();
+				if (line != null && monitor != null && !workReceived) {
+					int work = extractWorkFromLine(line);
+					if( work != NOT_WORK_COUNT) {
+						monitor.beginTask("Featching interpeter library locations", work);
+//						monitor.subTask("Featching interpeter library locations");
+						workReceived = true;
 					}
 				}
-				DLTKLaunchingPlugin.log(new Status(IStatus.INFO,
-						DLTKLaunchingPlugin.PLUGIN_ID, IStatus.INFO,
-						"Successfuly finish reading discovery script library paths:"
-								+ combine(result), null));
+				if( line != null && monitor != null && detectWorkInc(line)) {
+					monitor.worked(1);
+				}
+				if (line != null) {
+					result.add(line);
+				} else {
+					break;
+				}
 			}
 
-		});
-
-		tReading.start();
-
-		synchronized (lock) {
-			try {
-				lock.wait(100000);
-			} catch (InterruptedException e) {
-				DLTKLaunchingPlugin
-						.log(new Status(
-								IStatus.INFO,
-								DLTKLaunchingPlugin.PLUGIN_ID,
-								IStatus.INFO,
-								"Reading of discovery script library paths are interrupted",
-								e));
+		} catch (IOException e) {
+			DLTKLaunchingPlugin.log(new Status(IStatus.INFO,
+					DLTKLaunchingPlugin.PLUGIN_ID, IStatus.INFO,
+					"Failed to read from discovert script output stream:"
+							+ e.getMessage(), e));
+		} finally {
+			if( monitor != null ) {
+				if( !workReceived ) {
+					monitor.beginTask("Featching interpeter library locations", 1);
+				}
+				monitor.done();
 			}
-			p.destroy();
 		}
 
+
 		return (String[]) result.toArray(new String[result.size()]);
+	}
+
+	private boolean detectWorkInc(String line) {
+		return line.indexOf(DLTK_TOTAL_WORK_INC) != -1;
+
+	}
+
+	/**
+	 * Extract work from specified line.
+	 */
+	private int extractWorkFromLine(String line) {
+		int pos1 = line.indexOf(DLTK_TOTAL_WORK_START);
+		int pos2 = line.indexOf(DLTK_TOTAL_WORK_END);
+		if (pos1 != -1 && pos2 != -1) {
+			String totalWork = line.substring(pos1
+					+ DLTK_TOTAL_WORK_START.length(), pos2);
+			int intValue = new Integer(totalWork).intValue();
+			if( intValue == -1) {
+				return IProgressMonitor.UNKNOWN;
+			}
+			return intValue;
+		}
+		return NOT_WORK_COUNT;
 	}
 
 	/**
@@ -334,7 +361,15 @@ public abstract class AbstractInterpreterInstallType implements
 	}
 
 	public static LibraryLocation[] correctLocations(final List locs) {
+		return correctLocations(locs, null);
+	}
+
+	public static LibraryLocation[] correctLocations(final List locs,
+			IProgressMonitor monitor) {
 		List resolvedLocs = new ArrayList();
+		if (monitor != null) {
+			monitor.beginTask("Correct locations...", locs.size());
+		}
 		for (Iterator iter = locs.iterator(); iter.hasNext();) {
 			LibraryLocation l = (LibraryLocation) iter.next();
 			String res;
@@ -350,10 +385,16 @@ public abstract class AbstractInterpreterInstallType implements
 			LibraryLocation n = new LibraryLocation(new Path(res));
 			if (!resolvedLocs.contains(n))
 				resolvedLocs.add(n);
+			if (monitor != null) {
+				monitor.worked(1);
+			}
 		}
 
 		LibraryLocation[] libs = (LibraryLocation[]) resolvedLocs
 				.toArray(new LibraryLocation[resolvedLocs.size()]);
+		if (monitor != null) {
+			monitor.done();
+		}
 		return libs;
 	}
 
@@ -377,8 +418,9 @@ public abstract class AbstractInterpreterInstallType implements
 	 * run the interpreter library lookup in a
 	 * <code>ProgressMonitorDialog</code>
 	 */
-	protected void runLibraryLookup(final IRunnableWithProgress runnable)
-			throws InvocationTargetException, InterruptedException {
+	protected void runLibraryLookup(final IRunnableWithProgress runnable,
+			IProgressMonitor monitor) throws InvocationTargetException,
+			InterruptedException {
 
 		/*
 		 * ProgressMonitorDialog progress = new ProgressMonitorDialog(null);
@@ -387,7 +429,7 @@ public abstract class AbstractInterpreterInstallType implements
 		 * runnable.run(new NullProgressMonitor()); } } else { runnable.run(new
 		 * NullProgressMonitor()); }
 		 */
-		runnable.run(new NullProgressMonitor());
+		runnable.run(monitor);
 	}
 
 	protected abstract String getPluginId();
@@ -495,9 +537,11 @@ public abstract class AbstractInterpreterInstallType implements
 			EnvironmentVariable[] variables) {
 		Process process = null;
 		try {
-			monitor.beginTask(InterpreterMessages.statusFetchingLibs, 1);
-			if (monitor.isCanceled()) {
-				return null;
+			if (monitor != null) {
+				// monitor.beginTask(InterpreterMessages.statusFetchingLibs, 1);
+				if (monitor.isCanceled()) {
+					return null;
+				}
 			}
 			String[] cmdLine;
 			String[] env = extractEnvironment(variables);
@@ -552,7 +596,9 @@ public abstract class AbstractInterpreterInstallType implements
 			if (process != null) {
 				process.destroy();
 			}
-			monitor.done();
+			if (monitor != null) {
+				monitor.done();
+			}
 		}
 		return null;
 	}
@@ -630,6 +676,15 @@ public abstract class AbstractInterpreterInstallType implements
 
 	public synchronized LibraryLocation[] getDefaultLibraryLocations(
 			final File installLocation, EnvironmentVariable[] variables) {
+		return getDefaultLibraryLocations(installLocation, variables);
+	}
+
+	public synchronized LibraryLocation[] getDefaultLibraryLocations(
+			final File installLocation, EnvironmentVariable[] variables,
+			IProgressMonitor monitor) {
+		if (monitor != null) {
+			monitor.beginTask(this.getName() + " getting library paths", 100);
+		}
 		Object cacheKey = makeKey(installLocation, variables);
 		if (fCachedLocations.containsKey(cacheKey)) {
 			return (LibraryLocation[]) fCachedLocations.get(cacheKey);
@@ -641,7 +696,9 @@ public abstract class AbstractInterpreterInstallType implements
 				installLocation, locations, variables);
 
 		try {
-			runLibraryLookup(runnable);
+			runLibraryLookup(runnable,
+					monitor != null ? new SubProgressMonitor(monitor, 95)
+							: null);
 		} catch (InvocationTargetException e) {
 			getLog().log(
 					createStatus(IStatus.ERROR,
@@ -652,11 +709,14 @@ public abstract class AbstractInterpreterInstallType implements
 							"Error to get default libraries:", e));
 		}
 
-		LibraryLocation[] libs = correctLocations(locations);
+		LibraryLocation[] libs = correctLocations(locations,
+				monitor != null ? new SubProgressMonitor(monitor, 5) : null);
 		if (libs.length != 0) {
 			fCachedLocations.put(cacheKey, libs);
 		}
-
+		if (monitor != null) {
+			monitor.done();
+		}
 		return libs;
 	}
 

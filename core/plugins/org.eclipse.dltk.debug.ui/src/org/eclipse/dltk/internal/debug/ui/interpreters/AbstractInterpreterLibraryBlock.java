@@ -11,6 +11,7 @@ package org.eclipse.dltk.internal.debug.ui.interpreters;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -81,6 +82,7 @@ public abstract class AbstractInterpreterLibraryBlock implements
 	private Button fRemoveButton;
 	private Button fAddButton;
 	protected Button fDefaultButton;
+	protected Button fRediscoverButton;
 
 	protected AddScriptInterpreterDialog fDialog;
 
@@ -146,6 +148,9 @@ public abstract class AbstractInterpreterLibraryBlock implements
 				InterpretersMessages.InterpreterLibraryBlock_9);
 		fDefaultButton.addSelectionListener(this);
 
+		fRediscoverButton = createPushButton(pathButtonComp, "Rediscover");
+		fRediscoverButton.addSelectionListener(this);
+
 		return comp;
 	}
 
@@ -169,14 +174,14 @@ public abstract class AbstractInterpreterLibraryBlock implements
 		} else {
 			ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
 			try {
-				dialog.run(false, false, new IRunnableWithProgress() {
+				dialog.run(true, true, new IRunnableWithProgress() {
 
 					public void run(IProgressMonitor monitor)
 							throws InvocationTargetException,
 							InterruptedException {
 						libs[0] = getInterpreterInstallType()
 								.getDefaultLibraryLocations(installLocation,
-										environmentVariables);
+										environmentVariables, monitor);
 					}
 
 				});
@@ -288,7 +293,7 @@ public abstract class AbstractInterpreterLibraryBlock implements
 		if (installLocation != null) {
 			LibraryLocation[] def = getInterpreterInstallType()
 					.getDefaultLibraryLocations(installLocation,
-							install.getEnvironmentVariables());
+							install.getEnvironmentVariables(), null);
 			if (def.length == libraryLocations.length) {
 				for (int i = 0; i < def.length; i++) {
 					if (!def[i].equals(libraryLocations[i])) {
@@ -340,6 +345,8 @@ public abstract class AbstractInterpreterLibraryBlock implements
 			add((IStructuredSelection) fLibraryViewer.getSelection());
 		} else if (source == fDefaultButton) {
 			restoreDefaultLibraries();
+		} else if (source == fRediscoverButton) {
+			this.reDiscover(this.fDialog.getEnvironmentVariables(), null);
 		}
 		update();
 	}
@@ -416,8 +423,27 @@ public abstract class AbstractInterpreterLibraryBlock implements
 		fInterpreterInstallType = type;
 		if (Interpreter != null) {
 			setHomeDirectory(Interpreter.getInstallLocation());
-			fLibraryContentProvider.setLibraries(ScriptRuntime
-					.getLibraryLocations(getInterpreterInstall()));
+			// fLibraryContentProvider.setLibraries(ScriptRuntime
+			// .getLibraryLocations(getInterpreterInstall(), null));
+			final LibraryLocation[][] libs = new LibraryLocation[][] { null };
+			ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
+			try {
+				dialog.run(true, true, new IRunnableWithProgress() {
+
+					public void run(IProgressMonitor monitor)
+							throws InvocationTargetException,
+							InterruptedException {
+						libs[0] = ScriptRuntime.getLibraryLocations(
+								getInterpreterInstall(), monitor);
+					}
+
+				});
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			fLibraryContentProvider.setLibraries(libs[0]);
 		}
 		update();
 	}
@@ -472,6 +498,18 @@ public abstract class AbstractInterpreterLibraryBlock implements
 	 */
 	public void reDiscover(EnvironmentVariable[] environmentVariables,
 			EnvironmentVariable[] oldVars) {
+		if (oldVars == null) {
+			if (this.fInterpreterInstall != null) {
+				oldVars = this.fInterpreterInstall.getEnvironmentVariables();
+			}
+//			if( oldVars != null && oldVars.length == 0 ) {
+//				restoreDefaultLibraries();
+//				return;
+//			}
+		}
+		if( oldVars == null ) {
+			return;
+		}
 		// Skip re discover if variables are same.
 		if (equals(environmentVariables, oldVars)) {
 			return;
@@ -489,18 +527,26 @@ public abstract class AbstractInterpreterLibraryBlock implements
 			Set delta = new HashSet();
 			delta.addAll(Arrays.asList(currentLibraries));
 			delta.removeAll(Arrays.asList(oldLibs));
-			delta.addAll(Arrays.asList(newLibs));
-			LibraryLocation[] aNew = (LibraryLocation[]) delta
+			
+			List newList = new ArrayList();
+			newList.addAll(Arrays.asList(newLibs));
+			for (Iterator iterator = delta.iterator(); iterator.hasNext();) {
+				LibraryLocation lib = (LibraryLocation) iterator.next();
+				if( !newList.contains(lib)) {
+					newList.add(lib);
+				}
+			}
+			
+			LibraryLocation[] aNew = (LibraryLocation[]) newList
 					.toArray(new LibraryLocation[delta.size()]);
 			fLibraryContentProvider.setLibraries(aNew);
 		}
-
 		update();
 	}
 
 	private boolean equals(EnvironmentVariable[] a, EnvironmentVariable[] b) {
 		Map vars = new HashMap();
-		if( a.length != b.length ) {
+		if (a.length != b.length) {
 			return false;
 		}
 		for (int i = 0; i < a.length; i++) {
@@ -521,7 +567,7 @@ public abstract class AbstractInterpreterLibraryBlock implements
 
 	private boolean equals(LibraryLocation[] a, LibraryLocation[] b) {
 		Set libs = new HashSet();
-		if( a.length != b.length ) {
+		if (a.length != b.length) {
 			return false;
 		}
 		for (int i = 0; i < a.length; i++) {

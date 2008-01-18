@@ -112,12 +112,14 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 		LibraryLocation[] newLocations = locations;
 		if (newLocations == null) {
 			newLocations = getInterpreterInstallType()
-					.getDefaultLibraryLocations(getInstallLocation(), getEnvironmentVariables());
+					.getDefaultLibraryLocations(getInstallLocation(),
+							getEnvironmentVariables(), null);
 		}
 		LibraryLocation[] prevLocations = fSystemLibraryDescriptions;
 		if (prevLocations == null) {
 			prevLocations = getInterpreterInstallType()
-					.getDefaultLibraryLocations(getInstallLocation(), getEnvironmentVariables());
+					.getDefaultLibraryLocations(getInstallLocation(),
+							getEnvironmentVariables(), null);
 		}
 
 		if (newLocations.length == prevLocations.length) {
@@ -254,7 +256,8 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 	}
 
 	public void setEnvironmentVariables(EnvironmentVariable[] variables) {
-		PropertyChangeEvent event = new PropertyChangeEvent(this,
+		PropertyChangeEvent event = new PropertyChangeEvent(
+				this,
 				IInterpreterInstallChangedListener.PROPERTY_ENVIRONMENT_VARIABLES,
 				this.fEnvironmentVariables, variables);
 		this.fEnvironmentVariables = variables;

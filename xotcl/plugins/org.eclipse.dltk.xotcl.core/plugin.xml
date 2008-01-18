@@ -76,5 +76,11 @@
             priority="0">
       </tclExtension>
    </extension>
-
+   <extension
+         point="org.eclipse.core.runtime.contentTypes">
+      <file-association
+            content-type="org.eclipse.dltk.tclContentType"
+            file-extensions="xotcl">
+      </file-association>
+   </extension>
 </plugin>

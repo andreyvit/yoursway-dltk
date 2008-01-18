@@ -353,7 +353,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 				if (!InterpreterRuntimeBuildpathEntryResolver.isSameArchives(
 						libraryLocations, install.getInterpreterInstallType()
 								.getDefaultLibraryLocations(
-										install.getInstallLocation(), install.getEnvironmentVariables()))) {
+										install.getInstallLocation(), install.getEnvironmentVariables(), null))) {
 					// resolve bootpath entries in InterpreterEnvironment entry
 					IRuntimeBuildpathEntry[] bootEntries = null;
 					if (InterpreterEnvironmentEntry.getType() == IRuntimeBuildpathEntry.CONTAINER) {

@@ -11,22 +11,29 @@ package org.eclipse.dltk.tcl.core;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.dltk.core.AbstractLanguageToolkit;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.tcl.core.extensions.ITclLanguageExtension;
 import org.eclipse.dltk.tcl.internal.core.TclExtensionManager;
 
 public class TclLanguageToolkit extends AbstractLanguageToolkit {
+
+	private static final String TCL_CONTENT_TYPE = "org.eclipse.dltk.tclContentType";
 
 	private static final String[] FILTER_EXTS = { "so", "a", "la", "c", "h",
 			"log" };
@@ -130,13 +137,41 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 			return createNotScriptFileStatus();
 		}
 
-		if (checkPatterns(path.toFile(), header_patterns, footer_patterns) == IModelStatus.VERIFIED_OK)
+		if (checkTclFile(path) == IModelStatus.VERIFIED_OK)
 			return IModelStatus.VERIFIED_OK;
 
 		return status;
 	}
 
+	public static IStatus checkTclFile(IPath path) {
+		return checkPatterns(path.toFile(), header_patterns, footer_patterns);
+		// return checkContentType(path);
+	}
+
+	public static IStatus checkTclFile(Reader reader) {
+		return checkPatterns(reader, header_patterns, footer_patterns);
+	}
+
 	public IStatus validateSourceModule(IResource resource) {
+		if (resource.getType() == IResource.FILE) {
+			IFile file = (IFile) resource;
+			IContentDescription description;
+			try {
+				description = file.getContentDescription();
+				if (description != null) {
+					System.out.println(file.getName() + ":"
+							+ description.getContentType().getName());
+					if (description.getContentType().getId().equals(
+							TCL_CONTENT_TYPE)) {
+						return IModelStatus.VERIFIED_OK;
+					}
+				}
+			} catch (CoreException e) {
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
+			}
+		}
 		IStatus status = validateSourceModuleName(resource.getName());
 
 		if (status == IModelStatus.VERIFIED_OK)
@@ -149,7 +184,7 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 				return status;
 			}
 
-			if (checkPatterns(path.toFile(), header_patterns, footer_patterns) == IModelStatus.VERIFIED_OK) {
+			if (checkTclFile(path) == IModelStatus.VERIFIED_OK) {
 				return IModelStatus.VERIFIED_OK;
 			}
 		}

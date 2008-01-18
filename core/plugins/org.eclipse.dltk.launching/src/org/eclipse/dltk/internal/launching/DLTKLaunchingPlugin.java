@@ -42,6 +42,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -306,13 +307,16 @@ public class DLTKLaunchingPlugin extends Plugin implements
 		// DebugPlugin.getDefault().getLaunchManager().addLaunchListener(this);
 		// DebugPlugin.getDefault().addDebugEventListener(this);
 
-//		 prefetch library locations for default interpreters
+		// prefetch library locations for default interpreters
 		Job libPrefetch = new Job("Inializing DLTK launching") {
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
 					IDLTKLanguageToolkit[] toolkits = DLTKLanguageManager
 							.getLanguageToolkits();
+					monitor.beginTask("Inializing DLTK", toolkits.length);
 					for (int i = 0; i < toolkits.length; i++) {
+						SubProgressMonitor subMonitor = new SubProgressMonitor(
+								monitor, 1);
 						String natureId = toolkits[i].getNatureId();
 						IInterpreterInstall install = ScriptRuntime
 								.getDefaultInterpreterInstall(natureId);
@@ -322,9 +326,14 @@ public class DLTKLaunchingPlugin extends Plugin implements
 							// cache library locations.
 							type.getDefaultLibraryLocations(install
 									.getInstallLocation(), install
-									.getEnvironmentVariables());
+									.getEnvironmentVariables(), subMonitor);
 						}
+						else {
+							subMonitor.worked(1);
+						}
+						subMonitor.done();
 					}
+					monitor.done();
 				} catch (CoreException e) {
 					if (DLTKCore.DEBUG) {
 						e.printStackTrace();
@@ -334,7 +343,7 @@ public class DLTKLaunchingPlugin extends Plugin implements
 			}
 
 		};
-//		// libPrefetch.setSystem(true);
+		// // libPrefetch.setSystem(true);
 		libPrefetch.schedule();
 	}
 

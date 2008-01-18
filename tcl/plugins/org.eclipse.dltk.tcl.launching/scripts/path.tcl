@@ -62,9 +62,11 @@ proc process-pkg-info {args} {
 	global pkg_list
 	
 	# load all pkgs
+	puts "%DLTK_TOTAL_WORK_START%:[array size pkg_list]%DLTK_TOTAL_WORK_END%"
 	foreach elm [array names pkg_list] {
 		set name [lindex $elm 0]
 		set vers [lindex $elm 1]
+		puts "%DLTK_TOTAL_WORK_INCREMENT%\n"		         
 		#puts "$name $vers:"
 		#puts $::auto_path
 		# Load the package

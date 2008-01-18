@@ -112,7 +112,7 @@ public class InterpreterRuntimeBuildpathEntryResolver implements
 		LibraryLocation[] libs = Interpreter.getLibraryLocations();
 		LibraryLocation[] defaultLibs = Interpreter.getInterpreterInstallType()
 				.getDefaultLibraryLocations(Interpreter.getInstallLocation(),
-						Interpreter.getEnvironmentVariables());
+						Interpreter.getEnvironmentVariables(), null);
 		if (libs == null) {
 			// default system libs
 			libs = defaultLibs;
