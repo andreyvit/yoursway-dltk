@@ -2,11 +2,11 @@
 ! Cisco xotcl
 ! Copyright (c) 2004, 2007 xored software, Inc.
 !
-! $Id: xotcl.map,v 1.17 2008/01/16 07:28:48 asobolev Exp $ 
+! $Id: xotcl.map,v 1.18 2008/01/21 13:06:40 asobolev Exp $ 
 
 feature@org.eclipse.dltk.xotcl=v20071213,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/xotcl/features/org.eclipse.dltk.xotcl-feature
 feature@org.eclipse.dltk.xotcl.sdk=v20070807,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/xotcl/features/org.eclipse.dltk.xotcl.sdk
 
-plugin@org.eclipse.dltk.xotcl.core=v20080116,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/xotcl/plugins/org.eclipse.dltk.xotcl.core
+plugin@org.eclipse.dltk.xotcl.core=v20080121a,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/xotcl/plugins/org.eclipse.dltk.xotcl.core
 plugin@org.eclipse.dltk.xotcl.ui=v20080114,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/xotcl/plugins/org.eclipse.dltk.xotcl.ui
 plugin@org.eclipse.dltk.xotcl.testing.xounit=v20071213,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/xotcl/plugins/org.eclipse.dltk.xotcl.testing.xounit

@@ -1,18 +1,18 @@
 
 ! Javascript Development Tools (DLTK)
 !
-! $Id: javascript.map,v 1.19 2008/01/09 15:16:02 asobolev Exp $ 
+! $Id: javascript.map,v 1.20 2008/01/21 13:06:40 asobolev Exp $ 
 
 feature@org.eclipse.dltk.javascript=v20071127-2200,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/features/org.eclipse.dltk.javascript-feature
 feature@org.eclipse.dltk.javascript.sdk=v20071127,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/features/org.eclipse.dltk.javascript.sdk
 
-plugin@org.eclipse.dltk.javascript.core=v20071219f,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.javascript.core
+plugin@org.eclipse.dltk.javascript.core=v20080121a,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.javascript.core
 plugin@org.eclipse.dltk.javascript.core.dom.support=v20071219f,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.javascript.core.dom.support
 plugin@org.eclipse.dltk.javascript.core.dom.support.sample=v20071218,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.javascript.core.dom.support.sample
 plugin@org.eclipse.dltk.javascript.debug=v20071127,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.javascript.debug
 plugin@org.eclipse.dltk.javascript.debug.ui=v20071116c,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.javascript.debug.ui
 plugin@org.eclipse.dltk.javascript.jdt.integration=v20071219f,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.javascript.jdt.integration
-plugin@org.eclipse.dltk.javascript.launching=v20080108c,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.javascript.launching
+plugin@org.eclipse.dltk.javascript.launching=v20080121a,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.javascript.launching
 plugin@org.eclipse.dltk.javascript.rhino=v20071127,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.javascript.rhino
 plugin@org.eclipse.dltk.javascript.rhino.dbgp=v20071116c,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.javascript.rhino.dbgp
 plugin@org.eclipse.dltk.javascript.ui=v20080109,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/javascript/plugins/org.eclipse.dltk.javascript.ui
