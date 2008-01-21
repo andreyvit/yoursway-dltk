@@ -28,16 +28,19 @@ public class TclCodeTemplatesPreferencePage extends ScriptTemplatePreferencePage
 		setContextTypeRegistry(TclTemplateAccess.getInstance().getContextTypeRegistry());
 	}
 
-	protected ScriptSourceViewerConfiguration createSourceViewerConfiguration(IDocument document) {
+	protected ScriptSourceViewerConfiguration createSourceViewerConfiguration() {
 		IPreferenceStore store = TclUI.getDefault().getPreferenceStore();
 
 		TclTextTools textTools = TclUI.getDefault().getTextTools();
-		textTools.setupDocumentPartitioner(document,
-				TclPartitions.TCL_PARTITIONING);
-
 		return new SimpleTclSourceViewerConfiguration(
 				textTools.getColorManager(), store, null,
 				TclPartitions.TCL_PARTITIONING, false);
 		
+	}
+
+	protected void setDocumentParticioner(IDocument document) {
+		TclTextTools textTools = TclUI.getDefault().getTextTools();
+		textTools.setupDocumentPartitioner(document,
+				TclPartitions.TCL_PARTITIONING);
 	}
 }
