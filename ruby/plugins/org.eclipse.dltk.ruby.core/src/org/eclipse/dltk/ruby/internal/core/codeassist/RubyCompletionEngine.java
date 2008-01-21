@@ -220,13 +220,8 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 	public void complete(ISourceModule module, int position, int i) {
 		this.currentModule = module;
-		if (Job.getJobManager().find(ResourcesPlugin.FAMILY_AUTO_BUILD).length > 0) { // `FIXIT,
-																						// make
-																						// more
-																						// correct
-																						// awaiting
-																						// for
-																						// building
+		if (Job.getJobManager().find(ResourcesPlugin.FAMILY_AUTO_BUILD).length > 0) {
+			// FIXIT, make more correct awaiting for building
 			this.requestor.completionFailure(new DefaultProblem(null,
 					"Please wait until building is ready...", 0, null,
 					IStatus.WARNING, startPosition, endPosition, -1));

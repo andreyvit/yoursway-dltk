@@ -14,8 +14,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
+import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.ITextViewer;
@@ -27,6 +30,9 @@ import org.eclipse.jface.text.templates.TemplateContext;
 import org.eclipse.jface.text.templates.TemplateContextType;
 import org.eclipse.jface.text.templates.TemplateException;
 import org.eclipse.jface.text.templates.TemplateProposal;
+import org.eclipse.swt.SWT;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.part.IWorkbenchPartOrientation;
 
 public abstract class ScriptTempalteCompletionProcessor extends
 		TemplateCompletionProcessor {
@@ -111,5 +117,36 @@ public abstract class ScriptTempalteCompletionProcessor extends
 		} else {
 			return super.createContext(viewer, region);
 		}
+	}
+
+	protected ICompletionProposal createProposal(Template template,
+			TemplateContext context, IRegion region, int relevance) {	
+		TemplateProposal proposal = new TemplateProposal(template, context, region, getImage(template), relevance);
+		proposal.setInformationControlCreator(getInformationControlCreator());
+		return proposal;
+	}
+		
+	private IInformationControlCreator getInformationControlCreator() {
+		int orientation;
+		ScriptEditor editor= getScriptEditor();
+		if (editor instanceof IWorkbenchPartOrientation)
+			orientation= ((IWorkbenchPartOrientation)editor).getOrientation();
+		else
+			orientation= SWT.LEFT_TO_RIGHT;
+		return new TemplateInformationControlCreator(orientation, editor.getLanguageToolkit());
+	}
+	
+	/**
+	 * Returns the currently active java editor, or <code>null</code> if it
+	 * cannot be determined.
+	 *
+	 * @return  the currently active java editor, or <code>null</code>
+	 */
+	private ScriptEditor getScriptEditor() {
+		IEditorPart part= DLTKUIPlugin.getActivePage().getActiveEditor();
+		if (part instanceof ScriptEditor)
+			return (ScriptEditor) part;
+		else
+			return null;
 	}
 }

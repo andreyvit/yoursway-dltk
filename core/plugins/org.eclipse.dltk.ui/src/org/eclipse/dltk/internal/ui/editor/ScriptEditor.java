@@ -2975,4 +2975,10 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 			fSemanticManager = null;
 		}
 	}
+
+	public int getOrientation() {	
+		return SWT.LEFT_TO_RIGHT;
+	}
+	
+	
 }

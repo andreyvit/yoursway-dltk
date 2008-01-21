@@ -169,7 +169,7 @@ public abstract class ScriptCompletionProposalComputer implements
 			collector.setReplacementLength(selection.y);
 		}
 
-		// Fillig collector with proposals
+		// Filling collector with proposals
 		try {
 			IModelElement element = sourceModule.getElementAt(offset);
 			if (element != null) {
