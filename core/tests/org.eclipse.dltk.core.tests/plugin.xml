@@ -55,10 +55,12 @@
   <extension
         point="org.eclipse.core.runtime.contentTypes">
      <content-type
+           base-type="org.eclipse.core.runtime.text"
            describer="org.eclipse.dltk.core.tests.TestContentDescriber"
+           file-extensions="txt"
            id="org.eclipse.dltk.core.test.testContentType"
            name="DLTK Test Content type"
-           priority="normal">
+           priority="high">
      </content-type>
   </extension>
 
