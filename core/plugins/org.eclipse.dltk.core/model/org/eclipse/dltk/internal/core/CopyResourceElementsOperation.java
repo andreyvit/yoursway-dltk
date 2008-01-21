@@ -24,21 +24,21 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.dltk.core.DLTKContentTypeManager;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.util.Messages;
 import org.eclipse.dltk.internal.core.util.Util;
-
 
 /**
  * This operation copies/moves/renames a collection of resources from their
@@ -85,10 +85,9 @@ public class CopyResourceElementsOperation extends MultiOperation {
 	 * When executed, this operation will copy the given resources to the given
 	 * container.
 	 */
-	public CopyResourceElementsOperation(IModelElement[] resourcesToCopy, IModelElement destContainer, boolean force) {
-		this(resourcesToCopy, new IModelElement[] {
-			destContainer
-		}, force);
+	public CopyResourceElementsOperation(IModelElement[] resourcesToCopy,
+			IModelElement destContainer, boolean force) {
+		this(resourcesToCopy, new IModelElement[] { destContainer }, force);
 	}
 
 	/**
@@ -97,7 +96,8 @@ public class CopyResourceElementsOperation extends MultiOperation {
 	 * correct order. If there is > 1 destination, the number of destinations
 	 * must be the same as the number of resources being copied/moved.
 	 */
-	public CopyResourceElementsOperation(IModelElement[] resourcesToCopy, IModelElement[] destContainers, boolean force) {
+	public CopyResourceElementsOperation(IModelElement[] resourcesToCopy,
+			IModelElement[] destContainers, boolean force) {
 		super(resourcesToCopy, destContainers, force);
 		// initializeASTParser();
 	}
@@ -111,7 +111,8 @@ public class CopyResourceElementsOperation extends MultiOperation {
 	 * are the <code>.java</code> files, if it is a <code>K_BINARY</code>,
 	 * they are the <code>.class</code> files.
 	 */
-	private IResource[] collectResourcesOfInterest(IScriptFolder source) throws ModelException {
+	private IResource[] collectResourcesOfInterest(IScriptFolder source)
+			throws ModelException {
 		IModelElement[] children = source.getChildren();
 		int childOfInterest = IModelElement.SOURCE_MODULE;
 		// if (source.getKind() == IProjectFragment.K_BINARY) {
@@ -138,9 +139,11 @@ public class CopyResourceElementsOperation extends MultiOperation {
 		}
 		if (actualNonScriptResourceCount != 0) {
 			int correctKindChildrenSize = correctKindChildren.size();
-			IResource[] result = new IResource[correctKindChildrenSize + actualNonScriptResourceCount];
+			IResource[] result = new IResource[correctKindChildrenSize
+					+ actualNonScriptResourceCount];
 			correctKindChildren.toArray(result);
-			System.arraycopy(actualNonScriptResources, 0, result, correctKindChildrenSize, actualNonScriptResourceCount);
+			System.arraycopy(actualNonScriptResources, 0, result,
+					correctKindChildrenSize, actualNonScriptResourceCount);
 			return result;
 		} else {
 			IResource[] result = new IResource[correctKindChildren.size()];
@@ -154,7 +157,8 @@ public class CopyResourceElementsOperation extends MultiOperation {
 	 * Return true if a read-only package fragment has been found among package
 	 * fragments, false otherwise
 	 */
-	private boolean createNeededScriptFolders(IContainer sourceFolder, ProjectFragment root, IPath newFragName, boolean moveFolder)
+	private boolean createNeededScriptFolders(IContainer sourceFolder,
+			ProjectFragment root, IPath newFragName, boolean moveFolder)
 			throws ModelException {
 		boolean containsReadOnlyScriptFolder = false;
 		IContainer parentFolder = (IContainer) root.getResource();
@@ -177,11 +181,13 @@ public class CopyResourceElementsOperation extends MultiOperation {
 				if (Util.isReadOnly(sourceFolder)) {
 					containsReadOnlyScriptFolder = true;
 				}
-				IScriptFolder sideEffectPackage = root.getScriptFolder(sideEffectPackageName);
+				IScriptFolder sideEffectPackage = root
+						.getScriptFolder(sideEffectPackageName);
 				if (i < newFragName.segmentCount() - 1 // all but the last one
-														// are side effect
-														// packages
-						&& !Util.isExcluded(parentFolder, inclusionPatterns, exclusionPatterns)) {
+						// are side effect
+						// packages
+						&& !Util.isExcluded(parentFolder, inclusionPatterns,
+								exclusionPatterns)) {
 					if (projectDelta == null) {
 						projectDelta = getDeltaFor(root.getScriptProject());
 					}
@@ -196,12 +202,13 @@ public class CopyResourceElementsOperation extends MultiOperation {
 	}
 
 	/**
-	 * Returns the <code>ScriptElementDelta</code> for <code>scriptProject</code>,
-	 * creating it and putting it in <code>fDeltasPerProject</code> if it does
-	 * not exist yet.
+	 * Returns the <code>ScriptElementDelta</code> for
+	 * <code>scriptProject</code>, creating it and putting it in
+	 * <code>fDeltasPerProject</code> if it does not exist yet.
 	 */
 	private ModelElementDelta getDeltaFor(IScriptProject scriptProject) {
-		ModelElementDelta delta = (ModelElementDelta) deltasPerProject.get(scriptProject);
+		ModelElementDelta delta = (ModelElementDelta) deltasPerProject
+				.get(scriptProject);
 		if (delta == null) {
 			delta = new ModelElementDelta(scriptProject);
 			deltasPerProject.put(scriptProject, delta);
@@ -232,13 +239,16 @@ public class CopyResourceElementsOperation extends MultiOperation {
 	 * that project
 	 * 
 	 */
-	protected void prepareDeltas(IModelElement sourceElement, IModelElement destinationElement, boolean isMove) {
-		if (Util.isExcluded(sourceElement) || Util.isExcluded(destinationElement))
+	protected void prepareDeltas(IModelElement sourceElement,
+			IModelElement destinationElement, boolean isMove) {
+		if (Util.isExcluded(sourceElement)
+				|| Util.isExcluded(destinationElement))
 			return;
 		IScriptProject destProject = destinationElement.getScriptProject();
 		if (isMove) {
 			IScriptProject sourceProject = sourceElement.getScriptProject();
-			getDeltaFor(sourceProject).movedFrom(sourceElement, destinationElement);
+			getDeltaFor(sourceProject).movedFrom(sourceElement,
+					destinationElement);
 			getDeltaFor(destProject).movedTo(destinationElement, sourceElement);
 		} else {
 			getDeltaFor(destProject).added(destinationElement);
@@ -254,30 +264,33 @@ public class CopyResourceElementsOperation extends MultiOperation {
 	 * @exception ScriptModelException
 	 *                if the operation is unable to complete
 	 */
-	private void processSourceModuleResource(ISourceModule source, ScriptFolder dest) throws ModelException {
+	private void processSourceModuleResource(ISourceModule source,
+			ScriptFolder dest) throws ModelException {
 		String newCUName = getNewNameFor(source);
-		String destName = (newCUName != null) ? newCUName : source.getElementName();
+		String destName = (newCUName != null) ? newCUName : source
+				.getElementName();
 		// ASTRewrite rewrite = updateContent(source, dest, newCUName); // null
 		// if unchanged
 		// TODO (frederic) remove when bug 67606 will be fixed (bug 67823)
 		// store encoding (fix bug 66898)
 		IFile sourceResource = (IFile) source.getResource();
-//		String sourceEncoding = null;
-//		try {
-//			if( sourceResource != null ) {
-//				sourceEncoding = sourceResource.getCharset(false);
-//			}
-//		} catch (CoreException ce) {
-//			// no problem, use default encoding
-//		}
+		// String sourceEncoding = null;
+		// try {
+		// if( sourceResource != null ) {
+		// sourceEncoding = sourceResource.getCharset(false);
+		// }
+		// } catch (CoreException ce) {
+		// // no problem, use default encoding
+		// }
 		// end todo
 		// copy resource
 		IContainer destFolder = (IContainer) dest.getResource(); // can be an
-																	// IFolder
-																	// or an
-																	// IProject
+		// IFolder
+		// or an
+		// IProject
 		IFile destFile = destFolder.getFile(new Path(destName));
-		SourceModule destCU = new SourceModule(dest, destName, DefaultWorkingCopyOwner.PRIMARY);
+		SourceModule destCU = new SourceModule(dest, destName,
+				DefaultWorkingCopyOwner.PRIMARY);
 		if (sourceResource == null || !destFile.equals(sourceResource)) {
 			try {
 				if (!destCU.isWorkingCopy()) {
@@ -286,41 +299,52 @@ public class CopyResourceElementsOperation extends MultiOperation {
 							// we can remove it
 							deleteResource(destFile, IResource.KEEP_HISTORY);
 							destCU.close(); // ensure the in-memory buffer for
-											// the dest CU is closed
+							// the dest CU is closed
 						} else {
 							// abort
-							throw new ModelException(new ModelStatus(IModelStatusConstants.NAME_COLLISION, Messages.bind(
-									Messages.status_nameCollision, destFile.getFullPath().toString())));
+							throw new ModelException(new ModelStatus(
+									IModelStatusConstants.NAME_COLLISION,
+									Messages.bind(
+											Messages.status_nameCollision,
+											destFile.getFullPath().toString())));
 						}
 					}
 					int flags = this.force ? IResource.FORCE : IResource.NONE;
 					if (this.isMove()) {
 						flags |= IResource.KEEP_HISTORY;
-						if( sourceResource != null ) {
-							sourceResource.move(destFile.getFullPath(), flags, getSubProgressMonitor(1));
-						}
-						else {
+						if (sourceResource != null) {
+							sourceResource.move(destFile.getFullPath(), flags,
+									getSubProgressMonitor(1));
+						} else {
 							if (DLTKCore.DEBUG) {
-								System.err.println("TODO: Add correct status message here...");
-							} 
-							throw new ModelException(new ModelStatus(IModelStatusConstants.NAME_COLLISION, Messages.bind(
-									Messages.status_invalidResource, destFile.getFullPath().toString())));
+								System.err
+										.println("TODO: Add correct status message here...");
+							}
+							throw new ModelException(new ModelStatus(
+									IModelStatusConstants.NAME_COLLISION,
+									Messages.bind(
+											Messages.status_invalidResource,
+											destFile.getFullPath().toString())));
 						}
 					} else {
 						// if (rewrite != null) flags |= IResource.KEEP_HISTORY;
-						if( sourceResource == null ) {
-							ByteArrayInputStream bais = new ByteArrayInputStream(new byte[0]);
-							destFile.create(bais, IResource.FORCE, getSubProgressMonitor(1));							
-							destCU.getBuffer().setContents(source.getBuffer().getContents());
+						if (sourceResource == null) {
+							ByteArrayInputStream bais = new ByteArrayInputStream(
+									new byte[0]);
+							destFile.create(bais, IResource.FORCE,
+									getSubProgressMonitor(1));
+							destCU.getBuffer().setContents(
+									source.getBuffer().getContents());
 							destCU.save(getSubProgressMonitor(1), true);
-						}
-						else {							
-							sourceResource.copy(destFile.getFullPath(), flags, getSubProgressMonitor(1));
+						} else {
+							sourceResource.copy(destFile.getFullPath(), flags,
+									getSubProgressMonitor(1));
 						}
 					}
 					this.setAttribute(HAS_MODIFIED_RESOURCE_ATTR, TRUE);
 				} else {
-					destCU.getBuffer().setContents(source.getBuffer().getContents());
+					destCU.getBuffer().setContents(
+							source.getBuffer().getContents());
 				}
 			} catch (ModelException e) {
 				throw e;
@@ -346,14 +370,18 @@ public class CopyResourceElementsOperation extends MultiOperation {
 				if (DLTKCore.DEBUG) {
 					System.err.println("TODO: Add remove extensions here...");
 				}
-				String oldName = /* Util.getNameWithoutScriptLikeExtension( */source.getElementName();// );
+				String oldName = /* Util.getNameWithoutScriptLikeExtension( */source
+						.getElementName();// );
 				String newName = /* Util.getNameWithoutScriptLikeExtension( */newCUName;// );
-				prepareDeltas(source.getType(oldName), destCU.getType(newName), isMove());
+				prepareDeltas(source.getType(oldName), destCU.getType(newName),
+						isMove());
 			}
 		} else {
 			if (!this.force) {
-				throw new ModelException(new ModelStatus(IModelStatusConstants.NAME_COLLISION, Messages.bind(Messages.status_nameCollision,
-						destFile.getFullPath().toString())));
+				throw new ModelException(new ModelStatus(
+						IModelStatusConstants.NAME_COLLISION, Messages.bind(
+								Messages.status_nameCollision, destFile
+										.getFullPath().toString())));
 			}
 			// update new resource content
 			// in case we do a saveas on the same resource we have to simply
@@ -374,7 +402,8 @@ public class CopyResourceElementsOperation extends MultiOperation {
 	 * Process all of the changed deltas generated by this operation.
 	 */
 	protected void processDeltas() {
-		for (Iterator deltas = this.deltasPerProject.values().iterator(); deltas.hasNext();) {
+		for (Iterator deltas = this.deltasPerProject.values().iterator(); deltas
+				.hasNext();) {
 			addDelta((IModelElementDelta) deltas.next());
 		}
 	}
@@ -382,21 +411,25 @@ public class CopyResourceElementsOperation extends MultiOperation {
 	/**
 	 * @see MultiOperation This method delegates to
 	 *      <code>processSourceModuleResource</code> or
-	 *      <code>processScriptFolderResource</code>, depending on the
-	 *      type of <code>element</code>.
+	 *      <code>processScriptFolderResource</code>, depending on the type
+	 *      of <code>element</code>.
 	 */
 	protected void processElement(IModelElement element) throws ModelException {
 		IModelElement dest = getDestinationParent(element);
 		switch (element.getElementType()) {
-			case IModelElement.SOURCE_MODULE:
-				processSourceModuleResource((ISourceModule) element, (ScriptFolder) dest);
-				createdElements.add(((IScriptFolder) dest).getSourceModule(element.getElementName()));
-				break;
-			case IModelElement.SCRIPT_FOLDER:
-				processScriptFolderResource((ScriptFolder) element, (ProjectFragment) dest, getNewNameFor(element));
-				break;
-			default:
-				throw new ModelException(new ModelStatus(IModelStatusConstants.INVALID_ELEMENT_TYPES, element));
+		case IModelElement.SOURCE_MODULE:
+			processSourceModuleResource((ISourceModule) element,
+					(ScriptFolder) dest);
+			createdElements.add(((IScriptFolder) dest).getSourceModule(element
+					.getElementName()));
+			break;
+		case IModelElement.SCRIPT_FOLDER:
+			processScriptFolderResource((ScriptFolder) element,
+					(ProjectFragment) dest, getNewNameFor(element));
+			break;
+		default:
+			throw new ModelException(new ModelStatus(
+					IModelStatusConstants.INVALID_ELEMENT_TYPES, element));
 		}
 	}
 
@@ -424,24 +457,28 @@ public class CopyResourceElementsOperation extends MultiOperation {
 	 * @exception ScriptModelException
 	 *                if the operation is unable to complete
 	 */
-	private void processScriptFolderResource(ScriptFolder source, ProjectFragment root, String newName) throws ModelException {
+	private void processScriptFolderResource(ScriptFolder source,
+			ProjectFragment root, String newName) throws ModelException {
 		try {
 			// String[] newFragName = (newName == null) ? source.path.segments()
 			// : Util.getTrimmedSimpleNames(newName);
-			IPath newFragName = (newName == null) ? source.path : new Path(newName);
+			IPath newFragName = (newName == null) ? source.path : new Path(
+					newName);
 			IScriptFolder newFrag = root.getScriptFolder(newFragName);
 			IResource[] resources = collectResourcesOfInterest(source);
 			// if isMove() can we move the folder itself ? (see
 			// http://bugs.eclipse.org/bugs/show_bug.cgi?id=22458)
-			boolean shouldMoveFolder = isMove() && newFrag.getResource() != null &&!newFrag.getResource().exists(); // if
-																					// new
-																					// pkg
-																					// fragment
-																					// exists,
-																					// it
-																					// is
-																					// an
-																					// override
+			boolean shouldMoveFolder = isMove()
+					&& newFrag.getResource() != null
+					&& !newFrag.getResource().exists(); // if
+			// new
+			// pkg
+			// fragment
+			// exists,
+			// it
+			// is
+			// an
+			// override
 			IFolder srcFolder = (IFolder) source.getResource();
 			IPath destPath = newFrag.getPath();
 			if (shouldMoveFolder) {
@@ -459,17 +496,19 @@ public class CopyResourceElementsOperation extends MultiOperation {
 					}
 				}
 			}
-			boolean containsReadOnlySubScriptFolders = createNeededScriptFolders((IContainer) source.getParent().getResource(), root,
+			boolean containsReadOnlySubScriptFolders = createNeededScriptFolders(
+					(IContainer) source.getParent().getResource(), root,
 					newFragName, shouldMoveFolder);
 			boolean sourceIsReadOnly = Util.isReadOnly(srcFolder);
 			// Process resources
 			if (shouldMoveFolder) {
 				// move underlying resource
 				// TODO Revisit once bug 43044 is fixed
-				if (sourceIsReadOnly ) {
+				if (sourceIsReadOnly) {
 					Util.setReadOnly(srcFolder, false);
 				}
-				srcFolder.move(destPath, force, true /* keep history */, getSubProgressMonitor(1));
+				srcFolder.move(destPath, force, true /* keep history */,
+						getSubProgressMonitor(1));
 				if (sourceIsReadOnly) {
 					Util.setReadOnly(srcFolder, true);
 				}
@@ -485,14 +524,24 @@ public class CopyResourceElementsOperation extends MultiOperation {
 						// we need to delete this resource if this operation
 						// wants to override existing resources
 						for (int i = 0, max = resources.length; i < max; i++) {
-							IResource destinationResource = ResourcesPlugin.getWorkspace().getRoot().findMember(
-									destPath.append(resources[i].getName()));
+							IResource destinationResource = ResourcesPlugin
+									.getWorkspace().getRoot().findMember(
+											destPath.append(resources[i]
+													.getName()));
 							if (destinationResource != null) {
 								if (force) {
-									deleteResource(destinationResource, IResource.KEEP_HISTORY);
+									deleteResource(destinationResource,
+											IResource.KEEP_HISTORY);
 								} else {
-									throw new ModelException(new ModelStatus(IModelStatusConstants.NAME_COLLISION, Messages.bind(
-											Messages.status_nameCollision, destinationResource.getFullPath().toString())));
+									throw new ModelException(
+											new ModelStatus(
+													IModelStatusConstants.NAME_COLLISION,
+													Messages
+															.bind(
+																	Messages.status_nameCollision,
+																	destinationResource
+																			.getFullPath()
+																			.toString())));
 								}
 							}
 						}
@@ -501,17 +550,27 @@ public class CopyResourceElementsOperation extends MultiOperation {
 						// we need to delete this resource if this operation
 						// wants to override existing resources
 						for (int i = 0, max = resources.length; i < max; i++) {
-							IResource destinationResource = ResourcesPlugin.getWorkspace().getRoot().findMember(
-									destPath.append(resources[i].getName()));
+							IResource destinationResource = ResourcesPlugin
+									.getWorkspace().getRoot().findMember(
+											destPath.append(resources[i]
+													.getName()));
 							if (destinationResource != null) {
 								if (force) {
 									// we need to delete this resource if this
 									// operation wants to override existing
 									// resources
-									deleteResource(destinationResource, IResource.KEEP_HISTORY);
+									deleteResource(destinationResource,
+											IResource.KEEP_HISTORY);
 								} else {
-									throw new ModelException(new ModelStatus(IModelStatusConstants.NAME_COLLISION, Messages.bind(
-											Messages.status_nameCollision, destinationResource.getFullPath().toString())));
+									throw new ModelException(
+											new ModelStatus(
+													IModelStatusConstants.NAME_COLLISION,
+													Messages
+															.bind(
+																	Messages.status_nameCollision,
+																	destinationResource
+																			.getFullPath()
+																			.toString())));
 								}
 							}
 						}
@@ -520,27 +579,31 @@ public class CopyResourceElementsOperation extends MultiOperation {
 				}
 			}
 			// Update package statement in compilation unit if needed
-			if (!Util.equalArraysOrNull(new Object[] {
-				newFragName
-			}, new Object[] {
-				source.path
-			})) { // if package has been renamed, update the compilation units
+			if (!Util.equalArraysOrNull(new Object[] { newFragName },
+					new Object[] { source.path })) { // if package has been
+														// renamed, update the
+														// compilation units
 				char[][] inclusionPatterns = root.fullInclusionPatternChars();
 				char[][] exclusionPatterns = root.fullExclusionPatternChars();
 				for (int i = 0; i < resources.length; i++) {
 					String resourceName = resources[i].getName();
-					IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(newFrag);
-					if (toolkit != null && toolkit.validateSourceModule(resources[i]).getSeverity() != IStatus.ERROR) {
+					IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+							.getLanguageToolkit(newFrag);
+					if (toolkit != null
+							&& DLTKContentTypeManager
+									.isValidResourceForContentType(toolkit,
+											resources[i])) {
 						// we only consider potential compilation units
-						ISourceModule cu = newFrag.getSourceModule(resourceName);
-						if (Util.isExcluded(cu.getPath(), inclusionPatterns, exclusionPatterns, false/*
-																										 * not
-																										 * a
-																										 * folder
-																										 */))
+						ISourceModule cu = newFrag
+								.getSourceModule(resourceName);
+						if (Util.isExcluded(cu.getPath(), inclusionPatterns,
+								exclusionPatterns, false/*
+														 * not a folder
+														 */))
 							continue;
 						if (DLTKCore.DEBUG) {
-							System.err.println("TODO:Add source module modification code here...");
+							System.err
+									.println("TODO:Add source module modification code here...");
 						}
 						// this.parser.setSource(cu);
 						// SourceModule astCU = (SourceModule)
@@ -566,7 +629,9 @@ public class CopyResourceElementsOperation extends MultiOperation {
 				// delete remaining files in this package (.class file in the
 				// case where Proj=src=bin)
 				// in case of a copy
-				updateReadOnlyScriptFoldersForMove((IContainer) source.getParent().getResource(), root, newFragName, sourceIsReadOnly);
+				updateReadOnlyScriptFoldersForMove((IContainer) source
+						.getParent().getResource(), root, newFragName,
+						sourceIsReadOnly);
 				if (srcFolder.exists()) {
 					IResource[] remaining = srcFolder.members();
 					for (int i = 0, length = remaining.length; i < length; i++) {
@@ -575,7 +640,8 @@ public class CopyResourceElementsOperation extends MultiOperation {
 							if (Util.isReadOnly(file)) {
 								Util.setReadOnly(file, false);
 							}
-							this.deleteResource(file, IResource.FORCE | IResource.KEEP_HISTORY);
+							this.deleteResource(file, IResource.FORCE
+									| IResource.KEEP_HISTORY);
 						} else {
 							isEmpty = false;
 						}
@@ -594,11 +660,13 @@ public class CopyResourceElementsOperation extends MultiOperation {
 				}
 			} else if (containsReadOnlySubScriptFolders) {
 				// in case of a copy
-				updateReadOnlyScriptFoldersForCopy((IContainer) source.getParent().getResource(), root, newFragName);
+				updateReadOnlyScriptFoldersForCopy((IContainer) source
+						.getParent().getResource(), root, newFragName);
 			}
 			// workaround for bug
 			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=24505
-			if (isEmpty && isMove() && !(Util.isExcluded(source) || Util.isExcluded(newFrag))) {
+			if (isEmpty && isMove()
+					&& !(Util.isExcluded(source) || Util.isExcluded(newFrag))) {
 				IScriptProject sourceProject = source.getScriptProject();
 				getDeltaFor(sourceProject).movedFrom(source, newFrag);
 				IScriptProject destProject = newFrag.getScriptProject();
@@ -611,7 +679,8 @@ public class CopyResourceElementsOperation extends MultiOperation {
 		}
 	}
 
-	private void updateReadOnlyScriptFoldersForCopy(IContainer sourceFolder, IProjectFragment root, IPath newFragName) {
+	private void updateReadOnlyScriptFoldersForCopy(IContainer sourceFolder,
+			IProjectFragment root, IPath newFragName) {
 		IContainer parentFolder = (IContainer) root.getResource();
 		for (int i = 0, length = newFragName.segmentCount(); i < length; i++) {
 			String subFolderName = newFragName.segment(i);
@@ -623,14 +692,16 @@ public class CopyResourceElementsOperation extends MultiOperation {
 		}
 	}
 
-	private void updateReadOnlyScriptFoldersForMove(IContainer sourceFolder, IProjectFragment root, IPath newFragName,
+	private void updateReadOnlyScriptFoldersForMove(IContainer sourceFolder,
+			IProjectFragment root, IPath newFragName,
 			boolean sourceFolderIsReadOnly) {
 		IContainer parentFolder = (IContainer) root.getResource();
 		for (int i = 0, length = newFragName.segmentCount(); i < length; i++) {
 			String subFolderName = newFragName.segment(i);
 			parentFolder = parentFolder.getFolder(new Path(subFolderName));
 			sourceFolder = sourceFolder.getFolder(new Path(subFolderName));
-			if ((sourceFolder.exists() && Util.isReadOnly(sourceFolder)) || (i == length - 1 && sourceFolderIsReadOnly)) {
+			if ((sourceFolder.exists() && Util.isReadOnly(sourceFolder))
+					|| (i == length - 1 && sourceFolderIsReadOnly)) {
 				Util.setReadOnly(parentFolder, true);
 				// the source folder will be deleted anyway (move operation)
 				Util.setReadOnly(sourceFolder, false);
@@ -651,7 +722,8 @@ public class CopyResourceElementsOperation extends MultiOperation {
 		if (!status.isOK()) {
 			return status;
 		}
-		if (this.renamingsList != null && this.renamingsList.length != elementsToProcess.length) {
+		if (this.renamingsList != null
+				&& this.renamingsList.length != elementsToProcess.length) {
 			return new ModelStatus(IModelStatusConstants.INDEX_OUT_OF_BOUNDS);
 		}
 		return ModelStatus.VERIFIED_OK;
@@ -672,20 +744,21 @@ public class CopyResourceElementsOperation extends MultiOperation {
 			}
 		}
 		int elementType = element.getElementType();
-		if (elementType == IModelElement.SOURCE_MODULE && element instanceof SourceModule) {
+		if (elementType == IModelElement.SOURCE_MODULE
+				&& element instanceof SourceModule) {
 			SourceModule compilationUnit = (SourceModule) element;
-			if (isMove() && compilationUnit.isWorkingCopy() && !compilationUnit.isPrimary())
-				error(IModelStatusConstants.INVALID_ELEMENT_TYPES, element);			
-		} 
-		else if(elementType== IModelElement.SOURCE_MODULE && element instanceof ExternalSourceModule ) {
+			if (isMove() && compilationUnit.isWorkingCopy()
+					&& !compilationUnit.isPrimary())
+				error(IModelStatusConstants.INVALID_ELEMENT_TYPES, element);
+		} else if (elementType == IModelElement.SOURCE_MODULE
+				&& element instanceof ExternalSourceModule) {
 			if (isMove())
 				error(IModelStatusConstants.INVALID_ELEMENT_TYPES, element);
-		}
-		else if(elementType== IModelElement.SOURCE_MODULE && element instanceof BuiltinSourceModule ) {
+		} else if (elementType == IModelElement.SOURCE_MODULE
+				&& element instanceof BuiltinSourceModule) {
 			if (isMove())
 				error(IModelStatusConstants.INVALID_ELEMENT_TYPES, element);
-		}
-		else if (elementType != IModelElement.SCRIPT_FOLDER) {
+		} else if (elementType != IModelElement.SCRIPT_FOLDER) {
 			error(IModelStatusConstants.INVALID_ELEMENT_TYPES, element);
 		}
 		ModelElement dest = (ModelElement) getDestinationParent(element);

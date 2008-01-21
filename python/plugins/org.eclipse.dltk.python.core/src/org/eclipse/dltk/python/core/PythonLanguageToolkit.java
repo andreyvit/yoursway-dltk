@@ -69,4 +69,8 @@ public class PythonLanguageToolkit extends AbstractLanguageToolkit {
 	protected String getCorePluginID() {
 		return PythonPlugin.PLUGIN_ID;
 	}
+
+	public String getLanguageContentType() {
+		return "org.eclipse.dltk.pythonContentType";
+	}
 }

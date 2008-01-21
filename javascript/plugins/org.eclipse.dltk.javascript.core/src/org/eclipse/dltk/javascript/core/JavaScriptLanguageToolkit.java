@@ -46,4 +46,9 @@ public class JavaScriptLanguageToolkit extends AbstractLanguageToolkit {
 		return JavaScriptPlugin.PLUGIN_ID;
 	}
 
+	public String getLanguageContentType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

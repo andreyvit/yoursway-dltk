@@ -24,9 +24,9 @@ import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.dltk.core.DLTKContentTypeManager;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
@@ -197,7 +197,7 @@ public class BuildpathDetector implements IResourceProxyVisitor {
 	private boolean isValidCUResource(IResource res) {
 		IDLTKLanguageToolkit tk = DLTKLanguageManager.findToolkit(res);
 		if( tk != null ) {
-			return !tk.validateSourceModule(res).matches(IStatus.ERROR);
+			return DLTKContentTypeManager.isValidResourceForContentType(tk, res);
 		}
 		return false;
 	}

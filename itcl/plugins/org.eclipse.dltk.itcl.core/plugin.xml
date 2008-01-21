@@ -48,5 +48,11 @@
             class="org.eclipse.dltk.itcl.internal.core.IncrTclKeywords">
       </keywords>
    </extension>
-
+   <extension
+         point="org.eclipse.core.runtime.contentTypes">
+      <file-association
+            content-type="org.eclipse.dltk.tclContentType"
+            file-extensions="itcl">
+      </file-association>
+   </extension>
 </plugin>

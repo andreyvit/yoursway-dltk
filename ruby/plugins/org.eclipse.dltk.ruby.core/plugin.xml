@@ -95,6 +95,10 @@
            name="%rubyContentType"
            priority="high">       
      </content-type>
+     <file-association
+           content-type="org.eclipse.dltk.rubyContentType"
+           file-names="rakefile">
+     </file-association>
   </extension>
   <extension
         point="org.eclipse.dltk.ruby.core.goalEvaluatorFactories">

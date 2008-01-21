@@ -14,7 +14,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.ast.parser.SourceParserManager;
@@ -37,33 +36,40 @@ public class DLTKLanguageManager {
 	public static IDLTKLanguageToolkit getLanguageToolkit(String natureId)
 			throws CoreException {
 
-		return (IDLTKLanguageToolkit) InternalDLTKLanguageManager.getLanguageToolkitsManager().getObject(natureId);
+		return (IDLTKLanguageToolkit) InternalDLTKLanguageManager
+				.getLanguageToolkitsManager().getObject(natureId);
 	}
 
 	public static IDLTKLanguageToolkit[] getLanguageToolkits()
 			throws CoreException {
 
-		ElementInfo[] elementInfos = InternalDLTKLanguageManager.getLanguageToolkitsManager().getElementInfos();
+		ElementInfo[] elementInfos = InternalDLTKLanguageManager
+				.getLanguageToolkitsManager().getElementInfos();
 		IDLTKLanguageToolkit[] toolkits = new IDLTKLanguageToolkit[elementInfos.length];
 		for (int j = 0; j < elementInfos.length; j++) {
-			toolkits[j] = (IDLTKLanguageToolkit) InternalDLTKLanguageManager.getLanguageToolkitsManager().getInitObject(elementInfos[j]);	
+			toolkits[j] = (IDLTKLanguageToolkit) InternalDLTKLanguageManager
+					.getLanguageToolkitsManager()
+					.getInitObject(elementInfos[j]);
 		}
 		return toolkits;
 	}
 
 	private static IDLTKLanguageToolkit findAppropriateToolkitByObject(
 			Object object) {
-		ElementInfo[] elementInfos = InternalDLTKLanguageManager.getLanguageToolkitsManager().getElementInfos();
+		ElementInfo[] elementInfos = InternalDLTKLanguageManager
+				.getLanguageToolkitsManager().getElementInfos();
 		for (int j = 0; j < elementInfos.length; j++) {
-			IDLTKLanguageToolkit toolkit = (IDLTKLanguageToolkit) InternalDLTKLanguageManager.getLanguageToolkitsManager()
+			IDLTKLanguageToolkit toolkit = (IDLTKLanguageToolkit) InternalDLTKLanguageManager
+					.getLanguageToolkitsManager()
 					.getInitObject(elementInfos[j]);
 			if (object instanceof IResource) {
-				if (toolkit.validateSourceModule((IResource) object)
-						.getSeverity() == Status.OK) {
+				if (DLTKContentTypeManager.isValidResourceForContentType(
+						toolkit, (IResource) object)) {
 					return toolkit;
 				}
 			} else if (object instanceof IPath) {
-				if (toolkit.validateSourceModule((IPath) object).getSeverity() == Status.OK) {
+				if (DLTKContentTypeManager.isValidFileNameForContentType(
+						toolkit, (IPath) object)) {
 					return toolkit;
 				}
 			} else {
@@ -74,13 +80,16 @@ public class DLTKLanguageManager {
 	}
 
 	public static boolean hasScriptNature(IProject project) {
-		return InternalDLTKLanguageManager.getLanguageToolkitsManager().findScriptNature(project) != null;
+		return InternalDLTKLanguageManager.getLanguageToolkitsManager()
+				.findScriptNature(project) != null;
 	}
 
 	public static IDLTKLanguageToolkit getLanguageToolkit(IModelElement element)
 			throws CoreException {
-		IDLTKLanguageToolkit toolkit = (IDLTKLanguageToolkit) InternalDLTKLanguageManager.getLanguageToolkitsManager().getObject(element);
-		if( toolkit == null && element.getElementType() == IModelElement.SOURCE_MODULE ) {
+		IDLTKLanguageToolkit toolkit = (IDLTKLanguageToolkit) InternalDLTKLanguageManager
+				.getLanguageToolkitsManager().getObject(element);
+		if (toolkit == null
+				&& element.getElementType() == IModelElement.SOURCE_MODULE) {
 			return findAppropriateToolkitByObject(element.getPath());
 		}
 		return toolkit;
@@ -96,14 +105,14 @@ public class DLTKLanguageManager {
 
 	public static ISourceElementParser getSourceElementParser(String nature)
 			throws CoreException {
-		return (ISourceElementParser) InternalDLTKLanguageManager.getSourceElementParsersManager()
-				.getObject(nature);
+		return (ISourceElementParser) InternalDLTKLanguageManager
+				.getSourceElementParsersManager().getObject(nature);
 	}
 
 	public static ISourceElementParser getSourceElementParser(
 			IModelElement element) throws CoreException {
-		return (ISourceElementParser) InternalDLTKLanguageManager.getSourceElementParsersManager()
-				.getObject(element);
+		return (ISourceElementParser) InternalDLTKLanguageManager
+				.getSourceElementParsersManager().getObject(element);
 	}
 
 	// public static ISourceParser getSourceParser( String nature ) throws
@@ -119,8 +128,8 @@ public class DLTKLanguageManager {
 
 	public static IProblemFactory getProblemFactory(String natureID)
 			throws CoreException {
-		IProblemFactory factory = (IProblemFactory) InternalDLTKLanguageManager.getProblemFactoryManager()
-				.getObject(natureID);
+		IProblemFactory factory = (IProblemFactory) InternalDLTKLanguageManager
+				.getProblemFactoryManager().getObject(natureID);
 		if (factory != null) {
 			return factory;
 		}
@@ -129,8 +138,8 @@ public class DLTKLanguageManager {
 
 	public static IProblemFactory getProblemFactory(IModelElement element)
 			throws CoreException {
-		IProblemFactory factory = (IProblemFactory) InternalDLTKLanguageManager.getProblemFactoryManager()
-				.getObject(element);
+		IProblemFactory factory = (IProblemFactory) InternalDLTKLanguageManager
+				.getProblemFactoryManager().getObject(element);
 		if (factory != null) {
 			return factory;
 		}
@@ -139,28 +148,32 @@ public class DLTKLanguageManager {
 
 	public static ICompletionEngine getCompletionEngine(String natureID)
 			throws CoreException {
-		return (ICompletionEngine) InternalDLTKLanguageManager.getCompletionEngineManager().getObject(natureID);
+		return (ICompletionEngine) InternalDLTKLanguageManager
+				.getCompletionEngineManager().getObject(natureID);
 	}
 
 	public static ISelectionEngine getSelectionEngine(String natureID)
 			throws CoreException {
-		return (ISelectionEngine) InternalDLTKLanguageManager.getSelectionEngineManager().getObject(natureID);
+		return (ISelectionEngine) InternalDLTKLanguageManager
+				.getSelectionEngineManager().getObject(natureID);
 	}
 
-	public static ISourceParser getSourceParser(String natureID) 
+	public static ISourceParser getSourceParser(String natureID)
 			throws CoreException {
-		return SourceParserManager.getInstance().getSourceParser(null, natureID);
+		return SourceParserManager.getInstance()
+				.getSourceParser(null, natureID);
 	}
 
-//	/**
-//	 * Return source parser witch is one level lower from top. If this is only
-//	 * one source parser for selected nature then return null.
-//	 * 
-//	 */
-//	public static ISourceParser getSourceParserLower(String natureID)
-//			throws CoreException {
-//		return (ISourceParser) InternalDLTKLanguageManager.getSourceParsersManager().getObjectLower(natureID);
-//	}
+	// /**
+	// * Return source parser witch is one level lower from top. If this is only
+	// * one source parser for selected nature then return null.
+	// *
+	// */
+	// public static ISourceParser getSourceParserLower(String natureID)
+	// throws CoreException {
+	// return (ISourceParser)
+	// InternalDLTKLanguageManager.getSourceParsersManager().getObjectLower(natureID);
+	// }
 
 	public static DLTKSearchParticipant createSearchParticipant(String natureID) {
 		ISearchFactory factory = getSearchFactory(natureID);
@@ -175,7 +188,8 @@ public class DLTKLanguageManager {
 	}
 
 	private static ISearchFactory getSearchFactory(String natureId) {
-		return (ISearchFactory) InternalDLTKLanguageManager.getSearchManager().getObject(natureId);
+		return (ISearchFactory) InternalDLTKLanguageManager.getSearchManager()
+				.getObject(natureId);
 	}
 
 	public static MatchLocator createMatchLocator(String natureID,
@@ -225,7 +239,8 @@ public class DLTKLanguageManager {
 	}
 
 	private static ICallHierarchyFactory getCallHierarchyFactory(String natureId) {
-		return (ICallHierarchyFactory) InternalDLTKLanguageManager.getCallHierarchyManager().getObject(natureId);
+		return (ICallHierarchyFactory) InternalDLTKLanguageManager
+				.getCallHierarchyManager().getObject(natureId);
 	}
 
 	public static ICallProcessor createCallProcessor(String natureID) {

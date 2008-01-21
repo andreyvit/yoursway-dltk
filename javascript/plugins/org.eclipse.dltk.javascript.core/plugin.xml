@@ -89,4 +89,13 @@
             priority="0">
       </callHerarchiesFactory>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.contentTypes">
+      <content-type
+            file-names="js"
+            id="org.eclipse.dltk.javascriptContentType"
+            name="JavaScript source file"
+            priority="normal">
+      </content-type>
+   </extension>
 </plugin>

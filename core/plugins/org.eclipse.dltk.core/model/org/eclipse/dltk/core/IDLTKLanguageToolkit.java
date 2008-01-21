@@ -9,38 +9,32 @@
  *******************************************************************************/
 package org.eclipse.dltk.core;
 
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
 
-
+/**
+ * 
+ */
 public interface IDLTKLanguageToolkit {
 
-	/*
-	 * Validation of language toolkit resources
+	/**
+	 * Return content type associated with this language. DLTK will check all
+	 * derived content types to detect this language model elements.
 	 */
-
-	IStatus validateSourceModule(IResource resource);
-	
-	IStatus validateSourceModule(IPath path);
-
-	IStatus validateSourceModule(IModelElement parent, String name);
+	String getLanguageContentType();
 
 	boolean validateSourcePackage(IPath path);
 
 	/*
 	 * Different stuff
 	 */
-	
+
 	boolean languageSupportZIPBuildpath();
 
 	String getNatureId();
 
 	String getDelimeterReplacerString();
-	
+
 	String[] getLanguageFileExtensions();
-	
+
 	String getLanguageName();
-	
-	boolean isScriptLikeFileName(String name);
 }

@@ -52,5 +52,14 @@
         </parser>
      </parserContribution>
   </extension>
+  <extension
+        point="org.eclipse.core.runtime.contentTypes">
+     <content-type
+           describer="org.eclipse.dltk.core.tests.TestContentDescriber"
+           id="org.eclipse.dltk.core.test.testContentType"
+           name="DLTK Test Content type"
+           priority="normal">
+     </content-type>
+  </extension>
 
 </plugin>

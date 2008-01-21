@@ -19,28 +19,28 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.dltk.core.DLTKContentTypeManager;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptModel;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.compiler.env.AccessRuleSet;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
-import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.ExternalProjectFragment;
 import org.eclipse.dltk.internal.core.Model;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.ScriptFolder;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.util.Util;
 
 /**
@@ -289,7 +289,8 @@ public class DLTKSearchScope extends AbstractSearchScope {
 				containerPathToString = containerPath.getDevice() == null ? containerPath
 						.toString()
 						: containerPath.toOSString();
-				add( projectPath,
+				add(
+						projectPath,
 						"", containerPathToString, false/* not a package */, null); //$NON-NLS-1$
 			}
 			break;
@@ -507,7 +508,8 @@ public class DLTKSearchScope extends AbstractSearchScope {
 		enclosingPath = (new Path(enclosingPath)).toString();
 		path = new Path(normalize(path)).toString();
 		IPath realPath = new Path(path);
-		if (this.toolkit.validateSourceModule(realPath).getSeverity() != IStatus.OK) {
+		if (!DLTKContentTypeManager.isValidFileNameForContentType(toolkit,
+				realPath)) {
 			return false;
 		}
 		int pathLength = path.length();

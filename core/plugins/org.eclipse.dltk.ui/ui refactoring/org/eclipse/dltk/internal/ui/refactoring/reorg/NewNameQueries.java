@@ -15,8 +15,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.dltk.core.DLTKContentTypeManager;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
@@ -168,8 +170,13 @@ public class NewNameQueries implements INewNameQueries {
 					e.printStackTrace();
 				}
 				IStatus status= new Status(IStatus.ERROR, DLTKUIPlugin.PLUGIN_ID, 0, "Not Script Project",null);
-				if( toolkit != null ) {	
-					status = toolkit.validateSourceModule(cu, newCuName);					
+				if( toolkit != null ) {
+					if( DLTKContentTypeManager.isValidFileNameForContentType(toolkit, newCuName)) {
+						status = IModelStatus.VERIFIED_OK;
+					}
+					else {
+						status = new Status(IStatus.ERROR, DLTKUIPlugin.PLUGIN_ID, "Invalid file name");
+					}
 				}
 				if (status.getSeverity() == IStatus.ERROR)
 					return status.getMessage();
