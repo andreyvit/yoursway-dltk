@@ -267,9 +267,9 @@ public abstract class AbstractInterpreterInstallType implements
 	 */
 	protected String[] readPathsFromProcess(final IProgressMonitor monitor,
 			Process p) {
-		DLTKLaunchingPlugin.log(new Status(IStatus.INFO,
-				DLTKLaunchingPlugin.PLUGIN_ID, IStatus.INFO,
-				"Start reading discovery script library paths", null));
+//		DLTKLaunchingPlugin.log(new Status(IStatus.INFO,
+//				DLTKLaunchingPlugin.PLUGIN_ID, IStatus.INFO,
+//				"Start reading discovery script library paths", null));
 		final BufferedReader dataIn = new BufferedReader(new InputStreamReader(
 				p.getInputStream()));
 
