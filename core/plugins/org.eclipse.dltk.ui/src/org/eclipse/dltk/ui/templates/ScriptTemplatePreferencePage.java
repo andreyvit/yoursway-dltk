@@ -15,26 +15,74 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.SourceViewer;
+import org.eclipse.jface.text.source.SourceViewerConfiguration;
+import org.eclipse.jface.text.templates.ContextTypeRegistry;
 import org.eclipse.jface.text.templates.Template;
 import org.eclipse.jface.text.templates.persistence.TemplatePersistenceData;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.texteditor.templates.TemplatePreferencePage;
 
 public abstract class ScriptTemplatePreferencePage extends
 		TemplatePreferencePage implements IWorkbenchPreferencePage {
+	protected class ScriptEditTemplateDialog extends EditTemplateDialog {
+		public ScriptEditTemplateDialog(Shell parent, Template template,
+				boolean edit, boolean isNameModifiable,
+				ContextTypeRegistry registry) {
+			super(parent, template, edit, isNameModifiable, registry);
+		}
+
+		// protected SourceViewer createViewer(Composite parent) {
+		// return ScriptTemplatePreferencePage.this.createViewer(parent);
+		// }
+
+		/**
+		 * Creates the viewer to be used to display the pattern. Subclasses may
+		 * override.
+		 * 
+		 * @param parent
+		 *            the parent composite of the viewer
+		 * @return a configured <code>SourceViewer</code>
+		 */
+		protected SourceViewer createViewer(Composite parent) {
+			IPreferenceStore store = getPreferenceStore();
+			SourceViewer viewer = new ScriptSourceViewer(parent, null, null,
+					false, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL, store);
+			SourceViewerConfiguration origConfig = createSourceViewerConfiguration();
+			SourceViewerConfiguration configuration = new CodeTemplateSourceViewerConfigurationAdapter(
+					origConfig, getTemplateProcessor());
+			IDocument document = new Document();
+			setDocumentParticioner(document);
+
+			viewer.configure(configuration);
+			viewer.setDocument(document);
+			return viewer;
+		}
+	}
+
+	protected Template editTemplate(Template template, boolean edit,
+			boolean isNameModifiable) {
+		EditTemplateDialog dialog = new ScriptEditTemplateDialog(getShell(),
+				template, edit, isNameModifiable, getContextTypeRegistry());
+		if (dialog.open() == Window.OK) {
+			return dialog.getTemplate();
+		}
+		return null;
+	}
 
 	protected SourceViewer createViewer(Composite parent) {
-		IDocument document = new Document();
-
 		IPreferenceStore store = getPreferenceStore();
+		ScriptSourceViewerConfiguration configuration = createSourceViewerConfiguration();
 
-		ScriptSourceViewerConfiguration configuration = createSourceViewerConfiguration(document);
-		
+		IDocument document = new Document();
+		setDocumentParticioner(document);
+
 		SourceViewer viewer = new ScriptSourceViewer(parent, null, null, false,
 				SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL, store);
 
@@ -50,7 +98,7 @@ public abstract class ScriptTemplatePreferencePage extends
 		// .getFont(TPreferenceConstants.EDITOR_TEXT_FONT);
 		// viewer.getTextWidget().setFont(font);
 
-		//new ScriptSourcePreviewerUpdater(viewer, configuration, store);
+		// new ScriptSourcePreviewerUpdater(viewer, configuration, store);
 
 		return viewer;
 	}
@@ -88,6 +136,8 @@ public abstract class ScriptTemplatePreferencePage extends
 		return false;
 	}
 
-	protected abstract ScriptSourceViewerConfiguration createSourceViewerConfiguration(
-			IDocument document);
+	protected abstract ScriptSourceViewerConfiguration createSourceViewerConfiguration();
+
+	protected abstract void setDocumentParticioner(IDocument document);
+
 }
