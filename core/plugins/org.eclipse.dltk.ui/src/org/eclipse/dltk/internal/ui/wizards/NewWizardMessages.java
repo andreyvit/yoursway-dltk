@@ -14,6 +14,7 @@ import org.eclipse.osgi.util.NLS;
 public final class NewWizardMessages extends NLS {
 
 	private static final String BUNDLE_NAME= "org.eclipse.dltk.internal.ui.wizards.NewWizardMessages";//$NON-NLS-1$
+	
 
 	private NewWizardMessages() {
 		// Do not instantiate
@@ -445,6 +446,15 @@ public final class NewWizardMessages extends NLS {
 	public static String BuildpathModifierQueries_confirm_remove_linked_folder_message;
 	public static String BuildpathModifierQueries_delete_linked_folder;
 	public static String BuildpathModifierQueries_do_not_delete_linked_folder;
+	
+	public static String UserLibraryWizardPage_title;
+	public static String UserLibraryWizardPage_list_config_button;
+	public static String UserLibraryWizardPage_list_label;
+	public static String UserLibraryWizardPage_description_new;
+	public static String UserLibraryWizardPage_description_edit;
+	public static String UserLibraryWizardPage_error_selectentry;
+	public static String UserLibraryWizardPage_error_selectonlyone;
+	public static String UserLibraryWizardPage_error_alreadyoncp;
 	
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, NewWizardMessages.class);

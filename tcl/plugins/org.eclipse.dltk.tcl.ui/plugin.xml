@@ -222,6 +222,13 @@
           class="org.eclipse.dltk.tcl.internal.ui.preferences.TclFoldingPreferencePage"
           id="org.eclipse.dltk.tcl.preferences.editor.folding"
           name="%TclEditorFoldingPreferencePage.name"/>
+     <page
+            name="Tcl Libraries"
+            category="org.eclipse.dltk.tcl.preferences"
+            class="org.eclipse.dltk.internal.ui.preferences.UserLibraryPreferencePage"
+            id="org.eclipse.dltk.ui.preferences.UserLibraryPreferencePage">
+            <keywordReference id="org.eclipse.dltk.ui.userlibs"/>
+      </page>      
           
  </extension>
  <extension
@@ -457,5 +464,13 @@
       </objectContribution>      
    </extension> -->
   
-<!--Action Sets -->  
+<extension
+         point="org.eclipse.dltk.ui.buildpathContainerPage">
+      <buildpathContainerPath
+      		nature="org.eclipse.dltk.tcl.core.nature"
+            name="User Library"
+            class="org.eclipse.dltk.internal.ui.wizards.buildpath.UserLibraryWizardPage"
+            id="org.eclipse.dltk.USER_LIBRARY">
+      </buildpathContainerPath>
+   </extension>
 </plugin>

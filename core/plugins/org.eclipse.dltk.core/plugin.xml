@@ -89,4 +89,11 @@
 		</run>
 	</builder>
 </extension>
+<extension
+      point="org.eclipse.dltk.core.buildpathContainerInitializer">
+   <buildpathContainerInitializer
+         class="org.eclipse.dltk.internal.core.UserLibraryBuildpathContainerInitializer"
+         id="org.eclipse.dltk.USER_LIBRARY">
+   </buildpathContainerInitializer>
+</extension>
 </plugin>

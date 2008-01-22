@@ -1332,6 +1332,5 @@
                id="org.eclipse.dltk.ui.actions.ReferencesInWorkspace">
          </action>
       </actionSet>
-   </extension>   
-   
+   </extension>
 </plugin>

@@ -39,6 +39,7 @@ import org.eclipse.dltk.internal.ui.editor.ISourceModuleDocumentProvider;
 import org.eclipse.dltk.internal.ui.editor.SourceModuleDocumentProvider;
 import org.eclipse.dltk.internal.ui.editor.WorkingCopyManager;
 import org.eclipse.dltk.internal.ui.text.hover.EditorTextHoverDescriptor;
+import org.eclipse.dltk.internal.ui.wizards.buildpath.BuildpathAttributeConfigurationDescriptors;
 import org.eclipse.dltk.launching.sourcelookup.DBGPSourceModule;
 import org.eclipse.dltk.ui.text.completion.ContentAssistHistory;
 import org.eclipse.dltk.ui.viewsupport.ImageDescriptorRegistry;
@@ -82,6 +83,8 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 	 * 
 	 */
 	private ContentAssistHistory fContentAssistHistory;
+	
+	private BuildpathAttributeConfigurationDescriptors fBuildpathAttributeConfigurationDescriptors;
 
 	/**
 	 * The constructor.
@@ -452,5 +455,11 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 
 	public static boolean isDebug() {
 		return DLTKCore.DEBUG;
+	}
+	public BuildpathAttributeConfigurationDescriptors getClasspathAttributeConfigurationDescriptors() {
+		if (fBuildpathAttributeConfigurationDescriptors == null) {
+			fBuildpathAttributeConfigurationDescriptors= new BuildpathAttributeConfigurationDescriptors();
+		}
+		return fBuildpathAttributeConfigurationDescriptors;
 	}
 }
