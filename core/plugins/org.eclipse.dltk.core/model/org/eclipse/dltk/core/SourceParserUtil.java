@@ -42,7 +42,7 @@ public class SourceParserUtil {
 			moduleDeclaration = (ModuleDeclaration) mifo.get(AST);
 		}
 		if (moduleDeclaration == null) {
-			if( reporter != null ) {
+			if (reporter != null) {
 				reporter.clearMarkers();
 			}
 			ISourceParser sourceParser = null;
@@ -57,8 +57,8 @@ public class SourceParserUtil {
 			if (sourceParser != null) {
 				try {
 					moduleDeclaration = sourceParser.parse(module.getPath()
-							.toOSString().toCharArray(), module.getSource()
-							.toCharArray(), reporter);
+							.toOSString().toCharArray(), module
+							.getSourceAsCharArray(), reporter);
 				} catch (ModelException e) {
 					if (DLTKCore.DEBUG) {
 						e.printStackTrace();

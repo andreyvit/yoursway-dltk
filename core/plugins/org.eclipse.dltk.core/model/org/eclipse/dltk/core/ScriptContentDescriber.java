@@ -27,6 +27,8 @@ public abstract class ScriptContentDescriber implements ITextContentDescriber {
 	}
 
 	private final static int BUFFER_LENGTH = 2 * 1024;
+	private final static int HEADER_LENGTH = 4 * 1024;
+	private final static int FOOTER_LENGTH = 4 * 1024;
 
 	private static boolean checkHeader(File file, Pattern[] headerPatterns,
 			Pattern[] footerPatterns) throws FileNotFoundException, IOException {
@@ -119,6 +121,7 @@ public abstract class ScriptContentDescriber implements ITextContentDescriber {
 		}
 		return false;
 	}
+	
 
 	public static boolean checkPatterns(Reader stream,
 			Pattern[] headerPatterns, Pattern[] footerPatterns) {
@@ -139,10 +142,18 @@ public abstract class ScriptContentDescriber implements ITextContentDescriber {
 			}
 		}
 		String content = buffer.toString();
-		if (checkBufferForPatterns(content, headerPatterns)) {
+		String header = content;
+		if( header.length() > HEADER_LENGTH ) {
+			header = header.substring(0, HEADER_LENGTH);
+		}
+		String footer = content;
+		if( footer.length() > FOOTER_LENGTH) {
+			footer = footer.substring(footer.length() - FOOTER_LENGTH, footer.length()-1);
+		}
+		if (checkBufferForPatterns(header, headerPatterns)) {
 			return true;
 		}
-		if (checkBufferForPatterns(content, footerPatterns)) {
+		if (checkBufferForPatterns(footer, footerPatterns)) {
 			return true;
 		}
 

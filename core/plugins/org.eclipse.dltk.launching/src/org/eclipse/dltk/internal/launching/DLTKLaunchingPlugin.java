@@ -308,12 +308,12 @@ public class DLTKLaunchingPlugin extends Plugin implements
 		// DebugPlugin.getDefault().addDebugEventListener(this);
 
 		// prefetch library locations for default interpreters
-		Job libPrefetch = new Job("Inializing DLTK launching") {
+		Job libPrefetch = new Job("Initializing DLTK launching") {
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
 					IDLTKLanguageToolkit[] toolkits = DLTKLanguageManager
 							.getLanguageToolkits();
-					monitor.beginTask("Inializing DLTK", toolkits.length);
+					monitor.beginTask("Initialize interpreters", toolkits.length);
 					for (int i = 0; i < toolkits.length; i++) {
 						SubProgressMonitor subMonitor = new SubProgressMonitor(
 								monitor, 1);
@@ -327,8 +327,7 @@ public class DLTKLaunchingPlugin extends Plugin implements
 							type.getDefaultLibraryLocations(install
 									.getInstallLocation(), install
 									.getEnvironmentVariables(), subMonitor);
-						}
-						else {
+						} else {
 							subMonitor.worked(1);
 						}
 						subMonitor.done();
@@ -343,7 +342,7 @@ public class DLTKLaunchingPlugin extends Plugin implements
 			}
 
 		};
-		// // libPrefetch.setSystem(true);
+//		libPrefetch.setSystem(true);
 		libPrefetch.schedule();
 	}
 

@@ -56,6 +56,7 @@ import org.eclipse.dltk.internal.core.util.HandleFactory;
 
 public class ScriptBuilder extends IncrementalProjectBuilder {
 	public static final boolean DEBUG = DLTKCore.DEBUG_SCRIPT_BUILDER;
+	public static final boolean TRACE = DLTKCore.TRACE_SCRIPT_BUILDER;
 
 	public IProject currentProject = null;
 	ScriptProject scriptProject = null;
@@ -165,7 +166,10 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor)
 			throws CoreException {
-
+		long start = 0;
+		if (TRACE) {
+			start = System.currentTimeMillis();
+		}
 		this.currentProject = getProject();
 
 		if (!DLTKLanguageManager.hasScriptNature(this.currentProject)) {
@@ -197,7 +201,10 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 		if (DEBUG)
 			System.out.println("Finished build of " + currentProject.getName() //$NON-NLS-1$
 					+ " @ " + new Date(System.currentTimeMillis())); //$NON-NLS-1$
-
+		if (TRACE) {
+			System.out.println("Building time:"
+					+ Long.toString(System.currentTimeMillis() - start));
+		}
 		return requiredProjects;
 	}
 
@@ -331,7 +338,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			monitor.beginTask("Incremental building", 100);
 
 			Set resources = getResourcesFrom(delta, monitor, 5);
-			
+
 			// Call builders for resources.
 			Set actualResourcesToBuild = findDependencies(resources);
 			monitor.done();

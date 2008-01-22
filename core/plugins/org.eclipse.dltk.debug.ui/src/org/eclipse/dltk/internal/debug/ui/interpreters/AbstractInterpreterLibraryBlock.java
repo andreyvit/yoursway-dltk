@@ -508,6 +508,9 @@ public abstract class AbstractInterpreterLibraryBlock implements
 //			}
 		}
 		if( oldVars == null ) {
+			if( this.fInterpreterInstall == null ) {
+				restoreDefaultLibraries();
+			}
 			return;
 		}
 		// Skip re discover if variables are same.

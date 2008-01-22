@@ -76,6 +76,10 @@ public class DLTKCore extends Plugin {
 			Platform.getDebugOption("org.eclipse.dltk.core/debugScopes")).booleanValue();
 	public static final boolean DEBUG_SCRIPT_BUILDER = Boolean.valueOf(
 			Platform.getDebugOption("org.eclipse.dltk.core/debugScriptBuilder")).booleanValue();
+	
+	public static final boolean TRACE_SCRIPT_BUILDER = Boolean.valueOf(
+			Platform.getDebugOption("org.eclipse.dltk.core/traceScriptBuilder")).booleanValue();
+	
 	public static final boolean DEBUG_COMPLETION = Boolean.valueOf(
 			Platform.getDebugOption("org.eclipse.dltk.core/debugCompletion")).booleanValue();
 	public static final boolean DEBUG_SELECTION = Boolean.valueOf(

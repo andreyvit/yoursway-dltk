@@ -306,22 +306,27 @@ public abstract class AbstractSourceModule extends Openable implements
 	}
 
 	public String getSource() throws ModelException {
-		IBuffer buffer = getBuffer();
+		IBuffer buffer = getBufferNotOpen();
 		if (buffer == null)
-			return ""; //$NON-NLS-1$
+			return new String( getBufferContent() ); //$NON-NLS-1$
 		return buffer.getContents();
 	}
 
 	public char[] getSourceAsCharArray() throws ModelException {
-		return getSource().toCharArray();
+		IBuffer buffer = getBufferNotOpen();
+		if (buffer == null)
+			return getBufferContent(); //$NON-NLS-1$
+		return buffer.getContents().toCharArray();
+//		return getSource().toCharArray();
 	}
 
 	public String getSourceContents() {
 		try {
 			return getSource();
 		} catch (ModelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 			return "";
 		}
 	}
