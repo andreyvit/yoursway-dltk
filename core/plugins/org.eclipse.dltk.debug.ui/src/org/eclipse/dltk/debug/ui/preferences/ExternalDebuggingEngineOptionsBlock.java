@@ -4,10 +4,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.ui.preferences.AbstractOptionsBlock;
 import org.eclipse.dltk.ui.preferences.FieldValidators;
-import org.eclipse.dltk.ui.preferences.IFieldValidator;
 import org.eclipse.dltk.ui.preferences.PreferenceKey;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;
 import org.eclipse.dltk.ui.util.SWTFactory;
@@ -129,11 +127,4 @@ public abstract class ExternalDebuggingEngineOptionsBlock extends
 			e.printStackTrace();
 		}
 	}
-
-	protected IStatus validate(PreferenceKey changedKey, String oldValue,
-			String newValue) {
-		IFieldValidator validator = FieldValidators.PATH_VALIDATOR;
-		return validator.validate(oldValue);
-	}
-
 }
