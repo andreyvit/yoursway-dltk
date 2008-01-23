@@ -3,12 +3,25 @@ package org.eclipse.dltk.ui.preferences;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.internal.ui.preferences.OptionsConfigurationBlock;
+import org.eclipse.dltk.ui.dialogs.PropToPrefLinkArea;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;
+import org.eclipse.jface.preference.IPreferenceNode;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.PreferenceLinkArea;
+import org.eclipse.ui.dialogs.PreferencesUtil;
+import org.eclipse.ui.internal.WorkbenchMessages;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
+
+import com.ibm.icu.text.MessageFormat;
 
 public abstract class AbstractOptionsBlock extends OptionsConfigurationBlock
 		implements IPreferenceDelegate {
@@ -34,7 +47,7 @@ public abstract class AbstractOptionsBlock extends OptionsConfigurationBlock
 	protected void initialize() {
 		bindManager.initialize();
 	}
-	
+
 	protected abstract Control createOptionsBlock(Composite parent);
 
 	protected final void bindControl(Button button, PreferenceKey key,
@@ -79,24 +92,44 @@ public abstract class AbstractOptionsBlock extends OptionsConfigurationBlock
 	}
 
 	/*
-	 * @see org.eclipse.dltk.ui.preferences.IPreferenceDelegate#setBoolean(java.lang.Object, boolean)
+	 * @see org.eclipse.dltk.ui.preferences.IPreferenceDelegate#setBoolean(java.lang.Object,
+	 *      boolean)
 	 */
 	public final void setBoolean(Object key, boolean value) {
 		super.setValue((PreferenceKey) key, value);
 	}
 
 	/*
-	 * @see org.eclipse.dltk.ui.preferences.IPreferenceDelegate#setString(java.lang.Object, java.lang.String)
+	 * @see org.eclipse.dltk.ui.preferences.IPreferenceDelegate#setString(java.lang.Object,
+	 *      java.lang.String)
 	 */
 	public final void setString(Object key, String value) {
 		setValue((PreferenceKey) key, value);
 	}
-	
+
 	protected final IProject getProject() {
 		return fProject;
 	}
-	
+
 	protected final void updateStatus(IStatus status) {
 		bindManager.updateStatus(status);
+	}
+
+	protected void createPrefLink(Composite composite, String message,
+			final String prefPageId, final Object data) {
+		PreferenceLinkArea area = new PreferenceLinkArea(composite, SWT.NONE,
+				prefPageId, message, getPreferenceContainer(), data);
+
+		area.getControl().setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, false, false));
+	}
+
+	protected void createPropToPrefLink(Composite composite, String message,
+			final String prefPageId, final Object data) {
+		PropToPrefLinkArea area = new PropToPrefLinkArea(composite, SWT.NONE,
+				prefPageId, message, getShell(), data);
+
+		area.getControl().setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, false, false));
 	}
 }
