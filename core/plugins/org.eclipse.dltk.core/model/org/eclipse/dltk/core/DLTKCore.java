@@ -1538,8 +1538,8 @@ public class DLTKCore extends Plugin {
 	public static IRegion newRegion() {
 		return new Region();
 	}
-	public static String[] getUserLibraryNames() {
-		 return ModelManager.getUserLibraryManager().getUserLibraryNames();
+	public static String[] getUserLibraryNames(IDLTKLanguageToolkit toolkit) {
+		 return ModelManager.getUserLibraryManager().getUserLibraryNames(toolkit);
 	}
 	
 }

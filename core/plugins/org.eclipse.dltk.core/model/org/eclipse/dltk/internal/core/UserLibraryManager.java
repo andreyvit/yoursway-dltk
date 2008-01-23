@@ -14,16 +14,21 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.util.Util;
@@ -47,17 +52,62 @@ public class UserLibraryManager {
 	 * Gets the library for a given name or <code>null</code> if no such
 	 * library exists.
 	 */
-	public synchronized UserLibrary getUserLibrary(String libName) {
-		return (UserLibrary) this.userLibraries.get(libName);
+	public synchronized UserLibrary getUserLibrary(String libName,
+			IDLTKLanguageToolkit toolkit) {
+		return (UserLibrary) this.userLibraries.get(makeLibraryName(libName,
+				toolkit));
+	}
+
+	public static String makeLibraryName(String libName, IDLTKLanguageToolkit toolkit) {
+		if( toolkit == null ) {
+			return "#" + libName;
+		}
+		return toolkit.getNatureId() + "#" + libName;
+	}
+
+	private String getLibraryName(String key) {
+		int pos = key.indexOf("#");
+		if (pos != -1) {
+			return key.substring(pos + 1);
+		}
+		return key;
+	}
+
+	private IDLTKLanguageToolkit getToolkitFromKey(String key) {
+		int pos = key.indexOf("#");
+		if (pos != -1) {
+			String nature = key.substring(0, pos);
+			try {
+				return DLTKLanguageManager.getLanguageToolkit(nature);
+			} catch (CoreException e) {
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return null;
 	}
 
 	/*
 	 * Returns the names of all defined user libraries. The corresponding
 	 * classpath container path is the name appended to the CONTAINER_ID.
 	 */
-	public synchronized String[] getUserLibraryNames() {
+	public synchronized String[] getUserLibraryNames(
+			IDLTKLanguageToolkit toolkit) {
 		Set set = this.userLibraries.keySet();
-		return (String[]) set.toArray(new String[set.size()]);
+		Set result = new HashSet();
+		for (Iterator iterator = set.iterator(); iterator.hasNext();) {
+			String key = (String) iterator.next();
+			int pos = key.indexOf("#");
+			if (pos != -1) {
+				String nature = key.substring(0, pos);
+				if (toolkit.getNatureId().equals(nature)) {
+					result.add(getLibraryName(key));
+				}
+			}
+		}
+
+		return (String[]) result.toArray(new String[result.size()]);
 	}
 
 	private void initialize() {
@@ -112,9 +162,10 @@ public class UserLibraryManager {
 		try {
 			// find affected projects
 			IPath containerPath = new Path(DLTKCore.USER_LIBRARY_CONTAINER_ID)
-					.append(libName);
+					.append(getLibraryName(libName));
 			IScriptProject[] allJavaProjects = DLTKCore.create(
-					ResourcesPlugin.getWorkspace().getRoot()).getScriptProjects();
+					ResourcesPlugin.getWorkspace().getRoot())
+					.getScriptProjects();
 			ArrayList affectedProjects = new ArrayList();
 			for (int i = 0; i < allJavaProjects.length; i++) {
 				IScriptProject javaProject = allJavaProjects[i];
@@ -149,9 +200,10 @@ public class UserLibraryManager {
 			IScriptProject[] projects = new IScriptProject[length];
 			affectedProjects.toArray(projects);
 			IBuildpathContainer[] containers = new IBuildpathContainer[length];
-			if (userLibrary != null) {
+			IDLTKLanguageToolkit toolkit = getToolkitFromKey(libName);
+			if (userLibrary != null && toolkit != null) {
 				UserLibraryBuildpathContainer container = new UserLibraryBuildpathContainer(
-						libName);
+						getLibraryName(libName), toolkit);
 				for (int i = 0; i < length; i++) {
 					containers[i] = container;
 				}
@@ -167,10 +219,12 @@ public class UserLibraryManager {
 		}
 	}
 
-	public synchronized void removeUserLibrary(String libName) {
+	public synchronized void removeUserLibrary(String libName,
+			IDLTKLanguageToolkit toolkit) {
 		IEclipsePreferences instancePreferences = ModelManager
 				.getModelManager().getInstancePreferences();
-		String propertyName = BP_USERLIBRARY_PREFERENCES_PREFIX + libName;
+		String propertyName = BP_USERLIBRARY_PREFERENCES_PREFIX
+				+ makeLibraryName(libName, toolkit);
 		instancePreferences.remove(propertyName);
 		try {
 			instancePreferences.flush();
@@ -182,18 +236,20 @@ public class UserLibraryManager {
 	}
 
 	public synchronized void setUserLibrary(String libName,
-			IBuildpathEntry[] entries, boolean isSystemLibrary) {
+			IBuildpathEntry[] entries, boolean isSystemLibrary,
+			IDLTKLanguageToolkit toolkit) {
 		IEclipsePreferences instancePreferences = ModelManager
 				.getModelManager().getInstancePreferences();
-		String propertyName = BP_USERLIBRARY_PREFERENCES_PREFIX + libName;
+		String propertyName = BP_USERLIBRARY_PREFERENCES_PREFIX
+				+ makeLibraryName(libName, toolkit);
 		try {
 			String propertyValue = UserLibrary.serialize(entries,
 					isSystemLibrary);
 			instancePreferences.put(propertyName, propertyValue); // sends out
-																	// a
-																	// PreferenceChangeEvent
-																	// (see
-																	// preferenceChange(...))
+			// a
+			// PreferenceChangeEvent
+			// (see
+			// preferenceChange(...))
 		} catch (IOException e) {
 			Util.log(e, "Exception while serializing user library " + libName); //$NON-NLS-1$
 			return;

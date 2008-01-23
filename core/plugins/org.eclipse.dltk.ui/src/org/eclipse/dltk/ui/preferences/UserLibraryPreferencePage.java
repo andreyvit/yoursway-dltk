@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.dltk.internal.ui.preferences;
+package org.eclipse.dltk.ui.preferences;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -53,8 +53,11 @@ import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.internal.core.UserLibraryBuildpathContainerInitializer;
+import org.eclipse.dltk.internal.core.UserLibraryManager;
 import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.internal.ui.IUIConstants;
 import org.eclipse.dltk.internal.ui.dialogs.StatusInfo;
@@ -79,7 +82,6 @@ import org.eclipse.dltk.internal.ui.wizards.dialogfields.StringButtonDialogField
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.StringDialogField;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.TreeListDialogField;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
-import org.eclipse.dltk.ui.preferences.PreferencesMessages;
 import org.eclipse.dltk.ui.util.ExceptionHandler;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
@@ -111,8 +113,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class UserLibraryPreferencePage extends PreferencePage implements
-		IWorkbenchPreferencePage {
+public abstract class UserLibraryPreferencePage extends PreferencePage
+		implements IWorkbenchPreferencePage {
 
 	public static final String ID = "org.eclipse.dltk.ui.preferences.UserLibraryPreferencePage"; //$NON-NLS-1$
 	public static final String DATA_DO_CREATE = "do_create"; //$NON-NLS-1$
@@ -164,10 +166,11 @@ public class UserLibraryPreferencePage extends PreferencePage implements
 		 */
 		protected Control createDialogArea(Composite parent) {
 			Composite composite = (Composite) super.createDialogArea(parent);
-			LayoutUtil.doDefaultLayout(composite, new DialogField[] {
-					fNameField, fIsSystemField }, true, SWT.DEFAULT,
+			LayoutUtil.doDefaultLayout(composite,
+					new DialogField[] { fNameField, fIsSystemField }, false, SWT.DEFAULT,
 					SWT.DEFAULT);
 			fNameField.postSetFocusOnDialogField(parent.getDisplay());
+			// fNameField.doFillIntoGrid(composite, 2);
 
 			Dialog.applyDialogFont(composite);
 
@@ -221,8 +224,7 @@ public class UserLibraryPreferencePage extends PreferencePage implements
 			if (fElementToEdit != null) {
 				entries = fElementToEdit.getChildren();
 			}
-			return new BPUserLibraryElement(fNameField.getText(),
-					fIsSystemField.isSelected(), entries);
+			return new BPUserLibraryElement(fNameField.getText(), true, entries);
 		}
 
 	}
@@ -862,7 +864,7 @@ public class UserLibraryPreferencePage extends PreferencePage implements
 	}
 
 	private IDialogSettings fDialogSettings;
-	private TreeListDialogField fLibraryList;
+	protected TreeListDialogField fLibraryList;
 	private IScriptProject fDummyProject;
 	private BuildpathAttributeConfigurationDescriptors fAttributeDescriptors;
 
@@ -875,6 +877,7 @@ public class UserLibraryPreferencePage extends PreferencePage implements
 	private static final int IDX_DOWN = 7;
 	private static final int IDX_LOAD = 9;
 	private static final int IDX_SAVE = 10;
+	private static final int IDX_DETECT = 12;
 
 	/**
 	 * Constructor for ClasspathVariablesPreferencePage
@@ -906,19 +909,21 @@ public class UserLibraryPreferencePage extends PreferencePage implements
 				null,
 
 				PreferencesMessages.UserLibraryPreferencePage_libraries_load_button,
-				PreferencesMessages.UserLibraryPreferencePage_libraries_save_button };
+				PreferencesMessages.UserLibraryPreferencePage_libraries_save_button,
+				null, "Detect" };
 
 		fLibraryList = new TreeListDialogField(adapter, buttonLabels,
 				new BPListLabelProvider());
 		fLibraryList
 				.setLabelText(PreferencesMessages.UserLibraryPreferencePage_libraries_label);
 
-		String[] names = DLTKCore.getUserLibraryNames();
+		String[] names = DLTKCore.getUserLibraryNames(getLanguageToolkit());
 		ArrayList elements = new ArrayList();
 
 		for (int i = 0; i < names.length; i++) {
 			IPath path = new Path(DLTKCore.USER_LIBRARY_CONTAINER_ID)
-					.append(names[i]);
+					.append(UserLibraryManager.makeLibraryName(names[i],
+							getLanguageToolkit()));
 			try {
 				IBuildpathContainer container = DLTKCore.getBuildpathContainer(
 						path, fDummyProject);
@@ -1054,7 +1059,7 @@ public class UserLibraryPreferencePage extends PreferencePage implements
 			throws CoreException {
 		List list = fLibraryList.getElements();
 		HashSet oldNames = new HashSet(Arrays.asList(DLTKCore
-				.getUserLibraryNames()));
+				.getUserLibraryNames(getLanguageToolkit())));
 		int nExisting = list.size();
 
 		HashSet newEntries = new HashSet(list.size());
@@ -1076,6 +1081,10 @@ public class UserLibraryPreferencePage extends PreferencePage implements
 
 		BuildpathContainerInitializer initializer = DLTKCore
 				.getBuildpathContainerInitializer(DLTKCore.USER_LIBRARY_CONTAINER_ID);
+		if (initializer instanceof UserLibraryBuildpathContainerInitializer) {
+			((UserLibraryBuildpathContainerInitializer) initializer)
+					.setToolkit(getLanguageToolkit());
+		}
 		IScriptProject jproject = fDummyProject;
 
 		for (int i = 0; i < nExisting; i++) {
@@ -1087,6 +1096,10 @@ public class UserLibraryPreferencePage extends PreferencePage implements
 				IBuildpathContainer updatedContainer = element
 						.getUpdatedContainer();
 				try {
+					if (initializer instanceof UserLibraryBuildpathContainerInitializer) {
+						((UserLibraryBuildpathContainerInitializer) initializer)
+								.setToolkit(getLanguageToolkit());
+					}
 					initializer.requestBuildpathContainerUpdate(path, jproject,
 							updatedContainer);
 				} catch (CoreException e) {
@@ -1154,10 +1167,13 @@ public class UserLibraryPreferencePage extends PreferencePage implements
 		List list = field.getSelectedElements();
 		field.enableButton(IDX_REMOVE, canRemove(list));
 		field.enableButton(IDX_EDIT, canEdit(list));
-		field.enableButton(IDX_ADD, canAdd(list));
+		field.enableButton(IDX_ADD, canAdd(list)
+				&& this.getLanguageToolkit().languageSupportZIPBuildpath());
+		field.enableButton(IDX_ADD_EXTERNAL, canAdd(list));
 		field.enableButton(IDX_UP, canMoveUp(list));
 		field.enableButton(IDX_DOWN, canMoveDown(list));
 		field.enableButton(IDX_SAVE, field.getSize() > 0);
+		field.enableButton(IDX_DETECT, isDetectionSupported());
 	}
 
 	protected void doCustomButtonPressed(TreeListDialogField field, int index) {
@@ -1179,7 +1195,16 @@ public class UserLibraryPreferencePage extends PreferencePage implements
 			doMoveUp(field.getSelectedElements());
 		} else if (index == IDX_DOWN) {
 			doMoveDown(field.getSelectedElements());
+		} else if (index == IDX_DETECT) {
+			doDetection();
 		}
+	}
+
+	protected boolean isDetectionSupported() {
+		return false;
+	}
+
+	protected void doDetection() {
 	}
 
 	protected void doDoubleClicked(TreeListDialogField field) {
@@ -1372,7 +1397,7 @@ public class UserLibraryPreferencePage extends PreferencePage implements
 		dialog.open();
 	}
 
-	private boolean canAdd(List list) {
+	protected boolean canAdd(List list) {
 		return getSingleSelectedLibrary(list) != null;
 	}
 
@@ -1652,4 +1677,5 @@ public class UserLibraryPreferencePage extends PreferencePage implements
 
 	}
 
+	protected abstract IDLTKLanguageToolkit getLanguageToolkit();
 }

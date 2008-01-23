@@ -223,9 +223,9 @@
           id="org.eclipse.dltk.tcl.preferences.editor.folding"
           name="%TclEditorFoldingPreferencePage.name"/>
      <page
-            name="Tcl Libraries"
+            name="Libraries"
             category="org.eclipse.dltk.tcl.preferences"
-            class="org.eclipse.dltk.internal.ui.preferences.UserLibraryPreferencePage"
+            class="org.eclipse.dltk.tcl.internal.ui.preferences.TclLibraryPreferencePage"
             id="org.eclipse.dltk.ui.preferences.UserLibraryPreferencePage">
             <keywordReference id="org.eclipse.dltk.ui.userlibs"/>
       </page>      

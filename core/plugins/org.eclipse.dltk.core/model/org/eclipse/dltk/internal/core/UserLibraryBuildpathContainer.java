@@ -16,6 +16,7 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IBuiltinModuleProvider;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.internal.core.util.Util;
 
 /**
@@ -24,9 +25,10 @@ import org.eclipse.dltk.internal.core.util.Util;
 public class UserLibraryBuildpathContainer implements IBuildpathContainer {
 	
 	private String name;
-	
-	public UserLibraryBuildpathContainer(String name) {
+	private IDLTKLanguageToolkit toolkit;
+	public UserLibraryBuildpathContainer(String name, IDLTKLanguageToolkit languageToolkit) {
 		this.name = name;
+		this.toolkit = languageToolkit;
 	}
 	
 	/* (non-Javadoc)
@@ -66,7 +68,7 @@ public class UserLibraryBuildpathContainer implements IBuildpathContainer {
 	}
 	
 	private UserLibrary getUserLibrary() {
-		UserLibrary userLibrary = ModelManager.getUserLibraryManager().getUserLibrary(this.name);
+		UserLibrary userLibrary = ModelManager.getUserLibraryManager().getUserLibrary(this.name, toolkit);
 		if (userLibrary == null && ModelManager.BP_RESOLVE_VERBOSE) {
 			verbose_no_user_library_found(this.name);
 		}
