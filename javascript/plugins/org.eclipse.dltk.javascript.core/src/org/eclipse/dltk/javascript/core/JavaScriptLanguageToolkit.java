@@ -47,8 +47,7 @@ public class JavaScriptLanguageToolkit extends AbstractLanguageToolkit {
 	}
 
 	public String getLanguageContentType() {
-		// TODO Auto-generated method stub
-		return null;
+		return "org.eclipse.dltk.javascriptContentType";
 	}
 
 }
