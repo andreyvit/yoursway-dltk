@@ -9,36 +9,24 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.parser;
 
-import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
 import org.eclipse.dltk.core.AbstractSourceElementParser;
-import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.SourceParserUtil;
-import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.internal.parser.visitors.RubySourceElementRequestor;
 
 public class RubySourceElementParser extends AbstractSourceElementParser {
 
-	public RubySourceElementParser() {
+	/*
+	 * @see org.eclipse.dltk.core.AbstractSourceElementParser#createVisitor()
+	 */
+	protected SourceElementRequestVisitor createVisitor() {
+		return new RubySourceElementRequestor(getRequestor());
 	}
 
-	public void parseSourceModule(char[] contents,
-			ISourceModuleInfo astCache, char[] filename) {
-
-		ModuleDeclaration moduleDeclaration = SourceParserUtil
-				.getModuleDeclaration(filename, contents, RubyNature.NATURE_ID,
-						this.getProblemReporter(), astCache);
-
-		RubySourceElementRequestor requestor = new RubySourceElementRequestor(
-				this.getRequestor());
-
-		try {
-			moduleDeclaration.traverse(requestor);
-
-		} catch (Exception e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
+	/*
+	 * @see org.eclipse.dltk.core.AbstractSourceElementParser#getNatureId()
+	 */
+	protected String getNatureId() {
+		return RubyNature.NATURE_ID;
 	}
 }
