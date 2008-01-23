@@ -80,4 +80,5 @@ public class ScriptDebugPreferencesMessages {
 	public static String LinkToGlobalDebugOptions;
 	public static String LinkToLanguageDebugOptions;
 	public static String LinkToDebuggingEnginePreferences;
+	public static String LinkToGeneralPreferences;
 }
