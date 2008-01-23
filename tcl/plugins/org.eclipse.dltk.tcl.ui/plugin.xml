@@ -234,6 +234,7 @@
  <extension
        point="org.eclipse.ui.propertyPages">
     <page
+          category="org.eclipse.dltk.tcl.propertyPage"
           class="org.eclipse.dltk.tcl.internal.ui.preferences.TclBuildPathPropertyPage"
           id="org.eclipse.dltk.tcl.ui.BuildpathProperties"
           name="%TclBuildPathPropertyPage.name">

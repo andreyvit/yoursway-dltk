@@ -272,9 +272,10 @@
  <extension
        point="org.eclipse.ui.propertyPages">
     <page
-      class="org.eclipse.dltk.ruby.internal.ui.preferences.RubyBuildPathPropertyPage"
-      id="org.eclipse.dltk.ruby.ui.BuildpathProperties"
-      name="%RubyBuildPathPropertyPage.name">
+          category="org.eclipse.dltk.ruby.propertyPage"
+          class="org.eclipse.dltk.ruby.internal.ui.preferences.RubyBuildPathPropertyPage"
+          id="org.eclipse.dltk.ruby.ui.BuildpathProperties"
+          name="%RubyBuildPathPropertyPage.name">
       <enabledWhen>
         <adapt type="org.eclipse.core.resources.IProject">
           <test property="org.eclipse.core.resources.projectNature" value="org.eclipse.dltk.ruby.core.nature"/>
