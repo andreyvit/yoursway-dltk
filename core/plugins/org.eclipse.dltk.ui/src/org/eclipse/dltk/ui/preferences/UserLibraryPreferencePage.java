@@ -166,8 +166,8 @@ public abstract class UserLibraryPreferencePage extends PreferencePage
 		 */
 		protected Control createDialogArea(Composite parent) {
 			Composite composite = (Composite) super.createDialogArea(parent);
-			LayoutUtil.doDefaultLayout(composite,
-					new DialogField[] { fNameField, fIsSystemField }, false, SWT.DEFAULT,
+			LayoutUtil.doDefaultLayout(composite, new DialogField[] {
+					fNameField, fIsSystemField }, false, SWT.DEFAULT,
 					SWT.DEFAULT);
 			fNameField.postSetFocusOnDialogField(parent.getDisplay());
 			// fNameField.doFillIntoGrid(composite, 2);
@@ -224,7 +224,8 @@ public abstract class UserLibraryPreferencePage extends PreferencePage
 			if (fElementToEdit != null) {
 				entries = fElementToEdit.getChildren();
 			}
-			return new BPUserLibraryElement(fNameField.getText(), true, entries);
+			return new BPUserLibraryElement(fNameField.getText(),
+					fIsSystemField.isSelected(), entries);
 		}
 
 	}
