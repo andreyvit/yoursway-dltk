@@ -62,6 +62,12 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 	ScriptProject scriptProject = null;
 	State lastState;
 
+	/**
+	 * Last build following resource count.
+	 */
+	public long lastBuildResources = 0;
+	public long lastBuildSourceFiles = 0;
+
 	static class ResourceVisitor implements IResourceDeltaVisitor,
 			IResourceVisitor {
 		private Set resources;
@@ -167,6 +173,8 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor)
 			throws CoreException {
 		long start = 0;
+		lastBuildResources = 0;
+		lastBuildSourceFiles = 0;
 		if (TRACE) {
 			start = System.currentTimeMillis();
 		}
@@ -202,8 +210,24 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			System.out.println("Finished build of " + currentProject.getName() //$NON-NLS-1$
 					+ " @ " + new Date(System.currentTimeMillis())); //$NON-NLS-1$
 		if (TRACE) {
-			System.out.println("Building time:"
-					+ Long.toString(System.currentTimeMillis() - start));
+			System.out.println("-----SCRIPT-BUILDER-INFORMATION-TRACE----------------------------");
+			System.out
+					.println("Finished build of project:"
+							+ currentProject.getName()
+							+ "\n"
+							+ "Building time:"
+							+ Long.toString(System.currentTimeMillis() - start)
+							+ "\n"
+							+ "Resources count:"
+							+ this.lastBuildResources
+							+ "\n"
+							+ "Sources count:"
+							+ this.lastBuildSourceFiles
+							+ "\n"
+							+ "Build type:"
+							+ (kind == FULL_BUILD ? "Full build"
+									: "Incremental build"));
+			System.out.println("-----------------------------------------------------------------");
 		}
 		return requiredProjects;
 	}
@@ -283,7 +307,9 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			List els = new ArrayList();
 			els.addAll(elements);
 			buildElements(els, monitor, 30);
+			lastBuildSourceFiles += elements.size();
 			monitor.done();
+			lastBuildResources = resources.size() + elements.size();
 		} catch (CoreException e) {
 			if (DLTKCore.DEBUG) {
 				e.printStackTrace();
@@ -349,6 +375,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			List els = new ArrayList();
 			els.addAll(elements);
 			buildElements(els, monitor, 30);
+			lastBuildResources = resources.size() + elements.size();
 		} finally {
 			ModelManager.getModelManager().setLastBuiltState(currentProject,
 					this.lastState);
@@ -388,7 +415,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			}
 		}
 		sub.done();
-
+		lastBuildSourceFiles += elements.size();
 		// Else build as resource.
 		String[] natureIds = null;
 		try {
