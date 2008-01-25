@@ -18,7 +18,6 @@ import java.util.Set;
 
 import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.LibraryLocation;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -55,7 +54,8 @@ public class LibraryContentProvider implements ITreeContentProvider {
 		fViewer.refresh();
 	}
 
-	public void initialize(File file, EnvironmentVariable[] environmentVariables) {
+	public void initialize(File file,
+			EnvironmentVariable[] environmentVariables, boolean restoreDefault) {
 
 	}
 
@@ -151,9 +151,14 @@ public class LibraryContentProvider implements ITreeContentProvider {
 			newLibraries.addAll(toAdd);
 		} else {
 			Object element = selection.getFirstElement();
-			LibraryStandin firstLib = (LibraryStandin) element;
-			int index = newLibraries.indexOf(firstLib);
-			newLibraries.addAll(index, toAdd);
+			if (element instanceof LibraryStandin) {
+				LibraryStandin firstLib = (LibraryStandin) element;
+				int index = newLibraries.indexOf(firstLib);
+				newLibraries.addAll(index, toAdd);
+			}
+			else {
+				newLibraries.addAll(toAdd);
+			}
 		}
 		fLibraries = (LibraryStandin[]) newLibraries
 				.toArray(new LibraryStandin[newLibraries.size()]);
@@ -203,6 +208,7 @@ public class LibraryContentProvider implements ITreeContentProvider {
 	public boolean canUp(IStructuredSelection selection) {
 		return true;
 	}
+
 	public boolean canDown(IStructuredSelection selection) {
 		return true;
 	}

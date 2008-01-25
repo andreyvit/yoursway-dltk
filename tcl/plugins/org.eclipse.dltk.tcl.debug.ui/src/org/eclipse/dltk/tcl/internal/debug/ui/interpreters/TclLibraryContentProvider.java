@@ -23,6 +23,7 @@ import org.eclipse.ui.PlatformUI;
 
 public class TclLibraryContentProvider extends LibraryContentProvider {
 	PackageLocation[] packageLocations;
+	private Set additions = new HashSet();
 
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof PackageLocation) {
@@ -49,11 +50,17 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 		}
 	}
 
-	public void initialize(File file, EnvironmentVariable[] environmentVariables) {
+	public void initialize(File file,
+			EnvironmentVariable[] environmentVariables, boolean restoreDefault) {
 		if (file.exists()) {
+			LibraryLocation[] additions = null;
+			if (restoreDefault) {
+				this.additions.clear();
+			} else {
+				additions = getAdditions();
+			}
 			packageLocations = PackagesHelper.getLocations(new Path(file
-					.getAbsolutePath()), environmentVariables, super
-					.getLibraries());
+					.getAbsolutePath()), environmentVariables, additions);
 			// Try to use without specific libraries.
 			if (packageLocations.length == 0) {
 				packageLocations = PackagesHelper.getLocations(new Path(file
@@ -70,6 +77,28 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 			this.fViewer.refresh();
 			updateColors();
 		}
+	}
+
+	/**
+	 * Add all libraries not found in packages
+	 * 
+	 * @return
+	 */
+	private LibraryLocation[] getAdditions() {
+		LibraryLocation[] libraries = super.getLibraries();
+		if (packageLocations == null || packageLocations.length == 0) {
+			return null;
+		}
+		Set packages = new HashSet();
+		packages.addAll(Arrays.asList(packageLocations));
+		for (int i = 0; i < libraries.length; i++) {
+			if (!packages.contains(new PackageLocation(libraries[i]
+					.getLibraryPath().toOSString()))) {
+				additions.add(libraries[i]);
+			}
+		}
+		return (LibraryLocation[]) additions
+				.toArray(new LibraryLocation[additions.size()]);
 	}
 
 	private PackageLocation[] createPackageLocationsFrom(
@@ -171,7 +200,6 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 		return selection.size() == 1
 				&& selection.getFirstElement() instanceof PackageLocation;
 	}
-	
 
 	public boolean canDown(IStructuredSelection selection) {
 		return false;

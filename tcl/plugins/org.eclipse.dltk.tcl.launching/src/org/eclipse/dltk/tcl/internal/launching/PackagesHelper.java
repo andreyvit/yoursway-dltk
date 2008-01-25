@@ -243,6 +243,7 @@ public class PackagesHelper {
 							if (line == null) {
 								return;
 							}
+							System.out.println(line);
 							if (add) {
 								String l = line.trim();
 								// Package start
@@ -283,6 +284,7 @@ public class PackagesHelper {
 								.toArray(new String[this.paths.size()]);
 
 						for (int i = 0; i < paths.length; i++) {
+							System.out.println(paths[i]);
 							PackageLocation loc = findLocation(locations, paths[i]);
 							if (loc == null) {
 								loc = new PackageLocation();

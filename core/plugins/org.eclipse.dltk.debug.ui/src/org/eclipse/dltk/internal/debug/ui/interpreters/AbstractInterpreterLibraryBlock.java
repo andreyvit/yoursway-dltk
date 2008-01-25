@@ -11,12 +11,9 @@ package org.eclipse.dltk.internal.debug.ui.interpreters;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -204,7 +201,7 @@ public abstract class AbstractInterpreterLibraryBlock implements
 		if (libs != null) {
 			fLibraryContentProvider.setLibraries(libs);
 			fLibraryContentProvider.initialize(getHomeDirectory(), fDialog
-					.getEnvironmentVariables());
+					.getEnvironmentVariables(), true);
 		}
 		update();
 	}
@@ -412,7 +409,7 @@ public abstract class AbstractInterpreterLibraryBlock implements
 		fLibraryContentProvider.add(new LibraryLocation[] { libs }, selection);
 		// We need to reinitialize.
 		fLibraryContentProvider.initialize(this.getHomeDirectory(), fDialog
-				.getEnvironmentVariables());
+				.getEnvironmentVariables(), false);
 		update();
 	}
 
@@ -510,7 +507,7 @@ public abstract class AbstractInterpreterLibraryBlock implements
 
 			// Set All possibly libraries here
 			fLibraryContentProvider.initialize(getHomeDirectory(), fDialog
-					.getEnvironmentVariables());
+					.getEnvironmentVariables(), false);
 		}
 		update();
 	}
@@ -565,52 +562,53 @@ public abstract class AbstractInterpreterLibraryBlock implements
 	 */
 	public void reDiscover(EnvironmentVariable[] environmentVariables,
 			EnvironmentVariable[] oldVars) {
-		if (oldVars == null) {
-			if (this.fInterpreterInstall != null) {
-				oldVars = this.fInterpreterInstall.getEnvironmentVariables();
-			}
-			// if( oldVars != null && oldVars.length == 0 ) {
-			// restoreDefaultLibraries();
-			// return;
-			// }
-		}
-		if (oldVars == null) {
-			if (this.fInterpreterInstall == null) {
-				restoreDefaultLibraries();
-			}
-			return;
-		}
-		// Skip re discover if variables are same.
-		if (equals(environmentVariables, oldVars)) {
-			return;
-		}
-		LibraryLocation[] currentLibraries = this.fLibraryContentProvider
-				.getLibraries();
-
-		LibraryLocation[] oldLibs = getLibrariesWithEnvironment(oldVars);
-		LibraryLocation[] newLibs = getLibrariesWithEnvironment(environmentVariables);
-		// If current are equal to old, we could easy set new libs.
-		if (equals(currentLibraries, oldLibs)) {
-			if (newLibs != null)
-				fLibraryContentProvider.setLibraries(newLibs);
-		} else { // We need to build delta.
-			Set delta = new HashSet();
-			delta.addAll(Arrays.asList(currentLibraries));
-			delta.removeAll(Arrays.asList(oldLibs));
-
-			List newList = new ArrayList();
-			newList.addAll(Arrays.asList(newLibs));
-			for (Iterator iterator = delta.iterator(); iterator.hasNext();) {
-				LibraryLocation lib = (LibraryLocation) iterator.next();
-				if (!newList.contains(lib)) {
-					newList.add(lib);
-				}
-			}
-
-			LibraryLocation[] aNew = (LibraryLocation[]) newList
-					.toArray(new LibraryLocation[delta.size()]);
-			fLibraryContentProvider.setLibraries(aNew);
-		}
+//		if (oldVars == null) {
+//			if (this.fInterpreterInstall != null) {
+//				oldVars = this.fInterpreterInstall.getEnvironmentVariables();
+//			}
+//			// if( oldVars != null && oldVars.length == 0 ) {
+//			// restoreDefaultLibraries();
+//			// return;
+//			// }
+//		}
+//		if (oldVars == null) {
+//			if (this.fInterpreterInstall == null) {
+//				restoreDefaultLibraries();
+//			}
+//			return;
+//		}
+//		// Skip re discover if variables are same.
+//		if (equals(environmentVariables, oldVars)) {
+//			return;
+//		}
+//		LibraryLocation[] currentLibraries = this.fLibraryContentProvider
+//				.getLibraries();
+//
+//		LibraryLocation[] oldLibs = getLibrariesWithEnvironment(oldVars);
+//		LibraryLocation[] newLibs = getLibrariesWithEnvironment(environmentVariables);
+//		// If current are equal to old, we could easy set new libs.
+//		if (equals(currentLibraries, oldLibs)) {
+//			if (newLibs != null)
+//				fLibraryContentProvider.setLibraries(newLibs);
+//		} else { // We need to build delta.
+//			Set delta = new HashSet();
+//			delta.addAll(Arrays.asList(currentLibraries));
+//			delta.removeAll(Arrays.asList(oldLibs));
+//
+//			List newList = new ArrayList();
+//			newList.addAll(Arrays.asList(newLibs));
+//			for (Iterator iterator = delta.iterator(); iterator.hasNext();) {
+//				LibraryLocation lib = (LibraryLocation) iterator.next();
+//				if (!newList.contains(lib)) {
+//					newList.add(lib);
+//				}
+//			}
+//
+//			LibraryLocation[] aNew = (LibraryLocation[]) newList
+//					.toArray(new LibraryLocation[delta.size()]);
+//			fLibraryContentProvider.setLibraries(aNew);
+//		}
+		fLibraryContentProvider.initialize(getHomeDirectory(), fDialog.getEnvironmentVariables(), false);
 		update();
 	}
 
