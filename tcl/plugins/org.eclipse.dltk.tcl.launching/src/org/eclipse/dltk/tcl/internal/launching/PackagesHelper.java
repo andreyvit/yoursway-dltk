@@ -283,7 +283,7 @@ public class PackagesHelper {
 								.toArray(new String[this.paths.size()]);
 
 						for (int i = 0; i < paths.length; i++) {
-							System.out.println(paths[i]);
+//							System.out.println(paths[i]);
 							PackageLocation loc = findLocation(locations,
 									paths[i]);
 							if (loc == null) {
