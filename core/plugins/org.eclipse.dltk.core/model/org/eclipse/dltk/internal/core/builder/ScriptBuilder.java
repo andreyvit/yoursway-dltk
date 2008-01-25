@@ -210,7 +210,8 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			System.out.println("Finished build of " + currentProject.getName() //$NON-NLS-1$
 					+ " @ " + new Date(System.currentTimeMillis())); //$NON-NLS-1$
 		if (TRACE) {
-			System.out.println("-----SCRIPT-BUILDER-INFORMATION-TRACE----------------------------");
+			System.out
+					.println("-----SCRIPT-BUILDER-INFORMATION-TRACE----------------------------");
 			System.out
 					.println("Finished build of project:"
 							+ currentProject.getName()
@@ -227,7 +228,8 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 							+ "Build type:"
 							+ (kind == FULL_BUILD ? "Full build"
 									: "Incremental build"));
-			System.out.println("-----------------------------------------------------------------");
+			System.out
+					.println("-----------------------------------------------------------------");
 		}
 		return requiredProjects;
 	}

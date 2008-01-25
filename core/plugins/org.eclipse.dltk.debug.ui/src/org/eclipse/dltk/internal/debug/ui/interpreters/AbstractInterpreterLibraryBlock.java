@@ -35,7 +35,9 @@ import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -83,6 +85,7 @@ public abstract class AbstractInterpreterLibraryBlock implements
 	private Button fAddButton;
 	protected Button fDefaultButton;
 	protected Button fRediscoverButton;
+	private Button fEnabledButton;
 
 	protected AddScriptInterpreterDialog fDialog;
 
@@ -108,15 +111,40 @@ public abstract class AbstractInterpreterLibraryBlock implements
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		comp.setLayoutData(gd);
 
-		fLibraryViewer = new TreeViewer(comp);
+		Composite comp2 = new Composite(comp, SWT.NONE);
+		topLayout = new GridLayout();
+		topLayout.numColumns = 1;
+		topLayout.marginHeight = 0;
+		topLayout.marginWidth = 0;
+		comp2.setLayout(topLayout);
+		gd = new GridData(GridData.FILL_BOTH);
+		comp2.setLayoutData(gd);
+		fLibraryViewer = createViewer(comp2);
 		gd = new GridData(GridData.FILL_BOTH);
 		gd.heightHint = 6;
 		fLibraryViewer.getControl().setLayoutData(gd);
-		fLibraryContentProvider = new LibraryContentProvider();
+		fLibraryContentProvider = createLibraryContentProvider();
 		fLibraryViewer.setContentProvider(fLibraryContentProvider);
 		fLibraryViewer.setLabelProvider(getLabelProvider());
 		fLibraryViewer.setInput(this);
 		fLibraryViewer.addSelectionChangedListener(this);
+
+		if (isEnableButtonSupported()) {
+			fEnabledButton = new Button(comp2, SWT.CHECK);
+			fEnabledButton.setText("Path is enabled");
+			fEnabledButton.addSelectionListener(this);
+			this.fLibraryViewer
+					.addDoubleClickListener(new IDoubleClickListener() {
+						public void doubleClick(DoubleClickEvent event) {
+							if (fLibraryContentProvider
+									.canEnable((IStructuredSelection) fLibraryViewer
+											.getSelection())) {
+								fLibraryContentProvider.changeEnabled();
+								updateButtons();
+							}
+						}
+					});
+		}
 
 		Composite pathButtonComp = new Composite(comp, SWT.NONE);
 		GridLayout pathButtonLayout = new GridLayout();
@@ -147,11 +175,24 @@ public abstract class AbstractInterpreterLibraryBlock implements
 		fDefaultButton = createPushButton(pathButtonComp,
 				InterpretersMessages.InterpreterLibraryBlock_9);
 		fDefaultButton.addSelectionListener(this);
-
-		fRediscoverButton = createPushButton(pathButtonComp, "Rediscover");
-		fRediscoverButton.addSelectionListener(this);
+		if (this.fDialog.isRediscoverSupported()) {
+			fRediscoverButton = createPushButton(pathButtonComp, "Rediscover");
+			fRediscoverButton.addSelectionListener(this);
+		}
 
 		return comp;
+	}
+
+	protected boolean isEnableButtonSupported() {
+		return false;
+	}
+
+	protected LibraryContentProvider createLibraryContentProvider() {
+		return new LibraryContentProvider();
+	}
+
+	protected TreeViewer createViewer(Composite comp) {
+		return new TreeViewer(comp);
 	}
 
 	/**
@@ -160,12 +201,15 @@ public abstract class AbstractInterpreterLibraryBlock implements
 	public void restoreDefaultLibraries() {
 		LibraryLocation[] libs = getLibrariesWithEnvironment(fDialog
 				.getEnvironmentVariables());
-		if (libs != null)
+		if (libs != null) {
 			fLibraryContentProvider.setLibraries(libs);
+			fLibraryContentProvider.initialize(getHomeDirectory(), fDialog
+					.getEnvironmentVariables());
+		}
 		update();
 	}
 
-	private LibraryLocation[] getLibrariesWithEnvironment(
+	protected LibraryLocation[] getLibrariesWithEnvironment(
 			final EnvironmentVariable[] environmentVariables) {
 		final LibraryLocation[][] libs = new LibraryLocation[][] { null };
 		final File installLocation = getHomeDirectory();
@@ -347,6 +391,8 @@ public abstract class AbstractInterpreterLibraryBlock implements
 			restoreDefaultLibraries();
 		} else if (source == fRediscoverButton) {
 			this.reDiscover(this.fDialog.getEnvironmentVariables(), null);
+		} else if (source == fEnabledButton) {
+			this.fLibraryContentProvider.changeEnabled();
 		}
 		update();
 	}
@@ -364,6 +410,9 @@ public abstract class AbstractInterpreterLibraryBlock implements
 		if (libs == null)
 			return;
 		fLibraryContentProvider.add(new LibraryLocation[] { libs }, selection);
+		// We need to reinitialize.
+		fLibraryContentProvider.initialize(this.getHomeDirectory(), fDialog
+				.getEnvironmentVariables());
 		update();
 	}
 
@@ -382,19 +431,31 @@ public abstract class AbstractInterpreterLibraryBlock implements
 	private void updateButtons() {
 		IStructuredSelection selection = (IStructuredSelection) fLibraryViewer
 				.getSelection();
-		fRemoveButton.setEnabled(!selection.isEmpty());
+		fRemoveButton.setEnabled(fLibraryContentProvider.canRemove(selection));
 		boolean enableUp = true, enableDown = true;
 		Object[] libraries = fLibraryContentProvider.getElements(null);
 		if (selection.isEmpty() || libraries.length == 0) {
 			enableUp = false;
 			enableDown = false;
+			if (isEnableButtonSupported()) {
+				fEnabledButton.setSelection(false);
+				fEnabledButton.setEnabled(false);
+			}
 		} else {
 			Object first = libraries[0];
 			Object last = libraries[libraries.length - 1];
+			if (isEnableButtonSupported()) {
+				fEnabledButton.setEnabled(fLibraryContentProvider
+						.canEnable(selection));
+			}
 			for (Iterator iter = selection.iterator(); iter.hasNext();) {
 				Object element = iter.next();
 				Object lib;
 				lib = element;
+				if (isEnableButtonSupported() && selection.size() == 1) {
+					fEnabledButton.setSelection(fLibraryContentProvider
+							.isEnabled(lib));
+				}
 				if (lib == first) {
 					enableUp = false;
 				}
@@ -403,8 +464,10 @@ public abstract class AbstractInterpreterLibraryBlock implements
 				}
 			}
 		}
-		fUpButton.setEnabled(enableUp);
-		fDownButton.setEnabled(enableDown);
+		fUpButton.setEnabled(enableUp
+				&& fLibraryContentProvider.canUp(selection));
+		fDownButton.setEnabled(enableDown
+				&& fLibraryContentProvider.canUp(selection));
 	}
 
 	/**
@@ -444,6 +507,10 @@ public abstract class AbstractInterpreterLibraryBlock implements
 				e.printStackTrace();
 			}
 			fLibraryContentProvider.setLibraries(libs[0]);
+
+			// Set All possibly libraries here
+			fLibraryContentProvider.initialize(getHomeDirectory(), fDialog
+					.getEnvironmentVariables());
 		}
 		update();
 	}
@@ -502,13 +569,13 @@ public abstract class AbstractInterpreterLibraryBlock implements
 			if (this.fInterpreterInstall != null) {
 				oldVars = this.fInterpreterInstall.getEnvironmentVariables();
 			}
-//			if( oldVars != null && oldVars.length == 0 ) {
-//				restoreDefaultLibraries();
-//				return;
-//			}
+			// if( oldVars != null && oldVars.length == 0 ) {
+			// restoreDefaultLibraries();
+			// return;
+			// }
 		}
-		if( oldVars == null ) {
-			if( this.fInterpreterInstall == null ) {
+		if (oldVars == null) {
+			if (this.fInterpreterInstall == null) {
 				restoreDefaultLibraries();
 			}
 			return;
@@ -530,16 +597,16 @@ public abstract class AbstractInterpreterLibraryBlock implements
 			Set delta = new HashSet();
 			delta.addAll(Arrays.asList(currentLibraries));
 			delta.removeAll(Arrays.asList(oldLibs));
-			
+
 			List newList = new ArrayList();
 			newList.addAll(Arrays.asList(newLibs));
 			for (Iterator iterator = delta.iterator(); iterator.hasNext();) {
 				LibraryLocation lib = (LibraryLocation) iterator.next();
-				if( !newList.contains(lib)) {
+				if (!newList.contains(lib)) {
 					newList.add(lib);
 				}
 			}
-			
+
 			LibraryLocation[] aNew = (LibraryLocation[]) newList
 					.toArray(new LibraryLocation[delta.size()]);
 			fLibraryContentProvider.setLibraries(aNew);

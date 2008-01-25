@@ -9,29 +9,34 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.ui.interpreters;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.LibraryLocation;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 
 public class LibraryContentProvider implements ITreeContentProvider {
 
-	private Viewer fViewer;
+	protected TreeViewer fViewer;
 
-	private LibraryStandin[] fLibraries = new LibraryStandin[0];
+	protected LibraryStandin[] fLibraries = new LibraryStandin[0];
+	protected LibraryStandin[] fAllLibraries = new LibraryStandin[0];
 
 	public void dispose() {
 	}
 
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		fViewer = viewer;
+		fViewer = (TreeViewer) viewer;
 	}
 
 	public Object[] getElements(Object inputElement) {
@@ -44,11 +49,14 @@ public class LibraryContentProvider implements ITreeContentProvider {
 			for (int i = 0; i < libs.length; i++) {
 				fLibraries[i] = new LibraryStandin(libs[i]);
 			}
-		}
-		else {
+		} else {
 			fLibraries = new LibraryStandin[0];
 		}
 		fViewer.refresh();
+	}
+
+	public void initialize(File file, EnvironmentVariable[] environmentVariables) {
+
 	}
 
 	public LibraryLocation[] getLibraries() {
@@ -177,4 +185,25 @@ public class LibraryContentProvider implements ITreeContentProvider {
 		return false;
 	}
 
+	public boolean isEnabled(Object lib) {
+		return true;
+	}
+
+	public boolean canRemove(IStructuredSelection selection) {
+		return !selection.isEmpty();
+	}
+
+	public void changeEnabled() {
+	}
+
+	public boolean canEnable(IStructuredSelection selection) {
+		return false;
+	}
+
+	public boolean canUp(IStructuredSelection selection) {
+		return true;
+	}
+	public boolean canDown(IStructuredSelection selection) {
+		return true;
+	}
 }
