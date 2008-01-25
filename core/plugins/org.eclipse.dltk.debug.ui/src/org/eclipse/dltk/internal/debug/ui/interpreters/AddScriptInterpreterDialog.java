@@ -209,6 +209,8 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 			gd = new GridData(GridData.FILL_BOTH);
 			gd.horizontalSpan = 3;
 			block.setLayoutData(gd);
+		} else {
+			l.dispose();
 		}
 
 		Text t = fInterpreterPath.getTextControl(parent);
@@ -282,12 +284,12 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 			fInterpreterName.setText(fEditedInterpreter.getName());
 			fInterpreterPath.setText(fEditedInterpreter.getInstallLocation()
 					.toString());
-			fLibraryBlock.initializeFrom(fEditedInterpreter,
-					fSelectedInterpreterType);
 			if (fEnvironmentVariablesBlock != null) {
 				fEnvironmentVariablesBlock.initializeFrom(fEditedInterpreter,
 						fSelectedInterpreterType);
 			}
+			fLibraryBlock.initializeFrom(fEditedInterpreter,
+					fSelectedInterpreterType);
 			String InterpreterArgs = fEditedInterpreter.getInterpreterArgs();
 			if (InterpreterArgs != null) {
 				fInterpreterArgs.setText(InterpreterArgs);
@@ -536,6 +538,9 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 			return environmentVariablesBlock.fEnvironmentVariablesContentProvider
 					.getVariables();
 		}
+		if (this.fEditedInterpreter != null) {
+			return this.fEditedInterpreter.getEnvironmentVariables();
+		}
 		return null;
 	}
 
@@ -546,6 +551,11 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 	 */
 	public void updateLibraries(EnvironmentVariable[] newVars,
 			EnvironmentVariable[] oldVars) {
-//		fLibraryBlock.reDiscover(newVars, oldVars);
+		fLibraryBlock.reDiscover(newVars, oldVars);
 	}
+
+	protected boolean isRediscoverSupported() {
+		return false;
+	}
+
 }

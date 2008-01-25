@@ -243,7 +243,6 @@ public class PackagesHelper {
 							if (line == null) {
 								return;
 							}
-							System.out.println(line);
 							if (add) {
 								String l = line.trim();
 								// Package start
@@ -285,7 +284,8 @@ public class PackagesHelper {
 
 						for (int i = 0; i < paths.length; i++) {
 							System.out.println(paths[i]);
-							PackageLocation loc = findLocation(locations, paths[i]);
+							PackageLocation loc = findLocation(locations,
+									paths[i]);
 							if (loc == null) {
 								loc = new PackageLocation();
 								loc.setPath(paths[i]);
@@ -302,9 +302,11 @@ public class PackagesHelper {
 					}
 				}
 
-				private PackageLocation findLocation(List locations, String mainPath) {
+				private PackageLocation findLocation(List locations,
+						String mainPath) {
 					for (int i = 0; i < locations.size(); i++) {
-						PackageLocation loc = (PackageLocation) locations.get(i);
+						PackageLocation loc = (PackageLocation) locations
+								.get(i);
 						if (loc.getPath().equals(mainPath)) {
 							return loc;
 						}
@@ -312,9 +314,10 @@ public class PackagesHelper {
 					return null;
 				}
 			});
-			Collections.sort(locations, new Comparator(){
+			Collections.sort(locations, new Comparator() {
 				public int compare(Object arg0, Object arg1) {
-					if( arg0 instanceof PackageLocation && arg1 instanceof PackageLocation ) {
+					if (arg0 instanceof PackageLocation
+							&& arg1 instanceof PackageLocation) {
 						PackageLocation l1 = (PackageLocation) arg0;
 						PackageLocation l2 = (PackageLocation) arg1;
 						return l1.getPath().compareTo(l2.getPath());

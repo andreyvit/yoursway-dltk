@@ -128,7 +128,7 @@ public abstract class AbstractInterpreterLibraryBlock implements
 
 		if (isEnableButtonSupported()) {
 			fEnabledButton = new Button(comp2, SWT.CHECK);
-			fEnabledButton.setText("Path is enabled");
+			fEnabledButton.setText("Set path visible to DLTK");
 			fEnabledButton.addSelectionListener(this);
 			this.fLibraryViewer
 					.addDoubleClickListener(new IDoubleClickListener() {
