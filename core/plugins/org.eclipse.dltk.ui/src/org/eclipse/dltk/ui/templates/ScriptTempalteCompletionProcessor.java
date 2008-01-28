@@ -121,7 +121,7 @@ public abstract class ScriptTempalteCompletionProcessor extends
 
 	protected ICompletionProposal createProposal(Template template,
 			TemplateContext context, IRegion region, int relevance) {	
-		TemplateProposal proposal = new TemplateProposal(template, context, region, getImage(template), relevance);
+		TemplateProposal proposal = new ScriptTemplateProposal(template, context, region, getImage(template), relevance);
 		proposal.setInformationControlCreator(getInformationControlCreator());
 		return proposal;
 	}
