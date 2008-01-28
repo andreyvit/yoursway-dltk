@@ -65,6 +65,9 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 			ISourceModuleInfo info, char[] filename) {
 		String content = new String(contents);
 		CompilerEnvirons cenv = new CompilerEnvirons();
+		if (fReporter != null) {
+			fReporter.clearMarkers();
+		}
 		ErrorReporter reporter = new ErrorReporter() {
 
 			public void error(String arg0, String arg1, int arg2, String arg3,
@@ -102,6 +105,7 @@ public class JavaScriptSourceElementParser implements ISourceElementParser {
 		JavaScriptModuleDeclaration moduleDeclaration = new JavaScriptModuleDeclaration(
 				content.length());
 
+		
 		Parser parser = new Parser(cenv, reporter);
 		try {
 
