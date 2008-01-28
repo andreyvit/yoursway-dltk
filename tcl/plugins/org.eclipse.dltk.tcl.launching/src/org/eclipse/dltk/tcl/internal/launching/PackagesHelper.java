@@ -192,8 +192,10 @@ public class PackagesHelper {
 			script = DeployHelper.deploy(TclLaunchingPlugin.getDefault(),
 					"scripts/").append("packages.tcl").toFile();
 
+			File workingDir = script.getParentFile();
+			final String wrkDir = workingDir.getAbsolutePath();
 			InterpreterConfig config = ScriptLaunchUtil
-					.createInterpreterConfig(script, script.getParentFile());
+					.createInterpreterConfig(script, workingDir);
 			if (libraryLocations != null) {
 				addLibpathEnvVar(config, libraryLocations);
 			}
@@ -283,9 +285,13 @@ public class PackagesHelper {
 								.toArray(new String[this.paths.size()]);
 
 						for (int i = 0; i < paths.length; i++) {
-//							System.out.println(paths[i]);
+							if (paths[i] != null && wrkDir.equals(paths[i])) {
+								continue;
+							}
+							// System.out.println(paths[i]);
 							PackageLocation loc = findLocation(locations,
 									paths[i]);
+							// Skip script worting dir.
 							if (loc == null) {
 								loc = new PackageLocation();
 								loc.setPath(paths[i]);
