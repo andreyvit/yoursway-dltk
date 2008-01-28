@@ -11,6 +11,7 @@ import org.eclipse.dltk.internal.core.ModelManager;
 
 public class SourceParserUtil {
 	private static final Object AST = "ast";
+	private static final Object FLAGS = "flags";
 
 	/**
 	 * Used to retrive module declaration from source module.
@@ -48,8 +49,13 @@ public class SourceParserUtil {
 			return null;
 		}
 		ModuleDeclaration moduleDeclaration = null;
+		Integer flag;
 		if (mifo != null) {
 			moduleDeclaration = (ModuleDeclaration) mifo.get(AST);
+			flag = (Integer) mifo.get(FLAGS);
+			if( flag != null && flag.intValue() != flags ) {
+				moduleDeclaration = null;
+			}
 		}
 		if (moduleDeclaration == null) {
 			if (reporter != null) {
@@ -79,6 +85,7 @@ public class SourceParserUtil {
 				}
 				if (moduleDeclaration != null && mifo != null) {
 					mifo.put(AST, moduleDeclaration);
+					mifo.put(FLAGS, new Integer(flags));
 				}
 			}
 		}
@@ -106,13 +113,13 @@ public class SourceParserUtil {
 			((ISourceParserExtension) sourceParser).setFlags(flags);
 		}
 		ModuleDeclaration moduleDeclaration = SourceParserUtil
-				.getModuleFromCache(mifo);
+				.getModuleFromCache(mifo, flags);
 		if (moduleDeclaration == null) {
 			if (reporter != null) {
 				reporter.clearMarkers();
 			}
 			moduleDeclaration = sourceParser.parse(filename, content, reporter);
-			SourceParserUtil.putModuleToCache(mifo, moduleDeclaration);
+			SourceParserUtil.putModuleToCache(mifo, moduleDeclaration, flags);
 		}
 		return moduleDeclaration;
 	}
@@ -120,20 +127,22 @@ public class SourceParserUtil {
 	/**
 	 * This is for use in parsers.
 	 */
-	public static ModuleDeclaration getModuleFromCache(ISourceModuleInfo mifo) {
+	public static ModuleDeclaration getModuleFromCache(ISourceModuleInfo mifo, int flags) {
 		if (mifo != null) {
+			Integer flag = (Integer) mifo.get(FLAGS);
+			if( flag != null && flag.intValue() != flags ) {
+				return null;
+			}
 			return (ModuleDeclaration) mifo.get(AST);
 		}
 		return null;
 	}
 
-	/**
-	 * This is for use in parsers.
-	 */
 	public static void putModuleToCache(ISourceModuleInfo info,
-			ModuleDeclaration module) {
+			ModuleDeclaration module, int flags) {
 		if (info != null) {
 			info.put(AST, module);
+			info.put(FLAGS, new Integer(flags));
 		}
 	}
 }
