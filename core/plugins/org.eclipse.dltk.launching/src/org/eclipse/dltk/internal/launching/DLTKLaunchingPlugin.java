@@ -308,42 +308,42 @@ public class DLTKLaunchingPlugin extends Plugin implements
 		// DebugPlugin.getDefault().addDebugEventListener(this);
 
 		// prefetch library locations for default interpreters
-		Job libPrefetch = new Job("Initializing DLTK launching") {
-			protected IStatus run(IProgressMonitor monitor) {
-				try {
-					IDLTKLanguageToolkit[] toolkits = DLTKLanguageManager
-							.getLanguageToolkits();
-					monitor.beginTask("Initialize interpreters", toolkits.length);
-					for (int i = 0; i < toolkits.length; i++) {
-						SubProgressMonitor subMonitor = new SubProgressMonitor(
-								monitor, 1);
-						String natureId = toolkits[i].getNatureId();
-						IInterpreterInstall install = ScriptRuntime
-								.getDefaultInterpreterInstall(natureId);
-						if (install != null) {
-							IInterpreterInstallType type = install
-									.getInterpreterInstallType();
-							// cache library locations.
-							type.getDefaultLibraryLocations(install
-									.getInstallLocation(), install
-									.getEnvironmentVariables(), subMonitor);
-						} else {
-							subMonitor.worked(1);
-						}
-						subMonitor.done();
-					}
-					monitor.done();
-				} catch (CoreException e) {
-					if (DLTKCore.DEBUG) {
-						e.printStackTrace();
-					}
-				}
-				return Status.OK_STATUS;
-			}
-
-		};
-//		libPrefetch.setSystem(true);
-		libPrefetch.schedule();
+//		Job libPrefetch = new Job("Initializing DLTK launching") {
+//			protected IStatus run(IProgressMonitor monitor) {
+//				try {
+//					IDLTKLanguageToolkit[] toolkits = DLTKLanguageManager
+//							.getLanguageToolkits();
+//					monitor.beginTask("Initialize interpreters", toolkits.length);
+//					for (int i = 0; i < toolkits.length; i++) {
+//						SubProgressMonitor subMonitor = new SubProgressMonitor(
+//								monitor, 1);
+//						String natureId = toolkits[i].getNatureId();
+//						IInterpreterInstall install = ScriptRuntime
+//								.getDefaultInterpreterInstall(natureId);
+//						if (install != null) {
+//							IInterpreterInstallType type = install
+//									.getInterpreterInstallType();
+//							// cache library locations.
+//							type.getDefaultLibraryLocations(install
+//									.getInstallLocation(), install
+//									.getEnvironmentVariables(), subMonitor);
+//						} else {
+//							subMonitor.worked(1);
+//						}
+//						subMonitor.done();
+//					}
+//					monitor.done();
+//				} catch (CoreException e) {
+//					if (DLTKCore.DEBUG) {
+//						e.printStackTrace();
+//					}
+//				}
+//				return Status.OK_STATUS;
+//			}
+//
+//		};
+////		libPrefetch.setSystem(true);
+//		libPrefetch.schedule();
 	}
 
 	/**

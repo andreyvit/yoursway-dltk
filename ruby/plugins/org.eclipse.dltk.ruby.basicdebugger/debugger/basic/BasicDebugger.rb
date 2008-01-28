@@ -83,7 +83,7 @@ module XoredDebugger
 	            if (Thread.current.is_a? DebugThread)
 	                return
 	            end
-               
+                
                 context = current_context
                 
                 # if thread was suspended, then stop execution
@@ -119,7 +119,7 @@ module XoredDebugger
                         
                     when 'return', 'c-return', 'end'
                         context.stack_pop                                           
-
+                        
                     else
 	                    log('Warning: unknown event type "' + event + '"')    
                 end
@@ -130,6 +130,7 @@ module XoredDebugger
         
         def get_label(binding, klass, id)
             label = ''
+ # Causes null pointer in JRuby          
             label += klass.to_s if klass != false            
             label += '::' +  id.id2name unless id.nil?
             label = get_module_name(binding) if label.empty?

@@ -1,6 +1,7 @@
 package org.eclipse.dltk.tcl.internal.core.search.mixin;
 
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.ast.parser.ISourceParserConstants;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.SourceParserUtil;
@@ -13,7 +14,7 @@ public class TclMixinParser implements IMixinParser {
 	public void parserSourceModule(boolean signature, ISourceModule module) {
 
 		ModuleDeclaration moduleDeclaration = SourceParserUtil
-				.getModuleDeclaration(module, null);
+				.getModuleDeclaration(module, null, ISourceParserConstants.RUNTIME_MODEL);
 
 		TclMixinBuildVisitor visitor = new TclMixinBuildVisitor(
 				moduleDeclaration, module, signature, requestor);

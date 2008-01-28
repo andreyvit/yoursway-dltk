@@ -11,15 +11,18 @@ import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.itcl.internal.core.IIncrTclModifiers;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.ITclCommandDetector;
+import org.eclipse.dltk.tcl.core.ITclCommandDetectorExtension;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
-public class IncrTclCommandDetector implements ITclCommandDetector {
+public class IncrTclCommandDetector implements ITclCommandDetector,
+		ITclCommandDetectorExtension {
 	private final static String[] itclCommands = new String[] { "class",
 			"body", "code", "configbody", "delete", "ensemble", "find",
 			"local", "scope" };
 	private String prefix = "itcl::";
+	private boolean runtimeModel = false;
 
 	public static class IncrTclGlobalClassParameter {
 		private String name;
@@ -69,6 +72,9 @@ public class IncrTclCommandDetector implements ITclCommandDetector {
 
 	private CommandInfo checkInstanceOperations(ModuleDeclaration module,
 			ASTNode parent, TclStatement statement, ITclParser parser) {
+		if( runtimeModel ) {
+			return null;
+		}
 		Expression commandName = statement.getAt(0);
 		if (!(commandName instanceof SimpleReference)) {
 			return null;
@@ -83,7 +89,7 @@ public class IncrTclCommandDetector implements ITclCommandDetector {
 		Expression arg = statement.getAt(1);
 		if (type != null) {
 			if (arg instanceof SimpleReference) {
-				return check(type, (SimpleReference)arg);
+				return check(type, (SimpleReference) arg);
 			}
 		}
 
@@ -109,13 +115,16 @@ public class IncrTclCommandDetector implements ITclCommandDetector {
 		String value = arg.getName();
 		MethodDeclaration[] methods = type.getMethods();
 		for (int i = 0; i < methods.length; i++) {
-			if( (methods[i].getModifiers() & IIncrTclModifiers.AccIncrTclProc) != 0) {
-				if( methods[i].getName().equals(value)) {
-					return new CommandInfo( "#itcl#$methodCall", type);
+			if ((methods[i].getModifiers() & IIncrTclModifiers.AccIncrTclProc) != 0) {
+				if (methods[i].getName().equals(value)) {
+					return new CommandInfo("#itcl#$methodCall", type);
 				}
 			}
 		}
 		// String value = ((SimpleReference) arg).getName();
 		return new CommandInfo("#itcl#$newInstance", type);
+	}
+	public void setBuildRuntimeModelFlag(boolean value) {
+		this.runtimeModel = value;
 	}
 }

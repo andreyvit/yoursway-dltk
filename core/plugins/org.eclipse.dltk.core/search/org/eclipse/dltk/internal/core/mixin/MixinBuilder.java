@@ -96,15 +96,19 @@ public class MixinBuilder implements IScriptBuilder {
 			imon.enterWrite();
 			String name = "Building runtime model for "
 					+ project.getElementName();
-			monitor.beginTask(name, elementsSize);
+			if (monitor != null) {
+				monitor.beginTask(name, elementsSize);
+			}
 			int fileIndex = 0;
 
 			for (Iterator iterator = elements.iterator(); iterator.hasNext();) {
 				ISourceModule element = (ISourceModule) iterator.next();
 
 				Index currentIndex = mixinIndex;
-				if (monitor.isCanceled()) {
-					return null;
+				if (monitor != null) {
+					if (monitor.isCanceled()) {
+						return null;
+					}
 				}
 
 				String taskTitle = "Building runtime model for "
@@ -112,7 +116,9 @@ public class MixinBuilder implements IScriptBuilder {
 						+ (elements.size() - fileIndex) + "):"
 						+ element.getElementName();
 				++fileIndex;
-				monitor.subTask(taskTitle);
+				if (monitor != null) {
+					monitor.subTask(taskTitle);
+				}
 				// monitor.beginTask(taskTitle, 1);
 
 				IProjectFragment projectFragment = (IProjectFragment) element
@@ -169,9 +175,10 @@ public class MixinBuilder implements IScriptBuilder {
 
 				new MixinIndexer(document, element, currentIndex)
 						.indexDocument();
-				monitor.worked(1);
+				if (monitor != null) {
+					monitor.worked(1);
+				}
 			}
-			monitor.done();
 		} catch (CoreException e) {
 			if (DLTKCore.DEBUG) {
 				e.printStackTrace();
@@ -196,9 +203,14 @@ public class MixinBuilder implements IScriptBuilder {
 				}
 			}
 			if (saveIndex) {
-
+				if (monitor != null) {
+				}
 				for (Iterator ind = saveIndexesSet.iterator(); ind.hasNext();) {
 					Index index = (Index) ind.next();
+					if (monitor != null) {
+						monitor.subTask("Saving index for:"
+								+ index.containerPath);
+					}
 					try {
 						index.save();
 					} catch (IOException e) {
@@ -209,6 +221,9 @@ public class MixinBuilder implements IScriptBuilder {
 						index.monitor.exitWrite();
 					}
 				}
+			}
+			if (monitor != null) {
+				monitor.done();
 			}
 		}
 

@@ -16,26 +16,33 @@ module XoredDebugger
 		attr_reader :source_manager
         
         def initialize(debugger)
-            Thread.set_event_handler(self)  
-            @debugger = debugger
-            @debugger.handler = self
-	        @capture_manager = CaptureManager.new(self)         		               
-            @source_manager = SourceManager.instance
-
-            # fake started event for main thread
-            started()                                    
+            begin  
+                @debugger = debugger
+                @debugger.handler = self
+    	        @capture_manager = CaptureManager.new(self)         		               
+                @source_manager = SourceManager.instance
+    
+                Thread.set_event_handler(self)
+                # fake started event for main thread
+                started()
+            rescue Exception
+                Thread.set_event_handler(nil)
+            end                                    
         end
 
         def terminate(excpt = nil)    
             log('Terminating thread manager')   
-            Thread.set_event_handler(nil)
-            Thread.list.each do |thread|
-                dbgp_thread = thread[ :dbgp_thread_wrapper ]
-                dbgp_thread.exited(nil) unless dbgp_thread.nil? || Thread.main == thread
-            end     
-            print_exception(excpt) unless excpt.nil? || excpt.is_a?(SystemExit)       
-            @capture_manager.terminate     
-            exited(excpt)                  
+            begin             
+                Thread.list.each do |thread|
+                    dbgp_thread = thread[ :dbgp_thread_wrapper ]
+                    dbgp_thread.exited(nil) unless dbgp_thread.nil? || Thread.main == thread
+                end     
+                print_exception(excpt) unless excpt.nil? || excpt.is_a?(SystemExit)       
+                @capture_manager.terminate     
+                exited(excpt)
+            ensure 
+                Thread.set_event_handler(nil)
+            end                  
         end
         
         def get_dbgp_thread(thread)

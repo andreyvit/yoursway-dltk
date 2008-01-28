@@ -52,7 +52,7 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 
 	public void initialize(File file,
 			EnvironmentVariable[] environmentVariables, boolean restoreDefault) {
-		if (file.exists()) {
+		if (file != null && file.exists()) {
 			LibraryLocation[] additions = null;
 			if (restoreDefault) {
 				this.additions.clear();

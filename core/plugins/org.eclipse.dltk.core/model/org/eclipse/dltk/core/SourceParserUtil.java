@@ -3,6 +3,8 @@ package org.eclipse.dltk.core;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.parser.ISourceParser;
+import org.eclipse.dltk.ast.parser.ISourceParserConstants;
+import org.eclipse.dltk.ast.parser.ISourceParserExtension;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.internal.core.ModelManager;
@@ -15,10 +17,14 @@ public class SourceParserUtil {
 	 */
 	public static ModuleDeclaration getModuleDeclaration(ISourceModule module,
 			IProblemReporter reporter) {
+		return getModuleDeclaration(module, reporter, ISourceParserConstants.DEFAULT);
+	}
+	public static ModuleDeclaration getModuleDeclaration(ISourceModule module,
+			IProblemReporter reporter, int flags) {
 		ISourceModuleInfoCache sourceModuleInfoCache = ModelManager
 				.getModelManager().getSourceModuleInfoCache();
 		ISourceModuleInfo sourceModuleInfo = sourceModuleInfoCache.get(module);
-		return getModuleDeclaration(module, reporter, sourceModuleInfo);
+		return getModuleDeclaration(module, reporter, sourceModuleInfo, flags);
 	}
 
 	/**
@@ -27,6 +33,10 @@ public class SourceParserUtil {
 
 	public static ModuleDeclaration getModuleDeclaration(ISourceModule module,
 			IProblemReporter reporter, ISourceModuleInfo mifo) {
+		return getModuleDeclaration(module, reporter, mifo, ISourceParserConstants.DEFAULT);
+	}
+	public static ModuleDeclaration getModuleDeclaration(ISourceModule module,
+			IProblemReporter reporter, ISourceModuleInfo mifo, int flags) {
 
 		IDLTKLanguageToolkit toolkit;
 		try {
@@ -55,6 +65,9 @@ public class SourceParserUtil {
 				}
 			}
 			if (sourceParser != null) {
+				if (sourceParser instanceof ISourceParserExtension) {
+					((ISourceParserExtension) sourceParser).setFlags(flags);
+				}
 				try {
 					moduleDeclaration = sourceParser.parse(module.getPath()
 							.toOSString().toCharArray(), module
@@ -75,12 +88,22 @@ public class SourceParserUtil {
 	public static ModuleDeclaration getModuleDeclaration(char[] filename,
 			char[] content, String nature, IProblemReporter reporter,
 			ISourceModuleInfo mifo) {
+		return getModuleDeclaration(filename, content, nature, reporter, mifo,
+				ISourceParserConstants.DEFAULT);
+	}
+
+	public static ModuleDeclaration getModuleDeclaration(char[] filename,
+			char[] content, String nature, IProblemReporter reporter,
+			ISourceModuleInfo mifo, int flags) {
 		ISourceParser sourceParser;// = new PythonSourceParser(this.fReporter);
 		try {
 			sourceParser = DLTKLanguageManager.getSourceParser(nature);
 		} catch (CoreException e) {
 			throw new RuntimeException("Failed to create python source parser",
 					e);
+		}
+		if (sourceParser instanceof ISourceParserExtension) {
+			((ISourceParserExtension) sourceParser).setFlags(flags);
 		}
 		ModuleDeclaration moduleDeclaration = SourceParserUtil
 				.getModuleFromCache(mifo);

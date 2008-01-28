@@ -23,9 +23,17 @@ module XoredDebugger
         end
         
         def teardown
-            @thread_manager.terminate
+            @debugger = nil
+            @breakpoint_manager = nil
+            @context = nil
+            @handler = nil
+            @capture_manager = nil
+
+            @thread_manager.terminate if @thread_manager
+            @thread_manager = nil
             log('Thread manager terminated')
-            @debugger.terminate
+            @debugger.terminate if @debugger
+            @debugger = nil
             log('Debugger terminated')
             SimpleServer.stop()
             log('Server terminated')
@@ -298,6 +306,7 @@ module XoredDebugger
         
         # Common Data Types
         def test_handle_typemap_get
+            @context.status = 'break'                         
             response = @handler.handle(Command.new('typemap_get -i 5'))
             assert_equal('typemap_get', response.get_attribute('command'))
             assert_equal('5', response.get_attribute('transaction_id'))

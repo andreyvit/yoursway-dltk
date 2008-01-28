@@ -1,5 +1,6 @@
 require 'socket'
 require 'common/Logger'
+require 'dbgp/ThreadEventHandler'
 
 module XoredDebugger
     class SimpleServer
@@ -10,7 +11,7 @@ module XoredDebugger
         @@instance = nil
         
         def SimpleServer.start
-            @@instance = SimpleServer.new(PORT) if @@instance.nil?
+            @@instance = SimpleServer.new(PORT) 
         end           
                 
         def SimpleServer.started?
@@ -36,6 +37,7 @@ module XoredDebugger
             @port = port
             @received = ''
             @terminated = false
+            log('Starting simple server')
             @server_thread = Thread.new do
                 server_proc
             end
@@ -65,25 +67,33 @@ module XoredDebugger
                 @server = TCPServer.new('127.0.0.1', PORT)
                 @read_array = [ @server ]
   	            while (! @terminated)
-  	                selected = IO.select(@read_array) 
-                    unless selected.nil?  
-  	                    selected[0].each do |socket|
-  		                    if (socket == @server)
-  	                            client, client_addr = @server.accept
-  		                        @read_array.push(client)
-  		                    else
-  		                        begin
-  		                            piece = socket.readpartial(1024)
-                                    if (piece.nil?)
-                                        raise EOFError
-                                    end
-  		                            @received << piece 
-  		                        rescue IOError
-  		                            @read_array.delete(socket)
-  		                        end                                
-  	                        end
-  	                    end
-                        selected.clear
+  	                selected = nil 
+  	                begin
+  	                    selected = IO.select(@read_array)
+  	                rescue Exception
+  	                end 
+  	                if (@server.closed?)
+  	                    @terminated = true
+  	                else
+                        unless selected.nil?  
+      	                    selected[0].each do |socket|
+      		                    if (socket == @server)
+      	                            client, client_addr = @server.accept
+      		                        @read_array.push(client)
+      		                    else
+      		                        begin
+      		                            piece = socket.readpartial(1024)
+                                        if (piece.nil?)
+                                            raise EOFError
+                                        end
+      		                            @received << piece 
+      		                        rescue IOError
+      		                            @read_array.delete(socket)
+      		                        end                                
+      	                        end
+      	                    end
+                            selected.clear
+                        end
                     end
   	            end
             
@@ -99,7 +109,14 @@ module XoredDebugger
                             s.close
                         rescue Exception 
                         end
-                    } 
+                    }                     
+                end
+                
+                begin
+                    @server.close
+                rescue Exception
+                ensure
+                    @server = nil               
                 end
                 log('SimpleServer proc terminated')
             end            
