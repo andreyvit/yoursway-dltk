@@ -161,6 +161,7 @@ public class TclSourceParser extends AbstractSourceParser implements
 	}
 
 	public void parse(String content, int offset, ASTNode decl) {
+		commandToStatement.clear();
 		TclScript script = null;
 		try {
 			script = SimpleTclParser.parse(content);
