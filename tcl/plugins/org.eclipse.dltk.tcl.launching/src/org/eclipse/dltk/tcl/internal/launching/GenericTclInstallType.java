@@ -63,13 +63,7 @@ public class GenericTclInstallType extends AbstractInterpreterInstallType {
 
 	protected File createPathFile() throws IOException {
 		IPath path = DeployHelper.deploy(TclLaunchingPlugin.getDefault(),
-				"scripts").append("path.tcl");
-		return path.toFile();
-	}
-
-	protected File createSafePathFile() throws IOException {
-		IPath path = DeployHelper.deploy(TclLaunchingPlugin.getDefault(),
-				"scripts").append("path_safe.tcl");
+				"scripts").append("auto_path.tcl");
 		return path.toFile();
 	}
 
@@ -83,29 +77,11 @@ public class GenericTclInstallType extends AbstractInterpreterInstallType {
 					String result = retrivePaths(installLocation, locations,
 							monitor, createPathFile(), variables);
 					// This is safe retrieval
-					if (locations.size() == 0) {
-						String message = "Failed to obtain tcl library locations for "
-								+ installLocation.toString()
-								+ " with path.tcl. Executing path_safe.tcl";
-						String message2 = "Failed to obtain tcl library locations for "
-								+ installLocation.toString()
-								+ " with path_safe.tcl.";
-						if (result == null) {
-							DLTKLaunchingPlugin.logWarning(message);
-						} else {
-							DLTKLaunchingPlugin.logWarning(message,
-									new Exception("Output:\n" + result));
-						}
-						result = retrivePaths(installLocation, locations,
-								monitor, createSafePathFile(), variables);
-						if (locations.size() == 0) {
-							if (result == null) {
-								DLTKLaunchingPlugin.log(message2);
-							} else {
-								DLTKLaunchingPlugin.log(message2,
-										new Exception("Output:\n" + result));
-							}
-						}
+					String message = "Failed to obtain tcl library locations for "
+							+ installLocation.toString()
+							+ " with auto_path.tcl.";
+					if (result == null) {
+						DLTKLaunchingPlugin.logWarning(message);
 					}
 				} catch (IOException e) {
 					DLTKLaunchingPlugin.log(e);
