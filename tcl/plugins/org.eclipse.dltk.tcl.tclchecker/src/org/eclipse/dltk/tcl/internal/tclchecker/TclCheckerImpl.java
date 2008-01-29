@@ -81,7 +81,7 @@ public class TclCheckerImpl extends AbstractValidator {
 			}
 			if (getProgressMonitor() != null) {
 				getProgressMonitor().beginTask("Checking with tclchecker",
-						els.size());
+						els.size()*2);
 			}
 			TclChecker checker = new TclChecker(TclCheckerPlugin.getDefault()
 					.getPreferenceStore());

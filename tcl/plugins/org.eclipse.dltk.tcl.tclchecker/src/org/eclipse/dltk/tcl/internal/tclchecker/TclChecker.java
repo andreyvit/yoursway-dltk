@@ -36,6 +36,8 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 public class TclChecker {
+	private static final String SCANNING = "scanning:";
+
 	private static class TclCheckerCodeModel {
 		private String[] codeLines;
 
@@ -212,6 +214,23 @@ public class TclChecker {
 					}
 					TclCheckerProblem problem = TclCheckerHelper.parseProblem(
 							line, filter);
+					if( line.startsWith(SCANNING) && monitor != null ) {
+						monitor.subTask("TclChecker " + line);
+						if (monitor != null) {
+							monitor.worked(1);
+						}
+					}
+					if( line.startsWith("checking:") && monitor != null ) {
+						monitor.subTask("TclChecker " + line);
+						if (monitor != null) {
+							monitor.worked(1);
+						}
+					}
+					if( monitor != null ) {
+						if( monitor.isCanceled() ) {
+							return;
+						}
+					}
 					if (problem != null) {
 						String file = problem.getFile();
 						ISourceModule module = (ISourceModule) pathToSource
@@ -219,17 +238,14 @@ public class TclChecker {
 						if (module != null) {
 							if (checkingFile == null
 									|| !file.equals(checkingFile)) {
-								if (monitor != null) {
-									monitor.subTask("Checking with tclchecker:"
-											+ Path.fromOSString(file)
-													.lastSegment());
-								}
+//								if (monitor != null) {
+//									monitor.subTask("TclChecker parse problems for:"
+//											+ Path.fromOSString(file)
+//													.lastSegment());
+//								}
 								checkingFile = file;
 								model = new TclCheckerCodeModel(module
 										.getSource());
-								if (monitor != null) {
-									monitor.worked(1);
-								}
 							}
 							if (model != null) {
 								TclCheckerProblemDescription desc = problem
