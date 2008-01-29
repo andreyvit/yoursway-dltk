@@ -74,8 +74,8 @@ public class ExternalChecker extends AbstractValidator {
 		}
 
 		public int[] getBounds(int lineNumber) {
-			if( codeLines.length <= lineNumber ) {
-				return new int[] {0, 1};
+			if (codeLines.length <= lineNumber) {
+				return new int[] { 0, 1 };
 			}
 			String codeLine = codeLines[lineNumber];
 			String trimmedCodeLine = codeLine.trim();
@@ -93,11 +93,11 @@ public class ExternalChecker extends AbstractValidator {
 		for (int i = 0; i < rules.size(); i++) {
 			Rule rule = (Rule) this.rules.get(i);
 			// String wcard = rule.getDescription();
-// List tlist = null;
+			// List tlist = null;
 			try {
 				WildcardMatcher wmatcher = new WildcardMatcher(wlist);
 				ExternalCheckerProblem cproblem = wmatcher.match(rule, problem);
-				if(cproblem != null) {
+				if (cproblem != null) {
 					return cproblem;
 				}
 			} catch (Exception x) {
@@ -194,36 +194,56 @@ public class ExternalChecker extends AbstractValidator {
 		return arguments;
 	}
 
-	public IStatus validate(IResource resource, OutputStream console) {
-		return Status.OK_STATUS;
+	public IStatus validate(IResource[] resources, OutputStream console) {
+		return Status.CANCEL_STATUS;
+	}
+
+	public IStatus validate(ISourceModule[] modules, OutputStream console) {
+		if( getProgressMonitor() != null ) {
+			getProgressMonitor().beginTask("Checking with external checker", modules.length);
+		}
+		for (int i = 0; i < modules.length; i++) {
+			validate(modules[i], console);
+			if( getProgressMonitor() != null ) {
+				getProgressMonitor().worked(1);
+				if (getProgressMonitor().isCanceled()) {
+					return Status.CANCEL_STATUS;
+				}
+			}
+		}
+		if( getProgressMonitor() != null ) {
+			getProgressMonitor().done();
+		}
+		return Status.CANCEL_STATUS;
 	}
 
 	public IStatus validate(ISourceModule module, OutputStream console) {
-		
+
 		String elementName = module.getElementName();
 		String[] split = this.extensions.split(";");
 		boolean found = false;
 		for (int i = 0; i < split.length; i++) {
-			if( elementName.endsWith(split[i]) || split[i].equals("*") ) {
+			if (elementName.endsWith(split[i]) || split[i].equals("*")) {
 				found = true;
 				break;
 			}
 		}
-		if( this.extensions.equals("")) {
+		if (this.extensions.equals("")) {
 			found = true;
 		}
-		if( !found ) {
+		if (!found) {
 			return Status.OK_STATUS;
 		}
 		IResource resource = module.getResource();
 		if (resource == null) {
-			return new Status(IStatus.ERROR, ValidatorsCore.PLUGIN_ID, "SourceModule resource is null");
+			return new Status(IStatus.ERROR, ValidatorsCore.PLUGIN_ID,
+					"SourceModule resource is null");
 		}
 		
 		try {
 			ExternalCheckerMarker.clearMarkers(resource);
 		} catch (CoreException e2) {
-			if( DLTKCore.DEBUG ) {
+			if (DLTKCore.DEBUG) {
 				e2.printStackTrace();
 			}
 		}
@@ -249,7 +269,7 @@ public class ExternalChecker extends AbstractValidator {
 		String[] extcom = (String[]) coms.toArray(new String[coms.size()]);
 
 		BufferedReader input = null;
-// OutputStreamWriter output = null;
+		// OutputStreamWriter output = null;
 		Process process = null;
 		try {
 			try {
@@ -280,7 +300,7 @@ public class ExternalChecker extends AbstractValidator {
 				String line1 = (String) iterator.next();
 				ExternalCheckerProblem problem = parseProblem(line1);
 				if (problem != null) {
-					int[] bounds = model.getBounds(problem.getLineNumber()-1);
+					int[] bounds = model.getBounds(problem.getLineNumber() - 1);
 					if (problem.getType().indexOf("Error") != -1) {
 						reportErrorProblem(resource, problem, bounds[0],
 								bounds[1]);
@@ -349,16 +369,20 @@ public class ExternalChecker extends AbstractValidator {
 		return true;
 	}
 
-	public void clean(ISourceModule module) {
-		clean(module.getResource());
+	public void clean(ISourceModule[] modules) {
+		for (int i = 0; i < modules.length; i++) {
+			clean(modules[i].getResource());
+		}
 	}
 
-	public void clean(IResource resource) {
-		try {
-			ExternalCheckerMarker.clearMarkers(resource);
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
+	public void clean(IResource[] resource) {
+		for (int i = 0; i < resource.length; i++) {
+			try {
+				ExternalCheckerMarker.clearMarkers(resource[i]);
+			} catch (CoreException e) {
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -373,6 +397,6 @@ public class ExternalChecker extends AbstractValidator {
 
 	public void setProgressMonitor(IProgressMonitor monitor) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

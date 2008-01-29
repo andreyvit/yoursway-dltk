@@ -31,13 +31,6 @@
       </mixin>
    </extension>
    <extension
-         point="org.eclipse.dltk.core.builder">
-      <builder
-            class="org.eclipse.dltk.javascript.core.builders.JavaScriptBuilder"
-            nature="org.eclipse.dltk.javascript.core.nature">
-      </builder>
-   </extension>
-   <extension
          point="org.eclipse.dltk.core.sourceParsers">
       <parserContribution
             natureId="org.eclipse.dltk.javascript.core.nature">

@@ -303,12 +303,12 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			// Project external resources should also be added into list. Only
 			// on full build we need to manage this.
 			// Call builders for resources.
-			buildResources(resources, monitor, 60);
+			buildResources(resources, monitor, 60, IScriptBuilder.FULL_BUILD);
 
 			Set elements = getExternalElementsFrom(scriptProject, monitor, 5);
 			List els = new ArrayList();
 			els.addAll(elements);
-			buildElements(els, monitor, 30);
+			buildElements(els, monitor, 30, IScriptBuilder.FULL_BUILD);
 			lastBuildSourceFiles += elements.size();
 			monitor.done();
 			lastBuildResources = resources.size() + elements.size();
@@ -371,12 +371,12 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			Set actualResourcesToBuild = findDependencies(resources);
 			monitor.done();
 
-			buildResources(actualResourcesToBuild, monitor, 60);
+			buildResources(actualResourcesToBuild, monitor, 60, IScriptBuilder.INCREMENTAL_BUILD);
 			//
 			Set elements = getExternalElementsFrom(scriptProject, monitor, 5);
 			List els = new ArrayList();
 			els.addAll(elements);
-			buildElements(els, monitor, 30);
+			buildElements(els, monitor, 30, IScriptBuilder.INCREMENTAL_BUILD);
 			lastBuildResources = resources.size() + elements.size();
 		} finally {
 			ModelManager.getModelManager().setLastBuiltState(currentProject,
@@ -387,7 +387,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 	private HandleFactory factory = new HandleFactory();
 
 	protected void buildResources(Set resources, IProgressMonitor monitor,
-			int tiks) {
+			int tiks, int buildType) {
 		List status = new ArrayList();
 		IDLTKSearchScope scope = SearchEngine
 				.createSearchScope(new IModelElement[] { scriptProject });
@@ -447,7 +447,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 								alreadyPassed.add(builders[k]);
 								IStatus[] st = builders[k]
 										.buildResources(this.scriptProject,
-												realResources, ssub);
+												realResources, ssub, buildType);
 								if (st != null) {
 									for (int i = 0; i < st.length; i++) {
 										IStatus s = st[i];
@@ -469,12 +469,12 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			}
 		}
 
-		buildElements(elements, monitor, tiks / 3);
+		buildElements(elements, monitor, tiks / 3, buildType);
 		// sub.done();
 	}
 
 	protected void buildElements(List elements, IProgressMonitor monitor,
-			int tiks) {
+			int tiks, int buildType) {
 		List status = new ArrayList();
 		IDLTKLanguageToolkit toolkit = null;
 		try {
@@ -488,7 +488,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 							/ builders.length);
 					sub.beginTask("Building", 1);
 					IStatus[] st = builders[k].buildModelElements(
-							scriptProject, elements, sub);
+							scriptProject, elements, sub, buildType);
 					if (st != null) {
 						for (int i = 0; i < st.length; i++) {
 							IStatus s = st[i];

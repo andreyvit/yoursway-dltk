@@ -46,7 +46,7 @@ import org.eclipse.dltk.internal.core.search.DLTKSearchDocument;
 
 public class MixinBuilder implements IScriptBuilder {
 	public IStatus[] buildResources(IScriptProject project, List resources,
-			IProgressMonitor monitor) {
+			IProgressMonitor monitor, int status) {
 		return null;
 	}
 
@@ -55,7 +55,7 @@ public class MixinBuilder implements IScriptBuilder {
 	}
 
 	public IStatus[] buildModelElements(IScriptProject project, List elements,
-			IProgressMonitor monitor) {
+			IProgressMonitor monitor, int status) {
 		return this.buildModelElements(project, elements, monitor, true);
 	}
 
