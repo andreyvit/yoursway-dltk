@@ -28,7 +28,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.dltk.core.DLTKCore;
@@ -36,6 +35,8 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 public class TclChecker {
+	private static final String CHECKING = "checking:";
+
 	private static final String SCANNING = "scanning:";
 
 	private static class TclCheckerCodeModel {
@@ -220,7 +221,7 @@ public class TclChecker {
 							monitor.worked(1);
 						}
 					}
-					if( line.startsWith("checking:") && monitor != null ) {
+					if( line.startsWith(CHECKING) && monitor != null ) {
 						monitor.subTask("TclChecker " + line);
 						if (monitor != null) {
 							monitor.worked(1);
@@ -228,6 +229,7 @@ public class TclChecker {
 					}
 					if( monitor != null ) {
 						if( monitor.isCanceled() ) {
+							process.destroy();
 							return;
 						}
 					}
