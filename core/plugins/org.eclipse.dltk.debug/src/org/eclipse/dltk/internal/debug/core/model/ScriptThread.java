@@ -119,28 +119,30 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		if (e != null) {
 			DLTKDebugPlugin.log(e);
 			IScriptDebugTarget scriptDebugTarget = this.getScriptDebugTarget();
-			OutputStream stdout = scriptDebugTarget.getStreamProxy()
-					.getStderr();
-			try {
-				String message = "\n" + e.getMessage() + "\n";
-				stdout.write(message.getBytes());
-				stack.update();
-				IStackFrame[] frames = stack.getFrames();
-				stdout.write("\nStack trace:\n".getBytes());
-				for (int i = 0; i < frames.length; i++) {
-					IScriptStackFrame frame = (IScriptStackFrame) frames[i];
-					String line = "\t#" + frame.getLevel() + " file:"
-							+ frame.getSourceURI().getPath() + " line:"
-							+ frame.getLineNumber() + "\n";
-					stdout.write(line.getBytes());
-				}
-			} catch (IOException e1) {
-				if (DLTKCore.DEBUG) {
-					e1.printStackTrace();
-				}
-			} catch (DebugException e2) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
+			IScriptStreamProxy proxy = scriptDebugTarget.getStreamProxy();
+			if (proxy != null) {
+				OutputStream stdout = proxy.getStderr();
+				try {
+					String message = "\n" + e.getMessage() + "\n";
+					stdout.write(message.getBytes());
+					stack.update();
+					IStackFrame[] frames = stack.getFrames();
+					stdout.write("\nStack trace:\n".getBytes());
+					for (int i = 0; i < frames.length; i++) {
+						IScriptStackFrame frame = (IScriptStackFrame) frames[i];
+						String line = "\t#" + frame.getLevel() + " file:"
+								+ frame.getSourceURI().getPath() + " line:"
+								+ frame.getLineNumber() + "\n";
+						stdout.write(line.getBytes());
+					}
+				} catch (IOException e1) {
+					if (DLTKCore.DEBUG) {
+						e1.printStackTrace();
+					}
+				} catch (DebugException e2) {
+					if (DLTKCore.DEBUG) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
