@@ -8,6 +8,8 @@
 
 package org.eclipse.dltk.tcl.activestatedebugger;
 
+import java.util.List;
+
 import org.eclipse.dltk.launching.ExternalDebuggingEngineRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
@@ -79,8 +81,10 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 		newConfig.addInterpreterArg(SCRIPT_KEY);
 
 		// Script arguments
+		List args = config.getScriptArgs();
+		newConfig.clearScriptArgs();
 		newConfig.addScriptArg(ARGS_SEPARATOR);
-		newConfig.addScriptArgs(config.getScriptArgs());
+		newConfig.addScriptArgs(args);
 
 		return newConfig;
 	}

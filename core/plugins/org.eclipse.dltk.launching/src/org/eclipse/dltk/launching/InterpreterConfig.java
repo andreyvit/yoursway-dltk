@@ -398,4 +398,8 @@ public class InterpreterConfig implements Cloneable {
 
 		return sb.toString();
 	}
+
+	public void clearScriptArgs() {
+		this.scriptArgs.clear();
+	}
 }

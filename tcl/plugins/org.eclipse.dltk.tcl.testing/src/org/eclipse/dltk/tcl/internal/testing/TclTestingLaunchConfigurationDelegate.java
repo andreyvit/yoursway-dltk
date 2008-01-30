@@ -39,8 +39,10 @@ public class TclTestingLaunchConfigurationDelegate extends
 			IInterpreterRunner runner, InterpreterConfig config,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 
-		DLTKTestingCore.registerTestingProcessor(launch, engine
-				.getProcessor(launch));
+		if (engine != null) {
+			DLTKTestingCore.registerTestingProcessor(launch, engine
+					.getProcessor(launch));
+		}
 
 		super.runRunner(configuration, runner, config, launch, monitor);
 	}
