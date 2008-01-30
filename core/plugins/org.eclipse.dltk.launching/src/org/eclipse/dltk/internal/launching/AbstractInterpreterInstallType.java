@@ -71,7 +71,6 @@ public abstract class AbstractInterpreterInstallType implements
 	private static final String DLTK_TOTAL_WORK_END = "%DLTK_TOTAL_WORK_END%";
 	private static final String DLTK_TOTAL_WORK_INC = "%DLTK_TOTAL_WORK_INCREMENT%";
 
-
 	public static final String DLTK_PATH_PREFIX = "DLTK:";
 
 	private List fInterpreters;
@@ -267,9 +266,9 @@ public abstract class AbstractInterpreterInstallType implements
 	 */
 	protected String[] readPathsFromProcess(final IProgressMonitor monitor,
 			Process p) {
-//		DLTKLaunchingPlugin.log(new Status(IStatus.INFO,
-//				DLTKLaunchingPlugin.PLUGIN_ID, IStatus.INFO,
-//				"Start reading discovery script library paths", null));
+		// DLTKLaunchingPlugin.log(new Status(IStatus.INFO,
+		// DLTKLaunchingPlugin.PLUGIN_ID, IStatus.INFO,
+		// "Start reading discovery script library paths", null));
 		final BufferedReader dataIn = new BufferedReader(new InputStreamReader(
 				p.getInputStream()));
 
@@ -289,13 +288,15 @@ public abstract class AbstractInterpreterInstallType implements
 				String line = dataIn.readLine();
 				if (line != null && monitor != null && !workReceived) {
 					int work = extractWorkFromLine(line);
-					if( work != NOT_WORK_COUNT) {
-						monitor.beginTask("Featching interpeter library locations", work);
-//						monitor.subTask("Featching interpeter library locations");
+					if (work != NOT_WORK_COUNT) {
+						monitor.beginTask(
+								"Featching interpeter library locations", work);
+						// monitor.subTask("Featching interpeter library
+						// locations");
 						workReceived = true;
 					}
 				}
-				if( line != null && monitor != null && detectWorkInc(line)) {
+				if (line != null && monitor != null && detectWorkInc(line)) {
 					monitor.worked(1);
 				}
 				if (line != null) {
@@ -311,14 +312,14 @@ public abstract class AbstractInterpreterInstallType implements
 					"Failed to read from discovert script output stream:"
 							+ e.getMessage(), e));
 		} finally {
-			if( monitor != null ) {
-				if( !workReceived ) {
-					monitor.beginTask("Featching interpeter library locations", 1);
+			if (monitor != null) {
+				if (!workReceived) {
+					monitor.beginTask("Featching interpeter library locations",
+							1);
 				}
 				monitor.done();
 			}
 		}
-
 
 		return (String[]) result.toArray(new String[result.size()]);
 	}
@@ -338,7 +339,7 @@ public abstract class AbstractInterpreterInstallType implements
 			String totalWork = line.substring(pos1
 					+ DLTK_TOTAL_WORK_START.length(), pos2);
 			int intValue = new Integer(totalWork).intValue();
-			if( intValue == -1) {
+			if (intValue == -1) {
 				return IProgressMonitor.UNKNOWN;
 			}
 			return intValue;
@@ -676,7 +677,7 @@ public abstract class AbstractInterpreterInstallType implements
 
 	public synchronized LibraryLocation[] getDefaultLibraryLocations(
 			final File installLocation, EnvironmentVariable[] variables) {
-		return getDefaultLibraryLocations(installLocation, variables);
+		return getDefaultLibraryLocations(installLocation, variables, null);
 	}
 
 	public synchronized LibraryLocation[] getDefaultLibraryLocations(
@@ -720,7 +721,7 @@ public abstract class AbstractInterpreterInstallType implements
 		return libs;
 	}
 
-	private Object makeKey(File installLocation, EnvironmentVariable[] variables) {
+	public static Object makeKey(File installLocation, EnvironmentVariable[] variables) {
 		String key = installLocation.getAbsolutePath();
 		if (variables != null) {
 			for (int i = 0; i < variables.length; i++) {

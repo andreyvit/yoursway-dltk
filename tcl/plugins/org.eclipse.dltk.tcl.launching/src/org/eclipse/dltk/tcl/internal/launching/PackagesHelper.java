@@ -27,6 +27,7 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
 public class PackagesHelper {
+	private static final String DLTK_BEGIN = "DLTK-BEGIN:";
 	private static final String TCLLIBPATH_ENV_VAR = "TCLLIBPATH";
 
 	public static class Package {
@@ -220,20 +221,14 @@ public class PackagesHelper {
 			dialog.run(true, true, new IRunnableWithProgress() {
 				private String packageName;
 				private Set paths = new HashSet();
-				private String mainPath;
+
+				// private String mainPath;
 
 				public void run(IProgressMonitor monitor)
 						throws InvocationTargetException, InterruptedException {
 					boolean add = false;
-					if (monitor != null) {
-						monitor.beginTask("Discovering tcl packages",
-								IProgressMonitor.UNKNOWN);
-					}
 					try {
 						while (true) {
-							if (monitor != null) {
-								monitor.worked(1);
-							}
 							String line = null;
 							try {
 								line = input.readLine();
@@ -248,25 +243,39 @@ public class PackagesHelper {
 							if (add) {
 								String l = line.trim();
 								// Package start
-								if (l.charAt(0) == '+') {
-									addPrevPackage();
-									mainPath = l.substring(1).trim();
+								if (l.length() > 0) {
+									if (l.charAt(0) == '+') {
+										addPrevPackage(monitor);
+										// mainPath = l.substring(1).trim();
+									}
+									if (l.charAt(0) == '-') {
+										packageName = l.substring(1).trim();
+									}
+									if (l.charAt(0) == '.') {
+										IPath path = Path.fromOSString(l
+												.substring(1).trim());
+										path = path.removeLastSegments(1);
+										paths.add(path.toOSString());
+									}
 								}
-								if (l.charAt(0) == '-') {
-									packageName = l.substring(1).trim();
-								}
-								if (l.charAt(0) == '.') {
-									IPath path = Path.fromOSString(l.substring(
-											1).trim());
-									path = path.removeLastSegments(1);
-									paths.add(path.toOSString());
+								if (l.startsWith("###")) {
+									if (monitor != null) {
+										monitor.worked(1);
+									}
 								}
 							} else {
-								if (line.startsWith("DLTK-BEGIN")) {
+								if (line.startsWith(DLTK_BEGIN)) {
+									String count = line.substring(DLTK_BEGIN
+											.length() + 1);
+									int l = new Integer(count).intValue();
+									if (monitor != null) {
+										monitor.beginTask(
+												"Discovering tcl packages", l*2);
+									}
 									add = true;
 								}
 								if (line.startsWith("DLTK-END")) {
-									addPrevPackage();
+									addPrevPackage(monitor);
 									add = false;
 									return;
 								}
@@ -279,7 +288,10 @@ public class PackagesHelper {
 					}
 				}
 
-				private void addPrevPackage() {
+				private void addPrevPackage(IProgressMonitor monitor) {
+					if (monitor != null) {
+						monitor.worked(1);
+					}
 					if (this.packageName != null && paths.size() > 0) {
 						String[] paths = (String[]) this.paths
 								.toArray(new String[this.paths.size()]);
@@ -304,7 +316,7 @@ public class PackagesHelper {
 						}
 						this.packageName = null;
 						this.paths.clear();
-						this.mainPath = null;
+						// this.mainPath = null;
 					}
 				}
 
