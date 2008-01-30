@@ -2,6 +2,7 @@ package org.eclipse.dltk.tcl.internal.debug.ui.interpreters;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -24,6 +25,7 @@ import org.eclipse.ui.PlatformUI;
 public class TclLibraryContentProvider extends LibraryContentProvider {
 	PackageLocation[] packageLocations;
 	private Set additions = new HashSet();
+	private static HashMap fCachedPacakges = new HashMap();
 
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof PackageLocation) {
@@ -59,24 +61,52 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 			} else {
 				additions = getAdditions();
 			}
-			packageLocations = PackagesHelper.getLocations(new Path(file
-					.getAbsolutePath()), environmentVariables, additions);
-			// Try to use without specific libraries.
-			if (packageLocations.length == 0) {
+			Object key = makeKey(file, environmentVariables, additions);
+			if (fCachedPacakges.containsKey(key)) {
+				packageLocations = (PackageLocation[]) this.fCachedPacakges
+						.get(key);
+			} else {
 				packageLocations = PackagesHelper.getLocations(new Path(file
-						.getAbsolutePath()), environmentVariables, null);
-			}
-			// Failsafe.
-			if (packageLocations.length == 0) {
-				packageLocations = createPackageLocationsFrom(this
-						.getLibraries());
+						.getAbsolutePath()), environmentVariables, additions);
+				// Try to use without specific libraries.
+				if (packageLocations.length == 0) {
+					packageLocations = PackagesHelper
+							.getLocations(new Path(file.getAbsolutePath()),
+									environmentVariables, null);
+				}
+				// Failsafe.
+				if (packageLocations.length == 0) {
+					packageLocations = createPackageLocationsFrom(this
+							.getLibraries());
+				}
 			}
 
 			updateLibrariesFromPackages();
 
+			additions = getAdditions();
+			key = makeKey(file, environmentVariables, additions);
+			fCachedPacakges.put(key, this.packageLocations);
+
 			this.fViewer.refresh();
 			updateColors();
 		}
+	}
+
+	public static Object makeKey(File installLocation,
+			EnvironmentVariable[] variables, LibraryLocation[] additions) {
+		String key = installLocation.getAbsolutePath();
+		if (variables != null) {
+			for (int i = 0; i < variables.length; i++) {
+				key += "|" + variables[i].getName() + ":"
+						+ variables[i].getValue();
+			}
+		}
+		if (additions != null) {
+			for (int i = 0; i < additions.length; i++) {
+				key += "|" + additions[i].getLibraryPath().toOSString();
+			}
+		}
+		return key;
 	}
 
 	/**
