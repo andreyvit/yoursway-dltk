@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.dltk.core.DLTKCore;
@@ -177,17 +178,21 @@ public class TclChecker {
 			}
 			locs.close();
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e1.printStackTrace();
+			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 		cmdLine.add("-@");
 		cmdLine.add(patternFile.toOSString());
 		Process process;
 		BufferedReader input = null;
 		String checkingFile = null;
+		int scanned = 0;
+		int checked = 0;
 
 		TclCheckerCodeModel model = null;
 		try {
@@ -215,20 +220,26 @@ public class TclChecker {
 					}
 					TclCheckerProblem problem = TclCheckerHelper.parseProblem(
 							line, filter);
-					if( line.startsWith(SCANNING) && monitor != null ) {
-						monitor.subTask("TclChecker " + line);
+					if (line.startsWith(SCANNING) && monitor != null) {
+						String fileName = line.substring(SCANNING.length() + 1).trim();
+						fileName = Path.fromOSString(fileName).lastSegment();
+						monitor.subTask("TclChecker scanning (" + (sourceModules.size()-scanned) + "):" + fileName);
 						if (monitor != null) {
 							monitor.worked(1);
 						}
+						scanned++;
 					}
-					if( line.startsWith(CHECKING) && monitor != null ) {
-						monitor.subTask("TclChecker " + line);
+					if (line.startsWith(CHECKING) && monitor != null) {
+						String fileName = line.substring(CHECKING.length() + 1).trim();
+						fileName = Path.fromOSString(fileName).lastSegment();
+						monitor.subTask("TclChecker cheking (" + (sourceModules.size()-checked) + "):" + fileName);
 						if (monitor != null) {
 							monitor.worked(1);
 						}
+						checked++;
 					}
-					if( monitor != null ) {
-						if( monitor.isCanceled() ) {
+					if (monitor != null) {
+						if (monitor.isCanceled()) {
 							process.destroy();
 							return;
 						}
@@ -240,11 +251,12 @@ public class TclChecker {
 						if (module != null) {
 							if (checkingFile == null
 									|| !file.equals(checkingFile)) {
-//								if (monitor != null) {
-//									monitor.subTask("TclChecker parse problems for:"
-//											+ Path.fromOSString(file)
-//													.lastSegment());
-//								}
+								// if (monitor != null) {
+								// monitor.subTask("TclChecker parse problems
+								// for:"
+								// + Path.fromOSString(file)
+								// .lastSegment());
+								// }
 								checkingFile = file;
 								model = new TclCheckerCodeModel(module
 										.getSource());
