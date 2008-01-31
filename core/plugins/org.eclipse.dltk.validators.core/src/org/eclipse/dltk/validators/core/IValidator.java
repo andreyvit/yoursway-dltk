@@ -32,8 +32,8 @@ public interface IValidator {
 	
 	//Per-resouce operations
 	// If console is non null then output to console are possible.
-	IStatus validate(ISourceModule[] modules, OutputStream console );
-	IStatus validate(IResource[] resources, OutputStream console );
+	IStatus validate(ISourceModule[] modules, OutputStream console, IProgressMonitor monitor );
+	IStatus validate(IResource[] resources, OutputStream console, IProgressMonitor monitor);
 	
 	// Used to store information into
 	void storeTo(Document doc, Element element);
@@ -46,7 +46,5 @@ public interface IValidator {
 	 * @param module
 	 */
 	void clean(ISourceModule[] module);
-	void clean(IResource[] resource);
-	
-	public void setProgressMonitor(IProgressMonitor monitor);
+	void clean(IResource[] resource);	
 }

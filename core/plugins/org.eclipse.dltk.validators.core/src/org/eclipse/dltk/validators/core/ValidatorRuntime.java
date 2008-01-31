@@ -25,6 +25,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
@@ -38,6 +39,8 @@ import org.eclipse.dltk.validators.internal.core.ListenerList;
 import org.eclipse.dltk.validators.internal.core.ValidatorDefinitionsContainer;
 import org.eclipse.dltk.validators.internal.core.ValidatorManager;
 import org.eclipse.dltk.validators.internal.core.ValidatorsCore;
+
+import sun.nio.ch.SocketOpts.IP;
 
 public final class ValidatorRuntime {
 
@@ -410,31 +413,31 @@ public final class ValidatorRuntime {
 
 	private interface IProcessAction {
 		IStatus execute(IValidator validator, ISourceModule[] o,
-				OutputStream out);
+				OutputStream out, IProgressMonitor monitor);
 
-		IStatus execute(IValidator validator, IResource[] o, OutputStream out);
+		IStatus execute(IValidator validator, IResource[] o, OutputStream out, IProgressMonitor monitor);
 	}
 
 	public static IProcessAction processValidate = new IProcessAction() {
 		public IStatus execute(IValidator validator, ISourceModule[] o,
-				OutputStream out) {
-			return validator.validate(o, out);
+				OutputStream out, IProgressMonitor monitor) {
+			return validator.validate(o, out, monitor);
 		}
 
 		public IStatus execute(IValidator validator, IResource[] o,
-				OutputStream out) {
-			return validator.validate(o, out);
+				OutputStream out, IProgressMonitor monitor) {
+			return validator.validate(o, out, monitor);
 		}
 	};
 	public static IProcessAction processClean = new IProcessAction() {
 		public IStatus execute(IValidator validator, ISourceModule[] o,
-				OutputStream out) {
+				OutputStream out, IProgressMonitor monitor) {
 			validator.clean(o);
 			return null;
 		}
 
 		public IStatus execute(IValidator validator, IResource[] o,
-				OutputStream out) {
+				OutputStream out, IProgressMonitor monitor) {
 			validator.clean(o);
 			return null;
 		}
@@ -443,31 +446,24 @@ public final class ValidatorRuntime {
 	private static void process(OutputStream stream, List elements,
 			List resources, IValidator[] activeValidators,
 			IProcessAction action, IProgressMonitor monitor) {
-		if (monitor != null) {
-
-			monitor.beginTask("Validating", activeValidators.length);
-		}
-		int len = 0;
-		if (elements != null) {
-			len += (elements.size()) * activeValidators.length;
-		}
-		if (resources != null) {
-			len += (resources.size()) * activeValidators.length;
-		}
-		if (elements != null) {
-			for (int i = 0; i < activeValidators.length; i++) {
-				ISourceModule[] modules = filterModulesForValidator(elements,
-						activeValidators[i], monitor);
-				SubProgressMonitor subMonitor = null;
-				if (monitor != null) {
-					subMonitor = new SubProgressMonitor(monitor, 1);
-					activeValidators[i].setProgressMonitor(subMonitor);
-				}
-				action.execute(activeValidators[i], modules, stream);
-				if (subMonitor != null) {
-					subMonitor.done();
+		if (monitor == null)
+			monitor = new NullProgressMonitor();
+		monitor.beginTask("Running validators...", activeValidators.length);
+		try {
+			if (elements != null) {
+				for (int i = 0; i < activeValidators.length; i++) {
+					ISourceModule[] modules = filterModulesForValidator(
+							elements, activeValidators[i], monitor);
+					if (monitor.isCanceled())
+						return;
+					IProgressMonitor subMonitor = new SubProgressMonitor(
+							monitor, 1);
+					action.execute(activeValidators[i], modules, stream, subMonitor);
+					monitor.worked(1);
 				}
 			}
+		} finally {
+			monitor.done();
 		}
 		// if (resources != null) {
 		// for (Iterator iterator = resources.iterator(); iterator.hasNext();) {
@@ -492,9 +488,6 @@ public final class ValidatorRuntime {
 		// }
 		// }
 		// }
-		if (monitor != null) {
-			monitor.done();
-		}
 	}
 
 	private static ISourceModule[] filterModulesForValidator(List elements,
