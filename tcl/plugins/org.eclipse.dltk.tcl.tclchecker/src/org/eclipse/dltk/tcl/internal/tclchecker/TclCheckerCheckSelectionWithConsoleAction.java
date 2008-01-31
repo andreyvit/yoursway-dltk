@@ -24,4 +24,8 @@ public class TclCheckerCheckSelectionWithConsoleAction extends
 				"org.eclipse.dltk.tclchecker", out, elements, resources,
 				monitor);
 	}
+
+	protected String getJobName() {
+		return "TclChecker";
+	}
 }

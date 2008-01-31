@@ -46,11 +46,11 @@ public class SimpleValidator extends AbstractValidator {
 		element.setAttribute("simple_valid", Boolean.toString(this.valid));
 	}
 
-	public IStatus validate(ISourceModule[] module, OutputStream console) {
+	public IStatus validate(ISourceModule[] module, OutputStream console, IProgressMonitor monitor) {
 		return Status.OK_STATUS;
 	}
 
-	public IStatus validate(IResource[] resource, OutputStream console) {
+	public IStatus validate(IResource[] resource, OutputStream console, IProgressMonitor monitor) {
 		return Status.OK_STATUS;
 	}
 	public void setValid(boolean b) {

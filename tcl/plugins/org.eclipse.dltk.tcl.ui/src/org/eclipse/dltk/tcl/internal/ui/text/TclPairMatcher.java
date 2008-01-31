@@ -10,21 +10,25 @@
 package org.eclipse.dltk.tcl.internal.ui.text;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.parser.ISourceParser;
-import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.ast.parser.SourceParserManager;
+import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.tcl.ast.TclStatement;
-import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
+import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.SourceParserUtil;
+import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.core.TclNature;
+import org.eclipse.dltk.tcl.core.ast.TclAdvancedExecuteExpression;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentExtension4;
@@ -37,7 +41,7 @@ import org.eclipse.jface.text.source.ICharacterPairMatcher;
  */
 public final class TclPairMatcher implements ICharacterPairMatcher {
 
-	//private char[] fPairs;
+	// private char[] fPairs;
 
 	private IDocument fDocument;
 
@@ -48,6 +52,8 @@ public final class TclPairMatcher implements ICharacterPairMatcher {
 	private int fEndPos;
 
 	private int fAnchor;
+	
+	private ScriptEditor editor;
 
 	private class PairBlock {
 		public PairBlock(int start, int end, char c) {
@@ -69,72 +75,107 @@ public final class TclPairMatcher implements ICharacterPairMatcher {
 
 	private long cachedHash = -1;
 
-	public TclPairMatcher(char[] pairs) {
-		//if (pairs == null) {
-		//	throw new IllegalArgumentException();
-		//}
+	public TclPairMatcher(char[] pairs, ScriptEditor editor) {
+		// if (pairs == null) {
+		// throw new IllegalArgumentException();
+		// }
 
-		//fPairs = pairs;
+		// fPairs = pairs;
+		this.editor = editor;
 	}
 
-	private PairBlock[] computePairRanges(int offset, String contents) {
+	private PairBlock[] computePairRanges(final int offset, String contents) {
 		ISourceParser pp = null;
 		try {
 			pp = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
 		} catch (CoreException e1) {
-			if(DLTKCore.DEBUG ) {
+			if (DLTKCore.DEBUG) {
 				e1.printStackTrace();
 			}
 			return new PairBlock[0];
 		}
-		ModuleDeclaration md = pp.parse(null, contents.toCharArray(), null);
+		ModuleDeclaration md = null;// pp.parse(null, contents.toCharArray(),
+		// null);
+		IModelElement el = this.editor.getInputModelElement();
+		if (el != null && el instanceof ISourceModule) {
+			md = SourceParserUtil.getModuleDeclaration((ISourceModule)el, null);
+		}
+		if( md == null ) {
+			md = pp.parse(null, contents.toCharArray(), null);
+		}
 		if (md == null) {
 			return new PairBlock[0];
 		}
-		List statements = md.getStatements();
-		if (statements == null) {
-			return new PairBlock[0];
-		}
-		List result = new ArrayList();
-		Iterator i = statements.iterator();
-		while (i.hasNext()) {
-			Statement sst = (Statement) i.next();
-			if (sst instanceof TclStatement) {
-				TclStatement statement = (TclStatement) sst;
-				/*
-				 * result.add(new CodeBlock(statement, new Region(offset +
-				 * statement.sourceStart(), statement.sourceEnd() -
-				 * statement.sourceStart())));
-				 */
-				Iterator si = statement.getExpressions().iterator();
-				while (si.hasNext()) {
-					Expression ex = (Expression) si.next();
-					if (ex instanceof TclBlockExpression) {
-						TclBlockExpression be = (TclBlockExpression) ex;
-						try {
-							String newContents = contents.substring(be
-									.sourceStart() + 1, be.sourceEnd() - 1);
-							result.add(new PairBlock(offset + be.sourceStart(),
-									offset + be.sourceEnd() - 1, '{'));
-							PairBlock[] cb = computePairRanges(offset
-									+ be.sourceStart() + 1, newContents);
-							for (int j = 0; j < cb.length; j++) {
-								result.add(cb[j]);
-							}
-						} catch (StringIndexOutOfBoundsException e) {
-						}
-					} else if (ex instanceof StringLiteral) {
-						StringLiteral be = (StringLiteral) ex;
+		final List result = new ArrayList();
+		try {
+			md.traverse(new ASTVisitor() {
+				public boolean visitGeneral(ASTNode node) throws Exception {
+					if (node instanceof StringLiteral) {
+						StringLiteral be = (StringLiteral) node;
 						result.add(new PairBlock(offset + be.sourceStart(),
 								offset + be.sourceEnd() - 1, '\"'));
-					} else if (ex instanceof TclExecuteExpression) {
-						TclExecuteExpression be = (TclExecuteExpression) ex;
+					} else if (node instanceof TclExecuteExpression) {
+						TclExecuteExpression be = (TclExecuteExpression) node;
 						result.add(new PairBlock(offset + be.sourceStart(),
 								offset + be.sourceEnd() - 1, '['));
+					} else if (node instanceof TclAdvancedExecuteExpression) {
+						Block be = (Block) node;
+						result.add(new PairBlock(offset + be.sourceStart()-1,
+								offset + be.sourceEnd() - 1, '['));
+					} 
+					else if (node instanceof Block) {
+						Block be = (Block) node;
+						result.add(new PairBlock(offset + be.sourceStart(),
+								offset + be.sourceEnd() - 1, '{'));
 					}
+					return super.visitGeneral(node);
 				}
+			});
+		} catch (Exception e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
 			}
 		}
+
+		// Iterator i = statements.iterator();
+		// while (i.hasNext()) {
+		// Statement sst = (Statement) i.next();
+		// if (sst instanceof TclStatement) {
+		// TclStatement statement = (TclStatement) sst;
+		// /*
+		// * result.add(new CodeBlock(statement, new Region(offset +
+		// * statement.sourceStart(), statement.sourceEnd() -
+		// * statement.sourceStart())));
+		// */
+		// Iterator si = statement.getExpressions().iterator();
+		// while (si.hasNext()) {
+		// Expression ex = (Expression) si.next();
+		// if (ex instanceof TclBlockExpression) {
+		// TclBlockExpression be = (TclBlockExpression) ex;
+		// try {
+		// String newContents = contents.substring(be
+		// .sourceStart() + 1, be.sourceEnd() - 1);
+		// result.add(new PairBlock(offset + be.sourceStart(),
+		// offset + be.sourceEnd() - 1, '{'));
+		// PairBlock[] cb = computePairRanges(offset
+		// + be.sourceStart() + 1, newContents);
+		// for (int j = 0; j < cb.length; j++) {
+		// result.add(cb[j]);
+		// }
+		// } catch (StringIndexOutOfBoundsException e) {
+		// }
+		// } else if (ex instanceof StringLiteral) {
+		// StringLiteral be = (StringLiteral) ex;
+		// result.add(new PairBlock(offset + be.sourceStart(),
+		// offset + be.sourceEnd() - 1, '\"'));
+		// } else if (ex instanceof TclExecuteExpression) {
+		// TclExecuteExpression be = (TclExecuteExpression) ex;
+		// result.add(new PairBlock(offset + be.sourceStart(),
+		// offset + be.sourceEnd() - 1, '['));
+		// }
+		// }
+		// }
+		// }
 		return (PairBlock[]) result.toArray(new PairBlock[result.size()]);
 	}
 
@@ -201,7 +242,7 @@ public final class TclPairMatcher implements ICharacterPairMatcher {
 			if (matchPairsAt() && fStartPos != fEndPos)
 				return new Region(fStartPos, fEndPos - fStartPos + 1);
 		} catch (BadLocationException e) {
-			if (DLTKCore.DEBUG_PARSER) 
+			if (DLTKCore.DEBUG_PARSER)
 				e.printStackTrace();
 		}
 

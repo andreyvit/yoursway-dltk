@@ -48,7 +48,6 @@ import org.eclipse.dltk.launching.LaunchingMessages;
 import org.eclipse.dltk.launching.LibraryLocation;
 import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.dltk.utils.DeployHelper;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 
 /**
  * Abstract implementation of a interpreter install type. Subclasses should
@@ -65,6 +64,11 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
  */
 public abstract class AbstractInterpreterInstallType implements
 		IInterpreterInstallType, IExecutableExtension {
+	public interface ILookupRunnable {
+		public void run(IProgressMonitor monitor)
+				throws InvocationTargetException, InterruptedException;
+	};
+
 	private static final int NOT_WORK_COUNT = -2;
 
 	private static final String DLTK_TOTAL_WORK_START = "%DLTK_TOTAL_WORK_START%:";
@@ -283,6 +287,7 @@ public abstract class AbstractInterpreterInstallType implements
 			while (true) {
 				if (monitor != null && monitor.isCanceled()) {
 					monitor.worked(1);
+					p.destroy();
 					break;
 				}
 				String line = dataIn.readLine();
@@ -419,7 +424,7 @@ public abstract class AbstractInterpreterInstallType implements
 	 * run the interpreter library lookup in a
 	 * <code>ProgressMonitorDialog</code>
 	 */
-	protected void runLibraryLookup(final IRunnableWithProgress runnable,
+	protected void runLibraryLookup(final ILookupRunnable runnable,
 			IProgressMonitor monitor) throws InvocationTargetException,
 			InterruptedException {
 
@@ -559,7 +564,7 @@ public abstract class AbstractInterpreterInstallType implements
 						throw new IOException("null result from process");
 					}
 					if (DLTKLaunchingPlugin.TRACE_EXECUTION) {
-						traceDiscoveryOutput(process, result);
+						traceDiscoveryOutput(result);
 					}
 					String[] paths = null;
 					if (result.length == 1) {
@@ -604,7 +609,7 @@ public abstract class AbstractInterpreterInstallType implements
 		return null;
 	}
 
-	private void traceDiscoveryOutput(Process process, String[] result) {
+	private void traceDiscoveryOutput(String[] result) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("-----------------------------------------------\n");
 		sb.append("Discovery script output:").append('\n');
@@ -639,10 +644,9 @@ public abstract class AbstractInterpreterInstallType implements
 		System.out.println(sb);
 	}
 
-	protected IRunnableWithProgress createLookupRunnable(
-			final File installLocation, final List locations,
-			final EnvironmentVariable[] variables) {
-		return new IRunnableWithProgress() {
+	protected ILookupRunnable createLookupRunnable(final File installLocation,
+			final List locations, final EnvironmentVariable[] variables) {
+		return new ILookupRunnable() {
 			public void run(IProgressMonitor monitor) {
 				try {
 					File locator = createPathFile();
@@ -693,8 +697,8 @@ public abstract class AbstractInterpreterInstallType implements
 
 		final ArrayList locations = new ArrayList();
 
-		final IRunnableWithProgress runnable = createLookupRunnable(
-				installLocation, locations, variables);
+		final ILookupRunnable runnable = createLookupRunnable(installLocation,
+				locations, variables);
 
 		try {
 			runLibraryLookup(runnable,
@@ -721,7 +725,8 @@ public abstract class AbstractInterpreterInstallType implements
 		return libs;
 	}
 
-	public static Object makeKey(File installLocation, EnvironmentVariable[] variables) {
+	public static Object makeKey(File installLocation,
+			EnvironmentVariable[] variables) {
 		String key = installLocation.getAbsolutePath();
 		if (variables != null) {
 			for (int i = 0; i < variables.length; i++) {

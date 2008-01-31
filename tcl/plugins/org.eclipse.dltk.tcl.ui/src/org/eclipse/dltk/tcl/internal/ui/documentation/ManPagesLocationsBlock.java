@@ -39,6 +39,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.tcl.ui.TclPreferenceConstants;
 import org.eclipse.dltk.ui.DLTKPluginImages;
+import org.eclipse.dltk.ui.dialogs.TimeTriggeredProgressMonitorDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -436,7 +437,7 @@ public class ManPagesLocationsBlock implements SelectionListener,
 			if (this.folders == null)
 				this.folders = new ArrayList();
 			if (file != null && file.isDirectory()) {
-				ProgressMonitorDialog dialog2 = new ProgressMonitorDialog(null);
+				ProgressMonitorDialog dialog2 = new TimeTriggeredProgressMonitorDialog(null, 500);
 				try {
 					dialog2.run(true, true, new IRunnableWithProgress() {
 						public void run(IProgressMonitor monitor) {
@@ -444,7 +445,6 @@ public class ManPagesLocationsBlock implements SelectionListener,
 							performSearch(file);
 							monitor.done();
 						}
-
 					});
 				} catch (InvocationTargetException e) {
 					e.printStackTrace();

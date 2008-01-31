@@ -11,6 +11,7 @@ package org.eclipse.dltk.tcl.internal.ui.editor;
 
 import org.eclipse.core.filebuffers.IDocumentSetupParticipant;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.ui.actions.FoldingActionGroup;
 import org.eclipse.dltk.internal.ui.editor.DLTKEditorMessages;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
@@ -52,7 +53,7 @@ public class TclEditor extends ScriptEditor {
 
 	private IFoldingStructureProvider foldingProvider;
 
-	private TclPairMatcher bracketMatcher = new TclPairMatcher(BRACKETS);
+	private TclPairMatcher bracketMatcher;
 
 	private void configureToggleCommentAction() {
 		IAction action = getAction("ToggleComment"); //$NON-NLS-1$
@@ -202,7 +203,7 @@ public class TclEditor extends ScriptEditor {
 		int sourceCaretOffset = selection.getOffset() + selection.getLength();
 		if (isSurroundedByBrackets(document, sourceCaretOffset))
 			sourceCaretOffset -= selection.getLength();
-
+		
 		IRegion region = bracketMatcher.match(document, sourceCaretOffset);
 		if (region == null) {
 			setStatusLineErrorMessage("No matching bracket found");
@@ -248,6 +249,7 @@ public class TclEditor extends ScriptEditor {
 
 	protected void configureSourceViewerDecorationSupport(
 			SourceViewerDecorationSupport support) {
+		bracketMatcher = new TclPairMatcher(BRACKETS, this);
 		support.setCharacterPairMatcher(bracketMatcher);
 		support.setMatchingCharacterPainterPreferenceKeys(MATCHING_BRACKETS,
 				MATCHING_BRACKETS_COLOR);

@@ -1,6 +1,7 @@
 package org.eclipse.dltk.tcl.internal.debug.ui.interpreters;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,13 +9,18 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.internal.debug.ui.interpreters.LibraryContentProvider;
 import org.eclipse.dltk.internal.debug.ui.interpreters.LibraryStandin;
 import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.LibraryLocation;
 import org.eclipse.dltk.tcl.internal.launching.PackagesHelper;
 import org.eclipse.dltk.tcl.internal.launching.PackagesHelper.PackageLocation;
+import org.eclipse.dltk.ui.dialogs.TimeTriggeredProgressMonitorDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
@@ -52,40 +58,65 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 		}
 	}
 
-	public void initialize(File file,
-			EnvironmentVariable[] environmentVariables, boolean restoreDefault) {
+	public void initialize(final File file,
+			final EnvironmentVariable[] environmentVariables,
+			boolean restoreDefault) {
 		if (file != null && file.exists()) {
-			LibraryLocation[] additions = null;
+			final LibraryLocation[] additions;
 			if (restoreDefault) {
 				this.additions.clear();
+				additions = null;
 			} else {
 				additions = getAdditions();
 			}
-			Object key = makeKey(file, environmentVariables, additions);
-			if (fCachedPacakges.containsKey(key)) {
-				packageLocations = (PackageLocation[]) this.fCachedPacakges
-						.get(key);
-			} else {
-				packageLocations = PackagesHelper.getLocations(new Path(file
-						.getAbsolutePath()), environmentVariables, additions);
-				// Try to use without specific libraries.
-				if (packageLocations.length == 0) {
-					packageLocations = PackagesHelper
-							.getLocations(new Path(file.getAbsolutePath()),
-									environmentVariables, null);
+			ProgressMonitorDialog dialog = new TimeTriggeredProgressMonitorDialog(
+					null, 100);
+			try {
+				dialog.run(true, true, new IRunnableWithProgress() {
+
+					public void run(IProgressMonitor monitor)
+							throws InvocationTargetException,
+							InterruptedException {
+						// TODO Auto-generated method stub
+
+						Object key = makeKey(file, environmentVariables,
+								additions);
+						if (fCachedPacakges.containsKey(key)) {
+							packageLocations = (PackageLocation[]) fCachedPacakges
+									.get(key);
+						} else {
+							packageLocations = PackagesHelper.getLocations(
+									new Path(file.getAbsolutePath()),
+									environmentVariables, additions, monitor);
+							// Try to use without specific libraries.
+							if (packageLocations.length == 0) {
+								packageLocations = PackagesHelper.getLocations(
+										new Path(file.getAbsolutePath()),
+										environmentVariables, null, monitor);
+							}
+							// Failsafe.
+							if (packageLocations.length == 0) {
+								packageLocations = createPackageLocationsFrom(getLibraries());
+							}
+						}
+
+						updateLibrariesFromPackages();
+
+						LibraryLocation[] adds = getAdditions();
+						key = makeKey(file, environmentVariables, adds);
+						fCachedPacakges.put(key, packageLocations);
+					}
+
+				});
+			} catch (InvocationTargetException e) {
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
 				}
-				// Failsafe.
-				if (packageLocations.length == 0) {
-					packageLocations = createPackageLocationsFrom(this
-							.getLibraries());
+			} catch (InterruptedException e) {
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
 				}
 			}
-
-			updateLibrariesFromPackages();
-
-			additions = getAdditions();
-			key = makeKey(file, environmentVariables, additions);
-			fCachedPacakges.put(key, this.packageLocations);
 
 			this.fViewer.refresh();
 			updateColors();

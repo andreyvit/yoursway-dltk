@@ -287,15 +287,23 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 				project, monitor);
 	}
 
-	private void clearLastState() {
+	private State clearLastState() {
+		State state = new State(this);
+		State prevState = (State) ModelManager.getModelManager().getLastBuiltState(currentProject, null);
+		if( prevState != null ) {
+			if( prevState.noCleanExternalFolders) {
+				state.externalFolderLocations = prevState.externalFolderLocations;
+				return state;
+			}
+		}
 		ModelManager.getModelManager().setLastBuiltState(currentProject, null);
+		return state;
 	}
 
 	protected void fullBuild(final IProgressMonitor monitor)
 			throws CoreException {
 
-		clearLastState();
-		State newState = new State(this);
+		State newState = clearLastState();
 		lastState = newState;
 		try {
 			monitor.beginTask(MessageFormat.format("Building \"{0}\" project...",
