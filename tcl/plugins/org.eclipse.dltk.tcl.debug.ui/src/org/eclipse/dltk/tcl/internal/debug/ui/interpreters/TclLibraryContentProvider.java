@@ -63,12 +63,12 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 			boolean restoreDefault) {
 		if (file != null && file.exists()) {
 			final LibraryLocation[] additions;
-			if (restoreDefault) {
-				this.additions.clear();
-				additions = null;
-			} else {
-				additions = getAdditions();
-			}
+			// if (restoreDefault) {
+			// // this.additions.clear();
+			// additions = null;
+			// } else {
+			additions = getAdditions();
+			// }
 
 			final Object key = makeKey(file, environmentVariables, additions);
 			if (fCachedPacakges.containsKey(key)) {
@@ -97,9 +97,7 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 						if (packageLocations.length == 0) {
 							packageLocations = createPackageLocationsFrom(getLibraries());
 						}
-
 					}
-
 				});
 			} catch (InvocationTargetException e) {
 				if (DLTKCore.DEBUG) {
@@ -112,7 +110,7 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 			}
 
 			updateLibrariesFromPackages();
-			
+
 			LibraryLocation[] adds = getAdditions();
 			Object key2 = makeKey(file, environmentVariables, adds);
 			fCachedPacakges.put(key2, packageLocations);
