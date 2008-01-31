@@ -40,8 +40,6 @@ import org.eclipse.dltk.validators.internal.core.ValidatorDefinitionsContainer;
 import org.eclipse.dltk.validators.internal.core.ValidatorManager;
 import org.eclipse.dltk.validators.internal.core.ValidatorsCore;
 
-import sun.nio.ch.SocketOpts.IP;
-
 public final class ValidatorRuntime {
 
 	public static final String PREF_VALIDATOR_XML = ValidatorsCore.PLUGIN_ID
@@ -402,7 +400,7 @@ public final class ValidatorRuntime {
 			}
 			return;
 		}
-		process(stream, elements, resources, activeValidators, processValidate,
+		process(stream, elements, resources, (IValidator[])required.toArray(new IValidator[required.size()]), processValidate,
 				monitor);
 	}
 
@@ -448,7 +446,7 @@ public final class ValidatorRuntime {
 			IProcessAction action, IProgressMonitor monitor) {
 		if (monitor == null)
 			monitor = new NullProgressMonitor();
-		monitor.beginTask("Running validators...", activeValidators.length);
+		monitor.beginTask("Running validators", activeValidators.length*100);
 		try {
 			if (elements != null) {
 				for (int i = 0; i < activeValidators.length; i++) {
@@ -457,9 +455,8 @@ public final class ValidatorRuntime {
 					if (monitor.isCanceled())
 						return;
 					IProgressMonitor subMonitor = new SubProgressMonitor(
-							monitor, 1);
+							monitor, 100);
 					action.execute(activeValidators[i], modules, stream, subMonitor);
-					monitor.worked(1);
 				}
 			}
 		} finally {
