@@ -508,7 +508,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 				}
 				
 				for (int k = 0; k < builders.length; k++) {
-					int builderLength = (total > 0) ? ticks * builders[k].estimateElementsToBuild(elements) / (total * builders.length) : 1;
+					int builderLength = (total > 0) ? ticks * builders[k].estimateElementsToBuild(elements) / total : 1;
 					IProgressMonitor sub = new SubProgressMonitor(monitor, builderLength);
 					IStatus[] st = builders[k].buildModelElements(
 							scriptProject, elements, sub, buildType);
