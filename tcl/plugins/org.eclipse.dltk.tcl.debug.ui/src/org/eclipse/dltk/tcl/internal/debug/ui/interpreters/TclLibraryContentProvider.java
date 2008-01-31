@@ -73,6 +73,8 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 			final Object key = makeKey(file, environmentVariables, additions);
 			if (fCachedPacakges.containsKey(key)) {
 				packageLocations = (PackageLocation[]) fCachedPacakges.get(key);
+				this.fViewer.refresh();
+				updateColors();
 				return;
 			}
 			ProgressMonitorDialog dialog = new TimeTriggeredProgressMonitorDialog(

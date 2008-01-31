@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.debug.ui.IDLTKDebugUIConstants;
 import org.eclipse.dltk.launching.EnvironmentVariable;
@@ -488,7 +489,8 @@ public abstract class AbstractInterpreterLibraryBlock implements
 			// fLibraryContentProvider.setLibraries(ScriptRuntime
 			// .getLibraryLocations(getInterpreterInstall(), null));
 			final LibraryLocation[][] libs = new LibraryLocation[][] { null };
-			ProgressMonitorDialog dialog = new TimeTriggeredProgressMonitorDialog(null, 3000);
+			ProgressMonitorDialog dialog = new TimeTriggeredProgressMonitorDialog(
+					null, 3000);
 			try {
 				dialog.run(true, true, new IRunnableWithProgress() {
 
@@ -501,9 +503,13 @@ public abstract class AbstractInterpreterLibraryBlock implements
 
 				});
 			} catch (InvocationTargetException e) {
-				e.printStackTrace();
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
 			}
 			fLibraryContentProvider.setLibraries(libs[0]);
 
