@@ -69,8 +69,14 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 			} else {
 				additions = getAdditions();
 			}
+
+			final Object key = makeKey(file, environmentVariables, additions);
+			if (fCachedPacakges.containsKey(key)) {
+				packageLocations = (PackageLocation[]) fCachedPacakges.get(key);
+				return;
+			}
 			ProgressMonitorDialog dialog = new TimeTriggeredProgressMonitorDialog(
-					null, 100);
+					null, 1000);
 			try {
 				dialog.run(true, true, new IRunnableWithProgress() {
 
@@ -78,33 +84,25 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 							throws InvocationTargetException,
 							InterruptedException {
 						// TODO Auto-generated method stub
-
-						Object key = makeKey(file, environmentVariables,
-								additions);
-						if (fCachedPacakges.containsKey(key)) {
-							packageLocations = (PackageLocation[]) fCachedPacakges
-									.get(key);
-						} else {
+						packageLocations = PackagesHelper.getLocations(
+								new Path(file.getAbsolutePath()),
+								environmentVariables, additions, monitor);
+						// Try to use without specific libraries.
+						if (packageLocations.length == 0) {
 							packageLocations = PackagesHelper.getLocations(
 									new Path(file.getAbsolutePath()),
-									environmentVariables, additions, monitor);
-							// Try to use without specific libraries.
-							if (packageLocations.length == 0) {
-								packageLocations = PackagesHelper.getLocations(
-										new Path(file.getAbsolutePath()),
-										environmentVariables, null, monitor);
-							}
-							// Failsafe.
-							if (packageLocations.length == 0) {
-								packageLocations = createPackageLocationsFrom(getLibraries());
-							}
+									environmentVariables, null, monitor);
+						}
+						// Failsafe.
+						if (packageLocations.length == 0) {
+							packageLocations = createPackageLocationsFrom(getLibraries());
 						}
 
 						updateLibrariesFromPackages();
 
 						LibraryLocation[] adds = getAdditions();
-						key = makeKey(file, environmentVariables, adds);
-						fCachedPacakges.put(key, packageLocations);
+						Object key2 = makeKey(file, environmentVariables, adds);
+						fCachedPacakges.put(key2, packageLocations);
 					}
 
 				});
