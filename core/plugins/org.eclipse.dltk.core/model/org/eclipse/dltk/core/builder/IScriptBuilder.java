@@ -24,6 +24,13 @@ import org.eclipse.dltk.core.IScriptProject;
 public interface IScriptBuilder {
 	public static final int INCREMENTAL_BUILD = 0;
 	public static final int FULL_BUILD = 1;
+	
+	/**
+	 * Estimate number of elements will be build from given set.
+	 * @return
+	 */
+	int estimateElementsToBuild(List elements);
+	
 	/**
 	 * Called for each resource required to build. Only resources with specified
 	 * project nature are here.

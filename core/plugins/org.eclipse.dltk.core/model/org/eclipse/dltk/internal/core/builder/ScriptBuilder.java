@@ -500,10 +500,16 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			IScriptBuilder[] builders = ScriptBuilderManager
 					.getScriptBuilders(toolkit.getNatureId());
 
+			//TODO: replace this stuff with multistatus
 			if (builders != null) {
+				int total = 0;
 				for (int k = 0; k < builders.length; k++) {
-					IProgressMonitor sub = new SubProgressMonitor(monitor, ticks
-							/ builders.length);
+					total += builders[k].estimateElementsToBuild(elements);
+				}
+				
+				for (int k = 0; k < builders.length; k++) {
+					int builderLength = (total > 0) ? ticks * builders[k].estimateElementsToBuild(elements) / (total * builders.length) : 1;
+					IProgressMonitor sub = new SubProgressMonitor(monitor, builderLength);
 					IStatus[] st = builders[k].buildModelElements(
 							scriptProject, elements, sub, buildType);
 					if (st != null) {
