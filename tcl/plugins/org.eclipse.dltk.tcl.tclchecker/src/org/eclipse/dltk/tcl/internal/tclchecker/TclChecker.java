@@ -179,7 +179,7 @@ public class TclChecker {
 		if (monitor == null)
 			monitor = new NullProgressMonitor();
 
-		monitor.beginTask("Executing TclChecker...", sourceModules.size() + 1);
+		monitor.beginTask("Executing TclChecker...", sourceModules.size()*2 + 1);
 
 		try {
 			monitor.subTask("Launching TclChecker...");
