@@ -2,15 +2,18 @@ package org.eclipse.dltk.tcl.internal.debug.ui.interpreters;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.internal.debug.ui.interpreters.LibraryContentProvider;
 import org.eclipse.dltk.internal.debug.ui.interpreters.LibraryStandin;
@@ -30,7 +33,7 @@ import org.eclipse.ui.PlatformUI;
 
 public class TclLibraryContentProvider extends LibraryContentProvider {
 	PackageLocation[] packageLocations;
-	private Set additions = new HashSet();
+	// private Set additions = new HashSet();
 	private static HashMap fCachedPacakges = new HashMap();
 
 	public Object[] getChildren(Object parentElement) {
@@ -63,19 +66,39 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 			boolean restoreDefault) {
 		if (file != null && file.exists()) {
 			final LibraryLocation[] additions;
-			// if (restoreDefault) {
-			// // this.additions.clear();
-			// additions = null;
-			// } else {
-			additions = getAdditions();
-			// }
+
+			final PackageLocation[] defaultLocations;
+			final Object defaultKey = makeKey(file, environmentVariables, null);
+			if (fCachedPacakges.containsKey(defaultKey)) {
+				defaultLocations = (PackageLocation[]) fCachedPacakges
+						.get(defaultKey);
+			} else {
+				defaultLocations = null;
+			}
+
+			if (restoreDefault) {
+				// this.additions.clear();
+				additions = null;
+			} else {
+				if (defaultLocations != null
+						&& (this.packageLocations == null || packageLocations.length == 0)) {
+					additions = getAdditions(defaultLocations);
+				} else {
+					additions = getAdditions(this.packageLocations);
+				}
+			}
 
 			final Object key = makeKey(file, environmentVariables, additions);
 			if (fCachedPacakges.containsKey(key)) {
 				packageLocations = (PackageLocation[]) fCachedPacakges.get(key);
-				this.fViewer.refresh();
-				updateColors();
-				return;
+				if (packageLocations != null) {
+					if (restoreDefault) {
+						restoreDefaults();
+					}
+					this.fViewer.refresh();
+					updateColors();
+					return;
+				}
 			}
 			ProgressMonitorDialog dialog = new TimeTriggeredProgressMonitorDialog(
 					null, 1000);
@@ -85,19 +108,53 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 					public void run(IProgressMonitor monitor)
 							throws InvocationTargetException,
 							InterruptedException {
-						// TODO Auto-generated method stub
-						packageLocations = PackagesHelper.getLocations(
-								new Path(file.getAbsolutePath()),
-								environmentVariables, additions, monitor);
-						// Try to use without specific libraries.
-						if (packageLocations.length == 0) {
+						if( additions != null) {
+							monitor.beginTask("Discovering tcl packages", 2);
+						}
+						PackageLocation[] def = defaultLocations;
+						if (defaultLocations == null) {
+							IProgressMonitor sub = monitor;
+							if( additions != null ) {
+								sub = new SubProgressMonitor(monitor, 1);
+							}
+							def = PackagesHelper.getLocations(new Path(file
+									.getAbsolutePath()), environmentVariables,
+									additions, sub);
+							fCachedPacakges.put(defaultKey, def);
+						}
+						else {
+							if( additions != null ) {
+								monitor.worked(1);
+							}
+						}
+						if ((additions != null && additions.length > 0)
+								|| def == null) {
+							IProgressMonitor sub = monitor;
+							if( additions != null ) {
+								sub = new SubProgressMonitor(monitor, 1);
+							}
+							// TODO Auto-generated method stub
 							packageLocations = PackagesHelper.getLocations(
 									new Path(file.getAbsolutePath()),
-									environmentVariables, null, monitor);
+									environmentVariables, additions, sub);
+							// Try to use without specific libraries.
+							if (packageLocations.length == 0) {
+								packageLocations = def;
+							}
+						} else {
+							// if (packageLocations != null
+							// && packageLocations.length > 0) {
+							// // We need to add not pressent locations for def.
+
+							packageLocations = def;
+							// }
 						}
 						// Failsafe.
 						if (packageLocations.length == 0) {
 							packageLocations = createPackageLocationsFrom(getLibraries());
+						}
+						if( additions != null) {
+							monitor.done();
 						}
 					}
 				});
@@ -111,14 +168,27 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 				}
 			}
 
-			updateLibrariesFromPackages();
+			if (!restoreDefault) {
+				 updateLibrariesFromPackages();
+			} else {
+				restoreDefaults();
+			}
 
-			LibraryLocation[] adds = getAdditions();
+			LibraryLocation[] adds = getAdditions(this.packageLocations);
 			Object key2 = makeKey(file, environmentVariables, adds);
 			fCachedPacakges.put(key2, packageLocations);
 
 			updateColors();
 		}
+	}
+
+	private void restoreDefaults() {
+		LibraryLocation[] defaultLibs = new LibraryLocation[this.packageLocations.length];
+		for (int i = 0; i < defaultLibs.length; i++) {
+			defaultLibs[i] = new LibraryLocation(Path
+					.fromOSString(this.packageLocations[i].getPath()));
+		}
+		super.setLibraries(defaultLibs);
 	}
 
 	public static Object makeKey(File installLocation,
@@ -143,13 +213,14 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 	 * 
 	 * @return
 	 */
-	private LibraryLocation[] getAdditions() {
+	private LibraryLocation[] getAdditions(PackageLocation[] pkgLocations) {
 		LibraryLocation[] libraries = super.getLibraries();
-		if (packageLocations == null || packageLocations.length == 0) {
-			return null;
+		if (pkgLocations == null || pkgLocations.length == 0) {
+			return libraries;
 		}
-		Set packages = new HashSet();
-		packages.addAll(Arrays.asList(packageLocations));
+		List additions = new ArrayList();
+		List packages = new ArrayList();
+		packages.addAll(Arrays.asList(pkgLocations));
 		for (int i = 0; i < libraries.length; i++) {
 			if (!packages.contains(new PackageLocation(libraries[i]
 					.getLibraryPath().toOSString()))) {
