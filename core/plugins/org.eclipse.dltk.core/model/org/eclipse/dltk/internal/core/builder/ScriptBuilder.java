@@ -232,6 +232,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			System.out
 					.println("-----------------------------------------------------------------");
 		}
+		monitor.done();
 		return requiredProjects;
 	}
 
