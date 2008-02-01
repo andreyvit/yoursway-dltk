@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.ISourceModule;
@@ -45,11 +46,11 @@ public class SimpleValidator extends AbstractValidator {
 		element.setAttribute("simple_valid", Boolean.toString(this.valid));
 	}
 
-	public IStatus validate(ISourceModule module, OutputStream console) {
+	public IStatus validate(ISourceModule[] module, OutputStream console) {
 		return Status.OK_STATUS;
 	}
 
-	public IStatus validate(IResource resource, OutputStream console) {
+	public IStatus validate(IResource[] resource, OutputStream console) {
 		return Status.OK_STATUS;
 	}
 	public void setValid(boolean b) {
@@ -58,9 +59,13 @@ public class SimpleValidator extends AbstractValidator {
 	public boolean isValidatorValid() {
 		return this.valid;
 	}
-	public void clean(ISourceModule module) {
+	public void clean(ISourceModule[] module) {
 		
 	}
-	public void clean(IResource resource) {
+	public void clean(IResource[] resource) {
+	}
+	public void setProgressMonitor(IProgressMonitor monitor) {
+		// TODO Auto-generated method stub
+		
 	}
 }

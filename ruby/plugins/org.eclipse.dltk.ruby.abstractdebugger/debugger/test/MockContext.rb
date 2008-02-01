@@ -23,6 +23,14 @@ module XoredDebugger
             end 
         end
         
+        def dead?
+	    	@status == STOPPED             
+        end
+
+        def suspended?
+	    	@status == BREAK             
+        end
+                
         def step_into
             if (@status == BREAK)
                 @status = BREAK

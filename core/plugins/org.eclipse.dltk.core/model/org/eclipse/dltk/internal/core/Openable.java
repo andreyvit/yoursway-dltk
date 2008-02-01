@@ -220,6 +220,19 @@ public abstract class Openable extends ModelElement implements IOpenable,
 			return null;
 		}
 	}
+	
+	public IBuffer getBufferNotOpen() throws ModelException {
+		if (hasBuffer()) {
+			// ensure element is open
+			IBuffer buffer = getBufferManager().getBuffer(this);
+			if (buffer == null) {
+				return null;
+			}
+			return buffer;
+		} else {
+			return null;
+		}
+	}
 
 	/**
 	 * Returns the buffer manager for this element.

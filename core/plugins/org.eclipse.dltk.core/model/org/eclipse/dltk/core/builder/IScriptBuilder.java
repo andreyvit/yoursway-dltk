@@ -22,6 +22,8 @@ import org.eclipse.dltk.core.IScriptProject;
  * 
  */
 public interface IScriptBuilder {
+	public static final int INCREMENTAL_BUILD = 0;
+	public static final int FULL_BUILD = 1;
 	/**
 	 * Called for each resource required to build. Only resources with specified
 	 * project nature are here.
@@ -29,7 +31,7 @@ public interface IScriptBuilder {
 	 * @return
 	 */
 	IStatus[] buildResources(IScriptProject project, List resources,
-			IProgressMonitor monitor);
+			IProgressMonitor monitor, int status);
 
 	/**
 	 * Called for each resource required to build. Only resources with
@@ -38,7 +40,7 @@ public interface IScriptBuilder {
 	 * @return
 	 */
 	IStatus[] buildModelElements(IScriptProject project, List elements,
-			IProgressMonitor monitor);
+			IProgressMonitor monitor, int status);
 
 	/**
 	 * Return all dependencies for selected resource. Should also return all

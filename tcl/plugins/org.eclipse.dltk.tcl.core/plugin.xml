@@ -63,11 +63,14 @@
         point="org.eclipse.core.runtime.contentTypes">
      <content-type
            base-type="org.eclipse.core.runtime.text"
-           describer="org.eclipse.dltk.tcl.core.TclContentDescriber"
-           file-extensions="tcl"
+           file-extensions="tcl,test,exp"
            id="org.eclipse.dltk.tclContentType"
            name="%tclContentType"
-           priority="high">       
+           priority="high">
+        <describer
+              class="org.eclipse.dltk.tcl.core.TclContentDescriber"
+              plugin="org.eclipse.dltk.tcl.core">
+        </describer>       
      </content-type>
   </extension>
    <extension
@@ -85,8 +88,7 @@
    <extension
          point="org.eclipse.dltk.tcl.core.tclkeywords">
       <keywords
-            class="org.eclipse.dltk.tcl.core.TclKeywords"
-            priority="0">
+            class="org.eclipse.dltk.tcl.core.TclKeywords">
       </keywords>
    </extension>
  <extension

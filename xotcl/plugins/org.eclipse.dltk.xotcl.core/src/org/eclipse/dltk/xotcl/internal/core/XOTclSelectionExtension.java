@@ -51,7 +51,7 @@ public class XOTclSelectionExtension implements ISelectionExtension {
 			TypeDeclaration declaringType = node.getDeclaringType();
 			IModelElement type = engine.findElementFromNode(declaringType);
 			if (type != null) {
-				engine.addSelectionElement(type);
+				engine.addSelectionElement(type);	
 			}
 		}
 	}
@@ -395,6 +395,11 @@ public class XOTclSelectionExtension implements ISelectionExtension {
 	private void findXOTclMethodMixin(String pattern, String name,
 			TclSelectionEngine engine) {
 		IMixinElement[] find = TclMixinModel.getInstance().find(pattern + "*");
+		int pos = pattern.indexOf(IMixinRequestor.MIXIN_NAME_SEPARATOR);
+		if( find.length == 0 && pos != -1 ) {
+			String newPattern = pattern.substring(0, pos);
+			find = TclMixinModel.getInstance().find(newPattern + "*");
+		}
 		for (int i = 0; i < find.length; i++) {
 			Object[] allObjects = find[i].getAllObjects();
 			for (int j = 0; j < allObjects.length; j++) {

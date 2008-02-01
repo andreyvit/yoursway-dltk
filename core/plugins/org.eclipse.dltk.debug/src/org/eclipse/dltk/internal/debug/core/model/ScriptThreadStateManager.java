@@ -2,6 +2,7 @@ package org.eclipse.dltk.internal.debug.core.model;
 
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.dbgp.IDbgpStatus;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.internal.debug.core.model.operations.DbgpDebugger;
@@ -40,10 +41,11 @@ public class ScriptThreadStateManager implements IDbgpDebuggerFeedback {
 		if (exception != null) {
 			setTerminated(exception);
 		}
-		if( status == null ) {
+		if (status == null) {
 			setTerminated(null);
 			return;
 		}
+
 		if (status.isBreak()) {
 			setSuspended(true, suspendDetail);
 		} else if (status.isStopping()) {
@@ -51,8 +53,9 @@ public class ScriptThreadStateManager implements IDbgpDebuggerFeedback {
 			try {
 				terminate();
 			} catch (DebugException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
 			}
 		} else if (status.isStopped()) {
 			setTerminated(null);
@@ -127,13 +130,14 @@ public class ScriptThreadStateManager implements IDbgpDebuggerFeedback {
 		this.stepIntoState = true;
 		engine.stepInto();
 	}
+
 	public boolean isStepInto() {
 		return this.stepIntoState;
 	}
+
 	public void setStepInto(boolean state) {
 		this.stepIntoState = state;
 	}
-	
 
 	// StepOver
 	public boolean canStepOver() {
@@ -177,8 +181,8 @@ public class ScriptThreadStateManager implements IDbgpDebuggerFeedback {
 	}
 
 	public void suspend() throws DebugException {
-		setSuspended(true, DebugEvent.CLIENT_REQUEST);
 		engine.suspend();
+		setSuspended(true, DebugEvent.CLIENT_REQUEST);
 	}
 
 	public int getModificationsCount() {
@@ -218,6 +222,6 @@ public class ScriptThreadStateManager implements IDbgpDebuggerFeedback {
 	}
 
 	public void notifyModified() {
-		modificationsCount++;		
+		modificationsCount++;
 	}
 }

@@ -14,4 +14,6 @@ import org.eclipse.core.runtime.CoreException;
 
 public interface IProblemReporter {
 	IMarker reportProblem(IProblem problem) throws CoreException;
+	// Clear all existing markes from file
+	void clearMarkers();
 }

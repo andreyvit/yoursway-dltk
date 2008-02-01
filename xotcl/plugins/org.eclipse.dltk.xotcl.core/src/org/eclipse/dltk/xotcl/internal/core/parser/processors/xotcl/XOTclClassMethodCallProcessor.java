@@ -10,7 +10,6 @@ import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
-import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodCallStatement;
 
 public class XOTclClassMethodCallProcessor extends AbstractTclCommandProcessor {

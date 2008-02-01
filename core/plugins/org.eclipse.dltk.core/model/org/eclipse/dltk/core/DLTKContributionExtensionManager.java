@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -48,7 +49,7 @@ public abstract class DLTKContributionExtensionManager {
 				.toArray(new IDLTKContributedExtension[contributions.size()]);
 	}
 
-	public IDLTKContributedExtension getSelectedContribution(String natureId) {
+	public IDLTKContributedExtension getSelectedContribution(IProject project, String natureId) {
 		IDLTKContributedExtension[] contributions = getContributions(natureId);
 
 		if (contributions.length > 0) {
@@ -58,7 +59,7 @@ public abstract class DLTKContributionExtensionManager {
 				selector = defaultSelector;
 			}
 
-			return selector.select(contributions);
+			return selector.select(contributions, project);
 		}
 
 		return null;

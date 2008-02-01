@@ -1,5 +1,6 @@
 package org.eclipse.dltk.launching;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -39,7 +40,7 @@ public abstract class AbstractRemoteLaunchConfigurationDelegate extends
 	 * @see org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate#validateLaunchConfiguration(org.eclipse.debug.core.ILaunchConfiguration, java.lang.String)
 	 */
 	protected void validateLaunchConfiguration(
-			ILaunchConfiguration configuration, String mode)
+			ILaunchConfiguration configuration, String mode, IProject project)
 			throws CoreException {
 		// nothing to validate 
 	}

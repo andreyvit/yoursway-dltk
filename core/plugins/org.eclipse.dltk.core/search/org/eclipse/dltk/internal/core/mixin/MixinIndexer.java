@@ -18,15 +18,21 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.mixin.IMixinParser;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.search.SearchDocument;
+import org.eclipse.dltk.core.search.index.Index;
 import org.eclipse.dltk.core.search.indexing.AbstractIndexer;
 
 public class MixinIndexer extends AbstractIndexer {
 	MixinIndexRequestor requestor = new MixinIndexRequestor();
 	ISourceModule sourceModule;
+	Index currentIndex;
+	public int index;
+	public String elementName;
 
-	public MixinIndexer(SearchDocument document, ISourceModule module) {
+	public MixinIndexer(SearchDocument document, ISourceModule module,
+			Index currentIndex) {
 		super(document);
 		this.sourceModule = module;
+		this.currentIndex = currentIndex;
 	}
 
 	public void indexDocument() {
@@ -55,7 +61,10 @@ public class MixinIndexer extends AbstractIndexer {
 	private class MixinIndexRequestor implements IMixinRequestor {
 		public void reportElement(ElementInfo info) {
 			if (info.key.length() > 0) {
+				// Thread safe support
+//				synchronized (currentIndex) {
 				MixinIndexer.this.addMixin(info.key.toCharArray());
+//				}
 			}
 		}
 	}

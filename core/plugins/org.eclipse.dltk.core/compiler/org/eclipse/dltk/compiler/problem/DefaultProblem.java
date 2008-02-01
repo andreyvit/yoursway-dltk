@@ -41,7 +41,7 @@ public class DefaultProblem extends CategorizedProblem {
 
 	private String message;
 
-	private static final String MARKER_TYPE_PROBLEM = "org.eclipse.dltk.core.problem"; //$NON-NLS-1$
+	public static final String MARKER_TYPE_PROBLEM = "org.eclipse.dltk.core.problem"; //$NON-NLS-1$
 
 	private static final String MARKER_TYPE_TASK = "org.eclipse.dltk.core.task"; //$NON-NLS-1$
 

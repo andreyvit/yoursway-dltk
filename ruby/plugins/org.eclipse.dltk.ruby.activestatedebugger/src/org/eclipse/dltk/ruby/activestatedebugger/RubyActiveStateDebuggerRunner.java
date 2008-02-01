@@ -10,8 +10,6 @@
 
 package org.eclipse.dltk.ruby.activestatedebugger;
 
-import java.io.File;
-
 import org.eclipse.dltk.launching.ExternalDebuggingEngineRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
@@ -22,8 +20,8 @@ import org.eclipse.dltk.launching.debug.DbgpInterpreterConfig;
  * 
  * <p>
  * see: <a
- * href="http://aspn.activestate.com/ASPN/docs/Komodo/4.1/komodo-doc-debugruby.html">
- * http://aspn.activestate.com/ASPN/docs/Komodo/4.1/komodo-doc-debugruby.html</a>
+ * href="http://aspn.activestate.com/ASPN/docs/Komodo/komodo-doc-debugruby.html">
+ * http://aspn.activestate.com/ASPN/docs/Komodo/komodo-doc-debugruby.html</a>
  * </p>
  */
 public class RubyActiveStateDebuggerRunner extends
@@ -33,20 +31,6 @@ public class RubyActiveStateDebuggerRunner extends
 
 	public RubyActiveStateDebuggerRunner(IInterpreterInstall install) {
 		super(install);
-	}
-
-	protected File getDebuggingEnginePath() {
-		String path = RubyActiveStateDebuggerPlugin
-				.getDefault()
-				.getPreferenceStore()
-				.getString(
-						RubyActiveStateDebuggerConstants.DEBUGGING_ENGINE_PATH_KEY);
-
-		if (path != null) {
-			return new File(path);
-		}
-
-		return null;
 	}
 
 	protected InterpreterConfig alterConfig(InterpreterConfig config,
@@ -64,7 +48,7 @@ public class RubyActiveStateDebuggerRunner extends
 		 * TODO: handle RUBYOPT support for rubygems
 		 * 
 		 * unset if not explicity set to a value by user? see:
-		 * http://aspn.activestate.com/ASPN/docs/Komodo/4.1/komodo-doc-debugruby.html
+		 * http://aspn.activestate.com/ASPN/docs/Komodo/komodo-doc-debugruby.html
 		 */
 		config.addEnvVar("RUBYDB_OPTS", "RemotePort=" + host + ":" + port);
 		config.addEnvVar("DBGP_IDEKEY", sessionId);
@@ -80,5 +64,13 @@ public class RubyActiveStateDebuggerRunner extends
 
 	protected String getDebuggingEngineId() {
 		return ENGINE_ID;
+	}
+
+	protected String getDebuggingEnginePreferenceKey() {
+		return RubyActiveStateDebuggerConstants.DEBUGGING_ENGINE_PATH_KEY;
+	}
+
+	protected String getDebuggingEnginePreferenceQualifier() {
+		return RubyActiveStateDebuggerPlugin.PLUGIN_ID;
 	}
 }

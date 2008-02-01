@@ -31,13 +31,6 @@
       </mixin>
    </extension>
    <extension
-         point="org.eclipse.dltk.core.builder">
-      <builder
-            class="org.eclipse.dltk.javascript.core.builders.JavaScriptBuilder"
-            nature="org.eclipse.dltk.javascript.core.nature">
-      </builder>
-   </extension>
-   <extension
          point="org.eclipse.dltk.core.sourceParsers">
       <parserContribution
             natureId="org.eclipse.dltk.javascript.core.nature">
@@ -88,5 +81,16 @@
             nature="org.eclipse.dltk.javascript.core.nature"
             priority="0">
       </callHerarchiesFactory>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            file-extensions="js"
+            file-names="js"
+            id="org.eclipse.dltk.javascriptContentType"
+            name="JavaScript source file"
+            priority="high">
+      </content-type>
    </extension>
 </plugin>

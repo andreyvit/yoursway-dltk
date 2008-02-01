@@ -1,6 +1,5 @@
 package org.eclipse.dltk.tcl.internal.ui.documentation;
 
-import org.eclipse.dltk.ui.documentation.IScriptDocumentationProvider;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 

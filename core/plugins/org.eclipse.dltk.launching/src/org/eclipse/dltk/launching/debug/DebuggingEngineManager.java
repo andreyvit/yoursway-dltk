@@ -1,7 +1,7 @@
 package org.eclipse.dltk.launching.debug;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IConfigurationElement;
-
 import org.eclipse.dltk.core.DLTKContributionExtensionManager;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.internal.launching.debug.DebuggingEngine;
@@ -37,8 +37,8 @@ public class DebuggingEngineManager extends DLTKContributionExtensionManager {
 	 * @return Selected debugging engine or null (if there are no debugging
 	 *         engines at all or there are no selected engines)
 	 */
-	public IDebuggingEngine getSelectedDebuggingEngine(String natureId) {
-		return (IDebuggingEngine) getSelectedContribution(natureId);
+	public IDebuggingEngine getSelectedDebuggingEngine(IProject project, String natureId) {
+		return (IDebuggingEngine) getSelectedContribution(project, natureId);
 	}
 
 	/**
@@ -52,8 +52,8 @@ public class DebuggingEngineManager extends DLTKContributionExtensionManager {
 	 * @return true if the nature has a selected debugging engine, false
 	 *         otherwise
 	 */
-	public boolean hasSelectedDebuggingEngine(String natureId) {
-		return getSelectedDebuggingEngine(natureId) != null;
+	public boolean hasSelectedDebuggingEngine(IProject project, String natureId) {
+		return getSelectedDebuggingEngine(project, natureId) != null;
 	}
 
 	/*

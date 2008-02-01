@@ -9,19 +9,22 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.ITclCommandDetector;
+import org.eclipse.dltk.tcl.core.ITclCommandDetectorExtension;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
+import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
 import org.eclipse.dltk.xotcl.core.XOTclParseUtil;
-import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclObjectDeclaration;
 import org.eclipse.dltk.xotcl.internal.core.XOTclKeywords;
 import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclClass;
 
-public class XOTclCommandDetector implements ITclCommandDetector {
+public class XOTclCommandDetector implements ITclCommandDetector,
+		ITclCommandDetectorExtension {
 	// Options
 	public static boolean INTERPRET_CLASS_UNKNOWN_AS_CREATE = true;
 	public static boolean INTERPRET_OBJECT_UNKNOWN_AS_CREATE = true;
+	private boolean runtimeModel = false;
 
 	public static class XOTclGlobalClassParameter {
 		private String name;
@@ -56,9 +59,12 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 		Expression commandName = statement.getAt(0);
 		if (commandName instanceof SimpleReference) {
 			String value = ((SimpleReference) commandName).getName();
-			if (value.equals("Class") || value.equals("::xotcl::Class")|| value.equals("xotcl::Class")) {
+			if (value.equals("Class") || value.equals("::xotcl::Class")
+					|| value.equals("xotcl::Class")) {
 				return checkClass(statement, module, parser, parent);
-			} else if (value.equals("Object")|| value.equals("::xotcl::Object")|| value.equals("xotcl::Object")) {
+			} else if (value.equals("Object")
+					|| value.equals("::xotcl::Object")
+					|| value.equals("xotcl::Object")) {
 				return checkObject(statement, module, parser, parent);
 			} else {
 				return checkInstanceOperations(module, parent, statement,
@@ -70,6 +76,9 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 
 	private CommandInfo checkInstanceOperations(ModuleDeclaration module,
 			ASTNode parent, TclStatement statement, ITclParser parser) {
+		if (runtimeModel) {
+			return null;
+		}
 		Expression commandName = statement.getAt(0);
 		if (!(commandName instanceof SimpleReference)) {
 			// TODO: Add handling of this.
@@ -79,13 +88,13 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 
 		TypeDeclaration type = TclParseUtil.findXOTclTypeDeclarationFrom(
 				module, parent, commandNameValue);
-		if( statement.getCount() == 1) {
+		if (statement.getCount() == 1) {
 			return null;
 		}
 		Expression arg = statement.getAt(1);
 		if (type != null) {
 			if (arg instanceof SimpleReference) {
-				return check(type, arg);
+				return check(type, (SimpleReference) arg);
 			}
 		}
 
@@ -102,7 +111,7 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 			// Method call
 			return new CommandInfo("#Class#$ProcCall", type);
 		}
-		// Letch check possibly this is method call for existing instance
+		// Lets check possibly this is method call for existing instance
 		// variable.
 		FieldDeclaration variable = XOTclParseUtil
 				.findXOTclInstanceVariableDeclarationFrom(module, parent,
@@ -111,24 +120,24 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 			// Add support of procs etc.
 			return new CommandInfo("#Class#$MethodCall", variable);
 		}
-		// Eurictics
 
 		// Class instance field declaration
-		if( statement.getCount() < 3) {
+		if (statement.getCount() < 3) {
 			return null;
 		}
-		if( !(arg instanceof SimpleReference ) ) {
+		if (!(arg instanceof SimpleReference)) {
 			return null;
 		}
-		String argumentValue = ((SimpleReference)arg).getName();
+		String argumentValue = ((SimpleReference) arg).getName();
 		if (commandNameValue.length() >= 3) {
 			if (commandNameValue.startsWith("::")) {
 				commandNameValue = commandNameValue.substring(2);
 			}
 			boolean isUpper = Character.isUpperCase(commandNameValue.charAt(0));
 			if (commandNameValue.indexOf("::") > 0 || isUpper) {
-				if( argumentValue.equals("create") ) {
-					XOTclGlobalClassParameter param = new XOTclGlobalClassParameter(commandNameValue);
+				if (argumentValue.equals("create")) {
+					XOTclGlobalClassParameter param = new XOTclGlobalClassParameter(
+							commandNameValue);
 					return new CommandInfo("#Class#$newInstance", param);
 				}
 			}
@@ -136,8 +145,11 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 		return null;
 	}
 
-	private CommandInfo check(TypeDeclaration type, Expression arg) {
-		String value = ((SimpleReference) arg).getName();
+	private CommandInfo check(TypeDeclaration type, SimpleReference arg) {
+		if ((type.getModifiers() & IXOTclModifiers.AccXOTcl) == 0) {
+			return null;
+		}
+		String value = arg.getName();
 		if (!value.equals("create")) {
 			CommandInfo info = checkCommands(value, type);
 			if (info != null) {
@@ -180,16 +192,17 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 		Expression arg = statement.getAt(1);
 		if (arg instanceof SimpleReference) {
 			String value = ((SimpleReference) arg).getName();
-
-			TypeDeclaration type = TclParseUtil.findXOTclTypeDeclarationFrom(
-					module, parent, "Class");
-//			if (type != null) {
+			if (!runtimeModel) {
+				TypeDeclaration type = TclParseUtil
+						.findXOTclTypeDeclarationFrom(module, parent, "Class");
+				// if (type != null) {
 				for (int i = 0; i < XOTclKeywords.XOTclCommandClassArgs.length; i++) {
 					if (value.equals(XOTclKeywords.XOTclCommandClassArgs[i])) {
 						return new CommandInfo("#Class#" + value, type);
 					}
 				}
-//			}
+				// }
+			}
 			CommandInfo info = checkCreateType(statement, parent, arg, value);
 			if (info != null) {
 				return info;
@@ -212,13 +225,13 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 			String value = ((SimpleReference) arg).getName();
 			TypeDeclaration type = TclParseUtil.findXOTclTypeDeclarationFrom(
 					module, parent, "Object");
-//			if (type != null) {
-				for (int i = 0; i < XOTclKeywords.XOTclCommandObjectArgs.length; i++) {
-					if (value.equals(XOTclKeywords.XOTclCommandObjectArgs[i])) {
-						return new CommandInfo("#Object#" + value, type);
-					}
+			// if (type != null) {
+			for (int i = 0; i < XOTclKeywords.XOTclCommandObjectArgs.length; i++) {
+				if (value.equals(XOTclKeywords.XOTclCommandObjectArgs[i])) {
+					return new CommandInfo("#Object#" + value, type);
 				}
-//			}
+			}
+			// }
 			CommandInfo info = checkCreateType(statement, parent, arg, value);
 			if (info != null) {
 				return info;
@@ -254,5 +267,9 @@ public class XOTclCommandDetector implements ITclCommandDetector {
 				arg.sourceEnd(), arg.sourceStart(), arg.sourceEnd());
 		TclParseUtil.addToDeclaration(parent, decl);
 		return decl;
+	}
+
+	public void setBuildRuntimeModelFlag(boolean value) {
+		this.runtimeModel = value;
 	}
 }

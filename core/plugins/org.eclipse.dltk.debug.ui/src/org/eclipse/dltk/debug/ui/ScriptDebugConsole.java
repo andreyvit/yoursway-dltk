@@ -14,6 +14,8 @@ public class ScriptDebugConsole extends IOConsole {
 	}
 	public ScriptDebugConsole(String name, ImageDescriptor imageDescriptor) {
 		super(name, imageDescriptor);
+		
+		this.addPatternMatchListener(new ScriptDebugConsoleTraceTracker());
 	}
 	public void matcherFinished() {
 		super.matcherFinished();

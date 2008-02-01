@@ -10,8 +10,12 @@
 package org.eclipse.dltk.internal.ui.wizards.buildpath;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathAttribute;
+import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.IScriptProject;
+import org.eclipse.dltk.internal.ui.wizards.BuildpathAttributeConfiguration.BuildpathAttributeAccess;
 
 
 
@@ -22,7 +26,11 @@ public class BPListElementAttribute {
 	private BPListElement fParent;
 	private String fKey;
 	private Object fValue;
+	
+	private IStatus fStatus;
 	private final boolean fBuiltIn;
+	
+	private BuildpathAttributeAccess fCachedAccess;
 	
 	public BPListElementAttribute(BPListElement parent, String key, Object value, boolean builtIn) {
 		fKey= key;
@@ -88,5 +96,25 @@ public class BPListElementAttribute {
             return false;
         BPListElementAttribute attrib= (BPListElementAttribute)obj;
         return attrib.fKey== this.fKey && attrib.getParent().getPath().equals(fParent.getPath());
+    }
+    public IBuildpathAttribute getBuildpathAttribute() {
+		Assert.isTrue(!fBuiltIn);
+		return DLTKCore.newBuildpathAttribute(fKey, (String) fValue);
+	}
+    public BuildpathAttributeAccess getBuildpathAttributeAccess() {
+    	if (fCachedAccess == null) {
+	    	fCachedAccess= new BuildpathAttributeAccess() {
+	    		public IBuildpathAttribute getBuildpathAttribute() {
+	 				return BPListElementAttribute.this.getBuildpathAttribute();
+				}
+				public IScriptProject getScriptProject() {
+					return getParent().getScriptProject();
+				}
+				public IBuildpathEntry getParentBuildpathEntry() {
+					return getParent().getBuildpathEntry();
+				}
+	    	};
+    	}
+    	return fCachedAccess;
     }
 }

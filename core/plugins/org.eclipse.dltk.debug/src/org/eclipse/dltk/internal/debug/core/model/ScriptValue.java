@@ -9,10 +9,13 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.core.model;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.dltk.dbgp.IDbgpProperty;
+import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.ScriptDebugManager;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationCommand;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
@@ -30,15 +33,17 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 	final protected IVariable[] variables;
 	private IScriptStackFrame frame;
 
-	public static IScriptValue createValue(IScriptStackFrame frame, IDbgpProperty property) {
+	public static IScriptValue createValue(IScriptStackFrame frame,
+			IDbgpProperty property) {
 		IScriptType type = createType(frame.getDebugTarget(), property);
-		if (type.isCollection()) {			
+		if (type.isCollection()) {
 			return new ScriptArrayValue(frame, property, type);
 		}
 		return new ScriptValue(frame, property, type);
 	}
-	
-	ScriptValue(IScriptStackFrame frame, IDbgpProperty property, IScriptType type) {
+
+	ScriptValue(IScriptStackFrame frame, IDbgpProperty property,
+			IScriptType type) {
 		this.frame = frame;
 		this.property = property;
 		this.type = type;
@@ -55,11 +60,12 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 
 		return variables;
 	}
-	
-	private static IScriptType createType(IDebugTarget target, IDbgpProperty property) {
+
+	private static IScriptType createType(IDebugTarget target,
+			IDbgpProperty property) {
 		IScriptType type = null;
 		final String rawType = property.getType();
-		
+
 		final IScriptTypeFactory factory = ScriptDebugManager.getInstance()
 				.getTypeFactoryByDebugModel(target.getModelIdentifier());
 		if (factory != null) {
@@ -121,15 +127,35 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 		return type;
 	}
 
-	public IScriptEvaluationCommand createEvaluationCommand(String messageTemplate,
-			IScriptThread thread) {
+	public IScriptEvaluationCommand createEvaluationCommand(
+			String messageTemplate, IScriptThread thread) {
 		IScriptEvaluationEngine engine = thread.getEvaluationEngine();
 
-		final String snippet = messageTemplate.replaceAll("(%variable%)", getEvalName());
-
-		return new ScriptEvaluationCommand(engine, snippet, frame);
+		String pattern = "(%variable%)";
+		String evalName = getEvalName();
+		if (messageTemplate.indexOf(pattern) != -1) {
+			String snippet = replacePattern(messageTemplate, pattern, evalName);
+			return new ScriptEvaluationCommand(engine, snippet, frame);
+		} else {
+			DLTKDebugPlugin.log(new Status(IStatus.WARNING,
+					DLTKDebugPlugin.PLUGIN_ID,
+					"Detail formatter requird to contain " + pattern
+							+ " identifier."));
+			return new ScriptEvaluationCommand(engine, evalName, frame);
+		}
 	}
-	
+
+	private String replacePattern(String messageTemplate, String pattern,
+			String evalName) {
+		String result = messageTemplate;
+		while (result.indexOf(pattern) != -1) {
+			int pos = result.indexOf(pattern);
+			result = result.substring(0, pos) + evalName
+					+ result.substring(pos + pattern.length(), result.length());
+		}
+		return result;
+	}
+
 	public String getEvalName() {
 		return property.getEvalName();
 	}

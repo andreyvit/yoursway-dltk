@@ -12,10 +12,10 @@ package org.eclipse.dltk.ui.text.completion;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.net.URL;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
@@ -95,24 +95,6 @@ public class HTMLPrinter {
 		return null;
 	}
 
-	public static void insertPageProlog(StringBuffer buffer, int position, RGB bgRGB, URL styleSheetURL) {
-
-		if (bgRGB == null)
-			insertPageProlog(buffer, position, styleSheetURL);
-		else {
-			StringBuffer pageProlog= new StringBuffer(300);
-
-			pageProlog.append("<html>"); //$NON-NLS-1$
-
-			appendStyleSheetURL(pageProlog, styleSheetURL);
-
-			pageProlog.append("<body text=\"#000000\" bgcolor=\""); //$NON-NLS-1$
-			appendColor(pageProlog, bgRGB);
-			pageProlog.append("\">"); //$NON-NLS-1$
-
-			buffer.insert(position,  pageProlog.toString());
-		}
-	}
 	public static void insertPageProlog(StringBuffer buffer, int position, RGB bgRGB, String styleSheet) {
 		
 		if (bgRGB == null)
@@ -122,7 +104,7 @@ public class HTMLPrinter {
 			
 			pageProlog.append("<html>"); //$NON-NLS-1$
 			
-			appendStyleSheetURL(pageProlog, styleSheet);
+			appendStyleSheet(pageProlog, styleSheet);
 			
 			pageProlog.append("<body text=\"#000000\" bgcolor=\""); //$NON-NLS-1$
 			appendColor(pageProlog, bgRGB);
@@ -163,7 +145,7 @@ public class HTMLPrinter {
 		}
 	}
 
-	private static void appendStyleSheetURL(StringBuffer buffer, String styleSheet) {
+	private static void appendStyleSheet(StringBuffer buffer, String styleSheet) {
 		if (styleSheet == null)
 			return;
 		
@@ -172,19 +154,6 @@ public class HTMLPrinter {
 		buffer.append("</style></head>"); //$NON-NLS-1$
 	}
 	
-	private static void appendStyleSheetURL(StringBuffer buffer, URL styleSheetURL) {
-		if (styleSheetURL == null)
-			return;
-
-		buffer.append("<head>"); //$NON-NLS-1$
-
-		buffer.append("<LINK REL=\"stylesheet\" HREF= \""); //$NON-NLS-1$
-		buffer.append(styleSheetURL);
-		buffer.append("\" CHARSET=\"ISO-8859-1\" TYPE=\"text/css\">"); //$NON-NLS-1$
-
-		buffer.append("</head>"); //$NON-NLS-1$
-	}
-
 	private static void appendColor(StringBuffer buffer, RGB rgb) {
 		buffer.append('#');
 		buffer.append(Integer.toHexString(rgb.red));
@@ -194,10 +163,6 @@ public class HTMLPrinter {
 
 	public static void insertPageProlog(StringBuffer buffer, int position) {
 		insertPageProlog(buffer, position, getBgColor()); 
-	}
-
-	public static void insertPageProlog(StringBuffer buffer, int position, URL styleSheetURL) {
-		insertPageProlog(buffer, position, getBgColor(), styleSheetURL); 
 	}
 	
 	public static void insertPageProlog(StringBuffer buffer, int position, String styleSheet) {
@@ -253,5 +218,40 @@ public class HTMLPrinter {
 	public static void addParagraph(StringBuffer buffer, Reader paragraphReader) {
 		if (paragraphReader != null)
 			addParagraph(buffer, read(paragraphReader));
+	}
+
+	/**
+	 * Replaces the following style attributes of the font definition of the <code>html</code>
+	 * element:
+	 * <ul>
+	 * <li>font-size</li>
+	 * <li>font-weight</li>
+	 * <li>font-style</li>
+	 * <li>font-family</li>
+	 * </ul>
+	 * The font's name is used as font family, a <code>sans-serif</code> default font family is
+	 * appended for the case that the given font name is not available.
+	 * <p>
+	 * If the listed font attributes are not contained in the passed style list, nothing happens.
+	 * </p>
+	 * 
+	 * @param styles CSS style definitions
+	 * @param fontData the font information to use
+	 * @return the modified style definitions
+	 * @since 3.3
+	 */
+	public static String convertTopLevelFont(String styles, FontData fontData) {
+		boolean bold= (fontData.getStyle() & SWT.BOLD) != 0;
+		boolean italic= (fontData.getStyle() & SWT.ITALIC) != 0;
+		
+		// See: https://bugs.eclipse.org/bugs/show_bug.cgi?id=155993
+		String size= Integer.toString(fontData.getHeight()) + ("carbon".equals(SWT.getPlatform()) ? "px" : "pt"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		
+		String family= "'" + fontData.getName() + "',sans-serif"; //$NON-NLS-1$ //$NON-NLS-2$
+		styles= styles.replaceFirst("(html\\s*\\{.*(?:\\s|;)font-size:\\s*)\\d+pt(\\;?.*\\})", "$1" + size + "$2"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		styles= styles.replaceFirst("(html\\s*\\{.*(?:\\s|;)font-weight:\\s*)\\w+(\\;?.*\\})", "$1" + (bold ? "bold" : "normal") + "$2"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		styles= styles.replaceFirst("(html\\s*\\{.*(?:\\s|;)font-style:\\s*)\\w+(\\;?.*\\})", "$1" + (italic ? "italic" : "normal") + "$2"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		styles= styles.replaceFirst("(html\\s*\\{.*(?:\\s|;)font-family:\\s*).+?(;.*\\})", "$1" + family + "$2"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return styles;
 	}
 }

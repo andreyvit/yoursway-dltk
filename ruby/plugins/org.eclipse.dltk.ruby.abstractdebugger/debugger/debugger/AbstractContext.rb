@@ -9,14 +9,28 @@ module XoredDebugger
         STOPPED = 'stopped'   # IDE is detached from process, no further interaction is possible.
         RUNNING = 'running'   # code is currently executing
         BREAK = 'break'       # code execution is paused, for whatever reason
+                
+        def status()
+            if dead?
+                return STOPPED
+            elsif suspended?
+                return BREAK
+            else
+                return RUNNING
+            end
+        end
+                       
+        def dead?
+	    	raise NotImplementedError.new('You MUST implement this method in ancessors')             
+        end
+
+        def suspended?
+	    	raise NotImplementedError.new('You MUST implement this method in ancessors')             
+        end
         
         def thread
 	    	raise NotImplementedError.new('You MUST implement this method in ancessors')             
-        end
-        	    	   	    
-	    def status
-	    	raise NotImplementedError.new('You MUST implement this method in ancessors') 
-	    end
+        end        	    	   	   
         
         def stack_manager
 	    	raise NotImplementedError.new('You MUST implement this method in ancessors')             

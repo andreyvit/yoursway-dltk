@@ -60,17 +60,9 @@ module XoredDebugger
     protected    
 	    PACKET_WITH_DATA_TEMPLATE = '<%s%s>%s</%s>'
 	    PACKET_WITHOUT_DATA_TEMPLATE = '<%s%s/>'
-
-        def transaction_id_only_xml
-            if (@transation_id.nil?)
-                ''
-            else
-                sprintf(' transaction_id="%s"', @transation_id)
-            end
-        end
         
         def attributes_xml
-            result = transaction_id_only_xml
+            result = ''
             @attributes.each { |name, value| result += sprintf(' %s="%s"', name, CGI::escapeHTML(value)) }
             result
         end

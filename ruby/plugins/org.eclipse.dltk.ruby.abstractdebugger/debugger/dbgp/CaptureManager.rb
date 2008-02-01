@@ -8,57 +8,72 @@
 
 ###############################################################################
 
-require 'monitor'
+require 'stringio'
 require 'common/Logger'
 require 'dbgp/StreamPacket'
 
-module XoredDebugger           
-    class Capturer
-        DISABLE = 0
-        COPY = 1
-        REDIRECT = 2
-                
+module XoredDebugger
+    class StdoutCapturer                     
         attr_accessor :state
         
-        def initialize(stream, state)
-            @stream = stream 
-            @redirected = Hash.new
-            @state = state
-            @monitor = Monitor.new
+        def initialize(&redirector)
+            @redirector = redirector
+            @state = CaptureManager::COPY
+            @capture = StringIO.new
+            $stdout = @capture           
         end
-
-        def write(s)
-            # this is unsafe place which called directly from 
-            # script code
-            if (@state != REDIRECT)
-                @stream.write(s)
-            end
-            @monitor.synchronize do
-	            if (@state != DISABLE)                                  	
-		            if @redirected[Thread.current].nil?
-		                @redirected[Thread.current] = s
-		            else
-		                @redirected[Thread.current] += s
-		            end
-	            end
-            end
+            
+        def flush_captured
+            temp_capturer = StringIO.new
+            $stdout = temp_capturer
+            @capture.rewind
+            captured = @capture.read            
+            @capture = temp_capturer       
+            
+            unless captured.empty?
+                STDOUT.write(captured) if @state != CaptureManager::REDIRECT 
+                @redirector.call(captured) if @state != CaptureManager::DISABLE
+            end            
         end
         
-        def redirected
-            @monitor.synchronize do
-                result = @redirected
-                @redirected = Hash.new
-                result
-            end
-        end 
-        
-        def method_missing(method, *args, &block)
-          @stream.send(method, *args, &block)
-        end               
-    end # class Capturer
+        def terminate
+            $stdout = STDOUT
+        end   
+    end # class StdoutCapturer    
 
-	
+    
+    class StderrCapturer                     
+        attr_accessor :state
+        
+        def initialize(&redirector)
+            @redirector = redirector
+            @state = CaptureManager::COPY
+            @capture = StringIO.new
+            $stderr = @capture           
+        end
+            
+        def flush_captured
+            temp_capturer = StringIO.new
+            $stderr = temp_capturer
+            @capture.rewind
+            captured = @capture.read            
+            @capture = temp_capturer       
+            
+            unless captured.empty?
+                STDERR.write(captured) if @state != CaptureManager::REDIRECT 
+                @redirector.call(captured) if @state != CaptureManager::DISABLE
+            end            
+        end
+        
+        def terminate
+            $stderr = STDOUT
+        end   
+    end # class StderrCapturer    
+
 	class CaptureManager
+        DISABLE = 0
+        COPY = 1
+        REDIRECT = 2	    
 	    include Logger
         
         attr_reader :stdout_capturer
@@ -66,56 +81,53 @@ module XoredDebugger
         
 	    def initialize(thread_manager)
 	        @thread_manager = thread_manager	        
-	        @stdout_capturer = Capturer.new($stdout, Capturer::COPY)             
-			@stderr_capturer = Capturer.new($stderr, Capturer::COPY)
-            $stdout = @stdout_capturer
-            $stderr = @stderr_capturer
-            
+	        @stdout_capturer = StdoutCapturer.new {
+	            |message|
+                # send through main thread's connection 
+                dbgp_thread = @thread_manager.get_dbgp_thread(Thread.main)
+                if (!dbgp_thread.nil?)
+                    dbgp_thread.communicator.sendPacket(StreamPacket.new('stdout', message))
+                else
+                    puts("Could not redirect message, cause communication links broken. Message:\n" + message)
+                end                
+	        }
+                         
+			@stderr_capturer = StderrCapturer.new {
+	            |message|
+                # send through main thread's connection 
+                dbgp_thread = @thread_manager.get_dbgp_thread(Thread.main)
+                if (!dbgp_thread.nil?)
+                    dbgp_thread.communicator.sendPacket(StreamPacket.new('stderr', message))
+                else
+                    puts("Could not redirect message, cause communication links broken. Message:\n" + message)
+                end                
+	        }
+                        
             @terminating = false
             debugger = thread_manager.debugger
             @flusher = debugger.create_debug_thread do
-                flush_redirected
+                flusher_loop
             end
 		end
 
-        def flush_redirected
+        def flusher_loop 
             begin
                 log('Capture flusher started')
                 while (@terminating == false)
-                    sleep 1
-                    @stdout_capturer.redirected.each_pair do |thread, message|
-                        send(thread, 'stdout', message) 
-                    end
-                    @stderr_capturer.redirected.each_pair do |thread, message| 
-                        send(thread, 'stderr', message) 
-                    end                                        
+                    sleep 0.5
+                    @stdout_capturer.flush_captured
+                    @stderr_capturer.flush_captured                    
                 end
                 log('Capture flusher terminated')
             rescue Exception
                 puts $!.message
                 logException($!, 'in capture flusher')      
-            end            
-        end
-        
-        def send(thread, stream, message)
-            log('REDIRECT ' + stream + ': ' + message)
-            dbgp_thread = @thread_manager.get_dbgp_thread(thread)
-            if (!dbgp_thread.nil?)
-                dbgp_thread.communicator.sendPacket(StreamPacket.new(stream, message))
-            else
-                # send through main thread's connection 
-                dbgp_thread = @thread_manager.get_dbgp_thread(Thread.main)
-                if (!dbgp_thread.nil?)
-                    dbgp_thread.communicator.sendPacket(StreamPacket.new(stream, message))
-                else
-                    puts("Could not redirect message, cause communication links broken. Message:\n" + message)
-                end
-            end                                
-        end
+            end                        
+        end       
         
         def terminate()
-            $stdout = STDOUT
-            $stderr = STDERR
+            @stdout_capturer.terminate
+            @stderr_capturer.terminate
             @terminating = true
             @flusher.wakeup()
             @flusher.join

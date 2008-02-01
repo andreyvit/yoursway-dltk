@@ -14,10 +14,12 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuffer;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.IProblemRequestor;
@@ -403,7 +405,11 @@ public class SourceModule extends AbstractSourceModule implements ISourceModule 
 		IResource resource = this.getResource();
 		Object lookup = (resource == null) ? (Object) getPath() : resource;
 
-		return lookupLanguageToolkit(lookup).getNatureId();
+		IDLTKLanguageToolkit lookupLanguageToolkit = lookupLanguageToolkit(lookup);
+		if( lookupLanguageToolkit == null ) {
+			return null;
+		}
+		return lookupLanguageToolkit.getNatureId();
 	}
 
 	/*
@@ -422,8 +428,11 @@ public class SourceModule extends AbstractSourceModule implements ISourceModule 
 	 */
 	protected char[] getBufferContent() throws ModelException {
 		IFile file = (IFile) this.getResource();
-		if (file == null || !file.exists())
-			throw newNotPresentException();
+		if (file == null || !file.exists()) {
+			// throw newNotPresentException();
+			// initialize buffer with empty contents
+			return CharOperation.NO_CHAR;
+		}
 
 		return Util.getResourceContentsAsCharArray(file);
 	}

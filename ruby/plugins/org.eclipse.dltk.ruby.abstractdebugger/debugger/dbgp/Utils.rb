@@ -33,10 +33,11 @@ module XoredDebuggerUtils
         main_label = (thread == Thread.main ? ' (main)' : '' )
         label = sprintf("Thread%s id=%d", main_label, thread.object_id)
         
-        priority = thread.priority
-        unless (priority.nil?) 
-            label = sprintf("%s, priority=%d", label, priority)
-        end
+# Can cause null pointer on JRuby
+#        priority = thread.priority
+#        if priority 
+#            label = sprintf("%s, priority=%d", label, priority)
+#        end
         label
     end     
     

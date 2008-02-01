@@ -28,7 +28,7 @@ import org.eclipse.core.runtime.Platform;
  */
 public class PriorityDLTKExtensionManager {
 	public final static String PRIORITY_ATTR = "priority";
-	
+
 	private Map extensions;
 
 	private String extensionPoint = null;
@@ -117,24 +117,27 @@ public class PriorityDLTKExtensionManager {
 
 	protected ElementInfo internalGetElementInfo(String id) {
 		initialize();
-		if( prefferedExtensionCache.containsKey(id)) {
+		if (prefferedExtensionCache.containsKey(id)) {
 			return (ElementInfo) prefferedExtensionCache.get(id);
 		}
 		ElementInfo info = (ElementInfo) extensions.get(id);
 		Object level = prefferedLevels.get(id);
-		if( level != null) {
+		if (level != null) {
 			// Search for preffered id.
-			int prefferedLevel = ((Integer)level).intValue();
-			while( info != null ) {
-				if( info.level == prefferedLevel) {
+			int prefferedLevel = ((Integer) level).intValue();
+			while (info != null) {
+				if (info.level == prefferedLevel) {
 					return info;
 				}
 				info = info.oldInfo;
 			}
 		}
-		prefferedExtensionCache.put(id, info);
+		if (info != null) {
+			prefferedExtensionCache.put(id, info);
+		}
 		return info;
 	}
+
 	protected ElementInfo getElementInfo(String id) {
 		return internalGetElementInfo(id);
 	}
@@ -154,8 +157,9 @@ public class PriorityDLTKExtensionManager {
 
 	public ElementInfo[] getElementInfos() {
 		initialize();
-//		Collection values = extensions.values();
-//		return (ElementInfo[]) values.toArray(new ElementInfo[values.size()]);
+		// Collection values = extensions.values();
+		// return (ElementInfo[]) values.toArray(new
+		// ElementInfo[values.size()]);
 		ElementInfo[] values = new ElementInfo[this.extensions.size()];
 		Iterator j = this.extensions.keySet().iterator();
 		for (int i = 0; i < values.length; i++) {
@@ -191,14 +195,14 @@ public class PriorityDLTKExtensionManager {
 
 		return null;
 	}
+
 	public void setPreffetedLevel(String id, int level) {
-		if( level != -1 ) {
+		if (level != -1) {
 			this.prefferedExtensionCache.clear();
-			this.prefferedLevels.put( id, new Integer(level));
-		}
-		else {
+			this.prefferedLevels.put(id, new Integer(level));
+		} else {
 			this.prefferedExtensionCache.clear();
-			this.prefferedLevels.put( id, null);
+			this.prefferedLevels.put(id, null);
 		}
 	}
 }

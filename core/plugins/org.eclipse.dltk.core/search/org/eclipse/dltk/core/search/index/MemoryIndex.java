@@ -17,7 +17,7 @@ import org.eclipse.dltk.internal.core.util.SimpleWordSet;
 
 public class MemoryIndex {
 
-	public int NUM_CHANGES = 100; // number of separate document changes...
+	public int NUM_CHANGES = 500; // number of separate document changes...
 									// used to decide when to merge
 
 	SimpleLookupTable docsToReferences; // document paths ->

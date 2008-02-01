@@ -32,6 +32,9 @@ public class ClassInstanceType implements IClassType {
 		}
 		return false;
 	}
+	public int hashCode() {
+		return this.fClass.hashCode() *10 + this.fModule.hashCode();
+	}
 
 	public TypeDeclaration getTypeDeclaration() {
 		return this.fClass;

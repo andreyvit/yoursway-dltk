@@ -14,9 +14,9 @@ import org.eclipse.dltk.compiler.env.lookup.Scope;
 
 public class CompletionNodeFound extends RuntimeException {
 	private static final long serialVersionUID = 8556836876798770199L;
-	public ASTNode astNode;
+	public transient ASTNode astNode;
 
-	public Scope scope;
+	public transient Scope scope;
 	public boolean insideTypeAnnotation = false;
 
 	// compatible

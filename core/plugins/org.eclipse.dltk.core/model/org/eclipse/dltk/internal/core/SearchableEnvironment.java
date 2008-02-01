@@ -58,7 +58,7 @@ public class SearchableEnvironment implements ISearchableEnvironment {
 					.createSearchScope(new IModelElement[] { project });
 		} else {
 			this.searchScope = BasicSearchEngine
-					.createSearchScope(this.nameLookup.ProjectFragments);
+					.createSearchScope(this.nameLookup.projectFragments);
 		}
 	}
 

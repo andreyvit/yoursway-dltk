@@ -66,9 +66,8 @@ public class JavascriptSourceViewerConfiguration extends
 				IJavaScriptPartitions.JS_STRING, IJavaScriptPartitions.JS_COMMENT};
 	}
 	
-	public String[] getDefaultPrefixes(ISourceViewer sourceViewer,
-			String contentType) {
-		return new String[] { "//", "" }; //$NON-NLS-1$ //$NON-NLS-2$
+	public String getCommentPrefix() {
+		return "//";
 	}
 
 	public String[] getIndentPrefixes(ISourceViewer sourceViewer,

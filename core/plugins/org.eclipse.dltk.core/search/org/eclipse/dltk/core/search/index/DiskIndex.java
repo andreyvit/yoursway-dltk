@@ -62,7 +62,7 @@ public class DiskIndex {
 
 	public static final String SIGNATURE = "DLTK INDEX VERSION 1.008"; //$NON-NLS-1$
 
-	public static boolean DEBUG = false;
+	public final static boolean DEBUG = false;
 
 	private static final int RE_INDEXED = -1;
 
@@ -70,7 +70,7 @@ public class DiskIndex {
 
 	private static final int CHUNK_SIZE = 100;
 
-	class IntList {
+	static class IntList {
 
 		int size;
 

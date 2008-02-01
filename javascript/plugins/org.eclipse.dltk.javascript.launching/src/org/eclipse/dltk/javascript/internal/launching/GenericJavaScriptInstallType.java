@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -17,6 +18,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.internal.launching.AbstractInterpreterInstallType;
 import org.eclipse.dltk.javascript.core.JavaScriptNature;
 import org.eclipse.dltk.javascript.launching.JavaScriptLaunchingPlugin;
+import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.LibraryLocation;
 import org.osgi.framework.Bundle;
@@ -35,33 +37,30 @@ public class GenericJavaScriptInstallType extends
 		return "Generic Rhino install";
 	}
 
-	public LibraryLocation[] getDefaultLibraryLocations(File installLocation) {
-		if (true) {
-			Bundle bundle = Platform.getBundle(EMBEDDED_RHINO_BUNDLE_ID);
+	public LibraryLocation[] getDefaultLibraryLocations(File installLocation,
+			EnvironmentVariable[] variables, IProgressMonitor monitor) {
+		Bundle bundle = Platform.getBundle(EMBEDDED_RHINO_BUNDLE_ID);
 
-			URL resolve;
+		URL resolve;
+		try {
+			resolve = FileLocator.toFileURL(bundle
+					.getResource("/org/mozilla/classfile/ByteCode.class"));
 			try {
-				resolve = FileLocator.toFileURL(bundle
-						.getResource("/org/mozilla/classfile/ByteCode.class"));
-				try {
 
-					File fl = new File(new URI(resolve.toString()))
-							.getParentFile().getParentFile().getParentFile()
-							.getParentFile();
-					return new LibraryLocation[] { new LibraryLocation(
-							new Path(fl.getAbsolutePath())) };
-				} catch (URISyntaxException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} catch (IOException e1) {
+				File fl = new File(new URI(resolve.toString())).getParentFile()
+						.getParentFile().getParentFile().getParentFile();
+				return new LibraryLocation[] { new LibraryLocation(new Path(fl
+						.getAbsolutePath())) };
+			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				e.printStackTrace();
 			}
-
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		// TODO Auto-generated method stub
-		return super.getDefaultLibraryLocations(installLocation);
+
+		return new LibraryLocation[0];
 	}
 
 	private static String[] possibleExes = { "js" };
@@ -90,9 +89,8 @@ public class GenericJavaScriptInstallType extends
 	}
 
 	protected File createPathFile() throws IOException {
-		// XXX: this is WRONG!!!
-		return storeToMetadata(JavaScriptLaunchingPlugin.getDefault(),
-				"path.tcl", "scripts/path.tcl");
+		// this method should not be used
+		throw new RuntimeException("This method should not be used");
 	}
 
 	protected String[] parsePaths(String result) {

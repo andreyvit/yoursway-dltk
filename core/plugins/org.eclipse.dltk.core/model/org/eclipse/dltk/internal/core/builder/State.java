@@ -72,7 +72,7 @@ public class State {
 		this.buildNumber = lastState.buildNumber + 1;
 		this.lastStructuralBuildTime = lastState.lastStructuralBuildTime;
 		this.structuralBuildTimes = lastState.structuralBuildTimes;
-
+		
 		this.externalFolderLocations.addAll(lastState.externalFolderLocations);
 	}
 

@@ -9,59 +9,24 @@
  *******************************************************************************/
 package org.eclipse.dltk.python.internal.core.parser;
 
-import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.compiler.ISourceElementRequestor;
-import org.eclipse.dltk.compiler.problem.IProblemReporter;
-import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.ISourceElementParser;
-import org.eclipse.dltk.core.SourceParserUtil;
-import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
+import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
+import org.eclipse.dltk.core.AbstractSourceElementParser;
 import org.eclipse.dltk.python.core.PythonNature;
 import org.eclipse.dltk.python.internal.core.parser.visitors.PythonSourceElementRequestor;
 
-public class PythonSourceElementParser implements ISourceElementParser {
+public class PythonSourceElementParser extends AbstractSourceElementParser {
 
-	private ISourceElementRequestor fRequestor = null;
-	private IProblemReporter fReporter = null;
-
-	/**
-	 * Python lexer handler helper.
-	 * 
-	 * @param enveronment
+	/*
+	 * @see org.eclipse.dltk.core.AbstractSourceElementParser#createVisitor()
 	 */
-
-	public PythonSourceElementParser( /*
-										 * ISourceElementRequestor requestor,
-										 * IProblemReporter problemReporter
-										 */) {
-		// this.fRequestor = requestor;
-		// this.fReporter = problemReporter;
+	protected SourceElementRequestVisitor createVisitor() {
+		return new PythonSourceElementRequestor(getRequestor());
 	}
 
-	public void parseSourceModule(char[] contents,
-			ISourceModuleInfo astCache, char[] filename) {
-
-		ModuleDeclaration moduleDeclaration = SourceParserUtil
-				.getModuleDeclaration(filename, contents,
-						PythonNature.NATURE_ID, this.fReporter, astCache);
-
-		PythonSourceElementRequestor requestor = new PythonSourceElementRequestor(
-				this.fRequestor);
-
-		try {
-			moduleDeclaration.traverse(requestor);
-		} catch (Exception e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public void setRequestor(ISourceElementRequestor requestor) {
-		this.fRequestor = requestor;
-	}
-
-	public void setReporter(IProblemReporter reporter) {
-		this.fReporter = reporter;
+	/*
+	 * @see org.eclipse.dltk.core.AbstractSourceElementParser#getNatureId()
+	 */
+	protected String getNatureId() {
+		return PythonNature.NATURE_ID;
 	}
 }

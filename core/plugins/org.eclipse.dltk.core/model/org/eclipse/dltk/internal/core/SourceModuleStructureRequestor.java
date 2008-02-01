@@ -164,7 +164,7 @@ public class SourceModuleStructureRequestor implements ISourceElementRequestor {
 	}
 
 	private void processMethod(MethodInfo methodInfo, ModelElementInfo parentInfo, ModelElement parentHandle) {
-		String nameString= new String(methodInfo.name);
+		String nameString= methodInfo.name;
 		ModelManager manager = ModelManager.getModelManager();
 		SourceMethod handle = new SourceMethod(parentHandle, manager.intern(nameString));
 		this.resolveDuplicates(handle);
@@ -337,7 +337,7 @@ public class SourceModuleStructureRequestor implements ISourceElementRequestor {
 	}
 
 	private void processType(TypeInfo typeInfo, ModelElementInfo parentInfo, ModelElement parentHandle) {
-		String nameString= new String(typeInfo.name);
+		String nameString= typeInfo.name;
 		SourceType handle = new SourceType(parentHandle, nameString); //NB: occurenceCount is computed in resolveDuplicates
 		this.resolveDuplicates(handle);
 

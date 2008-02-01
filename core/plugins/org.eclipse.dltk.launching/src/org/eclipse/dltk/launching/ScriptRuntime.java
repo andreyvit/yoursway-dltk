@@ -325,8 +325,8 @@ public final class ScriptRuntime {
 	 * @throws CoreException
 	 *             if unable to determine the project's interpreter install
 	 */
-	public static IInterpreterInstall getInterpreterInstall(IScriptProject project)
-			throws CoreException {
+	public static IInterpreterInstall getInterpreterInstall(
+			IScriptProject project) throws CoreException {
 		// check the buildpath
 		IInterpreterInstall interpreter = null;
 
@@ -439,7 +439,8 @@ public final class ScriptRuntime {
 	 * 
 	 * @return Returns the default Interpreter.
 	 */
-	public static IInterpreterInstall getDefaultInterpreterInstall(String natureId) {
+	public static IInterpreterInstall getDefaultInterpreterInstall(
+			String natureId) {
 		IInterpreterInstall install = getInterpreterFromCompositeId(getDefaultInterpreterId(natureId));
 		if (install != null && install.getInstallLocation().exists()) {
 			return install;
@@ -566,8 +567,8 @@ public final class ScriptRuntime {
 	 *                if the referenced Script project does not exist
 	 * 
 	 */
-	public static IScriptProject getScriptProject(ILaunchConfiguration configuration)
-			throws CoreException {
+	public static IScriptProject getScriptProject(
+			ILaunchConfiguration configuration) throws CoreException {
 		String projectName = configuration.getAttribute(
 				ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
 				(String) null);
@@ -626,7 +627,8 @@ public final class ScriptRuntime {
 			ILaunchConfiguration configuration) throws CoreException {
 		// get field ATTR_NATURE from launch configuration
 		String nature = configuration.getAttribute(
-				ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE, (String) null);
+				ScriptLaunchConfigurationConstants.ATTR_SCRIPT_NATURE,
+				(String) null);
 		String containerPath = configuration.getAttribute(
 				ScriptLaunchConfigurationConstants.ATTR_CONTAINER_PATH,
 				(String) null);
@@ -700,8 +702,8 @@ public final class ScriptRuntime {
 	 */
 	private static void abort(String message, int code, Throwable exception)
 			throws CoreException {
-		throw new CoreException(new Status(IStatus.ERROR, DLTKLaunchingPlugin
-				.PLUGIN_ID, code, message, exception));
+		throw new CoreException(new Status(IStatus.ERROR,
+				DLTKLaunchingPlugin.PLUGIN_ID, code, message, exception));
 	}
 
 	/**
@@ -853,6 +855,10 @@ public final class ScriptRuntime {
 	 */
 	public static LibraryLocation[] getLibraryLocations(
 			IInterpreterInstall interperterInstall) {
+		return getLibraryLocations(interperterInstall, null);
+	}
+	public static LibraryLocation[] getLibraryLocations(
+			IInterpreterInstall interperterInstall, IProgressMonitor monitor) {
 
 		LibraryLocation[] locations = interperterInstall.getLibraryLocations();
 		if (locations != null) {
@@ -861,7 +867,8 @@ public final class ScriptRuntime {
 
 		LibraryLocation[] defaultLocations = interperterInstall
 				.getInterpreterInstallType().getDefaultLibraryLocations(
-						interperterInstall.getInstallLocation());
+						interperterInstall.getInstallLocation(),
+						interperterInstall.getEnvironmentVariables(), monitor);
 
 		List existingDefaultLocations = new ArrayList();
 		for (int i = 0; i < defaultLocations.length; ++i) {
@@ -2064,9 +2071,9 @@ public final class ScriptRuntime {
 				(String) null);
 		IRuntimeBuildpathProvider provider = null;
 		if (providerId == null) {
-			provider = 	fgDefaultSourcepathProvider;
+			provider = fgDefaultSourcepathProvider;
 		} else {
-			
+
 			provider = (IRuntimeBuildpathProvider) getBuildpathProviders().get(
 					providerId);
 			if (provider == null) {
@@ -2211,16 +2218,22 @@ public final class ScriptRuntime {
 			throws CoreException {
 		switch (entry.getType()) {
 		case IRuntimeBuildpathEntry.PROJECT:
-			// if the project has multiple output locations, they must be returned
+			// if the project has multiple output locations, they must be
+			// returned
 			IResource resource = entry.getResource();
 			if (resource instanceof IProject) {
-				IProject p = (IProject)resource;
+				IProject p = (IProject) resource;
 				IScriptProject project = DLTKCore.create(p);
 				if (project == null || !p.isOpen() || !project.exists()) {
 					return new IRuntimeBuildpathEntry[0];
 				}
 			} else {
-				abort(MessageFormat.format(LaunchingMessages.ScriptRuntime_Buildpath_references_non_existant_project___0__3, new String[]{entry.getPath().lastSegment()}), null);
+				abort(
+						MessageFormat
+								.format(
+										LaunchingMessages.ScriptRuntime_Buildpath_references_non_existant_project___0__3,
+										new String[] { entry.getPath()
+												.lastSegment() }), null);
 			}
 			break;
 		case IRuntimeBuildpathEntry.CONTAINER:
@@ -2405,7 +2418,8 @@ public final class ScriptRuntime {
 
 	public static IRuntimeBuildpathEntry[] computeUnresolvedSourceBuildpath(
 			ILaunchConfiguration configuration) throws CoreException {
-		return getScriptpathProvider(configuration).computeUnresolvedBuildpath(configuration);
+		return getScriptpathProvider(configuration).computeUnresolvedBuildpath(
+				configuration);
 	}
 
 }

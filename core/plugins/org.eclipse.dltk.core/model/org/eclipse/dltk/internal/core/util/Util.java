@@ -38,6 +38,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.dltk.compiler.CharOperation;
+import org.eclipse.dltk.core.DLTKContentTypeManager;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
@@ -97,7 +98,7 @@ public class Util {
 	 * Add a log entry
 	 */
 	public static void log(Throwable e, String message) {
-		if(e == null || message != null ) {
+		if (e == null || message != null) {
 			return;
 		}
 		Throwable nestedException;
@@ -213,36 +214,38 @@ public class Util {
 		}
 		return args.toString();
 	}
-	
-	public static String[] getProblemArgumentsFromMarker(String argumentsString){
-		if (argumentsString == null) return null;
-		int index = argumentsString.indexOf(':');
-		if(index == -1)
+
+	public static String[] getProblemArgumentsFromMarker(String argumentsString) {
+		if (argumentsString == null)
 			return null;
-		
+		int index = argumentsString.indexOf(':');
+		if (index == -1)
+			return null;
+
 		int length = argumentsString.length();
 		int numberOfArg;
-		try{
-			numberOfArg = Integer.parseInt(argumentsString.substring(0 , index));
+		try {
+			numberOfArg = Integer.parseInt(argumentsString.substring(0, index));
 		} catch (NumberFormatException e) {
 			return null;
 		}
 		argumentsString = argumentsString.substring(index + 1, length);
-		
+
 		String[] args = new String[length];
 		int count = 0;
-		
-		StringTokenizer tokenizer = new StringTokenizer(argumentsString, ARGUMENTS_DELIMITER);
-		while(tokenizer.hasMoreTokens()) {
+
+		StringTokenizer tokenizer = new StringTokenizer(argumentsString,
+				ARGUMENTS_DELIMITER);
+		while (tokenizer.hasMoreTokens()) {
 			String argument = tokenizer.nextToken();
-			if(argument.equals(EMPTY_ARGUMENT))
-				argument = "";  //$NON-NLS-1$
+			if (argument.equals(EMPTY_ARGUMENT))
+				argument = ""; //$NON-NLS-1$
 			args[count++] = argument;
 		}
-		
-		if(count != numberOfArg)
+
+		if (count != numberOfArg)
 			return null;
-		
+
 		System.arraycopy(args, 0, args = new String[count], 0, count);
 		return args;
 	}
@@ -414,15 +417,18 @@ public class Util {
 		}
 	}
 
-	public static char[] getResourceContentsAsCharArray(IFile file, String encoding) throws ModelException {		
+	public static char[] getResourceContentsAsCharArray(IFile file,
+			String encoding) throws ModelException {
 		// Get file length
-		// workaround https://bugs.eclipse.org/bugs/show_bug.cgi?id=130736 by using java.io.File if possible
+		// workaround https://bugs.eclipse.org/bugs/show_bug.cgi?id=130736 by
+		// using java.io.File if possible
 		IPath location = file.getLocation();
 		long length;
 		if (location == null) {
 			// non local file
 			try {
-				length = EFS.getStore(file.getLocationURI()).fetchInfo().getLength();
+				length = EFS.getStore(file.getLocationURI()).fetchInfo()
+						.getLength();
 			} catch (CoreException e) {
 				throw new ModelException(e);
 			}
@@ -430,16 +436,18 @@ public class Util {
 			// local file
 			length = location.toFile().length();
 		}
-		
+
 		// Get resource contents
-		InputStream stream= null;
+		InputStream stream = null;
 		try {
 			stream = file.getContents(true);
 		} catch (CoreException e) {
-			throw new ModelException(e, IModelStatusConstants.ELEMENT_DOES_NOT_EXIST);
+			throw new ModelException(e,
+					IModelStatusConstants.ELEMENT_DOES_NOT_EXIST);
 		}
 		try {
-			return org.eclipse.dltk.compiler.util.Util.getInputStreamAsCharArray(stream, (int) length, encoding);
+			return org.eclipse.dltk.compiler.util.Util
+					.getInputStreamAsCharArray(stream, (int) length, encoding);
 		} catch (IOException e) {
 			throw new ModelException(e, IModelStatusConstants.IO_EXCEPTION);
 		} finally {
@@ -565,11 +573,13 @@ public class Util {
 			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
 					.getLanguageToolkit(parent);
 			if (toolkit != null) {
-				return toolkit.validateSourceModule(resource).getSeverity() != IStatus.ERROR;
+				return DLTKContentTypeManager.isValidResourceForContentType(
+						toolkit, resource);
 			} else {
 				toolkit = DLTKLanguageManager.findToolkit(resource);
 				if (toolkit != null) {
-					return toolkit.validateSourceModule(resource).getSeverity() != IStatus.ERROR;
+					return DLTKContentTypeManager
+							.isValidResourceForContentType(toolkit, resource);
 				}
 				return false;
 			}
@@ -583,11 +593,11 @@ public class Util {
 			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
 					.getLanguageToolkit(parent);
 			if (toolkit != null) {
-				return toolkit.validateSourceModule(path).getSeverity() != IStatus.ERROR;
+				return DLTKContentTypeManager.isValidFileNameForContentType(toolkit, path);
 			} else {
 				toolkit = DLTKLanguageManager.findToolkit(path);
 				if (toolkit != null) {
-					return toolkit.validateSourceModule(path).getSeverity() != IStatus.ERROR;
+					return DLTKContentTypeManager.isValidFileNameForContentType(toolkit, path);
 				}
 				return false;
 			}
@@ -616,7 +626,7 @@ public class Util {
 			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
 					.getLanguageToolkit(parent);
 			if (toolkit != null) {
-				return toolkit.validateSourceModule(parent, name).getSeverity() != IStatus.ERROR;
+				return DLTKContentTypeManager.isValidFileNameForContentType(toolkit, name);
 			} else {
 				return false;
 			}
@@ -628,7 +638,7 @@ public class Util {
 	public static boolean isValidSourceModule(IResource res) {
 		IDLTKLanguageToolkit toolkit = DLTKLanguageManager.findToolkit(res);
 		if (toolkit != null) {
-			return toolkit.validateSourceModule(res).getSeverity() != IStatus.ERROR;
+			return DLTKContentTypeManager.isValidResourceForContentType(toolkit, res);
 		}
 		return false;
 	}
@@ -1322,7 +1332,6 @@ public class Util {
 		}
 		return utflen + 2; // the number of bytes written to the stream
 	}
-
 
 	/**
 	 * Scans the given string for an identifier starting at the given index and

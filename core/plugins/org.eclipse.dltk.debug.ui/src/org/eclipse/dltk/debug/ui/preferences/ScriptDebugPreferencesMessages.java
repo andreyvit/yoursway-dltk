@@ -48,27 +48,37 @@ public class ScriptDebugPreferencesMessages {
 	}
 
 	public static String GeneralPreferencesDescription;
-
-	public static String LinkToGeneralPreferences;
-
-	public static String LinkToDebuggingEnginePreferences;
-
+	
 	public static String DebuggingEngine;
-
 	public static String NameLabel;
-
 	public static String DescriptionLabel;
-
 	public static String PathLabel;
-
 	public static String BrowseEnginePath;
-
 	public static String ExternalEngineGroup;
 	
-	//
-	public static String BreakOnFirstLineLabel;
+	public static String ServerSettingsLabel;
+	public static String PortLabel;
+	public static String AutoSelectLabel;
+	public static String CustomLabel;
+	public static String ConnectionTimeoutLabel;
+	public static String ResponseTimeoutLabel;
 	
+	//
+	public static String EngineSettingsLabel;
+	public static String BreakOnFirstLineLabel;	
 	public static String EnableDbgpLoggingLabel;
 	
+	public static String VariableSettingsLabel;
+	public static String ShowLocalVarsLabel;
+	public static String ShowGlobalVarsLabel;
+	public static String ShowClassVarsLabel;
 	
+	public static String HCRLabel;
+	public static String HCRFailedLabel;
+	public static String HCRNotSupportedLabel;
+	
+	public static String LinkToGlobalDebugOptions;
+	public static String LinkToLanguageDebugOptions;
+	public static String LinkToDebuggingEnginePreferences;
+	public static String LinkToGeneralPreferences;
 }

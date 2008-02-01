@@ -35,11 +35,11 @@ import org.eclipse.dltk.internal.core.BuildpathAccessRule;
 import org.eclipse.dltk.internal.core.BuildpathAttribute;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.internal.core.DLTKCorePreferenceInitializer;
-import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.DefaultWorkingCopyOwner;
 import org.eclipse.dltk.internal.core.Model;
 import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.Region;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.util.MementoTokenizer;
 import org.eclipse.dltk.internal.core.util.Util;
 import org.osgi.framework.BundleContext;
@@ -76,6 +76,10 @@ public class DLTKCore extends Plugin {
 			Platform.getDebugOption("org.eclipse.dltk.core/debugScopes")).booleanValue();
 	public static final boolean DEBUG_SCRIPT_BUILDER = Boolean.valueOf(
 			Platform.getDebugOption("org.eclipse.dltk.core/debugScriptBuilder")).booleanValue();
+	
+	public static final boolean TRACE_SCRIPT_BUILDER = Boolean.valueOf(
+			Platform.getDebugOption("org.eclipse.dltk.core/traceScriptBuilder")).booleanValue();
+	
 	public static final boolean DEBUG_COMPLETION = Boolean.valueOf(
 			Platform.getDebugOption("org.eclipse.dltk.core/debugCompletion")).booleanValue();
 	public static final boolean DEBUG_SELECTION = Boolean.valueOf(
@@ -1533,6 +1537,9 @@ public class DLTKCore extends Plugin {
 
 	public static IRegion newRegion() {
 		return new Region();
+	}
+	public static String[] getUserLibraryNames(IDLTKLanguageToolkit toolkit) {
+		 return ModelManager.getUserLibraryManager().getUserLibraryNames(toolkit);
 	}
 	
 }

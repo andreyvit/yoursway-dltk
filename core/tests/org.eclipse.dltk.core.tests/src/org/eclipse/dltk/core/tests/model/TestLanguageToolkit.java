@@ -29,10 +29,10 @@ import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.ICallProcessor;
 import org.eclipse.dltk.core.ICalleeProcessor;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatus;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceElementParser;
 import org.eclipse.dltk.core.ISourceModule;
@@ -184,5 +184,9 @@ public class TestLanguageToolkit implements IDLTKLanguageToolkit {
 
 	public boolean isScriptLikeFileName(String name) {
 		return name.endsWith(".txt");
+	}
+
+	public String getLanguageContentType() {
+		return "org.eclipse.dltk.core.test.testContentType";
 	}
 }

@@ -14,6 +14,7 @@ import org.eclipse.debug.core.sourcelookup.ISourceContainerType;
 import org.eclipse.debug.core.sourcelookup.containers.CompositeSourceContainer;
 import org.eclipse.debug.core.sourcelookup.containers.FolderSourceContainer;
 import org.eclipse.debug.core.sourcelookup.containers.ProjectSourceContainer;
+import org.eclipse.dltk.core.DLTKContentTypeManager;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
@@ -155,7 +156,10 @@ public class ScriptProjectSourceContainer extends CompositeSourceContainer {
 	{
 		try {
 			IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(project);
-			return toolkit.isScriptLikeFileName(name);			
+			if( toolkit != null ) {
+				return false;
+			}
+			return DLTKContentTypeManager.isValidFileNameForContentType(toolkit, name);			
 		} catch (CoreException e) {
 			if (DLTKCore.DEBUG) {
 				e.printStackTrace();

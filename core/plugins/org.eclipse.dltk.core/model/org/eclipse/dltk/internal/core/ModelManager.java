@@ -98,6 +98,8 @@ public class ModelManager implements ISaveParticipant {
 	private final static int CONTAINERS_FILE_VERSION = 1;
 	public final static String BP_CONTAINER_PREFERENCES_PREFIX = DLTKCore.PLUGIN_ID
 			+ ".buildpathContainer."; //$NON-NLS-1$
+	public final static String BP_USERLIBRARY_PREFERENCES_PREFIX = DLTKCore.PLUGIN_ID
+			+ ".userLibrary."; //$NON-NLS-1$
 	public final static String BP_ENTRY_IGNORE = "##<cp entry ignore>##"; //$NON-NLS-1$
 	public final static IPath BP_ENTRY_IGNORE_PATH = new Path(BP_ENTRY_IGNORE);
 	/**
@@ -218,7 +220,8 @@ public class ModelManager implements ISaveParticipant {
 		}
 
 		public PerWorkingCopyInfo(ISourceModule workingCopy,
-				IProblemRequestor problemRequestor, IProblemReporter problemReporter) {
+				IProblemRequestor problemRequestor,
+				IProblemReporter problemReporter) {
 			this(workingCopy, problemRequestor);
 			this.problemReporter = problemReporter;
 		}
@@ -276,6 +279,9 @@ public class ModelManager implements ISaveParticipant {
 	 * value is a HashMap from IPath to java.io.ZipFile)
 	 */
 	private ThreadLocal zipFiles = new ThreadLocal();
+
+	private UserLibraryManager userLibraryManager;
+
 	public final static ISourceModule[] NO_WORKING_COPY = new ISourceModule[0];
 	/**
 	 * The singleton manager
@@ -470,7 +476,8 @@ public class ModelManager implements ISaveParticipant {
 		// Need to put any ArchiveProjectFragment in first.
 		// This is due to the way the LRU cache flushes entries.
 		// When a BinaryFolder is flused from the LRU cache, the entire
-		// archive is flushed by removing the ArchiveProjectFragment and all of its
+		// archive is flushed by removing the ArchiveProjectFragment and all of
+		// its
 		// children (see ElementCache.close()). If we flush the BinaryFolder
 		// when its ArchiveProjectFragment is not in the cache and the root is
 		// about to be
@@ -549,7 +556,8 @@ public class ModelManager implements ISaveParticipant {
 	 * Creating an element has the side effect of creating and opening all of
 	 * the element's parents if they are not yet open.
 	 */
-	public static IModelElement create(IResource resource, IScriptProject project) {
+	public static IModelElement create(IResource resource,
+			IScriptProject project) {
 		if (resource == null) {
 			return null;
 		}
@@ -714,7 +722,8 @@ public class ModelManager implements ISaveParticipant {
 	public PerWorkingCopyInfo getPerWorkingCopyInfo(SourceModule workingCopy,
 			boolean create, boolean recordUsage,
 			IProblemRequestor problemRequestor) {
-		return getPerWorkingCopyInfo(workingCopy, create, recordUsage, problemRequestor, null);
+		return getPerWorkingCopyInfo(workingCopy, create, recordUsage,
+				problemRequestor, null);
 	}
 
 	public PerWorkingCopyInfo getPerWorkingCopyInfo(SourceModule workingCopy,
@@ -733,7 +742,8 @@ public class ModelManager implements ISaveParticipant {
 			PerWorkingCopyInfo info = workingCopyToInfos == null ? null
 					: (PerWorkingCopyInfo) workingCopyToInfos.get(workingCopy);
 			if (info == null && create) {
-				info = new PerWorkingCopyInfo(workingCopy, problemRequestor, problemReporter);
+				info = new PerWorkingCopyInfo(workingCopy, problemRequestor,
+						problemReporter);
 				workingCopyToInfos.put(workingCopy, info);
 			}
 			if (info != null && recordUsage)
@@ -808,19 +818,24 @@ public class ModelManager implements ISaveParticipant {
 	public IndexManager getIndexManager() {
 		return this.indexManager;
 	}
-	
+
 	public Object getLastBuiltState(IProject project, IProgressMonitor monitor) {
 		if (!DLTKLanguageManager.hasScriptNature(project)) {
 			if (ScriptBuilder.DEBUG)
 				System.out.println(project + " is not a Java project"); //$NON-NLS-1$
 			return null; // should never be requested on non-Java projects
 		}
-		PerProjectInfo info = getPerProjectInfo(project, true/*create if missing*/);
+		PerProjectInfo info = getPerProjectInfo(project, true/*
+																 * create if
+																 * missing
+																 */);
 		if (!info.triedRead) {
 			info.triedRead = true;
 			try {
 				if (monitor != null)
-					monitor.subTask(Messages.bind(Messages.build_readStateProgress, project.getName())); 
+					monitor.subTask(Messages
+							.bind(Messages.build_readStateProgress, project
+									.getName()));
 				info.savedState = readState(project);
 			} catch (CoreException e) {
 				e.printStackTrace();
@@ -918,7 +933,8 @@ public class ModelManager implements ISaveParticipant {
 		synchronized (this.perProjectInfos) { // use the perProjectInfo
 			// collection as its own lock
 			IProject project = scriptProject.getProject();
-			PerProjectInfo info = (PerProjectInfo) this.perProjectInfos.get(project);
+			PerProjectInfo info = (PerProjectInfo) this.perProjectInfos
+					.get(project);
 			if (info != null) {
 				info.options = null;
 			}
@@ -932,7 +948,8 @@ public class ModelManager implements ISaveParticipant {
 		synchronized (this.perProjectInfos) { // use the perProjectInfo
 			// collection as its own lock
 			IProject project = scriptProject.getProject();
-			PerProjectInfo info = (PerProjectInfo) this.perProjectInfos.get(project);
+			PerProjectInfo info = (PerProjectInfo) this.perProjectInfos
+					.get(project);
 			if (info != null) {
 				info.preferences = null;
 			}
@@ -1019,7 +1036,7 @@ public class ModelManager implements ISaveParticipant {
 	public synchronized String intern(String s) {
 		// make sure to copy the string (so that it doesn't hold on the
 		// underlying char[] that might be much bigger than necessary)
-		return (String) this.stringSymbols.add(new String(s));
+		return (String) this.stringSymbols.add(s);
 	}
 
 	public void startup() throws CoreException {
@@ -1087,7 +1104,7 @@ public class ModelManager implements ISaveParticipant {
 			};
 			processSavedState.setSystem(true);
 			processSavedState.setPriority(Job.SHORT); // process asap
-			processSavedState.schedule();			
+			processSavedState.schedule();
 		} catch (RuntimeException e) {
 			shutdown();
 			throw e;
@@ -1112,6 +1129,15 @@ public class ModelManager implements ISaveParticipant {
 			if (propertyName.startsWith(BP_CONTAINER_PREFERENCES_PREFIX)) {
 				recreatePersistedContainer(propertyName, (String) event
 						.getNewValue(), false);
+			} else if (propertyName
+					.startsWith(BP_USERLIBRARY_PREFERENCES_PREFIX)) {
+				String libName = propertyName
+						.substring(BP_USERLIBRARY_PREFERENCES_PREFIX.length());
+				UserLibraryManager manager = ModelManager
+						.getUserLibraryManager();
+				manager
+						.updateUserLibrary(libName, (String) event
+								.getNewValue());
 			}
 		}
 	}
@@ -1123,34 +1149,42 @@ public class ModelManager implements ISaveParticipant {
 		File file = getSerializationFile(project);
 		if (file != null && file.exists()) {
 			try {
-				DataInputStream in= new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
+				DataInputStream in = new DataInputStream(
+						new BufferedInputStream(new FileInputStream(file)));
 				try {
-					String pluginID= in.readUTF();
+					String pluginID = in.readUTF();
 					if (!pluginID.equals(DLTKCore.PLUGIN_ID))
-						throw new IOException(Messages.build_wrongFileFormat); 
-					String kind= in.readUTF();
+						throw new IOException(Messages.build_wrongFileFormat);
+					String kind = in.readUTF();
 					if (!kind.equals("STATE")) //$NON-NLS-1$
-						throw new IOException(Messages.build_wrongFileFormat); 
+						throw new IOException(Messages.build_wrongFileFormat);
 					if (in.readBoolean())
 						return ScriptBuilder.readState(project, in);
 					if (ScriptBuilder.DEBUG)
-						System.out.println("Saved state thinks last build failed for " + project.getName()); //$NON-NLS-1$
+						System.out
+								.println("Saved state thinks last build failed for " + project.getName()); //$NON-NLS-1$
 				} finally {
 					in.close();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				throw new CoreException(new Status(IStatus.ERROR, DLTKCore.PLUGIN_ID, Platform.PLUGIN_ERROR, "Error reading last build state for project "+ project.getName(), e)); //$NON-NLS-1$
+				throw new CoreException(
+						new Status(
+								IStatus.ERROR,
+								DLTKCore.PLUGIN_ID,
+								Platform.PLUGIN_ERROR,
+								"Error reading last build state for project " + project.getName(), e)); //$NON-NLS-1$
 			}
 		} else if (ScriptBuilder.DEBUG) {
 			if (file == null)
 				System.out.println("Project does not exist: " + project); //$NON-NLS-1$
 			else
-				System.out.println("Build state file " + file.getPath() + " does not exist"); //$NON-NLS-1$ //$NON-NLS-2$
+				System.out
+						.println("Build state file " + file.getPath() + " does not exist"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return null;
 	}
-	
+
 	public static void recreatePersistedContainer(String propertyName,
 			String containerString, boolean addToContainerValues) {
 		int containerPrefixLength = BP_CONTAINER_PREFERENCES_PREFIX.length();
@@ -1169,9 +1203,9 @@ public class ModelManager implements ISaveParticipant {
 		}
 	}
 
-	private static void recreatePersistedContainer(final IScriptProject project,
-			final IPath containerPath, String containerString,
-			boolean addToContainerValues) {
+	private static void recreatePersistedContainer(
+			final IScriptProject project, final IPath containerPath,
+			String containerString, boolean addToContainerValues) {
 		if (!project.getProject().isAccessible())
 			return; // avoid leaking deleted project's persisted container
 		if (containerString == null) {
@@ -1286,11 +1320,11 @@ public class ModelManager implements ISaveParticipant {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		workspace.removeResourceChangeListener(this.deltaState);
 		workspace.removeSaveParticipant(DLTKCore.getDefault());
-		
-		if( sourceModuleInfoCach !=null ) {
+
+		if (sourceModuleInfoCach != null) {
 			sourceModuleInfoCach.stop();
 		}
-		if (this.indexManager != null){ // no more indexing
+		if (this.indexManager != null) { // no more indexing
 			this.indexManager.shutdown();
 		}
 		// wait for the initialization job to finish
@@ -1381,7 +1415,8 @@ public class ModelManager implements ISaveParticipant {
 
 	// Do not modify without modifying getDefaultOptions()
 	private Hashtable getDefaultOptionsNoInitialization() {
-		System.err.println("Add language dependent compiler options. Or implement it in another whan in DLTK way...");
+		System.err
+				.println("Add language dependent compiler options. Or implement it in another whan in DLTK way...");
 		Map defaultOptionsMap = new HashMap(); // compiler defaults
 		return new Hashtable(defaultOptionsMap);
 	}
@@ -1402,8 +1437,8 @@ public class ModelManager implements ISaveParticipant {
 		return container;
 	}
 
-	public synchronized IBuildpathContainer containerGet(IScriptProject project,
-			IPath containerPath) {
+	public synchronized IBuildpathContainer containerGet(
+			IScriptProject project, IPath containerPath) {
 		// check initialization in progress first
 		HashSet projectInitializations = containerInitializationInProgress(project);
 		if (projectInitializations.contains(containerPath)) {
@@ -1441,12 +1476,14 @@ public class ModelManager implements ISaveParticipant {
 	 * Initialize all container at the same time as the given container. Return
 	 * the container for the given path and project.
 	 */
-	private IBuildpathContainer initializeAllContainers(IScriptProject scriptProjectToInit, IPath containerToInit) throws ModelException {
+	private IBuildpathContainer initializeAllContainers(
+			IScriptProject scriptProjectToInit, IPath containerToInit)
+			throws ModelException {
 		/*
 		 * if (BP_RESOLVE_VERBOSE) { Util.verbose( "CPContainer INIT - batching
 		 * containers initialization\n" + //$NON-NLS-1$ " project to init: " +
-		 * scriptProjectToInit.getElementName() + '\n' + //$NON-NLS-1$ " container
-		 * path to init: " + containerToInit); //$NON-NLS-1$ }
+		 * scriptProjectToInit.getElementName() + '\n' + //$NON-NLS-1$ "
+		 * container path to init: " + containerToInit); //$NON-NLS-1$ }
 		 */
 		// collect all container paths
 		final HashMap allContainerPaths = new HashMap();
@@ -1472,7 +1509,8 @@ public class ModelManager implements ISaveParticipant {
 				}
 			}
 		}
-		HashSet containerPaths = (HashSet) allContainerPaths.get(scriptProjectToInit);
+		HashSet containerPaths = (HashSet) allContainerPaths
+				.get(scriptProjectToInit);
 		if (containerPaths == null) {
 			containerPaths = new HashSet();
 			allContainerPaths.put(scriptProjectToInit, containerPaths);
@@ -1559,7 +1597,7 @@ public class ModelManager implements ISaveParticipant {
 						"	invocation stack trace:"); //$NON-NLS-1$
 				new Exception("<Fake exception>").printStackTrace(System.out); //$NON-NLS-1$
 			}
-			//PerformanceStats stats = null;
+			// PerformanceStats stats = null;
 			containerPut(project, containerPath,
 					CONTAINER_INITIALIZATION_IN_PROGRESS); // avoid
 			// initialization
@@ -1742,8 +1780,8 @@ public class ModelManager implements ISaveParticipant {
 		this.containers.remove(project);
 	}
 
-	private void containerRemoveInitializationInProgress(IScriptProject project,
-			IPath containerPath) {
+	private void containerRemoveInitializationInProgress(
+			IScriptProject project, IPath containerPath) {
 		HashSet projectInitializations = containerInitializationInProgress(project);
 		projectInitializations.remove(containerPath);
 		if (projectInitializations.size() == 0) {
@@ -1795,7 +1833,8 @@ public class ModelManager implements ISaveParticipant {
 							+ //$NON-NLS-1$
 							Util.toString(projects, new Util.Displayable() {
 								public String displayString(Object o) {
-									return ((IScriptProject) o).getElementName();
+									return ((IScriptProject) o)
+											.getElementName();
 								}
 							})
 							+ "}\n	values on previous session: {\n" + //$NON-NLS-1$
@@ -1854,9 +1893,9 @@ public class ModelManager implements ISaveParticipant {
 	 * Returns the open ZipFile at the given path. If the ZipFile does not yet
 	 * exist, it is created, opened, and added to the cache of open ZipFiles.
 	 * 
-	 * The path must be a file system path if representing an external zip,
-	 * or it must be an absolute workspace relative path if representing a
-	 * zip inside the workspace.
+	 * The path must be a file system path if representing an external zip, or
+	 * it must be an absolute workspace relative path if representing a zip
+	 * inside the workspace.
 	 * 
 	 * @exception CoreException
 	 *                If unable to create/open the ZipFile
@@ -2319,8 +2358,8 @@ public class ModelManager implements ISaveParticipant {
 				savePath(paths[i]);
 		}
 
-		private void saveProjects(IScriptProject[] projects) throws IOException,
-				ModelException {
+		private void saveProjects(IScriptProject[] projects)
+				throws IOException, ModelException {
 			int count = projects.length;
 			saveInt(count);
 			for (int i = 0; i < count; ++i) {
@@ -2422,8 +2461,8 @@ public class ModelManager implements ISaveParticipant {
 		private final IBuildpathEntry[] entries;
 		private final IScriptProject project;
 
-		PersistedBuildpathContainer(IScriptProject project, IPath containerPath,
-				IBuildpathEntry[] entries) {
+		PersistedBuildpathContainer(IScriptProject project,
+				IPath containerPath, IBuildpathEntry[] entries) {
 			super();
 			this.containerPath = containerPath;
 			this.entries = entries;
@@ -2635,12 +2674,14 @@ public class ModelManager implements ISaveParticipant {
 	}
 
 	/**
- 	 * Returns the name of the container IDs for which an CP container initializer is registered through an extension point
- 	 */
-	public static String[] getRegisteredContainerIDs(){
-		
+	 * Returns the name of the container IDs for which an CP container
+	 * initializer is registered through an extension point
+	 */
+	public static String[] getRegisteredContainerIDs() {
+
 		Plugin dltkCorePlugin = DLTKCore.getPlugin();
-		if (dltkCorePlugin == null) return null;
+		if (dltkCorePlugin == null)
+			return null;
 
 		ArrayList containerIDList = new ArrayList(5);
 		IExtensionPoint extension = Platform.getExtensionRegistry()
@@ -2668,7 +2709,8 @@ public class ModelManager implements ISaveParticipant {
 			String containerID = containerIDs[i];
 			Iterator projectIterator = this.containers.keySet().iterator();
 			while (projectIterator.hasNext()) {
-				IScriptProject project = (IScriptProject) projectIterator.next();
+				IScriptProject project = (IScriptProject) projectIterator
+						.next();
 				Map projectContainers = (Map) this.containers.get(project);
 				if (projectContainers != null) {
 					Iterator containerIterator = projectContainers.keySet()
@@ -2676,15 +2718,15 @@ public class ModelManager implements ISaveParticipant {
 					while (containerIterator.hasNext()) {
 						IPath containerPath = (IPath) containerIterator.next();
 						if (containerPath.segment(0).equals(containerID)) { // registered
-																			// container
+							// container
 							projectContainers.put(containerPath, null); // reset
-																		// container
-																		// value,
-																		// but
-																		// leave
-																		// entry
-																		// in
-																		// Map
+							// container
+							// value,
+							// but
+							// leave
+							// entry
+							// in
+							// Map
 						}
 					}
 				}
@@ -2715,12 +2757,29 @@ public class ModelManager implements ISaveParticipant {
 			}
 		}
 	}
-	
+
 	private SourceModuleInfoCache sourceModuleInfoCach;
+
 	public ISourceModuleInfoCache getSourceModuleInfoCache() {
-		if( sourceModuleInfoCach == null ) {
+		if (sourceModuleInfoCach == null) {
 			sourceModuleInfoCach = new SourceModuleInfoCache();
 		}
 		return sourceModuleInfoCach;
+	}
+
+	public static UserLibraryManager getUserLibraryManager() {
+		if (MANAGER.userLibraryManager == null) {
+			UserLibraryManager libraryManager = new UserLibraryManager();
+			synchronized (MANAGER) {
+				if (MANAGER.userLibraryManager == null) { // ensure another
+															// library manager
+															// was not set while
+															// creating the
+															// instance above
+					MANAGER.userLibraryManager = libraryManager;
+				}
+			}
+		}
+		return MANAGER.userLibraryManager;
 	}
 }

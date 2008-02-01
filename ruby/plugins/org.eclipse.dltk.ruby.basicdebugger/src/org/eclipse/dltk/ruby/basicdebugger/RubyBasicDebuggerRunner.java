@@ -14,10 +14,12 @@ import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.dltk.core.PreferencesLookupDelegate;
 import org.eclipse.dltk.launching.DebuggingEngineRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.launching.debug.DbgpInterpreterConfig;
+import org.eclipse.dltk.ruby.internal.launching.JRubyInstallType;
 
 public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 	public static final String ENGINE_ID = "org.eclipse.dltk.ruby.basicdebugger";
@@ -58,7 +60,7 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 		this.logging = true;
 	}
 
-	protected InterpreterConfig alterConfig(InterpreterConfig config)
+	protected InterpreterConfig addEngineConfig(InterpreterConfig config, PreferencesLookupDelegate delegate)
 			throws CoreException {
 		// Get debugger source location
 		final IPath sourceLocation = deploy();
@@ -67,6 +69,12 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 
 		// Creating new config
 		InterpreterConfig newConfig = (InterpreterConfig) config.clone();
+		
+		if (getInstall().getInterpreterInstallType() instanceof JRubyInstallType) {
+			newConfig.addEnvVar("JAVA_OPTS", "-Djruby.jit.enabled=false");
+			newConfig.addInterpreterArg("-X-C");
+		}
+
 		newConfig.addInterpreterArg("-r" + scriptFile.toPortableString());
 		newConfig.addInterpreterArg("-I" + sourceLocation.toPortableString());
 		
@@ -80,7 +88,7 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 		newConfig.addEnvVar(RUBY_KEY_VAR, dbgpConfig.getSessionId());
 		newConfig.addEnvVar(RUBY_SCRIPT_VAR, config.getScriptFilePath()
 				.toPortableString());
-
+		
 		if (isLoggingEnabled()) {
 			newConfig.addEnvVar(RUBY_LOG_VAR, getLogFilename()
 					.toPortableString());

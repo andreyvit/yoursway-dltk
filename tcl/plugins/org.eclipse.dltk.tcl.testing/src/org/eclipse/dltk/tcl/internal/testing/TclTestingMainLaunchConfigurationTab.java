@@ -120,8 +120,8 @@ public class TclTestingMainLaunchConfigurationTab extends
 				}
 			}
 		}
-		setErrorMessage("Not a test file");
-		return false;
+		setErrorMessage("Testing engine not support specified script");
+		return true;
 	}
 
 	protected void doPerformApply(ILaunchConfigurationWorkingCopy config) {
@@ -154,6 +154,6 @@ public class TclTestingMainLaunchConfigurationTab extends
 				}
 			}
 		}
-		handleDetectButtonSelected();
+//		handleDetectButtonSelected();
 	}
 }

@@ -47,6 +47,9 @@ public abstract class AbstractASTTest extends AbstractModelTests {
 			return null;
 		}
 
+		public void clearMarkers() {
+		}
+
 	}
 
 	protected final static CountingProblemReporter problems = new CountingProblemReporter();

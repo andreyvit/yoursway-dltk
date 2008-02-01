@@ -45,7 +45,8 @@ public abstract class DbgpWorkingThread extends DbgpTermination {
 	}
 
 	public void waitTerminated() throws InterruptedException {
-		thread.join();
+		if (thread != null)
+			thread.join();
 	}
 
 	// Working cycle

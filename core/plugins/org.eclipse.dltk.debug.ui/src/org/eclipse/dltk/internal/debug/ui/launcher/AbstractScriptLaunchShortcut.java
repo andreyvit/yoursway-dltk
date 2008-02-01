@@ -34,8 +34,8 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.debug.ui.messages.ScriptLaunchMessages;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
-import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.LaunchingMessages;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -236,6 +236,11 @@ public abstract class AbstractScriptLaunchShortcut implements ILaunchShortcut {
 					.setAttribute(
 							ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
 							script.getProjectRelativePath().toPortableString()/* script.getFullPath().toPortableString() */);
+			
+			wc
+					.setAttribute(
+							ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_WAITING_TIMEOUT,
+							10000);
 			wc.setMappedResources(new IResource[] { script.getProject() });
 			config = wc.doSave();
 		} catch (CoreException exception) {

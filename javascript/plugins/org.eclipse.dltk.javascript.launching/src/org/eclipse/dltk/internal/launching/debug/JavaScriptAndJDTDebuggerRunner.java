@@ -3,6 +3,7 @@ package org.eclipse.dltk.internal.launching.debug;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.dltk.core.PreferencesLookupDelegate;
 import org.eclipse.dltk.javascript.internal.debug.JavaScriptDebugPlugin;
 import org.eclipse.dltk.javascript.internal.launching.JavaScriptInterpreterRunner;
 import org.eclipse.dltk.javascript.launching.IConfigurableRunner;
@@ -37,5 +38,10 @@ public class JavaScriptAndJDTDebuggerRunner extends DebuggingEngineRunner
 
 	protected String getDebuggingEngineId() {
 		return "org.eclipse.dltk.internal.launching.debug.JavaScriptAndJDTDebuggerRunnerFactory";
+	}
+
+	protected InterpreterConfig addEngineConfig(InterpreterConfig config,
+			PreferencesLookupDelegate delegate) throws CoreException {
+		return config;
 	}
 }

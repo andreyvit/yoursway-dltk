@@ -1,6 +1,7 @@
 package org.eclipse.dltk.python.launching;
 
 import org.eclipse.dltk.core.DLTKIdContributionSelector;
+import org.eclipse.dltk.core.PreferencesLookupDelegate;
 import org.eclipse.dltk.python.internal.debug.PythonDebugConstants;
 import org.eclipse.dltk.python.internal.debug.PythonDebugPlugin;
 
@@ -10,10 +11,10 @@ import org.eclipse.dltk.python.internal.debug.PythonDebugPlugin;
 public class PythonDebuggingEngineSelector extends DLTKIdContributionSelector {
 
 	/*
-	 * @see org.eclipse.dltk.core.DLTKIdContributionSelector#getContributionId()
+	 * @see org.eclipse.dltk.core.DLTKIdContributionSelector#getSavedContributionId(org.eclipse.dltk.core.PreferencesLookupDelegate)
 	 */
-	protected String getSavedContributionId() {
-		return PythonDebugPlugin.getDefault().getPluginPreferences().getString(
+	protected String getSavedContributionId(PreferencesLookupDelegate delegate) {
+		return delegate.getString(PythonDebugPlugin.PLUGIN_ID,
 				PythonDebugConstants.DEBUGGING_ENGINE_ID_KEY);
 	}
 }

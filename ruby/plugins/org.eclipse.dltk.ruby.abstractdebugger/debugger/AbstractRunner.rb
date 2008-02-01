@@ -69,19 +69,19 @@ module XoredDebugger
             end     
 
             begin 
-                @thread_manager.terminate(excpt)
+                @thread_manager.terminate(excpt) unless @thread_manager.nil?
             rescue Exception
                 logException($!, ' in at_exit')
             end            
 
             begin                 
-                @debugger.terminate
+                @debugger.terminate unless @debugger.nil?
             rescue Exception
                 logException($!, ' in at_exit')
             end            
 
             log('Debugger terminated')                    
-            shutdownLogger()                                                                   
+            Logger.shutdownLogger()                                                                   
         end
         
         def create_debugger

@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.core.search.index;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -31,7 +33,7 @@ import org.eclipse.dltk.internal.core.util.Util;
 public class MixinIndex extends Index {
 
 	private static final String HEADER = "MIXIN INDEX 0.1";
-	
+
 	private HashtableOfObject docNamesToKeys;
 
 	private final String fileName;
@@ -53,11 +55,11 @@ public class MixinIndex extends Index {
 	public void addIndexEntry(char[] category, char[] key,
 			String containerRelativePath) {
 		this.dirty = true;
-		if (DLTKCore.DEBUG_INDEX) {
-			System.out.println("DEBUG INDEX: Add Index Entry:"
-					+ new String(category) + " " + new String(key) + " path:"
-					+ containerRelativePath);
-		}
+		// if (DLTKCore.DEBUG_INDEX) {
+		// System.out.println("DEBUG INDEX: Add Index Entry:"
+		// + new String(category) + " " + new String(key) + " path:"
+		// + containerRelativePath);
+		// }
 		Assert.isTrue(CharOperation.equals(category, IIndexConstants.MIXIN));
 		addIndexEntry(key, containerRelativePath.toCharArray());
 	}
@@ -101,7 +103,7 @@ public class MixinIndex extends Index {
 		}
 		if (!found)
 			return new EntryResult[0];
-		
+
 		HashtableOfObject results = new HashtableOfObject(10);
 
 		performQuery(key, matchRule, results);
@@ -180,9 +182,14 @@ public class MixinIndex extends Index {
 		long t = System.currentTimeMillis();
 		if (docNamesToKeys == null)
 			docNamesToKeys = new HashtableOfObject(0);
+		if (!hasChanged()) {
+			return;
+		}
 
 		File f = getIndexFile();
-		DataOutputStream stream = new DataOutputStream(new FileOutputStream(f));
+		FileOutputStream fouts = new FileOutputStream(f, false);
+		BufferedOutputStream bufout = new BufferedOutputStream(fouts, 2048);
+		DataOutputStream stream = new DataOutputStream(bufout);
 		int docNamesCount = docNamesToKeys.elementSize;
 		Util.writeUTF(stream, HEADER.toCharArray());
 		stream.writeInt(docNamesCount);
@@ -204,8 +211,9 @@ public class MixinIndex extends Index {
 			} else
 				stream.writeInt(0);
 		}
-		
+		bufout.close();
 		stream.close();
+		fouts.close();
 		this.dirty = false;
 		if (DLTKCore.DEBUG_INDEX) {
 			System.out.println("Mixin index for " + this.containerPath + " ("
@@ -224,9 +232,10 @@ public class MixinIndex extends Index {
 				try {
 					monitor.enterRead();
 					DataInputStream stream = new DataInputStream(
-							new FileInputStream(indexFile));
+							new BufferedInputStream(new FileInputStream(
+									indexFile), 2048));
 					char[] header = Util.readUTF(stream);
-					if (new String(header).equals(HEADER)) {						
+					if (new String(header).equals(HEADER)) {
 						int documentsCount = stream.readInt();
 						for (int i = 0; i < documentsCount; i++) {
 							char[] docName = Util.readUTF(stream);

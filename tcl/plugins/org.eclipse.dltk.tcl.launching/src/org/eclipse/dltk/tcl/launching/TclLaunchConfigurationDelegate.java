@@ -25,6 +25,18 @@ public class TclLaunchConfigurationDelegate extends
 	public String getLanguageId() {
 		return TclNature.NATURE_ID;
 	}
+	protected InterpreterConfig createInterpreterConfig(
+			ILaunchConfiguration configuration, ILaunch launch)
+	throws CoreException {
+		InterpreterConfig config = super.createInterpreterConfig(
+				configuration, launch);
+		if( config != null ) {
+			addLibpathEnvVar(config, configuration);
+			checkEnvVars(config, configuration);
+		}
+		
+		return config;
+	}
 
 	protected void addLibpathEnvVar(InterpreterConfig config,
 			ILaunchConfiguration configuration) throws CoreException {
@@ -47,32 +59,6 @@ public class TclLaunchConfigurationDelegate extends
 
 	protected void checkEnvVars(InterpreterConfig config,
 			ILaunchConfiguration configuration) {
-		// TODO
-		/*
-		 * if (envp != null) { // exclude TCLLIBPATH from environment for future
-		 * insertion for (int i = 0; i < envp.length; i++) { if
-		 * (envp[i].startsWith("SystemRoot=")) systemRootFixed = true; if
-		 * (envp[i].startsWith("DISPLAY=")) displayFixed = true; if
-		 * (envp[i].startsWith(envLibName)) continue; envList.add(envp[i]); } }
-		 * 
-		 * if (!systemRootFixed && systemEnv.get("SystemRoot") != null)
-		 * envList.add("SystemRoot=" + systemEnv.get("SystemRoot"));
-		 * 
-		 * if (!displayFixed && systemEnv.get("DISPLAY") != null)
-		 * envList.add("DISPLAY=" + systemEnv.get("DISPLAY"));
-		 */
 	}
 
-	protected InterpreterConfig createInterpreterConfig(
-			ILaunchConfiguration configuration, ILaunch launch)
-			throws CoreException {
-		InterpreterConfig config = super.createInterpreterConfig(
-				configuration, launch);
-		if( config != null ) {
-			addLibpathEnvVar(config, configuration);
-			checkEnvVars(config, configuration);
-		}
-
-		return config;
-	}
 }

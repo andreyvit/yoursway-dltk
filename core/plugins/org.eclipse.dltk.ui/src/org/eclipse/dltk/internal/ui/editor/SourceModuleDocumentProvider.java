@@ -52,6 +52,7 @@ import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.WorkingCopyOwner;
 import org.eclipse.dltk.internal.core.BufferManager;
 import org.eclipse.dltk.internal.ui.text.IProblemRequestorExtension;
+import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.editor.IScriptAnnotation;
@@ -1430,8 +1431,8 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 				cpEntries = jp.getResolvedBuildpath(true);
 
 			if (cpEntries == null || cpEntries.length == 0)
-				cpEntries = new IBuildpathEntry[] { DLTKCore
-						.newSourceEntry(storagePath) };
+				cpEntries = new IBuildpathEntry[] { ScriptRuntime
+						.getDefaultInterpreterContainerEntry() };
 
 			final ISourceModule cu = woc.newWorkingCopy(storage.getName(),
 					cpEntries, null, getProgressMonitor());

@@ -38,7 +38,7 @@ public class GoalEngine {
 
 	private IEvaluationStatisticsRequestor statisticsRequestor;
 
-	private class EvaluatorState {
+	private static class EvaluatorState {
 		public long timeCreated;
 		public int totalSubgoals;
 		public int successfulSubgoals;
@@ -53,7 +53,7 @@ public class GoalEngine {
 
 	}
 
-	private class WorkingPair {
+	private static class WorkingPair {
 		private IGoal goal;
 		private GoalEvaluator creator;
 
@@ -64,7 +64,7 @@ public class GoalEngine {
 
 	}
 
-	private class GoalEvaluationState {
+	private static class GoalEvaluationState {
 		public GoalEvaluator creator;
 		public GoalState state;
 		public Object result;

@@ -4,7 +4,6 @@ import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.references.SimpleReference;
-import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
@@ -44,12 +43,13 @@ public class XOTclClassMyProcessor extends AbstractTclCommandProcessor {
 			} else {
 				// TODO process method call.
 			}
-		} else
-			this
-					.report(
-							parser,
-							"'my' can only be used in a context of an instproc or a method specific proc.",
-							statement, ProblemSeverities.Error);
+		} 
+//			else
+//			this
+//					.report(
+//							parser,
+//							"'my' can only be used in a context of an instproc or a method specific proc.",
+//							statement, ProblemSeverities.Error);
 		return null;
 	}
 }

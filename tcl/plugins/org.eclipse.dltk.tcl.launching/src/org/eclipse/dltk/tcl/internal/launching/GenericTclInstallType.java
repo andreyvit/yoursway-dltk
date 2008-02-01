@@ -16,9 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.internal.launching.AbstractInterpreterInstallType;
+import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
+import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.launching.TclLaunchingPlugin;
@@ -59,33 +62,29 @@ public class GenericTclInstallType extends AbstractInterpreterInstallType {
 	}
 
 	protected File createPathFile() throws IOException {
-		DeployHelper.deploy(TclLaunchingPlugin.getDefault(), "scripts").append(
-				"");
-		return storeToMetadata(TclLaunchingPlugin.getDefault(), "path.tcl",
-				"scripts/path.tcl");
-	}
-
-	protected File createSafePathFile() throws IOException {
-		DeployHelper.deploy(TclLaunchingPlugin.getDefault(), "scripts").append(
-				"");
-		return storeToMetadata(TclLaunchingPlugin.getDefault(), "path.tcl",
-				"scripts/path_safe.tcl");
+		IPath path = DeployHelper.deploy(TclLaunchingPlugin.getDefault(),
+				"scripts").append("auto_path.tcl");
+		return path.toFile();
 	}
 
 	protected IRunnableWithProgress createLookupRunnable(
-			final File installLocation, final List locations) {
+			final File installLocation, final List locations,
+			final EnvironmentVariable[] variables) {
 		return new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) {
 				try {
 					// This retrieval could not receive paths in some cases.
-					retrivePaths(installLocation, locations, monitor,
-							createPathFile());
+					String result = retrivePaths(installLocation, locations,
+							monitor, createPathFile(), variables);
 					// This is safe retrieval
-					if (locations.size() == 0) {
-						retrivePaths(installLocation, locations, monitor,
-								createSafePathFile());
+					String message = "Failed to obtain tcl library locations for "
+							+ installLocation.toString()
+							+ " with auto_path.tcl.";
+					if (result == null) {
+						DLTKLaunchingPlugin.log(message);
 					}
 				} catch (IOException e) {
+					DLTKLaunchingPlugin.log(e);
 					if (DLTKCore.DEBUG) {
 						e.printStackTrace();
 					}
@@ -94,10 +93,14 @@ public class GenericTclInstallType extends AbstractInterpreterInstallType {
 		};
 	}
 
-	protected String[] parsePaths(String result) {
+	protected String[] parsePaths(String res) {
 		ArrayList paths = new ArrayList();
 		String subs = null;
 		int index = 0;
+		String result = res;
+		if (result.startsWith(DLTK_PATH_PREFIX)) {
+			result = result.substring(DLTK_PATH_PREFIX.length());
+		}
 		while (index < result.length()) {
 			// skip whitespaces
 			while (index < result.length()

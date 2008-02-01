@@ -9,7 +9,7 @@ import org.osgi.framework.BundleContext;
 public class PythonActiveStateDebuggerPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.activestatedebugger";
+	public static final String PLUGIN_ID = "org.eclipse.dltk.python.activestatedebugger";
 
 	// The shared instance
 	private static PythonActiveStateDebuggerPlugin plugin;

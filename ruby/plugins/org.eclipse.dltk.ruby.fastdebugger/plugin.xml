@@ -15,7 +15,7 @@
         id="org.eclipse.dltk.ruby.fastdebugger"
         name="%FastDebuggingEngine.name"
         propertyPageId="org.eclipse.dltk.ruby.propertyPage.debug.engines.railsdebugger"
-        preferencePageId="org.eclipse.dltk.ruby.preferences.debug.railsdebugger"
+        preferencePageId="org.eclipse.dltk.ruby.preferences.debug.engines.railsdebugger"
         priority="5">
       </engine>
     </engineContribution>

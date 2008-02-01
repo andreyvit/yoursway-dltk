@@ -37,5 +37,7 @@ public class AddTclInterpreterDialog extends AddScriptInterpreterDialog {
 	protected boolean useInterpreterArgs() {
 		return false;
 	}
-	
+	protected boolean isRediscoverSupported() {
+		return false;
+	}
 }

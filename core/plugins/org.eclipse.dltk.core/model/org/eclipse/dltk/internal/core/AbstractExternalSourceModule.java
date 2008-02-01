@@ -7,10 +7,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.CompletionRequestor;
+import org.eclipse.dltk.core.DLTKContentTypeManager;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IExternalSourceModule;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.IProblemRequestor;
 import org.eclipse.dltk.core.ISourceModule;
@@ -186,7 +188,10 @@ public abstract class AbstractExternalSourceModule extends AbstractSourceModule
 		}
 
 		if (toolkit != null) {
-			return toolkit.validateSourceModule(path);
+			if (DLTKContentTypeManager.isValidFileNameForContentType(toolkit,
+					path)) {
+				return IModelStatus.VERIFIED_OK;
+			}
 		}
 
 		return null;

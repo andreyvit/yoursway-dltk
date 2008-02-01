@@ -71,6 +71,9 @@ public class RenameElementsOperation extends MoveElementsOperation {
 	 * @see MultiOperation
 	 */
 	protected void verify(IModelElement element) throws ModelException {
+		if( element == null ) {
+			error(IModelStatusConstants.NULL_NAME, null);
+		}
 		int elementType = element.getElementType();
 		if (element == null || !element.exists())
 			error(IModelStatusConstants.ELEMENT_DOES_NOT_EXIST, element);

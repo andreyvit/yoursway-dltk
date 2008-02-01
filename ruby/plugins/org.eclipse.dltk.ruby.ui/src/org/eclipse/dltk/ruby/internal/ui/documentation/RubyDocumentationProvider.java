@@ -14,7 +14,6 @@ import java.io.StringReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.core.IBuffer;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMember;
@@ -22,6 +21,7 @@ import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceRange;
+import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.BuiltinProjectFragment;
 import org.eclipse.dltk.ruby.core.PredefinedVariables;
@@ -167,20 +167,20 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 		return null;
 	}
 
-	private Reader proccessBuiltin(IMethod method) {
-		String divider;
-		try {
-			if (0 != (method.getFlags() & Modifiers.AccStatic))
-				divider = "::";
-			else
-				divider = ".";
-		} catch (ModelException e) {
-			e.printStackTrace();
-			return null;
-		}
+	private Reader proccessBuiltinType(IType type) {
+		String keyword = type.getElementName();
+		RiHelper helper = RiHelper.getInstance();
+		String doc = helper.getDocFor(keyword);
+		if (doc != null)
+			return new StringReader(doc);
+		return new StringReader("Built-in method");
+	}
+
+	private Reader proccessBuiltinMethod(IMethod method) {
+		final String divider = "#";
 		IModelElement pp = method.getAncestor(IModelElement.TYPE);
 		if (pp.getElementName().startsWith("<<"))
-				pp = pp.getAncestor(IModelElement.TYPE);
+			pp = pp.getAncestor(IModelElement.TYPE);
 		String keyword = pp.getElementName() + divider
 				+ method.getElementName();
 		RiHelper helper = RiHelper.getInstance();
@@ -200,10 +200,13 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 
 	public Reader getInfo(IMember member, boolean lookIntoParents,
 			boolean lookIntoExternal) {
-		if (member.getAncestor(IModelElement.PROJECT_FRAGMENT) instanceof BuiltinProjectFragment
-				&& member instanceof IMethod) {
-			IMethod method = (IMethod) member;
-			return proccessBuiltin(method);
+		boolean isBuiltin = member.getAncestor(IModelElement.PROJECT_FRAGMENT) instanceof BuiltinProjectFragment;
+		if (isBuiltin && member instanceof IMethod) {
+				IMethod method = (IMethod) member;
+				return proccessBuiltinMethod(method);
+		} else if (isBuiltin && member instanceof IType) {
+				IType type = (IType) member;
+				return proccessBuiltinType(type);				
 		} else if (member instanceof FakeField) {
 			FakeField field = (FakeField) member;
 			String doc = PredefinedVariables.getDocOf(field.getElementName());

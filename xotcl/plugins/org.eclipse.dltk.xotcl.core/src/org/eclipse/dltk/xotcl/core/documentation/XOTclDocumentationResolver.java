@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.internal.core.codeassist.TclASTUtil;
@@ -24,7 +25,7 @@ public class XOTclDocumentationResolver {
 						(ASTNode) sts.get(q));
 				String elementFQN = "::"
 						+ TclParseUtil.getElementFQN(parent, "::", module);
-				if( memberkey.length() < elementFQN.length() + 2) {
+				if (memberkey.length() < elementFQN.length() + 2) {
 					continue;
 				}
 				String shortDescr = memberkey
@@ -50,8 +51,9 @@ public class XOTclDocumentationResolver {
 				}
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 		return descriptions.toString();
 	}

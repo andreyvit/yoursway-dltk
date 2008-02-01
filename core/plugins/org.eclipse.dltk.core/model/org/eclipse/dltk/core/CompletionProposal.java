@@ -240,7 +240,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	// private boolean parameterNamesComputed = false;
 	private IModelElement modelElement;
 
-	private String proposalInfo;
+//	private String proposalInfo;
 
 	/**
 	 * Creates a basic completion proposal. All instance field have plausible

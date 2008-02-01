@@ -109,7 +109,7 @@ public class RiHelper {
 			}
 
 			sb.append(line);
-
+			sb.append('\n');
 		} while (true);
 
 		return sb.toString();

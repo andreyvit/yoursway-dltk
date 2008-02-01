@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,7 +28,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 public final class TclCheckerHelper {
-	private static final String REGEX = "(\\w+):(\\d+)\\s+\\((\\w+)\\)\\s+(.*)";
+	private static final String REGEX = "((?:\\w:)?[^:]+):(\\d+)\\s+\\((\\w+)\\)\\s+(.*)";
 
 	private static final String QUIET_OPTION = "-quiet";
 
@@ -51,9 +52,27 @@ public final class TclCheckerHelper {
 	private static String[] makeTclCheckerCmdLine(IPreferenceStore store) {
 		List cmdLine = new ArrayList();
 
+		passOriginalArguments(store, cmdLine);
+
+		return (String[]) cmdLine.toArray(new String[cmdLine.size()]);
+	}
+
+	public static String[] makeTclCheckerCmdLine(IPreferenceStore store,
+			String path) {
+		List cmdLine = new ArrayList();
+
+		passOriginalArguments(store, cmdLine);
+
+		cmdLine.add(path);
+
+		return (String[]) cmdLine.toArray(new String[cmdLine.size()]);
+	}
+
+	public static void passOriginalArguments(IPreferenceStore store,
+			List cmdLine) {
 		cmdLine.add(store.getString(TclCheckerConstants.PREF_PATH));
 
-		cmdLine.add(QUIET_OPTION);
+//		cmdLine.add(QUIET_OPTION);
 
 		int mode = store.getInt(TclCheckerConstants.PREF_MODE);
 
@@ -75,8 +94,6 @@ public final class TclCheckerHelper {
 				cmdLine.add(warningName);
 			}
 		}
-
-		return (String[]) cmdLine.toArray(new String[cmdLine.size()]);
 	}
 
 	public static boolean canExecuteTclChecker(IPreferenceStore store) {
@@ -108,8 +125,8 @@ public final class TclCheckerHelper {
 		return new TclCheckerProblem(file, lineNumber, messageID, message);
 	}
 
-	public static String[] execTclChecker(String code, IPreferenceStore store)
-			throws IOException, CoreException {
+	public static String[] execTclChecker(String code, IPreferenceStore store,
+			OutputStream console) throws IOException, CoreException {
 		Process process = DebugPlugin.exec(makeTclCheckerCmdLine(store), null);
 
 		// Writing tcl code to TclChecker
@@ -136,6 +153,40 @@ public final class TclCheckerHelper {
 			String line = null;
 			while ((line = input.readLine()) != null) {
 				lines.add(line);
+				if (console != null) {
+					console.write((line + "\n").getBytes());
+				}
+			}
+		} finally {
+			if (input != null) {
+				input.close();
+			}
+		}
+
+		return (String[]) lines.toArray(new String[lines.size()]);
+	}
+
+	public static String[] execTclCheckerPath(String path,
+			IPreferenceStore store, OutputStream console) throws IOException,
+			CoreException {
+		Process process = DebugPlugin.exec(makeTclCheckerCmdLine(store, path),
+				null);
+
+		// Reading TclChecker output
+		Set lines = new HashSet();
+
+		BufferedReader input = null;
+
+		try {
+			input = new BufferedReader(new InputStreamReader(process
+					.getInputStream()));
+
+			String line = null;
+			while ((line = input.readLine()) != null) {
+				lines.add(line);
+				if (console != null) {
+					console.write((line + "\n").getBytes());
+				}
 			}
 		} finally {
 			if (input != null) {

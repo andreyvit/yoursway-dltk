@@ -12,7 +12,6 @@ public class AllTests {
 
 		// Launching
 		suite.addTest(RubyLaunchingTests.suite());
-
 		// $JUnit-END$
 		return suite;
 	}

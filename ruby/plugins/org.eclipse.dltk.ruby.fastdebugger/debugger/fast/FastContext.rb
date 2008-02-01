@@ -16,14 +16,12 @@ module XoredDebugger
             @context.thread
         end
                 
-        def status()
-            if @context.dead?
-                return STOPPED
-            elsif @context.suspended?
-                return BREAK
-            else
-                return RUNNING
-            end
+        def dead?
+            @context.dead?             
+        end
+
+        def suspended?
+            @context.suspended?             
         end
         
         # Continuation Commands

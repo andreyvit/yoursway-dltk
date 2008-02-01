@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.eclipse.dltk.itcl.core;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.dltk.itcl.internal.core.IncrTCLPlugin
+Bundle-Vendor: %pluginProvider
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.dltk.core,
+ org.eclipse.dltk.tcl.core,
+ org.eclipse.core.resources
+Eclipse-LazyStart: true

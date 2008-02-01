@@ -317,22 +317,25 @@ public abstract class ScriptLaunchConfigurationTab extends
 		}
 
 		IModelElement me = DLTKUIPlugin.getEditorInputModelElement(editorInput);
-		IScriptProject project = me.getScriptProject();
-		if (project != null && validateProject(project)) {
-			String projectName = project.getProject().getName();
+		if (me != null) {
+			IScriptProject project = me.getScriptProject();
 
-			/*
-			 * TODO: validate script is an executable and not library/module
-			 * otherwise, return null and make user select
-			 */
-			IResource resource = me.getResource();
-			if (resource != null) {
-				String scriptName = resource.getProjectRelativePath()
-						.toPortableString();
-				// me.getResource().getLocation().toPortableString();
-				// /*me.getResource().getFullPath().toPortableString();*/
-	
-				return new String[] { projectName, scriptName };
+			if (project != null && validateProject(project)) {
+				String projectName = project.getProject().getName();
+
+				/*
+				 * TODO: validate script is an executable and not library/module
+				 * otherwise, return null and make user select
+				 */
+				IResource resource = me.getResource();
+				if (resource != null) {
+					String scriptName = resource.getProjectRelativePath()
+							.toPortableString();
+					// me.getResource().getLocation().toPortableString();
+					// /*me.getResource().getFullPath().toPortableString();*/
+
+					return new String[] { projectName, scriptName };
+				}
 			}
 		}
 		return null;

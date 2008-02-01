@@ -29,6 +29,11 @@ public class ModelClassType implements IClassType {
 		}
 		return false;
 	}
+	
+
+	public int hashCode() {
+		return this.fClass.hashCode();
+	}
 
 	public String getTypeName() {
 		if (fClass != null) {

@@ -34,9 +34,10 @@ module XoredDebugger
             assert_equal(@last_exited, thread)
             assert_not_equal(@last_excpt, nil)
                         
-            thread = Thread.new(1,2,3) {
-               |*args| @args = args
+            thread = Thread.new(1,2,3) {                
+               |*args| @args = *args
             }            
+            thread.join
             assert_equal([1,2,3], @args)
             assert_equal(@last_started, thread)
             assert_equal(@last_exited, thread)

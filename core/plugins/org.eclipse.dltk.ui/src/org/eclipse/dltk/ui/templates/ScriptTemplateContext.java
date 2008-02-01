@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.ui.templates;
 
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -57,7 +58,9 @@ public class ScriptTemplateContext extends DocumentTemplateContext {
 
 			return sb.toString();
 		} catch (BadLocationException e) {
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 
 		return "";

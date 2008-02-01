@@ -11,7 +11,6 @@ package org.eclipse.dltk.internal.launching;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -43,11 +42,14 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallChangedListener;
@@ -123,9 +125,29 @@ public class DLTKLaunchingPlugin extends Plugin implements
 				message, null));
 	}
 
+	public static void logWarning(String message) {
+		log(new Status(IStatus.WARNING, getUniqueIdentifier(), IStatus.ERROR,
+				message, null));
+	}
+
+	public static void logWarning(Throwable t) {
+		log(new Status(IStatus.WARNING, getUniqueIdentifier(), IStatus.ERROR, t
+				.getMessage(), t));
+	}
+
+	public static void logWarning(String message, Throwable t) {
+		log(new Status(IStatus.WARNING, getUniqueIdentifier(), IStatus.ERROR,
+				message, t));
+	}
+
 	public static void log(Throwable e) {
 		log(new Status(IStatus.ERROR, getUniqueIdentifier(), IStatus.ERROR, e
 				.getMessage(), e));
+	}
+
+	public static void log(String message, Throwable e) {
+		log(new Status(IStatus.ERROR, getUniqueIdentifier(), IStatus.ERROR,
+				message, e));
 	}
 
 	/**
@@ -285,34 +307,43 @@ public class DLTKLaunchingPlugin extends Plugin implements
 		// DebugPlugin.getDefault().getLaunchManager().addLaunchListener(this);
 		// DebugPlugin.getDefault().addDebugEventListener(this);
 
-		// prefetch library locations
-		Job libPrefetch = new Job("Inializing DLTK launching") {
-
-			protected IStatus run(IProgressMonitor monitor) {
-				IInterpreterInstallType[] installTypes = ScriptRuntime
-						.getInterpreterInstallTypes();
-				for (int i = 0; i < installTypes.length; i++) {
-					if (installTypes[i] != null) {
-						IInterpreterInstall[] installs = installTypes[i]
-								.getInterpreterInstalls();
-						if (installs != null) {
-							for (int j = 0; j < installs.length; j++) {
-								if (installs[j] != null) {
-									File path = installs[j]
-											.getInstallLocation();
-									installTypes[i]
-											.getDefaultLibraryLocations(path);
-								}
-							}
-						}
-					}
-				}
-				return Status.OK_STATUS;
-			}
-
-		};
-		libPrefetch.setSystem(true);
-		libPrefetch.schedule();
+		// prefetch library locations for default interpreters
+//		Job libPrefetch = new Job("Initializing DLTK launching") {
+//			protected IStatus run(IProgressMonitor monitor) {
+//				try {
+//					IDLTKLanguageToolkit[] toolkits = DLTKLanguageManager
+//							.getLanguageToolkits();
+//					monitor.beginTask("Initialize interpreters", toolkits.length);
+//					for (int i = 0; i < toolkits.length; i++) {
+//						SubProgressMonitor subMonitor = new SubProgressMonitor(
+//								monitor, 1);
+//						String natureId = toolkits[i].getNatureId();
+//						IInterpreterInstall install = ScriptRuntime
+//								.getDefaultInterpreterInstall(natureId);
+//						if (install != null) {
+//							IInterpreterInstallType type = install
+//									.getInterpreterInstallType();
+//							// cache library locations.
+//							type.getDefaultLibraryLocations(install
+//									.getInstallLocation(), install
+//									.getEnvironmentVariables(), subMonitor);
+//						} else {
+//							subMonitor.worked(1);
+//						}
+//						subMonitor.done();
+//					}
+//					monitor.done();
+//				} catch (CoreException e) {
+//					if (DLTKCore.DEBUG) {
+//						e.printStackTrace();
+//					}
+//				}
+//				return Status.OK_STATUS;
+//			}
+//
+//		};
+////		libPrefetch.setSystem(true);
+//		libPrefetch.schedule();
 	}
 
 	/**

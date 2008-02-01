@@ -12,6 +12,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.compiler.problem.IProblemFactory;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
+import org.eclipse.dltk.core.DLTKContentTypeManager;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuffer;
@@ -19,6 +20,7 @@ import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.IPackageDeclaration;
 import org.eclipse.dltk.core.IProjectFragment;
@@ -118,8 +120,11 @@ public abstract class AbstractSourceModule extends Openable implements
 	 * @see org.eclipse.dltk.internal.core.ModelElement#equals(java.lang.Object)
 	 */
 	public boolean equals(Object obj) {
-		AbstractSourceModule other = (AbstractSourceModule) obj;
-		return this.owner.equals(other.owner) && super.equals(obj);
+		if (obj instanceof AbstractSourceModule) {
+			AbstractSourceModule other = (AbstractSourceModule) obj;
+			return this.owner.equals(other.owner) && super.equals(obj);
+		}
+		return false;
 	}
 
 	public boolean exists() {
@@ -301,22 +306,27 @@ public abstract class AbstractSourceModule extends Openable implements
 	}
 
 	public String getSource() throws ModelException {
-		IBuffer buffer = getBuffer();
+		IBuffer buffer = getBufferNotOpen();
 		if (buffer == null)
-			return ""; //$NON-NLS-1$
+			return new String( getBufferContent() ); //$NON-NLS-1$
 		return buffer.getContents();
 	}
 
 	public char[] getSourceAsCharArray() throws ModelException {
-		return getSource().toCharArray();
+		IBuffer buffer = getBufferNotOpen();
+		if (buffer == null)
+			return getBufferContent(); //$NON-NLS-1$
+		return buffer.getContents().toCharArray();
+//		return getSource().toCharArray();
 	}
 
 	public String getSourceContents() {
 		try {
 			return getSource();
 		} catch (ModelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 			return "";
 		}
 	}
@@ -439,7 +449,7 @@ public abstract class AbstractSourceModule extends Openable implements
 			IBuffer buffer = getBufferManager().getBuffer(this);
 			if (buffer == null) {
 				buffer = openBuffer(pm, moduleInfo); // open buffer
-														// independently
+				// independently
 				// from the info, since we are building the info
 			}
 
@@ -650,7 +660,10 @@ public abstract class AbstractSourceModule extends Openable implements
 		}
 
 		if (toolkit != null) {
-			return toolkit.validateSourceModule(resource);
+			if (DLTKContentTypeManager.isValidResourceForContentType(toolkit,
+					resource)) {
+				return IModelStatus.VERIFIED_OK;
+			}
 		}
 
 		return null;

@@ -21,6 +21,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
 import org.eclipse.dltk.core.IScriptProject;
+import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 
 public class ScriptLaunchUtil {
 	// Create file with script content
@@ -64,7 +65,30 @@ public class ScriptLaunchUtil {
 		if (workingDirectoryPath != null) {
 			file = workingDirectoryPath.toFile();
 		}
+		if (DLTKLaunchingPlugin.TRACE_EXECUTION) {
+			traceExecution("runScript with interpreter", cmdLine,
+					environmentAsStrings);
+		}
 		return DebugPlugin.exec(cmdLine, file, environmentAsStrings);
+	}
+
+	private static void traceExecution(String processLabel,
+			String[] cmdLineLabel, String[] environment) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("-----------------------------------------------\n");
+		sb.append("Running ").append(processLabel).append('\n');
+		// sb.append("Command line: ").append(cmdLineLabel).append('\n');
+		sb.append("Command line: ");
+		for (int i = 0; i < cmdLineLabel.length; i++) {
+			sb.append(" " + cmdLineLabel[i]);
+		}
+		sb.append("\n");
+		sb.append("Environment:\n");
+		for (int i = 0; i < environment.length; i++) {
+			sb.append('\t').append(environment[i]).append('\n');
+		}
+		sb.append("-----------------------------------------------\n");
+		System.out.println(sb);
 	}
 
 	public static Process runScriptWithInterpreter(String interpreter,
@@ -115,6 +139,7 @@ public class ScriptLaunchUtil {
 
 		ILaunch launch = new Launch(null, ILaunchManager.RUN_MODE, null);
 
+		// will use 'instance scoped' interpreter here
 		IInterpreterRunner runner = install.getInterpreterRunner(launch
 				.getLaunchMode());
 

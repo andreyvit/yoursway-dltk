@@ -30,17 +30,20 @@ public class JavaScriptTemplatePreferencePage extends
 				.getContextTypeRegistry());
 	}
 
-	protected ScriptSourceViewerConfiguration createSourceViewerConfiguration(
-			IDocument document) {
+	protected ScriptSourceViewerConfiguration createSourceViewerConfiguration() {
 		IPreferenceStore store = JavaScriptUI.getDefault().getPreferenceStore();
 		JavascriptTextTools textTools = JavaScriptUI.getDefault()
 				.getTextTools();
-		textTools.setupDocumentPartitioner(document,
-				IJavaScriptPartitions.JS_PARTITIONING);
-
 		return new SimpleJavascriptSourceViewerConfiguration(textTools
 				.getColorManager(), store, null,
 				IJavaScriptPartitions.JS_PARTITIONING, false);
 
+	}
+
+	protected void setDocumentParticioner(IDocument document) {
+		JavascriptTextTools textTools = JavaScriptUI.getDefault()
+				.getTextTools();
+		textTools.setupDocumentPartitioner(document,
+				IJavaScriptPartitions.JS_PARTITIONING);
 	}
 }

@@ -34,19 +34,20 @@ import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.ScriptUtils;
+import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.LaunchingMessages;
 import org.eclipse.dltk.launching.LibraryLocation;
 import org.eclipse.dltk.launching.ScriptRuntime;
+import org.eclipse.dltk.utils.DeployHelper;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
 /**
@@ -64,6 +65,14 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
  */
 public abstract class AbstractInterpreterInstallType implements
 		IInterpreterInstallType, IExecutableExtension {
+	private static final int NOT_WORK_COUNT = -2;
+
+	private static final String DLTK_TOTAL_WORK_START = "%DLTK_TOTAL_WORK_START%:";
+	private static final String DLTK_TOTAL_WORK_END = "%DLTK_TOTAL_WORK_END%";
+	private static final String DLTK_TOTAL_WORK_INC = "%DLTK_TOTAL_WORK_INCREMENT%";
+
+	public static final String DLTK_PATH_PREFIX = "DLTK:";
+
 	private List fInterpreters;
 
 	private String fId;
@@ -194,7 +203,7 @@ public abstract class AbstractInterpreterInstallType implements
 		}
 	}
 
-	protected String[] extractEnvironment() {
+	protected String[] extractEnvironment(EnvironmentVariable[] variables) {
 		Map systemEnv = DebugPlugin.getDefault().getLaunchManager()
 				.getNativeEnvironmentCasePreserved();
 
@@ -204,7 +213,24 @@ public abstract class AbstractInterpreterInstallType implements
 		Iterator it = systemEnv.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry entry = (Map.Entry) it.next();
+			// Skip all in variables.
+			if (variables != null) {
+				for (int i = 0; i < variables.length; i++) {
+					if (variables[i].getName().equals(entry.getKey())) {
+						continue;
+					}
+				}
+			}
 			list.add(entry.getKey() + "=" + entry.getValue());
+		}
+
+		// Overwrite from variables with updates values.
+		if (variables != null) {
+			for (int i = 0; i < variables.length; i++) {
+				list
+						.add(variables[i].getName() + "="
+								+ variables[i].getValue());
+			}
 		}
 
 		return (String[]) list.toArray(new String[list.size()]);
@@ -226,7 +252,8 @@ public abstract class AbstractInterpreterInstallType implements
 
 	protected File storeToMetadata(Plugin plugin, String name, String path)
 			throws IOException {
-		return ScriptUtils.storeToMetadata(plugin, name, path);
+		return DeployHelper.deploy(plugin, path).toFile();
+		// return ScriptUtils.storeToMetadata(plugin, name, path);
 	}
 
 	/**
@@ -237,44 +264,113 @@ public abstract class AbstractInterpreterInstallType implements
 	 * @param p
 	 * @return
 	 */
-	protected String readPathsFromProcess(IProgressMonitor monitor, Process p) {
+	protected String[] readPathsFromProcess(final IProgressMonitor monitor,
+			Process p) {
+		// DLTKLaunchingPlugin.log(new Status(IStatus.INFO,
+		// DLTKLaunchingPlugin.PLUGIN_ID, IStatus.INFO,
+		// "Start reading discovery script library paths", null));
 		final BufferedReader dataIn = new BufferedReader(new InputStreamReader(
 				p.getInputStream()));
 
-		final String[] result = new String[] { null };
+		final List result = new ArrayList();
 
-		final Object lock = new Object();
+		// final Object lock = new Object();
 
-		Thread tReading = new Thread(new Runnable() {
-			public void run() {
-				try {
-					result[0] = dataIn.readLine();
-
-					synchronized (lock) {
-						lock.notifyAll();
+		// Thread tReading = new Thread(new Runnable() {
+		// public void run() {
+		boolean workReceived = false;
+		try {
+			while (true) {
+				if (monitor != null && monitor.isCanceled()) {
+					monitor.worked(1);
+					break;
+				}
+				String line = dataIn.readLine();
+				if (line != null && monitor != null && !workReceived) {
+					int work = extractWorkFromLine(line);
+					if (work != NOT_WORK_COUNT) {
+						monitor.beginTask(
+								"Featching interpeter library locations", work);
+						// monitor.subTask("Featching interpeter library
+						// locations");
+						workReceived = true;
 					}
-
-				} catch (IOException e) {
+				}
+				if (line != null && monitor != null && detectWorkInc(line)) {
+					monitor.worked(1);
+				}
+				if (line != null) {
+					result.add(line);
+				} else {
+					break;
 				}
 			}
-		});
 
-		tReading.start();
-
-		synchronized (lock) {
-			try {
-				lock.wait(5000);
-			} catch (InterruptedException e) {
-
+		} catch (IOException e) {
+			DLTKLaunchingPlugin.log(new Status(IStatus.INFO,
+					DLTKLaunchingPlugin.PLUGIN_ID, IStatus.INFO,
+					"Failed to read from discovert script output stream:"
+							+ e.getMessage(), e));
+		} finally {
+			if (monitor != null) {
+				if (!workReceived) {
+					monitor.beginTask("Featching interpeter library locations",
+							1);
+				}
+				monitor.done();
 			}
-			p.destroy();
 		}
 
-		return result[0];
+		return (String[]) result.toArray(new String[result.size()]);
+	}
+
+	private boolean detectWorkInc(String line) {
+		return line.indexOf(DLTK_TOTAL_WORK_INC) != -1;
+
+	}
+
+	/**
+	 * Extract work from specified line.
+	 */
+	private int extractWorkFromLine(String line) {
+		int pos1 = line.indexOf(DLTK_TOTAL_WORK_START);
+		int pos2 = line.indexOf(DLTK_TOTAL_WORK_END);
+		if (pos1 != -1 && pos2 != -1) {
+			String totalWork = line.substring(pos1
+					+ DLTK_TOTAL_WORK_START.length(), pos2);
+			int intValue = new Integer(totalWork).intValue();
+			if (intValue == -1) {
+				return IProgressMonitor.UNKNOWN;
+			}
+			return intValue;
+		}
+		return NOT_WORK_COUNT;
+	}
+
+	/**
+	 * Combine list of strings
+	 * 
+	 * @param result
+	 * @return
+	 */
+	private String combine(List result) {
+		StringBuffer buffer = new StringBuffer();
+		for (int i = 0; i < result.size(); i++) {
+			buffer.append(" " + result.get(i));
+		}
+		return buffer.toString();
 	}
 
 	public static LibraryLocation[] correctLocations(final List locs) {
+		return correctLocations(locs, null);
+	}
+
+	public static LibraryLocation[] correctLocations(final List locs,
+			IProgressMonitor monitor) {
 		List resolvedLocs = new ArrayList();
+		if (monitor != null) {
+			monitor.beginTask("Correct locations...", locs.size());
+		}
 		for (Iterator iter = locs.iterator(); iter.hasNext();) {
 			LibraryLocation l = (LibraryLocation) iter.next();
 			String res;
@@ -290,10 +386,16 @@ public abstract class AbstractInterpreterInstallType implements
 			LibraryLocation n = new LibraryLocation(new Path(res));
 			if (!resolvedLocs.contains(n))
 				resolvedLocs.add(n);
+			if (monitor != null) {
+				monitor.worked(1);
+			}
 		}
 
 		LibraryLocation[] libs = (LibraryLocation[]) resolvedLocs
 				.toArray(new LibraryLocation[resolvedLocs.size()]);
+		if (monitor != null) {
+			monitor.done();
+		}
 		return libs;
 	}
 
@@ -317,8 +419,9 @@ public abstract class AbstractInterpreterInstallType implements
 	 * run the interpreter library lookup in a
 	 * <code>ProgressMonitorDialog</code>
 	 */
-	protected void runLibraryLookup(final IRunnableWithProgress runnable)
-			throws InvocationTargetException, InterruptedException {
+	protected void runLibraryLookup(final IRunnableWithProgress runnable,
+			IProgressMonitor monitor) throws InvocationTargetException,
+			InterruptedException {
 
 		/*
 		 * ProgressMonitorDialog progress = new ProgressMonitorDialog(null);
@@ -327,7 +430,7 @@ public abstract class AbstractInterpreterInstallType implements
 		 * runnable.run(new NullProgressMonitor()); } } else { runnable.run(new
 		 * NullProgressMonitor()); }
 		 */
-		runnable.run(new NullProgressMonitor());
+		runnable.run(monitor);
 	}
 
 	protected abstract String getPluginId();
@@ -348,7 +451,11 @@ public abstract class AbstractInterpreterInstallType implements
 	}
 
 	protected String[] parsePaths(String result) {
-		String[] paths = result.split(getBuildPathDelimeter());
+		String res = result;
+		if (res.startsWith(DLTK_PATH_PREFIX)) {
+			res = res.substring(DLTK_PATH_PREFIX.length());
+		}
+		String[] paths = res.split(getBuildPathDelimeter());
 		List filtered = new ArrayList();
 		for (int i = 0; i < paths.length; ++i) {
 			if (!paths[i].equals(".")) {
@@ -358,6 +465,31 @@ public abstract class AbstractInterpreterInstallType implements
 
 		return (String[]) filtered.toArray(new String[filtered.size()]);
 
+	}
+
+	/**
+	 * Then multiple lines of output are provided, we parse only paths started
+	 * from "DLTK:" sequence.
+	 * 
+	 * @param result
+	 * @return
+	 */
+	protected String[] parsePaths(String[] result) {
+		List filtered = new ArrayList();
+		for (int k = 0; k < result.length; ++k) {
+			String res = result[k];
+			if (res.startsWith(DLTK_PATH_PREFIX)) {
+				res = res.substring(DLTK_PATH_PREFIX.length());
+
+				String[] paths = parsePaths(res);
+				for (int i = 0; i < paths.length; ++i) {
+					if (!paths[i].equals(".")) {
+						filtered.add(paths[i].trim());
+					}
+				}
+			}
+		}
+		return (String[]) filtered.toArray(new String[filtered.size()]);
 	}
 
 	public IStatus validateInstallLocation(File installLocation) {
@@ -401,35 +533,58 @@ public abstract class AbstractInterpreterInstallType implements
 		}
 	}
 
-	protected void retrivePaths(final File installLocation,
-			final List locations, IProgressMonitor monitor, File pathFile) {
+	protected String retrivePaths(final File installLocation,
+			final List locations, IProgressMonitor monitor, File pathFile,
+			EnvironmentVariable[] variables) {
 		Process process = null;
 		try {
-			monitor.beginTask(InterpreterMessages.statusFetchingLibs, 1);
-			if (monitor.isCanceled()) {
-				return;
+			if (monitor != null) {
+				// monitor.beginTask(InterpreterMessages.statusFetchingLibs, 1);
+				if (monitor.isCanceled()) {
+					return null;
+				}
 			}
 			String[] cmdLine;
-			String[] env = extractEnvironment();
+			String[] env = extractEnvironment(variables);
 
 			cmdLine = buildCommandLine(installLocation, pathFile);
 			try {
+				if (DLTKLaunchingPlugin.TRACE_EXECUTION) {
+					traceExecution("Tcl library discovery script", cmdLine, env);
+				}
 				process = DebugPlugin.exec(cmdLine, null, env);
 				if (process != null) {
-					String result = readPathsFromProcess(monitor, process);
+					String result[] = readPathsFromProcess(monitor, process);
 					if (result == null) {
 						throw new IOException("null result from process");
 					}
-
-					String[] paths = parsePaths(result);
+					if (DLTKLaunchingPlugin.TRACE_EXECUTION) {
+						traceDiscoveryOutput(process, result);
+					}
+					String[] paths = null;
+					if (result.length == 1) {
+						paths = parsePaths(result[0]);
+					} else {
+						paths = parsePaths(result);
+					}
 
 					IPath path = new Path(pathFile.getCanonicalPath())
 							.removeLastSegments(1);
 
 					fillLocationsExceptOne(locations, paths, path);
+					if (result != null) {
+						StringBuffer resultBuffer = new StringBuffer();
+						for (int i = 0; i < result.length; i++) {
+							resultBuffer.append(result[i]).append("\n");
+						}
+						return resultBuffer.toString();
+					}
 				}
 			} catch (CoreException e) {
-				// TODO: handle
+				DLTKLaunchingPlugin.log(e);
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
 			}
 
 		} catch (IOException e) {
@@ -442,18 +597,71 @@ public abstract class AbstractInterpreterInstallType implements
 			if (process != null) {
 				process.destroy();
 			}
-			monitor.done();
+			if (monitor != null) {
+				monitor.done();
+			}
 		}
+		return null;
+	}
+
+	private void traceDiscoveryOutput(Process process, String[] result) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("-----------------------------------------------\n");
+		sb.append("Discovery script output:").append('\n');
+		sb.append("Output Result:");
+		if (result != null) {
+			for (int i = 0; i < result.length; i++) {
+				sb.append(" " + result[i]);
+			}
+		} else {
+			sb.append("Null");
+		}
+		sb.append("\n-----------------------------------------------\n");
+		System.out.println(sb);
+	}
+
+	private void traceExecution(String processLabel, String[] cmdLineLabel,
+			String[] environment) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("-----------------------------------------------\n");
+		sb.append("Running ").append(processLabel).append('\n');
+		// sb.append("Command line: ").append(cmdLineLabel).append('\n');
+		sb.append("Command line: ");
+		for (int i = 0; i < cmdLineLabel.length; i++) {
+			sb.append(" " + cmdLineLabel[i]);
+		}
+		sb.append("\n");
+		sb.append("Environment:\n");
+		for (int i = 0; i < environment.length; i++) {
+			sb.append('\t').append(environment[i]).append('\n');
+		}
+		sb.append("-----------------------------------------------\n");
+		System.out.println(sb);
 	}
 
 	protected IRunnableWithProgress createLookupRunnable(
-			final File installLocation, final List locations) {
+			final File installLocation, final List locations,
+			final EnvironmentVariable[] variables) {
 		return new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) {
 				try {
-					retrivePaths(installLocation, locations, monitor,
-							createPathFile());
+					File locator = createPathFile();
+					String result = retrivePaths(installLocation, locations,
+							monitor, locator, variables);
+					String message = "Failed to obtain library locations for "
+							+ installLocation.getName() + " with "
+							+ locator.toString();
+					if (locations.size() == 0) {
+						if (result == null) {
+							DLTKLaunchingPlugin.log(message);
+						} else {
+							DLTKLaunchingPlugin.logWarning(message,
+									new Exception("Output:\n" + result));
+						}
+					}
 				} catch (IOException e) {
+					DLTKLaunchingPlugin.log(
+							"Problem while obtaining interpreter libraries", e);
 					if (DLTKCore.DEBUG) {
 						e.printStackTrace();
 					}
@@ -464,17 +672,34 @@ public abstract class AbstractInterpreterInstallType implements
 
 	public synchronized LibraryLocation[] getDefaultLibraryLocations(
 			final File installLocation) {
-		if (fCachedLocations.containsKey(installLocation)) {
-			return (LibraryLocation[]) fCachedLocations.get(installLocation);
+		return getDefaultLibraryLocations(installLocation, null);
+	}
+
+	public synchronized LibraryLocation[] getDefaultLibraryLocations(
+			final File installLocation, EnvironmentVariable[] variables) {
+		return getDefaultLibraryLocations(installLocation, variables, null);
+	}
+
+	public synchronized LibraryLocation[] getDefaultLibraryLocations(
+			final File installLocation, EnvironmentVariable[] variables,
+			IProgressMonitor monitor) {
+		if (monitor != null) {
+			monitor.beginTask(this.getName() + " getting library paths", 100);
+		}
+		Object cacheKey = makeKey(installLocation, variables);
+		if (fCachedLocations.containsKey(cacheKey)) {
+			return (LibraryLocation[]) fCachedLocations.get(cacheKey);
 		}
 
 		final ArrayList locations = new ArrayList();
 
 		final IRunnableWithProgress runnable = createLookupRunnable(
-				installLocation, locations);
+				installLocation, locations, variables);
 
 		try {
-			runLibraryLookup(runnable);
+			runLibraryLookup(runnable,
+					monitor != null ? new SubProgressMonitor(monitor, 95)
+							: null);
 		} catch (InvocationTargetException e) {
 			getLog().log(
 					createStatus(IStatus.ERROR,
@@ -485,12 +710,26 @@ public abstract class AbstractInterpreterInstallType implements
 							"Error to get default libraries:", e));
 		}
 
-		LibraryLocation[] libs = correctLocations(locations);
+		LibraryLocation[] libs = correctLocations(locations,
+				monitor != null ? new SubProgressMonitor(monitor, 5) : null);
 		if (libs.length != 0) {
-			fCachedLocations.put(installLocation, libs);
+			fCachedLocations.put(cacheKey, libs);
 		}
-
+		if (monitor != null) {
+			monitor.done();
+		}
 		return libs;
+	}
+
+	public static Object makeKey(File installLocation, EnvironmentVariable[] variables) {
+		String key = installLocation.getAbsolutePath();
+		if (variables != null) {
+			for (int i = 0; i < variables.length; i++) {
+				key += "|" + variables[i].getName() + ":"
+						+ variables[i].getValue();
+			}
+		}
+		return key;
 	}
 
 	protected IStatus createStatus(int severity, String message,

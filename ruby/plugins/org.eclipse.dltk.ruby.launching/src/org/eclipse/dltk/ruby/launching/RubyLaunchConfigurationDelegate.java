@@ -27,6 +27,23 @@ import org.eclipse.dltk.utils.DeployHelper;
 public class RubyLaunchConfigurationDelegate extends
 		AbstractScriptLaunchConfigurationDelegate {
 
+	public String getLanguageId() {
+		return RubyNature.NATURE_ID;
+	}
+	protected InterpreterConfig createInterpreterConfig(
+			ILaunchConfiguration configuration, ILaunch launch)
+	throws CoreException {
+		
+		final InterpreterConfig config = super.createInterpreterConfig(
+				configuration, launch);
+		if (config != null) {
+			addEncodingInterpreterArg(config, configuration);
+			addIncludePathInterpreterArg(config, configuration);
+			addStreamSync(config, configuration);
+		}
+		
+		return config;
+	}
 	protected String getCharset(ILaunchConfiguration configuration)
 			throws CoreException {
 		IProject project = getScriptProject(configuration).getProject();
@@ -91,29 +108,7 @@ public class RubyLaunchConfigurationDelegate extends
 		} catch (IOException e) {
 			RubyLaunchingPlugin.log(e);
 		}
-
-		// Old solution
-		// config.addInterpreterArg("-e");
-		// config.addInterpreterArg("STDOUT.sync=true; STDERR.sync=true;
-		// load($0=ARGV.shift)");
 	}
 
-	protected InterpreterConfig createInterpreterConfig(
-			ILaunchConfiguration configuration, ILaunch launch)
-			throws CoreException {
 
-		final InterpreterConfig config = super.createInterpreterConfig(
-				configuration, launch);
-		if( config != null ) {
-			addEncodingInterpreterArg(config, configuration);
-			addIncludePathInterpreterArg(config, configuration);
-			addStreamSync(config, configuration);
-		}
-
-		return config;
-	}
-
-	public String getLanguageId() {
-		return RubyNature.NATURE_ID;
-	}
 }

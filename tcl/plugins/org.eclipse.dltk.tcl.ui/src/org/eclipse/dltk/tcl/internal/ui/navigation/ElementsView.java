@@ -546,7 +546,8 @@ public abstract class ElementsView extends ViewPart {
 					if (monitor.isCanceled())
 						return Status.OK_STATUS;
 					try {
-						if (projects[i].hasNature(TclNature.NATURE_ID)) {
+						if (projects[i].isAccessible()
+								&& projects[i].hasNature(TclNature.NATURE_ID)) {
 							IScriptProject project = DLTKCore
 									.create(projects[i]);
 							if (project != null) {

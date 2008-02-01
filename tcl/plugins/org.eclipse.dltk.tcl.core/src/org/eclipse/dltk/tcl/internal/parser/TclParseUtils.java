@@ -485,6 +485,6 @@ public class TclParseUtils {
 	public static ModuleDeclaration parseModule(ISourceModuleInfo astCache,
 			char[] content, IProblemReporter problemReporter, char[] filename) {
 		return SourceParserUtil.getModuleDeclaration(filename, content,
-				TclNature.NATURE_ID, problemReporter, astCache);
+				TclNature.NATURE_ID, problemReporter, astCache, 0);
 	}
 }

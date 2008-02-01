@@ -31,7 +31,7 @@ public class ScriptBuilderManager {
 	// Contains list of builders for selected nature.
 	private static Map builders;
 
-	private static void initialize() {
+	private synchronized static void initialize() {
 		if (builders != null) {
 			return;
 		}

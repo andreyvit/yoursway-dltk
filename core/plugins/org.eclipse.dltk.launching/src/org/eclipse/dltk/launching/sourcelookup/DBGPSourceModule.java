@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
@@ -131,7 +132,11 @@ public class DBGPSourceModule extends AbstractExternalSourceModule {
 	 */
 	protected String getNatureId() throws CoreException {
 		IPath path = getFullPath();
-		return lookupLanguageToolkit(path).getNatureId();
+		IDLTKLanguageToolkit toolkit = lookupLanguageToolkit(path);
+		if (toolkit == null) 
+			return null;
+		
+		return toolkit.getNatureId();
 	}
 
 	/*

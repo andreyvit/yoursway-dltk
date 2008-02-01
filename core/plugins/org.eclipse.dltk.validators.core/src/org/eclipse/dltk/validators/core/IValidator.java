@@ -12,6 +12,7 @@ package org.eclipse.dltk.validators.core;
 import java.io.OutputStream;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.core.ISourceModule;
 import org.w3c.dom.Document;
@@ -31,8 +32,8 @@ public interface IValidator {
 	
 	//Per-resouce operations
 	// If console is non null then output to console are possible.
-	IStatus validate(ISourceModule module, OutputStream console );
-	IStatus validate(IResource resource, OutputStream console );
+	IStatus validate(ISourceModule[] modules, OutputStream console );
+	IStatus validate(IResource[] resources, OutputStream console );
 	
 	// Used to store information into
 	void storeTo(Document doc, Element element);
@@ -44,6 +45,8 @@ public interface IValidator {
 	 * Remove all reported markers.
 	 * @param module
 	 */
-	void clean(ISourceModule module);
-	void clean(IResource resource);
+	void clean(ISourceModule[] module);
+	void clean(IResource[] resource);
+	
+	public void setProgressMonitor(IProgressMonitor monitor);
 }

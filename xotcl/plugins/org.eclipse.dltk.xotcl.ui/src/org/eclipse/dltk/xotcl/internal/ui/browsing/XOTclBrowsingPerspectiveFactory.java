@@ -17,7 +17,6 @@ import org.eclipse.dltk.tcl.internal.ui.wizards.TclFileCreationWizard;
 import org.eclipse.dltk.tcl.internal.ui.wizards.TclProjectCreationWizard;
 import org.eclipse.dltk.tcl.ui.TclPerspective;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
-import org.eclipse.dltk.ui.wizards.NewPackageCreationWizard;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.IPlaceholderFolderLayout;

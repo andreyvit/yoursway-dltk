@@ -16,8 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
-import org.eclipse.dltk.launching.debug.DebuggingEngineManager;
-import org.eclipse.dltk.launching.debug.IDebuggingEngine;
+import org.eclipse.dltk.internal.launching.DebugRunnerDelegate;
 
 /**
  * Abstract implementation of a interpreter install.
@@ -113,12 +112,14 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 		LibraryLocation[] newLocations = locations;
 		if (newLocations == null) {
 			newLocations = getInterpreterInstallType()
-					.getDefaultLibraryLocations(getInstallLocation());
+					.getDefaultLibraryLocations(getInstallLocation(),
+							getEnvironmentVariables(), null);
 		}
 		LibraryLocation[] prevLocations = fSystemLibraryDescriptions;
 		if (prevLocations == null) {
 			prevLocations = getInterpreterInstallType()
-					.getDefaultLibraryLocations(getInstallLocation());
+					.getDefaultLibraryLocations(getInstallLocation(),
+							getEnvironmentVariables(), null);
 		}
 
 		if (newLocations.length == prevLocations.length) {
@@ -239,15 +240,7 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 	}
 
 	protected IInterpreterRunner getDebugInterpreterRunner() {
-		DebuggingEngineManager manager = DebuggingEngineManager.getInstance();
-		IDebuggingEngine engine = manager
-				.getSelectedDebuggingEngine(getNatureId());
-
-		if (engine != null) {
-			return engine.getRunner(this);
-		}
-
-		return null;
+		return new DebugRunnerDelegate(this);
 	}
 
 	public IInterpreterRunner getInterpreterRunner(String mode) {
@@ -263,7 +256,8 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 	}
 
 	public void setEnvironmentVariables(EnvironmentVariable[] variables) {
-		PropertyChangeEvent event = new PropertyChangeEvent(this,
+		PropertyChangeEvent event = new PropertyChangeEvent(
+				this,
 				IInterpreterInstallChangedListener.PROPERTY_ENVIRONMENT_VARIABLES,
 				this.fEnvironmentVariables, variables);
 		this.fEnvironmentVariables = variables;

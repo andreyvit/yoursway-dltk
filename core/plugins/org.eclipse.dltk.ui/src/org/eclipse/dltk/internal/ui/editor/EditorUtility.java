@@ -23,16 +23,16 @@ import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.ScriptModelUtil;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IExternalSourceModule;
 import org.eclipse.dltk.core.IForeignElement;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.ISourceReference;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
@@ -89,11 +89,6 @@ public class EditorUtility {
 					return project;
 				}
 			}
-		} else {
-			if (input != null) {
-				System.err.println("DLTK: unhandled InputType");
-			}
-			dProject = null;
 		}
 		return dProject;
 	}

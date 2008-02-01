@@ -29,51 +29,51 @@ end
 end
 
 def put_methods!(metaclass)
-	i = metaclass.included_modules
+    modules = metaclass.included_modules
 	
-	ms = metaclass.public_instance_methods(false)
-	for t in i do; ms -= t.public_instance_methods(true); end
+	methods = metaclass.public_instance_methods(false)
+	for mod in modules do; methods -= mod.public_instance_methods(true); end
 	
 	$data << "\t\npublic\n"
-	for i in ms do
-		put_rdoc(metaclass.name + "." + i.to_s)
+	for method in methods do
+	    put_rdoc(metaclass.name + "." + method.to_s)
 		$data << <<-"END"		
-	def #{i.to_s} (#{generateArgs(metaclass.instance_method(i).arity)})
+	def #{method.to_s} (#{generateArgs(metaclass.instance_method(method).arity)})
 	end
 	
 		END
 	end
 	
-	ms = metaclass.protected_instance_methods(false)
-	for t in i do; 
-		if t.respond_to?(:protected_instance_methods) then 
-			ms -= t.protected_instance_methods(true)
+	methods = metaclass.protected_instance_methods(false)
+	for mod in modules do; 
+	    if mod.respond_to?(:protected_instance_methods) then 
+	        methods -= mod.protected_instance_methods(true)
 		end  
 	end
 	
 	$data << "\t\nprotected\n"
-	for i in ms do
-		put_rdoc(metaclass.name + "." + i.to_s)
+	for method in methods do
+	    put_rdoc(metaclass.name + "." + method.to_s)
 		$data << <<-"END"		
-	def #{i.to_s} (#{generateArgs(metaclass.instance_method(i).arity)})
+	def #{method.to_s} (#{generateArgs(metaclass.instance_method(method).arity)})
 	end
 	
 		END
 	end
 	
 	
-	ms = metaclass.private_instance_methods(false)
-	for t in i do; 
-		if t.respond_to?(:private_instance_methods) then 
-			ms -= t.private_instance_methods(true)
+	methods = metaclass.private_instance_methods(false)
+	for mod in modules do; 
+	    if mod.respond_to?(:private_instance_methods) then 
+	        methods -= mod.private_instance_methods(true)
 		end 		 
 	end
 	
 	$data << "\t\nprivate\n"
-	for i in ms do
-		put_rdoc(metaclass.name + "." + i.to_s)
+	for method in methods do
+	    put_rdoc(metaclass.name + "." + method.to_s)
 		$data << <<-"END"		
-	def #{i.to_s} (#{generateArgs(metaclass.instance_method(i).arity)})
+	def #{method.to_s} (#{generateArgs(metaclass.instance_method(method).arity)})
 	end
 	
 		END

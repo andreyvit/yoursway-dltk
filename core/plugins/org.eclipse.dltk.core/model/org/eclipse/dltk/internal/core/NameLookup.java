@@ -94,7 +94,7 @@ public class NameLookup {
 	 * with the buildpath of this NameLookup facility's
 	 * project.
 	 */
-	protected IProjectFragment[] ProjectFragments;
+	protected IProjectFragment[] projectFragments;
 
 	/**
 	 * Table that maps package names to lists of package fragment roots
@@ -142,7 +142,7 @@ public class NameLookup {
 			Util.verbose(" -> working copy size: " + (workingCopies == null ? 0 : workingCopies.length));  //$NON-NLS-1$
 			start = System.currentTimeMillis();
 		}
-		this.ProjectFragments = ProjectFragments;
+		this.projectFragments = ProjectFragments;
 		if (workingCopies == null) {
 			this.scriptFolders = ScriptFolders;
 			this.isPackageCache = isPackage;
@@ -254,11 +254,11 @@ public class NameLookup {
 	 * should be considered.
 	 */
 	private void findAllTypes(String prefix, boolean partialMatch, int acceptFlags, IModelElementRequestor requestor) {
-		int count= this.ProjectFragments.length;
+		int count= this.projectFragments.length;
 		for (int i= 0; i < count; i++) {
 			if (requestor.isCanceled())
 				return;
-			IProjectFragment root= this.ProjectFragments[i];
+			IProjectFragment root= this.projectFragments[i];
 			IModelElement[] packages= null;
 			try {
 				packages= root.getChildren();
@@ -360,8 +360,8 @@ public class NameLookup {
 		IResource possibleFragment = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
 		if (possibleFragment == null) {
 			//external jar
-			for (int i = 0; i < this.ProjectFragments.length; i++) {
-				IProjectFragment root = this.ProjectFragments[i];
+			for (int i = 0; i < this.projectFragments.length; i++) {
+				IProjectFragment root = this.projectFragments[i];
 				if (!root.isExternal()) {
 					continue;
 				}

@@ -23,9 +23,12 @@ import javax.xml.transform.TransformerException;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
@@ -55,7 +58,8 @@ public final class ValidatorRuntime {
 	// private static ThreadLocal fgEntryCount = new ThreadLocal(); // Integers
 
 	private static Set fgContributedValidators = new HashSet();
-//	private static List markerList = new ArrayList();
+
+	// private static List markerList = new ArrayList();
 
 	private ValidatorRuntime() {
 	}
@@ -331,59 +335,105 @@ public final class ValidatorRuntime {
 		}
 		return (IValidator[]) possible.toArray(new IValidator[possible.size()]);
 	}
-	
+
 	public static IValidator[] getAllValidators() {
 		List possible = new ArrayList();
 		IValidatorType[] vals = getValidatorTypes();
 		for (int i = 0; i < vals.length; i++) {
 			IValidator[] v = vals[i].getValidators();
-			for (int j = 0; j < v.length; j++) {				
+			for (int j = 0; j < v.length; j++) {
 				if (!possible.contains(v[j])) {
 					possible.add(v[j]);
-				}				
+				}
 			}
 		}
 		return (IValidator[]) possible.toArray(new IValidator[possible.size()]);
 	}
 
-	public static void executeActiveValidatorsWithConsole(OutputStream stream,
-			List elements, List resources) {
+	public static void executeActiveValidators(OutputStream stream,
+			List elements, List resources, IProgressMonitor monitor) {
 		IValidator[] activeValidators = getActiveValidators();
-		process(stream, elements, resources, activeValidators, processValidate);
+		process(stream, elements, resources, activeValidators, processValidate,
+				monitor);
 	}
 
-	public static void executeAllValidatorsWithConsole(OutputStream stream,
+	public static void executeActiveValidators(OutputStream stream,
 			List elements, List resources) {
+		executeActiveValidators(stream, elements, resources, null);
+	}
+
+	public static void executeAllValidators(OutputStream stream, List elements,
+			List resources, IProgressMonitor monitor) {
 		IValidator[] activeValidators = getValidValidators();
-		process(stream, elements, resources, activeValidators, processValidate);
-		
+		process(stream, elements, resources, activeValidators, processValidate,
+				monitor);
+	}
+
+	public static void executeValidator(String id, OutputStream stream,
+			List elements, List resources, IProgressMonitor monitor) {
+		IValidator[] validValidators = getValidValidators();
+		List required = new ArrayList();
+		for (int i = 0; i < validValidators.length; i++) {
+			if (id.equals(validValidators[i].getValidatorType().getID())) {
+				required.add(validValidators[i]);
+			}
+		}
+		IValidator[] activeValidators = (IValidator[]) required
+				.toArray(new IValidator[required.size()]);
+		if (activeValidators.length == 0) {
+			if (stream != null) {
+				try {
+					IValidatorType type = getValidatorType(id);
+					String sub = "...";
+					if (type != null) {
+						sub = "for " + type.getName() + "...";
+					}
+					stream
+							.write(("Validation could not be performed...\nPlease check validator preferences " + sub)
+									.getBytes());
+				} catch (IOException e) {
+					if (DLTKCore.DEBUG) {
+						e.printStackTrace();
+					}
+				}
+			}
+			return;
+		}
+		process(stream, elements, resources, activeValidators, processValidate,
+				monitor);
+	}
+
+	public static void executeAllValidators(OutputStream stream, List elements,
+			List resources) {
+		executeAllValidators(stream, elements, resources, null);
 	}
 
 	private interface IProcessAction {
-		IStatus execute(IValidator validator, ISourceModule o, OutputStream out);
+		IStatus execute(IValidator validator, ISourceModule[] o,
+				OutputStream out);
 
-		IStatus execute(IValidator validator, IResource o, OutputStream out);
+		IStatus execute(IValidator validator, IResource[] o, OutputStream out);
 	}
 
 	public static IProcessAction processValidate = new IProcessAction() {
-		public IStatus execute(IValidator validator, ISourceModule o,
+		public IStatus execute(IValidator validator, ISourceModule[] o,
 				OutputStream out) {
 			return validator.validate(o, out);
 		}
 
-		public IStatus execute(IValidator validator, IResource o,
+		public IStatus execute(IValidator validator, IResource[] o,
 				OutputStream out) {
 			return validator.validate(o, out);
 		}
 	};
 	public static IProcessAction processClean = new IProcessAction() {
-		public IStatus execute(IValidator validator, ISourceModule o,
+		public IStatus execute(IValidator validator, ISourceModule[] o,
 				OutputStream out) {
 			validator.clean(o);
 			return null;
 		}
 
-	  	public IStatus execute(IValidator validator, IResource o,
+		public IStatus execute(IValidator validator, IResource[] o,
 				OutputStream out) {
 			validator.clean(o);
 			return null;
@@ -391,70 +441,103 @@ public final class ValidatorRuntime {
 	};
 
 	private static void process(OutputStream stream, List elements,
-			List resources, IValidator[] activeValidators, IProcessAction action) {
+			List resources, IValidator[] activeValidators,
+			IProcessAction action, IProgressMonitor monitor) {
+		if (monitor != null) {
+
+			monitor.beginTask("Validating", activeValidators.length);
+		}
+		int len = 0;
 		if (elements != null) {
-			for (Iterator iterator = elements.iterator(); iterator.hasNext();) {
-				IModelElement el = (IModelElement) iterator.next();
-				if (el instanceof ISourceModule) {
-					ISourceModule module = (ISourceModule) el;
-					IDLTKLanguageToolkit toolkit = null;
-					try {
-						toolkit = DLTKLanguageManager
-								.getLanguageToolkit(module);
-					} catch (CoreException e) {
-						try {
-							if (stream != null) {
-								stream
-										.write(("Error to check element:" + module
-												.getPath()).getBytes());
-							}
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-						e.printStackTrace();
-						continue;
-					}
-					for (int i = 0; i < activeValidators.length; i++) {
-						IValidator v = activeValidators[i];
-						String nature = v.getValidatorType().getNature();
-						if (toolkit.getNatureId().equals(nature)
-								|| nature.equals("#")) {
-
-							// IStatus e = v.validate(module, stream);
-							IStatus e = action.execute(v, module, stream);
-							if (e != null) {
-								if (e.getSeverity() == IStatus.ERROR) {
-									if (stream != null) {
-										String message = e.getMessage();
-										try {
-											stream.write(message.getBytes());
-										} catch (IOException e1) {
-											e1.printStackTrace();
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-
-			}
+			len += (elements.size()) * activeValidators.length;
 		}
 		if (resources != null) {
-			for (Iterator iterator = resources.iterator(); iterator.hasNext();) {
-				IResource el = (IResource) iterator.next();
-				for (int i = 0; i < activeValidators.length; i++) {
-					IValidator v = activeValidators[i];
-					// v.validate(el, stream);
-					action.execute(v, el, stream);
+			len += (resources.size()) * activeValidators.length;
+		}
+		if (elements != null) {
+			for (int i = 0; i < activeValidators.length; i++) {
+				ISourceModule[] modules = filterModulesForValidator(elements,
+						activeValidators[i], monitor);
+				SubProgressMonitor subMonitor = null;
+				if (monitor != null) {
+					subMonitor = new SubProgressMonitor(monitor, 1);
+					activeValidators[i].setProgressMonitor(subMonitor);
+				}
+				action.execute(activeValidators[i], modules, stream);
+				if (subMonitor != null) {
+					subMonitor.done();
 				}
 			}
 		}
+		// if (resources != null) {
+		// for (Iterator iterator = resources.iterator(); iterator.hasNext();) {
+		// if (monitor != null) {
+		// if (monitor.isCanceled()) {
+		// return;
+		// }
+		// }
+		// IResource el = (IResource) iterator.next();
+		// for (int i = 0; i < activeValidators.length; i++) {
+		// IValidator v = activeValidators[i];
+		// IProgressMonitor sub = null;
+		// if (monitor != null) {
+		// sub = new SubProgressMonitor(monitor, 1);
+		// }
+		// v.setProgressMonitor(sub);
+		// v.validate(el, stream);
+		// action.execute(v, el, stream);
+		// if (sub != null) {
+		// sub.done();
+		// }
+		// }
+		// }
+		// }
+		if (monitor != null) {
+			monitor.done();
+		}
+	}
+
+	private static ISourceModule[] filterModulesForValidator(List elements,
+			IValidator v, IProgressMonitor monitor) {
+		List result = new ArrayList();
+		String nature = v.getValidatorType().getNature();
+		for (Iterator iterator = elements.iterator(); iterator.hasNext();) {
+			if (monitor != null) {
+				if (monitor.isCanceled()) {
+					return null;
+				}
+			}
+			IModelElement el = (IModelElement) iterator.next();
+			if (el instanceof ISourceModule) {
+				ISourceModule module = (ISourceModule) el;
+				IDLTKLanguageToolkit toolkit = null;
+				try {
+					toolkit = DLTKLanguageManager.getLanguageToolkit(module);
+				} catch (CoreException e) {
+					if (DLTKCore.DEBUG) {
+						e.printStackTrace();
+					}
+				}
+
+				if (toolkit != null && toolkit.getNatureId().equals(nature)
+						|| nature.equals("#")) {
+					result.add(module);
+				}
+			}
+		}
+		return (ISourceModule[]) result
+				.toArray(new ISourceModule[result.size()]);
 	}
 
 	public static void executeCleanAllValidatorsWithConsole(List elements,
 			List resources) {
+		executeCleanAllValidatorsWithConsole(elements, resources);
+	}
+
+	public static void executeCleanAllValidatorsWithConsole(List elements,
+			List resources, IProgressMonitor monitor) {
 		IValidator[] activeValidators = getAllValidators();
-		process(null, elements, resources, activeValidators, processClean);
+		process(null, elements, resources, activeValidators, processClean,
+				monitor);
 	}
 }

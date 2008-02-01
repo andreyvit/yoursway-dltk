@@ -205,7 +205,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		IProcess process = newProcess(launch, p, processLabel,
 				getDefaultProcessMap());
 		process.setAttribute(IProcess.ATTR_CMDLINE, cmdLineLabel);
-		return process;	
+		return process;
 	}
 
 	private void traceExecution(String processLabel,

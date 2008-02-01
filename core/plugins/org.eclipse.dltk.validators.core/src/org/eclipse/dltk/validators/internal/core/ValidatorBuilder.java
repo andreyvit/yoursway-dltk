@@ -20,14 +20,14 @@ import org.eclipse.dltk.validators.core.ValidatorRuntime;
 public class ValidatorBuilder implements IScriptBuilder {
 
 	public IStatus[] buildModelElements(IScriptProject project, List elements,
-			IProgressMonitor monitor) {
-		ValidatorRuntime.executeActiveValidatorsWithConsole(null, elements, null);
+			IProgressMonitor monitor, int buildType ) {
+		ValidatorRuntime.executeActiveValidators(null, elements, null, monitor);
 		return null;
 	}
 
 	public IStatus[] buildResources(IScriptProject project, List resources,
-			IProgressMonitor monitor) {
-		ValidatorRuntime.executeActiveValidatorsWithConsole(null, null, resources);
+			IProgressMonitor monitor, int buildType) {
+		ValidatorRuntime.executeActiveValidators(null, null, resources, monitor);
 		return null;
 	}
 
@@ -35,5 +35,4 @@ public class ValidatorBuilder implements IScriptBuilder {
 		//We don't provide dependencies here.
 		return null;
 	}
-
 }

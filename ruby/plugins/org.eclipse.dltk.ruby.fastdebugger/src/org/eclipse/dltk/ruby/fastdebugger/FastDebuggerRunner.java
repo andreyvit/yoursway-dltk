@@ -7,8 +7,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.dltk.core.PreferencesLookupDelegate;
 import org.eclipse.dltk.launching.DebuggingEngineRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
@@ -26,15 +26,14 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 
 	private static final String DEBUGGER_SCRIPT = "FastRunner.rb";
 
-	protected IPath getLogFilename(String sessionId) {
-		Preferences preferences = FastDebuggerPlugin.getDefault()
-				.getPluginPreferences();
+	protected IPath getLogFilename(PreferencesLookupDelegate delegate,
+			String sessionId) {
+		String pluginId = FastDebuggerPlugin.PLUGIN_ID;
 
-		String logFilePath = preferences
-				.getString(FastDebuggerPreferenceConstants.LOG_FILE_PATH);
-
-		String logFileName = preferences
-				.getString(FastDebuggerPreferenceConstants.LOG_FILE_NAME);
+		String logFilePath = delegate.getString(pluginId,
+				FastDebuggerPreferenceConstants.LOG_FILE_PATH);
+		String logFileName = delegate.getString(pluginId,
+				FastDebuggerPreferenceConstants.LOG_FILE_NAME);
 
 		String fileName = MessageFormat.format(logFileName,
 				new Object[] { sessionId });
@@ -42,9 +41,9 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 		return Path.fromOSString(logFilePath).append(fileName);
 	}
 
-	protected boolean isLoggingEnabled() {
-		return FastDebuggerPlugin.getDefault().getPluginPreferences()
-				.getBoolean(FastDebuggerPreferenceConstants.ENABLE_LOGGING);
+	protected boolean isLoggingEnabled(PreferencesLookupDelegate delegate) {
+		return delegate.getBoolean(FastDebuggerPlugin.PLUGIN_ID,
+				FastDebuggerPreferenceConstants.ENABLE_LOGGING);
 	}
 
 	protected IPath deploy() throws CoreException {
@@ -62,8 +61,8 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 		super(install);
 	}
 
-	protected InterpreterConfig alterConfig(InterpreterConfig config)
-			throws CoreException {
+	protected InterpreterConfig addEngineConfig(InterpreterConfig config,
+			PreferencesLookupDelegate delegate) throws CoreException {
 		// Get debugger source location
 		final IPath sourceLocation = deploy();
 
@@ -87,9 +86,9 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 		newConfig.addEnvVar(RUBY_SCRIPT_VAR, config.getScriptFilePath()
 				.toPortableString());
 
-		if (isLoggingEnabled()) {
-			newConfig.addEnvVar(RUBY_LOG_VAR, getLogFilename(sessionId)
-					.toPortableString());
+		if (isLoggingEnabled(delegate)) {
+			newConfig.addEnvVar(RUBY_LOG_VAR, getLogFilename(delegate,
+					sessionId).toPortableString());
 		}
 
 		return newConfig;

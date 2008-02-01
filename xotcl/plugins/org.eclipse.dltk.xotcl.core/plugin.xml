@@ -4,8 +4,7 @@
    <extension
          point="org.eclipse.dltk.tcl.core.tclkeywords">
       <keywords
-            class="org.eclipse.dltk.xotcl.internal.core.XOTclKeywords"
-            priority="1">
+            class="org.eclipse.dltk.xotcl.internal.core.XOTclKeywords">
       </keywords>
    </extension>
    <extension
@@ -77,5 +76,11 @@
             priority="0">
       </tclExtension>
    </extension>
-
+   <extension
+         point="org.eclipse.core.runtime.contentTypes">
+      <file-association
+            content-type="org.eclipse.dltk.tclContentType"
+            file-extensions="xotcl">
+      </file-association>
+   </extension>
 </plugin>

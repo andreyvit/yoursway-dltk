@@ -31,8 +31,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.compiler.util.Util;
 import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IProjectFragment;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.internal.ui.actions.WorkbenchRunnableAdapter;
 import org.eclipse.dltk.internal.ui.wizards.BuildpathDialogAccess;
@@ -68,11 +68,11 @@ public class LibrariesWorkbookPage extends BuildPathBasePage {
 	private final int IDX_ADDZIP = 0;
 	private final int IDX_ADDEXT = 1;
 	private final int IDX_ADDLIB = 2;
-	private final int IDX_ADDFOL = 3;
-	private final int IDX_ADDEXTFOL = 4;
-	private final int IDX_EDIT = 6;
-	private final int IDX_REMOVE = 7;
-	private final int IDX_REPLACE = 9;
+//	private final int IDX_ADDFOL = 3;
+	private final int IDX_ADDEXTFOL = 3;
+	private final int IDX_EDIT = 5;
+	private final int IDX_REMOVE = 6;
+	private final int IDX_REPLACE = 8;
 	
 	private final int IDX_WITHOUTZIP = -2;
 	private int IDX_ADD = 0;
@@ -87,7 +87,7 @@ public class LibrariesWorkbookPage extends BuildPathBasePage {
 				NewWizardMessages.LibrariesWorkbookPage_libraries_addzip_button,
 				NewWizardMessages.LibrariesWorkbookPage_libraries_addextzip_button,
 				NewWizardMessages.LibrariesWorkbookPage_libraries_addlibrary_button,
-				NewWizardMessages.LibrariesWorkbookPage_libraries_add_source_folder_button,
+//				NewWizardMessages.LibrariesWorkbookPage_libraries_add_source_folder_button,
 				NewWizardMessages.LibrariesWorkbookPage_libraries_add_external_source_folder_button,
 				/* */null, 
 				NewWizardMessages.LibrariesWorkbookPage_libraries_edit_button,
@@ -97,7 +97,7 @@ public class LibrariesWorkbookPage extends BuildPathBasePage {
 		};
 		String[] buttonLabelsWithout = new String[] {
 				NewWizardMessages.LibrariesWorkbookPage_libraries_addlibrary_button,
-				NewWizardMessages.LibrariesWorkbookPage_libraries_add_source_folder_button,
+//				NewWizardMessages.LibrariesWorkbookPage_libraries_add_source_folder_button,
 				NewWizardMessages.LibrariesWorkbookPage_libraries_add_external_source_folder_button,
 				/* */null, 
 				NewWizardMessages.LibrariesWorkbookPage_libraries_edit_button,
@@ -235,9 +235,9 @@ public class LibrariesWorkbookPage extends BuildPathBasePage {
 			case IDX_ADDEXTFOL: /* add folder */
 				libentries = opensExtSourceFolderDialog(null);
 				break;
-			case IDX_ADDFOL: /* add folder */
-				libentries = opensSourceFolderDialog(null);
-				break;
+//			case IDX_ADDFOL: /* add folder */
+//				libentries = opensSourceFolderDialog(null);
+//				break;
 			case IDX_EDIT: /* edit */
 				editEntry();
 				return;
@@ -259,9 +259,9 @@ public class LibrariesWorkbookPage extends BuildPathBasePage {
 					elementsToAdd.add(curr);
 				}
 			}
-			if (!elementsToAdd.isEmpty() && (index == IDX_ADDFOL+IDX_ADD)) {
-				askForAddingExclusionPatternsDialog(elementsToAdd);
-			}
+//			if (!elementsToAdd.isEmpty() && (index == IDX_ADDFOL+IDX_ADD)) {
+//				askForAddingExclusionPatternsDialog(elementsToAdd);
+//			}
 			fLibrariesList.addElements(elementsToAdd);
 			if (index == IDX_ADDLIB+IDX_ADD ) {
 				fLibrariesList.refresh();
@@ -542,7 +542,7 @@ public class LibrariesWorkbookPage extends BuildPathBasePage {
 			fLibrariesList.enableButton(IDX_ADDZIP+IDX_ADD, noAttributes);
 			fLibrariesList.enableButton(IDX_REPLACE+IDX_ADD, getSelectedProjectFragment() != null);
 		}
-		fLibrariesList.enableButton(IDX_ADDFOL+IDX_ADD, noAttributes);		
+//		fLibrariesList.enableButton(IDX_ADDFOL+IDX_ADD, noAttributes);		
 		fLibrariesList.enableButton(IDX_ADDLIB+IDX_ADD, noAttributes);		
 	}
 

@@ -1,27 +1,18 @@
-###############################################################################
 #!/bin/sh
-# find-pkg-src.tcl \
+# path.tcl \
 exec tclsh "$0" ${1+"$@"}
-
-###############################################################################
-# Copyright (c) 2005, 2007 IBM Corporation and others.
-# All rights reserved. This program and the accompanying materials
-# are made available under the terms of the Eclipse Public License v1.0
-# which accompanies this distribution, and is available at
-# http://www.eclipse.org/legal/epl-v10.html
-#
 
 rename package package-org
 proc package {subcmd args} {
-	global pkg pkg_list pkg_stack
+    global pkg_list pkg_stack
 	
 	switch -exact -- $subcmd {
 		"ifneeded" {
 			set name [lindex $args 0]
 			set vers [lindex $args 1]
 			set body [lindex $args 2]
-						set pkg_list([list $name $vers]) {}
-			return [uplevel 1 "package-org $subcmd $args"]
+			set pkg_list([list $name $vers]) {}
+			return [uplevel 1 "::package-org $subcmd $args"]
 		}
 		"require" {
 			set name [lindex $args 0]
@@ -31,10 +22,8 @@ proc package {subcmd args} {
 				set vers [lindex $args 2]
 			}
 			set pkg_stack [linsert $pkg_stack 0 $name]
-			
 			set retCode [catch {uplevel 1 "::package-org $subcmd $args"} vers]
 			set pkg_stack [lrange $pkg_stack 1 end]
-			
 			return -code $retCode $vers
 		}
 		default {}
@@ -45,62 +34,96 @@ proc package {subcmd args} {
 
 rename source source-org
 proc source {args} {
-	global pkg pkg_stack
+	global tcl_version
+	global pkg_files pkg_stack
 	
 	set fname [lindex $args end]
 	set pname [lindex $pkg_stack 0]
 	# Skip pkgIndex.tcl file or if pkg name is null
 	if {![string equal $pname ""] && 
 		![string equal [file tail $fname] "pkgIndex.tcl"]} {
-		lappend pkg($pname) [file normalize $fname]
+		# [file normalize] cmd was introduced in tcl8.4 version
+		if {$tcl_version >= 8.4} {
+			set fname [file normalize $fname]
+		}
+		lappend pkg_files($pname) $fname
 	}
 	
 	return [uplevel 1 "::source-org $args"]
 }
 
+# Some pkgs rename exit proc when it is loaded or they may explicitly
+# terminate this script by explicitly calling exit. We prevent this
+# by renaming exit cmd as per below.
+rename exit exit-org
+proc exit args {}
+
 proc process-pkg-info {args} {
 	global pkg_list
 	
 	# load all pkgs
-	foreach elm [lsort [array names pkg_list]] {
+	puts "%DLTK_TOTAL_WORK_START%:[array size pkg_list]%DLTK_TOTAL_WORK_END%"
+	foreach elm [array names pkg_list] {
 		set name [lindex $elm 0]
 		set vers [lindex $elm 1]
+		puts "%DLTK_TOTAL_WORK_INCREMENT%\n"		         
 		#puts "$name $vers:"
 		#puts $::auto_path
 		# Load the package
 		catch {package require $name} err
 	}
 }
+proc pkg-add-path {path} {
+	global pkg_paths
 
+	# Get the directory name for the specified path
+	if {![file isdirectory $path]} {
+		set path [file dirname $path]
+	}
+	set pkg_paths($path) 1
+}
 proc print-pkg-info {args} {
-	global pkg
+	global pkg_files pkg_paths
 	
-	puts "+++++++++ Begin Pkg Info +++++++++++++++++++"
-	foreach elm [lsort [array names pkg]] {
+	#puts "+++++++++ Begin Pkg Info +++++++++++++++++++"
+	foreach elm [array names pkg_files] {
 		set name [lindex $elm 0]
 		set vers [lindex $elm 1]
-		set files $pkg($elm)
-		puts "$name $vers: $files"
+		set files $pkg_files($elm)
+		
+		# add unical paths to roots
+		foreach path $files {
+			pkg-add-path $path
+		}
 	}
-	puts "+++++++++ End Pkg Info +++++++++++++++++++"
+	#puts "+++++++++ End Pkg Info +++++++++++++++++++"
+	puts "DLTK:[array names pkg_paths]"
+	#puts "Number of pkgs names found: [llength [array names pkg_files]]"
+	#puts "Number of pkgs paths found: [llength [array names pkg_paths]]"
 }
 
 proc main {argv} {
-	global pkg pkg_stack
+	global pkg_stack
 	set pkg_stack {} ;# initialize to null
-	
-	# try to load an unknown pkg, so that it discovers all packages
-	catch {package-org require unknown-random-[clock seconds]}
 
+	# We could use tcl's time cmd below but we don't need
+	# microsecond resolution
+	set start_time [clock seconds]
+
+	# try to load an unknown pkg, so that it discovers all packages
+	catch {::package-org require unknown-random-[clock seconds]}
 	# Process pkg ifneeded bodies
 	process-pkg-info
-	puts "$::auto_path"
-	# Print pkg names and corresponding src files
-	#print-pkg-info
+	# Print pkg root folders
+	print-pkg-info
+
+	set stop_time [clock seconds]
+
+	#puts "Run time = [expr {$stop_time-$start_time}] secs"
 }
 main $argv
 
 
 # Exit needs to be called explicitly because some package may endup
-# invoke Tk pkg which in turn may create a GUI window and wait forever.
-::exit
+# invoking Tk pkg which in turn may create a GUI window and wait forever.
+::exit-org

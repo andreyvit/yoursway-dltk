@@ -250,11 +250,6 @@ public class RubySourceViewerConfiguration extends
 		};
 	}
 
-	public String[] getDefaultPrefixes(ISourceViewer sourceViewer,
-			String contentType) {
-		return new String[] { "#", "" }; //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
 		if (getEditor() != null) {
 			ContentAssistant assistant = new ContentAssistant();

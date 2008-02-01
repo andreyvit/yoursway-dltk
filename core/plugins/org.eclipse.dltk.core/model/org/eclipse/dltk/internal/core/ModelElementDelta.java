@@ -148,7 +148,7 @@ public class ModelElementDelta extends SimpleDelta implements IModelElementDelta
 			this.fineGrained();
 		}
 		
-		if (this.affectedChildren.length == 0) {
+		if (this.affectedChildren == null || this.affectedChildren.length == 0) {
 			this.affectedChildren = new IModelElementDelta[] {child};
 			return;
 		}
