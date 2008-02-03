@@ -15,6 +15,7 @@ package org.eclipse.dltk.ast;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.dltk.core.DLTKCore;
@@ -188,8 +189,22 @@ public abstract class ASTNode {
 	public abstract void traverse(ASTVisitor visitor) throws Exception;
 
 	public void printNode(CorePrinter output) {
-		output.println(this.getClass()
-				+ "(node doesn't support debug printing)\n");
+        String simpleName = getClass().getName();
+        simpleName = simpleName.substring(simpleName.lastIndexOf('.')+1);
+        
+        List children = getChilds();
+	    if (children.size() == 0)
+            output.formatPrintLn(simpleName);
+	    else {
+            output.formatPrintLn(simpleName + ":");
+            output.indent();
+            for (Iterator it = children.iterator(); it.hasNext(); ) {
+                ((ASTNode) it.next()).printNode(output);
+                // Achtung! This formatPrint is needed because of CorePrinter's megadesign
+                output.formatPrint("");
+            }
+            output.dedent();
+	    }
 	}
 
 	protected ISourceRange getSourceRange() {
