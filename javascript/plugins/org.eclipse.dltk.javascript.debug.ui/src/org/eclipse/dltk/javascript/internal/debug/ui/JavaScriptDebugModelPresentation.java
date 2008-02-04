@@ -110,10 +110,10 @@ public class JavaScriptDebugModelPresentation extends
 		IScriptVariable v = variable;
 		IScriptValue scriptValue;
 		try {
-			scriptValue = (IScriptValue)v.getValue();
+			scriptValue = (IScriptValue) v.getValue();
 		} catch (DebugException e) {
 			return ScriptDebugImages
-			.get(ScriptDebugImages.IMG_OBJS_LOCAL_VARIABLE);
+					.get(ScriptDebugImages.IMG_OBJS_LOCAL_VARIABLE);
 		}
 		String typeString = (scriptValue).getType().getName();
 		if (typeString.equals("function"))
@@ -125,11 +125,12 @@ public class JavaScriptDebugModelPresentation extends
 		if (typeString.equals("javaarray"))
 			return DLTKPluginImages.get(DLTKPluginImages.IMG_METHOD_DEFAULT);
 		String fullName = scriptValue.getEvalName();
-		if (fullName != null && (fullName.indexOf('.') >= 0 || (fullName.equals("this"))))
-			return DLTKPluginImages.get(DLTKPluginImages.IMG_METHOD_PUBLIC);
-		else
-			return ScriptDebugImages
-					.get(ScriptDebugImages.IMG_OBJS_LOCAL_VARIABLE);
+		if (fullName != null) {
+			if (fullName.indexOf('.') >= 0 || (fullName.equals("this"))) {
+				return DLTKPluginImages.get(DLTKPluginImages.IMG_METHOD_PUBLIC);
+			}
+		}
+		return ScriptDebugImages.get(ScriptDebugImages.IMG_OBJS_LOCAL_VARIABLE);
 	}
 
 	public String getEditorId(IEditorInput input, Object element) {
