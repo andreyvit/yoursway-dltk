@@ -102,8 +102,8 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner
 
 		IScriptProject proj = AbstractScriptLaunchConfigurationDelegate
 				.getScriptProject(launch.getLaunchConfiguration());
-		IJavaProject myJavaProject = JavaCore.create(proj.getProject());		
-		IVMInstall vmInstall = myJavaProject.exists()?JavaRuntime.getVMInstall(myJavaProject):JavaRuntime.getDefaultVMInstall();		
+		IJavaProject myJavaProject = JavaCore.create(proj.getProject());
+		IVMInstall vmInstall = myJavaProject.exists()?JavaRuntime.getVMInstall(myJavaProject):JavaRuntime.getDefaultVMInstall();
 		if (vmInstall != null) {
 			IVMRunner vmRunner = vmInstall
 					.getVMRunner(ILaunchManager.DEBUG_MODE);
@@ -166,10 +166,10 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner
 				.getBundle(GenericJavaScriptInstallType.DBGP_FOR_RHINO_BUNDLE_ID);
 		URL resolve = FileLocator.toFileURL(bundle1
 				.getResource("RhinoRunner.class"));
-		File fl = new File(new URI(resolve.toString())).getParentFile();
+		File fl = new File(new URL(resolve.toExternalForm().replace(" ", "%20")).toURI()).getParentFile();
 		URL fileURL = FileLocator.toFileURL(bundle
 				.getResource("org/mozilla/classfile/ByteCode.class"));
-		File fl1 = new File(new URI(fileURL.toString())).getParentFile()
+		File fl1 = new File(new URL(fileURL.toExternalForm().replace(" ", "%20")).toURI()).getParentFile()
 				.getParentFile().getParentFile().getParentFile();
 		String[] classPath = null;
 		try {
