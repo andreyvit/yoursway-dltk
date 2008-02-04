@@ -546,7 +546,7 @@ public class CodeCompletion extends TestCase {
 	 */
 	public void test2() {
 		String[] names=new String[]{"firstVar","secondVar"};
-		basicTest("test2.js", 37, names);
+		basicTest("test2.js", 36, names);
 	}
 	
 	/**
@@ -554,7 +554,7 @@ public class CodeCompletion extends TestCase {
 	 */
 	public void test3() {		
 		String[] names=new String[]{"world"};
-		basicTest("test3.js", 66, names);		
+		basicTest("test3.js", 63, names);		
 	}
 	//104 ,temperature
 	/**
@@ -562,7 +562,7 @@ public class CodeCompletion extends TestCase {
 	 */
 	public void test4() {
 		String[] names=new String[]{"temperature"};		
-		basicTest("test4.js", 104, names);		
+		basicTest("test4.js", 100, names);		
 	}
 	
 	public void test5() {

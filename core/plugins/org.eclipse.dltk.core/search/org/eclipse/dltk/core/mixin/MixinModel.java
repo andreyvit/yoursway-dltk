@@ -569,8 +569,12 @@ public class MixinModel {
 				}
 				return objs;
 			}
-			notifyInitializeListener(this, module, o);
-			return new Object[] { o };
+			if (o != null)
+			{
+				notifyInitializeListener(this, module, o);
+				return new Object[] { o };
+			}
+			return new Object[0];
 		}
 
 		public Object[] getAllObjects() {
