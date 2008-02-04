@@ -132,13 +132,13 @@ public class ContentProviderTests3 extends TestCase {
 	}
 	
 	public void testGetChildrenSource() throws Exception{
-		Object[] expectedChildren= new Object[]{fPack1,fPack2,fPack3, fRoot1.getScriptFolder("")};//$NON-NLS-1$
+		Object[] expectedChildren= new Object[]{fPack1,fPack2,fPack3};//$NON-NLS-1$
 		Object[] children= fProvider.getChildren(fRoot1);
 		assertTrue("Wrong children found for ProjectFragment with folding", compareArrays(children, expectedChildren));	//$NON-NLS-1$
 	}
 	
 	public void testGetChildrenArchive(){
-		Object[] expectedChildren= new Object[]{fPackJunit, fArchiveFragmentRoot.getScriptFolder("")};//$NON-NLS-1$
+		Object[] expectedChildren= new Object[]{fPackJunit};//$NON-NLS-1$
 		Object[] children= fProvider.getChildren(fArchiveFragmentRoot);
 		assertTrue("Wrong child found for ProjectFragment Archive with folding", compareArrays(children,expectedChildren));//$NON-NLS-1$
 		

@@ -468,8 +468,8 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			if (!isRequiredInstall(name, install.getInstallLocation())) {
 				continue;
 			}
-			System.out.println("Interpreter install location (run): "
-					+ install.getInstallLocation().toString());
+//			System.out.println("Interpreter install location (run): "
+//					+ install.getInstallLocation().toString());
 
 			MyInterpretersUpdater updater = new MyInterpretersUpdater();
 			updater.updateInterpreterSettings(getNatureId(),
@@ -655,8 +655,8 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			DebugEventStats stats = new DebugEventStats();
 
 			DebugPlugin.getDefault().addDebugEventListener(stats);
-			System.out.println("Interperter install location (debug): "
-					+ install.getInstallLocation());
+//			System.out.println("Interperter install location (debug): "
+//					+ install.getInstallLocation());
 
 			final MyInterpretersUpdater updater = new MyInterpretersUpdater();
 			updater.updateInterpreterSettings(getNatureId(),

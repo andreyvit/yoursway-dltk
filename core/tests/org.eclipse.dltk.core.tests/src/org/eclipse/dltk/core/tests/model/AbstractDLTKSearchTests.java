@@ -49,7 +49,7 @@ import org.eclipse.dltk.internal.core.util.Util;
 public class AbstractDLTKSearchTests extends AbstractModelTests implements IDLTKSearchConstants {
 
 	public static List JAVA_SEARCH_SUITES = null;
-	protected static IScriptProject SCRIPT_PROJECT;
+	protected IScriptProject SCRIPT_PROJECT;
 	protected static boolean COPY_DIRS = true;
 	protected static int EXACT_RULE = SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE;
 	protected static int EQUIVALENT_RULE = EXACT_RULE | SearchPattern.R_EQUIVALENT_MATCH;

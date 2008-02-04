@@ -84,7 +84,7 @@ public class EncodingTests extends ModifyingResourceTests {
 //		}
 		super.setUp();
 		wkspEncoding = getWorkspaceRoot().getDefaultCharset();
-		System.out.println("Encoding tests using Workspace charset: "+wkspEncoding+" and Interpreter charset: "+InterpreterEncoding);
+		//System.out.println("Encoding tests using Workspace charset: "+wkspEncoding+" and Interpreter charset: "+InterpreterEncoding);
 		encodingScriptProject = setUpScriptProject("Encoding");
 		this.encodingProject = (IProject) encodingScriptProject.getResource();
 		utf8File = (IFile) this.encodingProject.findMember("src/testUTF8/Test.py");
@@ -834,7 +834,7 @@ public class EncodingTests extends ModifyingResourceTests {
 
 		String os = System.getProperty("osgi.os");
 		if (!"win32".equals(os)) {
-			System.out.println("Bug 110576 is not tested under "+os+" os...");
+			//System.out.println("Bug 110576 is not tested under "+os+" os...");
 			return;
 		}
 

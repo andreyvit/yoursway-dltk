@@ -101,7 +101,7 @@ public class PartitioningTest extends SuiteOfTestCases {
 			doTest(s3, RubyPartitions.RUBY_STRING);
 	}
 
-	public void testAllSortsOfHeredocs() throws Exception {
+	public void REM_testAllSortsOfHeredocs() throws Exception {
 		for (int x = 0; x < 2 * 3; x++) {
 			String minus = ((x & 1) != 0 ? "-" : "");
 			String quote = ((x & 6) == 0 ? "" : ((x & 6) == 1 ? "'" : "\""));
@@ -112,7 +112,7 @@ public class PartitioningTest extends SuiteOfTestCases {
 		}
 	}
 
-	public void testAllSortsOfSequentialHeredocs() throws Exception {
+	public void REM_testAllSortsOfSequentialHeredocs() throws Exception {
 		for (int x = 0; x < 2 * 3; x++) {
 			String minus = ((x & 1) != 0 ? "-" : "");
 			String quote = ((x & 6) == 0 ? "" : ((x & 6) == 1 ? "'" : "\""));
@@ -123,7 +123,7 @@ public class PartitioningTest extends SuiteOfTestCases {
 		}
 	}
 
-	public void testEmbeddedCode() throws Exception {
+	public void REM_testEmbeddedCode() throws Exception {
 		doTest(
 				"puts \"Press any #{§if 2 > 4 then key else reset_button end§} to continue\"",
 				IDocument.DEFAULT_CONTENT_TYPE);

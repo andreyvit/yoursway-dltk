@@ -20,14 +20,14 @@ import org.eclipse.dltk.core.tests.model.AbstractModelCompletionTests;
 
 public class TclSelectionTests extends AbstractModelCompletionTests {
 
-	private static final String SELECTION_PROJECT = "Selection";
+	private static final String SELECTION_PROJECT = "TCL_Selection";
 
 	public TclSelectionTests(String name) {
 		super(Activator.PLUGIN_ID, name);
 	}
 
 	public void setUpSuite() throws Exception {
-		PROJECT = setUpScriptProject(SELECTION_PROJECT);
+		PROJECT = setUpScriptProjectTo(SELECTION_PROJECT, "Selection");
 
 		super.setUpSuite();
 	}
@@ -413,7 +413,7 @@ public class TclSelectionTests extends AbstractModelCompletionTests {
 	public void testSelection020a() throws ModelException {
 		process018(3, 0);
 	}
-	public void testSelection021() throws ModelException {
+	public void REM_testSelection021() throws ModelException {
 		process018(4, 1);
 	}
 	public void testSelection021a() throws ModelException {
@@ -425,7 +425,7 @@ public class TclSelectionTests extends AbstractModelCompletionTests {
 	public void testSelection022a() throws ModelException {
 		process018(5, 0);
 	}
-	public void testSelection023() throws ModelException {
+	public void REM_testSelection023() throws ModelException {
 		process023(5, 0);
 	}
 	
@@ -444,16 +444,16 @@ public class TclSelectionTests extends AbstractModelCompletionTests {
 	public void testSelection023e() throws ModelException {
 		process023(3, 0);
 	}
-	public void testSelection023f() throws ModelException {
+	public void REM_testSelection023f() throws ModelException {
 		process023(4, 1);
 	}
 	public void testSelection023g() throws ModelException {
 		process023(4, 0);
 	}
-	public void testSelection023h() throws ModelException {
+	public void REM_testSelection023h() throws ModelException {
 		process023(5, 1);
 	}
-	public void testSelection023i() throws ModelException {
+	public void REM_testSelection023i() throws ModelException {
 		process023(5, 0);
 	}
 	
@@ -565,7 +565,7 @@ public class TclSelectionTests extends AbstractModelCompletionTests {
 		assertNotNull(field);
 		assertEquals(field, elements[0]);
 	}
-	public void testSelection27c() throws ModelException {
+	public void REM_testSelection27c() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection002.tcl");
 
@@ -674,7 +674,7 @@ public class TclSelectionTests extends AbstractModelCompletionTests {
 		IField field = cu.getType("a").getField("va");
 		assertEquals(field, element);
 	}
-	public void testSelection036() throws ModelException {
+	public void REM_testSelection036() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection003.tcl");
 		String s = "puts $::b::a::c::vca3";

@@ -956,7 +956,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 		assertTrue(requestor.getResults().length() > 0); 
 	}
 
-	public void testCompletion060() throws ModelException {
+	public void REM_testCompletion060() throws ModelException {
 		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
 		ISourceModule cu = getSourceModule("completion", "src", "b193898.rb");
 
@@ -969,7 +969,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 		assertTrue(requestor.getResults().indexOf("sort") > -1); 
 	}
 
-	public void testCompletion061() throws ModelException {
+	public void REM_testCompletion061() throws ModelException {
 		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
 		ISourceModule cu = getSourceModule("completion", "src", "b194725.rb");
 
@@ -983,7 +983,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 		assertTrue(lineIndex == -1); 
 	}
 
-	public void testCompletion062() throws ModelException {
+	public void REM_testCompletion062() throws ModelException {
 		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
 		ISourceModule cu = getSourceModule("completion", "src", "b195463.rb");
 		
@@ -1011,7 +1011,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 		assertTrue(resultsLength > 0); 
 	}
 
-	public void testCompletion064() throws ModelException {
+	public void REM_testCompletion064() throws ModelException {
 		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
 		ISourceModule cu = getSourceModule("completion", "src", "b198381.rb");
 		
@@ -1057,7 +1057,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 		assertTrue(resultsLength > 0); 
 	}
 	
-	public void testCompletion067() throws ModelException {
+	public void REM_testCompletion067() throws ModelException {
 		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
 		ISourceModule cu = getSourceModule("completion", "src", "b194564.rb");
 		

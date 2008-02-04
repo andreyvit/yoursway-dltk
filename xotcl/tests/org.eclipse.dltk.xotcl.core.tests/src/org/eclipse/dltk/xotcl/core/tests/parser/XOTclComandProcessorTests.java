@@ -134,7 +134,7 @@ public class XOTclComandProcessorTests extends TestCase
 	
 	public void testXOTclClassNewInstanceProcessor() throws TclParseException
 	{
-		String content = "ClassName inst";
+		String content = "ClassName create inst";
 		AbstractTclCommandProcessor processor = new XOTclClassNewInstanceProcessor();
 		
 		processor.setDetectedParameter(new TypeDeclaration("ClassName",0,0,0,0));

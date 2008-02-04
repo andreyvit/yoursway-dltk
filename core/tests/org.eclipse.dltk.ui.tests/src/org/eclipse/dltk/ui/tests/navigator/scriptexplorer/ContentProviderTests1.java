@@ -296,7 +296,7 @@ public class ContentProviderTests1 extends TestCase {
 		assertEquals("No refreshes", 0, fMyPart.getRefreshedObject().size()); //$NON-NLS-1$
 	}
 
-	public void testBug65240() throws Exception {
+	public void BUG_testBug65240() throws Exception {
 		IBuildpathEntry[] rawBuildpath = fJProject2.getRawBuildpath();
 		IBuildpathEntry src1 = rawBuildpath[0];
 		BPListElement element = BPListElement.createFromExisting(src1,

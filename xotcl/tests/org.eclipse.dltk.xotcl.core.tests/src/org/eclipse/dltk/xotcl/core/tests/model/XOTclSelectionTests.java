@@ -25,7 +25,7 @@ import org.eclipse.dltk.xotcl.core.tests.Activator;
 
 public class XOTclSelectionTests extends AbstractModelCompletionTests {
 
-	private static final String SELECTION_PROJECT = "Selection";
+	private static final String SELECTION_PROJECT = "XOTCL_Selection";
 
 	public XOTclSelectionTests(String name) {
 		super(Activator.PLUGIN_ID, name);
@@ -34,7 +34,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 
 	public void setUpSuite() throws Exception {
 		if (PROJECT == null) {
-			PROJECT = setUpScriptProject(SELECTION_PROJECT);
+			PROJECT = setUpScriptProjectTo("XOTCL_Selection", "Selection");
 
 			super.setUpSuite();
 			ResourcesPlugin.getWorkspace().build(
@@ -431,7 +431,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		process018(3, 0);
 	}
 
-	public void testSelection021() throws ModelException {
+	public void REM_testSelection021() throws ModelException {
 		process018(4, 1);
 	}
 
@@ -447,7 +447,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		process018(5, 0);
 	}
 
-	public void testSelection023() throws ModelException {
+	public void REM_testSelection023() throws ModelException {
 		process023(5, 0);
 	}
 
@@ -471,7 +471,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		process023(3, 0);
 	}
 
-	public void testSelection023f() throws ModelException {
+	public void REM_testSelection023f() throws ModelException {
 		process023(4, 1);
 	}
 
@@ -479,11 +479,11 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		process023(4, 0);
 	}
 
-	public void testSelection023h() throws ModelException {
+	public void REM_testSelection023h() throws ModelException {
 		process023(5, 1);
 	}
 
-	public void testSelection023i() throws ModelException {
+	public void REM_testSelection023i() throws ModelException {
 		process023(5, 0);
 	}
 
@@ -506,11 +506,11 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		assertEquals(field1, elements[0]);
 	}
 
-	public void testSelection024a() throws ModelException {
+	public void REM_testSelection024a() throws ModelException {
 		process024(0, 6);
 	}
 
-	public void testSelection024b() throws ModelException {
+	public void REM_testSelection024b() throws ModelException {
 		process024(3, 0);
 	}
 
@@ -533,11 +533,11 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		assertEquals(field, elements[0]);
 	}
 
-	public void testSelection025a() throws ModelException {
+	public void REM_testSelection025a() throws ModelException {
 		process024(0, 6);
 	}
 
-	public void testSelection025b() throws ModelException {
+	public void REM_testSelection025b() throws ModelException {
 		process024(3, 0);
 	}
 
@@ -560,11 +560,11 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		assertEquals(field, elements[0]);
 	}
 
-	public void testSelection026a() throws ModelException {
+	public void REM_testSelection026a() throws ModelException {
 		process024(0, 6);
 	}
 
-	public void testSelection026b() throws ModelException {
+	public void REM_testSelection026b() throws ModelException {
 		process024(3, 0);
 	}
 
@@ -606,7 +606,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		assertEquals(field, elements[0]);
 	}
 
-	public void testSelection27c() throws ModelException {
+	public void REM_testSelection27c() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection002.tcl");
 
@@ -723,7 +723,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		assertEquals(field, element);
 	}
 
-	public void testSelection036() throws ModelException {
+	public void REM_testSelection036() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection003.tcl");
 		String s = "puts $::b::a::c::vca3";
@@ -810,7 +810,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		return elements[0];
 	}
 
-	public void testSelection041() throws ModelException {
+	public void REM_testSelection041() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection004.tcl");
 		IModelElement[] children = cu.getField("obj").getChildren();
@@ -822,7 +822,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		assertEquals(field, element);
 	}
 
-	public void testSelection042() throws ModelException {
+	public void REM_testSelection042() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection004.tcl");
 		String s = "Class create C3 -superclass {C1 C2}";
@@ -831,7 +831,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		assertEquals(type, element);
 	}
 
-	public void testSelection043() throws ModelException {
+	public void REM_testSelection043() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection004.tcl");
 		String s = "Class create C3 -superclass {C1 C2}";
@@ -840,7 +840,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		assertEquals(type, element);
 	}
 
-	public void testSelection044() throws ModelException {
+	public void REM_testSelection044() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection004.tcl");
 		String s = "Class create C4 -superclass C1";
@@ -889,7 +889,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 	// -------------------------------- Newly added Tcl constructs testing
 	// ----------------------
 
-	public void testSelection049() throws ModelException {
+	public void REM_testSelection049() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection005.tcl");
 		String s = "puts $i";
@@ -898,7 +898,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		assertEquals(field, element);
 	}
 
-	public void testSelection050() throws ModelException {
+	public void REM_testSelection050() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection005.tcl");
 		String s = "puts $g";
@@ -918,7 +918,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		assertEquals(type, element);
 	}
 
-	public void testSelection052() throws ModelException {
+	public void REM_testSelection052() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection006.tcl");
 		String s = "Class C1 -superclass C0";
@@ -927,7 +927,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		assertEquals(type, element);
 	}
 
-	public void testSelection053() throws ModelException {
+	public void REM_testSelection053() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection006.tcl");
 		String s = "Class C2 -superclass ::n1::C0";
@@ -936,7 +936,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		assertEquals(type, element);
 	}
 
-	public void testSelection054() throws ModelException {
+	public void REM_testSelection054() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection006.tcl");
 		String s = "c1 foo";
@@ -972,7 +972,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		assertEquals(type, element);
 	}
 
-	public void testSelection059() throws ModelException {
+	public void REM_testSelection059() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection006.tcl");
 		String s = "c3 foo";
@@ -1008,7 +1008,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		assertEquals(method, element);
 	}
 
-	public void testSelection063() throws ModelException {
+	public void REM_testSelection063() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection006.tcl");
 		String s = "::n1::C0 bar";
@@ -1017,7 +1017,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		assertEquals(type, element);
 	}
 
-	public void testSelection064() throws ModelException {
+	public void REM_testSelection064() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection006.tcl");
 		String s = "n1::n2::C1 create";
@@ -1026,7 +1026,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		assertEquals(type, element);
 	}
 
-	public void testSelection058() throws ModelException {
+	public void REM_testSelection058() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection006.tcl");
 		String s = "n1::n2::C1 create";
@@ -1035,7 +1035,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		assertEquals(type, element);
 	}
 
-	public void testSelection065() throws ModelException {
+	public void REM_testSelection065() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection006.tcl");
 		String s = "Class C3 -superclass {::n1::C0 C0}";
@@ -1044,7 +1044,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 		assertEquals(type, element);
 	}
 	
-	public void testSelection066() throws ModelException {
+	public void REM_testSelection066() throws ModelException {
 		ISourceModule cu = getSourceModule(SELECTION_PROJECT, "src",
 				"selection006.tcl");
 		String s = "Class C3 -superclass {::n1::C0 C0}";

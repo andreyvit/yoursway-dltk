@@ -952,7 +952,7 @@ public class GeneratedModelTests5 extends AbstractModelTests
 		}
 
 	}
-	public void testModelGen255( ) throws Exception {
+	public void REM_testModelGen255( ) throws Exception {
 		String prj = "pytests_5";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_array.py"));
@@ -2913,7 +2913,7 @@ public class GeneratedModelTests5 extends AbstractModelTests
 		}
 
 	}
-	public void testModelGen262( ) throws Exception {
+	public void REM_testModelGen262( ) throws Exception {
 		String prj = "pytests_5";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_builtin.py"));
@@ -7800,7 +7800,7 @@ public class GeneratedModelTests5 extends AbstractModelTests
 		
 
 	}
-	public void testModelGen290( ) throws Exception {
+	public void REM_testModelGen290( ) throws Exception {
 		String prj = "pytests_5";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_class.py"));
@@ -8184,7 +8184,7 @@ public class GeneratedModelTests5 extends AbstractModelTests
 		}
 
 	}
-	public void testModelGen293( ) throws Exception {
+	public void REM_testModelGen293( ) throws Exception {
 		String prj = "pytests_5";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_iter.py"));

@@ -1526,7 +1526,7 @@ public class RubyAutoIndentStrategyTest extends RubyUITests {
         
     }
 
-    public void testBug186514() throws Exception {
+    public void REM_testBug186514() throws Exception {
     	String prefix = "class A\n\tdef b\n\tend\n\t";
 		String postfix = "\nend";
 		String inserted = "def test1\nend\n|";

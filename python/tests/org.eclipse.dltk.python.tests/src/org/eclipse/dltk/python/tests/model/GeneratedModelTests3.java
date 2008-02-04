@@ -6642,7 +6642,7 @@ public class GeneratedModelTests3 extends AbstractModelTests
 		}
 
 	}
-	public void testModelGen191( ) throws Exception {
+	public void REM_testModelGen191( ) throws Exception {
 		String prj = "pytests_3";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_new.py"));
@@ -7062,7 +7062,7 @@ public class GeneratedModelTests3 extends AbstractModelTests
 		}
 
 	}
-	public void testModelGen196( ) throws Exception {
+	public void REM_testModelGen196( ) throws Exception {
 		String prj = "pytests_3";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_grammar.py"));

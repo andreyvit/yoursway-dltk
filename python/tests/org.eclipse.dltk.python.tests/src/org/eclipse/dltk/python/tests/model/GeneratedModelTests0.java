@@ -237,7 +237,7 @@ public class GeneratedModelTests0 extends AbstractModelTests
 		}
 
 	}
-	public void testModelGen1( ) throws Exception {
+	public void REM_testModelGen1( ) throws Exception {
 		String prj = "pytests_0";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_dict.py"));
@@ -7026,7 +7026,7 @@ public class GeneratedModelTests0 extends AbstractModelTests
 		}
 
 	}
-	public void testModelGen49( ) throws Exception {
+	public void REM_testModelGen49( ) throws Exception {
 		String prj = "pytests_0";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("mapping_tests.py"));

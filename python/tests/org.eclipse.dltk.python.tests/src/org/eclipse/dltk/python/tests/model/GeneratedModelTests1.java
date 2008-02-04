@@ -2834,7 +2834,7 @@ public class GeneratedModelTests1 extends AbstractModelTests
 		}
 
 	}
-	public void testModelGen70( ) throws Exception {
+	public void REM_testModelGen70( ) throws Exception {
 		String prj = "pytests_1";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_doctest.py"));
@@ -3528,7 +3528,7 @@ public class GeneratedModelTests1 extends AbstractModelTests
 		}
 
 	}
-	public void testModelGen77( ) throws Exception {
+	public void REM_testModelGen77( ) throws Exception {
 		String prj = "pytests_1";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_zipfile.py"));
@@ -3620,7 +3620,7 @@ public class GeneratedModelTests1 extends AbstractModelTests
 		}
 
 	}
-	public void testModelGen78( ) throws Exception {
+	public void REM_testModelGen78( ) throws Exception {
 		String prj = "pytests_1";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_pep292.py"));
@@ -4590,7 +4590,7 @@ public class GeneratedModelTests1 extends AbstractModelTests
 		}
 
 	}
-	public void testModelGen90( ) throws Exception {
+	public void REM_testModelGen90( ) throws Exception {
 		String prj = "pytests_1";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_math.py"));
@@ -4814,7 +4814,7 @@ public class GeneratedModelTests1 extends AbstractModelTests
 		}
 
 	}
-	public void testModelGen94( ) throws Exception {
+	public void REM_testModelGen94( ) throws Exception {
 		String prj = "pytests_1";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_zlib.py"));
@@ -5125,7 +5125,7 @@ public class GeneratedModelTests1 extends AbstractModelTests
 		}
 
 	}
-	public void testModelGen96( ) throws Exception {
+	public void REM_testModelGen96( ) throws Exception {
 		String prj = "pytests_1";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_long.py"));

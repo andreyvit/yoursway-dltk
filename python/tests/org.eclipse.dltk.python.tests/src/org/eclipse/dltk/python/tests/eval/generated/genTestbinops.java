@@ -164,7 +164,7 @@ public class genTestbinops extends AbstractModelTests
 		testType( "binops.py", "ls3", "list" );
 	}
 
-	public void testEval25() throws Exception {
+	public void REM_testEval25() throws Exception {
 		testType( "binops.py", "ls4", "list" );
 	}
 
@@ -192,7 +192,7 @@ public class genTestbinops extends AbstractModelTests
 		testType( "binops.py", "ts3", "tuple" );
 	}
 
-	public void testEval32() throws Exception {
+	public void REM_testEval32() throws Exception {
 		testType( "binops.py", "ts4", "tuple" );
 	}
 

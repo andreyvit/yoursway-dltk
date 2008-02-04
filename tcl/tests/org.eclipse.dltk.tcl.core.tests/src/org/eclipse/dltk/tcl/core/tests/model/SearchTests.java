@@ -26,7 +26,7 @@ import org.eclipse.dltk.core.tests.model.AbstractDLTKSearchTests;
 
 
 public class SearchTests extends AbstractDLTKSearchTests implements IDLTKSearchConstants {
-	private static final String TCLSEARCH = "TCLSearch";
+	private static final String TCLSEARCH = "PROJ_TCLSearch";
 
 	public SearchTests(String name) {
 		super(Activator.PLUGIN_ID, name);
@@ -50,7 +50,7 @@ public class SearchTests extends AbstractDLTKSearchTests implements IDLTKSearchC
 	
 	private void up() throws Exception {
 		if (SCRIPT_PROJECT == null) {
-			SCRIPT_PROJECT = setUpScriptProject(TCLSEARCH);
+			SCRIPT_PROJECT = setUpScriptProjectTo(TCLSEARCH, "TCLSearch");
 		}
 	}
 

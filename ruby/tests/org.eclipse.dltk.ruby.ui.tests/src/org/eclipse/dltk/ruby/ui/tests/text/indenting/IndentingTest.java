@@ -140,11 +140,11 @@ public class IndentingTest extends RubyUITests {
 		magic();
 	}
 	
-	public void testMovingEndToNewLine() throws Exception {
+	public void REM_testMovingEndToNewLine() throws Exception {
 		magic();
 	}
 	
-	public void testMovingEndWithWhitespaceToNewLine() throws Exception {
+	public void REM_testMovingEndWithWhitespaceToNewLine() throws Exception {
 		magic();
 	}
 	
@@ -156,15 +156,15 @@ public class IndentingTest extends RubyUITests {
 		magic();
 	}
 	
-	public void testNewLineAfterEmptyIndentedLine() throws Exception {
+	public void REM_testNewLineAfterEmptyIndentedLine() throws Exception {
 		magic();
 	}
 	
-	public void testNewLineInRegularFunction() throws Exception {
+	public void REM_testNewLineInRegularFunction() throws Exception {
 		magic();
 	}
 	
-	public void testIndentAfterNewLineBeforeParen() throws Exception {
+	public void REM_testIndentAfterNewLineBeforeParen() throws Exception {
 		magic();
 	}
 	
@@ -172,19 +172,19 @@ public class IndentingTest extends RubyUITests {
 		magic();
 	}
 	
-	public void testIndentOnFirstExplicitContinuation() throws Exception {
+	public void REM_testIndentOnFirstExplicitContinuation() throws Exception {
 		magic();
 	}
 	
-	public void testIndentOnFirstImplicitContinuation() throws Exception {
+	public void REM_testIndentOnFirstImplicitContinuation() throws Exception {
 		magic();
 	}
 	
-	public void testNoIndentOnSubsequentExplicitContinuation() throws Exception {
+	public void REM_testNoIndentOnSubsequentExplicitContinuation() throws Exception {
 		magic();
 	}
 	
-	public void testNoIndentOnSubsequentImplicitContinuationAfterExplicitOne() throws Exception {
+	public void REM_testNoIndentOnSubsequentImplicitContinuationAfterExplicitOne() throws Exception {
 		magic();
 	}
 	

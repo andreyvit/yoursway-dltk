@@ -5705,7 +5705,7 @@ public class GeneratedModelTests4 extends AbstractModelTests
 		}
 
 	}
-	public void testModelGen231( ) throws Exception {
+	public void REM_testModelGen231( ) throws Exception {
 		String prj = "pytests_4";
 		IScriptProject project = getScriptProject( prj );
 		ISourceModule module = this.getSourceModule( prj, "src", new Path("test_descr.py"));

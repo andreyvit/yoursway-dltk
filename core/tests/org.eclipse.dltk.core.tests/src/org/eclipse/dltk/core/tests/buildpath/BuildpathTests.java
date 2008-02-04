@@ -120,8 +120,8 @@ public class BuildpathTests extends ModifyingResourceTests {
 	protected void assertStatus(String expected, IStatus status) {
 		String actual = status.getMessage();
 		if (!expected.equals(actual)) {
-			System.out.print(Util.displayString(actual, 2));
-			System.out.println(",");
+//			System.out.print(Util.displayString(actual, 2));
+//			System.out.println(",");
 		}
 		assertEquals(expected, actual);
 	}
@@ -129,8 +129,8 @@ public class BuildpathTests extends ModifyingResourceTests {
 	protected void assertStatus(String message, String expected, IStatus status) {
 		String actual = status.getMessage();
 		if (!expected.equals(actual)) {
-			System.out.print(Util.displayString(actual, 2));
-			System.out.println(",");
+//			System.out.print(Util.displayString(actual, 2));
+//			System.out.println(",");
 		}
 		assertEquals(message, expected, actual);
 	}
@@ -263,7 +263,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 		IProjectFragment fragment = fragments[0];
 		IModelElement[] elements = fragment.getChildren();
 		
-		System.out.println("Model:");
+//		System.out.println("Model:");
 		CorePrinter printer = new CorePrinter(System.out);
 		((ScriptProject)project).printNode(printer);
 		printer.flush();
@@ -295,7 +295,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 			
 			IProjectFragment[] fragments = proj.getProjectFragments();			
 			
-			System.out.println("Model:");
+//			System.out.println("Model:");
 			CorePrinter printer = new CorePrinter(System.out, true);
 			((ScriptProject)proj).printNode(printer);
 			printer.flush();
@@ -325,7 +325,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 			IProjectFragment[] fragments = proj.getProjectFragments();
 			assertEquals(2, fragments.length);
 			
-			System.out.println("Model:");
+//			System.out.println("Model:");
 			CorePrinter printer = new CorePrinter(System.out, true);
 			((ScriptProject)proj).printNode(printer);
 			printer.flush();

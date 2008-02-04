@@ -62,8 +62,8 @@ public class BuildpathTests extends ModifyingResourceTests {
 	protected void assertStatus(String expected, IStatus status) {
 		String actual = status.getMessage();
 		if (!expected.equals(actual)) {
-			System.out.print(Util.displayString(actual, 2));
-			System.out.println(",");
+			//System.out.print(Util.displayString(actual, 2));
+			//System.out.println(",");
 		}
 		assertEquals(expected, actual);
 	}
@@ -71,8 +71,8 @@ public class BuildpathTests extends ModifyingResourceTests {
 	protected void assertStatus(String message, String expected, IStatus status) {
 		String actual = status.getMessage();
 		if (!expected.equals(actual)) {
-			System.out.print(Util.displayString(actual, 2));
-			System.out.println(",");
+			//System.out.print(Util.displayString(actual, 2));
+			//System.out.println(",");
 		}
 		assertEquals(message, expected, actual);
 	}
@@ -158,7 +158,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 			
 			proj.setRawBuildpath(newCP, null);
 			
-			System.out.println("Model:");
+		//	System.out.println("Model:");
 			CorePrinter printer = new CorePrinter(System.out, true);
 			//((ScriptProject)proj).printNode(printer);
 			printer.flush();
