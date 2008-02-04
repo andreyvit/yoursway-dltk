@@ -26,10 +26,16 @@ public class ExamplePythonLanguageToolkit extends AbstractLanguageToolkit {
 		return "Python";
 	}
 
+	/**
+	 * Return Python nature to use.
+	 */
 	public String getNatureId() {
 		return ExamplePythonNature.PYTHON_NATURE;
 	}
-
+	
+	/**
+	 * Return correct content type.
+	 */
 	public String getLanguageContentType() {
 		return "org.eclipse.dltk.examples.python.content-type";
 	}

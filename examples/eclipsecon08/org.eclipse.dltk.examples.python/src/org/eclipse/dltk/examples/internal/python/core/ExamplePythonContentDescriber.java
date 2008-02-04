@@ -11,7 +11,7 @@ public class ExamplePythonContentDescriber extends ScriptContentDescriber {
 	}
 
 	/**
-	 * This method could be extended to use pattern matching for files wothout
+	 * This method could be extended to use pattern matching for files without
 	 * extension.
 	 */
 	public int describe(Reader contents, IContentDescription description)
