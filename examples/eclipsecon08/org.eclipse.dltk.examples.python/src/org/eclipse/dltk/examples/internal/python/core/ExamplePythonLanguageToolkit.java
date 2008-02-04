@@ -14,10 +14,6 @@ public class ExamplePythonLanguageToolkit extends AbstractLanguageToolkit {
 		return toolkit;
 	}
 
-	protected String getCorePluginID() {
-		return PythonCorePlugin.PLUGIN_ID;
-	}
-
 	public String[] getLanguageFileExtensions() {
 		return languageExtensions;
 	}
