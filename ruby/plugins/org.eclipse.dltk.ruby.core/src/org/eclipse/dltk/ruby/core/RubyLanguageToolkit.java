@@ -48,10 +48,6 @@ public class RubyLanguageToolkit extends AbstractLanguageToolkit {
 		return "Ruby";
 	}
 
-	protected String getCorePluginID() {
-		return RubyPlugin.PLUGIN_ID;
-	}
-
 	public String getLanguageContentType() {
 		return "org.eclipse.dltk.rubyContentType";
 	}

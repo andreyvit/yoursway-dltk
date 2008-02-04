@@ -60,5 +60,7 @@ public abstract class AbstractSourceElementParser implements
 	 * requestor and/or a problem reporter.
 	 * </p>
 	 */
-	protected abstract SourceElementRequestVisitor createVisitor();
+	protected SourceElementRequestVisitor createVisitor() {
+		return new SourceElementRequestVisitor(getRequestor());
+	}
 }

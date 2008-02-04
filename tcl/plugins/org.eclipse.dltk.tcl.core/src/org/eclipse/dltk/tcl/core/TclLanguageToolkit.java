@@ -100,10 +100,6 @@ public class TclLanguageToolkit extends AbstractLanguageToolkit {
 		return "Tcl";
 	}
 
-	protected String getCorePluginID() {
-		return TclPlugin.PLUGIN_ID;
-	}
-
 	public String getLanguageContentType() {
 		return TCL_CONTENT_TYPE;
 	}

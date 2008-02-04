@@ -42,10 +42,6 @@ public class JavaScriptLanguageToolkit extends AbstractLanguageToolkit {
 		return "Javascript";
 	}
 
-	protected String getCorePluginID() {
-		return JavaScriptPlugin.PLUGIN_ID;
-	}
-
 	public String getLanguageContentType() {
 		return "org.eclipse.dltk.javascriptContentType";
 	}

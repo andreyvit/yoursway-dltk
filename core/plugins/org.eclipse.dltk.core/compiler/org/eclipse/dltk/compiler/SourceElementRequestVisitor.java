@@ -35,7 +35,7 @@ public class SourceElementRequestVisitor extends ASTVisitor {
 	protected Stack fNodes = new Stack(); // Used to hold visited nodes in
 											// deeph
 
-	protected SourceElementRequestVisitor(ISourceElementRequestor requesor) {
+	public SourceElementRequestVisitor(ISourceElementRequestor requesor) {
 		this.fRequestor = requesor;
 	}
 

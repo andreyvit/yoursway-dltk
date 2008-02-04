@@ -68,11 +68,11 @@ public class SourceIndexer extends AbstractIndexer {
 			}
 			String pkgName = "";
 			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
-//			ISourceModule sourceModule = null;
+			// ISourceModule sourceModule = null;
 			if (file.exists()) {
 				ISourceModule module = (ISourceModule) DLTKCore.create(file);
 				if (module != null) {
-//					sourceModule = module;
+					// sourceModule = module;
 					IScriptFolder folder = (IScriptFolder) module.getParent();
 					pkgName = folder.getElementName();
 				}
