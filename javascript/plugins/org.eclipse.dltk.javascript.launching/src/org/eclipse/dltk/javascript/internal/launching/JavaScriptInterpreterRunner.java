@@ -12,7 +12,6 @@ package org.eclipse.dltk.javascript.internal.launching;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -33,7 +32,6 @@ import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.javascript.launching.IConfigurableRunner;
 import org.eclipse.dltk.javascript.launching.IJavaScriptInterpreterRunnerConfig;
 import org.eclipse.dltk.javascript.launching.JavaScriptLaunchConfigurationConstants;
-import org.eclipse.dltk.javascript.launching.JavaScriptLaunchingPlugin;
 import org.eclipse.dltk.launching.AbstractInterpreterRunner;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
 import org.eclipse.dltk.launching.IInterpreterInstall;
@@ -166,10 +164,12 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner
 				.getBundle(GenericJavaScriptInstallType.DBGP_FOR_RHINO_BUNDLE_ID);
 		URL resolve = FileLocator.toFileURL(bundle1
 				.getResource("RhinoRunner.class"));
-		File fl = new File(new URL(resolve.toExternalForm().replace(" ", "%20")).toURI()).getParentFile();
+		String externalForm = resolve.toExternalForm();
+		File fl = new File(new URL(replaceSpaces(externalForm)).toURI()).getParentFile();
 		URL fileURL = FileLocator.toFileURL(bundle
 				.getResource("org/mozilla/classfile/ByteCode.class"));
-		File fl1 = new File(new URL(fileURL.toExternalForm().replace(" ", "%20")).toURI()).getParentFile()
+		String externalForm2 = fileURL.toExternalForm();
+		File fl1 = new File(new URL(replaceSpaces(externalForm2)).toURI()).getParentFile()
 				.getParentFile().getParentFile().getParentFile();
 		String[] classPath = null;
 		try {
@@ -181,6 +181,10 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner
 		newClassPath[classPath.length] = fl.getAbsolutePath();
 		newClassPath[classPath.length + 1] = fl1.getAbsolutePath();
 		return newClassPath;
+	}
+
+	private static String replaceSpaces(String text) {
+		return text.replaceAll(" ", "%20");
 	}
 
 	protected static String[] computeBaseClassPath(IJavaProject myJavaProject)
