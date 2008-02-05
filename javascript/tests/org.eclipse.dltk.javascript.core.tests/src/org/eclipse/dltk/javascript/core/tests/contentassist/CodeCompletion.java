@@ -3,6 +3,7 @@ package org.eclipse.dltk.javascript.core.tests.contentassist;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Comparator;
@@ -488,6 +489,40 @@ public class CodeCompletion extends TestCase {
 //		throw new Error("Unimplemented, please fix");
 	}
 	
+	private int lastPositionInFile(String string, String moduleName) {
+		URL resource = this.getClass().getResource(moduleName);
+		DataInputStream str;
+		try {
+			str = new DataInputStream(resource.openStream());
+		} catch (IOException e1) {
+			return -1;
+		}
+		ByteArrayOutputStream bs = new ByteArrayOutputStream();
+		try {
+			while (str.available() >= 0) {
+				int k = str.read();
+				if (k == -1)
+					break;
+				else
+					bs.write(k);
+			}
+		} catch (IOException e) {
+			return -1;
+		}
+		String content = "";
+		try {
+			content = new String(bs.toByteArray(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			return -1;
+		}
+		
+		int position = content.lastIndexOf(string); 
+		if (position >= 0){
+			return position + string.length();
+		}
+		return -1;
+	}
+
 	private void compareNames(LinkedList results, String[] names) {
 		assertEquals(results.size(),names.length);
 		Collections.sort(results,new Comparator(){
@@ -545,8 +580,11 @@ public class CodeCompletion extends TestCase {
 	 * dumb completion on function
 	 */
 	public void test2() {
-		String[] names=new String[]{"firstVar","secondVar"};
-		basicTest("test2.js", 36, names);
+		String[] names = new String[] { "firstVar", "secondVar" };
+		String module = "test2.js";
+		int position = lastPositionInFile("\n", module);
+		basicTest(module, position, names);
+		// basicTest("test2.js", 36, names);
 	}
 	
 	/**
@@ -554,7 +592,10 @@ public class CodeCompletion extends TestCase {
 	 */
 	public void test3() {		
 		String[] names=new String[]{"world"};
-		basicTest("test3.js", 63, names);		
+		String module = "test3.js";
+		int position = lastPositionInFile("firstVar.", module);
+		basicTest(module, position, names);		
+//		basicTest(module, 63, names);		
 	}
 	//104 ,temperature
 	/**
@@ -562,43 +603,58 @@ public class CodeCompletion extends TestCase {
 	 */
 	public void test4() {
 		String[] names=new String[]{"temperature"};		
-		basicTest("test4.js", 100, names);		
+		String module = "test4.js";
+		int position = lastPositionInFile("firstVar.world.", module);
+		basicTest(module, position, names);		
+//		basicTest("test4.js", 100, names);		
 	}
 	
 	public void test5() {
 		String[] names=new String[]{"world"};
 		String[] names1=new String[]{"temperature"};
 		String module = "test5.js";
-		basicTest(module, 120, names);
-		basicTest(module, 126, names1);
+		int positionFirst = lastPositionInFile("secondVar.", module);
+		basicTest(module, positionFirst, names);
+		int positionSecond = lastPositionInFile("world.", module);
+		basicTest(module, positionSecond, names1);
+//		basicTest(module, 120, names);
+//		basicTest(module, 126, names1);
 	}
 	
 	public void test6() {
 		String[] names=new String[]{"world"};
 		//String[] names1=new String[]{"temperature"};
 		String module = "test6.js";
-		basicTest(module, 158, names);
+		int position = lastPositionInFile("world.", module);
+		basicTest(module, position, names);		
+//		basicTest(module, 158, names);
 		//basicTest(module, 126, names1);
 	}
 	public void test7() {
 		String[] names=new String[]{"world"};
 		//String[] names1=new String[]{"temperature"};
 		String module = "test7.js";
-		basicTest(module, 157, names);
+		int position = lastPositionInFile("world.", module);
+		basicTest(module, position, names);		
+//		basicTest(module, 157, names);
 		//basicTest(module, 126, names1);
 	}
 	public void test8() {
 		String[] names=new String[]{"mission","target"};
 		//String[] names1=new String[]{"temperature"};
 		String module = "test8.js";
-		basicTest(module, 124, names);
+		int position = lastPositionInFile("firstVar.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 124, names);
 		//basicTest(module, 126, names1);
 	}
 	public void test9() {
 		String[] names=new String[]{};
 		//String[] names1=new String[]{"temperature"};
 		String module = "test9.js";
-		basicTest(module, 138, names);
+		int position = lastPositionInFile("firstVar.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 138, names);
 		//basicTest(module, 126, names1);
 	}
 	
@@ -606,235 +662,311 @@ public class CodeCompletion extends TestCase {
 		String[] names=new String[]{"mission","target"};
 		//String[] names1=new String[]{"temperature"};
 		String module = "test10.js";
-		basicTest(module, 139, names);
-		//basicTest(module, 126, names1);
+//		basicTest(module, 139, names);
+		int position = lastPositionInFile("secondVar.", module);
+		basicTest(module, position, names);
 	}
 	
 	public void test11() {
 		String[] names=new String[]{"firstVar","secondVar"};
 		String module = "test11.js";
-		basicTest(module, 56, names);
+		int position = lastPositionInFile("{", module);
+		basicTest(module, position, names);
+//		basicTest(module, 56, names);
 	}
 	
 	public void test12() {
 		String[] names=new String[]{"p0","p1"};
 		String module = "test12.js";
-		basicTest(module, 62, names);
+//		basicTest(module, 62, names);
+		int position = lastPositionInFile("p", module);
+		basicTest(module, position, names);
 	}
 	
 	public void test13() {
 		String[] names=new String[]{"element"};
 		String module = "test13.js";
-		basicTest(module, 88, names);
+		int position = lastPositionInFile("firstVar.", module);
+		basicTest(module, position, names);
 	}
 	
 	public void test14() {
 		String[] names=new String[]{"element"};
 		String module = "test14.js";
-		basicTest(module, 88, names);
+		int position = lastPositionInFile("firstVar.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 88, names);
 	}
 	
 	public void test15() {
 		String[] names=new String[]{};
 		String module = "test15.js";
-		basicTest(module, 104, names);
+		int position = lastPositionInFile("firstVar.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 104, names);
 	}
 	
 	public void test16() {
 		String[] names=new String[]{"xaml"};
 		String module = "test16.js";
-		basicTest(module, 86, names);
+		int position = lastPositionInFile("x", module);
+		basicTest(module, position, names);
+//		basicTest(module, 86, names);
 	}
 	
 	public void test17() {
 		String[] names=new String[]{};
 		String module = "test17.js";
-		basicTest(module, 87, names);
+		int position = lastPositionInFile("x", module);
+		basicTest(module, position, names);
+//		basicTest(module, 87, names);
 	}
 	
 	public void test18() {
 		String[] names=new String[]{"my"};
 		String module = "test18.js";
-		basicTest(module, 120, names);
+		int position = lastPositionInFile("hello.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 120, names);
 	}
 	
 	public void test19() {
 		String[] names=new String[]{};
 		String module = "test19.js";
-		basicTest(module, 119, names);
+		int position = lastPositionInFile("hello.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 119, names);
 	}
 	
 	public void test20() {
 		String[] names=new String[]{"my"};
 		String module = "test20.js";
-		basicTest(module, 123, names);
+		int position = lastPositionInFile("hello.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 123, names);
 	}
 	
 	public void test21() {
 		String[] names=new String[]{"favorite"};
 		String module = "test21.js";
-		basicTest(module, 151, names);
+		int position = lastPositionInFile("hello.my.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 151, names);
 	}
 	
 	public void test22() {
 		String[] names=new String[]{};
 		String module = "test22.js";
-		basicTest(module, 147, names);
+		int position = lastPositionInFile("hello.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 147, names);
 	}
 	
 	public void test23() {
 		String[] names=new String[]{"my","olive"};
 		String module = "test23.js";
-		basicTest(module, 160, names);
+		int position = lastPositionInFile("hello.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 160, names);
 	}
 	
 	public void test24() {
 		String[] names=new String[]{"age","wine"};
 		String module = "test24.js";
-		basicTest(module, 215, names);
+		int position = lastPositionInFile("hello.olive.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 215, names);
 	}
 	
 	public void test25() {
 		String[] names=new String[]{"age","my","olive","wine"};
 		String module = "test25.js";
-		basicTest(module, 219, names);
+		int position = lastPositionInFile("hello.olive.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 219, names);
 	}
 	
 	public void test26() {
 		String[] names=new String[]{"wine"};
 		String module = "test26.js";
-		basicTest(module, 256, names);
+		int position = lastPositionInFile("hello.olive.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 256, names);
 	}
 	
 	public void test27() {
 		String[] names=new String[]{"olive"};
 		String module = "test27.js";
-		basicTest(module, 131, names);
+		int position = lastPositionInFile("hello.o", module);
+		basicTest(module, position, names);
+//		basicTest(module, 131, names);
 	}
 	
 	public void test28() {
 		String[] names=new String[]{};
 		String module = "test28.js";
-		basicTest(module, 118, names);
+		int position = lastPositionInFile("hello.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 118, names);
 	}
 	
 	public void test29() {
 		String[] names=new String[]{"x"};
 		String module = "test29.js";
-		basicTest(module, 46, names);
+		int position = lastPositionInFile("{", module);
+		basicTest(module, position, names);
+//		basicTest(module, 46, names);
 	}
 	
 	public void test30() {
 		String[] names=new String[]{"xsd"};
 		String module = "test30.js";
-		basicTest(module, 79, names);
+		int position = lastPositionInFile("sz.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 79, names);
 	}
 	
 	public void test31() {
 		String[] names=new String[]{"x"};
 		String module = "test31.js";
-		basicTest(module, 107, names);
+		int position = lastPositionInFile("node.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 107, names);
 	}
 	
 	public void test32() {
 		String[] names=new String[]{"x"};
 		String module = "test32.js";
-		basicTest(module, 110, names);
+		int position = lastPositionInFile("node.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 110, names);
 	}
 	
 	public void test33() {
 		String[] names=new String[]{"object","objectVariable"};
 		String module = "test33.js";
-		basicTest(module, 65, names);
+		int position = lastPositionInFile("{", module);
+		basicTest(module, position, names);
+//		basicTest(module, 65, names);
 	}
 	
 	public void test34() {
 		String[] names=new String[]{"x2"};
 		String module = "test34.js";
-		basicTest(module, 93, names);
+		int position = lastPositionInFile("object.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 93, names);
 	}
 	
 	public void test35() {
 		String[] names=new String[]{"x"};
 		String module = "test35.js";
-		basicTest(module, 82, names);
+		int position = lastPositionInFile("c.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 82, names);
 	}
 	
 	public void test36() {
 		String[] names=new String[]{"e"};
 		String module = "test36.js";
-		basicTest(module, 76, names);
+		int position = lastPositionInFile("{", module);
+		basicTest(module, position, names);
+//		basicTest(module, 76, names);
 	}
 	
 	public void test37() {
 		String[] names=new String[]{"forward","hello","object"};
 		String module = "test37.js";
-		basicTest(module, 85, names);
+		int position = lastPositionInFile("{", module);
+		basicTest(module, position, names);
+//		basicTest(module, 85, names);
 	}
 	
 	public void test38() {
 		String[] names=new String[]{"object"};
 		String module = "test38.js";
-		basicTest(module, 102, names);
+		int position = lastPositionInFile("o", module);
+		basicTest(module, position, names);
+//		basicTest(module, 102, names);
 	}
 	
 	public void test39() {
 		String[] names=new String[]{"er"};
 		String module = "test39.js";
-		basicTest(module, 125, names);
+		int position = lastPositionInFile("eer.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 125, names);
 	}
 	
 	public void test40() {
 		String[] names=new String[]{"s"};
 		String module = "test40.js";
-		basicTest(module, 65, names);
+		int position = lastPositionInFile("v.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 65, names);
 	}
 	
 	public void test41() {
 		String[] names=new String[]{"hello"};
 		String module = "test41.js";
-		basicTest(module, 96, names);
+		int position = lastPositionInFile("er[0].", module);
+		basicTest(module, position, names);
+//		basicTest(module, 96, names);
 	}
 	
 	public void test42() {
 		String[] names=new String[]{"Hello","Mama"};
 		String module = "test42.js";
-		basicTest(module, 76, names);
+		int position = lastPositionInFile("object.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 76, names);
 	}
 	
 	public void test43() {
 		String[] names=new String[]{};
 		String module = "test43.js";
-		basicTest(module, 45, names);
+		int position = lastPositionInFile(";", module);
+		basicTest(module, position, names);
+//		basicTest(module, 45, names);
 	}
 	
 	public void test44() {
 		String[] names=new String[]{"main"};
 		String module = "test44.js";
-		basicTest(module, 95, names);
+		int position = lastPositionInFile("object.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 95, names);
 	}
 	
-	public void test45() {
+	public void REM_test45() {
 		String[] names=new String[]{"word","other_word"};
 		String module = "test45.js";
-		basicTest(module, 139, names);
+		int position = lastPositionInFile("x.hello.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 139, names);
 	}
 	
 	public void test46() {
 		String[] names=new String[]{"aaa","baa","my","prototype"};
 		String module = "test46.js";
-		basicTest(module, 102, names);
+		int position = lastPositionInFile("x.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 102, names);
 	}
 	
 	public void test47() {
 		String[] names=new String[]{"x","y"};
 		String module = "test47.js";
-		basicTest(module, 54, names);
+		int position = lastPositionInFile("this.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 54, names);
 	}
 	
-	public void test48() {
+	public void REM_test48() {
 		String[] names=new String[]{"erer"};
 		String module = "test48.js";
-		basicTest(module, 105, names);
+		int position = lastPositionInFile("this.", module);
+		basicTest(module, position, names);
+//		basicTest(module, 105, names);
 	}
 }
