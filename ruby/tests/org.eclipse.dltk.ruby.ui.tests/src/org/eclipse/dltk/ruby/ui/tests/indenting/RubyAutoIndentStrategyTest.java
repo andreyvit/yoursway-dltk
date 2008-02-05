@@ -10,17 +10,16 @@
 package org.eclipse.dltk.ruby.ui.tests.indenting;
 
 import org.eclipse.dltk.ruby.internal.ui.RubyPreferenceConstants;
+import org.eclipse.dltk.ruby.internal.ui.text.IRubyPartitions;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyAutoEditStrategy;
-import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitionScanner;
-import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
 import org.eclipse.dltk.ruby.ui.tests.RubyUITests;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
+import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.text.DocCmd;
 import org.eclipse.jface.text.Document;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.rules.FastPartitioner;
+import org.eclipse.jface.text.TextUtilities;
 
 
 public class RubyAutoIndentStrategyTest extends RubyUITests {
@@ -33,13 +32,15 @@ public class RubyAutoIndentStrategyTest extends RubyUITests {
 		super(name);
 	}
 
-	private static final String FOUR = "  ";
+	private static final String TAB = "\t";
 	
-	private static final String EIGHT = FOUR + FOUR;
-	
-	private static final String AUTOINDENT = FOUR;
+	private static final String AUTOINDENT = TAB;
 	
 	private static final String DUMMY_POSTFIX = "#comment";
+
+	private static String DELIMITER = TextUtilities.getDefaultLineDelimiter(new Document());
+	private static String BLOCK_END = DELIMITER + "end";
+	
 
     private RubyAutoEditStrategy strategy;
 	private String doc;
@@ -47,29 +48,17 @@ public class RubyAutoIndentStrategyTest extends RubyUITests {
 	private String expected;
 	IPreferenceStore fStore;
 	
-	/**
-	 * Installs a partitioner with <code>document</code>.
-	 * 
-	 * @param document
-	 *            the document
-	 */
-	private void installStuff(Document document) {
-		String[] types = new String[] { RubyPartitions.RUBY_STRING,
-				RubyPartitions.RUBY_COMMENT, IDocument.DEFAULT_CONTENT_TYPE };
-		FastPartitioner partitioner = new FastPartitioner(
-				new RubyPartitionScanner(), types);
-		partitioner.connect(document);
-		document.setDocumentPartitioner(RubyPartitions.RUBY_PARTITIONING,
-				partitioner);
-	}
 
     protected void setUp() throws Exception {
         super.setUp();
     	fStore = new PreferenceStore();
     	RubyPreferenceConstants.initializeDefaultValues(fStore);
-    	fStore.setValue(CodeFormatterConstants.FORMATTER_TAB_CHAR, CodeFormatterConstants.SPACE);
-		String fPartitioning = RubyPartitions.RUBY_PARTITIONING;
-    	strategy = new RubyAutoEditStrategy(fStore, fPartitioning);
+    	fStore.setValue(CodeFormatterConstants.FORMATTER_TAB_CHAR, CodeFormatterConstants.TAB);
+    	fStore.setValue(PreferenceConstants.EDITOR_CLOSE_BRACES, true);
+    	fStore.setValue(PreferenceConstants.EDITOR_SMART_PASTE, true);
+    	fStore.setValue(PreferenceConstants.EDITOR_SMART_INDENT, true);
+		String fPartitioning = IRubyPartitions.RUBY_PARTITIONING;
+    	strategy = new RubyAutoEditStrategy(fPartitioning, fStore);
     }
 
     protected void tearDown() throws Exception {
@@ -126,18 +115,25 @@ public class RubyAutoIndentStrategyTest extends RubyUITests {
     }
     
     public void doTestNewLineIndent(String prefix, String postfix, String indent) {
-    	doTestInsertion(prefix, postfix, "\n", "\n" + indent);
+		doTestInsertion(prefix, postfix, "\n", "\n" + indent);
     }
     
     public void testSimpleNewLine() {
     	String stat1 = "def foo";
     	String stat2 = "puts 'Ruby is cool'";
-    	doTestNewLineIndent(stat1 + "\n" + FOUR + stat2, DUMMY_POSTFIX, FOUR);
+    	doTestNewLineIndent(stat1 + "\n" + TAB + stat2, DUMMY_POSTFIX, TAB);
     }
     
     public void testIndentedNewLineAfterDef() {
     	String stat1 = "def foo";
-    	doTestNewLineIndent(stat1, DUMMY_POSTFIX, AUTOINDENT);
+    	doTestNewLineIndent(stat1, DUMMY_POSTFIX, AUTOINDENT + DUMMY_POSTFIX + BLOCK_END);
+    }
+        
+    public void testIndentedNewLineAfterIf() {
+    	String stat1 = "if a==0";
+    	doTestNewLineIndent(stat1, DUMMY_POSTFIX, AUTOINDENT + DUMMY_POSTFIX + BLOCK_END);
+    	String stat2 = "def foo" + DELIMITER + "end" + DELIMITER + "if a==0";
+    	doTestNewLineIndent(stat2, DUMMY_POSTFIX, AUTOINDENT + DUMMY_POSTFIX + BLOCK_END);
     }
     
     private void doTestBraceDeindent(String opening, String closing) throws Exception {
@@ -1526,7 +1522,7 @@ public class RubyAutoIndentStrategyTest extends RubyUITests {
         
     }
 
-    public void REM_testBug186514() throws Exception {
+    public void testBug186514() throws Exception {
     	String prefix = "class A\n\tdef b\n\tend\n\t";
 		String postfix = "\nend";
 		String inserted = "def test1\nend\n|";
