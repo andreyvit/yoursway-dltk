@@ -12,6 +12,8 @@ package org.eclipse.dltk.javascript.internal.launching;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -101,7 +103,9 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner
 		IScriptProject proj = AbstractScriptLaunchConfigurationDelegate
 				.getScriptProject(launch.getLaunchConfiguration());
 		IJavaProject myJavaProject = JavaCore.create(proj.getProject());
-		IVMInstall vmInstall = myJavaProject.exists()?JavaRuntime.getVMInstall(myJavaProject):JavaRuntime.getDefaultVMInstall();
+		IVMInstall vmInstall = myJavaProject.exists() ? JavaRuntime
+				.getVMInstall(myJavaProject) : JavaRuntime
+				.getDefaultVMInstall();
 		if (vmInstall != null) {
 			IVMRunner vmRunner = vmInstall
 					.getVMRunner(ILaunchManager.DEBUG_MODE);
@@ -117,7 +121,8 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner
 									iconfig.getRunnerClassName(config, launch,
 											myJavaProject), newClassPath);
 							String[] strings = new String[] {
-									config.getScriptFilePath().toPortableString(), host,
+									config.getScriptFilePath()
+											.toPortableString(), host,
 									"" + port, sessionId };
 							String[] newStrings = iconfig.getProgramArguments(
 									config, launch, myJavaProject);
@@ -165,11 +170,11 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner
 		URL resolve = FileLocator.toFileURL(bundle1
 				.getResource("RhinoRunner.class"));
 		String externalForm = resolve.toExternalForm();
-		File fl = new File(new URL(replaceSpaces(externalForm)).toURI()).getParentFile();
+		File fl = new File(toURI(externalForm)).getParentFile();
 		URL fileURL = FileLocator.toFileURL(bundle
 				.getResource("org/mozilla/classfile/ByteCode.class"));
 		String externalForm2 = fileURL.toExternalForm();
-		File fl1 = new File(new URL(replaceSpaces(externalForm2)).toURI()).getParentFile()
+		File fl1 = new File(toURI(externalForm2)).getParentFile()
 				.getParentFile().getParentFile().getParentFile();
 		String[] classPath = null;
 		try {
@@ -183,13 +188,23 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner
 		return newClassPath;
 	}
 
+	private static URI toURI(String externalForm) throws MalformedURLException {
+		URL url = new URL(replaceSpaces(externalForm));
+		try {
+			return new URI(url.toString());
+		} catch (URISyntaxException e) {
+			throw new MalformedURLException(e.getMessage());
+		}
+	}
+
 	private static String replaceSpaces(String text) {
 		return text.replaceAll(" ", "%20");
 	}
 
 	protected static String[] computeBaseClassPath(IJavaProject myJavaProject)
 			throws CoreException {
-		if (!myJavaProject.exists())return new String[0];
+		if (!myJavaProject.exists())
+			return new String[0];
 		return JavaRuntime.computeDefaultRuntimeClassPath(myJavaProject);
 	}
 
