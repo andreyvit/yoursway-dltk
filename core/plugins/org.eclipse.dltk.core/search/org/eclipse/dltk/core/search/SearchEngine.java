@@ -808,7 +808,7 @@ public class SearchEngine {
 				participant, // Script search only
 				scope, 
 				searchRequestor),
-				IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
+				IDLTKSearchConstants.FORCE_IMMEDIATE_SEARCH,
 			null);	
 		return (String[])result.toArray(new String[result.size()]);
 	}

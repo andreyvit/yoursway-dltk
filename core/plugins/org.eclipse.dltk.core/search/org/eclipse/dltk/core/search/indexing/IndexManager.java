@@ -416,6 +416,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 				// IF you put an index in the cache, then AddArchiveFileToIndex
 				// fails because it thinks there is nothing to do
 				rebuildIndex(indexLocation, containerPath);
+				if( !mixin )
 				return null;
 			}
 			// index isn't cached, consider reusing an existing index file
