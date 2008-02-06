@@ -74,7 +74,7 @@ final class CompletionProposalComputerDescriptor {
 	 * longer due to plug-in initialization etc. See also
 	 * {@link #fIsReportingDelay}.
 	 */
-	private static final long MAX_DELAY = 5000;
+	private static final long MAX_DELAY = 25000;
 
 	/* log constants */
 	private static final String COMPUTE_COMPLETION_PROPOSALS = "computeCompletionProposals()"; //$NON-NLS-1$

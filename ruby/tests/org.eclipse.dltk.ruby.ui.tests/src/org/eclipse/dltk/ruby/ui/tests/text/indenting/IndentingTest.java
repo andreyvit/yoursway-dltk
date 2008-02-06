@@ -67,32 +67,38 @@ public class IndentingTest extends RubyUITests {
 
 	public void doTest(String data, RubyAutoEditStrategy strategy)
 			throws Exception {
+		final String START_TAG = "#s#";
+		final String END_TAG = "#e#";
+		final String NEW_LINE_TAG = "#n#";
+		final String REPLACE_TAG = "#r#";
+		String EXPECTED_TAG = "###";
+		
 		String delim = TextUtilities.determineLineDelimiter(data, DELIMITER);
-		data = data.replaceAll("π", "≤" + delim + "≥");
+		data = data.replaceAll(NEW_LINE_TAG, START_TAG + delim + END_TAG);
 
-		int startPos = data.indexOf("≤");
+		int startPos = data.indexOf(START_TAG);
 		Assert.isLegal(startPos >= 0);
-		data = data.substring(0, startPos) + data.substring(startPos + 1);
+		data = data.substring(0, startPos) + data.substring(startPos + START_TAG.length());
 
-		int replacePos = data.indexOf("±");
+		int replacePos = data.indexOf(REPLACE_TAG);
 		int insertionStartPos = startPos;
 		if (replacePos >= 0) {
 			Assert.isLegal(replacePos >= startPos);
 			data = data.substring(0, replacePos)
-					+ data.substring(replacePos + 1);
+					+ data.substring(replacePos + REPLACE_TAG.length());
 			insertionStartPos = replacePos;
 		}
 
-		int endPos = data.indexOf("≥");
+		int endPos = data.indexOf(END_TAG);
 		Assert.isLegal(endPos >= 0);
 		Assert.isLegal(replacePos < 0 || endPos >= replacePos);
 		String insertion = data.substring(insertionStartPos, endPos);
 		data = data.substring(0, insertionStartPos)
-				+ data.substring(endPos + 1);
+				+ data.substring(endPos + END_TAG.length());
 
-		int expectedPos = data.indexOf("§§");
+		int expectedPos = data.indexOf(EXPECTED_TAG);
 		Assert.isLegal(expectedPos >= 0);
-		String expected = data.substring(expectedPos + 2);
+		String expected = data.substring(expectedPos + EXPECTED_TAG.length());
 		data = data.substring(0, expectedPos);
 
 		Document doc = new Document(data);

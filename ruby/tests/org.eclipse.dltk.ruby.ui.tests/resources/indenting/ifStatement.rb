@@ -1,10 +1,10 @@
 if test
-	if megatestπ
+	if megatest#n#
 	foo
 else
 	bar
 end
-§§
+###
 if test
 	if megatest
 		

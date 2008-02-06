@@ -1,7 +1,7 @@
 def foo(arg)
 	puts arg.class
-		en≤d≥
-§§
+		en#s#d#e#
+###
 def foo(arg)
 	puts arg.class
 end
