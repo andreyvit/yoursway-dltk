@@ -21,7 +21,7 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.TextUtilities;
 
 public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
-	
+
 	private static final int[] INDENT_TO_BLOCK_TOKENS = {
 			IRubySymbols.TokenELSE, IRubySymbols.TokenELSIF,
 			IRubySymbols.TokenEND, IRubySymbols.TokenENSURE,
@@ -60,16 +60,19 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 	}
 
 	private void closeBlock(IDocument d, DocumentCommand c, String indent,
-			String afterCursor, RubyHeuristicScanner scanner) throws BadLocationException {
+			String afterCursor, RubyHeuristicScanner scanner)
+			throws BadLocationException {
 		c.caretOffset = c.offset + c.text.length();
 		c.length = afterCursor.length();
 		c.shiftsCaret = false;
-		String delimiter = TextUtilities.getDefaultLineDelimiter(d);		
-		c.text += afterCursor.trim() + delimiter + indent + getApropriateBlockEnding(d, scanner, c.offset);
+		String delimiter = TextUtilities.getDefaultLineDelimiter(d);
+		c.text += afterCursor.trim() + delimiter + indent
+				+ getApropriateBlockEnding(d, scanner, c.offset);
 	}
 
 	private String getApropriateBlockEnding(IDocument d,
-			RubyHeuristicScanner scanner, int offset) throws BadLocationException {
+			RubyHeuristicScanner scanner, int offset)
+			throws BadLocationException {
 		int beginning = scanner.findBlockBeginningOffset(offset);
 		IRegion line = d.getLineInformationOfOffset(beginning);
 		int ending = Math.min(line.getOffset() + line.getLength(), offset);
@@ -126,18 +129,17 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 			String indent = "";
 			try {
 				indent = getBlockIndent(d, c, scanner);
-			}
-			catch (BadLocationException e) {
+			} catch (BadLocationException e) {
 				// there is no enclosing block
-			}	
-			
+			}
+
 			int pos = scanner.findNonWhitespaceForwardInAnyPartition(info
 					.getOffset(), c.offset);
 			String line = "";
 			if (pos != RubyHeuristicScanner.NOT_FOUND) {
 				line = d.get(pos, c.offset - pos);
 			}
-			
+
 			c.text = indent + line + c.text;
 			c.length = c.offset - info.getOffset();
 			c.offset = info.getOffset();
@@ -157,7 +159,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		int blockOffset = scanner.findBlockBeginningOffset(c.offset);
 		if (blockOffset == RubyHeuristicScanner.NOT_FOUND)
 			throw new BadLocationException("Block not found");
-			
+
 		String indent = AutoEditUtils.getLineIndent(d, d
 				.getLineOfOffset(blockOffset));
 		return indent;
@@ -181,10 +183,9 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		if (nextIsIdentToBlockToken(scanner, c.offset, lineEnd)) {
 			try {
 				c.text += getBlockIndent(d, c, scanner);
-			}
-			catch (BadLocationException e) {
+			} catch (BadLocationException e) {
 				// there is no enclosing block
-			}			
+			}
 			return;
 		}
 
@@ -197,8 +198,11 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 			c.text += fPreferences.getIndent();
 
 			// Auto close blocks
-			if (fCloseBlocks && !isBlockClosed(d, c.offset)) {
-				closeBlock(d, c, indent, d.get(c.offset, lineEnd - c.offset), scanner);
+			if (fCloseBlocks
+					&& scanner.isBlockBeginning(line.getOffset(), lineEnd)
+					&& !isBlockClosed(d, c.offset)) {
+				closeBlock(d, c, indent, d.get(c.offset, lineEnd - c.offset),
+						scanner);
 			}
 		} else if (previousIsFirstContinuation(d, scanner, c.offset, line
 				.getOffset())) {
@@ -276,10 +280,9 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		String indent = "";
 		try {
 			indent = getBlockIndent(d, c, scanner) + fPreferences.getIndent();
-		}
-		catch (BadLocationException e) {
+		} catch (BadLocationException e) {
 			// there is no enclosing block
-		}	
+		}
 
 		String delimiter = TextUtilities.getDefaultLineDelimiter(d);
 		boolean addLastDelimiter = c.text.endsWith(delimiter);
