@@ -27,20 +27,23 @@ public abstract class BasicTclMatchLocatorParser extends MatchLocatorParser {
 			kwMap.put(kw[q], Boolean.TRUE);
 		}
 	}
+
 	public BasicTclMatchLocatorParser(MatchLocator locator) {
 		super(locator);
 		try {
-			this.parser = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
+			this.parser = DLTKLanguageManager
+					.getSourceParser(TclNature.NATURE_ID);
 		} catch (CoreException e) {
-			if( DLTKCore.DEBUG ) {
+			if (DLTKCore.DEBUG) {
 				e.printStackTrace();
 			}
 		}
 	}
 
 	public ModuleDeclaration parse(PossibleMatch possibleMatch) {
-		ModuleDeclaration module = this.parser.parse(possibleMatch.getFileName(), possibleMatch
-						.getSourceContents().toCharArray(), null);
+		ModuleDeclaration module = this.parser.parse(possibleMatch
+				.getFileName(),
+				possibleMatch.getSourceContents().toCharArray(), null);
 		module.rebuild();
 		module.rebuildMethods();
 		return module;
@@ -51,7 +54,8 @@ public abstract class BasicTclMatchLocatorParser extends MatchLocatorParser {
 		if (types != null) {
 			for (int i = 0; i < types.length; i++) {
 				TypeDeclaration type = types[i];
-				this.getPatternLocator().match(this.processType(type), this.getNodeSet());
+				this.getPatternLocator().match(this.processType(type),
+						this.getNodeSet());
 				this.parseBodies(type);
 			}
 		}
@@ -60,16 +64,12 @@ public abstract class BasicTclMatchLocatorParser extends MatchLocatorParser {
 			PatternLocator locator = this.getPatternLocator();
 			for (int i = 0; i < methods.length; i++) {
 				MethodDeclaration method = methods[i];
-				if (method instanceof MethodDeclaration) {
-					MethodDeclaration methodDeclaration = method;
-	
-					locator.match(this.processMethod(methodDeclaration),
-							this.getNodeSet());
-					this.parseBodies(methodDeclaration);
-				}
+				locator.match(this.processMethod(method), this
+						.getNodeSet());
+				this.parseBodies(method);
 			}
 		}
-	
+
 		ASTNode[] nodes = unit.getNonTypeOrMethodNode();
 		int length = nodes.length;
 		for (int i = 0; i < length; i++) {
@@ -105,22 +105,22 @@ public abstract class BasicTclMatchLocatorParser extends MatchLocatorParser {
 	}
 
 	protected void parseBodies(TypeDeclaration type) {
-	
+
 		PatternLocator locator = this.getPatternLocator();
-	
+
 		MethodDeclaration[] methods = type.getMethods();
 		if (methods != null) {
 			for (int i = 0; i < methods.length; i++) {
 				MethodDeclaration method = methods[i];
 				if (method instanceof MethodDeclaration) {
 					MethodDeclaration methodDeclaration = method;
-					locator.match(this.processMethod(methodDeclaration),
-							this.getNodeSet());
+					locator.match(this.processMethod(methodDeclaration), this
+							.getNodeSet());
 					this.parseBodies(methodDeclaration);
 				}
 			}
 		}
-	
+
 		TypeDeclaration[] memberTypes = type.getTypes();
 		if (memberTypes != null) {
 			for (int i = 0; i < memberTypes.length; i++) {

@@ -40,7 +40,8 @@ public class Block extends Expression {
 		if (visitor.visit(this)) {
 			Iterator it = statements.iterator();
 			while (it.hasNext()) {
-				((ASTNode) it.next()).traverse(visitor);
+				ASTNode node = (ASTNode) it.next();
+				node.traverse(visitor);
 			}
 			visitor.endvisit(this);
 		}

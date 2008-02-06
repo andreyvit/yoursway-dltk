@@ -94,9 +94,6 @@
  <extension
          name="tcl commands"
          point="org.eclipse.dltk.tcl.core.tclCommandProcessor">
-      <!--processor
-            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclSwitchCommandProcessor"
-            id="switch"></processor-->
       <processor
             class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclNamespaceProcessor"
             id="namespace"></processor>
@@ -132,10 +129,10 @@
             class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclNamespaceVariableProcessor"
             id="variable">
       </processor>
-      <!--processor
+      <processor
             class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclSwitchCommandProcessor"
             id="switch">
-      </processor-->
+      </processor>
       <processor
             class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclForCommandProcessor"
             id="for">
@@ -143,6 +140,10 @@
       <processor
             class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclForeachCommandProcessor"
             id="foreach">
+      </processor>
+      <processor
+            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclWhileCommandProcessor"
+            id="while">
       </processor>
    </extension>
  <extension
