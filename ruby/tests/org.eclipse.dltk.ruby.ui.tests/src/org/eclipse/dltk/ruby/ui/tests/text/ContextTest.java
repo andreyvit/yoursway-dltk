@@ -12,8 +12,9 @@ package org.eclipse.dltk.ruby.ui.tests.text;
 import org.eclipse.dltk.core.tests.model.SuiteOfTestCases;
 import org.eclipse.dltk.ruby.core.text.RubyContext;
 import org.eclipse.dltk.ruby.core.text.RubyContext.HeuristicLookupResult;
-import org.eclipse.dltk.ruby.internal.ui.text.syntax.RubyContextUtils;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.IDocument;
 
 public class ContextTest extends SuiteOfTestCases {
 
@@ -21,11 +22,38 @@ public class ContextTest extends SuiteOfTestCases {
 		super(name);
 	}
 
+	public static CharSequence createDocumentAdapter(final IDocument document) {
+		CharSequence sequence = new CharSequence() {
+
+			public char charAt(int arg0) {
+				try {
+					return document.getChar(arg0);
+				} catch (BadLocationException e) {
+					throw new RuntimeException(e);
+				}
+			}
+
+			public int length() {
+				return document.getLength();
+			}
+
+			public CharSequence subSequence(int start, int end) {
+				try {
+					return document.get(start, end - start);
+				} catch (BadLocationException e) {
+					throw new RuntimeException(e);
+				}
+			}
+
+		};
+		return sequence;
+	}
+
 	public HeuristicLookupResult doTest(String data, RubyContext expected,
 			int inside) throws Exception {
 		Document doc = new Document(data);
 		HeuristicLookupResult result = RubyContext.determineContext(
-				RubyContextUtils.createDocumentAdapter(doc), doc.getLength(),
+				createDocumentAdapter(doc), doc.getLength(),
 				RubyContext.MODE_FULL);
 		assertEquals(expected.toString(), result.context.toString());
 		assertEquals(inside, result.inside);
@@ -101,18 +129,18 @@ public class ContextTest extends SuiteOfTestCases {
 
 	public void testNamespaceResolution() throws Exception {
 		doTest("Foo::", RubyContext.AFTER_DOT, RubyContext.INSIDE_NOTHING); // XXX
-																			// should
-																			// be
-																			// special
-																			// context?
+		// should
+		// be
+		// special
+		// context?
 	}
 
 	public void testSymbol() throws Exception {
 		doTest(":", RubyContext.AFTER_DOT, RubyContext.INSIDE_NOTHING); // XXX
-																		// should
-																		// be
-																		// special
-																		// context?
+		// should
+		// be
+		// special
+		// context?
 	}
 
 	public void testMethodDefinition() throws Exception {
