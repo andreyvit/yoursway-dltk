@@ -518,6 +518,10 @@ public abstract class AbstractSourceModule extends Openable implements
 
 	protected IProblemReporter getProblemReporter(String natureId)
 			throws CoreException {
+		IScriptProject project = getScriptProject();
+		if (project == null || !project.getProject().hasNature(natureId))
+			return null;
+		
 		IProblemFactory factory = DLTKLanguageManager
 				.getProblemFactory(natureId);
 		return factory.createReporter(getResource());
