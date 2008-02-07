@@ -2,13 +2,6 @@ package org.eclipse.dltk.ruby.internal.ui.text;
 
 import java.util.Arrays;
 
-import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.ast.parser.ISourceParser;
-import org.eclipse.dltk.compiler.problem.IProblem;
-import org.eclipse.dltk.compiler.problem.IProblemReporter;
-import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.internal.ui.RubyUI;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.text.util.AutoEditUtils;
@@ -390,44 +383,85 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 
 	private boolean isBlockClosed(IDocument document, int offset)
 			throws BadLocationException {
+		// TODO: Remove this comment when Ruby parser become able to report
+		// unclosed blocks
+		//
+		// RubyHeuristicScanner scanner = new RubyHeuristicScanner(document);
+		// IRegion sourceRange = scanner.findSurroundingBlock(offset);
+		// if (sourceRange != null) {
+		// String source = document.get(sourceRange.getOffset(), sourceRange
+		// .getLength());
+		// char[] buffer = source.toCharArray();
+		//
+		// SyntaxErrorListener listener = new SyntaxErrorListener();
+		// ISourceParser parser;
+		// try {
+		// parser = DLTKLanguageManager
+		// .getSourceParser(RubyNature.NATURE_ID);
+		// parser.parse(null, buffer, listener);
+		// if (listener.errorOccured())
+		// return false;
+		// } catch (CoreException e) {
+		// DLTKUIPlugin.log(e);
+		// }
+		// }
+		return getBlockBalance(document, offset) <= 0;
+	}
+
+	/**
+	 * Returns the block balance, i.e. zero if the blocks are balanced at
+	 * <code>offset</code>, a negative number if there are more closing than
+	 * opening braces, and a positive number if there are more opening than
+	 * closing braces.
+	 * 
+	 * @param document
+	 * @param offset
+	 * @param partitioning
+	 * @return the block balance
+	 */
+	private static int getBlockBalance(IDocument document, int offset) {
+		if (offset < 1)
+			return -1;
+		if (offset >= document.getLength())
+			return 1;
+
+		int begin = offset;
+		int end = offset - 1;
+
 		RubyHeuristicScanner scanner = new RubyHeuristicScanner(document);
-		IRegion sourceRange = scanner.findSurroundingBlock(offset);
-		if (sourceRange != null) {
-			String source = document.get(sourceRange.getOffset(), sourceRange
-					.getLength());
-			char[] buffer = source.toCharArray();
 
-			SyntaxErrorListener listener = new SyntaxErrorListener();
-			ISourceParser parser;
-			try {
-				parser = DLTKLanguageManager
-						.getSourceParser(RubyNature.NATURE_ID);
-				parser.parse(null, buffer, listener);
-				if (listener.errorOccured())
-					return false;
-			} catch (CoreException e) {
-				DLTKUIPlugin.log(e);
-			}
-		}
-		return true;
-	}
-
-	private static class SyntaxErrorListener implements IProblemReporter {
-		private boolean fError = false;
-
-		public void clearMarkers() {
-		}
-
-		public IMarker reportProblem(IProblem problem) throws CoreException {
-			int id = problem.getID();
-			if ((id & IProblem.Syntax) != 0 || id == IProblem.Unclassified) {
-				fError = true;
-			}
-			return null;
-		}
-
-		public boolean errorOccured() {
-			return fError;
+		while (true) {
+			begin = scanner.findBlockBeginningOffset(begin - 1);
+			end = scanner.findBlockEndingOffset(end + 1);
+			if (begin == RubyHeuristicScanner.NOT_FOUND
+					&& end == RubyHeuristicScanner.NOT_FOUND)
+				return 0;
+			if (begin == RubyHeuristicScanner.NOT_FOUND)
+				return -1;
+			if (end == RubyHeuristicScanner.NOT_FOUND)
+				return 1;
 		}
 	}
+	
+	// TODO: Remove this comment when Ruby parser become able to report
+	// unclosed blocks
+	//
+	// private static class SyntaxErrorListener implements IProblemReporter {
+	// private boolean fError = false;
+	//
+	// public void clearMarkers() {
+	// }
+	//
+	// public IMarker reportProblem(IProblem problem) throws CoreException {
+	// int id = problem.getID();
+	// if ((id & IProblem.Syntax) != 0 || id == IProblem.Unclassified) {
+	// fError = true;
+	// }
+	// return null;
+	// }
+	//
+	// public boolean errorOccured() {
+	// return fError;
+	// }
+	// }
 }
