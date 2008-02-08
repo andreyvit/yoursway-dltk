@@ -107,6 +107,7 @@ public class TclCompletionParser extends TclAssistParser {
 					completionNode = n;
 				}
 			}
+			int maxLen = position - completionNode.sourceStart();
 			if (completionNode == null) {
 				// TODO: Add inner completion here.
 				if (len > 0) {
@@ -134,6 +135,10 @@ public class TclCompletionParser extends TclAssistParser {
 				}
 			} else if (completionNode instanceof SimpleReference) {
 				completionToken = ((SimpleReference) completionNode).getName();
+				// We need to cut some sumbols if node is begger then position.
+				if (completionToken.length() > maxLen && maxLen > 0) {
+					completionToken = completionToken.substring(0, maxLen);
+				}
 			} /*
 				 * else if (completionNode instanceof TclBlockExpression) {
 				 * TclBlockExpression block = (TclBlockExpression)
@@ -152,7 +157,7 @@ public class TclCompletionParser extends TclAssistParser {
 				 * handleNotInElement(inNode, position); }
 				 */
 			if (completionNode instanceof StringLiteral) {
-				int pos = position - completionNode.sourceStart();
+				int pos = maxLen;
 				SimpleReference tok = TclParseUtils.extractVariableFromString(
 						(StringLiteral) completionNode, pos);
 				if (tok != null) {
@@ -231,15 +236,15 @@ public class TclCompletionParser extends TclAssistParser {
 								(TclStatement) node, keywords);
 						this.assistNodeParent = inNode;
 						throw new CompletionNodeFound(nde, null/* ((TypeDeclaration)inNode).scope */);
-					}
-					else {
+					} else {
 						String[] keywords = checkKeywords(completionToken,
 								MODULE);
-						if( completionToken == null ) {
+						if (completionToken == null) {
 							completionToken = "";
 						}
 						ASTNode nde = new CompletionOnKeywordArgumentOrFunctionArgument(
-								completionToken, (TclStatement) node, keywords, position);
+								completionToken, (TclStatement) node, keywords,
+								position);
 						this.assistNodeParent = inNode;
 						throw new CompletionNodeFound(nde, null/* ((TypeDeclaration)inNode).scope */);
 					}
@@ -301,6 +306,7 @@ public class TclCompletionParser extends TclAssistParser {
 			}
 			return super.visit(s);
 		}
+
 		public boolean visit(Expression s) throws Exception {
 			if (s.sourceStart() <= position && s.sourceEnd() >= position) {
 				for (int i = 0; i < extensions.length; i++) {

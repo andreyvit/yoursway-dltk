@@ -306,11 +306,11 @@ proc makeCloseNode {} {
 }
 
 proc makeDescriptionNode {body} {
-	return "<description>$body</description>"
+	return "<description><$body></description>"
 }
 
 proc makeInterpreterNode {state body} {
-	return "<interpreter state=\"$state\">$body</interpreter>"
+	return "<interpreter state=\"$state\"><!\[CDATA\[$body\]\]></interpreter>"
 }
 
 proc makeCompletionNode {body} {

@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Preferences;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IRegisterGroup;
@@ -98,11 +100,12 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 		}
 
 		if (showGlobal && names.containsKey(globalId)) {
-			all.add(readVariables(this, globalId.intValue(), commands));
+			all.add(new ScriptVariableWrapper(getDebugTarget(), "Global Variables",
+					readVariables(this, globalId.intValue(), commands)));
 		}
 
 		if (showClass && names.containsKey(classId)) {
-			all.add(new ScriptVariableWrapper(getDebugTarget(), "SELF",
+			all.add(new ScriptVariableWrapper(getDebugTarget(), "Class Variables",
 					readVariables(this, classId.intValue(), commands)));
 		}
 
@@ -128,16 +131,15 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 		}
 	}
 
-	public ScriptStackFrame(IScriptStack stack, IDbgpStackLevel stackLevel)
-			throws DbgpException {
+	public ScriptStackFrame(IScriptStack stack, IDbgpStackLevel stackLevel) {
 		this.stack = stack;
 		this.thread = stack.getThread();
 		this.level = stackLevel;
 		updateVariables();
 	}
 
-	public void updateVariables() throws DbgpException {
-		this.variables = readAllVariables();
+	public void updateVariables() {
+		this.variables = null;
 	}
 
 	public IScriptStack getStack() {
@@ -185,14 +187,26 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	}
 
 	public boolean hasVariables() throws DebugException {
-		if (variables == null) {
-			return false;
-		}
-
+		checkVariablesAvailable();
 		return variables.length > 0;
 	}
 
+	private synchronized void checkVariablesAvailable() throws DebugException {
+		if (variables == null) {
+			try {
+				variables = readAllVariables();
+			} catch (DbgpException e) {
+				variables = new IScriptVariable[0];
+				Status status = new Status(IStatus.ERROR,
+						DLTKDebugPlugin.PLUGIN_ID, "Unable to load variables",
+						e);
+				throw new DebugException(status);
+			}
+		}
+	}
+
 	public IVariable[] getVariables() throws DebugException {
+		checkVariablesAvailable();
 		return (IVariable[]) variables.clone();
 	}
 
@@ -265,6 +279,7 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	}
 
 	public IScriptVariable findVariable(String varName) throws DebugException {
+		checkVariablesAvailable();
 		for (int i = 0; i < variables.length; i++) {
 			if (variables[i].getName().equals(varName)) {
 				return variables[i];

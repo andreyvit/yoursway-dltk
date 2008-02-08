@@ -248,6 +248,16 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 				&& s instanceof TypeDeclaration) {
 			flags |= Modifiers.AccNameSpace;
 		}
+		if ((s.getModifiers() & Modifiers.AccPublic) != 0) {
+			flags |= Modifiers.AccPublic;
+		}
+		else if((s.getModifiers() & Modifiers.AccPrivate) != 0) {
+			flags |= Modifiers.AccPrivate;
+		}
+		else if((s.getModifiers() & Modifiers.AccProtected) != 0) {
+			flags |= Modifiers.AccProtected;
+		}
+		
 		for (int i = 0; i < this.extensions.length; i++) {
 			flags |= this.extensions[i].getModifiers(s);
 		}

@@ -69,13 +69,7 @@ public class ScriptStack implements IScriptStack {
 
 	public void updateFrames() {
 		for (int i = 0; i < frames.length; i++) {
-			try {
-				((ScriptStackFrame) frames[i]).updateVariables();
-			} catch (DbgpException e) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
-			}
+			((ScriptStackFrame) frames[i]).updateVariables();
 		}
 	}
 }

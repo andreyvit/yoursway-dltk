@@ -1,10 +1,12 @@
 package org.eclipse.dltk.tcl.internal.core.parser.processors.tcl;
 
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.tcl.ast.TclStatement;
+import org.eclipse.dltk.tcl.internal.core.codeassist.TclVisibilityUtils;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
@@ -39,6 +41,11 @@ public class TclVariableProcessor extends AbstractTclCommandProcessor {
 			TclVariableDeclaration var = new TclVariableDeclaration(variable,
 					variableValue, statement.sourceStart(), statement
 							.sourceEnd());
+			if (TclVisibilityUtils.isPrivate(variable.getName())) {
+				var.setModifier(Modifiers.AccPrivate);
+			} else {
+				var.setModifier(Modifiers.AccPublic);
+			}
 			this.addToParent(parent, var);
 			return var;
 		}

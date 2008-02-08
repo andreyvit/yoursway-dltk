@@ -368,7 +368,7 @@ public abstract class CompletionProposalLabelProvider {
 	private ImageDescriptor decorateImageDescriptor(ImageDescriptor descriptor,
 			CompletionProposal proposal) {
 		int adornments = 0;
-	
+
 		return new ScriptElementImageDescriptor(descriptor, adornments,
 				ScriptElementImageProvider.SMALL_SIZE);
 	}

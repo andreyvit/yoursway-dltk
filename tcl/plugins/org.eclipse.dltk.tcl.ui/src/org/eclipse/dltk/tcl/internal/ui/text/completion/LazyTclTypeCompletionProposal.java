@@ -10,8 +10,11 @@
 package org.eclipse.dltk.tcl.internal.ui.text.completion;
 
 import org.eclipse.dltk.core.CompletionProposal;
+import org.eclipse.dltk.tcl.internal.ui.TclUI;
+import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.text.completion.LazyScriptTypeCompletionProposal;
 import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 
@@ -46,5 +49,10 @@ public class LazyTclTypeCompletionProposal extends
 		}
 
 		return false;
+	}
+	protected boolean insertCompletion() {
+		IPreferenceStore preference = TclUI.getDefault().getPreferenceStore();
+		return preference
+				.getBoolean(PreferenceConstants.CODEASSIST_INSERT_COMPLETION);
 	}
 }

@@ -4,9 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -299,20 +301,23 @@ public class InterpreterConfig implements Cloneable {
 
 	public String[] getEnvironmentAsStringsIncluding(
 			EnvironmentVariable[] variables) {
+		Set pressentVars = new HashSet();
 		ArrayList list = new ArrayList();
 		if (variables != null) {
 			for (int i = 0; i < variables.length; i++) {
-				list
-						.add(variables[i].getName() + "="
-								+ variables[i].getValue());
+				String name = variables[i].getName();
+				list.add(name + "=" + variables[i].getValue());
+				pressentVars.add(name);
 			}
 		}
 
 		Iterator it = environment.keySet().iterator();
 		while (it.hasNext()) {
 			String key = (String) it.next();
-			String value = (String) environment.get(key);
-			list.add(key + "=" + value);
+			if (!pressentVars.contains(key)) {
+				String value = (String) environment.get(key);
+				list.add(key + "=" + value);
+			}
 		}
 
 		return (String[]) list.toArray(new String[list.size()]);

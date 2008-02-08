@@ -228,7 +228,13 @@
             class="org.eclipse.dltk.tcl.internal.ui.preferences.TclLibraryPreferencePage"
             id="org.eclipse.dltk.ui.preferences.UserLibraryPreferencePage">
             <keywordReference id="org.eclipse.dltk.ui.userlibs"/>
-      </page>      
+      </page>
+     <page
+           category="org.eclipse.dltk.tcl.preferences.editor"
+           class="org.eclipse.dltk.tcl.internal.ui.preferences.TclEditorAssistancePreferencePage"
+           id="org.eclipse.dltk.tcl.ui.assistance"
+           name="%TclEditorAssistancePreferencePage.name">
+     </page>      
           
  </extension>
  <extension

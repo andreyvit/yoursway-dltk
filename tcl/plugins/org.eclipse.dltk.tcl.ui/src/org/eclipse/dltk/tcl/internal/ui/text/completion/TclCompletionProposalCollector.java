@@ -84,23 +84,4 @@ public class TclCompletionProposalCollector extends
 		return createScriptCompletionProposal(completion, start, length, img,
 				label, relevance);
 	}
-
-	protected boolean isFiltered(CompletionProposal proposal) {
-		if (super.isFiltered(proposal)) {
-			return true;
-		}
-//		if (TclUI.getDefault().getPreferenceStore().getBoolean(
-//				TclPreferenceConstants.CODEASSIST_FILTER_INTERNAL_API)) {
-//			String name = new String( proposal.getName() );
-//			if( name.indexOf("::") != -1) {
-//				name = name.substring(name.lastIndexOf("::") + 2);
-//			}
-//			char first = name.charAt(0);
-//			if( Character.isUpperCase(first) || first == '_') {
-//				return true;
-//			}
-//		}
-
-		return false;
-	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
@@ -16,6 +17,7 @@ import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
+import org.eclipse.dltk.tcl.internal.core.codeassist.TclVisibilityUtils;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
@@ -44,10 +46,9 @@ public class TclProcProcessor extends AbstractTclCommandProcessor {
 			sName = ((TclBlockExpression) procName).getBlock();
 		} else if (procName instanceof TclExecuteExpression) {
 			sName = ((TclExecuteExpression) procName).getExpression();
-		}
-		else if (procName instanceof StringLiteral) {
+		} else if (procName instanceof StringLiteral) {
 			sName = ((StringLiteral) procName).getValue();
-			sName = sName.substring(1,sName.length() - 1);
+			sName = sName.substring(1, sName.length() - 1);
 		}
 		if (sName == null || sName.length() == 0) {
 			this.report(parser, Messages.TclProcProcessor_Empty_Proc_Name,
@@ -79,6 +80,11 @@ public class TclProcProcessor extends AbstractTclCommandProcessor {
 		method.setNameStart(procName.sourceStart());
 		method.setNameEnd(procName.sourceEnd());
 		method.acceptArguments(arguments);
+		if (TclVisibilityUtils.isPrivate(sName)) {
+			method.setModifier(Modifiers.AccPrivate);
+		} else {
+			method.setModifier(Modifiers.AccPublic);
+		}
 		Block block = new Block(procCode.sourceStart(), procCode.sourceEnd());
 
 		String content = parser.substring(procCode.sourceStart(), procCode

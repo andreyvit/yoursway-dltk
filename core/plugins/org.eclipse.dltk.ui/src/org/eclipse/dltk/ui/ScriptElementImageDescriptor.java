@@ -126,7 +126,7 @@ public class ScriptElementImageDescriptor extends CompositeImageDescriptor
 		if ((fFlags & ERROR) != 0) {
 			ImageData data= getImageData(DLTKPluginImages.DESC_OVR_ERROR);
 			drawImage(data, x, size.y - data.height);
-			x+= data.width;
+			x += data.width;
 		}
 		if ((fFlags & WARNING) != 0) {
 			ImageData data= getImageData(DLTKPluginImages.DESC_OVR_WARNING);

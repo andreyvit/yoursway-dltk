@@ -10,15 +10,19 @@
 package org.eclipse.dltk.tcl.internal.ui.text.completion;
 
 import org.eclipse.dltk.core.CompletionProposal;
+import org.eclipse.dltk.tcl.internal.core.codeassist.ITclCompletionProposalTypes;
+import org.eclipse.dltk.tcl.internal.ui.TclUI;
 import org.eclipse.dltk.tcl.internal.ui.templates.TclTemplateCompletionProcessor;
+import org.eclipse.dltk.tcl.ui.TclPreferenceConstants;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalCollector;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalComputer;
 import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.templates.TemplateCompletionProcessor;
 
 public class TclTypeCompletionProposalComputer extends
 		ScriptCompletionProposalComputer {
-	
+
 	protected ScriptCompletionProposalCollector createCollector(
 			ScriptContentAssistInvocationContext context) {
 		ScriptCompletionProposalCollector collector = new TclCompletionProposalCollector(
@@ -37,8 +41,17 @@ public class TclTypeCompletionProposalComputer extends
 
 		collector.setIgnored(CompletionProposal.TYPE_REF, false);
 
+		IPreferenceStore preferenceStore = TclUI.getDefault()
+				.getPreferenceStore();
+		collector
+				.setIgnored(
+						ITclCompletionProposalTypes.FILTER_INTERNAL_API,
+						preferenceStore
+								.getBoolean(TclPreferenceConstants.CODEASSIST_FILTER_INTERNAL_API));
+
 		return collector;
 	}
+
 	protected TemplateCompletionProcessor createTemplateProposalComputer(
 			ScriptContentAssistInvocationContext context) {
 		return new TclTemplateCompletionProcessor(context);

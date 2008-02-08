@@ -58,7 +58,7 @@ public class MixinModel {
 	private Set modulesToReparse = new HashSet(); // list of modules required
 	// to be reparsed.
 	public long removes = 1;
-	double ratio = 2000;
+	double ratio = 10000;
 
 	public MixinModel(IDLTKLanguageToolkit toolkit) {
 		this.toolkit = toolkit;

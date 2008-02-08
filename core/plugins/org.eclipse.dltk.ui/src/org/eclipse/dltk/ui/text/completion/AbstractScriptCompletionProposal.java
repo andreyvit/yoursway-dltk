@@ -758,7 +758,7 @@ public abstract class AbstractScriptCompletionProposal implements
 		return null;
 	}
 
-	private static boolean insertCompletion() {
+	protected boolean insertCompletion() {
 		IPreferenceStore preference = DLTKUIPlugin.getDefault()
 				.getPreferenceStore();
 		return preference

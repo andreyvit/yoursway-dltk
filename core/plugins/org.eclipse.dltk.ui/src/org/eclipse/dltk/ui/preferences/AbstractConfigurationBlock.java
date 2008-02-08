@@ -551,7 +551,7 @@ public abstract class AbstractConfigurationBlock implements
 		initializeFields();
 	}
 
-	private void initializeFields() {
+	protected void initializeFields() {
 
 		Iterator iter = fCheckBoxes.keySet().iterator();
 		while (iter.hasNext()) {

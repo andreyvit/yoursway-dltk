@@ -38,6 +38,7 @@ import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.Flags;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
@@ -70,10 +71,10 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 	protected org.eclipse.dltk.core.ISourceModule sourceModule;
 	protected final static boolean TRACE_COMPLETION_TIME = false;
 	private ICompletionExtension[] extensions;
-	
+
 	public TclCompletionEngine() {
 		extensions = TclExtensionManager.getDefault().getCompletionExtensions();
-		this.parser = new TclCompletionParser(extensions); 
+		this.parser = new TclCompletionParser(extensions);
 	}
 
 	public void complete(ISourceModule sourceModule, int completionPosition,
@@ -173,9 +174,10 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 			CompletionOnKeywordOrFunction key = (CompletionOnKeywordOrFunction) astNode;
 			processCompletionOnKeywords(key);
 			processCompletionOnFunctions(astNodeParent, key);
-			
+
 			for (int i = 0; i < extensions.length; i++) {
-				extensions[i].completeOnKeywordOrFunction(key, astNodeParent, this);
+				extensions[i].completeOnKeywordOrFunction(key, astNodeParent,
+						this);
 			}
 		} else if (astNode instanceof CompletionOnVariable) {
 			processCompletionOnVariables(astNode);
@@ -191,22 +193,22 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 					String prefix = ((SimpleReference) at).getName() + " "
 							+ new String(compl.getToken());
 					processPartOfKeywords(compl, prefix, methodNames);
-					
+
 					for (int i = 0; i < extensions.length; i++) {
-						extensions[i].completeOnKeywordArgumentsOne(name, compl, methodNames, st, this);
+						extensions[i].completeOnKeywordArgumentsOne(name,
+								compl, methodNames, st, this);
 					}
 				}
 			}
 			// Variables completion here.
-//			char[] varToken = new char[0];
+			// char[] varToken = new char[0];
 			boolean provideDollar = true;
-			if( compl.getToken().length > 0 && compl.getToken()[0] == '$') {
-//				varToken = compl.getToken();
+			if (compl.getToken().length > 0 && compl.getToken()[0] == '$') {
+				// varToken = compl.getToken();
 				provideDollar = false;
 			}
-			findVariables(compl.getToken(), astNodeParent,
-					true, astNode.sourceStart(),
-					provideDollar, null);
+			findVariables(compl.getToken(), astNodeParent, true, astNode
+					.sourceStart(), provideDollar, null);
 		}
 		return true;
 	}
@@ -255,6 +257,15 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 			Set set = new HashSet();
 			set.addAll(methodNames);
 			findNamespaceFunctions(token, set);
+			if (astNodeParent instanceof TypeDeclaration) {
+				if ((((TypeDeclaration) astNodeParent).getModifiers() & Modifiers.AccNameSpace) != 0) {
+					String namespace = TclParseUtil.getElementFQN(
+							astNodeParent,
+							IMixinRequestor.MIXIN_NAME_SEPARATOR, this.parser
+									.getModule());
+					findNamespaceCurrentFunctions(token, set, namespace);
+				}
+			}
 		}
 	}
 
@@ -311,10 +322,116 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		methods.removeAll(methodNames);
 		// Remove all with same names
 		removeSameFrom(methodNames, methods, to_);
+		filterInternalAPI(methodNames, methods, this.parser.getModule());
 		// findTypes(token, true, toList(types));
 		findMethods(token, false, toList(methods));
 	}
-	
+
+	protected void findNamespaceCurrentFunctions(final char[] token,
+			final Set methodNames, String namespace) {
+		if (namespace.endsWith(IMixinRequestor.MIXIN_NAME_SEPARATOR)) {
+			namespace = namespace.substring(0, namespace.length() - 1);
+		}
+		final Set methods = new HashSet();
+		String to_ = new String(token);
+		String to = to_;
+		if (to.startsWith("::")) {
+			to = to.substring(2);
+		}
+		methods.addAll(methodNames);
+		findMethodFromMixin(methods, namespace
+				+ IMixinRequestor.MIXIN_NAME_SEPARATOR + to + "*");
+		methods.removeAll(methodNames);
+		// Remove all with same names
+		// removeSameFrom(methodNames, methods, to_);
+		// filterAllPrivate(methodNames, methods, this.parser.getModule());
+		// findTypes(token, true, toList(types));
+		List list = toList(methods);
+		findMethods(token, true, list, removeNamespace(list, namespace));
+	}
+
+	private List removeNamespace(List methods, String namespace) {
+		List names = new ArrayList();
+		if (!namespace.startsWith("::")) {
+			namespace = "::" + namespace;
+		}
+		if (!namespace.endsWith("::")) {
+			namespace = namespace + "::";
+		}
+		for (Iterator iterator = methods.iterator(); iterator.hasNext();) {
+			IModelElement element = (IModelElement) iterator.next();
+			String fqn = TclParseUtil.getFQNFromModelElement(element, "::");
+			if (fqn.startsWith(namespace)) {
+				names.add(fqn.substring(namespace.length()));
+			} else {
+				names.add(fqn);
+			}
+		}
+		return names;
+	}
+
+	/**
+	 * Filters all private methods not in current module namespaces.
+	 * 
+	 * @param methodNames
+	 * @param methods
+	 */
+	private void filterInternalAPI(Set methodNames, Set methods,
+			final ModuleDeclaration module) {
+		if (!this.getRequestor().isIgnored(
+				ITclCompletionProposalTypes.FILTER_INTERNAL_API)) {
+			return;
+		}
+		final Set namespaceNames = new HashSet();
+
+		try {
+			module.traverse(new ASTVisitor() {
+				public boolean visit(TypeDeclaration s) throws Exception {
+					String ns = TclParseUtil.getElementFQN(s, "::", module);
+					if (!ns.startsWith("::")) {
+						ns = "::" + ns;
+					}
+					namespaceNames.add(ns);
+					return super.visit(s);
+				}
+			});
+		} catch (Exception e1) {
+			if (DLTKCore.DEBUG) {
+				e1.printStackTrace();
+			}
+		}
+
+		Set privateSet = new HashSet();
+		for (Iterator iterator = methods.iterator(); iterator.hasNext();) {
+			Object method = (Object) iterator.next();
+			if (method instanceof IMethod) {
+				IMethod m = (IMethod) method;
+				try {
+					boolean nsHere = false;
+					String elemName = TclParseUtil.getFQNFromModelElement(m,
+							"::");
+					for (Iterator ns = namespaceNames.iterator(); ns.hasNext();) {
+						String nsName = (String) ns.next();
+						if (elemName.startsWith(nsName)) {
+							nsHere = true;
+						}
+					}
+					if (!nsHere && Flags.isPrivate(m.getFlags())) {
+						privateSet.add(method);
+					}
+				} catch (ModelException e) {
+					if (DLTKCore.DEBUG) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		for (Iterator iterator = privateSet.iterator(); iterator.hasNext();) {
+			Object object = (Object) iterator.next();
+			methods.remove(object);
+		}
+	}
+
 	protected void findMethods(char[] token, boolean canCompleteEmptyToken,
 			List methods) {
 		findMethods(token, canCompleteEmptyToken, methods,
@@ -359,16 +476,35 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 				IMixinRequestor.MIXIN_NAME_SEPARATOR);
 		IModelElement[] elements = TclMixinUtils.findModelElementsFromMixin(
 				pattern, mixinClass);
-		long start = System.currentTimeMillis();
+		// long start = System.currentTimeMillis();
 		for (int i = 0; i < elements.length; i++) {
 			// We should filter external source modules with same
 			// external path.
 			if (moduleFilter(completions, elements[i])) {
 				completions.add(elements[i]);
 			}
-			if (System.currentTimeMillis() - start > 100) {
-				return;
-			}
+			// if (System.currentTimeMillis() - start > 1000) {
+			// return;
+			// }
+		}
+	}
+
+	public void findMixinTclElementNoFilter(final Set completions, String tok,
+			Class mixinClass) {
+		String pattern = tok.replaceAll("::",
+				IMixinRequestor.MIXIN_NAME_SEPARATOR);
+		IModelElement[] elements = TclMixinUtils.findModelElementsFromMixin(
+				pattern, mixinClass);
+		// long start = System.currentTimeMillis();
+		for (int i = 0; i < elements.length; i++) {
+			// We should filter external source modules with same
+			// external path.
+			// if (moduleFilter(completions, elements[i])) {
+			completions.add(elements[i]);
+			// }
+			// if (System.currentTimeMillis() - start > 1000) {
+			// return;
+			// }
 		}
 	}
 

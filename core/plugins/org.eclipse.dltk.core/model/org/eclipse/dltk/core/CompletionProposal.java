@@ -139,12 +139,12 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	 */
 	public static final int METHOD_NAME_REFERENCE = 10;
 	
+	public static final int PACKAGE_REF = 11;
 	/**
 	 * Private method declarations.
 	 */
-	public static final int METHOD_DECLARATION_PRIVATE = 6;
+	public static final int USER = 15;
 
-	public static final int PACKAGE_REF = 22;
 
 	/**
 	 * First valid completion kind.
@@ -154,7 +154,7 @@ public final class CompletionProposal extends InternalCompletionProposal {
 	/**
 	 * Last valid completion kind.
 	 */
-	protected static final int LAST_KIND = PACKAGE_REF;
+	protected static final int LAST_KIND = 22;
 
 	private boolean updateCompletion = false;
 

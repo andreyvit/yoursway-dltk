@@ -9,7 +9,10 @@
  *******************************************************************************/
 package org.eclipse.dltk.tcl.internal.ui.text.completion;
 
+import org.eclipse.dltk.tcl.internal.ui.TclUI;
+import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposal;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.graphics.Image;
 
 
@@ -30,5 +33,10 @@ public class TclScriptCompletionProposal extends ScriptCompletionProposal {
 			return true;
 		}
 		return false;
+	}
+	protected boolean insertCompletion() {
+		IPreferenceStore preference = TclUI.getDefault().getPreferenceStore();
+		return preference
+				.getBoolean(PreferenceConstants.CODEASSIST_INSERT_COMPLETION);
 	}
 }

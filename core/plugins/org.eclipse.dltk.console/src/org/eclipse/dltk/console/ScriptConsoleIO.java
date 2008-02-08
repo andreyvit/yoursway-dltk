@@ -26,7 +26,7 @@ public class ScriptConsoleIO implements IScriptConsoleIO {
 	private final String id;
 
 	protected static void logInterpreterResponse(String response) {
-//		System.out.println("interpreter: " + response);
+		System.out.println("interpreter: " + response);
 	}
 
 	protected static void logShellResponse(String response) {

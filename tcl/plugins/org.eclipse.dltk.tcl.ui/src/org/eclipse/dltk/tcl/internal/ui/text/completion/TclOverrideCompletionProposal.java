@@ -13,7 +13,10 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.tcl.internal.ui.TclUI;
+import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.text.completion.ScriptTypeCompletionProposal;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
@@ -63,5 +66,11 @@ public class TclOverrideCompletionProposal extends ScriptTypeCompletionProposal
 
 	public IContextInformation getContextInformation() {
 		return new ContextInformation(getDisplayString(), getDisplayString());
+	}
+
+	protected boolean insertCompletion() {
+		IPreferenceStore preference = TclUI.getDefault().getPreferenceStore();
+		return preference
+				.getBoolean(PreferenceConstants.CODEASSIST_INSERT_COMPLETION);
 	}
 }
