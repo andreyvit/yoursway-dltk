@@ -5,17 +5,18 @@ import java.util.Arrays;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 
 public class RubyHeuristicScanner extends ScriptHeuristicScanner implements
 		IRubySymbols {
-	private static final int[] BLOCK_BEGINNINGS_STARTS = { TokenIF, TokenFOR,
+	private static final int[] BLOCK_BEGINNING_KEYWORDS = { TokenIF, TokenFOR,
 			TokenDEF, TokenCASE, TokenCATCH, TokenCLASS, TokenWHILE,
 			TokenBEGIN, TokenUNTIL, TokenUNLESS, TokenMODULE, TokenDO };
 
-	private static final int[] BLOCK_BEGINNINGS_ENDS = { TokenDO, TokenLBRACE };
+	private static final int[] BLOCK_BEGINNING_SYMBOLS = { TokenLBRACE };
 
 	private static final int[] BLOCK_MIDDLES = { TokenELSE, TokenELSIF,
 			TokenENSURE, TokenRESCUE, TokenWHEN };
@@ -23,8 +24,8 @@ public class RubyHeuristicScanner extends ScriptHeuristicScanner implements
 	private static final int[] BLOCK_ENDINGS = { TokenEND, TokenRBRACE };
 
 	static {
-		Arrays.sort(BLOCK_BEGINNINGS_STARTS);
-		Arrays.sort(BLOCK_BEGINNINGS_ENDS);
+		Arrays.sort(BLOCK_BEGINNING_KEYWORDS);
+		Arrays.sort(BLOCK_BEGINNING_SYMBOLS);
 		Arrays.sort(BLOCK_MIDDLES);
 		Arrays.sort(BLOCK_ENDINGS);
 	}
@@ -152,27 +153,35 @@ public class RubyHeuristicScanner extends ScriptHeuristicScanner implements
 		int start = findBlockBeginningOffset(offset);
 		if (start == NOT_FOUND)
 			start = 0;
-		
+
 		int end = findBlockEndingOffset(offset);
 		if (end == NOT_FOUND)
 			end = getDocument().getLength();
-		
+
 		return new Region(start, end - start);
 	}
 
 	public boolean isBlockBeginning(int offset, int bound) {
-		if (Arrays.binarySearch(BLOCK_BEGINNINGS_STARTS, nextToken(offset,
-				bound)) >= 0) {
-			// setting the position to start of the block keyword
-			findNonIdentifierBackward(getPosition(), UNBOUND);
-			setPosition(getPosition() + 1);
-			return true;
-		} else if (Arrays.binarySearch(BLOCK_BEGINNINGS_ENDS, previousToken(
-				bound, offset)) >= 0) {
-			// setting the position to start of the block keyword
-			setPosition(getPosition() + 1);
-			return true;
+		int token = previousToken(bound, offset);
+		try {
+			while (token != NOT_FOUND) {
+				if (Arrays.binarySearch(BLOCK_BEGINNING_SYMBOLS, token) >= 0)
+					return true;
+
+				if (Arrays.binarySearch(BLOCK_BEGINNING_KEYWORDS, token) >= 0) {
+					int pos = getPosition();
+					if (Character.isWhitespace(getDocument().getChar(pos))) {
+						setPosition(pos + 1);
+						return true;
+					}
+				}
+
+				token = previousToken(getPosition(), offset);
+			}
+		} catch (BadLocationException e) {
+			DLTKUIPlugin.log(e);
 		}
+
 		return false;
 	}
 
@@ -188,7 +197,14 @@ public class RubyHeuristicScanner extends ScriptHeuristicScanner implements
 	}
 
 	public boolean isBlockEnding(int offset, int bound) {
-		return Arrays.binarySearch(BLOCK_ENDINGS, nextToken(offset, bound)) >= 0; 
+		int token = nextToken(offset, bound);
+		while (token != NOT_FOUND) {
+			if (Arrays.binarySearch(BLOCK_ENDINGS, token) >= 0)
+				return true;
+			token = nextToken(getPosition(), bound);
+		}
+
+		return false;
 	}
 
 	public int findBlockBeginningOffset(int offset) {
@@ -238,6 +254,27 @@ public class RubyHeuristicScanner extends ScriptHeuristicScanner implements
 				}
 				line++;
 			}
+		} catch (BadLocationException e) {
+			DLTKUIPlugin.log(e);
+		}
+		return NOT_FOUND;
+	}
+
+	public int previousTokenAfterInput(int offset, String appended) {
+		try {
+			if (appended.length() == 1) {
+				int token = getGenericToken(appended.charAt(0));
+				if (token != TokenOTHER)
+					return token;
+			}
+
+			IRegion line = getDocument().getLineInformationOfOffset(offset);
+			String content = getDocument().get(line.getOffset(),
+					offset - line.getOffset())
+					+ appended;
+			IDocument newDoc = new Document(content);
+			RubyHeuristicScanner scanner = new RubyHeuristicScanner(newDoc);
+			return scanner.previousToken(content.length(), UNBOUND);
 		} catch (BadLocationException e) {
 			DLTKUIPlugin.log(e);
 		}

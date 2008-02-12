@@ -66,7 +66,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 	private String getApropriateBlockEnding(IDocument d,
 			RubyHeuristicScanner scanner, int offset)
 			throws BadLocationException {
-		int beginning = scanner.findBlockBeginningOffset(offset);
+		int beginning = scanner.findBlockBeginningOffset(offset) - 1;
 		IRegion line = d.getLineInformationOfOffset(beginning);
 		int ending = Math.min(line.getOffset() + line.getLength(), offset);
 		int token = scanner.previousToken(ending, beginning);
@@ -121,7 +121,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		if (Arrays.binarySearch(INDENT_TO_BLOCK_TOKENS, token) >= 0) {
 			String indent = "";
 			try {
-				indent = getBlockIndent(d, c, scanner);
+				indent = getBlockIndent(d, info.getOffset(), scanner);
 			} catch (BadLocationException e) {
 				// there is no enclosing block
 			}
@@ -143,13 +143,34 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 			c.text = d.get(start, c.offset - start) + c.text;
 			c.length = c.offset - info.getOffset();
 			c.offset = info.getOffset();
+		} else {
+			// if previous was indented to block, restore original indentation
+			int wsPos = scanner.findNonIdentifierBackward(c.offset, info
+					.getOffset());
+			int previosToken = scanner.previousToken(c.offset, wsPos);
+			if (Arrays.binarySearch(INDENT_TO_BLOCK_TOKENS, previosToken) >= 0
+					&& Character.isJavaIdentifierPart(c.text.charAt(0))) {
+				String indent = getPreviousLineIndent(d, info.getOffset() - 1,
+						scanner);
+
+				int pos = scanner.findNonWhitespaceForwardInAnyPartition(info
+						.getOffset(), c.offset);
+				String line = "";
+				if (pos != RubyHeuristicScanner.NOT_FOUND) {
+					line = d.get(pos, c.offset - pos);
+				}
+
+				c.text = indent + line + c.text;
+				c.length = c.offset - info.getOffset();
+				c.offset = info.getOffset();
+			}
 		}
 	}
 
-	private String getBlockIndent(IDocument d, DocumentCommand c,
+	private String getBlockIndent(IDocument d, int offset,
 			RubyHeuristicScanner scanner) throws BadLocationException {
 
-		int blockOffset = scanner.findBlockBeginningOffset(c.offset);
+		int blockOffset = scanner.findBlockBeginningOffset(offset);
 		if (blockOffset == RubyHeuristicScanner.NOT_FOUND)
 			throw new BadLocationException("Block not found");
 
@@ -175,7 +196,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		// beginning
 		if (nextIsIdentToBlockToken(scanner, c.offset, lineEnd)) {
 			try {
-				c.text += getBlockIndent(d, c, scanner);
+				c.text += getBlockIndent(d, c.offset, scanner);
 			} catch (BadLocationException e) {
 				// there is no enclosing block
 			}
@@ -183,7 +204,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		}
 
 		// else
-		String indent = getPreviousLineIndent(d, c, scanner);
+		String indent = getPreviousLineIndent(d, c.offset, scanner);
 		c.text += indent;
 
 		if (previousIsBlockBeginning(d, scanner, c.offset)) {
@@ -272,7 +293,8 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		RubyHeuristicScanner scanner = new RubyHeuristicScanner(d);
 		String indent = "";
 		try {
-			indent = getBlockIndent(d, c, scanner) + fPreferences.getIndent();
+			indent = getBlockIndent(d, c.offset, scanner)
+					+ fPreferences.getIndent();
 		} catch (BadLocationException e) {
 			// there is no enclosing block
 		}
@@ -361,15 +383,15 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 	 *         determined
 	 * @throws BadLocationException
 	 */
-	private String getPreviousLineIndent(IDocument d, DocumentCommand c,
+	private String getPreviousLineIndent(IDocument d, int offset,
 			RubyHeuristicScanner scanner) throws BadLocationException {
 		StringBuffer result = new StringBuffer();
 
-		if (c.offset == -1 || d.getLength() == 0)
+		if (offset < 0 || d.getLength() == 0)
 			return result.toString();
 
 		// find start of line
-		int start = scanner.findPrecedingNotEmptyLine(c.offset);
+		int start = scanner.findPrecedingNotEmptyLine(offset);
 		IRegion info = d.getLineInformationOfOffset(start);
 		int end = scanner.findNonWhitespaceForwardInAnyPartition(start, start
 				+ info.getLength());
@@ -431,7 +453,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		RubyHeuristicScanner scanner = new RubyHeuristicScanner(document);
 
 		while (true) {
-			begin = scanner.findBlockBeginningOffset(begin - 1);
+			begin = scanner.findBlockBeginningOffset(begin);
 			end = scanner.findBlockEndingOffset(end + 1);
 			if (begin == RubyHeuristicScanner.NOT_FOUND
 					&& end == RubyHeuristicScanner.NOT_FOUND)
@@ -442,7 +464,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 				return 1;
 		}
 	}
-	
+
 	// TODO: Remove this comment when Ruby parser become able to report
 	// unclosed blocks
 	//
