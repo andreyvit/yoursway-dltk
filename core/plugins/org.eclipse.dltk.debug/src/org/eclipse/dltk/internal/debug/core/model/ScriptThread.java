@@ -32,6 +32,7 @@ import org.eclipse.dltk.dbgp.internal.IDbgpTerminationListener;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
 import org.eclipse.dltk.debug.core.ExtendedDebugEventDetails;
+import org.eclipse.dltk.debug.core.IHotCodeReplaceListener;
 import org.eclipse.dltk.debug.core.ISmartStepEvaluator;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
@@ -42,7 +43,7 @@ import org.eclipse.dltk.internal.debug.core.model.operations.DbgpDebugger;
 
 public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		IThreadManagement, IDbgpTerminationListener,
-		ScriptThreadStateManager.IStateChangeHandler {
+		ScriptThreadStateManager.IStateChangeHandler, IHotCodeReplaceListener {
 
 	private ScriptThreadStateManager stateManager;
 
@@ -208,6 +209,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		engine.redirectStdout();
 		engine.redirectStderr();
 
+		HotCodeReplaceManager.getDefault().addHotCodeReplaceListener(this);
 		// final IDbgpExtendedCommands extended = session.getExtendedCommands();
 		// session.getNotificationManager().addNotificationListener(
 		// new IDbgpNotificationListener() {
@@ -372,6 +374,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	public void objectTerminated(Object object, Exception e) {
 		terminated = true;
 		Assert.isTrue(object == session);
+		HotCodeReplaceManager.getDefault().removeHotCodeReplaceListener(this);
 		manager.terminateThread(this);
 		Preferences prefs = DLTKDebugPlugin.getDefault().getPluginPreferences();
 		prefs.removePropertyChangeListener(propertyListener);
@@ -384,5 +387,20 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	public void notifyModified() {
 		stateManager.notifyModified();
+	}
+
+	public void hotCodeReplaceFailed(IScriptDebugTarget target,
+			DebugException exception) {
+		if (isSuspended()) {
+			stack.updateFrames();
+			DebugEventHelper.fireChangeEvent(this);
+		}
+	}
+
+	public void hotCodeReplaceSucceeded(IScriptDebugTarget target) {
+		if (isSuspended()) {
+			stack.updateFrames();
+			DebugEventHelper.fireChangeEvent(this);
+		}
 	}
 }
