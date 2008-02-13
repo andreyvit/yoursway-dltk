@@ -12,6 +12,7 @@ package org.eclipse.dltk.debug.ui;
 import java.io.File;
 import java.net.URI;
 import java.text.MessageFormat;
+import java.util.HashMap;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -39,6 +40,7 @@ import org.eclipse.dltk.debug.core.model.IScriptExceptionBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
+import org.eclipse.dltk.debug.core.model.IScriptType;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
@@ -64,6 +66,8 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
 
 public abstract class ScriptDebugModelPresentation extends LabelProvider
 		implements IDebugModelPresentation {
+
+	private HashMap fAttributes = new HashMap();
 
 	// TODO: move to properties file
 	protected static final String SUSPENDED_LABEL = "suspended";
@@ -234,6 +238,13 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			String name = variable.getName();
 			IScriptValue value = (IScriptValue) variable.getValue();
 			if (value != null) {
+				if (isShowVariableTypeNames()) {
+					IScriptType type = value.getType();
+					if (type != null) {
+						String typeName = getTypeNameText(type);
+						name = typeName + " " + name;
+					}
+				}
 				String valueText = getValueText(value);
 				if (valueText != null && valueText.length() > 0) {
 					return name + " = " + valueText;
@@ -327,7 +338,7 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	}
 
 	protected String getExpressionText(IExpression expression) {
-		final String expressionText = expression.getExpressionText();
+		String expressionText = expression.getExpressionText();
 
 		if (expression instanceof IErrorReportingExpression) {
 			IErrorReportingExpression errorExpression = (IErrorReportingExpression) expression;
@@ -338,11 +349,23 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 
 		IScriptValue value = (IScriptValue) expression.getValue();
 		if (value != null) {
+			if (isShowVariableTypeNames()) {
+				IScriptType type = value.getType();
+				if (type != null) {
+					String typeName = getTypeNameText(type);
+					expressionText = typeName + " " + expressionText;
+				}
+			}
+
 			return MessageFormat.format("{0} = {1}", new Object[] {
 					expressionText, getValueText(value) });
 		}
 
 		return expressionText;
+	}
+
+	private String getTypeNameText(IScriptType type) {
+		return type.getName();
 	}
 
 	public final String getText(Object element) {
@@ -360,6 +383,8 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			return getValueText((IScriptValue) element);
 		} else if (element instanceof IExpression) {
 			return getExpressionText((IExpression) element);
+		} else if (element instanceof IScriptType) {
+			return getTypeNameText((IScriptType) element);
 		}
 
 		return null;
@@ -378,8 +403,22 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		}
 	}
 
-	public void setAttribute(String attribute, Object value) {
+	public void setAttribute(String id, Object value) {
+		if (value == null) {
+			return;
+		}
+		synchronized (fAttributes) {
+			fAttributes.put(id, value);
+		}
 	}
+
+	protected boolean isShowVariableTypeNames() {
+		synchronized (fAttributes) {
+			Boolean show= (Boolean) fAttributes.get(DISPLAY_VARIABLE_TYPE_NAMES);
+			show= show == null ? Boolean.FALSE : show;
+			return show.booleanValue();
+		}
+	}	
 
 	// Images
 	protected Image getBreakpointImage(IScriptBreakpoint breakpoint) {

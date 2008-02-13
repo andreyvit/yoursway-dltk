@@ -23,8 +23,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
-import org.eclipse.dltk.debug.ui.IDLTKDebugUIConstants;
 import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
@@ -288,12 +286,12 @@ public abstract class AbstractInterpreterLibraryBlock implements
 		if (fLibraryContentProvider.getLibraries().length == 0) { // &&
 			// !isDefaultSystemLibrary())
 			// {
-			status = new Status(
-					IStatus.ERROR,
-					DLTKDebugUIPlugin.getUniqueIdentifier(),
-					IDLTKDebugUIConstants.INTERNAL_ERROR,
-					InterpretersMessages.InterpreterLibraryBlock_Libraries_cannot_be_empty__1,
-					null);
+			// status = new Status(
+			// IStatus.ERROR,
+			// DLTKDebugUIPlugin.getUniqueIdentifier(),
+			// IDLTKDebugUIConstants.INTERNAL_ERROR,
+			// InterpretersMessages.InterpreterLibraryBlock_Libraries_cannot_be_empty__1,
+			// null);
 		}
 		LibraryStandin[] standins = fLibraryContentProvider.getStandins();
 		for (int i = 0; i < standins.length; i++) {

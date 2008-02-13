@@ -163,23 +163,20 @@ public class RubyHeuristicScanner extends ScriptHeuristicScanner implements
 
 	public boolean isBlockBeginning(int offset, int bound) {
 		int token = previousToken(bound, offset);
-		try {
-			while (token != NOT_FOUND) {
-				if (Arrays.binarySearch(BLOCK_BEGINNING_SYMBOLS, token) >= 0)
-					return true;
+		while (token != NOT_FOUND) {
+			if (Arrays.binarySearch(BLOCK_BEGINNING_SYMBOLS, token) >= 0)
+				return true;
 
-				if (Arrays.binarySearch(BLOCK_BEGINNING_KEYWORDS, token) >= 0) {
-					int pos = getPosition();
-					if (Character.isWhitespace(getDocument().getChar(pos))) {
-						setPosition(pos + 1);
-						return true;
-					}
-				}
-
+			if (Arrays.binarySearch(BLOCK_BEGINNING_KEYWORDS, token) >= 0) {
+				int pos = getPosition();
 				token = previousToken(getPosition(), offset);
+				if (token == NOT_FOUND || token == TokenEQUAL) {
+					setPosition(pos + 1);
+					return true;
+				}
 			}
-		} catch (BadLocationException e) {
-			DLTKUIPlugin.log(e);
+
+			token = previousToken(getPosition(), offset);
 		}
 
 		return false;
