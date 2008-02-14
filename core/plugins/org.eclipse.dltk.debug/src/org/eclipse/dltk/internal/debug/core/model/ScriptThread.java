@@ -132,8 +132,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 					for (int i = 0; i < frames.length; i++) {
 						IScriptStackFrame frame = (IScriptStackFrame) frames[i];
 						String line = "\t#" + frame.getLevel() + " file:"
-								+ frame.getSourceURI().getPath() + " line:"
-								+ frame.getLineNumber() + "\n";
+								+ frame.getSourceURI().getPath() + " ["
+								+ frame.getLineNumber() + "]\n";
 						stdout.write(line.getBytes());
 					}
 				} catch (IOException e1) {

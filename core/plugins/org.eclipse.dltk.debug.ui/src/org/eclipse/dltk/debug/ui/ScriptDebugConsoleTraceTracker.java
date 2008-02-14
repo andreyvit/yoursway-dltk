@@ -19,7 +19,7 @@ public class ScriptDebugConsoleTraceTracker extends ScriptDebugConsoleTracker {
 	}
 
 	public String getPattern() {
-		return "\\t*#\\d+ +file:(\\S+) +line:(\\d+)";
+		return "\\t*#\\d+ +file:(.*) \\[(\\d+)\\]";
 	}
 
 }

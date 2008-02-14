@@ -26,7 +26,7 @@ import org.eclipse.ui.console.TextConsole;
 public class ScriptDebuggerConsoleToFileHyperlink extends
 		ScriptDebugConsoleGenericHyperlink {
 	static final Pattern pattern = Pattern
-			.compile("\\t*#\\d+ +file:(\\S+) +line:(\\d+)");
+			.compile("\\t*#\\d+ +file:(.*) \\[(\\d+)\\]");
 
 	public ScriptDebuggerConsoleToFileHyperlink(TextConsole console) {
 		super(console);
