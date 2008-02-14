@@ -8,12 +8,14 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.dltk.core.PreferencesLookupDelegate;
 import org.eclipse.dltk.launching.DebuggingEngineRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.launching.debug.DbgpInterpreterConfig;
 import org.eclipse.dltk.ruby.fastdebugger.preferences.FastDebuggerPreferenceConstants;
+import org.eclipse.dltk.ruby.internal.launching.RubyGenericInstallType;
 
 public class FastDebuggerRunner extends DebuggingEngineRunner {
 	public static final String ENGINE_ID = "org.eclipse.dltk.ruby.fastdebugger";
@@ -63,6 +65,11 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 
 	protected InterpreterConfig addEngineConfig(InterpreterConfig config,
 			PreferencesLookupDelegate delegate) throws CoreException {
+		if (!(getInstall().getInterpreterInstallType() instanceof RubyGenericInstallType)) {
+			throw new DebugException(
+					new Status(IStatus.ERROR, FastDebuggerPlugin.PLUGIN_ID,
+							"Fast debugger can be runned only with Generic Ruby interpreter"));
+		}
 		// Get debugger source location
 		final IPath sourceLocation = deploy();
 

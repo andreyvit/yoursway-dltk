@@ -8,12 +8,14 @@
 
 package org.eclipse.dltk.tcl.activestatedebugger;
 
+import java.io.File;
 import java.util.List;
 
 import org.eclipse.dltk.launching.ExternalDebuggingEngineRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.launching.debug.DbgpConstants;
+import org.eclipse.dltk.utils.PlatformFileUtils;
 
 /**
  * Debugging engine implementation for ActiveState's tcl debugging engine.
@@ -53,11 +55,14 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 				.getProperty(DbgpConstants.PORT_PROP);
 		final String sessionId = (String) config
 				.getProperty(DbgpConstants.SESSION_ID_PROP);
-		
+
 		InterpreterConfig newConfig = (InterpreterConfig) config.clone();
 
 		// Additional property
-		newConfig.setProperty(OVERRIDE_EXE, debuggingEnginePath);
+		File dEngine = PlatformFileUtils
+				.findAbsoluteOrEclipseRelativeFile(new File(debuggingEnginePath));
+		newConfig.setProperty(OVERRIDE_EXE, dEngine.getAbsoluteFile()
+				.toString());
 
 		// Interpreter arguments
 		newConfig.addInterpreterArg(HOST_KEY);
@@ -72,12 +77,12 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 		newConfig.addInterpreterArg(IDE_KEY);
 		newConfig.addInterpreterArg(sessionId);
 
-		if (TclActiveStateDebuggerPlugin.LOG_ENABLED) { 
+		if (TclActiveStateDebuggerPlugin.LOG_ENABLED) {
 			newConfig.addInterpreterArg(LOG_KEY);
 			newConfig.addInterpreterArg(LOG_FILE_KEY);
 			newConfig.addInterpreterArg(getLogFileName(sessionId));
 		}
-		
+
 		newConfig.addInterpreterArg(SCRIPT_KEY);
 
 		// Script arguments
