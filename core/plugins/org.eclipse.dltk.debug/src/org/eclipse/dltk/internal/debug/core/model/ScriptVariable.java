@@ -30,10 +30,10 @@ public class ScriptVariable extends ScriptDebugElement implements
 
 	private IValue value;
 
-	public ScriptVariable(IScriptStackFrame frame, IDbgpProperty property) {
+	public ScriptVariable(IScriptStackFrame frame, IDbgpProperty property, String name) {
 		this.target = frame.getDebugTarget();
 		this.session = ((IScriptThread) frame.getThread()).getDbgpSession();
-		this.name = property.getName();
+		this.name = name;
 		this.property = property;
 		this.frame = frame;
 	}

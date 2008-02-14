@@ -55,7 +55,8 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 
 		ScriptVariable[] variables = new ScriptVariable[properties.length];
 		for (int i = 0; i < properties.length; ++i) {
-			variables[i] = new ScriptVariable(frame, properties[i]);
+			IDbgpProperty p = properties[i];
+			variables[i] = new ScriptVariable(frame, p, p.getName());
 		}
 
 		return variables;

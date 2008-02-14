@@ -12,8 +12,10 @@ package org.eclipse.dltk.internal.debug.core.model;
 import java.net.URI;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Preferences;
@@ -59,8 +61,27 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 
 			IScriptVariable[] variables = new IScriptVariable[properties.length];
 
+			// Workaround for bug 215215 https://bugs.eclipse.org/bugs/show_bug.cgi?id=215215
+			// Remove this code when Tcl active state debugger fixed
+			Set useFullName = new HashSet();
+			Set alreadyExsisting = new HashSet();
 			for (int i = 0; i < properties.length; ++i) {
-				variables[i] = new ScriptVariable(parentFrame, properties[i]);
+				IDbgpProperty property = properties[i];
+				String name = property.getName();
+				if (alreadyExsisting.contains(name)) {
+					useFullName.add(name);
+				} else {
+					alreadyExsisting.add(name);
+				}
+			}
+
+			for (int i = 0; i < properties.length; ++i) {
+				IDbgpProperty property = properties[i];
+				String name = property.getName();
+				if (useFullName.contains(name)) {
+					name = property.getEvalName();
+				}
+				variables[i] = new ScriptVariable(parentFrame, property, name);
 			}
 
 			return variables;
@@ -100,13 +121,15 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 		}
 
 		if (showGlobal && names.containsKey(globalId)) {
-			all.add(new ScriptVariableWrapper(getDebugTarget(), "Global Variables",
-					readVariables(this, globalId.intValue(), commands)));
+			all.add(new ScriptVariableWrapper(getDebugTarget(),
+					"Global Variables", readVariables(this,
+							globalId.intValue(), commands)));
 		}
 
 		if (showClass && names.containsKey(classId)) {
-			all.add(new ScriptVariableWrapper(getDebugTarget(), "Class Variables",
-					readVariables(this, classId.intValue(), commands)));
+			all.add(new ScriptVariableWrapper(getDebugTarget(),
+					"Class Variables", readVariables(this, classId.intValue(),
+							commands)));
 		}
 
 		return all.get();
