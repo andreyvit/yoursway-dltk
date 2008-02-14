@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
+import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.tcl.ast.TclStatement;
@@ -13,6 +14,8 @@ import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.ast.TclSwitchStatement;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
+
+import com.sun.org.apache.xerces.internal.xs.StringList;
 
 public class TclSwitchCommandProcessor extends AbstractTclCommandProcessor {
 
@@ -37,9 +40,17 @@ public class TclSwitchCommandProcessor extends AbstractTclCommandProcessor {
 						|| "-glob".equals(value) || "--".equals(value))) {
 					// We found pattern
 					patternsStart = i + 1;
+					switchStatement.setString(at);
 					break;
 				}
 			}
+			else 
+				if (at instanceof StringLiteral) {
+					String value = ((StringLiteral) at).getValue();
+					patternsStart = i + 1;
+					switchStatement.setString(at);
+					break;
+				}
 		}
 		if (patternsStart != -1 && patternsStart < statement.getCount()) {
 			Expression at = statement.getAt(patternsStart);
@@ -69,12 +80,14 @@ public class TclSwitchCommandProcessor extends AbstractTclCommandProcessor {
 				}
 			} else {
 				// We simple iterate and and parse all block expressions.
+				int index = 0;
 				for (int i = patternsStart; i < statement.getCount(); i++) {
 					Expression st = statement.getAt(patternsStart);
 					if (st instanceof TclBlockExpression) {
 						parserBlockAddTo(parser, switchStatement,
 								(TclBlockExpression) st);
 					}
+					index +=1;
 				}
 			}
 		}

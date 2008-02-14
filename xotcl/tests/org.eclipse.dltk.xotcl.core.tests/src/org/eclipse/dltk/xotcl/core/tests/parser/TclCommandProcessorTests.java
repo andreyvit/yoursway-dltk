@@ -436,30 +436,48 @@ public class TclCommandProcessorTests extends TestCase
 	public void testTclSwitchProcessor001() throws TclParseException
 	{
 		String script = "switch -glob aaab { a*b - b {expr 1} a* {expr 2} default {expr 3} }";
-		testTclSwitchProcessor(script, 4);
+		testTclSwitchProcessor(script, 3);
 	}
 	
 	public void testTclSwitchProcessor002() throws TclParseException
 	{
-		String script = "switch -glob aaab a*b - b {expr 1} a* {expr 2} default {expr 3}";
-		testTclSwitchProcessor(script, 4);
+		String script = "switch -glob aaab {" +
+						"	a*b -" +
+						"	b {" +
+						"		expr 1" +
+						"	} " +
+						"	a* {" +
+						"		expr 2" +
+						"	} " +
+						"	default {" +
+						"		expr 3" +
+						"}";
+		testTclSwitchProcessor(script, 3);
 	}
 	
 	public void testTclSwitchProcessor003() throws TclParseException
 	{
-		String script = "switch -exact -regexp -glob \"\" [func] {puts py!} default {puts boo}";
+		String script = "switch -exact -regexp -glob \"\" {" +
+				"	[func] {puts py!}" +
+				"	default {puts boo}";
 		testTclSwitchProcessor(script, 2);
 	}
 	
 	public void testTclSwitchProcessor004() throws TclParseException
 	{
-		String script = "switch -regexp -exact -glob -- -bu -bu {puts boo}";
+		String script = "switch -regexp -exact -glob -- -bu {" +
+						"-bu {puts boo}" +
+						"}";
 		testTclSwitchProcessor(script, 1);
 	}
 
 	public void testTclSwitchProcessor005() throws TclParseException
 	{
-		String script = "switch string {set pid default {puts boo}}";
+		String script = "switch string {" +
+						"set {" +
+						"	pid" +
+						"}" +
+						"default {puts boo}}";
 		testTclSwitchProcessor(script, 2);
 	}
 
