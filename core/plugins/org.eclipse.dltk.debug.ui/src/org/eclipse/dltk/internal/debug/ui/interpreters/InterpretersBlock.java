@@ -151,7 +151,7 @@ public abstract class InterpretersBlock implements
 				case 1:
 					return interp.getInterpreterInstallType().getName();
 				case 2:
-					return interp.getInstallLocation().toString();
+					return interp.getRawInstallLocation().toString();
 				}
 			}
 			return element.toString();

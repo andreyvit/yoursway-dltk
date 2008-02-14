@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.ui.preferences.AbstractOptionsBlock;
 import org.eclipse.dltk.ui.preferences.FieldValidators;
 import org.eclipse.dltk.ui.preferences.PreferenceKey;
@@ -44,9 +45,12 @@ public abstract class ExternalDebuggingEngineOptionsBlock extends
 	 * Add a link to an external site where the debugging engine can be
 	 * downloaded from
 	 * 
-	 * @param parent parent composite
-	 * @param text link text
-	 * @param url link url
+	 * @param parent
+	 *            parent composite
+	 * @param text
+	 *            link text
+	 * @param url
+	 *            link url
 	 */
 	protected void addDownloadLink(Composite parent, String text,
 			final String url) {
@@ -98,7 +102,8 @@ public abstract class ExternalDebuggingEngineOptionsBlock extends
 				1);
 
 		enginePath = SWTFactory.createText(group, SWT.BORDER, 1, "");
-		bindControl(enginePath, getDebuggingEnginePathKey(), FieldValidators.PATH_VALIDATOR);
+		bindControl(enginePath, getDebuggingEnginePathKey(),
+				FieldValidators.PATH_VALIDATOR);
 
 		// Browse
 		final Button button = SWTFactory.createPushButton(group,
@@ -120,11 +125,13 @@ public abstract class ExternalDebuggingEngineOptionsBlock extends
 					.getBrowserSupport().getExternalBrowser();
 			browser.openURL(new URL(url));
 		} catch (PartInitException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

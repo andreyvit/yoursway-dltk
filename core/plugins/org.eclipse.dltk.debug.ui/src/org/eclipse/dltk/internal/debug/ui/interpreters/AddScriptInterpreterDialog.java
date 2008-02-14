@@ -28,6 +28,7 @@ import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.InterpreterStandin;
+import org.eclipse.dltk.utils.PlatformFileUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.StatusDialog;
@@ -282,7 +283,7 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 		} else {
 			fInterpreterTypeCombo.setEnabled(false);
 			fInterpreterName.setText(fEditedInterpreter.getName());
-			fInterpreterPath.setText(fEditedInterpreter.getInstallLocation()
+			fInterpreterPath.setText(fEditedInterpreter.getRawInstallLocation()
 					.toString());
 			if (fEnvironmentVariablesBlock != null) {
 				fEnvironmentVariablesBlock.initializeFrom(fEditedInterpreter,
@@ -311,7 +312,7 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 			s = new StatusInfo(IStatus.INFO,
 					InterpretersMessages.addInterpreterDialog_enterLocation);
 		} else {
-			file = new File(locationName);
+			file = PlatformFileUtils.findAbsoluteOrEclipseRelativeFile(new File(locationName));
 			if (!file.exists()) {
 				s = new StatusInfo(
 						IStatus.ERROR,

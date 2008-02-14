@@ -15,8 +15,6 @@ import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.ast.TclSwitchStatement;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
-import com.sun.org.apache.xerces.internal.xs.StringList;
-
 public class TclSwitchCommandProcessor extends AbstractTclCommandProcessor {
 
 	public ASTNode process(TclCommand command, ITclParser parser, int offset,

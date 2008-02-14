@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.dltk.utils.PlatformFileUtils;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 public final class TclCheckerHelper {
@@ -70,9 +71,12 @@ public final class TclCheckerHelper {
 
 	public static void passOriginalArguments(IPreferenceStore store,
 			List cmdLine) {
-		cmdLine.add(store.getString(TclCheckerConstants.PREF_PATH));
+		File validatorFile = PlatformFileUtils
+				.findAbsoluteOrEclipseRelativeFile(new File(store
+						.getString(TclCheckerConstants.PREF_PATH)));
+		cmdLine.add(validatorFile.getAbsoluteFile().toString());
 
-//		cmdLine.add(QUIET_OPTION);
+		// cmdLine.add(QUIET_OPTION);
 
 		int mode = store.getInt(TclCheckerConstants.PREF_MODE);
 
@@ -97,7 +101,9 @@ public final class TclCheckerHelper {
 	}
 
 	public static boolean canExecuteTclChecker(IPreferenceStore store) {
-		File file = new File(store.getString(TclCheckerConstants.PREF_PATH));
+		File file = PlatformFileUtils
+				.findAbsoluteOrEclipseRelativeFile(new File(store
+						.getString(TclCheckerConstants.PREF_PATH)));
 
 		if (!file.exists()) {
 			return false;

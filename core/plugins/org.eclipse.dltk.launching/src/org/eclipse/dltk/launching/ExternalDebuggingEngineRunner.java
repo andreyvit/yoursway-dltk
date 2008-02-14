@@ -5,6 +5,7 @@ import java.io.File;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.PreferencesLookupDelegate;
 import org.eclipse.dltk.internal.launching.InterpreterMessages;
+import org.eclipse.dltk.utils.PlatformFileUtils;
 
 public abstract class ExternalDebuggingEngineRunner extends
 		DebuggingEngineRunner {
@@ -16,7 +17,8 @@ public abstract class ExternalDebuggingEngineRunner extends
 	protected final InterpreterConfig addEngineConfig(InterpreterConfig config,
 			PreferencesLookupDelegate delegate) throws CoreException {
 
-		final File file = getDebuggingEnginePath(delegate);
+		final File file = PlatformFileUtils
+				.findAbsoluteOrEclipseRelativeFile(getDebuggingEnginePath(delegate));
 
 		// Checking debugging engine path
 		if (file == null || file.toString().length() == 0) {
@@ -49,7 +51,7 @@ public abstract class ExternalDebuggingEngineRunner extends
 	protected File getDebuggingEnginePath(PreferencesLookupDelegate delegate) {
 		String key = getDebuggingEnginePreferenceKey();
 		String qualifier = getDebuggingEnginePreferenceQualifier();
-		
+
 		String path = delegate.getString(qualifier, key);
 		if (path != null) {
 			return new File(path);

@@ -421,7 +421,7 @@ public class InterpreterDefinitionsContainer {
 
 		// Determine and set the 'path' attribute for the Interpreter
 		String installPath = ""; //$NON-NLS-1$
-		File installLocation = Interpreter.getInstallLocation();
+		File installLocation = Interpreter.getRawInstallLocation();
 		if (installLocation != null) {
 			installPath = installLocation.toString();
 		}

@@ -6,6 +6,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.internal.ui.dialogs.StatusInfo;
+import org.eclipse.dltk.utils.PlatformFileUtils;
 
 public final class FieldValidators {
 
@@ -38,7 +39,7 @@ public final class FieldValidators {
 			if (text.trim().length() == 0) {
 				status.setError(ValidatorMessages.FileNameIsEmpty);
 			}
-			
+
 			return status;
 		}
 	}
@@ -50,7 +51,9 @@ public final class FieldValidators {
 			if (text.trim().length() == 0) {
 				status.setWarning(ValidatorMessages.FilePathIsEmpty);
 			} else {
-				File file = Path.fromOSString(text).toFile();
+				File file = PlatformFileUtils
+						.findAbsoluteOrEclipseRelativeFile(Path.fromOSString(
+								text).toFile());
 
 				if (!file.exists()) {
 					status.setError(Messages.format(
@@ -116,7 +119,7 @@ public final class FieldValidators {
 
 	// Available validators
 	public static IFieldValidator FILE_NAME_VALIDATOR = new FileNameValidator();
-	
+
 	public static IFieldValidator PATH_VALIDATOR = new FilePathValidator();
 
 	public static IFieldValidator POSITIVE_NUMBER_VALIDATOR = new PositiveNumberValidator();
