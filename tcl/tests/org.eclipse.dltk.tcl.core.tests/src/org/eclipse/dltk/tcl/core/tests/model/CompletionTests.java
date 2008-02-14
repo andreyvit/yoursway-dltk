@@ -112,9 +112,7 @@ public class CompletionTests extends AbstractModelCompletionTests {
 	}
 
 	public void testCompletion003() throws ModelException {
-		for (int i = 0; i < 10; ++i) {
-			process003(i);
-		}
+		process003(9);
 	}
 
 	private void process003(int add) throws ModelException {
@@ -126,8 +124,9 @@ public class CompletionTests extends AbstractModelCompletionTests {
 		int cursorLocation = str.indexOf("#2") + 4 + add;
 		cu.codeComplete(cursorLocation, requestor);
 
-		assertEquals(makeResult(new String[] { "::a::c::fac()" }, new String[] { "::a::c::fac" },
-				new int[] { 18 }), requestor.getResults());
+		assertEquals(makeResult(new String[] { "::a::c::fac()" },
+				new String[] { "::a::c::fac" }, new int[] { 18 }), requestor
+				.getResults());
 	}
 
 	public void REM_testCompletion004() throws ModelException {
@@ -139,9 +138,10 @@ public class CompletionTests extends AbstractModelCompletionTests {
 		int cursorLocation = str.indexOf("#1") + 4 + 8;
 		cu.codeComplete(cursorLocation, requestor);
 
-		assertEquals(makeResult(new String[] { "::a::c::fac()", "::a::c::fbac()",
-		"::a::c::feac()" }, new String[] { "::a::c::fac", "::a::c::fbac",
-				"::a::c::feac" }, new int[] {18,18,18}), requestor.getResults());
+		assertEquals(makeResult(new String[] { "::a::c::fac()",
+				"::a::c::fbac()", "::a::c::feac()" }, new String[] {
+				"::a::c::fac", "::a::c::fbac", "::a::c::feac" }, new int[] {
+				18, 18, 18 }), requestor.getResults());
 
 	}
 
@@ -169,8 +169,9 @@ public class CompletionTests extends AbstractModelCompletionTests {
 		int cursorLocation = str.indexOf("#4") + 4 + 6;
 		cu.codeComplete(cursorLocation, requestor);
 
-		assertEquals(makeResult(new String[] { "::b::fb()" }, new String[] { "::b::fb" }, new int[] { 22 }),
-				requestor.getResults());
+		assertEquals(makeResult(new String[] { "::b::fb()" },
+				new String[] { "::b::fb" }, new int[] { 22 }), requestor
+				.getResults());
 
 	}
 

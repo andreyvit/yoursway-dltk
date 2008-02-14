@@ -66,7 +66,10 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 	private String getApropriateBlockEnding(IDocument d,
 			RubyHeuristicScanner scanner, int offset)
 			throws BadLocationException {
-		int beginning = scanner.findBlockBeginningOffset(offset) - 1;
+		int beginning = scanner.findBlockBeginningOffset(offset);
+		if (beginning == RubyHeuristicScanner.NOT_FOUND)
+			throw new BadLocationException();
+		
 		IRegion line = d.getLineInformationOfOffset(beginning);
 		int ending = Math.min(line.getOffset() + line.getLength(), offset);
 		int token = scanner.previousToken(ending, beginning);

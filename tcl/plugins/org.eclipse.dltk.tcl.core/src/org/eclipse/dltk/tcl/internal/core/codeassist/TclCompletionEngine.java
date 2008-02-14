@@ -43,6 +43,7 @@ import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
@@ -53,14 +54,18 @@ import org.eclipse.dltk.core.search.SearchMatch;
 import org.eclipse.dltk.core.search.SearchParticipant;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
+import org.eclipse.dltk.launching.IInterpreterInstall;
+import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
+import org.eclipse.dltk.tcl.core.ast.TclPackageDeclaration;
 import org.eclipse.dltk.tcl.core.extensions.ICompletionExtension;
 import org.eclipse.dltk.tcl.internal.core.TclExtensionManager;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeywordArgumentOrFunctionArgument;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeywordOrFunction;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnVariable;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.TclCompletionParser;
+import org.eclipse.dltk.tcl.internal.core.packages.PackagesManager;
 import org.eclipse.dltk.tcl.internal.core.search.mixin.TclMixinUtils;
 import org.eclipse.dltk.tcl.internal.core.search.mixin.model.TclProc;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
@@ -181,6 +186,16 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 			}
 		} else if (astNode instanceof CompletionOnVariable) {
 			processCompletionOnVariables(astNode);
+		} else if (astNode instanceof TclPackageDeclaration) {
+			TclPackageDeclaration pkg = (TclPackageDeclaration) astNode;
+			int len = this.actualCompletionPosition - pkg.getNameStart();
+			String token = "";
+			if (len <= pkg.getName().length()) {
+				token = pkg.getName().substring(0, len);
+			}
+			setSourceRange(pkg.getNameStart(), pkg.getNameEnd());
+			packageNamesCompletion(token.toCharArray(), new HashSet());
+
 		} else if (astNode instanceof CompletionOnKeywordArgumentOrFunctionArgument) {
 			CompletionOnKeywordArgumentOrFunctionArgument compl = (CompletionOnKeywordArgumentOrFunctionArgument) astNode;
 			Set methodNames = new HashSet();
@@ -199,6 +214,21 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 								compl, methodNames, st, this);
 					}
 				}
+			} else if (compl.argumentIndex() == 3
+					|| (compl.argumentIndex() == -1 && compl.getStatement()
+							.getCount() > 1)) {
+				TclStatement st = compl.getStatement();
+				Expression at0 = st.getAt(0);
+				Expression at1 = st.getAt(1);
+				if (at1 instanceof SimpleReference
+						&& at0 instanceof SimpleReference) {
+					String sat0 = ((SimpleReference) at0).getName();
+					String sat1 = ((SimpleReference) at1).getName();
+					if ("package".equals(sat0) && "require".equals(sat1)) {
+						packageNamesCompletion(compl.getToken(), methodNames);
+						return true;
+					}
+				}
 			}
 			// Variables completion here.
 			// char[] varToken = new char[0];
@@ -211,6 +241,40 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 					.sourceStart(), provideDollar, null);
 		}
 		return true;
+	}
+
+	private void packageNamesCompletion(char[] token, Set methodNames) {
+		IScriptProject project = this.sourceModule.getScriptProject();
+		IInterpreterInstall install;
+		try {
+			install = ScriptRuntime.getInterpreterInstall(project);
+			if (install != null) {
+				Set packageNames = PackagesManager.getInstance()
+						.getPackageNames(install);
+				List k = new ArrayList();
+				String prefix = new String(token);
+				for (Iterator iterator = packageNames.iterator(); iterator
+						.hasNext();) {
+					String kkw = (String) iterator.next();
+					if (kkw.startsWith(prefix)) {
+						k.add(kkw);
+					}
+				}
+				String kw[] = (String[]) k.toArray(new String[k.size()]);
+				char[][] choices = new char[kw.length][];
+				for (int i = 0; i < kw.length; ++i) {
+					choices[i] = kw[i].toCharArray();
+				}
+				findKeywords(token, choices, true);
+				if (methodNames != null) {
+					methodNames.addAll(k);
+				}
+			}
+		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	protected void processPartOfKeywords(
@@ -392,6 +456,15 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 						ns = "::" + ns;
 					}
 					namespaceNames.add(ns);
+					// Also add all subnamespaces
+					String ns2 = ns;
+					while (true) {
+						ns2 = getElementNamespace(ns2);
+						if( ns2 == null || ( ns2 != null && ns2.equals("::") )) {
+							break;
+						}
+						namespaceNames.add(ns2);
+					}
 					return super.visit(s);
 				}
 			});
@@ -410,11 +483,9 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 					boolean nsHere = false;
 					String elemName = TclParseUtil.getFQNFromModelElement(m,
 							"::");
-					for (Iterator ns = namespaceNames.iterator(); ns.hasNext();) {
-						String nsName = (String) ns.next();
-						if (elemName.startsWith(nsName)) {
-							nsHere = true;
-						}
+					String elemNSName = getElementNamespace(elemName);
+					if (elemNSName != null) {
+						nsHere = namespaceNames.contains(elemNSName);
 					}
 					if (!nsHere && Flags.isPrivate(m.getFlags())) {
 						privateSet.add(method);
@@ -430,6 +501,18 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 			Object object = (Object) iterator.next();
 			methods.remove(object);
 		}
+	}
+
+	private String getElementNamespace(String elemName) {
+		int pos = elemName.lastIndexOf("::");
+		if (pos != -1) {
+			String rs = elemName.substring(0, pos);
+			if( rs.length() == 0 ) {
+				return null;
+			}
+			return rs;
+		}
+		return null;
 	}
 
 	protected void findMethods(char[] token, boolean canCompleteEmptyToken,

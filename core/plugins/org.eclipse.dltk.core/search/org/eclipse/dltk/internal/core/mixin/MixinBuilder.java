@@ -203,13 +203,16 @@ public class MixinBuilder implements IScriptBuilder {
 				}
 			}
 			if (saveIndex) {
-				if (monitor != null) {
-				}
 				for (Iterator ind = saveIndexesSet.iterator(); ind.hasNext();) {
 					Index index = (Index) ind.next();
 					if (monitor != null) {
-						monitor.subTask("Saving index for:"
-								+ index.containerPath);
+						String containerPath = index.containerPath;
+						if (containerPath.startsWith("#special#")) {
+							containerPath = containerPath.substring(
+									containerPath.lastIndexOf("#"),
+									containerPath.length());
+						}
+						monitor.subTask("Saving index for:" + containerPath);
 					}
 					try {
 						index.save();
