@@ -47,7 +47,7 @@ proc my_puts {args} {
 				append strStdout $arg1
 				append strStdout "\n"
 			} else {
-				evaluate [list __dltk__puts__ $arg0 $arg1]
+				return evaluate [list __dltk__puts__ $arg0 $arg1]
 			}
 			return
 		}
@@ -61,7 +61,7 @@ proc my_puts {args} {
 			if {$arg1 eq "stdout"} {
 				append strStdout $arg2
 			} else {
-				evaluate [list __dltk__puts__ $arg0 $arg1 $arg2]
+				return evaluate [list __dltk__puts__ $arg0 $arg1 $arg2]
 			}
 			return
 		}
@@ -81,7 +81,7 @@ proc my_gets {args} {
 			if {$arg0 eq "stdin"} {
 				append strStdout "Input from 'stdin' not supported\n"
 			} else {
-				evaluate [list __dltk__gets__ $arg0]
+				return [evaluate "::__dltk__gets__ $arg0"]
 			}
 			
 			return
@@ -94,7 +94,7 @@ proc my_gets {args} {
 			if {$arg0 eq "stdin"} {
 				append strStdout "Input from 'stdin' not supported\n"
 			} else {
-				evaluate [list __dltk__gets__ $arg0 $arg1]
+				return [evaluate "::__dltk__gets__ $arg0 $arg1"]
 			}
 			
 			return
@@ -107,6 +107,7 @@ proc my_gets {args} {
 proc my_exit {args} {
 	global strStdout
 	append strStdout "'exit' command not supported, please close console from Eclipse\n"
+	return 0
 }
 
 proc getOutput { {clear 1} } {
@@ -134,13 +135,13 @@ proc evaluate {statement} {
 	catch {
 		foo eval $statement
 	} res
-
+	foo alias exit my_exit
 	return $res
 }
 
-evaluate "rename puts __dltk__puts__"
-evaluate "rename gets __dltk__gets__"
-evaluate "rename exit __dltk__exit__"
+evaluate "rename puts ::__dltk__puts__"
+evaluate "rename gets ::__dltk__gets__"
+evaluate "rename exit ::__dltk__exit__"
 
 foo alias puts my_puts
 foo alias gets my_gets
