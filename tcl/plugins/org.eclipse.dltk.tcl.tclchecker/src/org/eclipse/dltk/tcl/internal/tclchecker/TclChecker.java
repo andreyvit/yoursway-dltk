@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 public class TclChecker {
@@ -141,6 +142,16 @@ public class TclChecker {
 		Map pathToSource = new HashMap();
 		for (Iterator iterator = sourceModules.iterator(); iterator.hasNext();) {
 			ISourceModule module = (ISourceModule) iterator.next();
+			try {
+				char[] sourceAsCharArray = module.getSourceAsCharArray();
+				if( sourceAsCharArray.length == 0 ) {
+					continue;
+				}
+			} catch (ModelException e) {
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
+			}
 			String loc = module.getResource().getLocation().toOSString();
 			pathToSource.put(loc, module);
 			arguments.add(loc);
@@ -179,7 +190,8 @@ public class TclChecker {
 		if (monitor == null)
 			monitor = new NullProgressMonitor();
 
-		monitor.beginTask("Executing TclChecker...", sourceModules.size()*2 + 1);
+		monitor.beginTask("Executing TclChecker...",
+				sourceModules.size() * 2 + 1);
 
 		try {
 			monitor.subTask("Launching TclChecker...");

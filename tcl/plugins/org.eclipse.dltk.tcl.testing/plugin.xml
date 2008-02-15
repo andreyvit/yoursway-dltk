@@ -34,7 +34,7 @@
          </launchMode>
          <launchMode
                mode="debug"
-               perspective="org.eclipse.debug.perspective">
+               perspective="org.eclipse.debug.ui.DebugPerspective">
          </launchMode>
       </launchConfigurationTabGroup>
    </extension>

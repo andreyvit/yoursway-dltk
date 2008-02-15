@@ -12,6 +12,7 @@ import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
+import org.eclipse.dltk.tcl.core.ast.TclAdvancedExecuteExpression;
 import org.eclipse.dltk.tcl.core.ast.TclSwitchStatement;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
@@ -41,14 +42,16 @@ public class TclSwitchCommandProcessor extends AbstractTclCommandProcessor {
 					switchStatement.setString(at);
 					break;
 				}
+			} else if (at instanceof StringLiteral) {
+				patternsStart = i + 1;
+				switchStatement.setString(at);
+				break;
 			}
-			else 
-				if (at instanceof StringLiteral) {
-					String value = ((StringLiteral) at).getValue();
-					patternsStart = i + 1;
-					switchStatement.setString(at);
-					break;
-				}
+			else if (at instanceof TclAdvancedExecuteExpression) {
+				patternsStart = i + 1;
+				switchStatement.setString(at);
+				break;
+			}
 		}
 		if (patternsStart != -1 && patternsStart < statement.getCount()) {
 			Expression at = statement.getAt(patternsStart);
@@ -64,14 +67,14 @@ public class TclSwitchCommandProcessor extends AbstractTclCommandProcessor {
 							parserBlockAddTo(parser, switchStatement,
 									(TclBlockExpression) st);
 						}
-						if( st instanceof TclStatement) {
+						if (st instanceof TclStatement) {
 							TclStatement stt = (TclStatement) st;
 							for (int i = 0; i < stt.getCount(); i++) {
 								ASTNode sttt = (ASTNode) stt.getAt(i);
 								if (sttt instanceof TclBlockExpression) {
 									parserBlockAddTo(parser, switchStatement,
 											(TclBlockExpression) sttt);
-								}								
+								}
 							}
 						}
 					}
@@ -85,7 +88,7 @@ public class TclSwitchCommandProcessor extends AbstractTclCommandProcessor {
 						parserBlockAddTo(parser, switchStatement,
 								(TclBlockExpression) st);
 					}
-					index +=1;
+					index += 1;
 				}
 			}
 		}
