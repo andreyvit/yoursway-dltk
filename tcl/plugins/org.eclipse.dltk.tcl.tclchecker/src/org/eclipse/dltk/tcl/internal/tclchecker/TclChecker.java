@@ -156,7 +156,12 @@ public class TclChecker {
 			pathToSource.put(loc, module);
 			arguments.add(loc);
 		}
-
+		if( arguments.size() == 0 ) {
+			if(monitor != null) {
+				monitor.done();
+			}
+			return;
+		}
 		List cmdLine = new ArrayList();
 		TclCheckerHelper.passOriginalArguments(store, cmdLine);
 		IPath stateLocation = TclCheckerPlugin.getDefault().getStateLocation();
