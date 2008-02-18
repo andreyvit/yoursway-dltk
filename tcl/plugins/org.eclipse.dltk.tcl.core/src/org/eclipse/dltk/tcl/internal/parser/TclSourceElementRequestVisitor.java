@@ -545,20 +545,20 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 		} else {
 			exit = this.resolveType(method, fullName, false);
 		}
-		if (exit.created) {
-			if (this.fReporter != null) {
-				try {
-					this.fReporter.reportProblem(new DefaultProblem("",
-							"Namespace not found.", 0, null,
-							ProblemSeverities.Warning, method.getNameStart(),
-							method.getNameEnd(), -1));
-				} catch (CoreException e1) {
-					if (DLTKCore.DEBUG) {
-						e1.printStackTrace();
-					}
-				}
-			}
-		}
+//		if (exit.created) {
+//			if (this.fReporter != null) {
+//				try {
+//					this.fReporter.reportProblem(new DefaultProblem("",
+//							"Namespace not found.", 0, null,
+//							ProblemSeverities.Warning, method.getNameStart(),
+//							method.getNameEnd(), -1));
+//				} catch (CoreException e1) {
+//					if (DLTKCore.DEBUG) {
+//						e1.printStackTrace();
+//					}
+//				}
+//			}
+//		}
 		this.fRequestor.enterMethodRemoveSame(mi);
 		this.exitStack.push(exit);
 		return true;

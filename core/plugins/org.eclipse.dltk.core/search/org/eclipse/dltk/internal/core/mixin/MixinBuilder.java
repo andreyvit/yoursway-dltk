@@ -45,21 +45,17 @@ import org.eclipse.dltk.internal.core.SourceModule;
 import org.eclipse.dltk.internal.core.search.DLTKSearchDocument;
 
 public class MixinBuilder implements IScriptBuilder {
-	public IStatus[] buildResources(IScriptProject project, List resources,
+	public IStatus buildResources(IScriptProject project, List resources,
 			IProgressMonitor monitor, int status) {
 		return null;
 	}
 
-	public List getDependencies(IScriptProject project, List resources) {
-		return null;
-	}
-
-	public IStatus[] buildModelElements(IScriptProject project, List elements,
+	public IStatus buildModelElements(IScriptProject project, List elements,
 			IProgressMonitor monitor, int status) {
 		return this.buildModelElements(project, elements, monitor, true);
 	}
 
-	public IStatus[] buildModelElements(IScriptProject project, List elements,
+	public IStatus buildModelElements(IScriptProject project, List elements,
 			final IProgressMonitor monitor, boolean saveIndex) {
 		if (elements.size() == 0) {
 			return null;
@@ -241,5 +237,10 @@ public class MixinBuilder implements IScriptBuilder {
 
 	public int estimateElementsToBuild(List elements) {
 		return elements.size();
+	}
+
+	public Set getDependencies(IScriptProject project, Set resources,
+			Set allResources, Set oldExternalFolders, Set externalFolders) {
+		return null;
 	}
 }

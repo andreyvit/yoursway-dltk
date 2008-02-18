@@ -312,7 +312,8 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 			s = new StatusInfo(IStatus.INFO,
 					InterpretersMessages.addInterpreterDialog_enterLocation);
 		} else {
-			file = PlatformFileUtils.findAbsoluteOrEclipseRelativeFile(new File(locationName));
+			file = PlatformFileUtils
+					.findAbsoluteOrEclipseRelativeFile(new File(locationName));
 			if (!file.exists()) {
 				s = new StatusInfo(
 						IStatus.ERROR,
@@ -417,6 +418,8 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 		super.okPressed();
 	}
 
+	private IInterpreterInstall lastInstall = null;
+
 	private void doOkPressed() {
 		if (fEditedInterpreter == null) {
 			IInterpreterInstall install = new InterpreterStandin(
@@ -424,8 +427,10 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 					createUniqueId(fSelectedInterpreterType));
 			setFieldValuesToInterpreter(install);
 			fRequestor.interpreterAdded(install);
+			lastInstall = install;
 		} else {
 			setFieldValuesToInterpreter(fEditedInterpreter);
+			lastInstall = fEditedInterpreter;
 		}
 	}
 
@@ -559,4 +564,10 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 		return false;
 	}
 
+	/**
+	 * This method could be used only after okPressed.
+	 */
+	protected IInterpreterInstall getLastInterpreterInstall() {
+		return this.lastInstall;
+	}
 }

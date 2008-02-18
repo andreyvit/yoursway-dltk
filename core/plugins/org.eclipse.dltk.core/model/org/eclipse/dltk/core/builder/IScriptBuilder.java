@@ -10,6 +10,7 @@
 package org.eclipse.dltk.core.builder;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -24,29 +25,30 @@ import org.eclipse.dltk.core.IScriptProject;
 public interface IScriptBuilder {
 	public static final int INCREMENTAL_BUILD = 0;
 	public static final int FULL_BUILD = 1;
-	
+
 	/**
 	 * Estimate number of elements will be build from given set.
+	 * 
 	 * @return
 	 */
 	int estimateElementsToBuild(List elements);
-	
+
 	/**
 	 * Called for each resource required to build. Only resources with specified
 	 * project nature are here.
 	 * 
 	 * @return
 	 */
-	IStatus[] buildResources(IScriptProject project, List resources,
+	IStatus buildResources(IScriptProject project, List resources,
 			IProgressMonitor monitor, int status);
 
 	/**
-	 * Called for each resource required to build. Only resources with
-	 * specified project nature are here.
+	 * Called for each resource required to build. Only resources with specified
+	 * project nature are here.
 	 * 
 	 * @return
 	 */
-	IStatus[] buildModelElements(IScriptProject project, List elements,
+	IStatus buildModelElements(IScriptProject project, List elements,
 			IProgressMonitor monitor, int status);
 
 	/**
@@ -63,5 +65,6 @@ public interface IScriptBuilder {
 	 * @return null, if no dependencies are found. Should not return elements
 	 *         from resources list.
 	 */
-	List getDependencies(IScriptProject project, List resources);
+	Set getDependencies(IScriptProject project, Set resources,
+			Set allResources, Set oldExternalFolders, Set externalFolders);
 }

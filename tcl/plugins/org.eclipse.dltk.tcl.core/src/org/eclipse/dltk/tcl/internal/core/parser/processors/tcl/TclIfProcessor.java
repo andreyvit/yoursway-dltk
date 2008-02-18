@@ -211,8 +211,8 @@ public class TclIfProcessor extends AbstractTclCommandProcessor {
 		} else if (node instanceof TclAdvancedExecuteExpression) {
 			TclAdvancedExecuteExpression ex = (TclAdvancedExecuteExpression) node;
 			List childs = ex.getChilds();
-			report(parser, "If condition not in {}", node.sourceStart() - 1,
-					node.sourceEnd(), ProblemSeverities.Warning);
+//			report(parser, "If condition not in {}", node.sourceStart() - 1,
+//					node.sourceEnd(), ProblemSeverities.Warning);
 			return new ASTListNode(node.sourceStart(), node.sourceEnd(), childs);
 		}
 		this.report(parser, "Incorrect if condition", node,

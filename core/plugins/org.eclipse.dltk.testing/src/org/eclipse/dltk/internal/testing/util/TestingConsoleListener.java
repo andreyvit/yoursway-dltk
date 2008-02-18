@@ -1,6 +1,7 @@
 package org.eclipse.dltk.internal.testing.util;
 
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.internal.ui.views.console.ProcessConsole;
 import org.eclipse.dltk.debug.ui.ScriptDebugConsole;
 import org.eclipse.dltk.testing.ITestKind;
@@ -26,7 +27,7 @@ public class TestingConsoleListener implements IConsoleListener {
 	}
 
 	public synchronized void consolesAdded(IConsole[] consoles) {
-//		System.out.println("consolesAdded:" + consoles.length);
+		// System.out.println("consolesAdded:" + consoles.length);
 		checkConsoles(consoles);
 	}
 
@@ -38,9 +39,14 @@ public class TestingConsoleListener implements IConsoleListener {
 			if (consoles[i] instanceof ProcessConsole) {
 				ProcessConsole pc = (ProcessConsole) consoles[i];
 
-				if (pc.getProcess().getLaunch().getAttribute(
-						ITestKind.LAUNCH_ATTR_TEST_KIND).equals(
-						launch.getAttribute(ITestKind.LAUNCH_ATTR_TEST_KIND))) {
+				IProcess process = pc.getProcess();
+				if (process != null
+						&& process
+								.getLaunch()
+								.getAttribute(ITestKind.LAUNCH_ATTR_TEST_KIND)
+								.equals(
+										launch
+												.getAttribute(ITestKind.LAUNCH_ATTR_TEST_KIND))) {
 					process(pc, launch);
 					initialized = true;
 				}
@@ -75,7 +81,7 @@ public class TestingConsoleListener implements IConsoleListener {
 
 			public void connect(TextConsole console) {
 				super.connect(console);
-//				System.out.println("%");
+				// System.out.println("%");
 			}
 
 			public synchronized void lineAppended(IRegion region, String content) {

@@ -20,9 +20,9 @@ public class PlatformFileUtils {
 			if (location != null) {
 				try {
 					loc = FileLocator.resolve(location.getURL()).getPath();
-					System.out.println("relavie to:" + loc);
+					// System.out.println("relavie to:" + loc);
 					File nfile = new File(loc + File.separator + locationName);
-					System.out.println("relavie to:" + nfile.toString());
+					// System.out.println("relavie to:" + nfile.toString());
 					if (nfile.exists()) {
 						return nfile;
 					}
@@ -39,7 +39,7 @@ public class PlatformFileUtils {
 				try {
 					loc = FileLocator.resolve(location.getURL()).getPath();
 					File nfile = new File(loc + File.separator + locationName);
-					System.out.println("relavie to:" + nfile.toString());
+					// System.out.println("relavie to:" + nfile.toString());
 					if (nfile.exists()) {
 						return nfile;
 					}
