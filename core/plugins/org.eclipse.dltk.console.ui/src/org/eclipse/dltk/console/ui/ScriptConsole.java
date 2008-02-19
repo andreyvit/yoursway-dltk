@@ -27,7 +27,6 @@ import org.eclipse.ui.console.IConsoleView;
 import org.eclipse.ui.console.TextConsole;
 import org.eclipse.ui.part.IPageBookViewPage;
 
-
 public class ScriptConsole extends TextConsole implements ICommandHandler {
 
 	private ScriptConsolePage page;
@@ -66,7 +65,7 @@ public class ScriptConsole extends TextConsole implements ICommandHandler {
 
 		partitioner = new ScriptConsolePartitioner();
 		getDocument().setDocumentPartitioner(partitioner);
-		partitioner.connect(getDocument());	
+		partitioner.connect(getDocument());
 	}
 
 	public IScriptConsoleSession getSession() {
@@ -87,10 +86,23 @@ public class ScriptConsole extends TextConsole implements ICommandHandler {
 
 	protected void setInterpreter(IScriptInterpreter interpreter) {
 		this.interpreter = interpreter;
+//		interpreter.addInitialListenerOperation(new Runnable() {
+//			public void run() {
+//				Object[] listeners = consoleListeners.getListeners();
+//				String output = ScriptConsole.this.interpreter
+//						.getInitialOuput();
+//				if (output != null) {
+//					for (int i = 0; i < listeners.length; i++) {
+//						((IScriptConsoleListener) listeners[i])
+//								.interpreterResponse(output);
+//					}
+//				}
+//			}
+//		});
 	}
-	
-	protected void setStyleProvider (IConsoleStyleProvider provider) {
-		this.styleProvider = provider;		
+
+	protected void setStyleProvider(IConsoleStyleProvider provider) {
+		this.styleProvider = provider;
 	}
 
 	public void setPrompt(ScriptConsolePrompt prompt) {
@@ -136,8 +148,7 @@ public class ScriptConsole extends TextConsole implements ICommandHandler {
 
 		String output = interpreter.getOutput();
 
-		
-		if (interpreter.getState() == IScriptInterpreter.WAIT_NEW_COMMAND){
+		if (interpreter.getState() == IScriptInterpreter.WAIT_NEW_COMMAND) {
 			prompt.setMode(true);
 		} else {
 			prompt.setMode(false);
@@ -152,9 +163,9 @@ public class ScriptConsole extends TextConsole implements ICommandHandler {
 
 	public void terminate() {
 		try {
-			interpreter.close();			
+			interpreter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 }

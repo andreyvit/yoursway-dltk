@@ -19,4 +19,6 @@ public interface IScriptConsoleIO {
 	ShellResponse execShell(String command, String[] args) throws IOException;
 
 	void close() throws IOException;
+
+	String getInitialResponse();
 }

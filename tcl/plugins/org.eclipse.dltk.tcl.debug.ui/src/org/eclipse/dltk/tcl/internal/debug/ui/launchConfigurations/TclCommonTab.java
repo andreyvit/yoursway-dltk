@@ -7,7 +7,7 @@ package org.eclipse.dltk.tcl.internal.debug.ui.launchConfigurations;
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 
 import java.io.IOException;
@@ -43,6 +43,7 @@ import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.ILaunchGroup;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.internal.ui.util.SWTUtil;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.tcl.launching.TclLaunchingPlugin;
@@ -91,7 +92,7 @@ import org.eclipse.ui.views.navigator.ResourceSorter;
  * subclassed.
  * </p>
  * 
-	 *
+ * 
  */
 public class TclCommonTab extends AbstractLaunchConfigurationTab {
 
@@ -152,7 +153,6 @@ public class TclCommonTab extends AbstractLaunchConfigurationTab {
 
 	private Button fWorkspaceBrowse;
 
-
 	private Button fUseDltkRadio;
 	private Button fNotUseDltkRatio;
 
@@ -196,7 +196,7 @@ public class TclCommonTab extends AbstractLaunchConfigurationTab {
 	 * 
 	 * @param parent
 	 *            the parent composite to add this one to
-	 *
+	 * 
 	 */
 	private void createFavoritesComponent(Composite parent) {
 		Group favComp = SWTUtil
@@ -224,7 +224,7 @@ public class TclCommonTab extends AbstractLaunchConfigurationTab {
 	 * 
 	 * @param parent
 	 *            the parent composite to add this component to
-	 *
+	 * 
 	 */
 	private void createSharedConfigComponent(Composite parent) {
 		Group group = SWTUtil.createGroup(parent,
@@ -256,24 +256,10 @@ public class TclCommonTab extends AbstractLaunchConfigurationTab {
 		setSharedEnabled(false);
 	}
 
-	/**
-	 * Creates the component set for the capture output composite
-	 * 
-	 * @param parent
-	 *            the parent to add this component to
-	 */
-	
-	private void test(){
-		
-	}
-	
-	
-	
 	private void createOutputCaptureComponent(Composite parent) {
-		Group group = SWTUtil.createGroup(parent,
-				"Input and Output", 1, 2,		
+		Group group = SWTUtil.createGroup(parent, "Input and Output", 1, 2,
 				GridData.FILL_HORIZONTAL);
-		
+
 		fUseDltkRadio = createRadioButton(group, "Use DLTK Input and Output");
 		fUseDltkRadio.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -281,17 +267,17 @@ public class TclCommonTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 
-		fNotUseDltkRatio = createRadioButton(group, "Use Standard Input and Output");
+		fNotUseDltkRatio = createRadioButton(group,
+				"Use Standard Input and Output");
 		fNotUseDltkRatio.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				updateLaunchConfigurationDialog();
 			}
 		});
-				
-		Group standardGroup = SWTUtil.createGroup(group,
-				"", 5, 2,
+
+		Group standardGroup = SWTUtil.createGroup(group, "", 5, 2,
 				GridData.FILL_HORIZONTAL);
-				
+
 		fConsoleOutput = createCheckButton(standardGroup,
 				LaunchConfigurationsMessages.CommonTab_5);
 		GridData gd = new GridData(SWT.BEGINNING, SWT.NORMAL, true, false);
@@ -376,7 +362,7 @@ public class TclCommonTab extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent e) {
 				updateLaunchConfigurationDialog();
 			}
-		});		
+		});
 	}
 
 	/**
@@ -385,7 +371,7 @@ public class TclCommonTab extends AbstractLaunchConfigurationTab {
 	 * 
 	 * @param enable
 	 *            if the output capture widgets should be enabled or not
-	 *
+	 * 
 	 */
 	private void enableOuputCaptureWidgets(boolean enable) {
 		fFileText.setEnabled(enable);
@@ -555,6 +541,15 @@ public class TclCommonTab extends AbstractLaunchConfigurationTab {
 		boolean isShared = !configuration.isLocal();
 		fSharedRadioButton.setSelection(isShared);
 		fLocalRadioButton.setSelection(!isShared);
+		// try {
+		// fUseDltkRadio.setSelection(configuration.getAttribute(
+		// ScriptLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT,
+		// false));
+		// } catch (CoreException e) {
+		// if (DLTKCore.DEBUG) {
+		// e.printStackTrace();
+		// }
+		// }
 		setSharedEnabled(isShared);
 		fSharedLocationText
 				.setText(getDefaultSharedConfigLocation(configuration));
@@ -589,7 +584,9 @@ public class TclCommonTab extends AbstractLaunchConfigurationTab {
 		boolean dltkOutput = false;
 
 		try {
-			dltkOutput = configuration.getAttribute(ScriptLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT, false);
+			dltkOutput = configuration.getAttribute(
+					ScriptLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT,
+					false);
 
 			outputToConsole = configuration.getAttribute(
 					IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, true);
@@ -929,22 +926,26 @@ public class TclCommonTab extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT,
 					(String) null);
 
-			configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_DLTK_CONSOLE_ID, Long.toString(System
-					.currentTimeMillis()));
-			
+			configuration.setAttribute(
+					ScriptLaunchConfigurationConstants.ATTR_DLTK_CONSOLE_ID,
+					Long.toString(System.currentTimeMillis()));
+
 			try {
-				String proxyPath = TclLaunchingPlugin.getDefault().getConsoleProxy().toOSString();
+				String proxyPath = TclLaunchingPlugin.getDefault()
+						.getConsoleProxy().toOSString();
 				configuration.setAttribute("proxy_path", proxyPath);
 			} catch (IOException e) {
 				e.printStackTrace();
-				//TODO: handle this situation
+				// TODO: handle this situation
 			}
 
 			captureOutput = false;
 			useDltk = true;
-		} 
-		
-		configuration.setAttribute(ScriptLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT, useDltk);
+		}
+
+		configuration.setAttribute(
+				ScriptLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT,
+				useDltk);
 
 		// Last option
 		if (captureOutput) {

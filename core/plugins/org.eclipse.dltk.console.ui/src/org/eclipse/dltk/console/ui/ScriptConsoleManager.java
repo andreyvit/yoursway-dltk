@@ -196,7 +196,6 @@ public class ScriptConsoleManager implements ILaunchListener {
 			SafeRunner.run(runnable);
 
 		} catch (CoreException e) {
-			//TODO: log exception
 			e.printStackTrace();
 		}
 	}

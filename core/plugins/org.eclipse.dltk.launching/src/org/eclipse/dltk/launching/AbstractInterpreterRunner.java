@@ -234,6 +234,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 			if (monitor.isCanceled()) {
 				return;
 			}
+			alterConfig(launch, config);
 			monitor.worked(1);
 			monitor.subTask("Running");
 			rawRun(launch, config);
@@ -242,8 +243,8 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		} finally {
 			monitor.done();
 		}
+	}
 
-		// TODO: Handling of
-		// IDLTKLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT
+	protected void alterConfig(ILaunch launch, InterpreterConfig config) {
 	}
 }

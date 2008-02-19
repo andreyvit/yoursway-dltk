@@ -13,7 +13,11 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.dltk.console.ScriptConsoleServer;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.launching.ScriptLaunchUtil;
 import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.launching.TclLaunchingPlugin;
@@ -30,7 +34,25 @@ public class TclConsoleUtil {
 
 		File scriptFile = TclLaunchingPlugin.getDefault().getConsoleProxy()
 				.toFile();
-		ScriptLaunchUtil.runScript(TclNature.NATURE_ID, scriptFile, null, null,
-				args, null);
+		final ILaunch launch = ScriptLaunchUtil.runScript(TclNature.NATURE_ID,
+				scriptFile, null, null, args, null);
+		if (launch != null) {
+			interpreter.addCloseOperation(new Runnable() {
+				public void run() {
+					IProcess[] processes = launch.getProcesses();
+					if (processes != null) {
+						for (int i = 0; i < processes.length; i++) {
+							try {
+								processes[i].terminate();
+							} catch (DebugException e) {
+								if (DLTKCore.DEBUG) {
+									e.printStackTrace();
+								}
+							}
+						}
+					}
+				}
+			});
+		}
 	}
 }

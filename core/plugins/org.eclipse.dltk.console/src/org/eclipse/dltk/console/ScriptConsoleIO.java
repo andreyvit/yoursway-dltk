@@ -24,9 +24,11 @@ public class ScriptConsoleIO implements IScriptConsoleIO {
 	private final OutputStream output;
 
 	private final String id;
+	
+	private String initialResponse = null;
 
 	protected static void logInterpreterResponse(String response) {
-		System.out.println("interpreter: " + response);
+//		System.out.println("interpreter: " + response);
 	}
 
 	protected static void logShellResponse(String response) {
@@ -81,6 +83,33 @@ public class ScriptConsoleIO implements IScriptConsoleIO {
 		this.output = output;
 
 		this.id = ScriptConsoleXmlHelper.parseInfoXml(readResponse(input));
+		// read all input from console
+//		String readResponse = readResponse(input);
+//		while (readResponse != null) {
+//			try {
+//				InterpreterResponse xml = ScriptConsoleXmlHelper
+//						.parseInterpreterXml(readResponse);
+//				String content = xml.getContent();
+//				if (content.startsWith("%%{{START_OF_SCRIPT}}&&")) {
+//					break;
+//				}
+//				if( initialResponse == null ) {
+//					initialResponse = content;
+//				}
+//				else {
+//					initialResponse += content;
+//				}
+////				this.output.write(content.getBytes());
+////				this.output.flush();
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//			readResponse = readResponse(input);
+//		}
+
+	}
+	public String getInitialResponse() {
+		return this.initialResponse;
 	}
 
 	public String getId() {

@@ -49,4 +49,7 @@ public class SocketScriptConsoleIO implements IScriptConsoleIO {
 		io.close();
 		socket.close();
 	}
+	public String getInitialResponse() {
+		return io.getInitialResponse();
+	}
 }

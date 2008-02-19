@@ -19,21 +19,41 @@ public class ScriptConsoleServer implements Runnable {
 
 	public static final int DEFAULT_PORT = 25000;
 
+	protected static final boolean DEBUG = false;
+
 	private static ScriptConsoleServer instance;
 
 	public static ScriptConsoleServer getInstance() {
 		if (instance == null) {
-			instance = new ScriptConsoleServer(DEFAULT_PORT);
+			instance = new ScriptConsoleServer();
 		}
 		return instance;
 	}
 
-	private final int port;
+	private int port;
 
 	private final Map handlers;
 
-	protected ScriptConsoleServer(int port) {
-		this.port = port;
+	protected ScriptConsoleServer() {
+		this.port = DEFAULT_PORT;
+
+		// check for not used port
+		while (true) {
+			try {
+				ServerSocket s = new ServerSocket(this.port);
+				if (!s.isBound()) {
+					this.port++;
+				}
+				else {
+					s.close();
+					break;
+				}
+			} catch (IOException e) {
+				if (DEBUG) {
+					e.printStackTrace();
+				}
+			}
+		}
 
 		handlers = new HashMap();
 
@@ -89,7 +109,9 @@ public class ScriptConsoleServer implements Runnable {
 
 							request.consoleConnected(proxy);
 						} catch (IOException e) {
-							e.printStackTrace();
+							if (DEBUG) {
+								e.printStackTrace();
+							}
 						}
 					}
 				});
@@ -97,7 +119,9 @@ public class ScriptConsoleServer implements Runnable {
 				clientHandler.start();
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			if (DEBUG) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

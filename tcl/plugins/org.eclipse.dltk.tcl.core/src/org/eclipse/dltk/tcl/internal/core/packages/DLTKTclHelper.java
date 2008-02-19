@@ -109,6 +109,7 @@ public class DLTKTclHelper {
 				return new String[] { autoPath[i] };
 			}
 		}
+		process.destroy();
 		return autoPath;
 	}
 
@@ -117,6 +118,7 @@ public class DLTKTclHelper {
 		Process process = deployExecute(installLocation.getAbsolutePath(),
 				new String[] { "get-srcs", "-pkgs", packageName }, environment);
 		List content = getScriptOutput(process);
+		process.destroy();
 		return getPackagePath(content);
 	}
 
@@ -308,6 +310,7 @@ public class DLTKTclHelper {
 		for (int i = 0; i < packagePath.length; i++) {
 			packages.add(packagePath[i].getName());
 		}
+		process.destroy();
 		return packages;
 	}
 }

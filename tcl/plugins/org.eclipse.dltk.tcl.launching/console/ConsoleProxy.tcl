@@ -556,23 +556,6 @@ set id   [lindex $argv 2]
 
 puts "Host: $host Port: $port ID: $id"
 
-if {[llength $argv] > 3} {
-	puts "Sourcing script..."
-
-	set script [lindex $argv 3]
-	puts "Script: $script"
-	evaluate [list source $script]
-
-	set scriptArgs {}
-	for {set i 4} {$i < $argc} {incr i} {
-		lappend scriptArgs [lindex $argv $i]
-	}
-
-	puts "Script args: "
-	evaluate [list set argc [llength $scriptArgs]]
-	evaluate [list set argv $scriptArgs]
-}
-
 # Testing
 #set in stdin
 #set out stdout
@@ -585,6 +568,29 @@ set out $server
 # Send initial information
 sendResponse $out [makeConsoleNode [makeInfoNode $id]]
 
+# Execute script with output
+if {[llength $argv] > 3} {
+	puts "Sourcing script..."
+
+	set script [lindex $argv 3]
+	
+	puts "Script args: "
+	set scriptArgs {}
+	for {set i 4} {$i < $argc} {incr i} {
+		lappend scriptArgs [lindex $argv $i]
+	}
+	evaluate [list set argc [llength $scriptArgs]]
+	evaluate [list set argv $scriptArgs]
+	
+	puts "Script: $script"
+	set res [evaluate [list source $script]]
+	
+	set output [getOutput]
+	
+	#sendResponse $out [makeConsoleNode [makeInterpreterNode "new" $output]]
+	#sendResponse $out [makeConsoleNode [makeInterpreterNode "new" $res]]
+}
+#sendResponse  $out [makeConsoleNode [makeInterpreterNode "new" "%%{{START_OF_SCRIPT}}&&"]]
 # Handle commands and send responses
 proc localHandler {} {
 	global in
