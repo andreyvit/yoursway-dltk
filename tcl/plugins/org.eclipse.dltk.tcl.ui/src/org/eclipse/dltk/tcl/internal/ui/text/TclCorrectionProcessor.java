@@ -43,7 +43,7 @@ public class TclCorrectionProcessor implements IQuickAssistProcessor {
 					IModelElement element = editor.getInputModelElement();
 					IScriptProject scriptProject = element.getScriptProject();
 					MarkerResolutionProposal prop = new MarkerResolutionProposal(
-							new RequirePackageMarkerResulution(pkgName,
+							new TclRequirePackageMarkerResolution(pkgName,
 									scriptProject), marker);
 					return new ICompletionProposal[] { prop };
 				}

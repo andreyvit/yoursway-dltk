@@ -154,4 +154,18 @@
             priority="0">
       </mixin>
    </extension>
+   <extension
+       point="org.eclipse.dltk.core.builder">
+    <builder
+          class="org.eclipse.dltk.tcl.internal.core.packages.TclCheckBuilder"
+          nature="org.eclipse.dltk.tcl.core.nature">
+    </builder>
+ </extension>
+   <!--extension
+         point="org.eclipse.dltk.core.buildpathContainerInitializer">
+      <buildpathContainerInitializer
+            class="org.eclipse.dltk.tcl.internal.core.TclPackageBuildpathContainerInitializer"
+            id="org.eclipse.dltk.tcl.core.PACKAGE">
+      </buildpathContainerInitializer>
+   </extension-->
 </plugin>

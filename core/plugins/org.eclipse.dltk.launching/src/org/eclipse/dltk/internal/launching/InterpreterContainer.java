@@ -13,8 +13,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -104,7 +106,7 @@ public class InterpreterContainer implements IBuildpathContainer {
 			libs = ScriptRuntime.getLibraryLocations(interpreter);
 		}
 		List entries = new ArrayList(libs.length);
-		List rawEntries = new ArrayList (libs.length);
+		Set rawEntries = new HashSet (libs.length);
 		for (int i = 0; i < libs.length; i++) {
 			IPath entryPath = libs[i].getLibraryPath();
 		

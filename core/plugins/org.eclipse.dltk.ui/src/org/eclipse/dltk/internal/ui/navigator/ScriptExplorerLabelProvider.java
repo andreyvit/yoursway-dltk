@@ -12,8 +12,10 @@ package org.eclipse.dltk.internal.ui.navigator;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.core.IScriptFolder;
+import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.dltk.ui.viewsupport.AppearanceAwareLabelProvider;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.graphics.Image;
 
 
 /**
@@ -40,8 +42,18 @@ public class ScriptExplorerLabelProvider extends AppearanceAwareLabelProvider {
 	}		
 
 
+	public Image getImage(Object element) {
+		if( element instanceof ScriptExplorerContentProvider.LibrariesFragment ) {
+			return DLTKPluginImages.get(DLTKPluginImages.IMG_OBJS_LIBRARY);
+		}
+		return super.getImage(element);
+	}
+
+
 	public String getText(Object element) {
-		
+		if( element instanceof ScriptExplorerContentProvider.LibrariesFragment) {
+			return "Libraries";
+		}
 		if (fIsFlatLayout || !(element instanceof IScriptFolder))
 			return super.getText(element);			
 

@@ -37,39 +37,41 @@ public class TclInterpreterRunner extends AbstractInterpreterRunner {
 	protected void alterConfig(ILaunch launch, InterpreterConfig config) {
 		super.alterConfig(launch, config);
 		ILaunchConfiguration configuration = launch.getLaunchConfiguration();
-
-		boolean useTclConsole = false;
-		try {
-			useTclConsole = configuration.getAttribute(
-					ScriptLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT,
-					false);
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
-		if (useTclConsole) {
-			ScriptConsoleServer server = ScriptConsoleServer.getInstance();
-			String port = Integer.toString(server.getPort());
-
+		if (configuration != null) {
+			boolean useTclConsole = false;
 			try {
-				File scriptFile = TclLaunchingPlugin.getDefault()
-						.getConsoleProxy().toFile();
-				String id = configuration
+				useTclConsole = configuration
 						.getAttribute(
-								ScriptLaunchConfigurationConstants.ATTR_DLTK_CONSOLE_ID,
-								(String) null);
-				config.addInterpreterArg(scriptFile.getAbsolutePath());
-				config.addInterpreterArg("127.0.0.1");
-				config.addInterpreterArg(port);
-				config.addInterpreterArg(id);
-			} catch (IOException e) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
+								ScriptLaunchConfigurationConstants.ATTR_USE_DLTK_OUTPUT,
+								false);
 			} catch (CoreException e) {
 				if (DLTKCore.DEBUG) {
 					e.printStackTrace();
+				}
+			}
+			if (useTclConsole) {
+				ScriptConsoleServer server = ScriptConsoleServer.getInstance();
+				String port = Integer.toString(server.getPort());
+
+				try {
+					File scriptFile = TclLaunchingPlugin.getDefault()
+							.getConsoleProxy().toFile();
+					String id = configuration
+							.getAttribute(
+									ScriptLaunchConfigurationConstants.ATTR_DLTK_CONSOLE_ID,
+									(String) null);
+					config.addInterpreterArg(scriptFile.getAbsolutePath());
+					config.addInterpreterArg("127.0.0.1");
+					config.addInterpreterArg(port);
+					config.addInterpreterArg(id);
+				} catch (IOException e) {
+					if (DLTKCore.DEBUG) {
+						e.printStackTrace();
+					}
+				} catch (CoreException e) {
+					if (DLTKCore.DEBUG) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}

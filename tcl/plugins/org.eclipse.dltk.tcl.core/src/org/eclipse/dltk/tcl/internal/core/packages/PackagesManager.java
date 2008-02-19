@@ -430,16 +430,21 @@ public class PackagesManager {
 		save();
 		return packages;
 	}
+
 	public synchronized Set getInternalPackageNames(IInterpreterInstall install) {
-		String key = "internal|||" + install.getInstallLocation().getAbsolutePath();
+		String key = "internal|||"
+				+ install.getInstallLocation().getAbsolutePath();
 		if (this.interpreterToPackages.containsKey(key)) {
 			Set set = (Set) this.interpreterToPackages.get(key);
 			return set;
 		}
 		return new HashSet();
 	}
-	public synchronized void setInternalPackageNames(IInterpreterInstall install, Set names) {
-		String key = "internal|||" + install.getInstallLocation().getAbsolutePath();
+
+	public synchronized void setInternalPackageNames(
+			IInterpreterInstall install, Set names) {
+		String key = "internal|||"
+				+ install.getInstallLocation().getAbsolutePath();
 		Set values = new HashSet();
 		values.addAll(names);
 		this.interpreterToPackages.put(key, values);
@@ -537,5 +542,20 @@ public class PackagesManager {
 			}
 		}
 		save();
+	}
+
+	public IPath[] getPathsForPackageWithDeps(IInterpreterInstall install,
+			String name) {
+		Set result = new HashSet();
+		IPath[] paths = this.getPathsForPackage(install, name);
+		result.addAll(Arrays.asList(paths));
+
+		Map dependencies = manager.getDependencies(name, install);
+		for (Iterator iterator = dependencies.keySet().iterator(); iterator
+				.hasNext();) {
+			String pkgName = (String) iterator.next();
+			result.addAll(Arrays.asList(getPathsForPackage(install, pkgName)));
+		}
+		return (IPath[]) result.toArray(new IPath[result.size()]);
 	}
 }

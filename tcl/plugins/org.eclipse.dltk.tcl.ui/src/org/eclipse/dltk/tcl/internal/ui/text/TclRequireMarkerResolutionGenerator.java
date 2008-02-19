@@ -16,7 +16,7 @@ public class TclRequireMarkerResolutionGenerator implements
 			if (pkgName != null) {
 				IProject project = marker.getResource().getProject();
 				IScriptProject scriptProject = DLTKCore.create(project);
-				return new IMarkerResolution[] { new RequirePackageMarkerResulution(
+				return new IMarkerResolution[] { new TclRequirePackageMarkerResolution(
 						pkgName, scriptProject) };
 			}
 		}
