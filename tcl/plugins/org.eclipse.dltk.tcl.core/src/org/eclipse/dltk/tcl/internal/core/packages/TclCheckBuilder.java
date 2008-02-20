@@ -99,9 +99,7 @@ public class TclCheckBuilder implements IScriptBuilder {
 		processSources(elements, monitor, resourceToPackagesList,
 				packagesInBuild, packageNamesInProject);
 
-		if (status == IScriptBuilder.FULL_BUILD) {
-			manager.setInternalPackageNames(install, packageNamesInProject);
-		}
+		manager.setInternalPackageNames(install, packageNamesInProject);
 
 		// This method will populate all required paths.
 		manager.getPathsForPackages(install, packagesInBuild);
@@ -238,7 +236,7 @@ public class TclCheckBuilder implements IScriptBuilder {
 		}
 	}
 
-	private void fillPackagesDeclarations(ModuleDeclaration declaration,
+	private static void fillPackagesDeclarations(ModuleDeclaration declaration,
 			final ArrayList list, final Set packagesInBuild,
 			final Set packageNamesInProject) throws Exception {
 		declaration.traverse(new ASTVisitor() {
@@ -287,6 +285,10 @@ public class TclCheckBuilder implements IScriptBuilder {
 			if (internalNames.contains(packageName)) {
 				return;
 			}
+			if (packageIsFiltered(packageName)) {
+				return;
+			}
+
 			// Report unknown projects
 			if (!packageNames.contains(packageName)
 					&& !internalNames.contains(packageName)) {
@@ -327,7 +329,18 @@ public class TclCheckBuilder implements IScriptBuilder {
 		}
 	}
 
-	private static boolean checkPackage(TclPackageDeclaration pkg,
+	private static boolean packageIsFiltered(String packageName) {
+		if( packageName == null || packageName.length() == 0 ) {
+			return true;
+		}
+		if (packageName.indexOf("$") != -1 || packageName.indexOf("[") != -1
+				|| packageName.indexOf("]") != -1) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean checkPackage(TclPackageDeclaration pkg,
 			IProblemReporter reporter, CodeModel model,
 			PackagesManager manager, IInterpreterInstall install,
 			Set buildpath, String packageName) {

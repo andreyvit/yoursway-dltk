@@ -46,17 +46,20 @@ public class TclCorrectionProcessor implements IQuickAssistProcessor {
 			if (annotation instanceof MarkerAnnotation) {
 				MarkerAnnotation mAnnot = (MarkerAnnotation) annotation;
 				IMarker marker = mAnnot.getMarker();
-				String pkgName = marker.getAttribute("tcl.problem.require",
-						null);
-				if (pkgName != null) {
-					ScriptEditor editor = (ScriptEditor) this.fAssistant
-							.getEditor();
-					IModelElement element = editor.getInputModelElement();
-					IScriptProject scriptProject = element.getScriptProject();
-					MarkerResolutionProposal prop = new MarkerResolutionProposal(
-							new TclRequirePackageMarkerResolution(pkgName,
-									scriptProject), marker);
-					return new ICompletionProposal[] { prop };
+				if (isFixable(marker)) {
+					String pkgName = marker.getAttribute(
+							TclCheckBuilder.TCL_PROBLEM_REQUIRE, null);
+					if (pkgName != null) {
+						ScriptEditor editor = (ScriptEditor) this.fAssistant
+								.getEditor();
+						IModelElement element = editor.getInputModelElement();
+						IScriptProject scriptProject = element
+								.getScriptProject();
+						MarkerResolutionProposal prop = new MarkerResolutionProposal(
+								new TclRequirePackageMarkerResolution(pkgName,
+										scriptProject), marker);
+						return new ICompletionProposal[] { prop };
+					}
 				}
 			}
 		}
@@ -83,33 +86,40 @@ public class TclCorrectionProcessor implements IQuickAssistProcessor {
 			IResource resource = marker.getResource();
 			IProject project = resource.getProject();
 			IScriptProject scriptProject = DLTKCore.create(project);
-			IDLTKLanguageToolkit toolkit = null;
+			if (isFixable(pkgName, scriptProject)) {
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+
+	public static boolean isFixable(String pkgName, IScriptProject scriptProject) {
+		IDLTKLanguageToolkit toolkit = null;
+		try {
+			toolkit = DLTKLanguageManager.getLanguageToolkit(scriptProject);
+		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+		}
+		if (toolkit != null
+				&& toolkit.getNatureId().equals(TclNature.NATURE_ID)) {
+			IInterpreterInstall install = null;
 			try {
-				toolkit = DLTKLanguageManager.getLanguageToolkit(scriptProject);
+				install = ScriptRuntime.getInterpreterInstall(scriptProject);
 			} catch (CoreException e) {
 				if (DLTKCore.DEBUG) {
 					e.printStackTrace();
 				}
 			}
-			if (toolkit != null
-					&& toolkit.getNatureId().equals(TclNature.NATURE_ID)) {
-				IInterpreterInstall install = null;
-				try {
-					install = ScriptRuntime
-							.getInterpreterInstall(scriptProject);
-				} catch (CoreException e) {
-					if (DLTKCore.DEBUG) {
-						e.printStackTrace();
-					}
-				}
-				if (install != null) {
-					IPath[] paths = PackagesManager.getInstance().getPathsForPackage(install, pkgName);
-					if( paths != null && paths.length > 0 ) {
-						return true;
-					}
+			if (install != null) {
+				IPath[] paths = PackagesManager.getInstance()
+						.getPathsForPackage(install, pkgName);
+				if (paths != null && paths.length > 0) {
+					return true;
 				}
 			}
-			return true;
 		}
 		return false;
 	}
@@ -118,10 +128,7 @@ public class TclCorrectionProcessor implements IQuickAssistProcessor {
 		if (annotation instanceof MarkerAnnotation) {
 			MarkerAnnotation mAnnot = (MarkerAnnotation) annotation;
 			IMarker marker = mAnnot.getMarker();
-			String pkgName = marker.getAttribute("tcl.problem.require", null);
-			if (pkgName != null) {
-				return true;
-			}
+			return isFixable(marker);
 		}
 		return false;
 	}

@@ -588,7 +588,7 @@ public class BuildpathEntry implements IBuildpathEntry {
 			}
 			break;
 		case IBuildpathEntry.BPE_CONTAINER:
-			entry = DLTKCore.newContainerEntry(path, isExported);
+			entry = DLTKCore.newContainerEntry(path, accessRules, extraAttributes, isExported);
 			break;
 		default:
 			throw new AssertionFailedException(Messages.bind(

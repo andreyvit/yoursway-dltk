@@ -535,45 +535,11 @@ public class DeltaProcessor {
 			/* buildpath file change */
 			if (file.getName().equals(ScriptProject.BUILDPATH_FILENAME)) {
 				this.manager.batchContainerInitializations = true;
-				switch (delta.getKind()) {
-				case IResourceDelta.CHANGED:
-					int flags = delta.getFlags();
-					if ((flags & IResourceDelta.CONTENT) == 0 // only consider
-							// content
-							// change
-							&& (flags & IResourceDelta.ENCODING) == 0 // and
-							// encoding
-							// change
-							&& (flags & IResourceDelta.MOVED_FROM) == 0) {// and
-						// also
-						// move
-						// and
-						// overide
-						// scenario
-						// (see
-						// http://dev.eclipse.org/bugs/show_bug.cgi?id=21420)
-						break;
-					}
-					// fall through
-				case IResourceDelta.ADDED:
-					scriptProject = (ScriptProject) DLTKCore.create(file
-							.getProject());
-
-					// force to (re)read the .buildpath file
-					// try {
-					// scriptProject.getPerProjectInfo().readAndCacheClasspath(
-					// scriptProject);
-					// scriptProject.r
-					// } catch (ModelException e){
-					// // project doesn't exist
-					// return;
-					// }
-					break;
-				}
+				reconcileBuildpathFileUpdate(delta, (ScriptProject) DLTKCore
+						.create(file.getProject()));
 				this.state.rootsAreStale = true;
 			}
 			break;
-
 		}
 		if (children != null) {
 			for (int i = 0; i < children.length; i++) {
@@ -589,6 +555,43 @@ public class DeltaProcessor {
 		this.state.addProjectReferenceChange(javaProject, /* change == null ? */
 		null
 		/* : change.oldResolvedClasspath */);
+	}
+
+	private void reconcileBuildpathFileUpdate(IResourceDelta delta,
+			ScriptProject project) {
+
+		switch (delta.getKind()) {
+		case IResourceDelta.REMOVED: // recreate one based on in-memory
+			// buildpath
+			break;
+		case IResourceDelta.CHANGED:
+			int flags = delta.getFlags();
+			if ((flags & IResourceDelta.CONTENT) == 0 // only consider content
+					// change
+					&& (flags & IResourceDelta.ENCODING) == 0 // and encoding
+					// change
+					&& (flags & IResourceDelta.MOVED_FROM) == 0) {// and also
+				// move and
+				// overide
+				// scenario
+				// (see
+				// http://dev.eclipse.org/bugs/show_bug.cgi?id=21420)
+				break;
+			}
+			// fall through
+		case IResourceDelta.ADDED:
+			try {
+				project.forceBuildpathReload(null);
+			} catch (RuntimeException e) {
+				if (VERBOSE) {
+					e.printStackTrace();
+				}
+			} catch (ModelException e) {
+				if (VERBOSE) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	/*
@@ -1872,31 +1875,32 @@ public class DeltaProcessor {
 						stopDeltas();
 						checkProjectsBeingAddedOrRemoved(delta);
 						// generate classpath change deltas
-//						if (this.buildpathChanges.size() > 0) {
-//							boolean hasDelta = this.currentDelta != null;
-//							ModelElementDelta javaDelta = currentDelta();
-//							Iterator changes = this.buildpathChanges.values()
-//									.iterator();
-//							while (changes.hasNext()) {
-//								BuildpathChange change = (BuildpathChange) changes
-//										.next();
-//								int result = change.generateDelta(javaDelta);
-//								if ((result & BuildpathChange.HAS_DELTA) != 0) {
-//									hasDelta = true;
-//									change.requestIndexing();
-//									this.state
-//											.addClasspathValidation(change.project);
-//								}
-//								if ((result & BuildpathChange.HAS_PROJECT_CHANGE) != 0) {
-//									this.state.addProjectReferenceChange(
-//											change.project,
-//											change.oldResolvedClasspath);
-//								}
-//							}
-//							this.buildpathChanges.clear();
-//							if (!hasDelta)
-//								this.currentDelta = null;
-//						}
+						// if (this.buildpathChanges.size() > 0) {
+						// boolean hasDelta = this.currentDelta != null;
+						// ModelElementDelta javaDelta = currentDelta();
+						// Iterator changes = this.buildpathChanges.values()
+						// .iterator();
+						// while (changes.hasNext()) {
+						// BuildpathChange change = (BuildpathChange) changes
+						// .next();
+						// int result = change.generateDelta(javaDelta);
+						// if ((result & BuildpathChange.HAS_DELTA) != 0) {
+						// hasDelta = true;
+						// change.requestIndexing();
+						// this.state
+						// .addClasspathValidation(change.project);
+						// }
+						// if ((result & BuildpathChange.HAS_PROJECT_CHANGE) !=
+						// 0) {
+						// this.state.addProjectReferenceChange(
+						// change.project,
+						// change.oldResolvedClasspath);
+						// }
+						// }
+						// this.buildpathChanges.clear();
+						// if (!hasDelta)
+						// this.currentDelta = null;
+						// }
 
 						// generate external archive change deltas
 						if (this.refreshedElements != null) {

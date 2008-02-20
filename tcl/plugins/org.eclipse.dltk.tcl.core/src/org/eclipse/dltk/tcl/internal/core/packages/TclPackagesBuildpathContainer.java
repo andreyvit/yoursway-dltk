@@ -8,12 +8,14 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.dltk.tcl.internal.core;
+package org.eclipse.dltk.tcl.internal.core.packages;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -29,45 +31,59 @@ import org.eclipse.dltk.core.IBuiltinModuleProvider;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.launching.IInterpreterInstall;
+import org.eclipse.dltk.launching.LibraryLocation;
 import org.eclipse.dltk.launching.ScriptRuntime;
-import org.eclipse.dltk.tcl.internal.core.packages.PackagesManager;
 
 /**
  * 
  */
-public class TclPackageBuildpathContainer implements IBuildpathContainer {
+public class TclPackagesBuildpathContainer implements IBuildpathContainer {
 
-	private String name;
+	private IPath containerPath;
 	private IScriptProject project;
 	private static IAccessRule[] EMPTY_RULES = new IAccessRule[0];
 
-
-	public TclPackageBuildpathContainer(String name, IScriptProject project) {
-		this.name = name;
+	public TclPackagesBuildpathContainer(IPath containerPath,
+			IScriptProject project) {
+		this.containerPath = containerPath;
 		this.project = project;
 	}
 
 	public IBuildpathEntry[] getBuildpathEntries() {
 		IInterpreterInstall install = null;
+		LibraryLocation[] locations = null;
 		try {
 			install = ScriptRuntime.getInterpreterInstall(this.project);
+			if (install != null) {
+				locations = ScriptRuntime.getLibraryLocations(install);
+			}
 		} catch (CoreException e) {
 			if (DLTKCore.DEBUG) {
 				e.printStackTrace();
 			}
 		}
 		if (install != null) {
-			IPath[] libs = PackagesManager.getInstance().getPathsForPackageWithDeps(
-					install, this.name);
-			
-			List entries = new ArrayList(libs.length);
-			Set rawEntries = new HashSet(libs.length);
-			for (int i = 0; i < libs.length; i++) {
-				IPath entryPath = libs[i];
-			
+			Set packages = PackagesContainerHelper
+					.getPackageContainerPackageNames(this.project);
+
+			Set allPaths = new HashSet();
+			for (Iterator iterator = packages.iterator(); iterator.hasNext();) {
+				String pkgName = (String) iterator.next();
+				IPath[] libs = PackagesManager.getInstance()
+						.getPathsForPackageWithDeps(install, pkgName);
+				if (libs != null) {
+					allPaths.addAll(Arrays.asList(libs));
+				}
+			}
+
+			List entries = new ArrayList(allPaths.size());
+			Set rawEntries = new HashSet(allPaths.size());
+			for (Iterator iterator = allPaths.iterator(); iterator.hasNext();) {
+				IPath entryPath = (IPath) iterator.next();
+
 				if (!entryPath.isEmpty()) {
-					
-					//	resolve symlink
+
+					// resolve symlink
 					try {
 						File f = entryPath.toFile();
 						if (f == null)
@@ -76,19 +92,22 @@ public class TclPackageBuildpathContainer implements IBuildpathContainer {
 					} catch (IOException e) {
 						continue;
 					}
-					
+
 					if (rawEntries.contains(entryPath))
 						continue;
-					
-					/*if (!entryPath.isAbsolute())
-						Assert.isTrue(false, "Path for IBuildpathEntry must be absolute"); //$NON-NLS-1$*/
+
+					/*
+					 * if (!entryPath.isAbsolute()) Assert.isTrue(false, "Path
+					 * for IBuildpathEntry must be absolute"); //$NON-NLS-1$
+					 */
 					IBuildpathAttribute[] attributes = new IBuildpathAttribute[0];
 					ArrayList excluded = new ArrayList(); // paths to exclude
-					for (int j = 0; j < libs.length; j++) {
-						IPath otherPath = libs[j];
+					for (Iterator iterator2 = allPaths.iterator(); iterator2
+							.hasNext();) {
+						IPath otherPath = (IPath) iterator2.next();
 						if (otherPath.isEmpty())
 							continue;
-						//resolve symlink
+						// resolve symlink
 						try {
 							File f = entryPath.toFile();
 							if (f == null)
@@ -97,28 +116,46 @@ public class TclPackageBuildpathContainer implements IBuildpathContainer {
 						} catch (IOException e) {
 							continue;
 						}
-											
-						// compare, if it contains some another					
-						if (entryPath.isPrefixOf(otherPath) && !otherPath.equals(entryPath) ) {						
-							IPath pattern = otherPath.removeFirstSegments(entryPath.segmentCount()).append("*");
-							if( !excluded.contains(pattern ) ) {
+
+						// compare, if it contains some another
+						if (entryPath.isPrefixOf(otherPath)
+								&& !otherPath.equals(entryPath)) {
+							IPath pattern = otherPath.removeFirstSegments(
+									entryPath.segmentCount()).append("*");
+							if (!excluded.contains(pattern)) {
 								excluded.add(pattern);
 							}
 						}
 					}
-
-					entries.add(DLTKCore.newLibraryEntry(entryPath, EMPTY_RULES, attributes,
-							BuildpathEntry.INCLUDE_ALL, (IPath[]) excluded.toArray(new IPath[excluded.size()]), false, true));
-					rawEntries.add (entryPath);
+					boolean inInterpreter = false;
+					if (locations != null) {
+						for (int i = 0; i < locations.length; i++) {
+							IPath path = locations[i].getLibraryPath();
+							if (path.isPrefixOf(entryPath)) {
+								inInterpreter = true;
+								break;
+							}
+						}
+					}
+					if (!inInterpreter) {
+						// Check for interpreter container libraries.
+						entries.add(DLTKCore.newLibraryEntry(entryPath,
+								EMPTY_RULES, attributes,
+								BuildpathEntry.INCLUDE_ALL, (IPath[]) excluded
+										.toArray(new IPath[excluded.size()]),
+								false, true));
+						rawEntries.add(entryPath);
+					}
 				}
-			}			
-			return (IBuildpathEntry[]) entries.toArray(new IBuildpathEntry[entries.size()]);
+			}
+			return (IBuildpathEntry[]) entries
+					.toArray(new IBuildpathEntry[entries.size()]);
 		}
 		return new IBuildpathEntry[0];
 	}
 
 	public String getDescription() {
-		return this.name;
+		return "Libraries";
 	}
 
 	public int getKind() {
@@ -126,8 +163,7 @@ public class TclPackageBuildpathContainer implements IBuildpathContainer {
 	}
 
 	public IPath getPath() {
-		return new Path(TclPackageBuildpathContainerInitializer.CONTAINER_PATH)
-				.append(this.name);
+		return containerPath;
 	}
 
 	public IBuiltinModuleProvider getBuiltinProvider() {
