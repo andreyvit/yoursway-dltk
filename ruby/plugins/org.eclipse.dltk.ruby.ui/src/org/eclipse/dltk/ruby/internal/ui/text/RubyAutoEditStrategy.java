@@ -69,7 +69,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		int beginning = scanner.findBlockBeginningOffset(offset);
 		if (beginning == RubyHeuristicScanner.NOT_FOUND)
 			throw new BadLocationException();
-		
+
 		IRegion line = d.getLineInformationOfOffset(beginning);
 		int ending = Math.min(line.getOffset() + line.getLength(), offset);
 		int token = scanner.previousToken(ending, beginning);
@@ -97,6 +97,8 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		try {
 			if (c.length == 0 && c.text != null && isLineDelimiter(d, c.text))
 				smartIndentAfterNewLine(d, c);
+			else if (c.text.length() == 1 && c.text.charAt(0) == '\t')
+				smartTab(d, c);
 			else if (c.text.length() == 1)
 				smartIndentOnKeypress(d, c);
 			else if (c.text.length() > 1 && fPreferences.isSmartPaste())
@@ -115,6 +117,38 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		return false;
 	}
 
+	private void smartTab(IDocument d, DocumentCommand c)
+			throws BadLocationException {
+		IRegion info = d.getLineInformationOfOffset(c.offset);
+		int endOffset = info.getOffset() + info.getLength();
+		String line = d.get(info.getOffset(), info.getLength());
+		String linePrefix = line.substring(0, c.offset - info.getOffset());
+		final String linePostfix = line.substring(c.offset - info.getOffset(),
+				endOffset - info.getOffset());
+		String postfixIndent = AutoEditUtils.getLineIndent(linePostfix);
+
+		RubyHeuristicScanner scanner = new RubyHeuristicScanner(d);
+		String rightIndent;
+		if (nextIsIdentToBlockToken(scanner, c.offset, endOffset)) {
+			rightIndent = getBlockIndent(d, c.offset, scanner);
+		} else {
+			rightIndent = getLineIndent(d, c.offset, scanner);
+		}
+
+		if (linePrefix.trim().length() != 0
+				|| (linePostfix.trim().length() != 0 && postfixIndent.length() == 0 &&
+						computeVisualLength(linePrefix) >= computeVisualLength(rightIndent))) {
+			c.text = fPreferences.getIndent();
+			return;
+		}
+
+		c.text = rightIndent + linePostfix.trim();
+		c.offset = info.getOffset();
+		c.length = info.getLength();
+		c.caretOffset = info.getOffset() + rightIndent.length();
+		c.shiftsCaret = false;
+	}
+
 	private void smartIndentOnKeypress(IDocument d, DocumentCommand c)
 			throws BadLocationException {
 		RubyHeuristicScanner scanner = new RubyHeuristicScanner(d);
@@ -123,11 +157,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 
 		if (Arrays.binarySearch(INDENT_TO_BLOCK_TOKENS, token) >= 0) {
 			String indent = "";
-			try {
-				indent = getBlockIndent(d, info.getOffset(), scanner);
-			} catch (BadLocationException e) {
-				// there is no enclosing block
-			}
+			indent = getLineIndent(d, info.getOffset(), scanner);
 
 			int pos = scanner.findNonWhitespaceForwardInAnyPartition(info
 					.getOffset(), c.offset);
@@ -168,6 +198,18 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 				c.offset = info.getOffset();
 			}
 		}
+	}
+
+	private String getLineIndent(IDocument d, int offset,
+			RubyHeuristicScanner scanner) {
+		try {
+			// find indentation of enclosing block and add one more
+			return getBlockIndent(d, offset, scanner)
+					+ fPreferences.getIndent();
+		} catch (BadLocationException e) {
+			// there is no enclosing block
+		}
+		return "";
 	}
 
 	private String getBlockIndent(IDocument d, int offset,
@@ -288,26 +330,21 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		// fix first line whitespace
 		IRegion info = d.getLineInformationOfOffset(c.offset);
 		String line = d.get(info.getOffset(), c.offset - info.getOffset());
+		int startFixFrom = 1;
 		if (line.trim().length() == 0) {
 			c.length += line.length();
 			c.offset -= line.length();
+			startFixFrom = 0;
 		}
 
 		RubyHeuristicScanner scanner = new RubyHeuristicScanner(d);
-		String indent = "";
-		try {
-			indent = getBlockIndent(d, c.offset, scanner)
-					+ fPreferences.getIndent();
-		} catch (BadLocationException e) {
-			// there is no enclosing block
-		}
-
+		String indent = getLineIndent(d, c.offset, scanner);
 		String delimiter = TextUtilities.getDefaultLineDelimiter(d);
 		boolean addLastDelimiter = c.text.endsWith(delimiter);
 		String[] lines = c.text.split(delimiter);
-		if (lines.length > 0) {
+		if (lines.length > startFixFrom) {
 			String currentIndent = "";
-			for (int i = 0; i < lines.length; i++) {
+			for (int i = startFixFrom; i < lines.length; i++) {
 				if (lines[i].trim().length() != 0) {
 					currentIndent = AutoEditUtils.getLineIndent(lines[i]);
 					break;
@@ -317,7 +354,10 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 			int shift = computeVisualLength(indent)
 					- computeVisualLength(currentIndent);
 			StringBuffer result = new StringBuffer();
-			for (int i = 0; i < lines.length - 1; i++) {
+			for (int i = 0; i < startFixFrom; i++) {
+				result.append(lines[i]).append(delimiter);
+			}
+			for (int i = startFixFrom; i < lines.length - 1; i++) {
 				result.append(shiftIdentation(lines[i], shift)).append(
 						delimiter);
 			}
