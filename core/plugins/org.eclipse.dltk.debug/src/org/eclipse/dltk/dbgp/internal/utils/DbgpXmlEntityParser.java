@@ -35,6 +35,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class DbgpXmlEntityParser extends DbgpXmlParser {
+	private static final IDbgpProperty[] NO_CHILDREN = new IDbgpProperty[0];
 
 	private static String ENCODING_NONE = "none";
 	private static String ENCODING_BASE64 = "base64";
@@ -96,9 +97,9 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 		final String ATTR_CHILDREN = "children";
 		final String ATTR_NUMCHILDREN = "numchildren";
 		final String ATTR_CONSTANT = "constant";
-		final String ATTR_SIZE = "size";
 		final String ATTR_KEY = "key";
-
+		final String ATTR_PAGE = "page";
+		final String ATTR_PAGE_SIZE = "pagesize";
 		/*
 		 * attributes: name, fullname, type, children, numchildren, constant,
 		 * encoding, size, key
@@ -122,10 +123,16 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 					.getAttribute(ATTR_NUMCHILDREN));
 		}
 
-		// Size
-		int size = -1;
-		if (property.hasAttribute(ATTR_SIZE)) {
-			size = Integer.parseInt(property.getAttribute(ATTR_SIZE));
+		// Page
+		int page = 0;
+		if (property.hasAttribute(ATTR_PAGE)) {
+			page = Integer.parseInt(property.getAttribute(ATTR_PAGE));
+		}
+
+		// Page Size
+		int pagesize = -1;
+		if (property.hasAttribute(ATTR_PAGE_SIZE)) {
+			pagesize = Integer.parseInt(property.getAttribute(ATTR_PAGE_SIZE));
 		}
 
 		// Constant
@@ -153,21 +160,27 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 		}
 
 		// Children
-		List availableChildren = new ArrayList();
+		IDbgpProperty[] availableChildren = NO_CHILDREN;
 		if (hasChildren) {
+			List childrenList = new ArrayList();
 			NodeList properties = property.getChildNodes();
 			for (int i = 0; i < properties.getLength(); ++i) {
 				Node item = properties.item(i);
 				if (item instanceof Element) {
-					availableChildren.add(parseProperty((Element) item));
+					childrenList.add(parseProperty((Element) item));
 				}
 			}
+			availableChildren = (IDbgpProperty[]) childrenList
+					.toArray(new IDbgpProperty[childrenList.size()]);
 		}
 
-		return new DbgpProperty(name, fullName, type, value, size,
-				childrenCount, hasChildren, constant, key,
-				(IDbgpProperty[]) availableChildren
-						.toArray(new IDbgpProperty[availableChildren.size()]));
+		
+		if (childrenCount < 0) {
+			childrenCount = availableChildren.length;
+		}
+		
+		return new DbgpProperty(name, fullName, type, value, childrenCount,
+				hasChildren, constant, key, availableChildren, page, pagesize);
 	}
 
 	public static IDbgpStatus parseStatus(Element element)
@@ -219,21 +232,21 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 
 		String id = element.getAttribute(ATTR_ID);
 		boolean enabled = element.getAttribute(ATTR_STATE).equals("enabled");
-		
+
 		// not all dbgp implementations have these
 		int hitCount = getIntAttribute(element, ATTR_HIT_COUNT, 0);
 		int hitValue = getIntAttribute(element, ATTR_HIT_VALUE, 0);
 		String hitCondition = getStringAttribute(element, ATTR_HIT_CONDITION);
-		
+
 		if (type.equals(LINE_BREAKPOINT)) {
 			String fileName = element.getAttribute(ATTR_FILENAME);
-			
+
 			// ActiveState's dbgp implementation is slightly inconsistent
 			String lineno = element.getAttribute(ATTR_LINENO);
 			if ("".equals(lineno)) {
 				lineno = element.getAttribute(ATTR_LINE);
 			}
-			
+
 			int lineNumber = Integer.parseInt(lineno);
 			return new DbgpLineBreakpoint(id, enabled, hitValue, hitCount,
 					hitCondition, fileName, lineNumber);
@@ -315,6 +328,5 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 
 		throw new AssertionError("invalid encoding [" + encoding + "]");
 	}
-	
-	
+
 }

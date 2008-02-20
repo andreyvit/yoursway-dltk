@@ -41,6 +41,11 @@ public class DbgpPropertyCommands extends DbgpBaseCommands implements
 
 	protected IDbgpProperty getProperty(String name, Integer stackDepth,
 			Integer contextId) throws DbgpException {
+		return getProperty(null, name, stackDepth, contextId);
+	}
+
+	protected IDbgpProperty getProperty(Integer page, String name, Integer stackDepth,
+			Integer contextId) throws DbgpException {
 		DbgpRequest request = createRequest(PROPERTY_GET_COMMAND);
 		request.addOption("-n", name);
 
@@ -52,6 +57,9 @@ public class DbgpPropertyCommands extends DbgpBaseCommands implements
 			request.addOption("-c", contextId);
 		}
 
+		if (page != null) {
+			request.addOption("-p", page);
+		}
 		return parsePropertyResponse(communicate(request));
 	}
 
@@ -78,10 +86,9 @@ public class DbgpPropertyCommands extends DbgpBaseCommands implements
 				new Integer(contextId));
 	}
 
-	public IDbgpProperty getProperty(String name, int stackDepth,
-			int contextId, String dataType, String dataPage)
+	public IDbgpProperty getProperty(int page, String name, int stackDepth)
 			throws DbgpException {
-		return null;
+		return getProperty(new Integer(page),name, new Integer(stackDepth), null);
 	}
 
 	public boolean setProperty(IDbgpProperty property) throws DbgpException {

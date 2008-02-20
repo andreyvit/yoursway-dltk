@@ -96,7 +96,7 @@ module XoredDebugger
             response.add_attribute('supported', (supported ? 1:0))
             if (supported)
                 value = @feature_manager.get(name).to_s
-                response.set_data(value, true)
+                response.set_data(value)
             end
             return response
         end
@@ -338,11 +338,11 @@ module XoredDebugger
                                     
             def make_props(exp, d)
                 vars = @context.eval(exp, d)
-
+                pagesize = @feature_manager.get('max_children').to_i
                 props = []
                 vars.each { |var|                   
                     real_var = @context.eval(var, d)
-                    props << PropertyElement.new(real_var, var)
+                    props << PropertyElement.new(real_var, var, pagesize, 0)
                 }
                 props
             end
@@ -401,17 +401,20 @@ module XoredDebugger
             check_command_arguments(command, '-n')
             name = command.arg('-n')
             depth =  command.arg_with_default('-d', '0').to_i            
-            
+            page = command.arg_with_default('-p', '0').to_i   
+            pagesize = @feature_manager.get('max_children').to_i
+
             response = Response.new(command)
             begin
                 cmd = "#{name}"
-                property = PropertyElement.new(@context.eval(cmd, depth), name)
+                property = PropertyElement.new(@context.eval(cmd, depth), name, pagesize, page)
                 response.set_data(property)
 
             rescue OperationNotAvailableError
                 raise $!
-
+				
             rescue Exception
+                logException($!, 'in property_get:')     
                 response.set_error(300)  
             end
             return response

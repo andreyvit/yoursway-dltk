@@ -24,7 +24,7 @@ module XoredDebugger
                 'breakpoint_languages'      => ['',       false], #get some engines may support more than one language. This feature returns a string which is a comma separated list of supported languages. If the engine does not provide this feature, then it is assumed that the engine only supports the language defined in the feature language_name. One example of this is an XSLT debugger engine which supports XSLT, XML, HTML and XHTML. An IDE may need this information to to know what types of breakpoints an engine will accept.
 
                 'multiple_sessions' => [0,        true], #get|set {0|1}
-                'max_children'      => [10,       true], #get|set max number of array or object children to initially retrieve
+                'max_children'      => [100,       true], #get|set max number of array or object children to initially retrieve
                 'max_data'          => [4096,     true], #get|set get|set   max amount of variable data to initially retrieve.
                 'max_depth'         => [3,        true], #get|set maximum depth that the debugger engine may return when sending arrays, hashs or object structures to the IDE.
 

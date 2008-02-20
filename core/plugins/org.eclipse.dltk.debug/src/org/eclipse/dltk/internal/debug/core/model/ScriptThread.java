@@ -65,6 +65,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	private boolean terminated = false;
 
+	private int propertyPageSize = 32; 
+	
 	// ScriptThreadStateManager.IStateChangeHandler
 	public void handleSuspend(int detail) {
 		DebugEventHelper.fireExtendedEvent(this,
@@ -76,6 +78,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 			return;
 		}
 
+		DebugEventHelper.fireChangeEvent(this);
 		DebugEventHelper.fireSuspendEvent(this, detail);
 	}
 
@@ -196,7 +199,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 			DbgpDebugger.printEngineInfo(engine);
 		}
 
-		engine.setMaxChildren(256);
+		engine.setMaxChildren(propertyPageSize);
 		engine.setMaxDepth(2);
 		engine.setMaxData(8192);
 
@@ -402,5 +405,9 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 			stack.updateFrames();
 			DebugEventHelper.fireChangeEvent(this);
 		}
+	}
+
+	public int getPropertyPageSize() {
+		return propertyPageSize;
 	}
 }

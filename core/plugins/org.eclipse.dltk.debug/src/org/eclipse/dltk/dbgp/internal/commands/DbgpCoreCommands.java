@@ -87,8 +87,8 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 		breakpointCommands.removeBreakpoint(id);
 	}
 
-	public String setCallBreakpoint(URI uri, String function, DbgpBreakpointConfig info)
-			throws DbgpException {
+	public String setCallBreakpoint(URI uri, String function,
+			DbgpBreakpointConfig info) throws DbgpException {
 		return breakpointCommands.setCallBreakpoint(uri, function, info);
 	}
 
@@ -132,23 +132,19 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 		return continuationCommands.detach();
 	}
 
-	public IDbgpStatus run()
-			throws DbgpException {
+	public IDbgpStatus run() throws DbgpException {
 		return continuationCommands.run();
 	}
 
-	public IDbgpStatus stepInto()
-			throws DbgpException {
+	public IDbgpStatus stepInto() throws DbgpException {
 		return continuationCommands.stepInto();
 	}
 
-	public IDbgpStatus stepOut()
-			throws DbgpException {
+	public IDbgpStatus stepOut() throws DbgpException {
 		return continuationCommands.stepOut();
 	}
 
-	public IDbgpStatus stepOver()
-			throws DbgpException {
+	public IDbgpStatus stepOver() throws DbgpException {
 		return continuationCommands.stepOver();
 	}
 
@@ -225,13 +221,6 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 		return propertyCommands.getProperty(name, stackDepth, contextId);
 	}
 
-	public IDbgpProperty getProperty(String name, int stackDepth,
-			int contextId, String dataType, String dataPage)
-			throws DbgpException {
-		return propertyCommands.getProperty(name, stackDepth, contextId,
-				dataType, dataPage);
-	}
-
 	public boolean setProperty(IDbgpProperty property) throws DbgpException {
 		return propertyCommands.setProperty(property);
 	}
@@ -244,5 +233,10 @@ public class DbgpCoreCommands implements IDbgpCoreCommands {
 	public IDbgpProperty getPropertyByKey(String name, String key)
 			throws DbgpException {
 		return propertyCommands.getPropertyByKey(name, key);
+	}
+
+	public IDbgpProperty getProperty(int page, String name, int stackDepth)
+			throws DbgpException {
+		return propertyCommands.getProperty(page, name, stackDepth);
 	}
 }

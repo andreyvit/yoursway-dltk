@@ -42,15 +42,8 @@ public class ScriptVariable extends ScriptDebugElement implements
 		return target;
 	}
 
-	public IValue getValue() throws DebugException {
+	public synchronized IValue getValue() throws DebugException {
 		if (value == null) {
-			try {
-				if (!childrenLoaded())
-					update();
-			} catch (DbgpException e) {
-				// TODO: localize
-				throw wrapDbgpException("Can't assign variable", e);
-			}
 			value = ScriptValue.createValue(frame, property);
 		}
 		return value;
@@ -68,7 +61,7 @@ public class ScriptVariable extends ScriptDebugElement implements
 		return false;
 	}
 
-	public void setValue(String expression) throws DebugException {
+	public synchronized void setValue(String expression) throws DebugException {
 		try {
 			if (session.getCoreCommands().setProperty(property.getEvalName(),
 					frame.getLevel(), expression)) {
@@ -87,16 +80,11 @@ public class ScriptVariable extends ScriptDebugElement implements
 		
 	}
 
-	private boolean childrenLoaded() {
-		return !property.hasChildren()
-				|| property.getAvailableChildren().length > 0;
-	}
-
 	private void update() throws DbgpException {
 		this.value = null;
 
 		IDbgpCoreCommands core = session.getCoreCommands();
-		String key = property.getKey();
+		//String key = property.getKey();
 		String name = property.getEvalName();
 		
 		// TODO: Use key if provided

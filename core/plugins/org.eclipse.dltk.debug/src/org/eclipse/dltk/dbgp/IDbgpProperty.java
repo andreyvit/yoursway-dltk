@@ -10,13 +10,13 @@
 package org.eclipse.dltk.dbgp;
 
 public interface IDbgpProperty {
+	String getKey();
+
 	String getName();
 
 	String getEvalName();
 
 	String getType();
-
-	int getSize();
 
 	String getValue();
 
@@ -27,6 +27,8 @@ public interface IDbgpProperty {
 	int getChildrenCount();
 
 	IDbgpProperty[] getAvailableChildren();
-
-	String getKey();
+	
+	int getPage();
+	
+	int getPageSize();
 }

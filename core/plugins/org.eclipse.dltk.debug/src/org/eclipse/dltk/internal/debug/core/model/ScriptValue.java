@@ -9,12 +9,16 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.debug.core.model;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
+import org.eclipse.debug.core.model.IIndexedValue;
 import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.dltk.dbgp.IDbgpProperty;
+import org.eclipse.dltk.dbgp.commands.IDbgpPropertyCommands;
+import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.ScriptDebugManager;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationCommand;
@@ -27,39 +31,22 @@ import org.eclipse.dltk.debug.core.model.IScriptTypeFactory;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.internal.debug.core.eval.ScriptEvaluationCommand;
 
-public class ScriptValue extends ScriptDebugElement implements IScriptValue {
-	final private IDbgpProperty property;
+public class ScriptValue extends ScriptDebugElement implements IScriptValue,
+		IIndexedValue {
 	final private IScriptType type;
-	final protected IVariable[] variables;
+	final private IVariable[] variables;
 	private IScriptStackFrame frame;
+	private int pageSize;
+	private String name;
+	private String fullname;
+	private String value;
+	private boolean hasChildren;
+	private String key;
 
 	public static IScriptValue createValue(IScriptStackFrame frame,
 			IDbgpProperty property) {
 		IScriptType type = createType(frame.getDebugTarget(), property);
-		if (type.isCollection()) {
-			return new ScriptArrayValue(frame, property, type);
-		}
 		return new ScriptValue(frame, property, type);
-	}
-
-	ScriptValue(IScriptStackFrame frame, IDbgpProperty property,
-			IScriptType type) {
-		this.frame = frame;
-		this.property = property;
-		this.type = type;
-		this.variables = createChildVariables(property);
-	}
-
-	private ScriptVariable[] createChildVariables(IDbgpProperty property) {
-		IDbgpProperty[] properties = property.getAvailableChildren();
-
-		ScriptVariable[] variables = new ScriptVariable[properties.length];
-		for (int i = 0; i < properties.length; ++i) {
-			IDbgpProperty p = properties[i];
-			variables[i] = new ScriptVariable(frame, p, p.getName());
-		}
-
-		return variables;
 	}
 
 	private static IScriptType createType(IDebugTarget target,
@@ -77,13 +64,59 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 		return type;
 	}
 
+	protected ScriptValue(IScriptStackFrame frame, IDbgpProperty property,
+			IScriptType type) {
+		this.frame = frame;
+		this.type = type;
+
+		this.key = property.getKey();
+		this.name = property.getName();
+		this.fullname = property.getEvalName();
+		this.value = property.getValue();
+		this.hasChildren = property.hasChildren();
+		this.variables = new ScriptVariable[property.getChildrenCount()];
+		
+		this.pageSize = property.getPageSize();		
+		fillVariables(property.getPage(), property);
+	}
+
+	private void loadPage(int page) throws DbgpException {
+		IDbgpPropertyCommands commands = frame.getScriptThread()
+				.getDbgpSession().getCoreCommands();
+		IDbgpProperty pageProperty = commands.getProperty(page, fullname, frame
+				.getLevel());
+		fillVariables(page, pageProperty);
+	}
+
+	private void fillVariables(int page, IDbgpProperty pageProperty) {
+		int offset = getPageOffset(page);
+		IDbgpProperty[] properties = pageProperty.getAvailableChildren();
+		for (int i = 0; i < properties.length; ++i) {
+			IDbgpProperty p = properties[i];
+			variables[offset + i] = new ScriptVariable(frame, p, p.getName());
+		}
+		Assert.isLegal(pageSize > 0 || properties.length == variables.length);
+	}
+
+	private int getPageOffset(int page) {
+		if (pageSize <= 0)
+			pageSize = frame.getScriptThread().getPropertyPageSize();
+		
+		if (pageSize <= 0)
+			return 0;
+		return page * pageSize;
+	}
+
+	private int getPageForOffset(int offset) {
+		Assert.isLegal(pageSize > 0);
+		return offset / pageSize;
+	}
+
 	public String getReferenceTypeName() throws DebugException {
 		return getType().getName();
 	}
 
 	public String getValueString() throws DebugException {
-		String value = property.getValue();
-
 		if (value == null || value.length() == 0) {
 			IScriptType type = getType();
 			if (!type.isAtomic()) {
@@ -93,19 +126,19 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 				if (id != null) {
 					sb.append(" (id = " + id + ")"); // TODO add constant
 				}
-				return sb.toString();
+				value = sb.toString();
 			}
 		}
 
 		return value;
 	}
 
-	public IVariable[] getVariables() throws DebugException {
-		return (IVariable[]) variables.clone();
+	public String getEvalName() {
+		return fullname;
 	}
 
 	public boolean hasVariables() throws DebugException {
-		return variables.length > 0;
+		return hasChildren;
 	}
 
 	public boolean isAllocated() throws DebugException {
@@ -113,7 +146,7 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 	}
 
 	public String toString() {
-		return property.getValue();
+		return value;
 	}
 
 	public IDebugTarget getDebugTarget() {
@@ -121,7 +154,7 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 	}
 
 	public String getInstanceId() {
-		return property.getKey();
+		return key;
 	}
 
 	public IScriptType getType() {
@@ -146,8 +179,8 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 		}
 	}
 
-	private String replacePattern(String messageTemplate, String pattern,
-			String evalName) {
+	private static String replacePattern(String messageTemplate,
+			String pattern, String evalName) {
 		String result = messageTemplate;
 		while (result.indexOf(pattern) != -1) {
 			int pos = result.indexOf(pattern);
@@ -157,7 +190,43 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue {
 		return result;
 	}
 
-	public String getEvalName() {
-		return property.getEvalName();
+	public int getInitialOffset() {
+		return 0;
 	}
+
+	public int getSize() throws DebugException {
+		return variables.length;
+	}
+
+	public IVariable getVariable(int offset) throws DebugException {
+		try {
+			if (variables[offset] == null) {
+				loadPage(getPageForOffset(offset));
+			}
+			return variables[offset];
+		} catch (DbgpException e) {
+			throw wrapDbgpException("Unable to load children of " + name, e);
+		}
+	}
+
+	public IVariable[] getVariables() throws DebugException {
+		return getVariables(0, getSize());
+	}
+
+	public IVariable[] getVariables(int offset, int length)
+			throws DebugException {
+		IVariable[] variables = new IVariable[length];
+		for (int i = 0; i < length; i++) {
+			variables[i] = getVariable(offset + i);
+		}
+		return variables;
+	}
+
+	public Object getAdapter(Class adapter) {
+		if (adapter == IIndexedValue.class && type.isCollection()) {
+			return this;
+		}
+		return super.getAdapter(adapter);
+	}
+
 }

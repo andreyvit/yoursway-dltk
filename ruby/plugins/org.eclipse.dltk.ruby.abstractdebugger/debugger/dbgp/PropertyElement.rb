@@ -1,16 +1,21 @@
 require 'dbgp/XmlElement'
+require 'common/Logger'
 
 module XoredDebugger
     class PropertyElement < XmlElement
-        attr_reader :xml 
-        def initialize(object, name, fullname = nil, add_children = true)
+        include Logger
+        
+        attr_reader :xml       
+        def initialize(object, name, pagesize = nil, page = nil, fullname = nil, add_children = true)
             super('property')
             
             if (fullname.nil?)
                 fullname = name
             end
             
-            children = get_children(fullname, object)
+            @pagesize = pagesize
+            
+            num_children = num_children(object)
             
             add_attribute('name', name)
             add_attribute('fullname', fullname)
@@ -18,15 +23,18 @@ module XoredDebugger
             add_attribute('constant', 0)
             add_attribute('key', object.object_id)
             add_attribute('encoding','base64')
-            add_attribute('children', children.empty? ? 0:1) 
-            add_attribute('numchildren', children.size)            
+            add_attribute('children', num_children > 0 ? '1': '0') 
+            add_attribute('numchildren', num_children)            
             
-            value = get_value(object, !children.empty?)
+            unless page.nil? || num_children == 0
+                add_attribute('page', page)                
+                add_attribute('pagesize', pagesize)
+            end
+                        
+            value = get_value(object, num_children > 0)
             data = prepare_data(value)
-            if (add_children)                
-                children.collect{ |name, fullname, child|
-                    data += PropertyElement.new(child, name, fullname, false).to_s
-                }
+            if (add_children && num_children > 0)
+                data += get_children_xml(fullname, object, page, pagesize)                
             end
             set_data(data)            
         end
@@ -34,64 +42,89 @@ module XoredDebugger
         def get_value(object, has_children)
            type = object.class
            value = if (type == Array)
-               '[...]'
+               '[...]'              
            elsif (type == Hash)
                '{...}'
            elsif (type == MatchData)
-               '[...]'                
+               '[...]'                          
            else
                object.nil? ? 'nil' : (has_children ? '' : object.to_s)
            end
            return value
-       end
+        end
         
+        def num_children(object)
+           type = object.class
+           if (type == Array)
+               return object.size
+           elsif (type == Hash)
+               return object.size
+           elsif (type == MatchData)
+               return object.to_a.size                              
+           else
+               return object.instance_variables.size
+           end
+        end
         
-        def get_children(name, object)
-            type = object.class
-            children = if (type == Array)
-                get_array_children(name, object)
-            elsif (type == Hash)
-                get_hash_children(name, object)
-            elsif (type == MatchData)
-                get_matchdata_children(name, object)                
-	        else
-	            get_object_children(name, object)                     
+        def get_children_xml(name, object, page, pagesize)
+            log('Get children xml')
+			start = 0
+			finish = num_children(object) - 1
+            unless (page.nil? || pagesize.nil?)
+                start = page*pagesize
+            	new_finish = (page + 1)*pagesize - 1
+            	            	
+            	if (finish > new_finish)
+            	    finish = new_finish
+            	end                
             end
-            return children
+            log('Gathering ' + name + ' children form ' + start.to_s + ' to ' + finish.to_s)
+
+        	type = object.class
+            if (type == Array)
+            	return get_array_children_xml(name, object, start, finish)
+            elsif (type == Hash)
+            	return get_hash_children_xml(name, object, start, finish)   
+            elsif (type == MatchData)             
+            	return get_array_children_xml(name, object.to_a, start, finish)   
+            else
+            	return get_object_children_xml(name, object, start, finish)                     
+            end
         end
         
         
-        def get_array_children(name, array)
-            index = -1
-            children = array.collect { |value|
-                 index += 1                             
-                 [ sprintf('[%d]', index), sprintf('%s[%d]', name, index), value ]
-            }    
-            return children        
+        def get_array_children_xml(name, array, start, finish)
+            children_xml = ''
+            for index in start..finish
+                child_name = sprintf('[%d]', index)
+                child_fullname = sprintf('%s[%d]', name, index) 
+                children_xml += PropertyElement.new(array[index], child_name, @pagesize, nil, child_fullname, false).to_xml
+            end    
+            return children_xml        
         end
         
-        def get_hash_children(name, hash)
-            children = hash.collect { |key, value|
-                [ sprintf("[%s]", key.inspect), sprintf("%s[%s]", name, key.inspect), value ]
+        def get_object_children_xml(name, object, start, finish)         
+            children_xml = ''
+            vars = object.instance_variables          
+        	for index in start..finish
+                child_name = vars[index]
+                child = object.instance_variable_get(child_name)
+                child_fullname = sprintf("%s.instance_eval('%s')", name, child_name) 
+                children_xml += PropertyElement.new(child, child_name, @pagesize, nil, child_fullname, false).to_xml
+            end    
+            return children_xml
+        end
+        
+        def get_hash_children_xml(name, hash, start, finish)
+            keys = hash.keys[start..finish]
+            children_xml = ''
+            keys.each { |key|
+                value = hash[key]
+                child_name = sprintf("[%s]", key.inspect)
+                child_fullname = sprintf("%s[%s]", name, key.inspect) 
+                children_xml += PropertyElement.new(value, child_name, @pagesize, nil, child_fullname, false).to_xml                
             }
-            return children        
-        end
-        
-        def get_matchdata_children(name, matchdata)
-            index = -1
-            children = matchdata.to_a.collect { |value|
-                 index += 1                             
-                 [ sprintf('[%d]', index), sprintf('%s[%d]', name, index), value ]
-            }    
-            return children        
-        end        
-        
-        def get_object_children(name, object)         
-            children = object.instance_variables.collect { |var|
-                real_var = object.instance_variable_get(var)
-                [ var, sprintf("%s.instance_eval('%s')", name, var), real_var ]
-            }
-            return children        
-        end
-	end
+            return children_xml        
+        end     
+ 	end
 end
