@@ -268,21 +268,34 @@
           id="org.eclipse.dltk.javascript.ui.JavascriptPerspective"
           name="%JavascriptPerspectiveName"/>
  </extension>
-  <extension
+ 
+ <extension
        point="org.eclipse.ui.propertyPages">
     <page
-          adaptable="true"
+          category="org.eclipse.dltk.javascript.propertyPage"
           class="org.eclipse.dltk.javascript.internal.ui.preferences.JavaScriptBuildPathPropertyPage"
           id="org.eclipse.dltk.javascript.ui.BuildpathProperties"
-          name="Javascript Build Path"
-          objectClass="org.eclipse.core.resources.IProject">
-       <filter
-             name="nature"
-             value="org.eclipse.dltk.javascript.core.nature">
-       </filter>       
+          name="%JavaScriptBuildPathPropertyPage.name">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test property="org.eclipse.core.resources.projectNature" value="org.eclipse.dltk.javascript.core.nature"/>
+        </adapt>         
+      </enabledWhen>
+      <keywordReference id="org.eclipse.dltk.ui.buildpath" />
     </page>    
- 
- </extension>
+    
+    <page
+      name="%JavaScriptPropertyPage.name"
+      class="org.eclipse.dltk.javascript.internal.ui.preferences.JavaScriptPropertyPage"
+      id="org.eclipse.dltk.javascript.propertyPage">
+      <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject">
+          <test property="org.eclipse.core.resources.projectNature" value="org.eclipse.dltk.javascript.core.nature"/>
+        </adapt>         
+      </enabledWhen>
+    </page>    
+      
+ </extension>   
   
  <extension
          point="org.eclipse.ui.commands">
