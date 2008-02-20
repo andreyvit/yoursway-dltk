@@ -14,8 +14,8 @@ import java.net.URISyntaxException;
 import java.util.Map;
 
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.model.Breakpoint;
@@ -64,10 +64,10 @@ public abstract class AbstractScriptBreakpoint extends Breakpoint implements
 	public static final String HIT_CONDITION = DLTKDebugPlugin.PLUGIN_ID
 			+ ".hit_condition";
 
-	public static URI makeUri(IResource resource) {
+	public static URI makeUri(IPath location) {
 		try {
 			return new URI("file", "///"
-					+ resource.getLocation().toPortableString(), null);
+					+ location.toPortableString(), null);
 		} catch (URISyntaxException e) {
 			// TODO: log exception
 			e.printStackTrace();

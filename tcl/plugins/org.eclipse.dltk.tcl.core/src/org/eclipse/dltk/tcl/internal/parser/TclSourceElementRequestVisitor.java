@@ -391,7 +391,7 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 		}
 		if (this.scriptProject != null) {
 			TclPackageDeclaration pkg = (TclPackageDeclaration) statement;
-			TclCheckBuilder.check(pkg, this.fReporter, this.scriptProject,
+			TclCheckBuilder.checkPackage(pkg, this.fReporter, this.scriptProject,
 					this.codeModel);
 		}
 	}

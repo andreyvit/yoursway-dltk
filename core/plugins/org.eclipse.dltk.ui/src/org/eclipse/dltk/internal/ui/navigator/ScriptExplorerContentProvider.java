@@ -22,19 +22,18 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IElementChangedListener;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.IScriptModel;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.internal.core.ExternalProjectFragment;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.internal.core.ScriptFolder;
 import org.eclipse.dltk.internal.ui.StandardModelElementContentProvider;
 import org.eclipse.dltk.internal.ui.scriptview.BuildPathContainer;
@@ -143,9 +142,6 @@ public abstract class ScriptExplorerContentProvider extends
 	public Object[] getChildren(Object parentElement) {
 		Object[] children = NO_CHILDREN;
 		try {
-			if (parentElement instanceof LibrariesFragment) {
-				return ((LibrariesFragment) parentElement).elements.toArray();
-			}
 			if (parentElement instanceof IScriptModel)
 				return concatenate(
 						getScriptProjects((IScriptModel) parentElement),
@@ -192,25 +188,7 @@ public abstract class ScriptExplorerContentProvider extends
 				if (!containedRoots.contains(roots[i])) {
 					result.add(roots[i]);
 				}
-			} else if (roots[i] instanceof LibrariesFragment) {
-				LibrariesFragment frag = (LibrariesFragment) roots[i];
-				LibrariesFragment nFrag = new LibrariesFragment();
-				nFrag.parent = frag.parent;
-				for (Iterator iterator = frag.elements.iterator(); iterator
-						.hasNext();) {
-					Object object = (Object) iterator.next();
-					if (!containedRoots.contains(object)) {
-						nFrag.elements.add(object);
-					}
-				}
-				if( nFrag.elements.size() > 1 ) {
-					result.add(nFrag);
-				}
-				else if( nFrag.elements.size() == 1 ) {
-					result.add(nFrag.elements.get(0));
-				}
 			} else {
-
 				result.add(roots[i]);
 			}
 		}
@@ -231,9 +209,6 @@ public abstract class ScriptExplorerContentProvider extends
 	}
 
 	public Object getParent(Object child) {
-		if( child instanceof LibrariesFragment ) {
-			return ((LibrariesFragment) child).parent;
-		}
 		if (needsToDelegateGetParent(child)) {
 			return fScriptFolderProvider.getParent(child);
 		} else
@@ -274,11 +249,6 @@ public abstract class ScriptExplorerContentProvider extends
 		return (!fIsFlatLayout && type == IModelElement.SCRIPT_FOLDER);
 	}
 
-	public static class LibrariesFragment {
-		public List elements = new ArrayList();
-		public Object parent;
-	}
-
 	/**
 	 * Returns the given objects with the resources of the parent.
 	 */
@@ -289,27 +259,14 @@ public abstract class ScriptExplorerContentProvider extends
 		if (existingObject != null) {
 			list.addAll(Arrays.asList(existingObject));
 		}
-		// Show all external libraris in libraries section.
-		LibrariesFragment fragment = new LibrariesFragment();
-		fragment.parent = parent;
 		// Add everything that is not a ScriptFolder
 		for (int i = 0; i < objects.length; i++) {
 			Object object = objects[i];
 			if (!(object instanceof ScriptFolder)) {
 				if (!list.contains(object)) {
-					if (object instanceof ExternalProjectFragment) {
-						fragment.elements.add(object);
-					} else {
-						list.add(object);
-					}
+					list.add(object);
 				}
 			}
-		}
-		// Filter fragment
-		if (fragment.elements.size() == 1) {
-			list.add(fragment.elements.get(0));
-		} else if (fragment.elements.size() > 1) {
-			list.add(fragment);
 		}
 		return list.toArray();
 	}

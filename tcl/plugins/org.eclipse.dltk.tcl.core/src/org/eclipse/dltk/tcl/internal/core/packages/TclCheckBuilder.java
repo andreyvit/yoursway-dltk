@@ -41,7 +41,7 @@ import org.eclipse.dltk.tcl.core.ast.TclPackageDeclaration;
 
 public class TclCheckBuilder implements IScriptBuilder {
 
-	private static final String TCL_PROBLEM_REQUIRE = "tcl.problem.require";
+	public static final String TCL_PROBLEM_REQUIRE = "tcl.problem.require";
 	IScriptProject project;
 
 	public IStatus buildModelElements(IScriptProject project, List elements,
@@ -142,8 +142,8 @@ public class TclCheckBuilder implements IScriptBuilder {
 			for (Iterator iterator2 = pkgs.iterator(); iterator2.hasNext();) {
 				TclPackageDeclaration pkg = (TclPackageDeclaration) iterator2
 						.next();
-				check(pkg, packageNames, reporter, model, manager, install,
-						buildpath);
+				checkPackage(pkg, packageNames, reporter, model, manager,
+						install, buildpath);
 			}
 		}
 
@@ -261,7 +261,7 @@ public class TclCheckBuilder implements IScriptBuilder {
 		});
 	}
 
-	private static void reportProblem(TclPackageDeclaration pkg,
+	private static void reportPackageProblem(TclPackageDeclaration pkg,
 			IProblemReporter reporter, CodeModel model, String name,
 			String pkgName) {
 		try {
@@ -277,25 +277,26 @@ public class TclCheckBuilder implements IScriptBuilder {
 		}
 	}
 
-	public static void check(TclPackageDeclaration pkg, Set packageNames,
-			IProblemReporter reporter, CodeModel model,
+	public static void checkPackage(TclPackageDeclaration pkg,
+			Set packageNames, IProblemReporter reporter, CodeModel model,
 			PackagesManager manager, IInterpreterInstall install, Set buildpath) {
 		if (pkg.getStyle() == TclPackageDeclaration.STYLE_REQUIRE) {
 			String packageName = pkg.getName();
 
 			Set internalNames = manager.getInternalPackageNames(install);
-			if( internalNames.contains(packageName )) {
+			if (internalNames.contains(packageName)) {
 				return;
 			}
 			// Report unknown projects
 			if (!packageNames.contains(packageName)
 					&& !internalNames.contains(packageName)) {
 				try {
-					reporter.reportProblem(new DefaultProblem("",
-							"Unknown package:" + packageName, 777, null,
+					IMarker marker = reporter.reportProblem(new DefaultProblem(
+							"", "Unknown package:" + packageName, 777, null,
 							ProblemSeverities.Error, pkg.sourceStart(), pkg
 									.sourceEnd(), model.getLineNumber(pkg
 									.sourceStart(), pkg.sourceEnd())));
+					marker.setAttribute(TCL_PROBLEM_REQUIRE, packageName);
 				} catch (CoreException e) {
 					if (DLTKCore.DEBUG) {
 						e.printStackTrace();
@@ -305,27 +306,28 @@ public class TclCheckBuilder implements IScriptBuilder {
 			}
 
 			// Receive main package and it paths.
-			boolean error = check(pkg, reporter, model, manager, install,
-					buildpath, packageName);
+			boolean error = checkPackage(pkg, reporter, model, manager,
+					install, buildpath, packageName);
 
 			Map dependencies = manager.getDependencies(packageName, install);
 			for (Iterator iterator = dependencies.keySet().iterator(); iterator
 					.hasNext();) {
 				String pkgName = (String) iterator.next();
-				boolean fail = check(pkg, reporter, model, manager, install,
-						buildpath, pkgName);
+				boolean fail = checkPackage(pkg, reporter, model, manager,
+						install, buildpath, pkgName);
 				if (fail) {
 					error = true;
 				}
 			}
 			if (error) {
-				reportProblem(pkg, reporter, model, "Package " + packageName
-						+ " has unresolved dependencies.", packageName);
+				reportPackageProblem(pkg, reporter, model, "Package "
+						+ packageName + " has unresolved dependencies.",
+						packageName);
 			}
 		}
 	}
 
-	private static boolean check(TclPackageDeclaration pkg,
+	private static boolean checkPackage(TclPackageDeclaration pkg,
 			IProblemReporter reporter, CodeModel model,
 			PackagesManager manager, IInterpreterInstall install,
 			Set buildpath, String packageName) {
@@ -339,10 +341,11 @@ public class TclCheckBuilder implements IScriptBuilder {
 
 		IPath[] paths = manager.getPathsForPackage(install, packageName);
 		// Check what package path are in project buildpath.
-		return checkPaths(pkg, reporter, model, buildpath, paths, packageName);
+		return checkPackagePaths(pkg, reporter, model, buildpath, paths,
+				packageName);
 	}
 
-	private static boolean checkPaths(TclPackageDeclaration pkg,
+	private static boolean checkPackagePaths(TclPackageDeclaration pkg,
 			IProblemReporter reporter, CodeModel model, Set buildpath,
 			IPath[] paths, String packageName) {
 		boolean error = false;
@@ -388,7 +391,7 @@ public class TclCheckBuilder implements IScriptBuilder {
 		return estimation;
 	}
 
-	public static void check(TclPackageDeclaration pkg,
+	public static void checkPackage(TclPackageDeclaration pkg,
 			IProblemReporter reporter, IScriptProject scriptProject,
 			CodeModel model) {
 		IInterpreterInstall install = null;
@@ -403,7 +406,8 @@ public class TclCheckBuilder implements IScriptBuilder {
 		Set buildpath = getBuildpath(scriptProject);
 		PackagesManager manager = PackagesManager.getInstance();
 		Set packageNames = manager.getPackageNames(install);
-		check(pkg, packageNames, reporter, model, manager, install, buildpath);
+		checkPackage(pkg, packageNames, reporter, model, manager, install,
+				buildpath);
 	}
 
 	public Set getDependencies(IScriptProject project, Set resources,

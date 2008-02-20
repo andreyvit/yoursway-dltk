@@ -381,9 +381,10 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			public Object getAdapter(Class adapter) {
 				return null;
 			}
+
 			public boolean hasAttribute(String attributeName)
 					throws CoreException {
-				return true;
+				return false;
 			}
 		};
 	}
@@ -458,6 +459,7 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 	protected void internalTestRun(String name) throws Exception {
 		internalTestRun(name, 0);
 	}
+
 	protected void internalTestRun(String name, int flags) throws Exception {
 		if (interpreterInstalls.length == 0) {
 			fail("No interperters found for nature " + getNatureId());
@@ -468,8 +470,8 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			if (!isRequiredInstall(name, install.getInstallLocation())) {
 				continue;
 			}
-//			System.out.println("Interpreter install location (run): "
-//					+ install.getInstallLocation().toString());
+			// System.out.println("Interpreter install location (run): "
+			// + install.getInstallLocation().toString());
 
 			MyInterpretersUpdater updater = new MyInterpretersUpdater();
 			updater.updateInterpreterSettings(getNatureId(),
@@ -651,12 +653,12 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			if (!isRequiredInstall(name, install.getInstallLocation())) {
 				continue;
 			}
-			
+
 			DebugEventStats stats = new DebugEventStats();
 
 			DebugPlugin.getDefault().addDebugEventListener(stats);
-//			System.out.println("Interperter install location (debug): "
-//					+ install.getInstallLocation());
+			// System.out.println("Interperter install location (debug): "
+			// + install.getInstallLocation());
 
 			final MyInterpretersUpdater updater = new MyInterpretersUpdater();
 			updater.updateInterpreterSettings(getNatureId(),
@@ -668,9 +670,10 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 					ILaunchManager.DEBUG_MODE, null);
 
 			// Setting breakpoint
+			IFile file = launch.getLaunchConfiguration().getFile();
 			IScriptLineBreakpoint b = new ScriptLineBreakpoint(
-					getDebugModelId(), launch.getLaunchConfiguration()
-							.getFile(), 1, -1, -1, true);
+					getDebugModelId(), file, file.getLocation(), 1, -1, -1,
+					true);
 
 			try {
 				startLaunch(launch);
@@ -688,7 +691,7 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 				assertEquals(0, exitValue);
 			} finally {
 				b.delete();
-				
+
 			}
 			DebugPlugin.getDefault().removeDebugEventListener(stats);
 			return stats;
@@ -712,6 +715,7 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 	protected boolean hasPredefinedInterpreters() {
 		return false;
 	}
+
 	protected IInterpreterInstall createInstall(String path, String id,
 			IInterpreterInstallType type) {
 		File file = new File(path);
@@ -729,6 +733,7 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 		install.setEnvironmentVariables(null);
 		return install;
 	}
+
 	protected void createAddInstall(List installs, String path, String id,
 			IInterpreterInstallType type) {
 		IInterpreterInstall install = createInstall(path, id, type);

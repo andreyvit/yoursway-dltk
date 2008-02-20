@@ -15,7 +15,9 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -34,6 +36,10 @@ import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IValueDetailListener;
+import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.core.search.IDLTKSearchScope;
+import org.eclipse.dltk.debug.core.ScriptDebugManager;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptExceptionBreakpoint;
@@ -45,10 +51,12 @@ import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
 import org.eclipse.dltk.debug.ui.breakpoints.BreakpointUtils;
+import org.eclipse.dltk.internal.core.util.HandleFactory;
 import org.eclipse.dltk.internal.debug.ui.ExternalFileEditorInput;
 import org.eclipse.dltk.internal.debug.ui.ScriptDetailFormattersManager;
 import org.eclipse.dltk.internal.debug.ui.ScriptEvaluationContextManager;
 import org.eclipse.dltk.internal.ui.editor.ExternalStorageEditorInput;
+import org.eclipse.dltk.internal.ui.search.DLTKSearchScopeFactory;
 import org.eclipse.dltk.launching.DebuggingEngineRunner;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.debug.DebuggingEngineManager;
@@ -364,7 +372,7 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		return expressionText;
 	}
 
-	private String getTypeNameText(IScriptType type) {
+	public String getTypeNameText(IScriptType type) {
 		return type.getName();
 	}
 
@@ -414,11 +422,12 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 
 	protected boolean isShowVariableTypeNames() {
 		synchronized (fAttributes) {
-			Boolean show= (Boolean) fAttributes.get(DISPLAY_VARIABLE_TYPE_NAMES);
-			show= show == null ? Boolean.FALSE : show;
+			Boolean show = (Boolean) fAttributes
+					.get(DISPLAY_VARIABLE_TYPE_NAMES);
+			show = show == null ? Boolean.FALSE : show;
 			return show.booleanValue();
 		}
-	}	
+	}
 
 	// Images
 	protected Image getBreakpointImage(IScriptBreakpoint breakpoint) {
@@ -458,10 +467,43 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		} else if (element instanceof IFile) {
 			return new FileEditorInput((IFile) element);
 		} else if (element instanceof ILineBreakpoint) {
-			return new FileEditorInput((IFile) ((ILineBreakpoint) element)
-					.getMarker().getResource());
+			return getLineBreakpointEditorInput(element);
 		} else if (element instanceof IStorage) {
 			return new ExternalStorageEditorInput((IStorage) element);
+		}
+		return null;
+	}
+
+	private IEditorInput getLineBreakpointEditorInput(Object element) {
+		ILineBreakpoint bp = (ILineBreakpoint) element;
+		IMarker marker = bp.getMarker();
+		IResource resource = marker.getResource();
+		if (resource instanceof IFile) {
+			return new FileEditorInput((IFile) resource);
+		}
+
+		// else
+		try {
+			IPath path = Path.fromPortableString((String) marker
+					.getAttribute(IMarker.LOCATION));
+			String debugModelId = bp.getModelIdentifier();
+			String natureId = ScriptDebugManager.getInstance()
+					.getNatureByDebugModel(debugModelId);
+			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+					.getLanguageToolkit(natureId);
+			if (toolkit != null) {
+				HandleFactory fac = new HandleFactory();
+				IDLTKSearchScope scope = DLTKSearchScopeFactory.getInstance()
+						.createWorkspaceScope(true, toolkit);
+				IStorage storage = (IStorage) fac.createOpenable(path
+						.toOSString(), scope);
+				
+				if (storage != null) {
+					return new ExternalStorageEditorInput(storage);
+				}
+			}
+		} catch (CoreException e) {
+			DLTKUIPlugin.log(e);
 		}
 		return null;
 	}

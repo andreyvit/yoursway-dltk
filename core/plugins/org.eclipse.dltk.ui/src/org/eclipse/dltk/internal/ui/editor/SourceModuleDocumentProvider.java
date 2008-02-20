@@ -16,14 +16,17 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFileState;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IStorage;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -822,6 +825,74 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 		}
 	}
 
+	/**
+	 * Annotation model dealing with java marker annotations and temporary
+	 * problems. Also acts as problem requester for its compilation unit.
+	 * Initially inactive. Must explicitly be activated.
+	 */
+	protected static class ExternalSourceModuleAnnotationModel extends
+			SourceModuleAnnotationModel {
+		private IPath location;
+
+		public ExternalSourceModuleAnnotationModel(IPath location) {
+			super(ResourcesPlugin.getWorkspace().getRoot());
+			this.location = location;
+		}
+
+		/*
+		 * @see AbstractMarkerAnnotationModel#retrieveMarkers()
+		 */
+		protected IMarker[] retrieveMarkers() throws CoreException {
+			String moduleLocation = location.toPortableString();
+			IMarker[] markers = super.retrieveMarkers();
+			List locationMarkers = new LinkedList();
+			for (int i = 0; i < markers.length; i++) {
+				IMarker marker = markers[i];
+				String markerLocation = (String) marker
+						.getAttribute(IMarker.LOCATION);
+				if (moduleLocation.equals(markerLocation)) {
+					locationMarkers.add(marker);
+				}
+			}
+			return (IMarker[]) locationMarkers
+					.toArray(new IMarker[locationMarkers.size()]);
+		}
+		
+		/**
+		 * Updates this model to the given marker deltas.
+		 *
+		 * @param markerDeltas the array of marker deltas
+		 */
+		protected void update(IMarkerDelta[] markerDeltas) {
+
+			if (markerDeltas.length ==  0)
+				return;
+
+			String moduleLocation = location.toPortableString();
+
+			for (int i= 0; i < markerDeltas.length; i++) {
+				IMarkerDelta delta= markerDeltas[i];
+				IMarker marker = delta.getMarker();
+
+				if (moduleLocation.equals(marker.getAttribute(IMarker.LOCATION, moduleLocation))) {
+					switch (delta.getKind()) {
+					case IResourceDelta.ADDED :
+						addMarkerAnnotation(marker);
+						break;
+					case IResourceDelta.REMOVED :
+						removeMarkerAnnotation(marker);
+						break;
+					case IResourceDelta.CHANGED :
+						modifyMarkerAnnotation(marker);
+						break;
+					}
+				}					
+			}
+
+			fireModelChanged();
+		}
+	}
+
 	protected static class GlobalAnnotationModelListener implements
 			IAnnotationModelListener, IAnnotationModelListenerExtension {
 
@@ -1066,6 +1137,14 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 			original = createFakeSourceModule(element, false);
 		if (original == null)
 			return null;
+
+		if (info.fModel == null) {
+			// There is no resource for this ISourceModule, so markers are set
+			// to workspace root
+			
+			IPath location = original.getPath();
+			info.fModel = new ExternalSourceModuleAnnotationModel(location);
+		}
 
 		SourceModuleInfo cuInfo = (SourceModuleInfo) info;
 		setUpSynchronization(cuInfo);
@@ -1409,13 +1488,13 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 			if (storage.getName() == null || storagePath == null)
 				return null;
 
-			final IPath documentPath;
-			if (storage instanceof IFileState)
-				documentPath = storagePath
-						.append(Long.toString(((IFileState) storage)
-								.getModificationTime()));
-			else
-				documentPath = storagePath;
+			// final IPath documentPath;
+			// if (storage instanceof IFileState)
+			// documentPath = storagePath
+			// .append(Long.toString(((IFileState) storage)
+			// .getModificationTime()));
+			// else
+			// documentPath = storagePath;
 
 			WorkingCopyOwner woc = new WorkingCopyOwner() {
 				public IBuffer createBuffer(ISourceModule workingCopy) {
@@ -1496,4 +1575,13 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 		}
 		return null;
 	}
+
+	public boolean isReadOnly(Object element) {
+		if (element instanceof ExternalStorageEditorInput) {
+			return true;
+		}
+		return super.isReadOnly(element);
+	}
+	
+	
 }

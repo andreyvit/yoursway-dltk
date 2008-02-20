@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
 
@@ -31,9 +32,9 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 			+ ".modification";
 
 	public ScriptWatchpoint(String debugModelId, IResource resource,
-			int lineNumber, int start, int end, String fieldName)
+			IPath path, int lineNumber, int start, int end, String fieldName)
 			throws CoreException {
-		super(debugModelId, resource, lineNumber, start, end, true);
+		super(debugModelId, resource, path, lineNumber, start, end, true);
 		this.setFieldName(fieldName);
 	}
 

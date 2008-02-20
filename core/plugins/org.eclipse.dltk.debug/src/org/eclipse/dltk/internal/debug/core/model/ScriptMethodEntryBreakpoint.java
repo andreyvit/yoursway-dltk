@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptMethodEntryBreakpoint;
@@ -36,11 +37,11 @@ public class ScriptMethodEntryBreakpoint extends ScriptLineBreakpoint implements
 
 	}
 
-	public ScriptMethodEntryBreakpoint(String debugModelId, IResource resource,
+	public ScriptMethodEntryBreakpoint(String debugModelId, IResource resource, IPath path,
 			int lineNumber, int charStart, int charEnd, boolean register,
 			String methodName) throws DebugException {
 
-		super(debugModelId, resource, lineNumber, charStart, charEnd, register);
+		super(debugModelId, resource, path, lineNumber, charStart, charEnd, register);
 
 		try {
 			ensureMarker().setAttribute(METHOD_NAME, methodName);
