@@ -88,7 +88,7 @@ public final class TclCheckerHelper {
 			cmdLine.add(W3_OPTION);
 		}
 
-		// Suppres
+		// Suppress
 		List problems = TclCheckerProblemDescription.getProblemIdentifiers();
 		Iterator it = problems.iterator();
 		while (it.hasNext()) {

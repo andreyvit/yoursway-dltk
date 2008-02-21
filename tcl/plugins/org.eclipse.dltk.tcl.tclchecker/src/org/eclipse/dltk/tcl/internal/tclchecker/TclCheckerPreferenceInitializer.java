@@ -32,5 +32,9 @@ public class TclCheckerPreferenceInitializer extends
 		while (it.hasNext()) {
 			store.setDefault((String) it.next(), false);
 		}
+		store.setDefault("warnUndefinedUpvar", true);
+		store.setDefault("warnUndefinedVar", true);
+		store.setDefault("warnUndefFunc", true);
+		store.setDefault("warnUndefProc", true);
 	}
 }

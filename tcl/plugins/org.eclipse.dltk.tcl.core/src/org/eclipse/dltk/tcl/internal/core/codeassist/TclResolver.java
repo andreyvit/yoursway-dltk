@@ -178,6 +178,9 @@ public class TclResolver {
 	public static IModelElement findChildrenByName(String childName,
 			IParent element) {
 		try {
+			if( element == null) {
+				return null;
+			}
 			String nextName = null;
 			int pos;
 			if ((pos = childName.indexOf("::")) != -1) {
@@ -215,7 +218,7 @@ public class TclResolver {
 		try {
 			for (int i = 0; i < childs.length; ++i) {
 				if (childs[i] instanceof IType) {
-					if ((((IType) childs[i]).getFlags() & Modifiers.AccNameSpace) == 0) {
+					if ((((IType) childs[i]).getFlags() & Modifiers.AccNameSpace) != 0) {
 						continue;
 					}
 					IType type = (IType) childs[i];

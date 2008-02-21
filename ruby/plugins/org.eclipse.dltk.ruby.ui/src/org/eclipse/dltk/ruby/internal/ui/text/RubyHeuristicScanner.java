@@ -259,6 +259,9 @@ public class RubyHeuristicScanner extends ScriptHeuristicScanner implements
 
 	public int previousTokenAfterInput(int offset, String appended) {
 		try {
+			if (getPartition(offset).getType() != IDocument.DEFAULT_CONTENT_TYPE)
+				return NOT_FOUND;
+			
 			if (appended.length() == 1) {
 				int token = getGenericToken(appended.charAt(0));
 				if (token != TokenOTHER)

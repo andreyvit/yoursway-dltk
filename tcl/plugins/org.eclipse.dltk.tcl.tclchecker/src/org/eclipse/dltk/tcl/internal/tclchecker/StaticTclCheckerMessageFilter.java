@@ -17,11 +17,11 @@ public class StaticTclCheckerMessageFilter implements TclCheckerMessageFilter {
 	private static List badIds;
 	
 	static{
-		badIds = new ArrayList(4);
-		badIds.add("warnUndefinedUpvar");
-		badIds.add("warnUndefinedVar");
-		badIds.add("warnUndefFunc");
-		badIds.add("warnUndefProc");
+		badIds = new ArrayList();
+//		badIds.add("warnUndefinedUpvar");
+//		badIds.add("warnUndefinedVar");
+//		badIds.add("warnUndefFunc");
+//		badIds.add("warnUndefProc");
 	};
 	 	
 	public StaticTclCheckerMessageFilter(){	

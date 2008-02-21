@@ -136,8 +136,8 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		}
 
 		if (linePrefix.trim().length() != 0
-				|| (linePostfix.trim().length() != 0 && postfixIndent.length() == 0 &&
-						computeVisualLength(linePrefix) >= computeVisualLength(rightIndent))) {
+				|| (linePostfix.trim().length() != 0
+						&& postfixIndent.length() == 0 && computeVisualLength(linePrefix) >= computeVisualLength(rightIndent))) {
 			c.text = fPreferences.getIndent();
 			return;
 		}
@@ -157,7 +157,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 
 		if (Arrays.binarySearch(INDENT_TO_BLOCK_TOKENS, token) >= 0) {
 			String indent = "";
-			indent = getLineIndent(d, info.getOffset(), scanner);
+			indent = getBlockIndent(d, info.getOffset(), scanner);
 
 			int pos = scanner.findNonWhitespaceForwardInAnyPartition(info
 					.getOffset(), c.offset);
@@ -202,26 +202,31 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 
 	private String getLineIndent(IDocument d, int offset,
 			RubyHeuristicScanner scanner) {
-		try {
-			// find indentation of enclosing block and add one more
-			return getBlockIndent(d, offset, scanner)
-					+ fPreferences.getIndent();
-		} catch (BadLocationException e) {
-			// there is no enclosing block
+		int blockOffset = scanner.findBlockBeginningOffset(offset);
+		if (blockOffset != RubyHeuristicScanner.NOT_FOUND) {
+			try {
+				return AutoEditUtils.getLineIndent(d, d
+						.getLineOfOffset(blockOffset))
+						+ fPreferences.getIndent();
+			} catch (BadLocationException e) {
+				DLTKUIPlugin.log(e);
+			}
 		}
 		return "";
 	}
 
 	private String getBlockIndent(IDocument d, int offset,
-			RubyHeuristicScanner scanner) throws BadLocationException {
-
+			RubyHeuristicScanner scanner) {
 		int blockOffset = scanner.findBlockBeginningOffset(offset);
-		if (blockOffset == RubyHeuristicScanner.NOT_FOUND)
-			throw new BadLocationException("Block not found");
-
-		String indent = AutoEditUtils.getLineIndent(d, d
-				.getLineOfOffset(blockOffset));
-		return indent;
+		if (blockOffset != RubyHeuristicScanner.NOT_FOUND) {
+			try {
+				return AutoEditUtils.getLineIndent(d, d
+						.getLineOfOffset(blockOffset));
+			} catch (BadLocationException e) {
+				DLTKUIPlugin.log(e);
+			}
+		}
+		return "";
 	}
 
 	private void smartIndentAfterNewLine(IDocument d, DocumentCommand c)
@@ -240,11 +245,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		// if pending statement is end, else etc. then indent it to block
 		// beginning
 		if (nextIsIdentToBlockToken(scanner, c.offset, lineEnd)) {
-			try {
-				c.text += getBlockIndent(d, c.offset, scanner);
-			} catch (BadLocationException e) {
-				// there is no enclosing block
-			}
+			c.text += getBlockIndent(d, c.offset, scanner);
 			return;
 		}
 
@@ -497,7 +498,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 
 		while (true) {
 			begin = scanner.findBlockBeginningOffset(begin);
-			end = scanner.findBlockEndingOffset(end + 1);
+			end = scanner.findBlockEndingOffset(end);
 			if (begin == RubyHeuristicScanner.NOT_FOUND
 					&& end == RubyHeuristicScanner.NOT_FOUND)
 				return 0;
