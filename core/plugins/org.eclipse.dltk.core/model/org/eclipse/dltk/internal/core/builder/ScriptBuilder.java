@@ -438,11 +438,11 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 		}
 	}
 
-	private HandleFactory factory = new HandleFactory();
 
 	protected void buildResources(Set resources, IProgressMonitor monitor,
 			int tiks, int buildType, Set externalFoldersBefore,
 			Set externalFolders, Set allresources) {
+		HandleFactory factory = new HandleFactory();
 		List status = new ArrayList();
 		IDLTKSearchScope scope = SearchEngine
 				.createSearchScope(new IModelElement[] { scriptProject });
