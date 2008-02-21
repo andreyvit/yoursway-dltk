@@ -1,5 +1,8 @@
 package org.eclipse.dltk.tcl.internal.ui.text;
 
+import java.util.Iterator;
+import java.util.Map;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -114,10 +117,21 @@ public class TclCorrectionProcessor implements IQuickAssistProcessor {
 				}
 			}
 			if (install != null) {
-				IPath[] paths = PackagesManager.getInstance()
+				PackagesManager manager = PackagesManager.getInstance();
+				IPath[] paths = manager
 						.getPathsForPackage(install, pkgName);
 				if (paths != null && paths.length > 0) {
 					return true;
+				}
+				Map dependencies = manager.getDependencies(pkgName, install);
+				for (Iterator iterator = dependencies.keySet().iterator(); iterator
+						.hasNext();) {
+					String pkg = (String) iterator.next();
+					IPath[] paths2 = manager
+							.getPathsForPackage(install, pkg);
+					if (paths2 != null && paths2.length > 0) {
+						return true;
+					}
 				}
 			}
 		}
