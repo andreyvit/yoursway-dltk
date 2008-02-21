@@ -218,7 +218,7 @@ public class TclResolver {
 		try {
 			for (int i = 0; i < childs.length; ++i) {
 				if (childs[i] instanceof IType) {
-					if ((((IType) childs[i]).getFlags() & Modifiers.AccNameSpace) != 0) {
+					if ((((IType) childs[i]).getFlags() & Modifiers.AccNameSpace) == 0) {
 						continue;
 					}
 					IType type = (IType) childs[i];

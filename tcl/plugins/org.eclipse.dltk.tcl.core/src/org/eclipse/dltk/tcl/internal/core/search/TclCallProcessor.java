@@ -15,6 +15,7 @@ import java.util.Map;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.ast.references.SimpleReference;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ICallProcessor;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.ISourceModule;
@@ -79,7 +80,9 @@ public class TclCallProcessor implements ICallProcessor {
 							.getDefaultSearchParticipant() }, scope, requestor,
 							monitor);
 		} catch (CoreException e) {
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 		return elements;
 	}

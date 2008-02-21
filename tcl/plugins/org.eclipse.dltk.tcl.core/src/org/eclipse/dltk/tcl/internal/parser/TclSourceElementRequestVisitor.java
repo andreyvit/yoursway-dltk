@@ -197,7 +197,7 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 				needEnterLeave++;
 				if (!this.fRequestor.enterTypeAppend(split[i], "::")) {
 					ISourceElementRequestor.TypeInfo ti = new ISourceElementRequestor.TypeInfo();
-					ti.modifiers = this.getModifiers(decl);
+					ti.modifiers = Modifiers.AccNameSpace;
 
 					ti.name = split[i];
 					ti.nameSourceStart = decl.getNameStart();
@@ -234,6 +234,7 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 		info.nameSourceEnd = s.getNameEnd();
 		info.declarationStart = s.sourceStart();
 		info.superclasses = this.processSuperClasses(s);
+		info.modifiers = this.getModifiers(s);
 
 		ExitFromType exit = this.resolveType(s, fullName + "::dummy", true);
 
