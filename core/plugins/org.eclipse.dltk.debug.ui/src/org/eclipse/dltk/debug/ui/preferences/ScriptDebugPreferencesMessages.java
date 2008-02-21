@@ -56,7 +56,7 @@ public class ScriptDebugPreferencesMessages {
 	public static String BrowseEnginePath;
 	public static String ExternalEngineGroup;
 	
-	public static String ServerSettingsLabel;
+	public static String CommunicationLabel;
 	public static String PortLabel;
 	public static String AutoSelectLabel;
 	public static String CustomLabel;

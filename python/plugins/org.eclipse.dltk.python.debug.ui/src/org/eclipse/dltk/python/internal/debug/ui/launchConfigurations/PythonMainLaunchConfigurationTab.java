@@ -5,56 +5,51 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
- *******************************************************************************/
+ ******************************************************************************/
 package org.eclipse.dltk.python.internal.debug.ui.launchConfigurations;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IScriptProject;
+import org.eclipse.dltk.core.PreferencesLookupDelegate;
+import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
 import org.eclipse.dltk.debug.ui.launchConfigurations.MainLaunchConfigurationTab;
 import org.eclipse.dltk.python.core.PythonLanguageToolkit;
 import org.eclipse.dltk.python.core.PythonNature;
-import org.eclipse.dltk.ui.DLTKPluginImages;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.dltk.python.internal.debug.PythonDebugPlugin;
 
+/**
+ * Main launch configuration tab for python scripts
+ */
 public class PythonMainLaunchConfigurationTab extends
 		MainLaunchConfigurationTab {
 
-	protected boolean validateProject(IScriptProject project) {
-		if (project == null)
-			return false;
-		// check project nature
-		try {
-			IDLTKLanguageToolkit ltk = DLTKLanguageManager
-					.getLanguageToolkit(project);
-			if (ltk instanceof PythonLanguageToolkit)
-				return true;
-		} catch (CoreException e) {
-		}
-		return false;
+	/*
+	 * @see org.eclipse.dltk.debug.ui.launchConfigurations.ScriptLaunchConfigurationTab#breakOnFirstLinePrefEnabled(org.eclipse.dltk.core.PreferencesLookupDelegate)
+	 */
+	protected boolean breakOnFirstLinePrefEnabled(
+			PreferencesLookupDelegate delegate) {
+		return delegate.getBoolean(PythonDebugPlugin.PLUGIN_ID,
+				DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#getImage()
+	 * @see org.eclipse.dltk.debug.ui.launchConfigurations.ScriptLaunchConfigurationTab#dbpgLoggingPrefEnabled(org.eclipse.dltk.core.PreferencesLookupDelegate)
 	 */
-	public Image getImage() {
-		return DLTKPluginImages.get(DLTKPluginImages.IMG_OBJS_CLASS);
+	protected boolean dbpgLoggingPrefEnabled(PreferencesLookupDelegate delegate) {
+		return delegate.getBoolean(PythonDebugPlugin.PLUGIN_ID,
+				DLTKDebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING);
 	}
 
+	/*
+	 * @see org.eclipse.dltk.debug.ui.launchConfigurations.ScriptLaunchConfigurationTab#getNatureID()
+	 */
 	protected String getNatureID() {
 		return PythonNature.NATURE_ID;
 	}
 
-	protected void doPerformApply(ILaunchConfigurationWorkingCopy config) {
-		super.doPerformApply(config);
-
-		config.setAttribute("suspendOnEntry", false);
-		config.setAttribute("suspendOnExit", false);
+	/*
+	 * @see org.eclipse.dltk.debug.ui.launchConfigurations.ScriptLaunchConfigurationTab#isValidToolkit(org.eclipse.dltk.core.IDLTKLanguageToolkit)
+	 */
+	protected boolean isValidToolkit(IDLTKLanguageToolkit toolkit) {
+		return (toolkit instanceof PythonLanguageToolkit) ? true : false;
 	}
-
 }

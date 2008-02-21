@@ -50,6 +50,10 @@ public class PreferencesLookupDelegate {
 		this.contexts = getLookupScopes(project);
 	}
 
+	public PreferencesLookupDelegate(IScriptProject scriptProject) {
+		this((scriptProject == null) ? null : scriptProject.getProject());
+	}
+	
 	/**
 	 * Returns a string preference value
 	 * 

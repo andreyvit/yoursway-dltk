@@ -48,6 +48,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		IScriptDebugTarget, IScriptThreadManagerListener {
 
 	private static final String LAUNCH_CONFIGURATION_ATTR_PROJECT = "project";
+	private static final String LAUNCH_CONFIGURATION_ATTR_BREAK_ON_FIRST_LINE = "enableBreakOnFirstLine";
 
 	private static final int THREAD_TERMINATION_TIMEOUT = 5000; // 5 seconds
 
@@ -76,12 +77,12 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	private String[] stepFilters;
 
 	private boolean useStepFilters;
-	
+
 	private final Object terminatedLock = new Object();
 	private boolean terminated = false;
 
 	private boolean initialized = false;
-	
+
 	public static List getAllTargets() {
 		return new ArrayList(targets.keySet());
 	}
@@ -107,7 +108,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		this.breakpointManager = new ScriptBreakpointManager(this);
 
 		this.threadManager.addListener(this);
-		
+
 		DebugEventHelper.fireCreateEvent(this);
 		targets.put(this, "");
 	}
@@ -142,9 +143,9 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	public void setProcess(IProcess process) {
-		this.process = process; 
+		this.process = process;
 	}
-	
+
 	public boolean hasThreads() throws DebugException {
 		return threadManager.hasThreads();
 	}
@@ -190,16 +191,16 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 				return;
 			terminated = true;
 		}
-		
+
 		dbgpService.unregisterAcceptor(sessionId);
-		
-		threadManager.sendTerminationRequest();		
+
+		threadManager.sendTerminationRequest();
 		if (!waitTermianted()) {
 			// Debugging process is not answering, so terminating it
 			if (process != null && process.canTerminate())
 				process.terminate();
 		}
-		
+
 		threadManager.removeListener(this);
 
 		IBreakpointManager manager = DebugPlugin.getDefault()
@@ -207,7 +208,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 		manager.removeBreakpointListener(this);
 		manager.removeBreakpointManagerListener(breakpointManager);
-		
+
 		DebugEventHelper.fireTerminateEvent(this);
 	}
 
@@ -310,7 +311,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 			manager.addBreakpointManagerListener(breakpointManager);
 
 			// DebugEventHelper.fireCreateEvent(this);
-			initialized  = true;
+			initialized = true;
 			fireTargetInitialized();
 		}
 	}
@@ -403,5 +404,17 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 			}
 		}
 		return null;
+	}
+
+	public boolean breakOnFirstLineEnabled() {
+		try {
+			return launch.getLaunchConfiguration().getAttribute(
+					LAUNCH_CONFIGURATION_ATTR_BREAK_ON_FIRST_LINE, false);
+		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+			return false;
+		}
 	}
 }

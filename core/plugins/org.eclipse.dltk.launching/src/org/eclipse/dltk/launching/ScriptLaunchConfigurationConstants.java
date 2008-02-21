@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.launching;
 
+
 /**
  * Constants for launch configurations
  * 
@@ -123,6 +124,8 @@ public class ScriptLaunchConfigurationConstants {
 	
 	public static final String ID_SCRIPT_PROCESS_TYPE = "script"; //$NON-NLS-1$
 
+	public static final String ENABLE_BREAK_ON_FIRST_LINE = "enableBreakOnFirstLine";
+	public static final String ENABLE_DBGP_LOGGING = "enableDbgpLogging";
 	
 	// Errors
 	public static final int ERR_INTERNAL_ERROR = 100;

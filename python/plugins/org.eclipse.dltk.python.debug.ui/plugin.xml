@@ -217,4 +217,13 @@
       debugModel="org.eclipse.dltk.debug.pythonModel"
       delegateClass="org.eclipse.dltk.python.internal.debug.ui.PythonWatchExpressionDelegate" />
   </extension>  
+  
+  <extension point="org.eclipse.ui.menus">
+    <menuContribution locationURI="menu:org.eclipse.debug.ui.VariableView">
+      <menu
+        label="Python"
+        id="org.eclipse.dltk.debug.ui.variableViewMenu" />
+    </menuContribution>
+  </extension>  
+   
 </plugin>

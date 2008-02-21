@@ -1,14 +1,14 @@
 package org.eclipse.dltk.ruby.internal.debug.ui.preferences;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
+import org.eclipse.dltk.debug.ui.preferences.AbstractDebuggingOptionsBlock;
 import org.eclipse.dltk.ruby.debug.RubyDebugPlugin;
 import org.eclipse.dltk.ui.PreferencesAdapter;
 import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage;
 import org.eclipse.dltk.ui.preferences.AbstractOptionsBlock;
 import org.eclipse.dltk.ui.preferences.PreferenceKey;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
 /**
@@ -17,24 +17,37 @@ import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 public class RubyDebugPreferencePage extends
 		AbstractConfigurationBlockPropertyAndPreferencePage {
 
-	// ~ Static fields/initializers
+	private static PreferenceKey BREAK_ON_FIRST_LINE = new PreferenceKey(
+			RubyDebugPlugin.PLUGIN_ID,
+			DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
+
+	private static PreferenceKey ENABLE_DBGP_LOGGING = new PreferenceKey(
+			RubyDebugPlugin.PLUGIN_ID,
+			DLTKDebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING);
 
 	private static String PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug";
 	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.ruby.propertyPage.debug";
 
-	// ~ Methods
-
 	protected AbstractOptionsBlock createOptionsBlock(
 			IStatusChangeListener newStatusChangedListener, IProject project,
 			IWorkbenchPreferenceContainer container) {
-		return new AbstractOptionsBlock(newStatusChangedListener, project,
-				new PreferenceKey[] {}, container) {
-			protected Control createOptionsBlock(Composite parent) {
-				return parent;
+		return new AbstractDebuggingOptionsBlock(newStatusChangedListener,
+				project, getKeys(), container) {
+
+			protected PreferenceKey getBreakOnFirstLineKey() {
+				return BREAK_ON_FIRST_LINE;
+			}
+
+			protected PreferenceKey getDbgpLoggingEnabledKey() {
+				return ENABLE_DBGP_LOGGING;
 			}
 		};
 	}
 
+	protected PreferenceKey[] getKeys() {
+		return new PreferenceKey[] { BREAK_ON_FIRST_LINE, ENABLE_DBGP_LOGGING };
+	}
+	
 	/*
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getHelpId()
 	 */
@@ -68,7 +81,7 @@ public class RubyDebugPreferencePage extends
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setDescription()
 	 */
 	protected void setDescription() {
-		setDescription(RubyDebugPreferencesMessages.RubyDebugEnginePreferencePage_description);
+		setDescription(RubyDebugPreferencesMessages.RubyDebugPreferencePage_description);
 	}
 
 	/*
