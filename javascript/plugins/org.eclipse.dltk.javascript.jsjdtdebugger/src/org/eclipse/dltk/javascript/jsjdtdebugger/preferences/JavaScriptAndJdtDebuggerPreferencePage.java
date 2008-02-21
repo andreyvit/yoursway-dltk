@@ -1,45 +1,44 @@
-package org.eclipse.dltk.javascript.internal.debug.ui.preferences;
+package org.eclipse.dltk.javascript.jsjdtdebugger.preferences;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
-import org.eclipse.dltk.debug.ui.preferences.AbstractDebuggingOptionsBlock;
-import org.eclipse.dltk.javascript.internal.debug.JavaScriptDebugPlugin;
-import org.eclipse.dltk.ui.PreferencesAdapter;
+import org.eclipse.dltk.javascript.jsjdtdebugger.JavaScriptAndJdtDebuggerPlugin;
 import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage;
 import org.eclipse.dltk.ui.preferences.AbstractOptionsBlock;
 import org.eclipse.dltk.ui.preferences.PreferenceKey;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;
+import org.eclipse.dltk.ui.util.SWTFactory;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
-public class JavaScriptDebugPreferencePage extends AbstractConfigurationBlockPropertyAndPreferencePage {
+public class JavaScriptAndJdtDebuggerPreferencePage extends
+		AbstractConfigurationBlockPropertyAndPreferencePage {
 
-    private static PreferenceKey BREAK_ON_FIRST_LINE =
-        new PreferenceKey(JavaScriptDebugPlugin.PLUGIN_ID,
-            DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
+	private static String PREFERENCE_PAGE_ID = "org.eclipse.dltk.javascript.preferences.debug.engines.jsjdtdebugger";
+	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.javascript.propertyPage.debug.engines.jsjdtdebugger";
 
-    private static PreferenceKey ENABLE_DBGP_LOGGING =
-        new PreferenceKey(JavaScriptDebugPlugin.PLUGIN_ID,
-            DLTKDebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING);
-	
-	private static String PREFERENCE_PAGE_ID = "org.eclipse.dltk.javascript.preferences.debug";
-	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.javascript.propertyPage.debug";
-    
+	/*
+	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#createOptionsBlock(org.eclipse.dltk.ui.util.IStatusChangeListener,
+	 *      org.eclipse.core.resources.IProject,
+	 *      org.eclipse.ui.preferences.IWorkbenchPreferenceContainer)
+	 */
 	protected AbstractOptionsBlock createOptionsBlock(
 			IStatusChangeListener newStatusChangedListener, IProject project,
 			IWorkbenchPreferenceContainer container) {
-		return new AbstractDebuggingOptionsBlock(newStatusChangedListener,
-				project, getKeys(), container) {
+		return new AbstractOptionsBlock(newStatusChangedListener, project,
+				new PreferenceKey[] {}, container) {
 
-			protected PreferenceKey getBreakOnFirstLineKey() {
-				return BREAK_ON_FIRST_LINE;
-			}
-
-			protected PreferenceKey getDbgpLoggingEnabledKey() {
-				return ENABLE_DBGP_LOGGING;
+			protected Control createOptionsBlock(Composite parent) {
+				Composite composite = SWTFactory.createComposite(parent, parent
+						.getFont(), 1, 1, GridData.FILL);
+				SWTFactory.createLabel(composite,
+						PreferenceMessages.NoSettingsAvailable, 1);
+				return composite;
 			}
 		};
 	}
-	
+
 	/*
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getHelpId()
 	 */
@@ -68,22 +67,19 @@ public class JavaScriptDebugPreferencePage extends AbstractConfigurationBlockPro
 	protected String getPropertyPageId() {
 		return PROPERTY_PAGE_ID;
 	}
-	
+
 	/*
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setDescription()
 	 */
 	protected void setDescription() {
-		setDescription(JavaScriptDebugPreferenceMessages.JavaScriptDebugPreferencePage_description);
+		setDescription(PreferenceMessages.PreferencesDescription);
 	}
 
 	/*
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setPreferenceStore()
 	 */
 	protected void setPreferenceStore() {
-		setPreferenceStore(new PreferencesAdapter(JavaScriptDebugPlugin.getDefault().getPluginPreferences()));
-	}
-	
-	private PreferenceKey[] getKeys() {
-		return new PreferenceKey[] { BREAK_ON_FIRST_LINE, ENABLE_DBGP_LOGGING };
+		setPreferenceStore(JavaScriptAndJdtDebuggerPlugin.getDefault()
+				.getPreferenceStore());
 	}
 }

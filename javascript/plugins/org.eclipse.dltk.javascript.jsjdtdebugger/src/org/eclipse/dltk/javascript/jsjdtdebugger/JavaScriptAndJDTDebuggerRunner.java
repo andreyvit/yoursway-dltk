@@ -1,10 +1,10 @@
-package org.eclipse.dltk.internal.launching.debug;
+package org.eclipse.dltk.javascript.jsjdtdebugger;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.dltk.core.PreferencesLookupDelegate;
-import org.eclipse.dltk.javascript.internal.debug.JavaScriptDebugPlugin;
+import org.eclipse.dltk.javascript.internal.debug.JavaScriptDebugConstants;
 import org.eclipse.dltk.javascript.internal.launching.JavaScriptInterpreterRunner;
 import org.eclipse.dltk.javascript.launching.IConfigurableRunner;
 import org.eclipse.dltk.javascript.launching.IJavaScriptInterpreterRunnerConfig;
@@ -15,6 +15,8 @@ import org.eclipse.dltk.launching.InterpreterConfig;
 public class JavaScriptAndJDTDebuggerRunner extends DebuggingEngineRunner
 		implements IConfigurableRunner {
 
+	private static String ENGINE_ID = "org.eclipse.dltk.javascript.jsjdtdebugger.preferences.JavaScriptAndJDTDebuggerRunnerFactory";
+	
 	IJavaScriptInterpreterRunnerConfig runnerconfig = JavaScriptInterpreterRunner.DEFAULT_CONFIG;
 
 	public JavaScriptAndJDTDebuggerRunner(IInterpreterInstall install) {
@@ -22,7 +24,7 @@ public class JavaScriptAndJDTDebuggerRunner extends DebuggingEngineRunner
 	}
 
 	public String getDebugModelId() {
-		return JavaScriptDebugPlugin.MODEL_ID;
+		return JavaScriptDebugConstants.DEBUG_MODEL_ID;
 	}
 
 	public void run(InterpreterConfig config, ILaunch launch,
@@ -37,7 +39,7 @@ public class JavaScriptAndJDTDebuggerRunner extends DebuggingEngineRunner
 	}
 
 	protected String getDebuggingEngineId() {
-		return "org.eclipse.dltk.internal.launching.debug.JavaScriptAndJDTDebuggerRunnerFactory";
+		return ENGINE_ID;
 	}
 
 	protected InterpreterConfig addEngineConfig(InterpreterConfig config,

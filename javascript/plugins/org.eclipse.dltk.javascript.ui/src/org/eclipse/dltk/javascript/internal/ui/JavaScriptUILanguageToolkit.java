@@ -74,6 +74,6 @@ public class JavaScriptUILanguageToolkit implements IDLTKUILanguageToolkit {
 	}
 
 	public String getDebugPreferencePage() {
-		return null;
+		return "org.eclipse.dltk.javascript.preferences.debug";
 	}
 }

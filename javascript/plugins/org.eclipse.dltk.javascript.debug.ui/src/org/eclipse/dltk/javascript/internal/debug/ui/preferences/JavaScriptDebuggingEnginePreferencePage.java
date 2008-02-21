@@ -1,8 +1,9 @@
 package org.eclipse.dltk.javascript.internal.debug.ui.preferences;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
-import org.eclipse.dltk.debug.ui.preferences.AbstractDebuggingOptionsBlock;
+import org.eclipse.dltk.debug.ui.preferences.AbstractDebuggingEngineOptionsBlock;
+import org.eclipse.dltk.javascript.core.JavaScriptNature;
+import org.eclipse.dltk.javascript.internal.debug.JavaScriptDebugConstants;
 import org.eclipse.dltk.javascript.internal.debug.JavaScriptDebugPlugin;
 import org.eclipse.dltk.ui.PreferencesAdapter;
 import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage;
@@ -11,39 +12,36 @@ import org.eclipse.dltk.ui.preferences.PreferenceKey;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
-public class JavaScriptDebugPreferencePage extends AbstractConfigurationBlockPropertyAndPreferencePage {
+public class JavaScriptDebuggingEnginePreferencePage extends AbstractConfigurationBlockPropertyAndPreferencePage {
 
-    private static PreferenceKey BREAK_ON_FIRST_LINE =
-        new PreferenceKey(JavaScriptDebugPlugin.PLUGIN_ID,
-            DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
+	private static PreferenceKey DEBUGGING_ENGINE = new PreferenceKey(
+			JavaScriptDebugPlugin.PLUGIN_ID,
+			JavaScriptDebugConstants.DEBUGGING_ENGINE_ID_KEY);
 
-    private static PreferenceKey ENABLE_DBGP_LOGGING =
-        new PreferenceKey(JavaScriptDebugPlugin.PLUGIN_ID,
-            DLTKDebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING);
+	private static final String PREFERENCE_PAGE_ID = "org.eclipse.dltk.javascript.preferences.debug.engines";
+	private static final String PROPERTY_PAGE_ID = "org.eclipse.dltk.javascript.propertyPage.debug.engines";
 	
-	private static String PREFERENCE_PAGE_ID = "org.eclipse.dltk.javascript.preferences.debug";
-	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.javascript.propertyPage.debug";
-    
 	protected AbstractOptionsBlock createOptionsBlock(
 			IStatusChangeListener newStatusChangedListener, IProject project,
 			IWorkbenchPreferenceContainer container) {
-		return new AbstractDebuggingOptionsBlock(newStatusChangedListener,
-				project, getKeys(), container) {
+		return new AbstractDebuggingEngineOptionsBlock(
+				newStatusChangedListener, project, getKeys(), container) {
 
-			protected PreferenceKey getBreakOnFirstLineKey() {
-				return BREAK_ON_FIRST_LINE;
+			protected String getNatureId() {
+				return JavaScriptNature.NATURE_ID;
 			}
 
-			protected PreferenceKey getDbgpLoggingEnabledKey() {
-				return ENABLE_DBGP_LOGGING;
+			protected PreferenceKey getSavedContributionKey() {
+				return DEBUGGING_ENGINE;
 			}
 		};
 	}
-	
+
 	/*
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getHelpId()
 	 */
 	protected String getHelpId() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -68,22 +66,23 @@ public class JavaScriptDebugPreferencePage extends AbstractConfigurationBlockPro
 	protected String getPropertyPageId() {
 		return PROPERTY_PAGE_ID;
 	}
-	
+
 	/*
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setDescription()
 	 */
 	protected void setDescription() {
-		setDescription(JavaScriptDebugPreferenceMessages.JavaScriptDebugPreferencePage_description);
+		setDescription(JavaScriptDebugPreferenceMessages.JavaScriptDebugEnginePreferencePage_description);
 	}
 
 	/*
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setPreferenceStore()
 	 */
 	protected void setPreferenceStore() {
-		setPreferenceStore(new PreferencesAdapter(JavaScriptDebugPlugin.getDefault().getPluginPreferences()));
+		setPreferenceStore(new PreferencesAdapter(JavaScriptDebugPlugin.getDefault()
+				.getPluginPreferences()));
 	}
-	
+
 	private PreferenceKey[] getKeys() {
-		return new PreferenceKey[] { BREAK_ON_FIRST_LINE, ENABLE_DBGP_LOGGING };
+		return new PreferenceKey[] { DEBUGGING_ENGINE };
 	}
 }

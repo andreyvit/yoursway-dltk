@@ -1,79 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension
-         point="org.eclipse.dltk.launching.interpreterInstallTypes">
-          <interpreterInstallType
-            class="org.eclipse.dltk.javascript.internal.launching.GenericJavaScriptInstallType"
-            id="org.eclipse.dltk.internal.debug.ui.launcher.GenericRhinoInstallType">
-      </interpreterInstallType>   
-   </extension>
-   
-<extension point="org.eclipse.debug.core.launchDelegates">
+  <extension point="org.eclipse.dltk.launching.interpreterInstallTypes">
+    <interpreterInstallType
+      class="org.eclipse.dltk.javascript.internal.launching.GenericJavaScriptInstallType"
+      id="org.eclipse.dltk.internal.debug.ui.launcher.GenericRhinoInstallType">
+    </interpreterInstallType>
+  </extension>
+
+  <extension point="org.eclipse.debug.core.launchDelegates">
     <launchDelegate
-          delegate="org.eclipse.dltk.javascript.internal.launching.JavaLocalApplicationLaunchConfigurationDelegate"
-          id="com.Instantiations.profiler.localJavaApplicationDelegate"
-          modes="debug"
-          name="Debugging with JavaScript debug support"
-          type="org.eclipse.jdt.launching.localJavaApplication">
+      delegate="org.eclipse.dltk.javascript.internal.launching.JavaLocalApplicationLaunchConfigurationDelegate"
+      id="com.Instantiations.profiler.localJavaApplicationDelegate"
+      modes="debug"
+      name="Debugging with JavaScript debug support"
+      type="org.eclipse.jdt.launching.localJavaApplication">
     </launchDelegate>
-</extension>  
-   <extension
-         point="org.eclipse.dltk.console.scriptInterpreter">
-      <scriptInterpreter
-            class="org.eclipse.dltk.javascript.console.JavaScriptInterpreter"
-            natureID="org.eclipse.dltk.javascript.core.nature"/>
-   </extension>
-  <extension
-         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
-      <launchConfigurationTypeImage
-            icon="$nl$/icons/javascript.gif"
-            configTypeID="org.eclipse.dltk.javascript.launching.JavaScriptLaunchConfigurationType"
-            id="org.eclipse.dltk.javascript.launching.JavaScriptLaunchConfigurationTypeImage">
-      </launchConfigurationTypeImage>
   </extension>
-  <extension
-         point="org.eclipse.debug.core.launchConfigurationTypes">
-         <launchConfigurationType
-               delegate="org.eclipse.dltk.javascript.launching.JavaScriptLaunchConfigurationDelegate"
-               id="org.eclipse.dltk.javascript.launching.JavaScriptLaunchConfigurationType"
-               modes="run,debug"
-               name="JavaScript"
-               public="true"
-               sourceLocatorId="javascriptSourceLocator"
-               sourcePathComputerId="javascriptSourcePathComputer">
-		  </launchConfigurationType>
-         <!--launchConfigurationType
-               delegate="org.eclipse.dltk.javascript.launching.TclLaunchConfigurationDelegate"
-               id="org.eclipse.dltk.javascript.launching.TCLRemoteLaunchConfigurationType"
-               modes="debug"
-               name="Remote javascript Script"
-               public="true">
-         </launchConfigurationType-->         
-   </extension>
-  <extension
-        point="org.eclipse.debug.core.sourcePathComputers">
-     <sourcePathComputer
-           class="org.eclipse.dltk.internal.launching.JavaScriptSourcePathComputer"
-           id="javascriptSourcePathComputer"/>
+
+  <extension point="org.eclipse.dltk.console.scriptInterpreter">
+    <scriptInterpreter
+      class="org.eclipse.dltk.javascript.console.JavaScriptInterpreter"
+      natureID="org.eclipse.dltk.javascript.core.nature" />
   </extension>
-  <extension
-        point="org.eclipse.debug.core.sourceLocators">
-     <sourceLocator
-           class="org.eclipse.dltk.internal.launching.JavaScriptSourceLookupDirector"
-           id="javascriptSourceLocator"
-           name="org.eclipse.dltk.javascript.launching.javascriptSourceLocator"/>
+
+  <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+    <launchConfigurationTypeImage
+      icon="$nl$/icons/javascript.gif"
+      configTypeID="org.eclipse.dltk.javascript.launching.JavaScriptLaunchConfigurationType"
+      id="org.eclipse.dltk.javascript.launching.JavaScriptLaunchConfigurationTypeImage">
+    </launchConfigurationTypeImage>
   </extension>
-  <extension
-        point="org.eclipse.dltk.launching.debuggingEngine">
-     <engineContribution
-           natureId="org.eclipse.dltk.javascript.core.nature">
-        <engine
-              class="org.eclipse.dltk.internal.launching.debug.JavaScriptAndJDTDebuggerRunnerFactory"
-              id="org.eclipse.dltk.internal.launching.debug.JavaScriptAndJDTDebuggerRunnerFactory"
-              name="JavaScript &amp; JDT Debugger"
-              priority="0">
-        </engine>
-     </engineContribution>
+
+  <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+    <launchConfigurationType
+      delegate="org.eclipse.dltk.javascript.launching.JavaScriptLaunchConfigurationDelegate"
+      id="org.eclipse.dltk.javascript.launching.JavaScriptLaunchConfigurationType"
+      modes="run,debug"
+      name="JavaScript"
+      public="true"
+      sourceLocatorId="javascriptSourceLocator"
+      sourcePathComputerId="javascriptSourcePathComputer">
+    </launchConfigurationType>
+    <!--launchConfigurationType
+      delegate="org.eclipse.dltk.javascript.launching.TclLaunchConfigurationDelegate"
+      id="org.eclipse.dltk.javascript.launching.TCLRemoteLaunchConfigurationType"
+      modes="debug"
+      name="Remote javascript Script"
+      public="true">
+      </launchConfigurationType-->
   </extension>
+
+  <extension point="org.eclipse.debug.core.sourcePathComputers">
+    <sourcePathComputer
+      class="org.eclipse.dltk.internal.launching.JavaScriptSourcePathComputer"
+      id="javascriptSourcePathComputer" />
+  </extension>
+
+  <extension point="org.eclipse.debug.core.sourceLocators">
+    <sourceLocator
+      class="org.eclipse.dltk.internal.launching.JavaScriptSourceLookupDirector"
+      id="javascriptSourceLocator"
+      name="org.eclipse.dltk.javascript.launching.javascriptSourceLocator" />
+  </extension>
+
+  <extension point="org.eclipse.dltk.launching.debuggingEngine">
+    <engineContribution natureId="org.eclipse.dltk.javascript.core.nature">
+      <selector class="org.eclipse.dltk.javascript.launching.JavaScriptDebuggingEngineSelector" />
+    </engineContribution>
+  </extension>
+
 </plugin>
