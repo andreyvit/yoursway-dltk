@@ -11,11 +11,13 @@ package org.eclipse.dltk.ui;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.BuildpathContainerInitializer;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IField;
@@ -574,10 +576,17 @@ public class ScriptElementLabels {
 			}
 			buf.append(name.substring(start));
 		} else {
-			buf.append(folder.getElementName()/*
-												 * .replace(IScriptFolder.PACKAGE_DELIMITER,
-												 * '.')
-												 */);
+			String name = folder.getElementName();
+			try {
+				String delimeter = DLTKLanguageManager.getLanguageToolkit(
+						folder).getDelimeterReplacerString();
+				name = name.replaceAll(String
+						.valueOf(IScriptFolder.PACKAGE_DELIMITER), delimeter);
+			} catch (CoreException e) {
+				// this can't happen
+			}
+
+			buf.append(name);
 		}
 		if (getFlag(flags, P_POST_QUALIFIED)) {
 			buf.append(CONCAT_STRING);
@@ -934,23 +943,24 @@ public class ScriptElementLabels {
 		}
 		// refreshPackageNamePattern();
 
-// if (getFlag(flags, P_COMPRESSED) && fgPkgNameLength >= 0) {
-// String name = pack.getElementName();
-// int start = 0;
-// int dot = name.indexOf(getTypeDelimiter(), start);
-// while (dot > 0) {
-// if (dot - start > fgPkgNameLength - 1) {
-// buf.append(fgPkgNamePrefix);
-// if (fgPkgNameChars > 0)
-// buf.append(name.substring(start, Math.min(start + fgPkgNameChars, dot)));
-// buf.append(fgPkgNamePostfix);
-// } else
-// buf.append(name.substring(start, dot + 1));
-// start = dot + 1;
-// dot = name.indexOf(getTypeDelimiter(), start);
-// }
-// buf.append(name.substring(start));
-// } else {
+		// if (getFlag(flags, P_COMPRESSED) && fgPkgNameLength >= 0) {
+		// String name = pack.getElementName();
+		// int start = 0;
+		// int dot = name.indexOf(getTypeDelimiter(), start);
+		// while (dot > 0) {
+		// if (dot - start > fgPkgNameLength - 1) {
+		// buf.append(fgPkgNamePrefix);
+		// if (fgPkgNameChars > 0)
+		// buf.append(name.substring(start, Math.min(start + fgPkgNameChars,
+		// dot)));
+		// buf.append(fgPkgNamePostfix);
+		// } else
+		// buf.append(name.substring(start, dot + 1));
+		// start = dot + 1;
+		// dot = name.indexOf(getTypeDelimiter(), start);
+		// }
+		// buf.append(name.substring(start));
+		// } else {
 		if (pack instanceof ExternalProjectFragment) {
 			buf.append(pack.getElementName().replace(
 					ExternalProjectFragment.JEM_SKIP_DELIMETER, Path.SEPARATOR)
@@ -962,7 +972,7 @@ public class ScriptElementLabels {
 				buf.append(pack.getElementName() + " ");
 			}
 		}
-// }
+		// }
 		if (getFlag(flags, P_POST_QUALIFIED)) {
 			buf.append(CONCAT_STRING);
 			getProjectFragmentLabel((IProjectFragment) pack.getParent(),
