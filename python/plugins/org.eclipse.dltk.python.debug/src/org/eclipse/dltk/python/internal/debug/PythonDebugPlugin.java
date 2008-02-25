@@ -36,8 +36,12 @@ public class PythonDebugPlugin extends Plugin {
 	}
 
 	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
+		try {			
+			savePluginPreferences();
+		} finally {
+			plugin = null;
+			super.stop(context);
+		}
 	}
 
 	/**
