@@ -5,6 +5,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.dltk.core.PreferencesLookupDelegate;
 import org.eclipse.dltk.javascript.internal.debug.JavaScriptDebugConstants;
+import org.eclipse.dltk.javascript.internal.debug.JavaScriptDebugPlugin;
 import org.eclipse.dltk.javascript.internal.launching.JavaScriptInterpreterRunner;
 import org.eclipse.dltk.javascript.launching.IConfigurableRunner;
 import org.eclipse.dltk.javascript.launching.IJavaScriptInterpreterRunnerConfig;
@@ -16,7 +17,7 @@ public class JavaScriptAndJDTDebuggerRunner extends DebuggingEngineRunner
 		implements IConfigurableRunner {
 
 	private static String ENGINE_ID = "org.eclipse.dltk.javascript.jsjdtdebugger.preferences.JavaScriptAndJDTDebuggerRunnerFactory";
-	
+
 	IJavaScriptInterpreterRunnerConfig runnerconfig = JavaScriptInterpreterRunner.DEFAULT_CONFIG;
 
 	public JavaScriptAndJDTDebuggerRunner(IInterpreterInstall install) {
@@ -29,7 +30,8 @@ public class JavaScriptAndJDTDebuggerRunner extends DebuggingEngineRunner
 
 	public void run(InterpreterConfig config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
-		initializeLaunch(launch, config);
+		initializeLaunch(launch, config,
+				createPreferencesLookupDelegate(launch));
 		JavaScriptInterpreterRunner
 				.doRunImpl(config, launch, this.runnerconfig);
 	}
@@ -45,5 +47,9 @@ public class JavaScriptAndJDTDebuggerRunner extends DebuggingEngineRunner
 	protected InterpreterConfig addEngineConfig(InterpreterConfig config,
 			PreferencesLookupDelegate delegate) throws CoreException {
 		return config;
+	}
+
+	protected String getDebugPreferenceQualifier() {
+		return JavaScriptDebugPlugin.PLUGIN_ID;
 	}
 }

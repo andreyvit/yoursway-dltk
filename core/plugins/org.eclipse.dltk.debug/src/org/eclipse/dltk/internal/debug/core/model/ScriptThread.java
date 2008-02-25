@@ -16,7 +16,6 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
-import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.model.IBreakpoint;
@@ -30,7 +29,6 @@ import org.eclipse.dltk.dbgp.commands.IDbgpExtendedCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.dbgp.internal.IDbgpTerminationListener;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
-import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
 import org.eclipse.dltk.debug.core.ExtendedDebugEventDetails;
 import org.eclipse.dltk.debug.core.IHotCodeReplaceListener;
 import org.eclipse.dltk.debug.core.ISmartStepEvaluator;
@@ -65,8 +63,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	private boolean terminated = false;
 
-	private int propertyPageSize = 32; 
-	
+	private int propertyPageSize = 32;
+
 	// ScriptThreadStateManager.IStateChangeHandler
 	public void handleSuspend(int detail) {
 		DebugEventHelper.fireExtendedEvent(this,
@@ -173,25 +171,6 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		this.stateManager = new ScriptThreadStateManager(this);
 
 		this.stack = new ScriptStack(this);
-
-		this.propertyListener = new IPropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent event) {
-				if (event
-						.getProperty()
-						.equals(
-								DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL)
-						|| event
-								.getProperty()
-								.equals(
-										DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS)) {
-					stack.updateFrames();
-					DebugEventHelper.fireChangeEvent(ScriptThread.this
-							.getDebugTarget());
-				}
-			}
-		};
-		Preferences prefs = DLTKDebugPlugin.getDefault().getPluginPreferences();
-		prefs.addPropertyChangeListener(propertyListener);
 
 		final DbgpDebugger engine = this.stateManager.getEngine();
 
@@ -379,8 +358,6 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		Assert.isTrue(object == session);
 		HotCodeReplaceManager.getDefault().removeHotCodeReplaceListener(this);
 		manager.terminateThread(this);
-		Preferences prefs = DLTKDebugPlugin.getDefault().getPluginPreferences();
-		prefs.removePropertyChangeListener(propertyListener);
 	}
 
 	// Object
@@ -410,4 +387,22 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	public int getPropertyPageSize() {
 		return propertyPageSize;
 	}
+
+	public boolean retrieveGlobalVariables() {
+		return target.retrieveGlobalVariables();
+	}
+
+	public boolean retrieveClassVariables() {
+		return target.retrieveClassVariables();
+	}
+
+	public boolean retrieveLocalVariables() {
+		return target.retrieveLocalVariables();
+	}
+
+	public void updateStackFrames() {
+		stack.updateFrames();
+		DebugEventHelper.fireChangeEvent(ScriptThread.this.getDebugTarget());
+	}
+
 }

@@ -285,4 +285,13 @@ public class ScriptThreadManager implements IScriptThreadManager {
 			}
 		}
 	}
+	
+	public void refreshThreads() {
+		synchronized(threads) {
+			IThread[] threads = getThreads();
+			for (int i = 0; i < threads.length; ++i) {
+				((IScriptThread) threads[i]).updateStackFrames();
+			}
+		}
+	}
 }

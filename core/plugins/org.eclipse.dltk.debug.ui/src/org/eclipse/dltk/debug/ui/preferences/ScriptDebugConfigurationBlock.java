@@ -68,26 +68,6 @@ public class ScriptDebugConfigurationBlock extends
 				OverlayPreferenceStore.BOOLEAN,
 				IDLTKDebugUIPreferenceConstants.PREF_ALERT_HCR_NOT_SUPPORTED));
 
-		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
-				OverlayPreferenceStore.BOOLEAN,
-				DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL));
-
-		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
-				OverlayPreferenceStore.BOOLEAN,
-				DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL));
-
-		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
-				OverlayPreferenceStore.BOOLEAN,
-				DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS));
-
-		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
-				OverlayPreferenceStore.BOOLEAN,
-				DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS));
-
-		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(
-				OverlayPreferenceStore.BOOLEAN,
-				DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS));
-
 		OverlayPreferenceStore.OverlayKey[] keys = new OverlayPreferenceStore.OverlayKey[overlayKeys
 				.size()];
 		overlayKeys.toArray(keys);
@@ -174,29 +154,6 @@ public class ScriptDebugConfigurationBlock extends
 		return group;
 	}
 
-	private Control createVariablesGroup(Composite parent) {
-		final Group group = SWTFactory.createGroup(parent,
-				ScriptDebugPreferencesMessages.VariableSettingsLabel, 1, 1,
-				GridData.FILL_HORIZONTAL);
-
-		Button b = SWTFactory.createCheckButton(group,
-				ScriptDebugPreferencesMessages.ShowGlobalVarsLabel, null, false,
-				1);
-		bindControl(b, DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL);
-
-		b = SWTFactory.createCheckButton(group,
-				ScriptDebugPreferencesMessages.ShowClassVarsLabel, null, false,
-				1);
-		bindControl(b, DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS);
-		
-		b = SWTFactory.createCheckButton(group,
-				ScriptDebugPreferencesMessages.ShowLocalVarsLabel, null,
-				false, 1);
-		bindControl(b, DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL);
-
-		return group;
-	}
-
 	private Control createHotCodeReplaceGroup(Composite parent) {
 		final Group group = SWTFactory.createGroup(parent,
 				ScriptDebugPreferencesMessages.HCRLabel, 1, 1,
@@ -260,7 +217,6 @@ public class ScriptDebugConfigurationBlock extends
 				.getFont(), 1, 1, GridData.FILL_HORIZONTAL);
 
 		createDbgpGroup(composite);
-		createVariablesGroup(composite);
 		createHotCodeReplaceGroup(composite);
 		createScriptLanguagesLinks(composite);
 

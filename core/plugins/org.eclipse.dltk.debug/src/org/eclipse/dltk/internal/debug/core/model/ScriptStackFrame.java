@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
@@ -32,7 +31,6 @@ import org.eclipse.dltk.dbgp.commands.IDbgpContextCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpDebuggingEngineException;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
-import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
 import org.eclipse.dltk.debug.core.model.IScriptStack;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
@@ -106,14 +104,10 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 		final Integer classId = new Integer(
 				IDbgpContextCommands.CLASS_CONTEXT_ID);
 
-		Preferences prefs = DLTKDebugPlugin.getDefault().getPluginPreferences();
-		boolean showLocal = prefs
-				.getBoolean(DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL);
-		boolean showGlobal = prefs
-				.getBoolean(DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL);
-		boolean showClass = prefs
-				.getBoolean(DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS);
-
+		boolean showGlobal = thread.retrieveGlobalVariables();
+		boolean showClass = thread.retrieveClassVariables();
+		boolean showLocal = thread.retrieveLocalVariables();
+		
 		ScriptVariableContainer all = new ScriptVariableContainer();
 
 		if (showLocal && names.containsKey(localId)) {

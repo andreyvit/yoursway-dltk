@@ -468,29 +468,4 @@
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration" />
 	</extension>
 
-	<extension point="org.eclipse.ui.viewActions">
-		<viewContribution targetID="org.eclipse.debug.ui.VariableView"
-			id="org.eclipse.dltk.debug.ui.VariableViewActions">
-			<action
-				class="org.eclipse.dltk.debug.ui.actions.ToggleShowGlobalVariablesActionDelegate"
-				id="org.eclipse.dltk.debug.ui.variableViewActions.ShowStatic"
-				label="%ShowGlobalVarsAction.label"
-				menubarPath="org.eclipse.dltk.debug.ui.VariableView.scriptSubmenu/scriptPart"
-				style="toggle" tooltip="%ShowGlobalVarsAction.tooltip">
-			</action>
-			<action
-				class="org.eclipse.dltk.debug.ui.actions.ToggleShowClassVariablesActionDelegate"
-				id="org.eclipse.dltk.debug.ui.variableViewActions.ShowClass"
-				label="%ShowClassVarsAction.label"
-				menubarPath="org.eclipse.dltk.debug.ui.VariableView.scriptSubmenu/scriptPart"
-				style="toggle" tooltip="%ShowClasssVarsAction.tooltip">
-			</action>
-			<menu
-				id="org.eclipse.dltk.debug.ui.VariableView.scriptSubmenu"
-				label="%VariablesViewScriptSubmenu.label" path="scriptActions">
-				<groupMarker
-					name="org.eclipse.dltk.debug.ui.scriptPart" />
-			</menu>
-		</viewContribution>		
-	</extension>
 </plugin>

@@ -19,6 +19,7 @@ import org.eclipse.dltk.launching.DebuggingEngineRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.launching.debug.DbgpInterpreterConfig;
+import org.eclipse.dltk.ruby.debug.RubyDebugPlugin;
 import org.eclipse.dltk.ruby.internal.launching.JRubyInstallType;
 
 public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
@@ -99,5 +100,12 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 
 	protected String getDebuggingEngineId() {
 		return ENGINE_ID;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getDebugPreferenceQualifier()
+	 */
+	protected String getDebugPreferenceQualifier() {
+		return RubyDebugPlugin.PLUGIN_ID;
 	}
 }

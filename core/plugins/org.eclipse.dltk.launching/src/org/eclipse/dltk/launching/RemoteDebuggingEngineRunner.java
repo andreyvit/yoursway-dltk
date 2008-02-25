@@ -39,7 +39,8 @@ public abstract class RemoteDebuggingEngineRunner extends DebuggingEngineRunner 
 	public void run(InterpreterConfig config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
 		try {
-			initializeLaunch(launch, config);
+			initializeLaunch(launch, config,
+					createPreferencesLookupDelegate(launch));
 			waitDebuggerConnected(null, launch, monitor);
 		} catch (CoreException e) {
 			launch.terminate();

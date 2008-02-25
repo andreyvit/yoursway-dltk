@@ -18,11 +18,13 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.editors,
  org.eclipse.jface.text,
  org.eclipse.ui.console,
- org.eclipse.dltk.launching
+ org.eclipse.dltk.launching,
+ org.eclipse.core.expressions
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.debug.ui,
  org.eclipse.dltk.debug.ui.actions,
  org.eclipse.dltk.debug.ui.breakpoints,
+ org.eclipse.dltk.debug.ui.handlers,
  org.eclipse.dltk.debug.ui.interpreters,
  org.eclipse.dltk.debug.ui.launchConfigurations,
  org.eclipse.dltk.debug.ui.messages,
@@ -30,6 +32,7 @@ Export-Package: org.eclipse.dltk.debug.ui,
  org.eclipse.dltk.debug.ui.preferences.dialogs,
  org.eclipse.dltk.internal.debug.ui,
  org.eclipse.dltk.internal.debug.ui.actions,
+ org.eclipse.dltk.internal.debug.ui.handlers,
  org.eclipse.dltk.internal.debug.ui.interpreters,
  org.eclipse.dltk.internal.debug.ui.launcher
 Bundle-RequiredExecutionEnvironment: J2SE-1.4

@@ -82,6 +82,9 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	private boolean terminated = false;
 
 	private boolean initialized = false;
+	private boolean retrieveGlobalVariables;
+	private boolean retrieveClassVariables;
+	private boolean retrieveLocalVariables;
 
 	public static List getAllTargets() {
 		return new ArrayList(targets.keySet());
@@ -416,5 +419,32 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 			}
 			return false;
 		}
+	}
+
+	public void toggleGlobalVariables(boolean enabled) {
+		retrieveGlobalVariables = enabled;
+		threadManager.refreshThreads();
+	}
+
+	public void toggleClassVariables(boolean enabled) {
+		retrieveClassVariables = enabled;
+		threadManager.refreshThreads();
+	}
+
+	public void toggleLocalVariables(boolean enabled) {
+		retrieveLocalVariables = enabled;
+		threadManager.refreshThreads();
+	}
+
+	public boolean retrieveClassVariables() {
+		return retrieveClassVariables;
+	}
+
+	public boolean retrieveGlobalVariables() {
+		return retrieveGlobalVariables;
+	}
+
+	public boolean retrieveLocalVariables() {
+		return retrieveLocalVariables;
 	}
 }

@@ -217,13 +217,54 @@
       debugModel="org.eclipse.dltk.debug.pythonModel"
       delegateClass="org.eclipse.dltk.python.internal.debug.ui.PythonWatchExpressionDelegate" />
   </extension>  
-  
+
+  <extension point="org.eclipse.ui.commands">
+    <command
+      id="org.eclipse.dltk.python.debug.ui.commands.toggleGlobalVariables"
+      description="%showGlobalVarsCommand.name"
+      name="%showGlobalVarsCommand.description" />
+    <command
+      id="org.eclipse.dltk.python.debug.ui.commands.toggleClassVariables"
+      description="%showClassVarsCommand.name"
+      name="%showClassVarsCommand.description" />
+    <command
+      id="org.eclipse.dltk.python.debug.ui.commands.toggleLocalVariables"
+      description="%showLocalVarsCommand.name"
+      name="%showLocalVarsCommand.description" />      
+  </extension>
+
   <extension point="org.eclipse.ui.menus">
     <menuContribution locationURI="menu:org.eclipse.debug.ui.VariableView">
       <menu
-        label="Python"
-        id="org.eclipse.dltk.debug.ui.variableViewMenu" />
+        label="%variablesViewMenu.name"
+        id="org.eclipse.dltk.python.debug.ui.menu.VariableView" />
     </menuContribution>
-  </extension>  
+    <menuContribution locationURI="menu:org.eclipse.dltk.python.debug.ui.menu.VariableView">
+      <command 
+        commandId="org.eclipse.dltk.python.debug.ui.commands.toggleGlobalVariables"
+        tooltip="%showGlobalVarsCommand.tooltip"     
+        style="toggle" />
+      <command 
+        commandId="org.eclipse.dltk.python.debug.ui.commands.toggleClassVariables"
+        tooltip="%showClassVarsCommand.tooltip"      
+        style="toggle" />       
+      <command 
+        commandId="org.eclipse.dltk.python.debug.ui.commands.toggleLocalVariables"
+        tooltip="%showLocalVarsCommand.tooltip" 
+        style="toggle" />                      
+    </menuContribution>  
+  </extension>
+
+  <extension point="org.eclipse.ui.handlers">
+    <handler 
+      commandId="org.eclipse.dltk.python.debug.ui.commands.toggleGlobalVariables"
+      class="org.eclipse.dltk.python.internal.debug.ui.handlers.ToggleGlobalVariablesHandler" />
+    <handler 
+      commandId="org.eclipse.dltk.python.debug.ui.commands.toggleClassVariables"
+      class="org.eclipse.dltk.python.internal.debug.ui.handlers.ToggleClassVariablesHandler" />
+    <handler 
+      commandId="org.eclipse.dltk.python.debug.ui.commands.toggleLocalVariables"
+      class="org.eclipse.dltk.python.internal.debug.ui.handlers.ToggleLocalVariablesHandler" />      
+  </extension>
    
 </plugin>

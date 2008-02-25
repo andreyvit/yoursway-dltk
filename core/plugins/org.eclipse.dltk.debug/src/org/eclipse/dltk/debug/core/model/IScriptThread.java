@@ -32,4 +32,13 @@ public interface IScriptThread extends IThread /* , IFilteredStep */{
 	void sendTerminationRequest() throws DebugException;
 
 	int getPropertyPageSize();
+	
+	boolean retrieveGlobalVariables();
+
+	boolean retrieveClassVariables();
+
+	boolean retrieveLocalVariables();
+	
+	void updateStackFrames();
 }
+	

@@ -11,6 +11,7 @@ import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.PreferencesLookupDelegate;
 import org.eclipse.dltk.dbgp.DbgpSessionIdGenerator;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
+import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
 import org.eclipse.dltk.debug.core.ExtendedDebugEventDetails;
 import org.eclipse.dltk.debug.core.IDbgpService;
 import org.eclipse.dltk.debug.core.ScriptDebugManager;
@@ -50,8 +51,8 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 		super(install);
 	}
 
-	protected void initializeLaunch(ILaunch launch, InterpreterConfig config)
-			throws CoreException {
+	protected void initializeLaunch(ILaunch launch, InterpreterConfig config,
+			PreferencesLookupDelegate delegate) throws CoreException {
 		final IDbgpService service = DLTKDebugPlugin.getDefault()
 				.getDbgpService();
 
@@ -60,6 +61,15 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 		}
 
 		final IScriptDebugTarget target = addDebugTarget(launch, service);
+
+		String qualifier = getDebugPreferenceQualifier();
+
+		target.toggleGlobalVariables(delegate.getBoolean(qualifier,
+				showGlobalVarsPreferenceKey()));
+		target.toggleClassVariables(delegate.getBoolean(qualifier,
+				showClassVarsPreferenceKey()));
+		target.toggleLocalVariables(delegate.getBoolean(qualifier,
+				showLocalVarsPreferenceKey()));
 
 		// Disable the output of the debugging engine process
 		launch.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT, Boolean.FALSE
@@ -96,12 +106,9 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			return;
 		}
 		try {
-			IScriptProject sProject = ScriptRuntime.getScriptProject(launch
-					.getLaunchConfiguration());
-			PreferencesLookupDelegate prefDelegate = new PreferencesLookupDelegate(sProject
-					.getProject());
+			PreferencesLookupDelegate prefDelegate = createPreferencesLookupDelegate(launch);
 
-			initializeLaunch(launch, config);
+			initializeLaunch(launch, config, prefDelegate);
 			InterpreterConfig newConfig = addEngineConfig(config, prefDelegate);
 
 			// Starting debugging engine
@@ -200,5 +207,31 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 				getDebuggingEngineId());
 	}
 
+	protected String showGlobalVarsPreferenceKey() {
+		return DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL;
+	}
+
+	protected String showClassVarsPreferenceKey() {
+		return DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS;
+	}
+
+	protected String showLocalVarsPreferenceKey() {
+		return DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL;
+	}
+
 	protected abstract String getDebuggingEngineId();
+
+	protected PreferencesLookupDelegate createPreferencesLookupDelegate(
+			ILaunch launch) throws CoreException {
+		IScriptProject sProject = ScriptRuntime.getScriptProject(launch
+				.getLaunchConfiguration());
+		return new PreferencesLookupDelegate(sProject.getProject());
+	}
+
+	/**
+	 * Returns the id of the plugin whose preference store that debugging
+	 * preference settings.
+	 */
+	protected abstract String getDebugPreferenceQualifier();
+
 }

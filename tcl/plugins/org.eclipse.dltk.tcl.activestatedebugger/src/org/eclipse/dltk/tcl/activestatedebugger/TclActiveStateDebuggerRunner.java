@@ -15,6 +15,7 @@ import org.eclipse.dltk.launching.ExternalDebuggingEngineRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.launching.debug.DbgpConstants;
+import org.eclipse.dltk.tcl.internal.debug.TclDebugPlugin;
 import org.eclipse.dltk.utils.PlatformFileUtils;
 
 /**
@@ -119,5 +120,12 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 	 */
 	protected String getDebuggingEnginePreferenceQualifier() {
 		return TclActiveStateDebuggerPlugin.PLUGIN_ID;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getDebugPreferenceQualifier()
+	 */
+	protected String getDebugPreferenceQualifier() {
+		return TclDebugPlugin.PLUGIN_ID;
 	}
 }

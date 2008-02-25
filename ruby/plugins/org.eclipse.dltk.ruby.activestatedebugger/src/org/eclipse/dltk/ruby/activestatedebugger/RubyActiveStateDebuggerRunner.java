@@ -14,6 +14,7 @@ import org.eclipse.dltk.launching.ExternalDebuggingEngineRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.launching.debug.DbgpInterpreterConfig;
+import org.eclipse.dltk.ruby.debug.RubyDebugPlugin;
 
 /**
  * Debugging engine implementation for ActiveState's ruby debugging engine.
@@ -72,5 +73,12 @@ public class RubyActiveStateDebuggerRunner extends
 
 	protected String getDebuggingEnginePreferenceQualifier() {
 		return RubyActiveStateDebuggerPlugin.PLUGIN_ID;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getDebugPreferenceQualifier()
+	 */
+	protected String getDebugPreferenceQualifier() {
+		return RubyDebugPlugin.PLUGIN_ID;
 	}
 }

@@ -4,6 +4,7 @@ import org.eclipse.dltk.launching.ExternalDebuggingEngineRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.launching.debug.DbgpInterpreterConfig;
+import org.eclipse.dltk.python.internal.debug.PythonDebugPlugin;
 
 /**
  * Debugging engine implementation for ActiveState's python debugging engine.
@@ -71,6 +72,13 @@ public class PythonActiveStateDebuggerRunner extends
 	 */
 	protected String getDebuggingEnginePreferenceQualifier() {
 		return PythonActiveStateDebuggerPlugin.PLUGIN_ID;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getDebugPreferenceQualifier()
+	 */
+	protected String getDebugPreferenceQualifier() {
+		return PythonDebugPlugin.PLUGIN_ID;
 	}
 
 }

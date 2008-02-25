@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.dltk.ui,
  org.eclipse.dltk.ruby.abstractdebugger,
- org.eclipse.dltk.ruby.launching
+ org.eclipse.dltk.ruby.launching,
+ org.eclipse.dltk.ruby.debug
 Bundle-Localization: plugin
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.ruby.fastdebugger,
