@@ -11,13 +11,11 @@ package org.eclipse.dltk.ui;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.BuildpathContainerInitializer;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IField;
@@ -548,6 +546,13 @@ public class ScriptElementLabels {
 		return (IProjectFragment) element;
 	}
 
+	protected void getScriptFolderLabel(IScriptFolder folder, StringBuffer buf) {
+		buf.append(folder.getElementName()/*
+											 * .replace(IScriptFolder.PACKAGE_DELIMITER,
+											 * '.')
+											 */);
+	}
+
 	private void getScriptFolderLabel(IScriptFolder folder, long flags,
 			StringBuffer buf) {
 		if (getFlag(flags, P_QUALIFIED)) {
@@ -576,17 +581,7 @@ public class ScriptElementLabels {
 			}
 			buf.append(name.substring(start));
 		} else {
-			String name = folder.getElementName();
-			try {
-				String delimeter = DLTKLanguageManager.getLanguageToolkit(
-						folder).getDelimeterReplacerString();
-				name = name.replaceAll(String
-						.valueOf(IScriptFolder.PACKAGE_DELIMITER), delimeter);
-			} catch (CoreException e) {
-				// this can't happen
-			}
-
-			buf.append(name);
+			getScriptFolderLabel(folder, buf);
 		}
 		if (getFlag(flags, P_POST_QUALIFIED)) {
 			buf.append(CONCAT_STRING);

@@ -43,6 +43,7 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.builder.State;
@@ -188,8 +189,11 @@ public abstract class ProjectWizardSecondPage extends
 
 			if (fFirstPage.getDetect()) {
 				if (!fCurrProject.getFile(FILENAME_BUILDPATH).exists()) {
+					IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+							.getLanguageToolkit(getScriptNature());
 					final BuildpathDetector detector = new BuildpathDetector(
-							fCurrProject, new SubProgressMonitor(monitor, 2));
+							fCurrProject, new SubProgressMonitor(monitor, 2),
+							toolkit);
 					entries = detector.getBuildpath();
 				} else {
 					monitor.worked(2);
@@ -444,9 +448,11 @@ public abstract class ProjectWizardSecondPage extends
 			IInterpreterInstall projectInterpreter = this.fFirstPage
 					.getInterpreter();
 			if (projectInterpreter == null) {
-				Observable observable = fFirstPage.getInterpreterGroupObservable();
+				Observable observable = fFirstPage
+						.getInterpreterGroupObservable();
 				String nature = null;
-				if( observable != null && observable instanceof AbstractInterpreterGroup ) {
+				if (observable != null
+						&& observable instanceof AbstractInterpreterGroup) {
 					AbstractInterpreterGroup gr = (AbstractInterpreterGroup) observable;
 					nature = gr.getCurrentLanguageNature();
 				}
@@ -485,7 +491,8 @@ public abstract class ProjectWizardSecondPage extends
 					}
 				}
 				lastState.setNoCleanExternalFolders();
-				ModelManager.getModelManager().setLastBuiltState(fCurrProject, lastState);
+				ModelManager.getModelManager().setLastBuiltState(fCurrProject,
+						lastState);
 			}
 			// Locate projects with same interpreter.
 		} finally {

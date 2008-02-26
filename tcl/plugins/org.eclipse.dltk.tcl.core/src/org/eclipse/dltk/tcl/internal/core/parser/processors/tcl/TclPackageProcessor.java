@@ -7,7 +7,6 @@ import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
@@ -19,10 +18,8 @@ public class TclPackageProcessor extends AbstractTclCommandProcessor implements
 	public TclPackageProcessor() {
 	}
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement statement, ITclParser parser, 
 			ASTNode parent) {
-		TclStatement statement = (TclStatement) parser.processLocal(command,
-				offset, parent);
 		if (statement.getCount() < 2) {
 			this.report(parser,
 					"Syntax error: at least one arguments expected.",

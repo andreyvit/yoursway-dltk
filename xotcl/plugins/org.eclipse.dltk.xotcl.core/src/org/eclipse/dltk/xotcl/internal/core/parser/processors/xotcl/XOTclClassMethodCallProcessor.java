@@ -9,7 +9,6 @@ import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodCallStatement;
 
 public class XOTclClassMethodCallProcessor extends AbstractTclCommandProcessor {
@@ -17,14 +16,13 @@ public class XOTclClassMethodCallProcessor extends AbstractTclCommandProcessor {
 	public XOTclClassMethodCallProcessor() {
 	}
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement statement, ITclParser parser, 
 			ASTNode parent) {
 		Object param = this.getDetectedParameter();
 		if (param == null || !(param instanceof FieldDeclaration)) {
 			return null;
 		}
-		TclStatement statement = (TclStatement) parser.processLocal(command,
-				offset, parent);
+
 		FieldDeclaration inst = (FieldDeclaration) param;
 		Expression nameExpr = statement.getAt(1);
 		if (!(nameExpr instanceof SimpleReference)) {

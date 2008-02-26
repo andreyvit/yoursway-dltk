@@ -19,21 +19,15 @@ import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.internal.core.codeassist.TclVisibilityUtils;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
 public class TclProcProcessor extends AbstractTclCommandProcessor {
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement statement, ITclParser parser,
 			ASTNode parent) {
-		ASTNode node = parser.processLocal(command, offset, parent);
-		if (!(node instanceof TclStatement)) {
-			return null;
-		}
-		TclStatement statement = (TclStatement) node;
 		if (statement.getCount() < 4) {
 			this.report(parser,
 					Messages.TclProcProcessor_Wrong_Number_of_Arguments,
-					command.getStart(), command.getEnd(),
+					statement.sourceStart(), statement.sourceEnd(),
 					ProblemSeverities.Error);
 			return null;
 		}
@@ -52,7 +46,7 @@ public class TclProcProcessor extends AbstractTclCommandProcessor {
 		}
 		if (sName == null || sName.length() == 0) {
 			this.report(parser, Messages.TclProcProcessor_Empty_Proc_Name,
-					command.getStart() + offset, command.getEnd() + offset,
+					statement.sourceStart(), statement.sourceEnd(),
 					ProblemSeverities.Error);
 			return null;
 		}
@@ -74,8 +68,8 @@ public class TclProcProcessor extends AbstractTclCommandProcessor {
 			arguments.add(a);
 		}
 
-		MethodDeclaration method = new MethodDeclaration(command.getStart()
-				+ offset, command.getEnd() + offset);
+		MethodDeclaration method = new MethodDeclaration(statement
+				.sourceStart(), statement.sourceEnd());
 		method.setName(sName);
 		method.setNameStart(procName.sourceStart());
 		method.setNameEnd(procName.sourceEnd());

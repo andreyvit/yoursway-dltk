@@ -18,12 +18,10 @@ import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
 public class IncrTclClassCommandProcessor extends AbstractTclCommandProcessor {
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement statement, ITclParser parser, 
 			ASTNode parent) {
-		TclStatement statement = parser.processLocal(command, offset, parent);
 		if (statement == null
 				|| (statement != null && statement.getCount() == 0)) {
 			return null;

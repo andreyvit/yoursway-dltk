@@ -18,7 +18,6 @@ import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.ast.ExtendedTclMethodDeclaration;
 import org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.Messages;
 import org.eclipse.dltk.tcl.internal.parser.TclParseUtils;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclExInstanceVariable;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
@@ -41,13 +40,8 @@ public class XOTclClassAllProcProcessor extends AbstractTclCommandProcessor {
 	public XOTclClassAllProcProcessor() {
 	}
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement statement, ITclParser parser,
 			ASTNode parent) {
-		ASTNode node = parser.processLocal(command, offset, parent);
-		if (!(node instanceof TclStatement)) {
-			return null;
-		}
-		TclStatement statement = (TclStatement) node;
 		ASTNode decl = null;
 
 		if (getDetectedParameter() != null
@@ -60,7 +54,7 @@ public class XOTclClassAllProcProcessor extends AbstractTclCommandProcessor {
 		if (statement.getCount() < 5) {
 			this.report(parser,
 					Messages.TclProcProcessor_Wrong_Number_of_Arguments,
-					command.getStart(), command.getEnd(),
+					statement.sourceStart(), statement.sourceEnd(),
 					ProblemSeverities.Error);
 			return null;
 		}
@@ -72,7 +66,7 @@ public class XOTclClassAllProcProcessor extends AbstractTclCommandProcessor {
 
 		if (sName == null || sName.length() == 0) {
 			this.report(parser, Messages.TclProcProcessor_Empty_Proc_Name,
-					command.getStart() + offset, command.getEnd() + offset,
+					statement.sourceStart(), statement.sourceEnd(),
 					ProblemSeverities.Error);
 			return null;
 		}
@@ -94,18 +88,17 @@ public class XOTclClassAllProcProcessor extends AbstractTclCommandProcessor {
 			arguments.add(a);
 		}
 
-		ExtendedTclMethodDeclaration method = new XOTclMethodDeclaration(command
-				.getStart()
-				+ offset, command.getEnd() + offset);
+		ExtendedTclMethodDeclaration method = new XOTclMethodDeclaration(
+				statement.sourceStart(), statement.sourceEnd());
 		method.setDeclaringXOTclType(decl);
 		if (decl instanceof TypeDeclaration) {
 			method.setDeclaringTypeName(((TypeDeclaration) decl).getName());
-		}
-		else if( decl instanceof XOTclInstanceVariable ) {
-			method.setDeclaringTypeName(((XOTclInstanceVariable)decl).getName());
-		}
-		else if( decl instanceof XOTclExInstanceVariable ) {
-			String name = ((XOTclExInstanceVariable)decl).getDeclaringClassParameter().getClassName();
+		} else if (decl instanceof XOTclInstanceVariable) {
+			method.setDeclaringTypeName(((XOTclInstanceVariable) decl)
+					.getName());
+		} else if (decl instanceof XOTclExInstanceVariable) {
+			String name = ((XOTclExInstanceVariable) decl)
+					.getDeclaringClassParameter().getClassName();
 			method.setDeclaringTypeName(name);
 		}
 
@@ -123,25 +116,25 @@ public class XOTclClassAllProcProcessor extends AbstractTclCommandProcessor {
 		this.addToParent(parent, method);
 
 		if (decl instanceof TypeDeclaration) {
-			((TypeDeclaration)decl).getMethodList().add(method);
+			((TypeDeclaration) decl).getMethodList().add(method);
 		}
 		/**
 		 * Parse method kind.
 		 */
 		Expression kind = statement.getAt(1);
 		String kindName = this.extractName(kind);
-		if( kindName != null ) {
-			if( KIND_PROC_STR.equals(kindName)) {
+		if (kindName != null) {
+			if (KIND_PROC_STR.equals(kindName)) {
 				method.setKind(ExtendedTclMethodDeclaration.KIND_PROC);
-			}
-			else if( KIND_INSTPROC_STR.equals(kindName)) {
+			} else if (KIND_INSTPROC_STR.equals(kindName)) {
 				method.setKind(ExtendedTclMethodDeclaration.KIND_INSTPROC);
-				if( decl instanceof XOTclObjectDeclaration ) {
-//					report(parser, "Adding instproc to object", kind, ProblemSeverities.Warning);
+				if (decl instanceof XOTclObjectDeclaration) {
+					// report(parser, "Adding instproc to object", kind,
+					// ProblemSeverities.Warning);
 				}
 			}
 		}
-		
+
 		parser.parse(content, procCode.sourceStart() + 1, block);
 		return method;
 	}

@@ -14,17 +14,13 @@ import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.core.ast.TclAdvancedExecuteExpression;
 import org.eclipse.dltk.tcl.core.ast.TclCatchStatement;
 import org.eclipse.dltk.tcl.core.ast.TclVariableDeclaration;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
 public class TclCatchProcessor extends AbstractTclCommandProcessor {
 
 	public TclCatchProcessor() {
 	}
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
-			ASTNode parent) {
-		TclStatement statement = (TclStatement) parser.processLocal(command,
-				offset, parent);
+	public ASTNode process(TclStatement statement, ITclParser parser, ASTNode parent) {
 		if (statement.getCount() >= 2) {
 			Expression e = statement.getAt(1);
 			TclVariableDeclaration variable = null;
@@ -50,17 +46,16 @@ public class TclCatchProcessor extends AbstractTclCommandProcessor {
 			} else if (e instanceof SimpleReference) {
 				Block bl = new Block(e.sourceStart(), e.sourceEnd());
 				TclCatchStatement catchStatement = new TclCatchStatement(bl,
-						variable, statement.sourceStart() + offset, statement
-								.sourceEnd()
-								+ 1 + offset);
+						variable, statement.sourceStart(), statement
+								.sourceEnd());
 				addToParent(parent, catchStatement);
 				bl.addStatement(e);
 				return catchStatement;
 			} else if (e instanceof StringLiteral) {
 				Block bl = new Block(e.sourceStart(), e.sourceEnd());
 				TclCatchStatement catchStatement = new TclCatchStatement(bl,
-						variable, command.getStart() + offset, command.getEnd()
-								+ 1 + offset);
+						variable, statement.sourceStart(), statement
+								.sourceEnd());
 				addToParent(parent, catchStatement);
 				bl.addStatement(e);
 				return catchStatement;
@@ -68,8 +63,7 @@ public class TclCatchProcessor extends AbstractTclCommandProcessor {
 				TclAdvancedExecuteExpression block = (TclAdvancedExecuteExpression) e;
 				Block bl = new Block(e.sourceStart(), e.sourceEnd());
 				TclCatchStatement catchStatement = new TclCatchStatement(bl,
-						variable, command.getStart() + offset, command.getEnd()
-								+ 1 + offset);
+						variable, block.sourceStart(), block.sourceEnd());
 				addToParent(parent, catchStatement);
 				bl.getStatements().addAll(block.getChilds());
 				return catchStatement;

@@ -6,25 +6,19 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.tcl.ast.TclStatement;
-import org.eclipse.dltk.tcl.internal.core.codeassist.TclVisibilityUtils;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.core.ast.TclVariableDeclaration;
+import org.eclipse.dltk.tcl.internal.core.codeassist.TclVisibilityUtils;
 
 public class TclVariableProcessor extends AbstractTclCommandProcessor {
 
 	public TclVariableProcessor() {
 	}
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement statement, ITclParser parser, 
 			ASTNode parent) {
-		TclStatement statement = (TclStatement) parser.processLocal(command,
-				offset, parent);
-		if( statement == null ) {
-			return null;
-		}
 		if (statement.getCount() < 2) {
 			this.report(parser, "Syntax error: at least one argument expected.", statement, ProblemSeverities.Error);
 			return null;

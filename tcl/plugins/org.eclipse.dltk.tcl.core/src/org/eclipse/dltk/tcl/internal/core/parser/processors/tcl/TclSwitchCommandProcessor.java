@@ -14,17 +14,11 @@ import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.ast.TclAdvancedExecuteExpression;
 import org.eclipse.dltk.tcl.core.ast.TclSwitchStatement;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
 public class TclSwitchCommandProcessor extends AbstractTclCommandProcessor {
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement statement, ITclParser parser, 
 			ASTNode parent) {
-		ASTNode node = parser.processLocal(command, offset, parent);
-		if (!(node instanceof TclStatement)) {
-			return null;
-		}
-		TclStatement statement = (TclStatement) node;
 
 		TclSwitchStatement switchStatement = new TclSwitchStatement(statement
 				.sourceStart(), statement.sourceEnd());

@@ -14,7 +14,6 @@ import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
@@ -33,13 +32,8 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 		return null;
 	}
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement statement, ITclParser parser,
 			ASTNode parent) {
-		ASTNode namespace = parser.processLocal(command, offset, parent);
-		if (!(namespace instanceof TclStatement)) {
-			return null;
-		}
-		TclStatement statement = (TclStatement) namespace;
 		Expression nameSpaceArg = statement.getAt(1);
 		if (nameSpaceArg == null || !(nameSpaceArg instanceof SimpleReference)) {
 			this.report(parser, "Syntax error: a namespace name expected.",
@@ -79,7 +73,7 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 			Block code = new Block(start, end);
 			TypeDeclaration type = new TypeDeclaration(sNameSpaceName,
 					nameSpaceName.sourceStart(), nameSpaceName.sourceEnd(),
-					namespace.sourceStart(), namespace.sourceEnd());
+					statement.sourceStart(), statement.sourceEnd());
 			type.setModifiers(Modifiers.AccNameSpace);
 			ASTNode realParent = findRealParent(parent);
 			if (realParent instanceof TypeDeclaration) {

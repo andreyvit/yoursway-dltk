@@ -509,13 +509,17 @@ public abstract class AbstractInterpreterInstallType implements
 
 		boolean matchFound = false;
 		final String name = installLocation.getName();
+		IPath nPath = new Path(name);
 
 		// name.matches(possibleName + ".*\\.exe")
 		if (Platform.getOS().equals(Platform.OS_WIN32)) {
 			for (int i = 0; i < possibleNames.length; ++i) {
-				final String possibleName = possibleNames[i];
-				if (name.equals(possibleName + ".exe")
-						|| name.equals(possibleName + ".bat")) {
+				final String possibleName = possibleNames[i].toLowerCase();
+				String fName = nPath.removeFileExtension().lastSegment()
+						.toLowerCase();
+				String ext = nPath.getFileExtension();
+				if ((ext.equalsIgnoreCase("exe") || ext.equalsIgnoreCase("bat"))
+						&& fName.startsWith(possibleName)) {
 					matchFound = true;
 					break;
 				}
@@ -523,7 +527,8 @@ public abstract class AbstractInterpreterInstallType implements
 		} else {
 			for (int i = 0; i < possibleNames.length; i++) {
 				final String possibleName = possibleNames[i];
-				if (name.indexOf(possibleName) == 0) {
+				String fName = nPath.lastSegment();
+				if (fName.startsWith(possibleName)) {
 					matchFound = true;
 					break;
 				}

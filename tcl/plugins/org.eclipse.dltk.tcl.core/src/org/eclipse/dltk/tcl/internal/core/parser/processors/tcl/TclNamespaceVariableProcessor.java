@@ -6,7 +6,6 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.tcl.ast.TclStatement;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
@@ -17,10 +16,8 @@ public class TclNamespaceVariableProcessor extends AbstractTclCommandProcessor {
 	public TclNamespaceVariableProcessor() {
 	}
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement statement, ITclParser parser, 
 			ASTNode parent) {
-		TclStatement statement = (TclStatement) parser.processLocal(command,
-				offset, parent);
 		int statementsCount = statement.getCount();
 		if (statementsCount < 2) {
 			this.report(parser, Messages.TclProcProcessor_Wrong_Number_of_Arguments, statement, ProblemSeverities.Error);

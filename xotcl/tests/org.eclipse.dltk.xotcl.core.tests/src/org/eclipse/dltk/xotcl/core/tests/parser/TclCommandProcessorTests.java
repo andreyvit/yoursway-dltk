@@ -3,22 +3,21 @@ package org.eclipse.dltk.xotcl.core.tests.parser;
 import java.util.Iterator;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.Argument;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
-import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.tcl.core.ast.BinaryExpression;
+import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.ast.IfStatement;
 import org.eclipse.dltk.tcl.core.ast.TclCatchStatement;
 import org.eclipse.dltk.tcl.core.ast.TclForStatement;
-import org.eclipse.dltk.tcl.core.ast.TclForeachStatement;
 import org.eclipse.dltk.tcl.core.ast.TclGlobalVariableDeclaration;
 import org.eclipse.dltk.tcl.core.ast.TclPackageDeclaration;
 import org.eclipse.dltk.tcl.core.ast.TclSwitchStatement;
@@ -26,7 +25,6 @@ import org.eclipse.dltk.tcl.core.ast.TclUpvarVariableDeclaration;
 import org.eclipse.dltk.tcl.core.ast.TclVariableDeclaration;
 import org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclCatchProcessor;
 import org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclForCommandProcessor;
-import org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclForeachCommandProcessor;
 import org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclGlobalVariableProcessor;
 import org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclIfProcessor;
 import org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclNamespaceProcessor;
@@ -40,17 +38,16 @@ import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclParseException;
 import org.eclipse.dltk.tcl.internal.parsers.raw.TclScript;
 
-import junit.framework.TestCase;
-
 public class TclCommandProcessorTests extends TestCase
 {
-	static TclCommand toCommand(String content) throws TclParseException
+	static TclStatement toCommand(String content) throws TclParseException
 	{
 		TclScript parse = SimpleTclParser.parse(content);
 		List commands = parse.getCommands();
 		assertEquals(1, commands.size());
 		assertNotNull(commands.get(0));
-		return (TclCommand) commands.get(0);
+		TestTclParser p = new TestTclParser(content);
+		return p.processLocal((TclCommand)commands.get(0), 0, null);
 	}
 	
 	////// If processor test.
@@ -89,11 +86,11 @@ public class TclCommandProcessorTests extends TestCase
 	
 	private void processTestIf001(String content) throws TclParseException
 	{
-		TclCommand ifCommand = TclCommandProcessorTests.toCommand(content);
-		TclIfProcessor ifProcessor = new TclIfProcessor();
 		TestTclParser testParser = new TestTclParser(content);
-
-		ASTNode statement = ifProcessor.process(ifCommand, testParser, 0, null);
+		TclStatement ifCommand = TclCommandProcessorTests.toCommand(content);
+		TclIfProcessor ifProcessor = new TclIfProcessor();
+		
+		ASTNode statement = ifProcessor.process(ifCommand, testParser, null);
 		assertNotNull(statement);
 		assertEquals(true, statement instanceof IfStatement);
 		IfStatement ifStatement = (IfStatement) statement;
@@ -157,11 +154,11 @@ public class TclCommandProcessorTests extends TestCase
 
 	private void processTestIf002(String content) throws TclParseException
 	{
-		TclCommand ifCommand = TclCommandProcessorTests.toCommand(content);
-		TclIfProcessor ifProcessor = new TclIfProcessor();
 		TestTclParser testParser = new TestTclParser(content);
-
-		ASTNode statement = ifProcessor.process(ifCommand, testParser, 0, null);
+		TclStatement ifCommand = TclCommandProcessorTests.toCommand(content);
+		TclIfProcessor ifProcessor = new TclIfProcessor();
+		
+		ASTNode statement = ifProcessor.process(ifCommand, testParser, null);
 		assertNotNull(statement);
 		assertEquals(true, statement instanceof IfStatement);
 		IfStatement ifStatement = (IfStatement) statement;
@@ -182,11 +179,11 @@ public class TclCommandProcessorTests extends TestCase
 		String content = "if {a < 2} then {\n" +
 						 "	set b 20\n" + 
 						 "}\n";
-		TclCommand ifCommand = TclCommandProcessorTests.toCommand(content);
-		TclIfProcessor ifProcessor = new TclIfProcessor();
 		TestTclParser testParser = new TestTclParser(content);
-
-		ASTNode statement = ifProcessor.process(ifCommand, testParser, 0, null);
+		TclStatement ifCommand = TclCommandProcessorTests.toCommand(content);
+		TclIfProcessor ifProcessor = new TclIfProcessor();
+		
+		ASTNode statement = ifProcessor.process(ifCommand, testParser, null);
 		assertNotNull(statement);
 		assertEquals(true, statement instanceof IfStatement);
 		IfStatement ifStatement = (IfStatement) statement;
@@ -224,7 +221,7 @@ public class TclCommandProcessorTests extends TestCase
 	{
 		TclCatchProcessor processor = new TclCatchProcessor();
 		
-		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), 0, null);
+		ASTNode node = processor.process(toCommand(script), new TestTclParser(script),  null);
 		assertNotNull(node);
 		assertTrue(node instanceof TclCatchStatement);
 		TclCatchStatement catchSatement = (TclCatchStatement)node;
@@ -254,7 +251,7 @@ public class TclCommandProcessorTests extends TestCase
 	{
 		TclGlobalVariableProcessor processor = new TclGlobalVariableProcessor();
 		
-		ASTNode statement = processor.process(toCommand(script), new TestTclParser(script), 0, null);
+		ASTNode statement = processor.process(toCommand(script), new TestTclParser(script), null);
 		assertNotNull(statement);
 		assertTrue(statement instanceof TclGlobalVariableDeclaration ||  statement instanceof Block);
 		if (statement instanceof ASTListNode)
@@ -299,7 +296,7 @@ public class TclCommandProcessorTests extends TestCase
 	private void testPackageImports(String script, int style, boolean hasScript ) throws TclParseException
 	{
 		TclPackageProcessor processor = new TclPackageProcessor();
-		ASTNode statement = processor.process(toCommand(script), new TestTclParser(script), 0, null);
+		ASTNode statement = processor.process(toCommand(script), new TestTclParser(script), null);
 		assertNotNull(statement);
 		assertTrue(statement instanceof TclPackageDeclaration);
 		TclPackageDeclaration decl = (TclPackageDeclaration)statement;
@@ -334,7 +331,7 @@ public class TclCommandProcessorTests extends TestCase
 	private MethodDeclaration testTclProcProcessor(String script, int argNum) throws TclParseException
 	{
 		TclProcProcessor processor = new TclProcProcessor();
-		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), 0, null);
+		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), null);
 		assertNotNull(node);
 		assertTrue(node instanceof MethodDeclaration);
 		MethodDeclaration method = (MethodDeclaration)node;
@@ -359,7 +356,7 @@ public class TclCommandProcessorTests extends TestCase
 	private void testTclVariableProcessor(String script, boolean initialValue) throws TclParseException
 	{
 		TclVariableProcessor processor = new TclVariableProcessor();
-		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), 0, null);
+		ASTNode node = processor.process(toCommand(script), new TestTclParser(script),  null);
 		assertNotNull(node);
 		TclVariableDeclaration var = (TclVariableDeclaration)node;
 		assertEquals("var", var.getName());
@@ -392,7 +389,7 @@ public class TclCommandProcessorTests extends TestCase
 	private void testTclUpVarProcessor(String script, int varNum) throws TclParseException
 	{
 		TclUpvarProcessor processor = new TclUpvarProcessor();
-		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), 0, null);
+		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), null);
 		assertNotNull(node);
 		assertTrue(node instanceof ASTListNode || node instanceof TclUpvarVariableDeclaration);
 		if (node instanceof ASTListNode)
@@ -426,7 +423,7 @@ public class TclCommandProcessorTests extends TestCase
 	private void testTclNamespaceProcessor(String script) throws TclParseException
 	{
 		TclNamespaceProcessor processor = new TclNamespaceProcessor();
-		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), 0, null);
+		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), null);
 		assertNotNull(node);
 		assertTrue(node instanceof TypeDeclaration);
 		assertTrue((Modifiers.AccNameSpace & ((TypeDeclaration)node).getModifiers()) != 0);
@@ -484,7 +481,7 @@ public class TclCommandProcessorTests extends TestCase
 	private void testTclSwitchProcessor(String script, int alternativesNumber) throws TclParseException
 	{
 		TclSwitchCommandProcessor processor =  new TclSwitchCommandProcessor();
-		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), 0, null);
+		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), null);
 		assertNotNull(node);
 		TclSwitchStatement switchExpr = (TclSwitchStatement)node;
 		assertNotNull(switchExpr.getString());
@@ -495,7 +492,7 @@ public class TclCommandProcessorTests extends TestCase
 	public void testTclForProcessor001() throws TclParseException {
 		String script = "for {set x 0} {$x < 10} {incr x} {puts $x}";
 		TclForCommandProcessor processor = new TclForCommandProcessor();
-		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), 0, null);
+		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), null);
 		assertNotNull(node);
 		assertTrue(node instanceof TclForStatement);
 		TclForStatement forStatement = (TclForStatement)node;
@@ -505,19 +502,19 @@ public class TclCommandProcessorTests extends TestCase
 	public void testTclForProcessor002() throws TclParseException {
 		String script = "for {set x 0} $x<10";	//infinite loop actually
 		TclForCommandProcessor processor = new TclForCommandProcessor();
-		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), 0, null);
+		ASTNode node = processor.process(toCommand(script), new TestTclParser(script),  null);
 		assertNull(node);
 	}
 	public void testTclForProcessor003() throws TclParseException {
 		String script = "for {set x 0} { $x<10 }";	//infinite loop actually
 		TclForCommandProcessor processor = new TclForCommandProcessor();
-		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), 0, null);
+		ASTNode node = processor.process(toCommand(script), new TestTclParser(script),  null);
 		assertNull(node);
 	}
 	public void testTclForProcessor004() throws TclParseException {
 		String script = "for {set x 0} { $x<10 } { incr x }";	//infinite loop actually
 		TclForCommandProcessor processor = new TclForCommandProcessor();
-		ASTNode node = processor.process(toCommand(script), new TestTclParser(script), 0, null);
+		ASTNode node = processor.process(toCommand(script), new TestTclParser(script),  null);
 		assertNull(node);
 	}
 	

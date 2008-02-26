@@ -9,25 +9,19 @@ import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.ast.TclForStatement;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
 public class TclForCommandProcessor extends AbstractTclCommandProcessor {
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement statement, ITclParser parser,
 			ASTNode parent) {
-		ASTNode node = parser.processLocal(command, offset, parent);
-		if (!(node instanceof TclStatement)) {
-			return null;
-		}
-		TclStatement statement = (TclStatement) node;
 		if (statement.getCount() != 5) {
 			this.report(parser, "Syntax error: exactly " + (5 - 1)
 					+ " arguments expected.", statement,
 					ProblemSeverities.Error);
 			return null;
 		}
-		TclForStatement forStatement = new TclForStatement(node.sourceStart(),
-				node.sourceEnd());
+		TclForStatement forStatement = new TclForStatement(statement.sourceStart(),
+				statement.sourceEnd());
 		addToParent(parent, forStatement);
 
 		Expression procCode = statement.getAt(statement.getCount() - 1);

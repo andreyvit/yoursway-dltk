@@ -9,7 +9,6 @@ import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.core.ast.TclVariableDeclaration;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodDeclaration;
 
 public class XOTclClassMyProcessor extends AbstractTclCommandProcessor {
@@ -17,10 +16,8 @@ public class XOTclClassMyProcessor extends AbstractTclCommandProcessor {
 	public XOTclClassMyProcessor() {
 	}
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement statement, ITclParser parser, 
 			ASTNode parent) {
-		TclStatement statement = (TclStatement) parser.processLocal(command,
-				offset, parent);
 		ModuleDeclaration moduleDeclaration = this.getModuleDeclaration();
 		ASTNode scopeParent = TclParseUtil.getScopeParent(moduleDeclaration,
 				parent);

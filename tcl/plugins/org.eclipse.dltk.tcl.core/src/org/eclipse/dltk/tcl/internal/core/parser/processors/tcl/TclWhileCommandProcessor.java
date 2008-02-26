@@ -9,24 +9,18 @@ import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.ast.TclWhileStatement;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
 public class TclWhileCommandProcessor extends AbstractTclCommandProcessor {
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement statement, ITclParser parser, 
 			ASTNode parent) {
-		ASTNode node = parser.processLocal(command, offset, parent);
-		if (!(node instanceof TclStatement)) {
-			return null;
-		}
-		TclStatement statement = (TclStatement) node;
 		TclWhileStatement foreach = new TclWhileStatement(statement
 				.sourceStart(), statement.sourceEnd());
 		this.addToParent(parent, foreach);
 
 		if (statement.getCount() != 3) {
 			this.report(parser, "Syntax error: wrong number of arguments",
-					node, ProblemSeverities.Error);
+					statement, ProblemSeverities.Error);
 		} else {
 			Expression test = statement.getAt(1);
 			foreach.setTest(test);

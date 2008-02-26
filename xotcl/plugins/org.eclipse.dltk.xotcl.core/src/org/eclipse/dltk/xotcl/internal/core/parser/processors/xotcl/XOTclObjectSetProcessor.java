@@ -10,7 +10,6 @@ import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclFieldDeclaration;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclProcCallStatement;
@@ -21,14 +20,13 @@ public class XOTclObjectSetProcessor extends AbstractTclCommandProcessor {
 	public XOTclObjectSetProcessor() {
 	}
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement statement, ITclParser parser, 
 			ASTNode parent) {
 		if( this.getDetectedParameter() == null || !(this.getDetectedParameter() instanceof TypeDeclaration ) ) {
 			return null;
 		}
 		TypeDeclaration type = (TypeDeclaration) this.getDetectedParameter();
-		
-		TclStatement statement = (TclStatement) parser.processLocal(command, offset, parent);
+
 		if (statement.getCount() < 3) {
 			this.report(parser, "Wrong number of arguments.", statement, ProblemSeverities.Error);
 			return null;

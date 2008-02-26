@@ -58,14 +58,8 @@ public class XOTclDocumentationProcessor extends AbstractTclCommandProcessor
 		st.setExpressions(Arrays.asList(nodes));
 	}
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement st, ITclParser parser, 
 			ASTNode parent) {
-//		String docText = parser.getContent().substring(
-//				offset + command.getStart(), command.getEnd() + 1 + offset);
-//		System.out.println(docText);
-		TclStatement st = TclParseUtil.convertToAST(command, parser
-				.getFileName(), offset, parser.getContent(), parser
-				.getStartPos());
 		// preprocessStatement(st);
 		final XOTclDocumentationNode doc = new XOTclDocumentationNode();
 		String objName = TclParseUtil.getNameFromNode((ASTNode) (st.getAt(1)));
