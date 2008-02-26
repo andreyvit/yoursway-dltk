@@ -21,7 +21,6 @@ import junit.framework.TestSuite;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.core.tests.Activator;
@@ -61,8 +60,7 @@ public class ParserSuite extends TestSuite {
 					String input = loadInput(cleanPath + ".rb", map);
 					String output = loadOutput(cleanPath + ".exp", map);
 										
-					ISourceParser parser = DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID);
-					ModuleDeclaration module = parser.parse((cleanPath + ".rb").toCharArray(), input.toCharArray(), null);
+					ModuleDeclaration module = DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID).parse((cleanPath + ".rb").toCharArray(), input.toCharArray(), null);
 					assertNotNull(module);
 					
 					AST2StringVisitor vis = new AST2StringVisitor();

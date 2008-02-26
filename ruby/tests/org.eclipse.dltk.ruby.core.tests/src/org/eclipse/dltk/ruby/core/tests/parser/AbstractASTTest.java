@@ -14,7 +14,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.compiler.problem.IProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
 import org.eclipse.dltk.core.DLTKLanguageManager;
@@ -36,8 +35,8 @@ public abstract class AbstractASTTest extends AbstractModelTests {
 		public int getCount() {
 			return count;
 		}
-		
-		public String info () {
+
+		public String info() {
 			return lastInfo;
 		}
 
@@ -50,6 +49,9 @@ public abstract class AbstractASTTest extends AbstractModelTests {
 		public void clearMarkers() {
 		}
 
+		public boolean isMarkersCleaned() {
+			return false;
+		}
 	}
 
 	protected final static CountingProblemReporter problems = new CountingProblemReporter();
@@ -57,23 +59,21 @@ public abstract class AbstractASTTest extends AbstractModelTests {
 	public AbstractASTTest(String testProjectName, String name) {
 		super(testProjectName, name);
 	}
-	
+
 	public AbstractASTTest(String name) {
 		super(Activator.PLUGIN_ID, name);
 	}
-	
-	
 
 	protected ModuleDeclaration getAST(String content) {
 		problems.reset();
-		ISourceParser parser;
+		// ISourceParser parser;
 		try {
-			parser = DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID);
+			return DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID)
+					.parse(null, content.toCharArray(), problems);
 		} catch (CoreException e) {
 			e.printStackTrace();
 			return null;
 		}
-		return parser.parse(null, content.toCharArray(), problems);
 	}
 
 	protected ASTNode getNodeAt(ASTNode root, final int start, final int end)
@@ -83,9 +83,10 @@ public abstract class AbstractASTTest extends AbstractModelTests {
 		ASTVisitor visitor = new ASTVisitor() {
 
 			public boolean visitGeneral(ASTNode node) throws Exception {
-				if ((node.sourceStart() == start || start == -1) && 
-						(node.sourceEnd() == end || end == -1)) {
-					if (result[0] != null && !(result[0] instanceof ModuleDeclaration))
+				if ((node.sourceStart() == start || start == -1)
+						&& (node.sourceEnd() == end || end == -1)) {
+					if (result[0] != null
+							&& !(result[0] instanceof ModuleDeclaration))
 						throw new RuntimeException("Two different nodes on "
 								+ start + ":" + end);
 					result[0] = node;
@@ -99,10 +100,11 @@ public abstract class AbstractASTTest extends AbstractModelTests {
 
 		return result[0];
 	}
-	
+
 	protected abstract Class getExpectedClass();
-	
-	protected ASTNode checkNode (String content, int start, int end) throws Exception {
+
+	protected ASTNode checkNode(String content, int start, int end)
+			throws Exception {
 		ModuleDeclaration ast = getAST(content);
 		assertNotNull(ast);
 		if (problems.getCount() != 0) {
