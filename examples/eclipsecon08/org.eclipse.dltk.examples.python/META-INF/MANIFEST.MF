@@ -13,3 +13,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.editors,
  org.eclipse.ui.ide
 Eclipse-LazyStart: true
+Export-Package: org.eclipse.dltk.examples.internal.python.core,
+ org.eclipse.dltk.examples.internal.python.core.parser,
+ org.eclipse.dltk.examples.internal.python.ui

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+ <extension
+         point="org.eclipse.dltk.core.sourceParsers">
+      <parserContribution
+            natureId="org.eclipse.dltk.examples.python.nature">
+         <parser
+               class="org.eclipse.dltk.python.internal.core.parser.PythonSourceParserFactory"
+               description="Python Source parse"
+               id="org.eclipse.dltk.example.python.sourceParser"
+               name="sourceParser.name"
+               priority="0" />
+      </parserContribution>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.sourceElementParsers">
+      <parser
+            class="org.eclipse.dltk.python.internal.core.parser.PythonSourceElementParser"
+            nature="org.eclipse.dltk.examples.python.nature"
+            priority="2">
+      </parser>
+   </extension>
+</plugin>
