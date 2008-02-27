@@ -9,7 +9,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.debug.ui;
 
+import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
+import org.eclipse.dltk.internal.debug.core.model.ScriptValue;
 import org.eclipse.ui.IEditorInput;
 
 public class RubyDebugModelPresentation extends ScriptDebugModelPresentation {
@@ -17,5 +19,12 @@ public class RubyDebugModelPresentation extends ScriptDebugModelPresentation {
 
 	public String getEditorId(IEditorInput input, Object element) {
 		return RUBY_EDITOR_ID;
+	}
+
+	public String getDetailPaneText(IScriptValue value) {
+		if (value instanceof ScriptValue) {
+			return ((ScriptValue) value).getRawValue();
+		}
+		return super.getDetailPaneText(value);
 	}
 }

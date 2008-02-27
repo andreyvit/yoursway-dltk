@@ -163,7 +163,6 @@ public abstract class RemoteLaunchConfigurationTab extends
 				updateLaunchConfigurationDialog();
 			}
 		});
-
 	}
 
 	private String getLaunchAttr(ILaunchConfiguration config, String key,

@@ -16,6 +16,7 @@ import org.eclipse.dltk.debug.core.eval.IScriptEvaluationResult;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
+import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
 
 public class ScriptDetailFormattersManager {
 	private static final String DEFAULT_FORMATTER_TYPE = "#DEFAULT#";
@@ -73,11 +74,12 @@ public class ScriptDetailFormattersManager {
 	}
 
 	private String getValueText(IValue value) {
-		try {
-			return value.getValueString();
-		} catch (DebugException e) {
-			return e.getMessage();
+		if (value instanceof IScriptValue) {
+			ScriptDebugModelPresentation presentation = DLTKDebugUIPlugin.getDefault()
+					.getModelPresentation(value.getModelIdentifier());
+			return presentation.getDetailPaneText((IScriptValue) value);
 		}
+		return null;
 	}
 
 	public void computeValueDetail(final IScriptValue value,
@@ -105,10 +107,11 @@ public class ScriptDetailFormattersManager {
 											getValueText(resultValue));
 								} else {
 									try {
-										listener.detailComputed(value,
-												value.getValueString()/*CANNOT_EVALUATE*/);
+										listener
+												.detailComputed(value, value
+														.getValueString()/* CANNOT_EVALUATE */);
 									} catch (DebugException e) {
-										if( DLTKCore.DEBUG ) {
+										if (DLTKCore.DEBUG) {
 											e.printStackTrace();
 										}
 										listener.detailComputed(value,

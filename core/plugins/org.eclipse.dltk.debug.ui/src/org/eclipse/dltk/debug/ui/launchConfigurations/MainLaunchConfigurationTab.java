@@ -80,9 +80,6 @@ public abstract class MainLaunchConfigurationTab extends
 				handleSearchButtonSelected();
 			}
 		});
-
-		addBreakOnFirstLineButton(mainGroup);
-		addDbgpLoggingButton(mainGroup);
 	}
 
 	/**

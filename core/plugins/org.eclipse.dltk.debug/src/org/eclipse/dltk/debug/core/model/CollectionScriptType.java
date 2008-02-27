@@ -19,4 +19,8 @@ public class CollectionScriptType implements IScriptType {
 	public boolean isCollection() {
 		return true;
 	}
+
+	public boolean isString() {
+		return false;
+	}
 }

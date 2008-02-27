@@ -406,7 +406,7 @@ module XoredDebugger
 
             response = Response.new(command)
             begin
-                cmd = "#{name}"
+                cmd = create_property_eval_command(name)
                 property = PropertyElement.new(@context.eval(cmd, depth), name, pagesize, page)
                 response.set_data(property)
 
@@ -429,7 +429,7 @@ module XoredDebugger
             
             response = Response.new(command)
             begin
-                cmd = "#{name} = #{value.to_s}"
+                cmd = create_property_set_command(name, value)
                 property = PropertyElement.new(@context.eval(cmd, depth), name)
                 response.set_data(property)
                 response.add_attribute('success', 1)
@@ -452,7 +452,7 @@ module XoredDebugger
 
             response = Response.new(command)
             begin
-                cmd = "#{name}"   
+                cmd = create_property_eval_command(name)   
                 value = @context.eval(cmd, depth).inspect                          
                 response.set_data(value, true)
                 response.add_attribute('encoding', 'base64')
@@ -539,7 +539,8 @@ module XoredDebugger
             check_command_arguments(command, '--')
             response = Response.new(command)
             begin
-                expression = command.data
+                expression = create_property_eval_command(command.data)
+                log('Evaluating: ' + expression)
                 result = calculate_in_another_thread(expression)
                 response.add_attribute('success', 1)
                 response.set_data(PropertyElement.new(result, expression))
@@ -547,7 +548,8 @@ module XoredDebugger
             rescue OperationNotAvailableError
                 raise $!
             
-            rescue Exception                        
+            rescue Exception
+                logException($!, 'in handle_eval')                        
                 response.add_attribute('success', 0)
                 response.set_error(206)                 
             end
@@ -661,5 +663,38 @@ module XoredDebugger
             end
             @result            
         end  
+        
+		def create_property_eval_command(name)
+		    pos = name.index('::::')
+		    if (pos.nil?)
+		    	return "#{name}"
+		    end
+		    
+		    parent = name[0..pos-1]
+		    var = name[pos+4..name.length]
+		    
+		    space_pos = var.index(' ')
+		    tab_pos = var.index('\t')
+
+		    space_pos = var.length if space_pos.nil?
+		    tab_pos = var.length if tab_pos.nil?
+		    ws_pos = (space_pos < tab_pos) ? space_pos : tab_pos
+		    
+		    rest = var[ws_pos..var.length]
+		    var = var[0..ws_pos - 1]
+		    return parent + '.instance_eval(\'' + create_property_eval_command(var) + '\')' 
+		        + create_property_eval_command(rest) 
+		end	       
+		
+		def create_property_set_command(name, value)
+		    pos = name.index('::::')
+		    if (pos.nil?)
+		    	return "#{name} = #{value}"
+		    end
+		    
+		    parent = name[0..pos-1]
+		    var = name[pos+4..name.length]
+		    return parent + '.instance_eval(\'' + create_property_set_command(var, value) + '\')' 		    
+		end
     end # class CommandHandler
 end # module XoredDebugger

@@ -16,12 +16,16 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.internal.ui.DebugUIPlugin;
+import org.eclipse.debug.internal.ui.LazyModelPresentation;
+import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
@@ -69,6 +73,8 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 	private boolean fShuttingDown = false;
 
 	private ScriptHotCodeReplaceListener fHCRListener;
+
+	private HashMap fPresentations = new HashMap();
 
 	// private Object fUtilPresentation;
 
@@ -136,15 +142,17 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 							org.eclipse.ui.console.IConsole[] consoles) {
 					}
 				});
-		
-		fHCRListener= new ScriptHotCodeReplaceListener();
-		HotCodeReplaceManager.getDefault().addHotCodeReplaceListener(fHCRListener);
+
+		fHCRListener = new ScriptHotCodeReplaceListener();
+		HotCodeReplaceManager.getDefault().addHotCodeReplaceListener(
+				fHCRListener);
 	}
 
 	public void stop(BundleContext context) throws Exception {
 		try {
-			HotCodeReplaceManager.getDefault().removeHotCodeReplaceListener(fHCRListener);
-			
+			HotCodeReplaceManager.getDefault().removeHotCodeReplaceListener(
+					fHCRListener);
+
 			setShuttingDown(true);
 
 			ScriptDebugOptionsManager.getDefault().shutdown();
@@ -363,4 +371,40 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 		return null;
 	}
 
+	private static ScriptDebugModelPresentation loadDebugModelPresentation(
+			String modelId) {
+		IExtensionPoint point = Platform.getExtensionRegistry()
+				.getExtensionPoint(DebugUIPlugin.getUniqueIdentifier(),
+						IDebugUIConstants.ID_DEBUG_MODEL_PRESENTATION);
+		if (point != null) {
+			IExtension[] extensions = point.getExtensions();
+			for (int i = 0; i < extensions.length; i++) {
+				IExtension extension = extensions[i];
+				IConfigurationElement[] configElements = extension
+						.getConfigurationElements();
+				for (int j = 0; j < configElements.length; j++) {
+					IConfigurationElement elt = configElements[j];
+					String id = elt.getAttribute("id"); //$NON-NLS-1$
+					if (id != null && id.equals(modelId)) {
+						IDebugModelPresentation lp;
+						try {
+							return (ScriptDebugModelPresentation) elt
+									.createExecutableExtension("class");
+						} catch (CoreException e) {
+							DLTKDebugUIPlugin.log(e);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	public synchronized ScriptDebugModelPresentation getModelPresentation(
+			String modelId) {
+		if (!fPresentations.containsKey(modelId)) {			
+			fPresentations.put(modelId, loadDebugModelPresentation(modelId));
+		}
+		return (ScriptDebugModelPresentation) fPresentations.get(modelId);
+	}
 }

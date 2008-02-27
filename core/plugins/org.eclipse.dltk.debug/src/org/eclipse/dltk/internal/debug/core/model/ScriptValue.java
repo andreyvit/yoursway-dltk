@@ -42,6 +42,7 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue,
 	private String value;
 	private boolean hasChildren;
 	private String key;
+	private String rawValue;
 
 	public static IScriptValue createValue(IScriptStackFrame frame,
 			IDbgpProperty property) {
@@ -72,7 +73,8 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue,
 		this.key = property.getKey();
 		this.name = property.getName();
 		this.fullname = property.getEvalName();
-		this.value = property.getValue();
+		this.rawValue = property.getValue();
+		this.value = null;
 		this.hasChildren = property.hasChildren();
 		this.variables = new ScriptVariable[property.getChildrenCount()];
 		
@@ -116,10 +118,12 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue,
 		return getType().getName();
 	}
 
-	public String getValueString() throws DebugException {
-		if (value == null || value.length() == 0) {
-			IScriptType type = getType();
-			if (!type.isAtomic()) {
+	public String getValueString() {
+		if (value == null) {
+			if (type.isString()) {
+				value = prepareString(rawValue);
+			}
+			else if (!type.isAtomic()) {
 				StringBuffer sb = new StringBuffer();
 				sb.append(type.getName());
 				String id = getInstanceId();
@@ -128,9 +132,36 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue,
 				}
 				value = sb.toString();
 			}
+			else {
+				value = rawValue;
+			}
 		}
-
 		return value;
+	}
+
+	public String getRawValue() {
+		return rawValue;
+	}
+	
+	private String prepareString(String string) {
+		if (string == null) {
+			return null;
+		}
+		StringBuffer escaped = new StringBuffer();
+		escaped.append('"');
+		for (int i = 0; i < string.length(); i++) {
+			char c = string.charAt(i);
+			switch (c) {
+				case '"':
+					escaped.append("\\\""); //$NON-NLS-1$
+					break;					
+				default:
+					escaped.append(c);
+					break;
+			}
+		}
+		escaped.append('"');
+		return escaped.toString();
 	}
 
 	public String getEvalName() {
@@ -146,7 +177,7 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue,
 	}
 
 	public String toString() {
-		return value;
+		return getValueString();
 	}
 
 	public IDebugTarget getDebugTarget() {
@@ -173,7 +204,7 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue,
 		} else {
 			DLTKDebugPlugin.log(new Status(IStatus.WARNING,
 					DLTKDebugPlugin.PLUGIN_ID,
-					"Detail formatter requird to contain " + pattern
+					"Detail formatter required to contain " + pattern
 							+ " identifier."));
 			return new ScriptEvaluationCommand(engine, evalName, frame);
 		}

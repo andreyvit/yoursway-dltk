@@ -38,6 +38,7 @@ import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IValueDetailListener;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.debug.core.ScriptDebugManager;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
@@ -51,6 +52,7 @@ import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
 import org.eclipse.dltk.debug.ui.breakpoints.BreakpointUtils;
+import org.eclipse.dltk.internal.core.Openable;
 import org.eclipse.dltk.internal.core.util.HandleFactory;
 import org.eclipse.dltk.internal.debug.ui.ExternalFileEditorInput;
 import org.eclipse.dltk.internal.debug.ui.ScriptDetailFormattersManager;
@@ -276,6 +278,10 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		return value.toString();
 	}
 
+	public String getDetailPaneText(IScriptValue value) {
+		return getValueText(value);
+	}
+	
 	protected String renderUnknownValue(IScriptValue value)
 			throws DebugException {
 		return value.getValueString();
@@ -495,12 +501,12 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 				HandleFactory fac = new HandleFactory();
 				IDLTKSearchScope scope = DLTKSearchScopeFactory.getInstance()
 						.createWorkspaceScope(true, toolkit);
-				IStorage storage = (IStorage) fac.createOpenable(path
+				Openable openable = fac.createOpenable(path
 						.toOSString(), scope);
 				
-				if (storage != null) {
-					return new ExternalStorageEditorInput(storage);
-				}
+				if (openable instanceof IStorage) {
+					return new ExternalStorageEditorInput((IStorage) openable);
+				}					
 			}
 		} catch (CoreException e) {
 			DLTKUIPlugin.log(e);

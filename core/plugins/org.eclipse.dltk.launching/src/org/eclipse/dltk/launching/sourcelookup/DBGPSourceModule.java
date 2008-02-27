@@ -88,15 +88,15 @@ public class DBGPSourceModule extends AbstractExternalSourceModule {
 	 * @see org.eclipse.core.resources.IStorage#getFullPath()
 	 */
 	public IPath getFullPath() {
-		Path path = new Path(frame.getFileName().getPath());
-		return path;
+		return null;
 	}
 
 	/*
 	 * @see org.eclipse.core.resources.IStorage#getName()
 	 */
 	public String getName() {
-		return getFullPath().lastSegment();
+		Path path = new Path(frame.getFileName().getPath());
+		return path.lastSegment();
 	}
 
 	/*

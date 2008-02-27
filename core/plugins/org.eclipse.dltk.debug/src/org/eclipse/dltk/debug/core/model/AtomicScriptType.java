@@ -19,4 +19,8 @@ public class AtomicScriptType implements IScriptType {
 	public boolean isCollection() {
 		return false;
 	}
+
+	public boolean isString() {
+		return false;
+	}
 }

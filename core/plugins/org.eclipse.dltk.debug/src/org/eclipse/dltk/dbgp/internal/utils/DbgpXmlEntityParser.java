@@ -100,6 +100,7 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 		final String ATTR_KEY = "key";
 		final String ATTR_PAGE = "page";
 		final String ATTR_PAGE_SIZE = "pagesize";
+		
 		/*
 		 * attributes: name, fullname, type, children, numchildren, constant,
 		 * encoding, size, key
@@ -150,13 +151,11 @@ public class DbgpXmlEntityParser extends DbgpXmlParser {
 		// Value
 		String value = "";
 
-		if (!hasChildren) {
-			NodeList list = property.getElementsByTagName("value");
-			if (list.getLength() == 0) {
-				value = getEncodedValue(property);
-			} else {
-				value = getEncodedValue((Element) list.item(0));
-			}
+		NodeList list = property.getElementsByTagName("value");
+		if (list.getLength() == 0) {
+			value = getEncodedValue(property);
+		} else {
+			value = getEncodedValue((Element) list.item(0));
 		}
 
 		// Children

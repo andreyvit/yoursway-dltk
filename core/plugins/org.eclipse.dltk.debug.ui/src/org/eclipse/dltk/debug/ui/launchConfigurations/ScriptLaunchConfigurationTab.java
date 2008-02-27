@@ -89,11 +89,34 @@ public abstract class ScriptLaunchConfigurationTab extends
 		createVerticalSpacer(comp, 1);
 
 		doCreateControl(comp);
+		createVerticalSpacer(comp, 1);
 
+		createDebugOptionsGroup(comp);
 		// PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(),
 		// IScriptDebugHelpContextIds.LAUNCH_CONFIGURATION_DIALOG_MAIN_TAB);
 	}
 
+	/**
+	 * Creates the widgets for specifying a main type.
+	 * 
+	 * @param parent
+	 *            the parent composite
+	 */
+	protected void createDebugOptionsGroup(Composite parent) {
+		String text = "Debug Options"; // TODO Externalize
+		Font font = parent.getFont();
+		Group group = new Group(parent, SWT.NONE);
+		group.setText(text);
+		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		group.setLayoutData(gd);
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 2;
+		group.setLayout(layout);
+		group.setFont(font);
+		addBreakOnFirstLineButton(group);
+		addDbgpLoggingButton(group);
+	}
+	
 	/*
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#initializeFrom(org.eclipse.debug.core.ILaunchConfiguration)
 	 */
@@ -207,7 +230,7 @@ public abstract class ScriptLaunchConfigurationTab extends
 	 * 
 	 * @param group group composite
 	 */
-	protected void addBreakOnFirstLineButton(Composite group) {
+	private void addBreakOnFirstLineButton(Composite group) {
 		breakOnFirstLine = createCheckButton(group,
 				ScriptDebugPreferencesMessages.BreakOnFirstLineLabel);
 		breakOnFirstLine.addSelectionListener(getWidgetListener());
@@ -222,7 +245,7 @@ public abstract class ScriptLaunchConfigurationTab extends
 	 * 
 	 * @param group group composite
 	 */
-	protected void addDbgpLoggingButton(Composite group) {
+	private void addDbgpLoggingButton(Composite group) {
 		enableLogging = createCheckButton(group,
 				ScriptDebugPreferencesMessages.EnableDbgpLoggingLabel);
 		enableLogging.addSelectionListener(getWidgetListener());
