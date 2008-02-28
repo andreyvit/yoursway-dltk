@@ -992,6 +992,12 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		return getPreferenceStore().getBoolean(
 				PreferenceConstants.EDITOR_FOLDING_ENABLED);
 	}
+	
+	
+
+	public boolean isSaveAsAllowed() {
+		return true;
+	}
 
 	/**
 	 * Returns the standard action group of this editor.
