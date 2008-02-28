@@ -112,6 +112,11 @@ public class RubyUILanguageToolkit implements IDLTKUILanguageToolkit {
 
 	private static final String INTERPRETERS_PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.interpreters";
 	private static final String DEBUG_PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug";
+	private static final String[] EDITOR_PREFERENCE_PAGES_IDS = {
+		"org.eclipse.dltk.ruby.preferences.editor", 
+		"org.eclipse.dltk.ruby.preferences.editor.syntaxcoloring", 
+		"org.eclipse.dltk.ruby.preferences.templates"		
+	};
 
 	public String getInterpreterPreferencePage() {
 		return INTERPRETERS_PREFERENCE_PAGE_ID;
@@ -119,5 +124,9 @@ public class RubyUILanguageToolkit implements IDLTKUILanguageToolkit {
 
 	public String getDebugPreferencePage() {
 		return DEBUG_PREFERENCE_PAGE_ID;
+	}
+
+	public String[] getEditorPreferencePages() {
+		return EDITOR_PREFERENCE_PAGES_IDS;
 	}
 }

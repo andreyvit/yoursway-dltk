@@ -34,11 +34,11 @@ public class SourceModuleInfoCache implements ISourceModuleInfoCache {
 	static long allAccess = 0;
 	static long miss = 0;
 	static long closes = 0;
-	
+
 	public SourceModuleInfoCache() {
 		// set the size of the caches in function of the maximum amount of
 		// memory available
-//		long maxMemory = Runtime.getRuntime().freeMemory();
+		// long maxMemory = Runtime.getRuntime().freeMemory();
 		// if max memory is infinite, set the ratio to 4d which corresponds to
 		// the 256MB that Eclipse defaults to
 		// (see https://bugs.eclipse.org/bugs/show_bug.cgi?id=111299)
@@ -46,8 +46,8 @@ public class SourceModuleInfoCache implements ISourceModuleInfoCache {
 
 		this.cache = new ElementCache(
 				(int) (ModelCache.DEFAULT_ROOT_SIZE * ratio));
-		this.cache.setLoadFactor( 0.90 );
-		this.cache.addListener(new IElementCacheListener(){
+		this.cache.setLoadFactor(0.90);
+		this.cache.addListener(new IElementCacheListener() {
 			public void close(Object element) {
 				closes++;
 			}
@@ -58,10 +58,10 @@ public class SourceModuleInfoCache implements ISourceModuleInfoCache {
 	public void stop() {
 		DLTKCore.removeElementChangedListener(changedListener);
 	}
-	
+
 	public ISourceModuleInfo get(ISourceModule module) {
 		Object object = this.cache.get(module);
-		if (DLTKCore.VERBOSE ) {
+		if (DLTKCore.VERBOSE) {
 			System.out.println("Filling ratio:" + this.cache.fillingRatio());
 		}
 		allAccess++;
@@ -71,13 +71,15 @@ public class SourceModuleInfoCache implements ISourceModuleInfoCache {
 		}
 		SoftReference ref = (SoftReference) object;
 		ISourceModuleInfo info = (ISourceModuleInfo) ref.get();
-		if( info == null ) {
+		if (info == null) {
 			miss++;
 			return returnAdd(module);
 		}
-//		this.cache.printStats();
-		if(DLTKCore.PERFOMANCE) {
-			System.out.println("SourceModuleInfoCache: access:" + allAccess + " ok:" + ( 100.0f * (allAccess - miss ) / allAccess) + "% closes:" + closes );
+		// this.cache.printStats();
+		if (DLTKCore.PERFOMANCE) {
+			System.out.println("SourceModuleInfoCache: access:" + allAccess
+					+ " ok:" + (100.0f * (allAccess - miss) / allAccess)
+					+ "% closes:" + closes);
 			System.out.println("Filling ratio:" + this.cache.fillingRatio());
 		}
 		return (ISourceModuleInfo) info;
@@ -100,10 +102,11 @@ public class SourceModuleInfoCache implements ISourceModuleInfoCache {
 		private void processDelta(IModelElementDelta delta) {
 			IModelElement element = delta.getElement();
 			if (delta.getKind() == IModelElementDelta.REMOVED
-					|| (delta.getFlags() & IModelElementDelta.F_REMOVED_FROM_BUILDPATH) != 0 
-					|| ( delta.getFlags() & IModelElementDelta.CHANGED) != 0 ) {
+					|| delta.getKind() == IModelElementDelta.CHANGED
+					|| (delta.getFlags() & IModelElementDelta.F_REMOVED_FROM_BUILDPATH) != 0
+					|| (delta.getFlags() & IModelElementDelta.CHANGED) != 0) {
 				if (element.getElementType() == IModelElement.SOURCE_MODULE) {
-					SourceModuleInfoCache.this.remove((ISourceModule)element);
+					SourceModuleInfoCache.this.remove((ISourceModule) element);
 				}
 			}
 			if ((delta.getFlags() & IModelElementDelta.F_CHILDREN) != 0) {
@@ -141,7 +144,7 @@ public class SourceModuleInfoCache implements ISourceModuleInfoCache {
 		}
 
 		public boolean isEmpty() {
-			if( this.map == null ) {
+			if (this.map == null) {
 				return true;
 			}
 			return this.map.isEmpty();

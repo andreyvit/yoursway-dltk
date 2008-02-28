@@ -11,9 +11,12 @@ package org.eclipse.dltk.internal.ui.editor;
 
 import java.text.CharacterIterator;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.Stack;
 
 import org.eclipse.core.resources.ProjectScope;
@@ -43,8 +46,10 @@ import org.eclipse.dltk.internal.ui.text.IScriptReconcilingListener;
 import org.eclipse.dltk.internal.ui.text.hover.ScriptExpandHover;
 import org.eclipse.dltk.internal.ui.text.hover.SourceViewerInformationControl;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
+import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.IContextMenuConstants;
+import org.eclipse.dltk.ui.IDLTKUILanguageToolkit;
 import org.eclipse.dltk.ui.IWorkingCopyManager;
 import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.PreferencesAdapter;
@@ -1258,17 +1263,17 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 
 		fFoldingGroup = createFoldingActionGroup();
 
-//		ResourceAction resAction = new TextOperationAction(DLTKEditorMessages
-//				.getBundleForConstructedKeys(), "ShowDocumentaion.", this,
-//				ISourceViewer.INFORMATION, true);
-//
-//		resAction = new InformationDispatchAction(DLTKEditorMessages
-//				.getBundleForConstructedKeys(), "ShowDocumentation.",
-//				(TextOperationAction) resAction);
-//
-//		resAction
-//				.setActionDefinitionId(IScriptEditorActionDefinitionIds.SHOW_DOCUMENTATION);
-//		setAction("ShowDocumentation", resAction);
+		// ResourceAction resAction = new TextOperationAction(DLTKEditorMessages
+		// .getBundleForConstructedKeys(), "ShowDocumentaion.", this,
+		// ISourceViewer.INFORMATION, true);
+		//
+		// resAction = new InformationDispatchAction(DLTKEditorMessages
+		// .getBundleForConstructedKeys(), "ShowDocumentation.",
+		// (TextOperationAction) resAction);
+		//
+		// resAction
+		// .setActionDefinitionId(IScriptEditorActionDefinitionIds.SHOW_DOCUMENTATION);
+		// setAction("ShowDocumentation", resAction);
 
 		Action action = new GotoMatchingBracketAction(this);
 		action
@@ -2613,7 +2618,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 								shellStyle, style, toolkit);
 					}
 				});
-	
+
 		fProjectionSupport.install();
 
 		fProjectionModelUpdater = getFoldingStructureProvider();
@@ -2627,26 +2632,28 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 
 		return viewer;
 	}
-//	protected String getTooltipAffordanceString() {
-//		if (this.getPreferenceStore() == null) {
-//			return "{0}";
-//		}
-//		IBindingService fBindingService = (IBindingService) PlatformUI.getWorkbench()
-//		.getAdapter(IBindingService.class);
-//		if (fBindingService == null
-//				|| !getPreferenceStore().getBoolean(
-//						PreferenceConstants.EDITOR_SHOW_TEXT_HOVER_AFFORDANCE))
-//			return null;
-//
-//		String keySequence = fBindingService
-//				.getBestActiveBindingFormattedFor(IScriptEditorActionDefinitionIds.SHOW_DOCUMENTATION);
-//		if (keySequence == null)
-//			return null;
-//
-//		return Messages.format(
-//				ScriptHoverMessages.ScriptTextHover_makeStickyHint,
-//				keySequence == null ? "" : keySequence); //$NON-NLS-1$
-//	}
+
+	// protected String getTooltipAffordanceString() {
+	// if (this.getPreferenceStore() == null) {
+	// return "{0}";
+	// }
+	// IBindingService fBindingService = (IBindingService)
+	// PlatformUI.getWorkbench()
+	// .getAdapter(IBindingService.class);
+	// if (fBindingService == null
+	// || !getPreferenceStore().getBoolean(
+	// PreferenceConstants.EDITOR_SHOW_TEXT_HOVER_AFFORDANCE))
+	// return null;
+	//
+	// String keySequence = fBindingService
+	// .getBestActiveBindingFormattedFor(IScriptEditorActionDefinitionIds.SHOW_DOCUMENTATION);
+	// if (keySequence == null)
+	// return null;
+	//
+	// return Messages.format(
+	// ScriptHoverMessages.ScriptTextHover_makeStickyHint,
+	// keySequence == null ? "" : keySequence); //$NON-NLS-1$
+	// }
 	protected SourceViewerInformationControl createSourceViewerInformationControl(
 			Shell shell, int shellStyle, int style, IDLTKLanguageToolkit toolkit) {
 		return new SourceViewerInformationControl(shell, shellStyle, style,
@@ -2976,9 +2983,23 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		}
 	}
 
-	public int getOrientation() {	
+	public int getOrientation() {
 		return SWT.LEFT_TO_RIGHT;
 	}
-	
-	
+
+	protected String[] collectContextMenuPreferencePages() {
+		String[] inheritedPages = super.collectContextMenuPreferencePages();
+		String natureId = getLanguageToolkit().getNatureId();
+
+		IDLTKUILanguageToolkit uiToolkit = DLTKUILanguageManager
+				.getLanguageToolkit(natureId);
+		final String[] myPages = uiToolkit.getEditorPreferencePages();
+		Set items = new HashSet();
+		items.addAll(Arrays.asList(inheritedPages));
+		if (myPages != null) {
+			items.addAll(Arrays.asList(myPages));
+		}
+
+		return (String[]) items.toArray(new String[items.size()]);
+	}
 }

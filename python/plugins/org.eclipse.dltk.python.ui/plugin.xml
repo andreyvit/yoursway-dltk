@@ -84,7 +84,7 @@
 	          category="org.eclipse.dltk.python.preferences.editor"
 	          class="org.eclipse.dltk.python.internal.ui.preferences.PythonEditorSyntaxColoringPreferencePage"
 	          id="org.eclipse.dltk.python.ui.editor.SyntaxColoring"
-	          name="PythonEditorSyntaxColoringPreferencePage.name"/>
+	          name="%PythonEditorSyntaxColoringPreferencePage.name"/>
 	    <page
 	          category="org.eclipse.dltk.python.preferences.editor"
 	          class="org.eclipse.dltk.python.internal.ui.preferences.PythonSmartTypingPreferencePage"

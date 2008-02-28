@@ -76,4 +76,16 @@ public class JavaScriptUILanguageToolkit implements IDLTKUILanguageToolkit {
 	public String getDebugPreferencePage() {
 		return "org.eclipse.dltk.javascript.preferences.debug";
 	}
+
+	private static final String[] EDITOR_PREFERENCE_PAGES_IDS = {
+		"org.eclipse.dltk.javascript.ui.EditorPreferences", 
+		"org.eclipse.dltk.javascript.ui.editor.SyntaxColoring", 
+		"org.eclipse.dltk.javascript.ui.editor.SmartTyping", 
+		"org.eclipse.dltk.javascript.ui.editor.JavascriptFolding", 
+		"javascriptTemplatePreferencePage" 
+	};
+	
+	public String[] getEditorPreferencePages() {
+		return EDITOR_PREFERENCE_PAGES_IDS;
+	}
 }

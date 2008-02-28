@@ -79,4 +79,7 @@ public abstract class AbstractDLTKUILanguageToolkit implements
 		};
 	}
 
+	public String[] getEditorPreferencePages() {
+		return null;
+	}
 }
