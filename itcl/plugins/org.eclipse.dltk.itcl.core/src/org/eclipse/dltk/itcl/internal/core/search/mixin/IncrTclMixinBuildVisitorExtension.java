@@ -40,11 +40,11 @@ public class IncrTclMixinBuildVisitorExtension implements
 		ElementInfo info = new ElementInfo();
 
 		String name = s.getName();
-		ASTNode declaringXOTclType = method.getDeclaringType();
-		if (declaringXOTclType != null
-				&& declaringXOTclType instanceof TypeDeclaration) {
+		ASTNode declaringType = method.getDeclaringType();
+		if (declaringType != null
+				&& declaringType instanceof TypeDeclaration) {
 			List levels = TclParseUtil.findLevelsTo(original
-					.getModuleDeclaration(), declaringXOTclType);
+					.getModuleDeclaration(), declaringType);
 			info.key = original.getKeyFromLevels(levels)
 					+ IMixinRequestor.MIXIN_NAME_SEPARATOR
 					+ original.tclNameToKey(name);
@@ -59,7 +59,9 @@ public class IncrTclMixinBuildVisitorExtension implements
 				break;
 			}
 		}
-		original.getRequestor().reportElement(info);
+		if (info.key != null) {
+			original.getRequestor().reportElement(info);
+		}
 		// System.out.println("Report proc or instproc:" + info.key);
 	}
 
@@ -69,6 +71,9 @@ public class IncrTclMixinBuildVisitorExtension implements
 
 			info.key = original.getNamespacePrefix()
 					+ original.tclNameToKey(s.getName());
+			if (info.key.startsWith("{")) {
+				info.key = info.key.substring(1);
+			}
 			// System.out.println("Report Tcl namespace:" + info.key);
 			original.pushNamespaceName(s);
 			if (original.getSignature()) {

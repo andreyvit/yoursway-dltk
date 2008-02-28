@@ -1,7 +1,6 @@
-package org.eclipse.dltk.xotcl.internal.core;
+package org.eclipse.dltk.itcl.internal.core;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -18,37 +17,37 @@ import org.eclipse.dltk.codeassist.complete.CompletionNodeFound;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.Flags;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
+import org.eclipse.dltk.itcl.internal.core.parser.IncrTclParseUtil;
+import org.eclipse.dltk.itcl.internal.core.parser.ast.IncrTclInstanceVariable;
+import org.eclipse.dltk.itcl.internal.core.parser.ast.IncrTclMethodCallStatement;
+import org.eclipse.dltk.itcl.internal.core.search.mixin.model.IncrTclClass;
+import org.eclipse.dltk.itcl.internal.core.search.mixin.model.IncrTclClassInstance;
+import org.eclipse.dltk.itcl.internal.core.search.mixin.model.IncrTclInstProc;
+import org.eclipse.dltk.itcl.internal.core.search.mixin.model.IncrTclProc;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.core.extensions.ICompletionExtension;
+import org.eclipse.dltk.tcl.internal.core.codeassist.ITclCompletionProposalTypes;
 import org.eclipse.dltk.tcl.internal.core.codeassist.TclCompletionEngine;
 import org.eclipse.dltk.tcl.internal.core.codeassist.TclResolver;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeywordArgumentOrFunctionArgument;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeywordOrFunction;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.TclCompletionParser;
-import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
-import org.eclipse.dltk.xotcl.core.XOTclParseUtil;
-import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclExInstanceVariable;
-import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclInstanceVariable;
-import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodCallStatement;
-import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclProcCallStatement;
-import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclClass;
-import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclClassInstance;
-import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclInstProc;
-import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclProc;
 
-public class XOTclCompletionExtension implements ICompletionExtension {
+public class IncrTclCompletionExtension implements ICompletionExtension {
 
 	private CompletionRequestor requestor;
+
 	public boolean visit(Expression s, TclCompletionParser parser, int position) {
 		List exprs = new ArrayList();
-		if (s instanceof XOTclMethodCallStatement) {
-			XOTclMethodCallStatement pcs = (XOTclMethodCallStatement) s;
+		if (s instanceof IncrTclMethodCallStatement) {
+			IncrTclMethodCallStatement pcs = (IncrTclMethodCallStatement) s;
 
 			exprs.add(pcs.getInstNameRef());
 			exprs.add(pcs.getCallName());
@@ -61,17 +60,6 @@ public class XOTclCompletionExtension implements ICompletionExtension {
 	}
 
 	public boolean visit(Statement s, TclCompletionParser parser, int position) {
-		List exprs = new ArrayList();
-		if (s instanceof XOTclProcCallStatement) {
-			XOTclProcCallStatement pcs = (XOTclProcCallStatement) s;
-
-			exprs.add(pcs.getInstNameRef());
-			exprs.add(pcs.getCallName());
-			if (pcs.getArguments() != null) {
-				exprs.addAll(pcs.getArguments().getChilds());
-			}
-			processArgumentCompletion(s, exprs, parser, position);
-		}
 		return false;
 	}
 
@@ -178,7 +166,7 @@ public class XOTclCompletionExtension implements ICompletionExtension {
 				// iterator.hasNext();) {
 				// ASTNode nde = (ASTNode) iterator.next();
 				public boolean visit(TypeDeclaration type) {
-					if ((type.getModifiers() & IXOTclModifiers.AccXOTcl) != 0
+					if ((type.getModifiers() & IIncrTclModifiers.AccIncrTcl) != 0
 							&& type.sourceStart() < engine
 									.getActualCompletionPosition()) {
 						// we need to find model element for selected type.
@@ -207,8 +195,8 @@ public class XOTclCompletionExtension implements ICompletionExtension {
 		try {
 			parent.traverse(new ASTVisitor() {
 				public boolean visit(Statement st) {
-					if (st instanceof XOTclInstanceVariable
-							|| st instanceof XOTclExInstanceVariable) {
+					if (st instanceof IncrTclInstanceVariable
+					/* || st instanceof XOTclExInstanceVariable */) {
 						// we need to find model element for selected type.
 						resolver.searchAddElementsTo(engine.getParser()
 								.getModule().getStatements(), st, engine
@@ -247,8 +235,8 @@ public class XOTclCompletionExtension implements ICompletionExtension {
 	private void completionForInstanceVariableMethods(FieldDeclaration var,
 			char[] token, Set methodNames, TclCompletionEngine engine) {
 		String keyPrefix = null;
-		if (var instanceof XOTclInstanceVariable) {
-			XOTclInstanceVariable ivar = (XOTclInstanceVariable) var;
+		if (var instanceof IncrTclInstanceVariable) {
+			IncrTclInstanceVariable ivar = (IncrTclInstanceVariable) var;
 			TypeDeclaration declaringType = ivar.getDeclaringType();
 			keyPrefix = TclParseUtil.getElementFQN(declaringType,
 					IMixinRequestor.MIXIN_NAME_SEPARATOR, engine.getParser()
@@ -257,15 +245,15 @@ public class XOTclCompletionExtension implements ICompletionExtension {
 				keyPrefix = keyPrefix.substring(1);
 			}
 
-		} else if (var instanceof XOTclExInstanceVariable) {
-			XOTclExInstanceVariable ivar = (XOTclExInstanceVariable) var;
-			String className = ivar.getDeclaringClassParameter().getClassName();
-			if (className.startsWith("::")) {
-				className = className.substring(2);
-			}
-			keyPrefix = className.replaceAll("::",
-					IMixinRequestor.MIXIN_NAME_SEPARATOR);
-		}
+		} /*
+			 * else if (var instanceof XOTclExInstanceVariable) {
+			 * XOTclExInstanceVariable ivar = (XOTclExInstanceVariable) var;
+			 * String className =
+			 * ivar.getDeclaringClassParameter().getClassName(); if
+			 * (className.startsWith("::")) { className =
+			 * className.substring(2); } keyPrefix = className.replaceAll("::",
+			 * IMixinRequestor.MIXIN_NAME_SEPARATOR); }
+			 */
 		Set methods = new HashSet();
 		findClassesFromMixin(methods, keyPrefix, engine);
 		Set result = new HashSet();
@@ -275,7 +263,15 @@ public class XOTclCompletionExtension implements ICompletionExtension {
 			if (e instanceof IType) {
 				try {
 					IMethod[] ms = ((IType) e).getMethods();
-					result.addAll(Arrays.asList(ms));
+					for (int i = 0; i < ms.length; i++) {
+						if (!Flags.isPublic(ms[i].getFlags())) {
+							if (this.requestor != null && this.requestor
+									.isIgnored(ITclCompletionProposalTypes.FILTER_INTERNAL_API)) {
+								continue;
+							}
+						}
+						result.add(ms[i]);
+					}
 				} catch (ModelException e1) {
 					if (DLTKCore.DEBUG) {
 						e1.printStackTrace();
@@ -289,10 +285,11 @@ public class XOTclCompletionExtension implements ICompletionExtension {
 		findMethodsShortName(token, result, methodNames, engine);
 		// We need to handle supers
 
-		addKeywords(token, XOTclKeywords.XOTclCommandClassArgs, methodNames,
-				engine);
-		addKeywords(token, XOTclKeywords.XOTclCommandObjectArgs, methodNames,
-				engine);
+		// addKeywords(token, IncrTclKeywords., methodNames,
+		// engine);
+		// addKeywords(token, IncrTclKeywords.XOTclCommandObjectArgs,
+		// methodNames,
+		// engine);
 	}
 
 	// protected boolean methodCanBeAdded(ASTNode nde, TclCompletionEngine
@@ -320,10 +317,12 @@ public class XOTclCompletionExtension implements ICompletionExtension {
 			findMethodsShortName(cs, methods, methodNames, engine);
 			// We also need to add Object and Class methods
 			// We need to add superclass methods
-			addKeywords(cs, XOTclKeywords.XOTclCommandClassArgs, methodNames,
-					engine);
-			addKeywords(cs, XOTclKeywords.XOTclCommandObjectArgs, methodNames,
-					engine);
+			// addKeywords(cs, IncrTclKeywords.XOTclCommandClassArgs,
+			// methodNames,
+			// engine);
+			// addKeywords(cs, IncrTclKeywords.XOTclCommandObjectArgs,
+			// methodNames,
+			// engine);
 		}
 	}
 
@@ -365,12 +364,12 @@ public class XOTclCompletionExtension implements ICompletionExtension {
 
 	protected void findProcsFromMixin(final Set methods, String tok,
 			TclCompletionEngine engine) {
-		engine.findMixinTclElement(methods, tok, XOTclProc.class);
+		engine.findMixinTclElement(methods, tok, IncrTclProc.class);
 	}
 
 	protected void findInstProcsFromMixin(final Set methods, String tok,
 			TclCompletionEngine engine) {
-		engine.findMixinTclElement(methods, tok, XOTclInstProc.class);
+		engine.findMixinTclElement(methods, tok, IncrTclInstProc.class);
 	}
 
 	private void findXOTclClasses(char[] token, Set methodNames,
@@ -396,12 +395,14 @@ public class XOTclCompletionExtension implements ICompletionExtension {
 
 	protected void findClassesFromMixin(final Set completions, String tok,
 			TclCompletionEngine engine) {
-		engine.findMixinTclElement(completions, tok, XOTclClass.class);
+		engine.findMixinTclElement(completions, tok, IncrTclClass.class);
 	}
 
 	protected void findClassesInstanceFromMixin(final Set completions,
 			String tok, TclCompletionEngine engine) {
-		engine.findMixinTclElement(completions, tok, XOTclClassInstance.class);
+		engine
+				.findMixinTclElement(completions, tok,
+						IncrTclClassInstance.class);
 	}
 
 	private FieldDeclaration searchFieldFromMixin(String name,
@@ -416,8 +417,8 @@ public class XOTclCompletionExtension implements ICompletionExtension {
 		completeClassMethods(name, compl.getToken(), methodNames, engine);
 
 		// Lets find instance with specified name.
-		FieldDeclaration var = XOTclParseUtil
-				.findXOTclInstanceVariableDeclarationFrom(engine.getParser()
+		FieldDeclaration var = IncrTclParseUtil
+				.findInstanceVariableDeclarationFrom(engine.getParser()
 						.getModule(), TclParseUtil.getScopeParent(engine
 						.getParser().getModule(), st), name);
 		if (var == null) {
@@ -428,6 +429,7 @@ public class XOTclCompletionExtension implements ICompletionExtension {
 					methodNames, engine);
 		}
 	}
+
 	public void setRequestor(CompletionRequestor requestor) {
 		this.requestor = requestor;
 	}

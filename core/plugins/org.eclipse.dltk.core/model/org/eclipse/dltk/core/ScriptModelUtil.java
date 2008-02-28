@@ -11,6 +11,9 @@ package org.eclipse.dltk.core;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.core.runtime.content.IContentTypeManager;
 import org.eclipse.dltk.compiler.CharOperation;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
@@ -177,11 +180,21 @@ public class ScriptModelUtil {
 			// Check for already specified extension in newMainName.
 			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
 					.getLanguageToolkit(cu);
-			String[] languageFileExtensions = languageToolkit.getLanguageFileExtensions();
-			for (int i = 0; i < languageFileExtensions.length; i++) {
-				if( newMainName.endsWith(languageFileExtensions[i] ) ) {
-					// Return extension is OK.
-					return newMainName;
+
+			String contentType = languageToolkit.getLanguageContentType();
+			IContentTypeManager manager = Platform.getContentTypeManager();
+			IContentType type = manager.getContentType(contentType);
+			String[] languageFileExtensions = null;
+			if (type != null) {
+				languageFileExtensions = type
+						.getFileSpecs(IContentType.FILE_EXTENSION_SPEC);
+			}
+			if (languageFileExtensions != null) {
+				for (int i = 0; i < languageFileExtensions.length; i++) {
+					if (newMainName.endsWith(languageFileExtensions[i])) {
+						// Return extension is OK.
+						return newMainName;
+					}
 				}
 			}
 		} catch (CoreException e) {

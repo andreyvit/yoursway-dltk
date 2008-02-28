@@ -196,7 +196,9 @@ public class TclParseUtil {
 			for (Iterator iterator = words.iterator(); iterator.hasNext();) {
 				TclWord word = (TclWord) iterator.next();
 				String wordText = null;
-				wordText = content.substring(offset + word.getStart(), word.getEnd() + 1 + offset);
+				wordText = content.substring(offset + word.getStart(), word
+						.getEnd()
+						+ 1 + offset);
 
 				// wordText = SimpleTclParser.magicSubstitute(wordText);
 				Object o = word.getContents().get(0);
@@ -477,9 +479,11 @@ public class TclParseUtil {
 				if (ns instanceof ExtendedTclMethodDeclaration) {
 					ExtendedTclMethodDeclaration m = (ExtendedTclMethodDeclaration) ns;
 					ASTNode declaringXOTclType = m.getDeclaringType();
-					List ndss = findLevelsTo(module, declaringXOTclType);
-					name = "::" + getElementFQN(ndss, separator, module)
-							+ separator + m.getName();
+					if (declaringXOTclType != null) {
+						List ndss = findLevelsTo(module, declaringXOTclType);
+						name = "::" + getElementFQN(ndss, separator, module)
+								+ separator + m.getName();
+					}
 				} else {
 					name = ((MethodDeclaration) ns).getName();
 				}

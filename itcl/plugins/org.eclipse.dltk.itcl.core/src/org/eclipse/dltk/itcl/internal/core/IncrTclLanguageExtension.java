@@ -1,5 +1,8 @@
 package org.eclipse.dltk.itcl.internal.core;
 
+import org.eclipse.dltk.itcl.internal.core.parser.IncrTclSourceElementRequestVisitorExtension;
+import org.eclipse.dltk.itcl.internal.core.search.IncrTclMatchLocatorExtension;
+import org.eclipse.dltk.itcl.internal.core.search.IncrTclSelectionExtension;
 import org.eclipse.dltk.itcl.internal.core.search.mixin.IncrTclMixinBuildVisitorExtension;
 import org.eclipse.dltk.tcl.core.extensions.ICompletionExtension;
 import org.eclipse.dltk.tcl.core.extensions.IMatchLocatorExtension;
@@ -10,17 +13,15 @@ import org.eclipse.dltk.tcl.core.extensions.ITclLanguageExtension;
 
 public class IncrTclLanguageExtension implements ITclLanguageExtension {
 
-	private static String[] extensions = new String[] {"itcl", "itk"};
-
 	public IncrTclLanguageExtension() {
 	}
 
 	public ICompletionExtension createCompletionExtension() {
-		return null;
+		return new IncrTclCompletionExtension();
 	}
 
 	public IMatchLocatorExtension createMatchLocatorExtension() {
-		return null;
+		return new IncrTclMatchLocatorExtension();
 	}
 
 	public IMixinBuildVisitorExtension createMixinBuildVisitorExtension() {
@@ -28,15 +29,11 @@ public class IncrTclLanguageExtension implements ITclLanguageExtension {
 	}
 
 	public ISelectionExtension createSelectionExtension() {
-		return null;
+		return new IncrTclSelectionExtension();
 	}
 
 	public ISourceElementRequestVisitorExtension createSourceElementRequestVisitorExtension() {
-		return null;
-	}
-
-	public String[] getFileExtensions() {
-		return extensions;
+		return new IncrTclSourceElementRequestVisitorExtension();
 	}
 
 	public String getName() {

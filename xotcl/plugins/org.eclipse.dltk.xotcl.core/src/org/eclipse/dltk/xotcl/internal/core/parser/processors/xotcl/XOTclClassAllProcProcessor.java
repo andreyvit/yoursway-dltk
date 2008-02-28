@@ -90,7 +90,7 @@ public class XOTclClassAllProcProcessor extends AbstractTclCommandProcessor {
 
 		ExtendedTclMethodDeclaration method = new XOTclMethodDeclaration(
 				statement.sourceStart(), statement.sourceEnd());
-		method.setDeclaringXOTclType(decl);
+		method.setDeclaringType(decl);
 		if (decl instanceof TypeDeclaration) {
 			method.setDeclaringTypeName(((TypeDeclaration) decl).getName());
 		} else if (decl instanceof XOTclInstanceVariable) {

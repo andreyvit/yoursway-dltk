@@ -14,7 +14,9 @@ public class TclMixinParser implements IMixinParser {
 	public void parserSourceModule(boolean signature, ISourceModule module) {
 
 		ModuleDeclaration moduleDeclaration = SourceParserUtil
-				.getModuleDeclaration(module, null, ISourceParserConstants.RUNTIME_MODEL);
+				.getModuleDeclaration(module, null,
+						signature ? ISourceParserConstants.DEFAULT
+								: ISourceParserConstants.RUNTIME_MODEL);
 
 		TclMixinBuildVisitor visitor = new TclMixinBuildVisitor(
 				moduleDeclaration, module, signature, requestor);

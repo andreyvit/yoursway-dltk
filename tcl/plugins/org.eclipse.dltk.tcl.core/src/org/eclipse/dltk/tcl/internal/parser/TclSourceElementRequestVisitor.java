@@ -193,7 +193,12 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 				needEnterLeave++;
 				if (!this.fRequestor.enterTypeAppend(split[i], "::")) {
 					ISourceElementRequestor.TypeInfo ti = new ISourceElementRequestor.TypeInfo();
-					ti.modifiers = Modifiers.AccNameSpace;
+					if (decl instanceof TypeDeclaration) {
+						ti.modifiers = getModifiers(decl);
+					}
+					else {
+						ti.modifiers = Modifiers.AccNameSpace;
+					}
 
 					ti.name = split[i];
 					ti.nameSourceStart = decl.getNameStart();
@@ -388,8 +393,8 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 		}
 		if (this.scriptProject != null) {
 			TclPackageDeclaration pkg = (TclPackageDeclaration) statement;
-			TclCheckBuilder.checkPackage(pkg, this.fReporter, this.scriptProject,
-					this.codeModel);
+			TclCheckBuilder.checkPackage(pkg, this.fReporter,
+					this.scriptProject, this.codeModel);
 		}
 	}
 
@@ -542,20 +547,20 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 		} else {
 			exit = this.resolveType(method, fullName, false);
 		}
-//		if (exit.created) {
-//			if (this.fReporter != null) {
-//				try {
-//					this.fReporter.reportProblem(new DefaultProblem("",
-//							"Namespace not found.", 0, null,
-//							ProblemSeverities.Warning, method.getNameStart(),
-//							method.getNameEnd(), -1));
-//				} catch (CoreException e1) {
-//					if (DLTKCore.DEBUG) {
-//						e1.printStackTrace();
-//					}
-//				}
-//			}
-//		}
+		// if (exit.created) {
+		// if (this.fReporter != null) {
+		// try {
+		// this.fReporter.reportProblem(new DefaultProblem("",
+		// "Namespace not found.", 0, null,
+		// ProblemSeverities.Warning, method.getNameStart(),
+		// method.getNameEnd(), -1));
+		// } catch (CoreException e1) {
+		// if (DLTKCore.DEBUG) {
+		// e1.printStackTrace();
+		// }
+		// }
+		// }
+		// }
 		this.fRequestor.enterMethodRemoveSame(mi);
 		this.exitStack.push(exit);
 		return true;

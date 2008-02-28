@@ -14,7 +14,7 @@ public class IncrTclClass extends TclMixinElement implements IIncrTclMixinConsta
 		return ELEMENT_INCRTCL_CLASS;
 	}
 	public String toString() {
-		return "xotclclass";
+		return "incrtclclass";
 	}
 	public void setNamespace(String namespacePrefix) {
 		this.namespaceKey = namespacePrefix;

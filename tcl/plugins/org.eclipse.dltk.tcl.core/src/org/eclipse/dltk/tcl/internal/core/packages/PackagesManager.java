@@ -27,6 +27,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.tcl.core.TclPlugin;
 import org.eclipse.dltk.tcl.internal.core.packages.DLTKTclHelper.TclPackage;
@@ -431,8 +432,9 @@ public class PackagesManager {
 		return packages;
 	}
 
-	public synchronized Set getInternalPackageNames(IInterpreterInstall install) {
-		String key = "internal|||"
+	public synchronized Set getInternalPackageNames(
+			IInterpreterInstall install, IScriptProject project) {
+		String key = "internal|||" + project.getElementName() + "|||"
 				+ install.getInstallLocation().getAbsolutePath();
 		if (this.interpreterToPackages.containsKey(key)) {
 			Set set = (Set) this.interpreterToPackages.get(key);

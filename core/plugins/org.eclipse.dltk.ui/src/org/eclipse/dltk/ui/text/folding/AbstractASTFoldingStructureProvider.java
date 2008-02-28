@@ -136,6 +136,8 @@ public abstract class AbstractASTFoldingStructureProvider implements
 		private int hash, length;
 
 		public SourceRangeStamp(int hash, int lenght) {
+			this.hash = hash;
+			this.length = lenght;
 		}
 
 		/**

@@ -400,7 +400,7 @@
     	    class="org.eclipse.dltk.tcl.internal.ui.text.completion.TclNoTypeCompletionProposalComputer"
 	        toolkitId="org.eclipse.dltk.tcl.core.nature">
 			<partition type="__dftl_partition_content_type"/>
-   <partition type="__tcl_string"/>
+		    <partition type="__tcl_string"/>
 		</scriptCompletionProposalComputer>
 	</extension> 
 	<extension

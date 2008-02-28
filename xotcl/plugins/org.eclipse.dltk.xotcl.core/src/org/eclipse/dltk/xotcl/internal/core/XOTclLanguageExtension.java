@@ -12,8 +12,6 @@ import org.eclipse.dltk.xotcl.internal.core.search.mixin.XOTclMixinBuildVisitorE
 
 public class XOTclLanguageExtension implements ITclLanguageExtension {
 
-	private static final String[] XOTCL_EXTENSIONS = new String[]{ "xotcl" };
-
 	public XOTclLanguageExtension() {
 	}
 
@@ -23,10 +21,6 @@ public class XOTclLanguageExtension implements ITclLanguageExtension {
 
 	public ISourceElementRequestVisitorExtension createSourceElementRequestVisitorExtension() {
 		return new XOTclSourceElementRequestVisitorExtension();
-	}
-
-	public String[] getFileExtensions() {
-		return XOTCL_EXTENSIONS;
 	}
 
 	public IMixinBuildVisitorExtension createMixinBuildVisitorExtension() {

@@ -93,7 +93,7 @@ public class IncrTclCommandDetector implements ITclCommandDetector,
 		// Lets check possibly this is method call for existing instance
 		// variable.
 		FieldDeclaration variable = IncrTclParseUtil
-				.findXOTclInstanceVariableDeclarationFrom(module, parent,
+				.findInstanceVariableDeclarationFrom(module, parent,
 						commandNameValue);
 		if (variable != null) {
 			// Add support of procs etc.

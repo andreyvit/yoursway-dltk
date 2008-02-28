@@ -5,6 +5,7 @@ import java.util.Set;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Statement;
+import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.internal.core.codeassist.TclCompletionEngine;
 import org.eclipse.dltk.tcl.internal.core.codeassist.completion.CompletionOnKeywordArgumentOrFunctionArgument;
@@ -25,4 +26,6 @@ public interface ICompletionExtension {
 			CompletionOnKeywordArgumentOrFunctionArgument compl,
 			Set methodNames, TclStatement st,
 			TclCompletionEngine tclCompletionEngine);
+
+	void setRequestor(CompletionRequestor requestor);
 }

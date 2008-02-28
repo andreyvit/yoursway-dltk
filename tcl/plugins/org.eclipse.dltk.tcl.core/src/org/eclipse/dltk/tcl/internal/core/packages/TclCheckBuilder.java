@@ -91,7 +91,7 @@ public class TclCheckBuilder implements IScriptBuilder {
 
 		Set packageNamesInProject = new HashSet();
 		if (status != IScriptBuilder.FULL_BUILD) {
-			Set names = manager.getInternalPackageNames(install);
+			Set names = manager.getInternalPackageNames(install, project);
 			if (names != null) {
 				packageNamesInProject.addAll(names);
 			}
@@ -141,7 +141,7 @@ public class TclCheckBuilder implements IScriptBuilder {
 				TclPackageDeclaration pkg = (TclPackageDeclaration) iterator2
 						.next();
 				checkPackage(pkg, packageNames, reporter, model, manager,
-						install, buildpath);
+						install, buildpath, project);
 			}
 		}
 
@@ -277,11 +277,13 @@ public class TclCheckBuilder implements IScriptBuilder {
 
 	public static void checkPackage(TclPackageDeclaration pkg,
 			Set packageNames, IProblemReporter reporter, CodeModel model,
-			PackagesManager manager, IInterpreterInstall install, Set buildpath) {
+			PackagesManager manager, IInterpreterInstall install,
+			Set buildpath, IScriptProject scriptProject) {
 		if (pkg.getStyle() == TclPackageDeclaration.STYLE_REQUIRE) {
 			String packageName = pkg.getName();
 
-			Set internalNames = manager.getInternalPackageNames(install);
+			Set internalNames = manager.getInternalPackageNames(install,
+					scriptProject);
 			if (internalNames.contains(packageName)) {
 				return;
 			}
@@ -309,14 +311,14 @@ public class TclCheckBuilder implements IScriptBuilder {
 
 			// Receive main package and it paths.
 			boolean error = checkPackage(pkg, reporter, model, manager,
-					install, buildpath, packageName);
+					install, buildpath, packageName, scriptProject);
 
 			Map dependencies = manager.getDependencies(packageName, install);
 			for (Iterator iterator = dependencies.keySet().iterator(); iterator
 					.hasNext();) {
 				String pkgName = (String) iterator.next();
 				boolean fail = checkPackage(pkg, reporter, model, manager,
-						install, buildpath, pkgName);
+						install, buildpath, pkgName, scriptProject);
 				if (fail) {
 					error = true;
 				}
@@ -330,7 +332,7 @@ public class TclCheckBuilder implements IScriptBuilder {
 	}
 
 	private static boolean packageIsFiltered(String packageName) {
-		if( packageName == null || packageName.length() == 0 ) {
+		if (packageName == null || packageName.length() == 0) {
 			return true;
 		}
 		if (packageName.indexOf("$") != -1 || packageName.indexOf("[") != -1
@@ -343,9 +345,9 @@ public class TclCheckBuilder implements IScriptBuilder {
 	public static boolean checkPackage(TclPackageDeclaration pkg,
 			IProblemReporter reporter, CodeModel model,
 			PackagesManager manager, IInterpreterInstall install,
-			Set buildpath, String packageName) {
+			Set buildpath, String packageName, IScriptProject project) {
 
-		Set names = manager.getInternalPackageNames(install);
+		Set names = manager.getInternalPackageNames(install, project);
 		if (names != null) { // Internal package check
 			if (names.contains(packageName)) {
 				return false;
@@ -411,7 +413,9 @@ public class TclCheckBuilder implements IScriptBuilder {
 		try {
 			install = ScriptRuntime.getInterpreterInstall(scriptProject);
 		} catch (CoreException e1) {
-			e1.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e1.printStackTrace();
+			}
 		}
 		if (install == null) {
 			return;
@@ -420,7 +424,7 @@ public class TclCheckBuilder implements IScriptBuilder {
 		PackagesManager manager = PackagesManager.getInstance();
 		Set packageNames = manager.getPackageNames(install);
 		checkPackage(pkg, packageNames, reporter, model, manager, install,
-				buildpath);
+				buildpath, scriptProject);
 	}
 
 	public Set getDependencies(IScriptProject project, Set resources,

@@ -13,7 +13,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.core.runtime.content.IContentTypeManager;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -123,15 +128,15 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 	}
 
 	public ISourceModule createFile(IProgressMonitor monitor)
-			throws CoreException, InterruptedException {
+			throws CoreException {
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
 		}
 
 		String fileName = getFileName();
 
-		final ISourceModule module = currentScriptFolder.createSourceModule(fileName,
-				getFileContent(), true, monitor);
+		final ISourceModule module = currentScriptFolder.createSourceModule(
+				fileName, getFileContent(), true, monitor);
 
 		if (module != null) {
 			Display.getDefault().asyncExec(new Runnable() {
@@ -193,8 +198,17 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 	// TODO: correct this
 	protected String[] getFileExtensions() {
 		try {
-			return DLTKLanguageManager.getLanguageToolkit(getRequiredNature())
-					.getLanguageFileExtensions();
+			String requiredNature = getRequiredNature();
+
+			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+					.getLanguageToolkit(requiredNature);
+			String contentType = toolkit.getLanguageContentType();
+			IContentTypeManager manager = Platform.getContentTypeManager();
+			IContentType type = manager.getContentType(contentType);
+			if (type != null) {
+				String[] extensions = type.getFileSpecs(IContentType.FILE_EXTENSION_SPEC);
+				return extensions;
+			}
 		} catch (CoreException e) {
 		}
 
@@ -218,8 +232,9 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 			try {
 				dialog.setElements(projectFragment.getChildren());
 			} catch (ModelException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
 			}
 		}
 

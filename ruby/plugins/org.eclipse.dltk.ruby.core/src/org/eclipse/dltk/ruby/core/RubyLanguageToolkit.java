@@ -13,15 +13,8 @@ import org.eclipse.dltk.core.AbstractLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 
 public class RubyLanguageToolkit extends AbstractLanguageToolkit {
-	private static final String RB_EXTENSION = "rb";
-	private static final String[] RUBY_EXTENSION_ARRAY = new String[] { RB_EXTENSION };
 	protected static RubyLanguageToolkit sToolkit = new RubyLanguageToolkit();
 	public RubyLanguageToolkit() {
-
-	}
-
-	public String getRubyExtension() {
-		return RB_EXTENSION;
 	}
 
 	public boolean languageSupportZIPBuildpath() {
@@ -32,16 +25,8 @@ public class RubyLanguageToolkit extends AbstractLanguageToolkit {
 		return RubyNature.NATURE_ID;
 	}
 
-	public String getDelimeterReplacerString() {
-		return ".";
-	}
-
 	public static IDLTKLanguageToolkit getDefault() {
 		return sToolkit;
-	}
-
-	public String[] getLanguageFileExtensions() {
-		return RUBY_EXTENSION_ARRAY;
 	}
 
 	public String getLanguageName() {

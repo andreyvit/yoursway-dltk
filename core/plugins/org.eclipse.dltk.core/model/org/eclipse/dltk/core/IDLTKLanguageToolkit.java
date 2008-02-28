@@ -11,9 +11,6 @@ package org.eclipse.dltk.core;
 
 import org.eclipse.core.runtime.IPath;
 
-/**
- * 
- */
 public interface IDLTKLanguageToolkit {
 
 	/**
@@ -31,10 +28,6 @@ public interface IDLTKLanguageToolkit {
 	boolean languageSupportZIPBuildpath();
 
 	String getNatureId();
-
-	String getDelimeterReplacerString();
-
-	String[] getLanguageFileExtensions();
 
 	String getLanguageName();
 }

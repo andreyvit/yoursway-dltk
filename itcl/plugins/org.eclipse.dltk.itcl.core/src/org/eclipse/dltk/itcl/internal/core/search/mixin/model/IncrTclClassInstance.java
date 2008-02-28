@@ -10,7 +10,7 @@ public class IncrTclClassInstance extends TclMixinElement implements
 	}
 
 	public String toString() {
-		return "xotcl_class_instance";
+		return "incr_class_instance";
 	}
 
 	protected boolean isValidModelElement(IModelElement element) {

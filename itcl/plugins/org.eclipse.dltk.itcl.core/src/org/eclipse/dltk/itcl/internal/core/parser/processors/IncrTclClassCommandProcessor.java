@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.Modifiers;
-import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
@@ -18,9 +17,10 @@ import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
+import org.eclipse.dltk.tcl.core.ast.ExtendedTclMethodDeclaration;
 
 public class IncrTclClassCommandProcessor extends AbstractTclCommandProcessor {
-	public ASTNode process(TclStatement statement, ITclParser parser, 
+	public ASTNode process(TclStatement statement, ITclParser parser,
 			ASTNode parent) {
 		if (statement == null
 				|| (statement != null && statement.getCount() == 0)) {
@@ -88,7 +88,7 @@ public class IncrTclClassCommandProcessor extends AbstractTclCommandProcessor {
 		}
 		Expression procCode = statement.getAt(3);
 
-		MethodDeclaration method = new MethodDeclaration(statement
+		ExtendedTclMethodDeclaration method = new ExtendedTclMethodDeclaration(statement
 				.sourceStart(), statement.sourceEnd());
 		method.setName("destructor");
 		Expression o = statement.getAt(0);
@@ -96,7 +96,9 @@ public class IncrTclClassCommandProcessor extends AbstractTclCommandProcessor {
 		method.setNameEnd(o.sourceEnd());
 		method.setModifier(IIncrTclModifiers.AccIncrTcl
 				| IIncrTclModifiers.AccDestructor);
+		method.setDeclaringType(type);
 		IncrTclUtils.parseBlockAdd(parser, procCode, method);
+		type.getMethodList().add(method);
 		this.addToParent(type, method);
 	}
 
@@ -137,8 +139,9 @@ public class IncrTclClassCommandProcessor extends AbstractTclCommandProcessor {
 
 		List arguments = IncrTclUtils.extractMethodArguments(procArguments);
 
-		MethodDeclaration method = new MethodDeclaration(statement
-				.sourceStart(), statement.sourceEnd());
+		ExtendedTclMethodDeclaration method = new ExtendedTclMethodDeclaration(
+				statement.sourceStart(), statement.sourceEnd());
+		method.setDeclaringType(type);
 		method.setName("constructor");
 		Expression o = statement.getAt(0);
 		method.setNameStart(o.sourceStart());
@@ -147,6 +150,7 @@ public class IncrTclClassCommandProcessor extends AbstractTclCommandProcessor {
 		method.setModifier(IIncrTclModifiers.AccIncrTcl
 				| IIncrTclModifiers.AccConstructor);
 		IncrTclUtils.parseBlockAdd(parser, procCode, method);
+		type.getMethodList().add(method);
 		this.addToParent(type, method);
 	}
 
@@ -198,6 +202,7 @@ public class IncrTclClassCommandProcessor extends AbstractTclCommandProcessor {
 			var.setModifier(IIncrTclModifiers.AccIncrTcl | modifier);
 			var.setDeclaringType(type);
 			this.addToParent(type, var);
+			type.getFieldList().add(var);
 		}
 	}
 
@@ -270,7 +275,10 @@ public class IncrTclClassCommandProcessor extends AbstractTclCommandProcessor {
 		method.setNameEnd(procName.sourceEnd());
 		method.acceptArguments(arguments);
 		method.setModifier(IIncrTclModifiers.AccIncrTcl | modifier);
+		method.setDeclaringType(type);
 		IncrTclUtils.parseBlockAdd(parser, procCode, method);
+		type.getMethodList().add(method);
+	
 		this.addToParent(type, method);
 	}
 

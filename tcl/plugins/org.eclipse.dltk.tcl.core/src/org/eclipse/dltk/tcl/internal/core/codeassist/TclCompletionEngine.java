@@ -175,12 +175,17 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 	protected boolean complete(ASTNode astNode, ASTNode astNodeParent,
 			Scope scope, boolean insideTypeAnnotation) {
 		setSourceRange(astNode.sourceStart(), astNode.sourceEnd());
+		
+		for (int i = 0; i < extensions.length; i++) {
+			extensions[i].setRequestor(this.getRequestor());
+		}
 		if (astNode instanceof CompletionOnKeywordOrFunction) {
 			CompletionOnKeywordOrFunction key = (CompletionOnKeywordOrFunction) astNode;
 			processCompletionOnKeywords(key);
 			processCompletionOnFunctions(astNodeParent, key);
 
 			for (int i = 0; i < extensions.length; i++) {
+				extensions[i].setRequestor(this.getRequestor());
 				extensions[i].completeOnKeywordOrFunction(key, astNodeParent,
 						this);
 			}
@@ -235,10 +240,10 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 			boolean provideDollar = true;
 			if (compl.getToken().length > 0 && compl.getToken()[0] == '$') {
 				// varToken = compl.getToken();
-				provideDollar = false;
+				provideDollar = true;
+				findVariables(compl.getToken(), astNodeParent, true, astNode
+						.sourceStart(), provideDollar, null);
 			}
-			findVariables(compl.getToken(), astNodeParent, true, astNode
-					.sourceStart(), provideDollar, null);
 		}
 		return true;
 	}
@@ -460,7 +465,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 					String ns2 = ns;
 					while (true) {
 						ns2 = getElementNamespace(ns2);
-						if( ns2 == null || ( ns2 != null && ns2.equals("::") )) {
+						if (ns2 == null || (ns2 != null && ns2.equals("::"))) {
 							break;
 						}
 						namespaceNames.add(ns2);
@@ -487,7 +492,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 					if (elemNSName != null) {
 						nsHere = namespaceNames.contains(elemNSName);
 					}
-					if (!nsHere && Flags.isPrivate(m.getFlags())) {
+					if (!nsHere && !Flags.isPublic(m.getFlags())) {
 						privateSet.add(method);
 					}
 				} catch (ModelException e) {
@@ -507,7 +512,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		int pos = elemName.lastIndexOf("::");
 		if (pos != -1) {
 			String rs = elemName.substring(0, pos);
-			if( rs.length() == 0 ) {
+			if (rs.length() == 0) {
 				return null;
 			}
 			return rs;
@@ -721,6 +726,9 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 		for (int i = 0; i < statements.size(); ++i) {
 			ASTNode nde = (ASTNode) statements.get(i);
 			if (nde instanceof MethodDeclaration) {
+				if (!isTclMethod((MethodDeclaration) nde)) {
+					continue;
+				}
 				String mName = ((MethodDeclaration) nde).getName();
 				if (!mName.startsWith("::")) {
 					mName = namePrefix + mName;
@@ -786,6 +794,22 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 			}
 			visited.add(nde);
 		}
+	}
+
+	private boolean isTclMethod(MethodDeclaration nde) {
+		int modifiers = nde.getModifiers();
+		if (modifiers <= Modifiers.USER_MODIFIER) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean isTclField(FieldDeclaration nde) {
+		int modifiers = nde.getModifiers();
+		if (modifiers <= Modifiers.USER_MODIFIER) {
+			return true;
+		}
+		return false;
 	}
 
 	protected boolean methodCanBeAdded(ASTNode nde) {
@@ -995,8 +1019,9 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 			toolkit = DLTKLanguageManager
 					.getLanguageToolkit(this.scriptProject);
 		} catch (CoreException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e1.printStackTrace();
+			}
 		}
 		IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit);
 		if (token.length >= 1 && token[0] == '$') {
@@ -1109,7 +1134,10 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 					}
 				} else if (nde instanceof FieldDeclaration) {
 					FieldDeclaration field = (FieldDeclaration) nde;
-					checkAddVariable(choices, prefix + add + field.getName());
+					if (isTclField(field)) {
+						checkAddVariable(choices, prefix + add
+								+ field.getName());
+					}
 				}
 				findASTVariables(nde, prefix + add, token,
 						canCompleteEmptyToken, choices);
@@ -1138,31 +1166,24 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 				ASTNode node = (ASTNode) statements.get(i);
 				if (node instanceof FieldDeclaration) {
 					FieldDeclaration decl = (FieldDeclaration) node;
-					this.checkAddVariable(choices, decl.getName());
+					if (isTclField(decl)) {
+						this.checkAddVariable(choices, decl.getName());
+					}
 				} else if (node instanceof TclStatement
 						&& node.sourceEnd() < beforePosition) {
 					TclStatement s = (TclStatement) node;
 					checkTclStatementForVariables(choices, s);
 					Expression commandId = s.getAt(0);
-					// if (commandId != null
-					// && commandId instanceof SimpleReference) {
-					// String name = ((SimpleReference) commandId).getName();
-					// if (name.equals("if")) {
-					// processIf(s, beforePosition, choices);
-					// } else if (name.equals("while")) {
-					// processWhile(s, beforePosition, choices);
-					// } else if (name.equals("for")) {
-					// processFor(s, beforePosition, choices);
-					// }
-					// }
 				} else {
 					ASTVisitor visitor = new ASTVisitor() {
 						public boolean visit(Statement s) throws Exception {
 							if (s instanceof FieldDeclaration) {
 								String name = TclParseUtil.getElementFQN(s,
 										"::", parser.module);
-								checkAddVariable(choices,
-								/* ((FieldDeclaration) s).getName() */name);
+								if (isTclField((FieldDeclaration) s)) {
+									checkAddVariable(choices,
+									/* ((FieldDeclaration) s).getName() */name);
+								}
 							} else if (s instanceof TclStatement) {
 								checkTclStatementForVariables(choices,
 										(TclStatement) s);
@@ -1174,7 +1195,9 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 					try {
 						node.traverse(visitor);
 					} catch (Exception e) {
-						e.printStackTrace();
+						if (DLTKCore.DEBUG) {
+							e.printStackTrace();
+						}
 					}
 				}
 			}
