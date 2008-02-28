@@ -170,6 +170,9 @@ public class OpenAction extends SelectionDispatchAction {
 	}
 
 	private IModelElement[] filterElements(IModelElement[] elements) {
+		if (elements == null)
+			return null;
+		
 		Map uniqueElements = new HashMap();
 		for (int i = 0; i < elements.length; i++) {
 			IModelElement element = elements[i];
