@@ -33,7 +33,6 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.launching.ScriptRuntime;
 
@@ -225,9 +224,9 @@ public class BuildpathDetector implements IResourceProxyVisitor {
 	private void visitSourceModule(IFile file) {
 		ISourceModule cu = DLTKCore.createSourceModuleFrom(file);
 		if (cu != null) {
-			ISourceModule workingCopy = null;
+//			ISourceModule workingCopy = null;
 			try {
-				workingCopy = cu.getWorkingCopy(null);
+//				workingCopy = cu.getWorkingCopy(null);
 				IPath relPath = null;// new
 				// Path(workingCopy.getElementName());
 				IPath packPath = file.getParent().getFullPath();
@@ -241,15 +240,13 @@ public class BuildpathDetector implements IResourceProxyVisitor {
 								.append(cuName));
 					}
 				}
-			} catch (ModelException e) {
-				// ignore
 			} finally {
-				if (workingCopy != null) {
-					try {
-						workingCopy.discardWorkingCopy();
-					} catch (ModelException ignore) {
-					}
-				}
+//				if (workingCopy != null) {
+//					try {
+//						workingCopy.discardWorkingCopy();
+//					} catch (ModelException ignore) {
+//					}
+//				}
 			}
 		}
 	}

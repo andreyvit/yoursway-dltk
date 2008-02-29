@@ -162,7 +162,7 @@ public abstract class ProjectWizardSecondPage extends
 			monitor
 					.beginTask(
 							NewWizardMessages.ScriptProjectWizardSecondPage_operation_initialize,
-							7);
+							70);
 			if (monitor.isCanceled()) {
 				throw new OperationCanceledException();
 			}
@@ -183,7 +183,7 @@ public abstract class ProjectWizardSecondPage extends
 			rememberExistingFiles(realLocation);
 
 			createProject(fCurrProject, fCurrProjectLocation,
-					new SubProgressMonitor(monitor, 2));
+					new SubProgressMonitor(monitor, 20));
 
 			IBuildpathEntry[] entries = null;
 
@@ -192,11 +192,11 @@ public abstract class ProjectWizardSecondPage extends
 					IDLTKLanguageToolkit toolkit = DLTKLanguageManager
 							.getLanguageToolkit(getScriptNature());
 					final BuildpathDetector detector = new BuildpathDetector(
-							fCurrProject, new SubProgressMonitor(monitor, 2),
+							fCurrProject, new SubProgressMonitor(monitor, 20),
 							toolkit);
 					entries = detector.getBuildpath();
 				} else {
-					monitor.worked(2);
+					monitor.worked(20);
 				}
 			} else if (fFirstPage.isSrc()) {
 				IPreferenceStore store = getPreferenceStore();
@@ -206,17 +206,17 @@ public abstract class ProjectWizardSecondPage extends
 				if (srcPath.segmentCount() > 0) {
 					IFolder folder = fCurrProject.getFolder(srcPath);
 					CoreUtility.createFolder(folder, true, true,
-							new SubProgressMonitor(monitor, 1));
+							new SubProgressMonitor(monitor, 10));
 				} else {
-					monitor.worked(1);
+					monitor.worked(10);
 				}
 
 				if (srcPath.segmentCount() > 0) {
 					IFolder folder = fCurrProject.getFolder(srcPath);
 					CoreUtility.createFolder(folder, true, true,
-							new SubProgressMonitor(monitor, 1));
+							new SubProgressMonitor(monitor, 10));
 				} else {
-					monitor.worked(1);
+					monitor.worked(10);
 				}
 
 				final IPath projectPath = fCurrProject.getFullPath();
@@ -244,27 +244,17 @@ public abstract class ProjectWizardSecondPage extends
 				entries = (IBuildpathEntry[]) cpEntries
 						.toArray(new IBuildpathEntry[cpEntries.size()]);
 
-				monitor.worked(2);
+				monitor.worked(20);
 			}
 			if (monitor.isCanceled()) {
 				throw new OperationCanceledException();
 			}
 
 			init(DLTKCore.create(fCurrProject), entries, false);
-			configureScriptProject(new SubProgressMonitor(monitor, 3)); // create
-			// the
-			// script
-			// project
-			// to
-			// allow
-			// the
-			// use
-			// of
-			// the
-			// new
-			// source
-			// folder
-			// page
+			configureScriptProject(new SubProgressMonitor(monitor, 30)); // create
+			/*
+			 * the script project to allow the use of the new source folder page
+			 */
 		} finally {
 			monitor.done();
 		}

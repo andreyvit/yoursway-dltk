@@ -24,8 +24,8 @@ import org.eclipse.dltk.core.CompletionContext;
 import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
@@ -366,7 +366,7 @@ public abstract class ScriptCompletionProposalCollector extends CompletionReques
 	}
 
 	/**
-	 * Creates a newscriptcompletion proposal from a core proposal. This may
+	 * Creates a new script completion proposal from a core proposal. This may
 	 * involve computing the display label and setting up some context.
 	 * <p>
 	 * This method is called for every proposal that will be displayed to the
@@ -385,7 +385,7 @@ public abstract class ScriptCompletionProposalCollector extends CompletionReques
 	 * 
 	 * @param proposal
 	 *            the core completion proposal to create a UI proposal for
-	 * @return the createdscriptcompletion proposal, or <code>null</code> if
+	 * @return the created script completion proposal, or <code>null</code> if
 	 *         no proposal should be displayed
 	 */
 	protected IScriptCompletionProposal createScriptCompletionProposal(
@@ -727,6 +727,7 @@ public abstract class ScriptCompletionProposalCollector extends CompletionReques
 				image, displayString, 0);
 		
 		scriptProposal.setRelevance(computeRelevance(typeProposal));
+		scriptProposal.setProposalInfo(new TypeProposalInfo(fScriptProject, typeProposal));
 		return scriptProposal;
 
 	}

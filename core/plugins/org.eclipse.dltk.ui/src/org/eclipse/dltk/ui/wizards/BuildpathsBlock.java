@@ -32,8 +32,8 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelStatus;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.internal.ui.dialogs.StatusInfo;
@@ -515,7 +515,7 @@ public abstract class BuildpathsBlock {
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
 		}
-		monitor.beginTask(NewWizardMessages.BuildPathsBlock_operationdesc_project, 10);
+		monitor.beginTask(NewWizardMessages.BuildPathsBlock_operationdesc_project, 100);
 		// create the project
 		try {
 			if (!project.exists()) {
@@ -524,12 +524,10 @@ public abstract class BuildpathsBlock {
 					locationURI = null;
 				}
 				desc.setLocationURI(locationURI);
-				project.create(desc, monitor);
-				monitor = null;
+				project.create(desc, new SubProgressMonitor(monitor, 50));
 			}
 			if (!project.isOpen()) {
-				project.open(monitor);
-				monitor = null;
+				project.open(new SubProgressMonitor(monitor, 50));
 			}
 		} finally {
 			if (monitor != null) {

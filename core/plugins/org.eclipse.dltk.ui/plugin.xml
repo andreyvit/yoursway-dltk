@@ -885,11 +885,20 @@
          point="org.eclipse.dltk.ui.dltkElementFilters">
 <!-- Script Explorer -->
       <filter
-            targetId="org.eclipse.dltk.ui.ScriptExplorer"
-            name="%HideSystemFiles.label"
-            enabled="true"
             description="%HideSystemFiles.description"
-            pattern=".*">
+            enabled="true"
+            id="org.eclipse.dltk.internal.ui.PackageExplorer.DotFilesFilter"
+            name="%HideSystemFiles.label"
+            class="org.eclipse.dltk.internal.ui.filters.DotFileFilter"
+            targetId="org.eclipse.dltk.ui.ScriptExplorer">
+      </filter>
+      <filter
+            description="%ContainMembers.description"
+            enabled="false"
+            id="org.eclipse.dltk.internal.ui.PackageExplorer.ContainMembersFilter"
+            name="%ContainMembers.label"
+            class="org.eclipse.dltk.internal.ui.filters.ContainMembersFilter"
+            targetId="org.eclipse.dltk.ui.ScriptExplorer">
       </filter>
       <filter
             targetId="org.eclipse.dltk.ui.ScriptExplorer"
