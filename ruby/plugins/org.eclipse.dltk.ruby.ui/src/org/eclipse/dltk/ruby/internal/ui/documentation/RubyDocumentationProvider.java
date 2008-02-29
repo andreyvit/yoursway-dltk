@@ -27,8 +27,8 @@ import org.eclipse.dltk.internal.core.BuiltinProjectFragment;
 import org.eclipse.dltk.ruby.core.PredefinedVariables;
 import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.internal.ui.docs.RiHelper;
+import org.eclipse.dltk.ruby.internal.ui.text.IRubyPartitions;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitionScanner;
-import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
 import org.eclipse.dltk.ui.documentation.IScriptDocumentationProvider;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
@@ -51,12 +51,14 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 	 *            the document
 	 */
 	private static void installStuff(Document document) {
-		String[] types = new String[] { RubyPartitions.RUBY_STRING,
-				RubyPartitions.RUBY_COMMENT, IDocument.DEFAULT_CONTENT_TYPE };
+		String[] types = new String[] { IRubyPartitions.RUBY_STRING,
+				IRubyPartitions.RUBY_SINGLE_QUOTE_STRING,
+				IRubyPartitions.RUBY_COMMENT, IRubyPartitions.RUBY_DOC,
+				IDocument.DEFAULT_CONTENT_TYPE };
 		FastPartitioner partitioner = new FastPartitioner(
 				new RubyPartitionScanner(), types);
 		partitioner.connect(document);
-		document.setDocumentPartitioner(RubyPartitions.RUBY_PARTITIONING,
+		document.setDocumentPartitioner(IRubyPartitions.RUBY_PARTITIONING,
 				partitioner);
 	}
 
@@ -67,7 +69,8 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 	 *            the document
 	 */
 	private static void removeStuff(Document document) {
-		document.setDocumentPartitioner(RubyPartitions.RUBY_PARTITIONING, null);
+		document
+				.setDocumentPartitioner(IRubyPartitions.RUBY_PARTITIONING, null);
 	}
 
 	public static String getHeaderComment(String contents, int offset) {
@@ -96,9 +99,10 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 		try {
 			while (pos >= 0 && pos <= doc.getLength()) {
 				ITypedRegion region = TextUtilities.getPartition(doc,
-						RubyPartitions.RUBY_PARTITIONING, pos, true);
-				if (region.getType().equals(RubyPartitions.RUBY_DOC)
-						|| region.getType().equals(RubyPartitions.RUBY_COMMENT)) {
+						IRubyPartitions.RUBY_PARTITIONING, pos, true);
+				if (region.getType().equals(IRubyPartitions.RUBY_DOC)
+						|| region.getType()
+								.equals(IRubyPartitions.RUBY_COMMENT)) {
 					start = region.getOffset();
 				}
 				if (region.getType().equals(IDocument.DEFAULT_CONTENT_TYPE)) {
@@ -114,9 +118,10 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 
 			while (pos <= doc.getLength()) {
 				ITypedRegion region = TextUtilities.getPartition(doc,
-						RubyPartitions.RUBY_PARTITIONING, pos, true);
-				if (region.getType().equals(RubyPartitions.RUBY_DOC)
-						|| region.getType().equals(RubyPartitions.RUBY_COMMENT)) {
+						IRubyPartitions.RUBY_PARTITIONING, pos, true);
+				if (region.getType().equals(IRubyPartitions.RUBY_DOC)
+						|| region.getType()
+								.equals(IRubyPartitions.RUBY_COMMENT)) {
 					end = region.getOffset() + region.getLength();
 				}
 				if (region.getType().equals(IDocument.DEFAULT_CONTENT_TYPE)) {
@@ -173,7 +178,7 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 		String doc = helper.getDocFor(keyword);
 		if (doc != null)
 			return new StringReader(doc);
-		return new StringReader("Built-in method");
+		return null;
 	}
 
 	private Reader proccessBuiltinMethod(IMethod method) {
@@ -191,22 +196,28 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 			if (pp.getElementName().equals("Kernel")) {
 				keyword = "Object" + divider + method.getElementName();
 				doc = helper.getDocFor(keyword);
+				if (doc == null || doc.indexOf("Nothing known about") >= 0) {
+					doc = null;
+				}
+			} else {
+				doc = null;
 			}
+
 		}
 		if (doc != null)
 			return new StringReader(doc);
-		return new StringReader("Built-in method");
+		return null;
 	}
 
 	public Reader getInfo(IMember member, boolean lookIntoParents,
 			boolean lookIntoExternal) {
 		boolean isBuiltin = member.getAncestor(IModelElement.PROJECT_FRAGMENT) instanceof BuiltinProjectFragment;
 		if (isBuiltin && member instanceof IMethod) {
-				IMethod method = (IMethod) member;
-				return proccessBuiltinMethod(method);
+			IMethod method = (IMethod) member;
+			return proccessBuiltinMethod(method);
 		} else if (isBuiltin && member instanceof IType) {
-				IType type = (IType) member;
-				return proccessBuiltinType(type);				
+			IType type = (IType) member;
+			return proccessBuiltinType(type);
 		} else if (member instanceof FakeField) {
 			FakeField field = (FakeField) member;
 			String doc = PredefinedVariables.getDocOf(field.getElementName());

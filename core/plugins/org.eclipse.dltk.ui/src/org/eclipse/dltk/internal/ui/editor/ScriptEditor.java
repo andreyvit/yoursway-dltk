@@ -992,8 +992,6 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		return getPreferenceStore().getBoolean(
 				PreferenceConstants.EDITOR_FOLDING_ENABLED);
 	}
-	
-	
 
 	public boolean isSaveAsAllowed() {
 		return true;
@@ -2606,9 +2604,12 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 				.setHoverControlCreator(new IInformationControlCreator() {
 					public IInformationControl createInformationControl(
 							Shell shell) {
-						return createSourceViewerInformationControl(shell,
-								SWT.TOOL | SWT.NO_TRIM | getOrientation(),
-								SWT.NONE, toolkit);
+						int shellStyle = SWT.TOOL | SWT.NO_TRIM
+								| getOrientation();
+						String statusFieldText = EditorsUI
+								.getTooltipAffordanceString();
+						return new SourceViewerInformationControl(shell,
+								shellStyle, SWT.NONE, statusFieldText, toolkit);
 					}
 				});
 		fProjectionSupport
@@ -2618,9 +2619,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 						int shellStyle = SWT.RESIZE | SWT.TOOL
 								| getOrientation();
 						int style = SWT.V_SCROLL | SWT.H_SCROLL;
-						// return new SourceViewerInformationControl(shell,
-						// shellStyle, style);
-						return createSourceViewerInformationControl(shell,
+						return new SourceViewerInformationControl(shell,
 								shellStyle, style, toolkit);
 					}
 				});
@@ -2637,33 +2636,6 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		getSourceViewerDecorationSupport(viewer);
 
 		return viewer;
-	}
-
-	// protected String getTooltipAffordanceString() {
-	// if (this.getPreferenceStore() == null) {
-	// return "{0}";
-	// }
-	// IBindingService fBindingService = (IBindingService)
-	// PlatformUI.getWorkbench()
-	// .getAdapter(IBindingService.class);
-	// if (fBindingService == null
-	// || !getPreferenceStore().getBoolean(
-	// PreferenceConstants.EDITOR_SHOW_TEXT_HOVER_AFFORDANCE))
-	// return null;
-	//
-	// String keySequence = fBindingService
-	// .getBestActiveBindingFormattedFor(IScriptEditorActionDefinitionIds.SHOW_DOCUMENTATION);
-	// if (keySequence == null)
-	// return null;
-	//
-	// return Messages.format(
-	// ScriptHoverMessages.ScriptTextHover_makeStickyHint,
-	// keySequence == null ? "" : keySequence); //$NON-NLS-1$
-	// }
-	protected SourceViewerInformationControl createSourceViewerInformationControl(
-			Shell shell, int shellStyle, int style, IDLTKLanguageToolkit toolkit) {
-		return new SourceViewerInformationControl(shell, shellStyle, style,
-				EditorsUI.getTooltipAffordanceString(), toolkit);
 	}
 
 	protected ISourceViewer createScriptSourceViewer(Composite parent,
