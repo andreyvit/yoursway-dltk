@@ -261,9 +261,9 @@ public class JRubySourceParser extends AbstractSourceParser {
 						+ " ms");
 			return module;
 		} catch (Throwable t) {
-			if( DLTKCore.DEBUG ) {
+//			if( DLTKCore.DEBUG ) {
 				t.printStackTrace();
-			}
+//			}
 			if (isSilentState()) {
 				ModuleDeclaration mdl = new ModuleDeclaration(1);
 				return mdl;

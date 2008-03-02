@@ -40,7 +40,7 @@ public class CallSearchResultCollector {
 
                 if (methodCall == null) {
                     methodCall = new MethodCall(calledMember);
-                    fCalledMembers.put(calledMember.getHandleIdentifier(), methodCall);
+                    fCalledMembers.put(calledMember.getHandleIdentifier(), methodCall); 
                 }
 
                 methodCall.addCallLocation(new CallLocation(member, calledMember, start,
