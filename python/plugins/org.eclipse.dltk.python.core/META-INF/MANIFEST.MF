@@ -13,12 +13,13 @@ Require-Bundle: org.eclipse.core.runtime,
 Eclipse-AutoStart: true
 Import-Package: org.eclipse.core.resources
 Export-Package: org.eclipse.dltk.python.core,
- org.eclipse.dltk.python.internal.core.evaluation;x-friends:="org.eclipse.dltk.python.tests",
- org.eclipse.dltk.python.internal.core.evaluation.types;x-friends:="org.eclipse.dltk.python.tests",
- org.eclipse.dltk.python.internal.core.parser;x-friends:="org.eclipse.dltk.python.core",
- org.eclipse.dltk.python.internal.core.parser.visitors;x-friends:="org.eclipse.dltk.python.core",
- org.eclipse.dltk.python.internal.core.parsers;x-friends:="org.eclipse.dltk.python.core",
+ org.eclipse.dltk.python.internal.core.evaluation,
+ org.eclipse.dltk.python.internal.core.evaluation.types,
+ org.eclipse.dltk.python.internal.core.parser,
+ org.eclipse.dltk.python.internal.core.parser.visitors,
+ org.eclipse.dltk.python.internal.core.parsers,
  org.eclipse.dltk.python.parser,
  org.eclipse.dltk.python.parser.ast,
- org.eclipse.dltk.python.parser.ast.expressions
+ org.eclipse.dltk.python.parser.ast.expressions,
+ org.eclipse.dltk.python.parser.ast.statements
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
