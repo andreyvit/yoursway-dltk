@@ -28,6 +28,7 @@ public class NumericLiteral extends Literal {
 	 */
 	public NumericLiteral(DLTKToken number) {
 		super(number);
+		this.intValue = Long.parseLong(number.getText());
 	}
 
 	public NumericLiteral(int start, int end, long value) {
