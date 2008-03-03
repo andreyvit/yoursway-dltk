@@ -3,12 +3,17 @@ package org.eclipse.dltk.core.tests.launching;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import junit.framework.Test;
 
+import org.eclipse.dltk.core.tests.model.SuiteOfTestCases;
 import org.eclipse.dltk.internal.launching.EnvironmentResolver;
 import org.eclipse.dltk.launching.EnvironmentVariable;
 
-public class EnvironmentResolverTests extends TestCase {
+public class EnvironmentResolverTests extends SuiteOfTestCases {
+	public EnvironmentResolverTests(String name) {
+		super(name);
+	}
+
 	public void testEnvironmentResolve001() {
 		Map env = new HashMap();
 		EnvironmentVariable[] vars = new EnvironmentVariable[] { mk("A", "a") };
@@ -107,5 +112,9 @@ public class EnvironmentResolverTests extends TestCase {
 			}
 		}
 		assertTrue(false);
+	}
+
+	public static Test suite() {
+		return new Suite(EnvironmentResolverTests.class);
 	}
 }
