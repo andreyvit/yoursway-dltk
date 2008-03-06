@@ -52,4 +52,23 @@ public class JavaScriptAndJDTDebuggerRunner extends DebuggingEngineRunner
 	protected String getDebugPreferenceQualifier() {
 		return JavaScriptDebugPlugin.PLUGIN_ID;
 	}
+
+	protected String getDebuggingEnginePreferenceQualifier() {
+		return JavaScriptAndJdtDebuggerPlugin.PLUGIN_ID;
+	}
+
+	protected String getLoggingEnabledPreferenceKey() {
+		// not yet supported...
+		return null;
+	}
+
+	protected String getLogFileNamePreferenceKey() {
+		// not yet supported...
+		return null;
+	}
+
+	protected String getLogFilePathPreferenceKey() {
+		// not yet supported...
+		return null;
+	}
 }

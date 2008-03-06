@@ -3,6 +3,7 @@ package org.eclipse.dltk.ruby.fastdebugger;
 import java.io.IOException;
 import java.text.MessageFormat;
 
+import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -15,7 +16,6 @@ import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.launching.debug.DbgpInterpreterConfig;
 import org.eclipse.dltk.ruby.debug.RubyDebugPlugin;
-import org.eclipse.dltk.ruby.fastdebugger.preferences.FastDebuggerPreferenceConstants;
 import org.eclipse.dltk.ruby.internal.launching.RubyGenericInstallType;
 
 public class FastDebuggerRunner extends DebuggingEngineRunner {
@@ -27,26 +27,6 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 	private static final String RUBY_LOG_VAR = "DBGP_RUBY_LOG";
 
 	private static final String DEBUGGER_SCRIPT = "FastRunner.rb";
-
-	protected IPath getLogFilename(PreferencesLookupDelegate delegate,
-			String sessionId) {
-		String pluginId = FastDebuggerPlugin.PLUGIN_ID;
-
-		String logFilePath = delegate.getString(pluginId,
-				FastDebuggerPreferenceConstants.LOG_FILE_PATH);
-		String logFileName = delegate.getString(pluginId,
-				FastDebuggerPreferenceConstants.LOG_FILE_NAME);
-
-		String fileName = MessageFormat.format(logFileName,
-				new Object[] { sessionId });
-
-		return Path.fromOSString(logFilePath).append(fileName);
-	}
-
-	protected boolean isLoggingEnabled(PreferencesLookupDelegate delegate) {
-		return delegate.getBoolean(FastDebuggerPlugin.PLUGIN_ID,
-				FastDebuggerPreferenceConstants.ENABLE_LOGGING);
-	}
 
 	protected IPath deploy() throws CoreException {
 		try {
@@ -74,7 +54,7 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 		final IPath sourceLocation = deploy();
 
 		final IPath scriptFile = sourceLocation.append(DEBUGGER_SCRIPT);
-
+		
 		// Creating new config
 		InterpreterConfig newConfig = (InterpreterConfig) config.clone();
 		newConfig.addInterpreterArg("-r" + scriptFile.toPortableString());
@@ -92,8 +72,8 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 		newConfig.addEnvVar(RUBY_KEY_VAR, sessionId);
 
 		if (isLoggingEnabled(delegate)) {
-			newConfig.addEnvVar(RUBY_LOG_VAR, getLogFilename(delegate,
-					sessionId).toPortableString());
+			newConfig.addEnvVar(RUBY_LOG_VAR, getLogFileName(delegate,
+					sessionId).getAbsolutePath());
 		}
 
 		return newConfig;
@@ -108,5 +88,33 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 	 */
 	protected String getDebugPreferenceQualifier() {
 		return RubyDebugPlugin.PLUGIN_ID;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getDebuggingEnginePreferenceQualifier()
+	 */
+	protected String getDebuggingEnginePreferenceQualifier() {
+		return FastDebuggerPlugin.PLUGIN_ID;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getLoggingEnabledPreferenceKey()
+	 */
+	protected String getLoggingEnabledPreferenceKey() {
+		return FastDebuggerConstants.ENABLE_LOGGING;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getLogFileNamePreferenceKey()
+	 */
+	protected String getLogFileNamePreferenceKey() {
+		return FastDebuggerConstants.LOG_FILE_NAME;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getLogFilePathPreferenceKey()
+	 */
+	protected String getLogFilePathPreferenceKey() {
+		return FastDebuggerConstants.LOG_FILE_PATH;
 	}
 }

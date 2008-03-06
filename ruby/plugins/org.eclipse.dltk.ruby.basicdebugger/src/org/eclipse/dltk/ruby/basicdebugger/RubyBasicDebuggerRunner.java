@@ -32,18 +32,6 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 
 	private static final String DEBUGGER_SCRIPT = "BasicRunner.rb";
 
-	private final boolean logging;
-
-	protected boolean isLoggingEnabled() {
-		return logging;
-	}
-
-	protected IPath getLogFilename() {
-		// TODO:customize log file name, may be to preferences
-		return RubyBasicDebuggerPlugin.getDefault().getStateLocation().append(
-				"debug_log.txt");
-	}
-
 	protected IPath deploy() throws CoreException {
 		try {
 			return RubyBasicDebuggerPlugin.getDefault().deployDebuggerSource();
@@ -56,12 +44,10 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 
 	public RubyBasicDebuggerRunner(IInterpreterInstall install) {
 		super(install);
-
-		this.logging = true;
 	}
 
-	protected InterpreterConfig addEngineConfig(InterpreterConfig config, PreferencesLookupDelegate delegate)
-			throws CoreException {
+	protected InterpreterConfig addEngineConfig(InterpreterConfig config,
+			PreferencesLookupDelegate delegate) throws CoreException {
 		// Get debugger source location
 		final IPath sourceLocation = deploy();
 
@@ -69,7 +55,7 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 
 		// Creating new config
 		InterpreterConfig newConfig = (InterpreterConfig) config.clone();
-		
+
 		if (getInstall().getInterpreterInstallType() instanceof JRubyInstallType) {
 			newConfig.addEnvVar("JAVA_OPTS", "-Djruby.jit.enabled=false");
 			newConfig.addInterpreterArg("-X-C");
@@ -77,19 +63,21 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 
 		newConfig.addInterpreterArg("-r" + scriptFile.toPortableString());
 		newConfig.addInterpreterArg("-I" + sourceLocation.toPortableString());
-		
+
 		// Environment
 		final DbgpInterpreterConfig dbgpConfig = new DbgpInterpreterConfig(
 				config);
 
+		String sessionId = dbgpConfig.getSessionId();
+
 		newConfig.addEnvVar(RUBY_HOST_VAR, dbgpConfig.getHost());
 		newConfig.addEnvVar(RUBY_PORT_VAR, Integer.toString(dbgpConfig
 				.getPort()));
-		newConfig.addEnvVar(RUBY_KEY_VAR, dbgpConfig.getSessionId());
-		
-		if (isLoggingEnabled()) {
-			newConfig.addEnvVar(RUBY_LOG_VAR, getLogFilename()
-					.toPortableString());
+		newConfig.addEnvVar(RUBY_KEY_VAR, sessionId);
+
+		if (isLoggingEnabled(delegate)) {
+			newConfig.addEnvVar(RUBY_LOG_VAR, getLogFileName(delegate,
+					sessionId).getAbsolutePath());
 		}
 
 		return newConfig;
@@ -104,5 +92,33 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 	 */
 	protected String getDebugPreferenceQualifier() {
 		return RubyDebugPlugin.PLUGIN_ID;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getDebuggingEnginePreferenceQualifier()
+	 */
+	protected String getDebuggingEnginePreferenceQualifier() {
+		return RubyBasicDebuggerPlugin.PLUGIN_ID;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getLoggingEnabledPreferenceKey()
+	 */
+	protected String getLoggingEnabledPreferenceKey() {
+		return RubyBasicDebuggerConstants.ENABLE_LOGGING;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getLogFileNamePreferenceKey()
+	 */
+	protected String getLogFileNamePreferenceKey() {
+		return RubyBasicDebuggerConstants.LOG_FILE_NAME;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getLogFilePathPreferenceKey()
+	 */
+	protected String getLogFilePathPreferenceKey() {
+		return RubyBasicDebuggerConstants.LOG_FILE_PATH;
 	}
 }

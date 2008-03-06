@@ -10,7 +10,6 @@
 
 package org.eclipse.dltk.tcl.activestatedebugger;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -21,11 +20,7 @@ public class TclActiveStateDebuggerPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.dltk.tcl.activestatedebugger";
-	public static final boolean LOG_ENABLED = Boolean
-			.valueOf(
-					Platform
-							.getDebugOption("org.eclipse.dltk.tcl.activestatedebugger/logEnabled"))
-			.booleanValue();
+
 	// The shared instance
 	private static TclActiveStateDebuggerPlugin plugin;
 

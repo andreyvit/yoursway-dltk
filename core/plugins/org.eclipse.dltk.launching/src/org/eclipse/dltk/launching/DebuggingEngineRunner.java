@@ -1,5 +1,8 @@
 package org.eclipse.dltk.launching;
 
+import java.io.File;
+import java.text.MessageFormat;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -22,6 +25,7 @@ import org.eclipse.dltk.internal.launching.InterpreterMessages;
 import org.eclipse.dltk.launching.debug.DbgpInterpreterConfig;
 import org.eclipse.dltk.launching.debug.DebuggingEngineManager;
 import org.eclipse.dltk.launching.debug.IDebuggingEngine;
+import org.eclipse.dltk.utils.PlatformFileUtils;
 
 public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 	// Launch attributes
@@ -229,9 +233,74 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 	}
 
 	/**
-	 * Returns the id of the plugin whose preference store that debugging
-	 * preference settings.
+	 * Returns the id of the plugin whose preference store contains general
+	 * debugging preference settings.
 	 */
 	protected abstract String getDebugPreferenceQualifier();
 
+	/**
+	 * Returns the id of the plugin whose preference store contains debugging
+	 * engine preferences.
+	 */
+	protected abstract String getDebuggingEnginePreferenceQualifier();
+
+	/**
+	 * Returns the preference key used to store the enable logging setting.
+	 * 
+	 * <p>
+	 * Note: this preference controls logging for the actual debugging engine,
+	 * and not the DBGP protocol output.
+	 * </p>
+	 */
+	protected abstract String getLoggingEnabledPreferenceKey();
+
+	/**
+	 * Returns the preference key used to store the log file path
+	 */
+	protected abstract String getLogFilePathPreferenceKey();
+
+	/**
+	 * Returns the preference key usd to store the log file name
+	 */
+	protected abstract String getLogFileNamePreferenceKey();
+
+	/**
+	 * Returns true if debugging engine logging is enabled.
+	 * 
+	 * <p>
+	 * Subclasses should use this method to determine of logging is enabled for
+	 * the given debugging engine.
+	 * </p>
+	 */
+	protected boolean isLoggingEnabled(PreferencesLookupDelegate delegate) {
+		String key = getLoggingEnabledPreferenceKey();
+		String qualifier = getDebuggingEnginePreferenceQualifier();
+
+		return delegate.getBoolean(qualifier, key);
+	}
+
+	/**
+	 * Returns a fully qualifed path to a log file name.
+	 * 
+	 * <p>
+	 * If the user chose to use '{0}' in their file name, it will be replaced
+	 * with the debugging session id.
+	 * </p>
+	 */
+	protected File getLogFileName(PreferencesLookupDelegate delegate,
+			String sessionId) {
+		String qualifier = getDebuggingEnginePreferenceQualifier();
+
+		String logFilePath = delegate.getString(qualifier,
+				getLogFilePathPreferenceKey());
+		String logFileName = delegate.getString(qualifier,
+				getLogFileNamePreferenceKey());
+
+		String fileName = MessageFormat.format(logFileName,
+				new Object[] { sessionId });
+
+		File file = new File(logFilePath + File.separator + fileName);
+
+		return PlatformFileUtils.findAbsoluteOrEclipseRelativeFile(file);
+	}
 }

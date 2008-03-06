@@ -3,6 +3,7 @@ package org.eclipse.dltk.ruby.fastdebugger.preferences;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 
 import org.eclipse.dltk.ruby.fastdebugger.FastDebuggerPlugin;
+import org.eclipse.dltk.ruby.fastdebugger.FastDebuggerConstants;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -13,6 +14,6 @@ public class FastDebuggerPreferenceInitializer extends
 		IPreferenceStore store = FastDebuggerPlugin.getDefault()
 				.getPreferenceStore();
 
-		FastDebuggerPreferenceConstants.initializeDefaults(store);
+		FastDebuggerConstants.initializeDefaults(store);
 	}
 }

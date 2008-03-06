@@ -10,13 +10,6 @@ public class FastDebuggerPreferenceMessages {
 	}
 	
 	public static String PreferencesDescription;
-	
-	public static String LoggingGroupLabel;
-	public static String EnableLoggingLabel;
-	public static String LogNameLabel;
-	public static String LogNameFormatLabel;
-	public static String LogFolderLabel;
-	public static String BrowseButton;
-	
+		
 	public static String LinkToRubyDebugPreferences;
 }

@@ -29,6 +29,18 @@ public class PythonActiveStateDebuggerPreferencePage extends
 			PythonActiveStateDebuggerPlugin.PLUGIN_ID,
 			PythonActiveStateDebuggerConstants.DEBUGGING_ENGINE_PATH_KEY);
 
+	static PreferenceKey ENABLE_LOGGING = new PreferenceKey(
+			PythonActiveStateDebuggerPlugin.PLUGIN_ID,
+			PythonActiveStateDebuggerConstants.ENABLE_LOGGING);
+
+	static PreferenceKey LOG_FILE_PATH = new PreferenceKey(
+			PythonActiveStateDebuggerPlugin.PLUGIN_ID,
+			PythonActiveStateDebuggerConstants.LOG_FILE_PATH);
+
+	static PreferenceKey LOG_FILE_NAME = new PreferenceKey(
+			PythonActiveStateDebuggerPlugin.PLUGIN_ID,
+			PythonActiveStateDebuggerConstants.LOG_FILE_NAME);
+	
 	private static String PREFERENCE_PAGE_ID = "org.eclipse.dltk.python.preferences.debug.engines.activestatedebugger";
 	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.python.propertyPage.debug.engines.activestatedebugger";
 
@@ -38,17 +50,36 @@ public class PythonActiveStateDebuggerPreferencePage extends
 
 		return new ExternalDebuggingEngineOptionsBlock(
 				newStatusChangedListener, project,
-				new PreferenceKey[] { ENGINE_PATH }, container) {
+				new PreferenceKey[] { ENGINE_PATH,ENABLE_LOGGING, LOG_FILE_PATH,
+						LOG_FILE_NAME }, container) {
 
-			protected void createEngineBlock(Composite parent) {
-				super.createEngineBlock(parent);
+			protected void createOtherBlock(Composite parent) {
 				addDownloadLink(parent,
 						PreferenceMessages.DebuggingEngineDownloadPage,
 						PreferenceMessages.DebuggingEngineDownloadPageLink);
 			}
 
+			protected void createLoggingBlock(Composite composite) {
+				/*
+				 * remove once the python active state debug runner supports
+				 * setting up the log file  
+				 */
+			}
+
 			protected PreferenceKey getDebuggingEnginePathKey() {
 				return ENGINE_PATH;
+			}
+
+			protected PreferenceKey getEnableLoggingPreferenceKey() {
+				return ENABLE_LOGGING;
+			}
+
+			protected PreferenceKey getLogFileNamePreferenceKey() {
+				return LOG_FILE_NAME;
+			}
+
+			protected PreferenceKey getLogFilePathPreferenceKey() {
+				return LOG_FILE_PATH;
 			}
 		};
 	}

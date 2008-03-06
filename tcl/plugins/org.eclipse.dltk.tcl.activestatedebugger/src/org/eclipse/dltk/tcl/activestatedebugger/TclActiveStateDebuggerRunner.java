@@ -11,6 +11,7 @@ package org.eclipse.dltk.tcl.activestatedebugger;
 import java.io.File;
 import java.util.List;
 
+import org.eclipse.dltk.core.PreferencesLookupDelegate;
 import org.eclipse.dltk.launching.ExternalDebuggingEngineRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
@@ -28,7 +29,7 @@ import org.eclipse.dltk.utils.PlatformFileUtils;
  * </p>
  */
 public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner {
-	public static final String ENGINE_ID = "org.eclipse.dltk.tcl.avtivestatedebugger";
+	public static final String ENGINE_ID = "org.eclipse.dltk.tcl.activestatedebugger";
 
 	private static final String HOST_KEY = "-host-ide";
 	private static final String PORT_KEY = "-port-ide";
@@ -48,7 +49,11 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 	 *      java.lang.String)
 	 */
 	protected InterpreterConfig alterConfig(InterpreterConfig config,
-			String debuggingEnginePath) {
+			PreferencesLookupDelegate delegate) {
+
+		File file = PlatformFileUtils
+				.findAbsoluteOrEclipseRelativeFile(getDebuggingEnginePath(delegate));
+
 		final String exe = getInstall().getInstallLocation().getAbsolutePath();
 		final String host = (String) config
 				.getProperty(DbgpConstants.HOST_PROP);
@@ -57,13 +62,20 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 		final String sessionId = (String) config
 				.getProperty(DbgpConstants.SESSION_ID_PROP);
 
+		File pdxFiles = PlatformFileUtils
+				.findAbsoluteOrEclipseRelativeFile(new File(
+						getDebuggingPreference(
+								delegate,
+								TclActiveStateDebuggerConstants.DEBUGGING_ENGINE_PDX_PATH_KEY)));
+
 		InterpreterConfig newConfig = (InterpreterConfig) config.clone();
 
+		if (pdxFiles.exists()) {
+			newConfig.addEnvVar("TCLDEVKIT_LOCAL", pdxFiles.getAbsolutePath());
+		}
+
 		// Additional property
-		File dEngine = PlatformFileUtils
-				.findAbsoluteOrEclipseRelativeFile(new File(debuggingEnginePath));
-		newConfig.setProperty(OVERRIDE_EXE, dEngine.getAbsoluteFile()
-				.toString());
+		newConfig.setProperty(OVERRIDE_EXE, file.getAbsoluteFile().toString());
 
 		// Interpreter arguments
 		newConfig.addInterpreterArg(HOST_KEY);
@@ -78,10 +90,12 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 		newConfig.addInterpreterArg(IDE_KEY);
 		newConfig.addInterpreterArg(sessionId);
 
-		if (TclActiveStateDebuggerPlugin.LOG_ENABLED) {
+		if (isLoggingEnabled(delegate)) {
 			newConfig.addInterpreterArg(LOG_KEY);
 			newConfig.addInterpreterArg(LOG_FILE_KEY);
-			newConfig.addInterpreterArg(getLogFileName(sessionId));
+
+			File logFileName = getLogFileName(delegate, sessionId);
+			newConfig.addInterpreterArg(logFileName.getAbsolutePath());
 		}
 
 		newConfig.addInterpreterArg(SCRIPT_KEY);
@@ -93,12 +107,6 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 		newConfig.addScriptArgs(args);
 
 		return newConfig;
-	}
-
-	private String getLogFileName(String sessionId) {
-		String filename = "log_" + sessionId + ".txt";
-		return TclActiveStateDebuggerPlugin.getDefault().getStateLocation()
-				.append(filename).toPortableString();
 	}
 
 	/*
@@ -116,7 +124,7 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 	}
 
 	/*
-	 * @see org.eclipse.dltk.launching.ExternalDebuggingEngineRunner#getDebuggingEnginePreferenceQualifier()
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getDebuggingEnginePreferenceQualifier()
 	 */
 	protected String getDebuggingEnginePreferenceQualifier() {
 		return TclActiveStateDebuggerPlugin.PLUGIN_ID;
@@ -127,5 +135,26 @@ public class TclActiveStateDebuggerRunner extends ExternalDebuggingEngineRunner 
 	 */
 	protected String getDebugPreferenceQualifier() {
 		return TclDebugPlugin.PLUGIN_ID;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getLoggingEnabledPreferenceKey()
+	 */
+	protected String getLoggingEnabledPreferenceKey() {
+		return TclActiveStateDebuggerConstants.ENABLE_LOGGING;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getLogFileNamePreferenceKey()
+	 */
+	protected String getLogFileNamePreferenceKey() {
+		return TclActiveStateDebuggerConstants.LOG_FILE_NAME;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getLogFilePathPreferenceKey()
+	 */
+	protected String getLogFilePathPreferenceKey() {
+		return TclActiveStateDebuggerConstants.LOG_FILE_PATH;
 	}
 }

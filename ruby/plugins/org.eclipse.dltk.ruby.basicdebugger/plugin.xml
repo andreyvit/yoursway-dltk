@@ -1,42 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-	<extension point="org.eclipse.dltk.launching.debuggingEngine">
-		<engineContribution
-			natureId="org.eclipse.dltk.ruby.core.nature">
-			<engine
-         class="org.eclipse.dltk.ruby.basicdebugger.RubyBasicDebuggerRunnerFactory"
-         description="%BasicDebuggingEngine.description"
-         id="org.eclipse.dltk.ruby.basicdebugger"
-         name="%BasicDebuggingEngine.name"
-         propertyPageId="org.eclipse.dltk.ruby.propertyPage.debug.engines.basicdebugger"
-         preferencePageId="org.eclipse.dltk.ruby.preferences.debug.engines.basicdebugger"
-         priority="0">
-			</engine>
-		</engineContribution>
-	</extension>
- <extension
-       point="org.eclipse.ui.preferencePages">
+
+  <extension
+    point="org.eclipse.core.runtime.preferences">
+    <initializer
+      class="org.eclipse.dltk.ruby.basicdebugger.preferences.RubyBasicDebuggerPreferenceInitializer" />
+  </extension>
+
+  <extension
+    point="org.eclipse.dltk.launching.debuggingEngine">
+    <engineContribution
+      natureId="org.eclipse.dltk.ruby.core.nature">
+      <engine
+        class="org.eclipse.dltk.ruby.basicdebugger.RubyBasicDebuggerRunnerFactory"
+        description="%BasicDebuggingEngine.description"
+        id="org.eclipse.dltk.ruby.basicdebugger"
+        name="%BasicDebuggingEngine.name"
+        propertyPageId="org.eclipse.dltk.ruby.propertyPage.debug.engines.basicdebugger"
+        preferencePageId="org.eclipse.dltk.ruby.preferences.debug.engines.basicdebugger"
+        priority="0">
+      </engine>
+    </engineContribution>
+  </extension>
+
+  <extension
+    point="org.eclipse.ui.preferencePages">
     <page
-          category="org.eclipse.dltk.ruby.preferences.debug.engines"
-          class="org.eclipse.dltk.ruby.basicdebugger.preferences.RubyBasicDebuggerPreferencePage"
-          id="org.eclipse.dltk.ruby.preferences.debug.engines.basicdebugger"
-          name="%BasicRubyDebuggerPreferencePage.name">
+      category="org.eclipse.dltk.ruby.preferences.debug.engines"
+      class="org.eclipse.dltk.ruby.basicdebugger.preferences.RubyBasicDebuggerPreferencePage"
+      id="org.eclipse.dltk.ruby.preferences.debug.engines.basicdebugger"
+      name="%BasicRubyDebuggerPreferencePage.name">
     </page>
- </extension>
- 
-  <extension point="org.eclipse.ui.propertyPages">
-      <page
-        class="org.eclipse.dltk.ruby.basicdebugger.preferences.RubyBasicDebuggerPreferencePage"
-        category="org.eclipse.dltk.ruby.propertyPage.debug.engines"
-        id="org.eclipse.dltk.ruby.propertyPage.debug.engines.basicdebugger"
-        name="%BasicRubyDebuggerPropertyPage.name">
-        <enabledWhen>
-          <adapt type="org.eclipse.core.resources.IProject">
-            <test property="org.eclipse.core.resources.projectNature" value="org.eclipse.dltk.ruby.core.nature"/>
-          </adapt>         
-        </enabledWhen>
-      </page>    
-  </extension>  
- 
+  </extension>
+
+  <extension
+    point="org.eclipse.ui.propertyPages">
+    <page
+      class="org.eclipse.dltk.ruby.basicdebugger.preferences.RubyBasicDebuggerPreferencePage"
+      category="org.eclipse.dltk.ruby.propertyPage.debug.engines"
+      id="org.eclipse.dltk.ruby.propertyPage.debug.engines.basicdebugger"
+      name="%BasicRubyDebuggerPropertyPage.name">
+      <enabledWhen>
+        <adapt
+          type="org.eclipse.core.resources.IProject">
+          <test
+            property="org.eclipse.core.resources.projectNature"
+            value="org.eclipse.dltk.ruby.core.nature" />
+        </adapt>
+      </enabledWhen>
+    </page>
+  </extension>
 </plugin>

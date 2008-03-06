@@ -33,7 +33,7 @@ public abstract class ExternalDebuggingEngineRunner extends
 					ScriptLaunchConfigurationConstants.ERR_DEBUGGING_ENGINE_NOT_CONFIGURED);
 		}
 
-		return alterConfig(config, file.toString());
+		return alterConfig(config, delegate);
 	}
 
 	/**
@@ -42,24 +42,31 @@ public abstract class ExternalDebuggingEngineRunner extends
 	 */
 	protected abstract String getDebuggingEnginePreferenceKey();
 
-	/**
-	 * Returns the id of the plugin whose preference store that contains the
-	 * debugging engine path.
-	 */
-	protected abstract String getDebuggingEnginePreferenceQualifier();
+//	/**
+//	 * Returns the id of the plugin whose preference store that contains the
+//	 * debugging engine path.
+//	 */
+//	protected abstract String getDebuggingEnginePreferenceQualifier();
 
+	
 	protected File getDebuggingEnginePath(PreferencesLookupDelegate delegate) {
 		String key = getDebuggingEnginePreferenceKey();
 		String qualifier = getDebuggingEnginePreferenceQualifier();
 
 		String path = delegate.getString(qualifier, key);
-		if (path != null) {
-			return new File(path);
+		if (!(path == null && "".equals(path))) {
+			return PlatformFileUtils
+					.findAbsoluteOrEclipseRelativeFile(new File(path));
 		}
 
 		return null;
 	}
+	
+	protected String getDebuggingPreference(PreferencesLookupDelegate delegate, String key) {
+		String qualifier = getDebuggingEnginePreferenceQualifier();
+		return delegate.getString(qualifier, key);
+	}
 
 	protected abstract InterpreterConfig alterConfig(InterpreterConfig config,
-			String debuggingEnginePath) throws CoreException;
+			PreferencesLookupDelegate delegate) throws CoreException;
 }

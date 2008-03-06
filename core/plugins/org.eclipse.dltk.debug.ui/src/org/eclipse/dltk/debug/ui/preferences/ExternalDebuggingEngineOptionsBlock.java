@@ -5,7 +5,6 @@ import java.net.URL;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.ui.preferences.AbstractOptionsBlock;
 import org.eclipse.dltk.ui.preferences.FieldValidators;
 import org.eclipse.dltk.ui.preferences.PreferenceKey;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;
@@ -16,7 +15,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Link;
@@ -31,7 +29,7 @@ import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
  * their location on disk.
  */
 public abstract class ExternalDebuggingEngineOptionsBlock extends
-		AbstractOptionsBlock {
+		DebuggingEngineConfigOptionsBlock {
 
 	Text enginePath;
 
@@ -63,18 +61,7 @@ public abstract class ExternalDebuggingEngineOptionsBlock extends
 
 		link.setText(text);
 	}
-
-	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractOptionsBlock#createOptionsBlock(org.eclipse.swt.widgets.Composite)
-	 */
-	protected final Control createOptionsBlock(Composite parent) {
-		final Composite composite = SWTFactory.createComposite(parent, parent
-				.getFont(), 1, 1, GridData.FILL);
-		createEngineBlock(composite);
-
-		return composite;
-	}
-
+	
 	/**
 	 * Returns the debugging engine path preference key.
 	 */
@@ -107,7 +94,7 @@ public abstract class ExternalDebuggingEngineOptionsBlock extends
 
 		// Browse
 		final Button button = SWTFactory.createPushButton(group,
-				ScriptDebugPreferencesMessages.BrowseEnginePath, null);
+				ScriptDebugPreferencesMessages.BrowseButton, null);
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog dialog = new FileDialog(parent.getShell(), SWT.OPEN);

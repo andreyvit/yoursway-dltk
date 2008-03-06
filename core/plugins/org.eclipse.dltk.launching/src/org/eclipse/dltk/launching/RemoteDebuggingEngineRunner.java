@@ -55,4 +55,34 @@ public abstract class RemoteDebuggingEngineRunner extends DebuggingEngineRunner 
 		return null;
 	}
 
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getDebuggingEnginePreferenceQualifier()
+	 */
+	protected String getDebuggingEnginePreferenceQualifier() {
+		return getDebugPreferenceQualifier();
+	}
+	
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getLoggingEnabledPreferenceKey()
+	 */
+	protected String getLoggingEnabledPreferenceKey() {
+		// not supported on the client side
+		return null;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getLogFileNamePreferenceKey()
+	 */
+	protected String getLogFileNamePreferenceKey() {
+		// not supported on the client side
+		return null;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getLogFilePathPreferenceKey()
+	 */
+	protected String getLogFilePathPreferenceKey() {
+		// not supported on the client side
+		return null;
+	}
 }

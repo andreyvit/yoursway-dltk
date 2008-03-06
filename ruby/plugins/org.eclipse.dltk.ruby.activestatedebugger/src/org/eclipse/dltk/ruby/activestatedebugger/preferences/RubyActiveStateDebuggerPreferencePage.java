@@ -18,28 +18,65 @@ import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPref
 import org.eclipse.dltk.ui.preferences.AbstractOptionsBlock;
 import org.eclipse.dltk.ui.preferences.PreferenceKey;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
 public class RubyActiveStateDebuggerPreferencePage extends
 		AbstractConfigurationBlockPropertyAndPreferencePage {
 
-	static PreferenceKey DEBUGGING_ENGINE_PATH_KEY = new PreferenceKey(
+	static PreferenceKey ENGINE_PATH = new PreferenceKey(
 			RubyActiveStateDebuggerPlugin.PLUGIN_ID,
 			RubyActiveStateDebuggerConstants.DEBUGGING_ENGINE_PATH_KEY);
+
+	static PreferenceKey ENABLE_LOGGING = new PreferenceKey(
+			RubyActiveStateDebuggerPlugin.PLUGIN_ID,
+			RubyActiveStateDebuggerConstants.ENABLE_LOGGING);
+
+	static PreferenceKey LOG_FILE_PATH = new PreferenceKey(
+			RubyActiveStateDebuggerPlugin.PLUGIN_ID,
+			RubyActiveStateDebuggerConstants.LOG_FILE_PATH);
+
+	static PreferenceKey LOG_FILE_NAME = new PreferenceKey(
+			RubyActiveStateDebuggerPlugin.PLUGIN_ID,
+			RubyActiveStateDebuggerConstants.LOG_FILE_NAME);
 
 	private static final String PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug.engines.activestatedebugger";
 	private static final String PROPERTY_PAGE_ID = "org.eclipse.dltk.ruby.propertyPage.debug.engines.activestatedebugger";
 
 	/*
-	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#createOptionsBlock(org.eclipse.dltk.ui.util.IStatusChangeListener, org.eclipse.core.resources.IProject, org.eclipse.ui.preferences.IWorkbenchPreferenceContainer)
+	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#createOptionsBlock(org.eclipse.dltk.ui.util.IStatusChangeListener,
+	 *      org.eclipse.core.resources.IProject,
+	 *      org.eclipse.ui.preferences.IWorkbenchPreferenceContainer)
 	 */
 	protected AbstractOptionsBlock createOptionsBlock(
 			IStatusChangeListener newStatusChangedListener, IProject project,
 			IWorkbenchPreferenceContainer container) {
 		return new ExternalDebuggingEngineOptionsBlock(
-				newStatusChangedListener, project, getKeys(), container) {
+				newStatusChangedListener, project, new PreferenceKey[] {
+						ENGINE_PATH, ENABLE_LOGGING, LOG_FILE_PATH,
+						LOG_FILE_NAME }, container) {
+
+			protected void createLoggingBlock(Composite composite) {
+				/*
+				 * remove once the python active state debug runner supports
+				 * setting up the log file
+				 */
+			}
+
 			protected PreferenceKey getDebuggingEnginePathKey() {
-				return DEBUGGING_ENGINE_PATH_KEY;
+				return ENGINE_PATH;
+			}
+
+			protected PreferenceKey getEnableLoggingPreferenceKey() {
+				return ENABLE_LOGGING;
+			}
+
+			protected PreferenceKey getLogFileNamePreferenceKey() {
+				return LOG_FILE_NAME;
+			}
+
+			protected PreferenceKey getLogFilePathPreferenceKey() {
+				return LOG_FILE_PATH;
 			}
 		};
 	}
@@ -87,9 +124,5 @@ public class RubyActiveStateDebuggerPreferencePage extends
 	 */
 	protected String getPropertyPageId() {
 		return PROPERTY_PAGE_ID;
-	}
-
-	private static PreferenceKey[] getKeys() {
-		return new PreferenceKey[] { DEBUGGING_ENGINE_PATH_KEY };
 	}
 }

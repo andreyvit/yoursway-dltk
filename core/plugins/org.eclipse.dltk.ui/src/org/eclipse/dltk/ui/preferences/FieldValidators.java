@@ -48,9 +48,7 @@ public final class FieldValidators {
 		public IStatus validate(String text) {
 			StatusInfo status = new StatusInfo();
 
-			if (text.trim().length() == 0) {
-				status.setWarning(ValidatorMessages.FilePathIsEmpty);
-			} else {
+			if (!(text.trim().length() == 0)) {
 				File file = PlatformFileUtils
 						.findAbsoluteOrEclipseRelativeFile(Path.fromOSString(
 								text).toFile());
