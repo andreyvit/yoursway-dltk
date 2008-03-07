@@ -90,6 +90,17 @@ public class EnvironmentResolverTests extends SuiteOfTestCases {
 		test(resolve, "a1", "a2");
 		test(resolve, "a2", "a2");
 	}
+	public void testEnvironmentResolve008() {
+		Map env = new HashMap();
+		env.put("PATH", "/bin:/usr/bin");
+		EnvironmentVariable[] vars = new EnvironmentVariable[] {
+				new EnvironmentVariable("PATH", "/sbii/bin/:$PATH"),
+				new EnvironmentVariable("a2", "alla{$PATH}") };
+		EnvironmentVariable[] resolve = EnvironmentResolver.resolve(env, vars);
+		assertEquals(resolve.length, 2);
+		test(resolve, "PATH", "/sbii/bin/:/bin:/usr/bin");
+		test(resolve, "a2", "alla{/sbii/bin/:/bin:/usr/bin}");
+	}
 
 	private void test(EnvironmentVariable[] resolve, String b, String v) {
 		assertContains(resolve, mk(b, v));

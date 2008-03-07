@@ -12,7 +12,7 @@ exec tclsh "$0" ${1+"$@"}
 ## Begin renaming of core tcl cmds
 rename package package-org
 proc package {subcmd args} {
-    global pkg_stack pkg_reqs_tmp
+    global pkg_stack pkg_reqs_tmp path_tmp
     
     switch -exact -- $subcmd {
         "require" {
@@ -48,10 +48,12 @@ proc package {subcmd args} {
             #set body [lindex $args 2]
             upvar 1 use_path lcl_use_path
             upvar 1 dir lcl_dir
+            set path $path_tmp
             if {[info exists lcl_use_path]} {
                 set path [lindex $lcl_use_path end]
-                add-pkg-info $name $vers $path $lcl_dir
+                set path_tmp $path
             }
+            add-pkg-info $name $vers $path $lcl_dir
             return [uplevel 1 "::package-org $subcmd $args"]
         }
         default {}
@@ -247,14 +249,15 @@ proc add-pkg-srcs-info {name vers} {
     global pkg_reqs_tmp pkg_srcs_tmp pkg_load_tmp
     global pkg_names_tmp
 
-    set path [get-pkg-info path $name $vers]
-    if {[string equal $path ""]} {
+    set type [get-pkg-info type $name $vers]
+    if {[string equal $type ""]} {
         # If the package is not known to the interpreter,
         # its shouldn't be recorded, so return immediately.
         return
     } ;# End of if stmt
 
     set elm [list $name $vers]
+    set path [get-pkg-info path $name $vers]
     set dir  [get-pkg-info dir $name $vers]
     # Skip if pkg name has been previously recorded
     if {[info exists pkg_names_tmp($elm)]} {
@@ -334,6 +337,11 @@ proc get-pkg-info {what name {vers ""}} {
                 set retVal $pkg_names_dir($elm)
             } ;# End of if stmt
         }
+        "type" {
+            if {[info exists pkg_names_path($elm)]} {
+                set retVal [get-path-info type $pkg_names_path($elm)]
+            } ;# End of if stmt
+        }
         "vers" {
             # Returns list of known pkg versions
             if {[info exists pkg_names_vers($name)]} {
@@ -362,12 +370,19 @@ proc get-pkg-info {what name {vers ""}} {
 
 proc get-path-info {what {path ""}} {
     global pkg_path_names
+    global pkg_path_type
 
     # Parse $what 
     set retVal {}
     switch -exact -- $what {
         "list" {
              set retVal [array names pkg_path_names]
+        }
+        "type" {
+            # Returns type for the given path
+            if {[info exists pkg_path_type($path)]} {
+                set retVal $pkg_path_type($path)
+            } ;# End of if stmt
         }
         "pkgs" {
             # Returns list of known pkgs for the given path
@@ -384,12 +399,20 @@ proc get-path-info {what {path ""}} {
     return $retVal
 } ;# End of proc get-path-info
 
-proc process-pkg-paths {find_paths} {
+proc process-pkg-paths {find_paths builtin_pkgs} {
     global env auto_path
     global pkg_path_type
     global pkg_path_names
 
-    #set pkg_path_type() unknown
+    # Initialize builtin pkgs
+    set pkg_path_names() [list]
+    set pkg_path_type()  builtin
+    foreach name $builtin_pkgs {
+        if {![catch {package provide $name} vers]} {
+            add-pkg-info $name $vers ""
+        } ;# End of if stmt
+    } ;# End of foreach pkt
+
     # First save paths found in auto_path variable
     # and set the flag to 0
     set paths $find_paths
@@ -416,7 +439,7 @@ proc process-pkg-paths {find_paths} {
 } ;# End of proc process-pkg-paths
 
 proc print-pkg-info {output} {
-    global pkg_srcs pkg_load pkg_reqs pkg_path_type
+    global pkg_srcs pkg_load pkg_reqs
     
     set tabspc "    "
     set path_count 0
@@ -428,11 +451,6 @@ proc print-pkg-info {output} {
     set dltk_size  0
     set path_data {}
     foreach path [lsort [get-path-info list]] {
-        # Skip null paths
-        if {[string equal $path ""]} {
-            continue
-        } ;# End of if stmt
-
         # Indentation
         set indent "$tabspc"
         incr path_count
@@ -524,7 +542,7 @@ proc print-pkg-info {output} {
 
         # Create the path xml structure
         set indent "$tabspc"
-        set type $pkg_path_type($path)
+        set type [get-path-info type $path]
         set pattr "name=\"$path\" type=\"$type\""
         if {$path_size} {
             append pattr " " size=\"$path_size\"
@@ -607,8 +625,10 @@ USAGE:  dltk.tcl [subcmd] [options] ?-output <file>?
 
 proc main {argv} {
     global auto_path
-    global pkg_stack
+    global pkg_stack path_tmp
     set pkg_stack {} ;# initialize to null
+    set path_tmp  {} ;# initialize to null
+
     set subcmd [lindex $argv 0]
 
     # We could use tcl's time cmd below but we don't need
@@ -670,13 +690,15 @@ proc main {argv} {
         incr idx
     } ;# End of while loop
 
-    # try to load an unknown pkg, so that it discovers all packages
+    # First try to get list of builtin pkgs known to interpreter
+    # Then try to load an unknown pkg, so that it discovers all packages
+    set builtin_pkgs [package names]
     catch {::package-org require unknown-random-[clock seconds]}
     log::notice "%DLTK-NUM-PATHS% [llength $auto_path]"
     log::notice "%DLTK-NUM-PKGS% [llength [package names]]"
 
     # Process pkg paths in auto_path and TCLLIBPATH
-    process-pkg-paths $paths
+    process-pkg-paths $paths $builtin_pkgs
 
     # Process pkg ifneeded bodies by invoking [pkg req]
     process-pkg-info $find_level $pkgs

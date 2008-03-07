@@ -53,8 +53,13 @@ public final class EnvironmentResolver {
 			fillDependencies(var, variables);
 			unresolved.add(var);
 		}
-
+		// For be shure we exit from while
+		int maxCycles = 1000;
 		while (unresolved.size() > 0) {
+			maxCycles--;
+			if( maxCycles < 0 ) {
+				break;
+			}
 			for (Iterator iterator = unresolved.iterator(); iterator.hasNext();) {
 				REnvironmentVariable var = (REnvironmentVariable) iterator.next();;
 				if (isResolved(var.var)) {

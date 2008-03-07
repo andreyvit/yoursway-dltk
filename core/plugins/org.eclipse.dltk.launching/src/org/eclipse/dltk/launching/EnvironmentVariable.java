@@ -65,5 +65,7 @@ public class EnvironmentVariable {
 		}
 		return Status.OK_STATUS;
 	}
-
+	public String toString() {
+		return this.name + "=" + this.value;
+	}
 }

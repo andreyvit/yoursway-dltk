@@ -44,7 +44,7 @@ public class RubyGenericInstall extends AbstractInterpreterInstall {
 
 			InterpreterConfig config = ScriptLaunchUtil
 					.createInterpreterConfig(builder.toFile(), builder
-							.removeLastSegments(1).toFile());
+							.removeLastSegments(1).toFile(), null);
 			// config.addInterpreterArg("-KU");
 			Process process = ScriptLaunchUtil.runScriptWithInterpreter(
 					RubyGenericInstall.this.getInstallLocation()

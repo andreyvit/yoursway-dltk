@@ -186,7 +186,7 @@ public class IncrTclSelectionExtension implements ISelectionExtension {
 									(IParent) parent);
 					engine.addSelectionElement(methodElement);
 					return;
-				} else if (ref.sourceStart() <= position
+				} else if (ref != null && ref.sourceStart() <= position
 						&& position <= ref.sourceEnd()) {
 					engine.addSelectionElement(parent);
 				}
@@ -369,7 +369,7 @@ public class IncrTclSelectionExtension implements ISelectionExtension {
 			TclSelectionEngine engine) {
 		IMixinElement[] find = TclMixinModel.getInstance().find(pattern + "*");
 		int pos = pattern.indexOf(IMixinRequestor.MIXIN_NAME_SEPARATOR);
-		if( find.length == 0 && pos != -1 ) {
+		if (find.length == 0 && pos != -1) {
 			String newPattern = pattern.substring(0, pos);
 			find = TclMixinModel.getInstance().find(newPattern + "*");
 		}
