@@ -4,14 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
-import org.eclipse.dltk.ast.parser.ISourceParser;
-import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.core.search.matching.MatchLocatorParser;
 import org.eclipse.dltk.core.search.matching.PatternLocator;
@@ -19,7 +15,6 @@ import org.eclipse.dltk.core.search.matching.PossibleMatch;
 
 public abstract class BasicTclMatchLocatorParser extends MatchLocatorParser {
 
-	protected ISourceParser parser;
 	protected static String[] kw = TclKeywordsManager.getKeywords();
 	protected static Map kwMap = new HashMap();
 	static {
@@ -30,22 +25,13 @@ public abstract class BasicTclMatchLocatorParser extends MatchLocatorParser {
 
 	public BasicTclMatchLocatorParser(MatchLocator locator) {
 		super(locator);
-		try {
-			this.parser = DLTKLanguageManager
-					.getSourceParser(TclNature.NATURE_ID);
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	public ModuleDeclaration parse(PossibleMatch possibleMatch) {
-		ModuleDeclaration module = this.parser.parse(possibleMatch
-				.getFileName(),
-				possibleMatch.getSourceContents().toCharArray(), null);
+		ModuleDeclaration module = super.parse(possibleMatch);		
 		module.rebuild();
 		module.rebuildMethods();
+		
 		return module;
 	}
 

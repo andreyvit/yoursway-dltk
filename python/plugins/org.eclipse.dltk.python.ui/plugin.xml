@@ -13,6 +13,22 @@
       <extension point="org.eclipse.core.runtime.preferences">
         <initializer class="org.eclipse.dltk.python.internal.ui.PythonUIPreferenceInitializer"/>
     </extension>
+    
+ <extension
+         point="org.eclipse.search.searchPages">
+      <page
+            canSearchEnclosingProjects="true"
+            class="org.eclipse.dltk.python.internal.ui.search.PythonSearchPage"
+            enabled="true"
+            extensions="py:90"
+            icon="$nl$/icons/obj16/search_obj.gif"
+            id="org.eclipse.dltk.ui.PythonSearchPage"
+            label="%PythonSearchPage.label"
+            showScopeSection="true"
+            sizeHint="460,160">
+      </page>
+   </extension>    
+    
  <extension
          point="org.eclipse.ui.editors">
       <editor
@@ -69,6 +85,19 @@
  </extension>
     
     <extension
+       point="org.eclipse.ui.editors.templates">
+       <contextType
+          class="org.eclipse.dltk.python.internal.ui.templates.PythonUniversalTemplateContextType"
+          id="pythonUniversalTemplateContextType"
+          name="%PythonTemplateContext.name">
+       </contextType> 
+       <include
+          file="templates/templates.xml"
+          translations="templates/templates.properties">
+       </include>         
+    </extension>
+    
+    <extension
        point="org.eclipse.ui.preferencePages">
        <page	          
 	          class="org.eclipse.dltk.python.internal.ui.preferences.PythonGlobalPreferencesPage"
@@ -80,11 +109,16 @@
 	          class="org.eclipse.dltk.python.internal.ui.preferences.PythonEditorPreferencesPage"
 	          id="org.eclipse.dltk.python.preferences.editor"
 	          name="%PythonEditorPreferencePage.name"/>
-	    <page
-	          category="org.eclipse.dltk.python.preferences.editor"
-	          class="org.eclipse.dltk.python.internal.ui.preferences.PythonEditorSyntaxColoringPreferencePage"
-	          id="org.eclipse.dltk.python.ui.editor.SyntaxColoring"
-	          name="%PythonEditorSyntaxColoringPreferencePage.name"/>
+        <page
+              category="org.eclipse.dltk.python.preferences.editor"
+              class="org.eclipse.dltk.python.internal.ui.templates.PythonCodeTemplatesPreferencePage"
+              id="org.eclipse.dltk.python.ui.editor.Templates"
+              name="%PythonEditorTemplatesPreferencePage.name"/>
+        <page
+              category="org.eclipse.dltk.python.preferences.editor"
+              class="org.eclipse.dltk.python.internal.ui.preferences.PythonEditorSyntaxColoringPreferencePage"
+              id="org.eclipse.dltk.python.ui.editor.SyntaxColoring"
+              name="%PythonEditorSyntaxColoringPreferencePage.name"/>
 	    <page
 	          category="org.eclipse.dltk.python.preferences.editor"
 	          class="org.eclipse.dltk.python.internal.ui.preferences.PythonSmartTypingPreferencePage"
@@ -138,6 +172,18 @@
           class="org.eclipse.dltk.python.internal.ui.PythonUILanguageToolkit"
           nature="org.eclipse.dltk.python.core.nature"/>
  </extension> 
+ 
+ <extension
+    point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+    id="PythonTypeCompletionProposalComputer">
+    <scriptCompletionProposalComputer
+      class="org.eclipse.dltk.python.internal.ui.text.completion.PythonTypeCompletionProposalComputer"
+      categoryId="org.eclipse.dltk.ui.scriptTypeProposalCategory"
+      toolkitId="org.eclipse.dltk.python.core.nature">
+      <partition
+        type="__dftl_partition_content_type" />
+    </scriptCompletionProposalComputer>
+  </extension>
  
 <extension
          point="org.eclipse.dltk.ui.dltkElementFilters">

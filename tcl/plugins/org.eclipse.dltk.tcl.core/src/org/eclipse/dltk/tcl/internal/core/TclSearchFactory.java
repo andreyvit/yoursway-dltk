@@ -10,8 +10,7 @@
 package org.eclipse.dltk.tcl.internal.core;
 
 import org.eclipse.core.runtime.SubProgressMonitor;
-import org.eclipse.dltk.core.ISearchFactory;
-import org.eclipse.dltk.core.search.DLTKSearchParticipant;
+import org.eclipse.dltk.core.search.AbstractSearchFactory;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.IMatchLocatorParser;
 import org.eclipse.dltk.core.search.SearchPattern;
@@ -21,21 +20,34 @@ import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.tcl.core.TclMatchLocatorParser;
 import org.eclipse.dltk.tcl.internal.core.search.TclMatchLocator;
 
-public class TclSearchFactory implements ISearchFactory {
+/**
+ * Tcl search factory
+ */
+public class TclSearchFactory extends AbstractSearchFactory {
 
+	/*
+	 * @see org.eclipse.dltk.core.ISearchFactory#createMatchParser(org.eclipse.dltk.core.search.matching.MatchLocator)
+	 */
 	public IMatchLocatorParser createMatchParser(MatchLocator locator) {
 		return new TclMatchLocatorParser(locator);
 	}
-	public MatchLocator createMatchLocator(SearchPattern pattern, SearchRequestor requestor, IDLTKSearchScope scope, SubProgressMonitor monitor) {
+
+	/*
+	 * @see org.eclipse.dltk.core.ISearchFactory#createMatchLocator(org.eclipse.dltk.core.search.SearchPattern,
+	 *      org.eclipse.dltk.core.search.SearchRequestor,
+	 *      org.eclipse.dltk.core.search.IDLTKSearchScope,
+	 *      org.eclipse.core.runtime.SubProgressMonitor)
+	 */
+	public MatchLocator createMatchLocator(SearchPattern pattern,
+			SearchRequestor requestor, IDLTKSearchScope scope,
+			SubProgressMonitor monitor) {
 		return new TclMatchLocator(pattern, requestor, scope, monitor);
 	}
 	
-	public DLTKSearchParticipant createSearchParticipant() {
-		return null;
-	}
+	/*
+	 * @see org.eclipse.dltk.core.search.AbstractSearchFactory#createSourceRequestor()
+	 */
 	public SourceIndexerRequestor createSourceRequestor() {
 		return new TclSourceIndexerRequestor();
 	}
-
-
 }
