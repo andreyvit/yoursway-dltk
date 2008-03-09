@@ -13,6 +13,9 @@ public class PlatformFileUtils {
 	 * Returns same file if not exist.
 	 */
 	public static File findAbsoluteOrEclipseRelativeFile(File file) {
+		if( file.getPath().length() == 0 ) {
+			return file;
+		}
 		String locationName = file.getPath();
 		if (!file.exists() && !file.isAbsolute()) {
 			String loc;
