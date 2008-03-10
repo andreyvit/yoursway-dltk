@@ -912,8 +912,11 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 	protected void initializeEditor() {
 		IPreferenceStore store = createCombinedPreferenceStore(null);
 		setPreferenceStore(store);
-		setSourceViewerConfiguration(getTextTools()
-				.createSourceViewerConfiguraton(store, this));
+		ScriptTextTools textTools = getTextTools();
+		if (textTools != null) {
+			setSourceViewerConfiguration(textTools
+					.createSourceViewerConfiguraton(store, this));
+		}
 	}
 
 	/**
@@ -943,10 +946,13 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 
 	protected abstract IPreferenceStore getScriptPreferenceStore();
 
-	public abstract ScriptTextTools getTextTools();
+	public ScriptTextTools getTextTools() {
+		return null;
+	}
 
-	protected abstract void connectPartitioningToElement(IEditorInput input,
-			IDocument document);
+	protected void connectPartitioningToElement(IEditorInput input,
+			IDocument document) {
+	}
 
 	protected void internalDoSetInput(IEditorInput input) throws CoreException {
 		ISourceViewer sourceViewer = getSourceViewer();
@@ -1333,7 +1339,14 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		setAction(GoToNextPreviousMemberAction.PREVIOUS_MEMBER, action);
 	}
 
-	protected abstract FoldingActionGroup createFoldingActionGroup();
+	/**
+	 * Creates action group for folding.
+	 * 
+	 * @return
+	 */
+	protected FoldingActionGroup createFoldingActionGroup() {
+		return null;
+	}
 
 	/*
 	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#createAnnotationRulerColumn(org.eclipse.jface.text.source.CompositeRuler)
@@ -1424,7 +1437,9 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 	 * 
 	 * @return the created script outline page
 	 */
-	protected abstract ScriptOutlinePage doCreateOutlinePage();
+	protected ScriptOutlinePage doCreateOutlinePage() {
+		return new ScriptOutlinePage(this, getPreferenceStore());
+	}
 
 	/**
 	 * String identifiying concrete language editor. Used for ex. for fetching
@@ -2079,7 +2094,14 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		}
 	}
 
-	protected abstract IFoldingStructureProvider getFoldingStructureProvider();
+	/**
+	 * Returns folding structure provider.
+	 * 
+	 * @return
+	 */
+	protected IFoldingStructureProvider getFoldingStructureProvider() {
+		return null;
+	}
 
 	private boolean isEditorHoverProperty(String property) {
 		return PreferenceConstants.EDITOR_TEXT_HOVER_MODIFIERS.equals(property);
@@ -2692,17 +2714,29 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 						foldingMenu);
 
 		IAction action = getAction("FoldingToggle"); //$NON-NLS-1$
-		foldingMenu.add(action);
+		if (action != null) {
+			foldingMenu.add(action);
+		}
 		action = getAction("FoldingExpandAll"); //$NON-NLS-1$
-		foldingMenu.add(action);
+		if (action != null) {
+			foldingMenu.add(action);
+		}
 		action = getAction("FoldingCollapseAll"); //$NON-NLS-1$
-		foldingMenu.add(action);
+		if (action != null) {
+			foldingMenu.add(action);
+		}
 		action = getAction("FoldingRestore"); //$NON-NLS-1$
-		foldingMenu.add(action);
+		if (action != null) {
+			foldingMenu.add(action);
+		}
 		action = getAction("FoldingCollapseMembers"); //$NON-NLS-1$
-		foldingMenu.add(action);
+		if (action != null) {
+			foldingMenu.add(action);
+		}
 		action = getAction("FoldingCollapseComments"); //$NON-NLS-1$
-		foldingMenu.add(action);
+		if (action != null) {
+			foldingMenu.add(action);
+		}
 	}
 
 	/*
@@ -2736,7 +2770,14 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 
 	public abstract IDLTKLanguageToolkit getLanguageToolkit();
 
-	public abstract String getCallHierarchyID();
+	/**
+	 * Return identifier of call hierarchy. Used by call hierarchy actions.
+	 * 
+	 * @return
+	 */
+	public String getCallHierarchyID() {
+		return null;
+	}
 
 	/*
 	 * @see org.eclipse.ui.texteditor.AbstractTextEditor#performSave(boolean,
@@ -2941,10 +2982,11 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 	protected SemanticHighlightingManager fSemanticManager;
 
 	private void installSemanticHighlighting() {
-		if (fSemanticManager == null) {
+		ScriptTextTools textTools = getTextTools();
+		if (fSemanticManager == null && textTools != null) {
 			fSemanticManager = new SemanticHighlightingManager();
 			fSemanticManager.install(this,
-					(ScriptSourceViewer) getSourceViewer(), getTextTools()
+					(ScriptSourceViewer) getSourceViewer(), textTools
 							.getColorManager(), getPreferenceStore());
 		}
 	}

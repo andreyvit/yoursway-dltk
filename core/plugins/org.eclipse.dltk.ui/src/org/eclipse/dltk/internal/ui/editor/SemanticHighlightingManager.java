@@ -23,12 +23,14 @@ import org.eclipse.dltk.ui.text.IColorManager;
 import org.eclipse.dltk.ui.text.IColorManagerExtension;
 import org.eclipse.dltk.ui.text.ScriptPresentationReconciler;
 import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
+import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.TextAttribute;
+import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
@@ -283,10 +285,22 @@ public class SemanticHighlightingManager implements IPropertyChangeListener {
 		fColorManager = colorManager;
 		fPreferenceStore = preferenceStore;
 		if (fEditor != null) {
-			fConfiguration = editor.getTextTools()
-					.createSourceViewerConfiguraton(preferenceStore, editor);
-			fPresentationReconciler = (ScriptPresentationReconciler) fConfiguration
-					.getPresentationReconciler(sourceViewer);
+			ScriptTextTools textTools = editor.getTextTools();
+			if (textTools != null) {
+				fConfiguration = textTools.createSourceViewerConfiguraton(
+						preferenceStore, editor);
+				IPresentationReconciler presReconciler = fConfiguration
+						.getPresentationReconciler(sourceViewer);
+				if (presReconciler instanceof ScriptPresentationReconciler) {
+					fPresentationReconciler = (ScriptPresentationReconciler) presReconciler;
+				}
+				else {
+					fPresentationReconciler = null;
+				}
+			} else {
+				fConfiguration = null;
+				fPresentationReconciler = null;
+			}
 		} else {
 			fConfiguration = null;
 			fPresentationReconciler = null;
@@ -471,16 +485,19 @@ public class SemanticHighlightingManager implements IPropertyChangeListener {
 	 * Initialize semantic highlightings.
 	 */
 	private void initializeHighlightings() {
-		fSemanticHighlightings = fEditor.getTextTools()
-				.getSemanticHighlightings();
-		fHighlightings = new Highlighting[fSemanticHighlightings.length];
-		for (int a = 0; a < fSemanticHighlightings.length; a++) {
-			fHighlightings[a] = new Highlighting(createTextAttribute(
-					fColorManager, fPreferenceStore, fSemanticHighlightings[a]
-							.getPreferenceKey(), fSemanticHighlightings[a]
-							.getBackgroundPreferenceKey()), true, fSemanticHighlightings[a]);
+		ScriptTextTools textTools = fEditor.getTextTools();
+		if (textTools != null) {
+			fSemanticHighlightings = textTools.getSemanticHighlightings();
+			fHighlightings = new Highlighting[fSemanticHighlightings.length];
+			for (int a = 0; a < fSemanticHighlightings.length; a++) {
+				fHighlightings[a] = new Highlighting(
+						createTextAttribute(fColorManager, fPreferenceStore,
+								fSemanticHighlightings[a].getPreferenceKey(),
+								fSemanticHighlightings[a]
+										.getBackgroundPreferenceKey()), true,
+						fSemanticHighlightings[a]);
+			}
 		}
-
 	}
 
 	/**
@@ -514,12 +531,13 @@ public class SemanticHighlightingManager implements IPropertyChangeListener {
 		if (fConfiguration != null)
 			fConfiguration.handlePropertyChangeEvent(event);
 
-// if (SemanticHighlightings.affectsEnablement(fPreferenceStore, event)) {
-// if (isEnabled())
-// enable();
-// else
-// disable();
-// }
+		// if (SemanticHighlightings.affectsEnablement(fPreferenceStore, event))
+		// {
+		// if (isEnabled())
+		// enable();
+		// else
+		// disable();
+		// }
 
 		if (!isEnabled())
 			return;
@@ -530,22 +548,22 @@ public class SemanticHighlightingManager implements IPropertyChangeListener {
 			SemanticHighlighting semanticHighlighting = fSemanticHighlightings[i];
 
 			String preferenceKey = semanticHighlighting.getPreferenceKey();
-			if (preferenceKey!=null)
-			if (preferenceKey.equals(event.getProperty())) {
-				adaptToTextForegroundChange(fHighlightings[i], event);
-				fPresenter.highlightingStyleChanged(fHighlightings[i]);
-				refreshNeeded = true;
-				continue;
-			}
+			if (preferenceKey != null)
+				if (preferenceKey.equals(event.getProperty())) {
+					adaptToTextForegroundChange(fHighlightings[i], event);
+					fPresenter.highlightingStyleChanged(fHighlightings[i]);
+					refreshNeeded = true;
+					continue;
+				}
 			String bpreferenceKey = semanticHighlighting
 					.getBackgroundPreferenceKey();
-			if (bpreferenceKey!=null)
-			if (bpreferenceKey.equals(event.getProperty())) {
-				adaptToTextBackgroundChange(fHighlightings[i], event);
-				fPresenter.highlightingStyleChanged(fHighlightings[i]);
-				refreshNeeded = true;
-				continue;
-			}
+			if (bpreferenceKey != null)
+				if (bpreferenceKey.equals(event.getProperty())) {
+					adaptToTextBackgroundChange(fHighlightings[i], event);
+					fPresenter.highlightingStyleChanged(fHighlightings[i]);
+					refreshNeeded = true;
+					continue;
+				}
 
 			String boldKey = preferenceKey
 					+ PreferenceConstants.EDITOR_BOLD_SUFFIX;
@@ -585,14 +603,14 @@ public class SemanticHighlightingManager implements IPropertyChangeListener {
 				continue;
 			}
 
-// String enabledKey=
-// preferenceKey+PreferenceConstants.EDITOR_SYNC_OUTLINE_ON_CURSOR_MOVE;
-// if (enabledKey.equals(event.getProperty())) {
-// adaptToEnablementChange(fHighlightings[i], event);
-// fPresenter.highlightingStyleChanged(fHighlightings[i]);
-// refreshNeeded= true;
-// continue;
-// }
+			// String enabledKey=
+			// preferenceKey+PreferenceConstants.EDITOR_SYNC_OUTLINE_ON_CURSOR_MOVE;
+			// if (enabledKey.equals(event.getProperty())) {
+			// adaptToEnablementChange(fHighlightings[i], event);
+			// fPresenter.highlightingStyleChanged(fHighlightings[i]);
+			// refreshNeeded= true;
+			// continue;
+			// }
 		}
 
 		if (refreshNeeded && fReconciler != null)

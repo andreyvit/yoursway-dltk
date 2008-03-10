@@ -9,11 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.python.internal.ui.text.folding;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.ast.parser.ISourceParser;
-import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.python.core.PythonNature;
 import org.eclipse.dltk.python.internal.ui.PythonUI;
 import org.eclipse.dltk.python.internal.ui.text.PythonPartitionScanner;
