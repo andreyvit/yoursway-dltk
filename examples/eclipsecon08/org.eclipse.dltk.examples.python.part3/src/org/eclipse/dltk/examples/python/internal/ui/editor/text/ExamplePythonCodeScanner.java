@@ -8,6 +8,8 @@ import org.eclipse.dltk.ui.text.IColorManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IToken;
+import org.eclipse.jface.text.rules.IWhitespaceDetector;
+import org.eclipse.jface.text.rules.IWordDetector;
 import org.eclipse.jface.text.rules.WhitespaceRule;
 import org.eclipse.jface.text.rules.WordRule;
 
@@ -24,7 +26,7 @@ public class ExamplePythonCodeScanner extends AbstractScriptScanner {
 
 	public ExamplePythonCodeScanner(IColorManager manager, IPreferenceStore store) {
 		super(manager, store);
-		initialize();
+		this.initialize();
 	}
 
 	protected String[] getTokenProperties() {
@@ -33,9 +35,9 @@ public class ExamplePythonCodeScanner extends AbstractScriptScanner {
 
 	protected List createRules() {
 		List/* <IRule> */rules = new ArrayList/* <IRule> */();
-		IToken keyword = getToken(IExamplePythonColorConstants.PYTHON_KEYWORD);
-		IToken comment = getToken(IExamplePythonColorConstants.PYTHON_COMMENT);
-		IToken other = getToken(IExamplePythonColorConstants.PYTHON_DEFAULT);
+		IToken keyword = this.getToken(IExamplePythonColorConstants.PYTHON_KEYWORD);
+		IToken comment = this.getToken(IExamplePythonColorConstants.PYTHON_COMMENT);
+		IToken other = this.getToken(IExamplePythonColorConstants.PYTHON_DEFAULT);
 		// Add rule for single line comments.
 		rules.add(new EndOfLineRule("#", comment));
 		// Add generic whitespace rule.
@@ -46,7 +48,20 @@ public class ExamplePythonCodeScanner extends AbstractScriptScanner {
 			wordRule.addWord(fgKeywords[i], keyword);
 		}
 		rules.add(wordRule);
-		setDefaultReturnToken(other);
+		this.setDefaultReturnToken(other);
 		return rules;
+	}
+	public class ExamplePythonWhitespaceDetector implements IWhitespaceDetector {
+		public boolean isWhitespace(char character) {
+			return Character.isWhitespace(character);
+		}
+	}
+	public class ExamplePythonWordDetector implements IWordDetector {
+		public boolean isWordPart(char character) {
+			return Character.isJavaIdentifierPart(character);
+		}
+		public boolean isWordStart(char character) {
+			return Character.isJavaIdentifierStart(character);
+		}
 	}
 }
