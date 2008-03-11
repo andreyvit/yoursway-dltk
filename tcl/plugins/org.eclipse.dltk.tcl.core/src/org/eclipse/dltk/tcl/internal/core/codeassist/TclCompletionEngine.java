@@ -798,7 +798,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 
 	private boolean isTclMethod(MethodDeclaration nde) {
 		int modifiers = nde.getModifiers();
-		if (modifiers <= Modifiers.USER_MODIFIER) {
+		if (modifiers < Modifiers.USER_MODIFIER) {
 			return true;
 		}
 		return false;
@@ -806,7 +806,7 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 
 	private boolean isTclField(FieldDeclaration nde) {
 		int modifiers = nde.getModifiers();
-		if (modifiers <= Modifiers.USER_MODIFIER) {
+		if (modifiers < Modifiers.USER_MODIFIER) {
 			return true;
 		}
 		return false;
