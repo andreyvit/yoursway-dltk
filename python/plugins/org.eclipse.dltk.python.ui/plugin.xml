@@ -94,7 +94,13 @@
           category="org.eclipse.dltk.python.preferences.editor"
           class="org.eclipse.dltk.python.internal.ui.preferences.PythonFoldingPreferencePage"
           id="org.eclipse.dltk.python.ui.editor.PythonFolding"
-          name="%PythonEditorFoldingPreferencePage.name"/>	          
+          name="%PythonEditorFoldingPreferencePage.name"/>
+     <page
+           category="org.eclipse.dltk.python.preferences.editor"
+           class="org.eclipse.dltk.python.internal.ui.templates.PythonCodeTemplatePreferencePage"
+           id="org.eclipse.dltk.python.preferences.templates"
+           name="%PythonCodeTemplatesPreferencePage.name">
+     </page>	          
 	    
 	 </extension>
   <extension
@@ -156,5 +162,30 @@
             description="%HideInnerPyoFiles.description"
             pattern="*.pyo">
       </filter>		      
- </extension>   
+ </extension>
+<extension
+      point="org.eclipse.ui.editors.templates">
+   <contextType
+         class="org.eclipse.dltk.python.internal.ui.templates.PythonTemplateContextType"
+         id="pythonTemplateContextType"
+         name="Python">
+   </contextType>
+   <include
+         file="templates/templates.xml"
+         translations="templates/templates.properties">
+   </include>
+</extension>
+<extension
+      id="PythonDefaultCompletionProposalComputer"
+      name="Python completion proposals"
+      point="org.eclipse.dltk.ui.scriptCompletionProposalComputer">
+   <scriptCompletionProposalComputer
+         categoryId="org.eclipse.dltk.ui.scriptProposalCategory"
+         class="org.eclipse.dltk.python.internal.ui.text.completion.PythonCompletionProposalComputer"
+         toolkitId="org.eclipse.dltk.python.core.nature">
+      <partition
+            type="__dftl_partition_content_type">
+      </partition>
+   </scriptCompletionProposalComputer>
+</extension>   
 </plugin>

@@ -27,8 +27,9 @@ import org.eclipse.dltk.utils.CorePrinter;
  * VariableReference, VariableReference, CallHolder ) 2) a.f().q[2] it is be: (
  * VariableReference, VariableReference, CallHolder, VariableReference,
  * IndexHolder )
+ * 
+ * @deprecated Should never appear in AST, use PythonCallExpression/PythonArrayAccessExpression/PythonVariableAccessExpression instead.
  */
-// TODO: May be needed add traverse for index and calls?
 public class ExtendedVariableReference extends Reference {
 	/**
 	 * List of expressions.

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+
+<template 
+	context="pythonTemplateContextType" 
+	description="%funcTemplate.description" 
+	id="org.eclipse.dltk.python.ui.templates.func" 
+	name="function">def ${name}(${args}):
+	${pass}</template>
+
+<template 
+	context="pythonTemplateContextType" 
+	description="%ifElse.description" 
+	id="org.eclipse.dltk.python.ui.templates.ifElse" 
+	name="if-else">if ${cond}: 
+	pass # ${if_block}
+else:
+	pass # ${else_block}</template>
+
+<template 
+	context="pythonTemplateContextType" 
+	description="%withAsStatement.description" 
+	id="org.eclipse.dltk.python.ui.templates.withAsStatement" 
+	name="with-as">with ${what} as ${alias}: 
+	${cursor}</template>
+
+<template 
+	context="pythonTemplateContextType" 
+	description="%withStatement.description" 
+	id="org.eclipse.dltk.python.ui.templates.withStatement" 
+	name="with">with ${what}: 
+	${cursor}</template>
+
+<template 
+	context="pythonTemplateContextType" 
+	description="%forStatement.description" 
+	id="org.eclipse.dltk.python.ui.templates.forStatement" 
+	name="for">for ${iter} in ${container}:
+	${cursor}</template>
+
+<template 
+	context="pythonTemplateContextType" 
+	description="%tryExceptFinally.description" 
+	id="org.eclipse.dltk.python.ui.templates.tryExceptFinally" 
+	name="try-except-finally">try:
+	${cursor}
+except ${exception}:
+	pass # ${except_block}
+finally:
+	pass # ${finally_block}</template>
+
+<template 
+	context="pythonTemplateContextType" 
+	description="%tryFinally.description" 
+	id="org.eclipse.dltk.python.ui.templates.tryFinally" 
+	name="try-finally">try:
+	${cursor}
+finally:
+	pass # ${finally_block}</template>
+
+<template 
+	context="pythonTemplateContextType" 
+	description="%tryExcept.description" 
+	id="org.eclipse.dltk.python.ui.templates.tryExcept" 
+	name="try-except">try:
+	${cursor}
+except ${exception}:
+	pass # ${except_block}</template>
+
+<template 
+	context="pythonTemplateContextType" 
+	description="%except.description" 
+	id="org.eclipse.dltk.python.ui.templates.except" 
+	name="except">except ${exception}:
+	${cursor}</template>
+
+<template 
+	context="pythonTemplateContextType" 
+	description="%fromImport.description" 
+	id="org.eclipse.dltk.python.ui.templates.fromImport" 
+	name="from-import">from ${module} import ${name}</template>
+
+<template 
+	context="pythonTemplateContextType" 
+	description="%fromImportAs.description" 
+	id="org.eclipse.dltk.python.ui.templates.fromImportAs" 
+	name="from-import-as">from ${module} import ${name} as ${alias}</template>
+
+<template 
+	context="pythonTemplateContextType" 
+	description="%classDecl.description" 
+	id="org.eclipse.dltk.python.ui.templates.classDecl" 
+	name="class">class ${name}(${object}):
+	${cursor}</template>
+
+<template 
+	context="pythonTemplateContextType" 
+	description="%instMethodDecl.description" 
+	id="org.eclipse.dltk.python.ui.templates.instMethodDecl" 
+	name="instance method">def ${name}(${self}):
+	${cursor}</template>
+
+<template 
+	context="pythonTemplateContextType" 
+	description="%classMethodDecl.description" 
+	id="org.eclipse.dltk.python.ui.templates.classMethodDecl" 
+	name="class method">@classmethod
+def ${name}(${_class}):
+	${cursor}</template>
+
+<template 
+	context="pythonTemplateContextType" 
+	description="%staticMethodDecl.description" 
+	id="org.eclipse.dltk.python.ui.templates.staticMethodDecl" 
+	name="static method">@staticmethod
+def ${name}(${}):
+	${cursor}</template>
+
+</templates>
