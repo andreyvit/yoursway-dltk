@@ -12,7 +12,7 @@ public class PythonArrayAccessExpression extends Expression implements ExtendedV
 	private final Expression index;
 
 	public PythonArrayAccessExpression(Expression array, Expression index) {
-		if (array == null || index == null)
+		if (array == null)
 			throw new IllegalArgumentException();
 		this.array = array;
 		this.index = index;
@@ -27,7 +27,8 @@ public class PythonArrayAccessExpression extends Expression implements ExtendedV
 	public void traverse(ASTVisitor visitor) throws Exception {
 		if (visitor.visit(this)) {
 			array.traverse(visitor);
-			index.traverse(visitor);
+			if(index != null)
+				index.traverse(visitor);
 			visitor.endvisit(this);
 		}
 	}
@@ -40,9 +41,7 @@ public class PythonArrayAccessExpression extends Expression implements ExtendedV
 			list = new ArrayList();
 			list.add(array);
 		}
-		list.add(this);
-		list.add(index);
+		list.add(new IndexHolder(this.sourceStart(), this.sourceEnd(), index));
 		return list;
 	}
-
 }

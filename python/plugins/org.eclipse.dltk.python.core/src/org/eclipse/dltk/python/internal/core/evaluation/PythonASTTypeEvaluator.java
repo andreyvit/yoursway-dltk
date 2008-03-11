@@ -53,6 +53,9 @@ import org.eclipse.dltk.python.parser.ast.expressions.Assignment;
 import org.eclipse.dltk.python.parser.ast.expressions.BinaryExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.CallHolder;
 import org.eclipse.dltk.python.parser.ast.expressions.ExtendedVariableReference;
+import org.eclipse.dltk.python.parser.ast.expressions.ExtendedVariableReferenceInterface;
+import org.eclipse.dltk.python.parser.ast.expressions.ExtendedVariableReferences;
+import org.eclipse.dltk.python.parser.ast.expressions.PythonCallExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonDictExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonImportAsExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonImportExpression;
@@ -201,9 +204,9 @@ public class PythonASTTypeEvaluator {
 			return new SimpleType(SimpleType.TYPE_DICT);
 		} else if (node instanceof SimpleReference) { // Simple reference
 			return evaluateSimpleReferenceType((SimpleReference) node, scope);
-		} else if (node instanceof ExtendedVariableReference) {
+		} else if (node instanceof ExtendedVariableReferenceInterface) {
 			return evaluateExtendedReferenceType(
-					(ExtendedVariableReference) node, node);
+					(ExtendedVariableReferenceInterface) node, node);
 		} else if (node instanceof TypeDeclaration) {
 			return new OldClassType(this.fModule, (TypeDeclaration) node);
 		}
@@ -237,28 +240,31 @@ public class PythonASTTypeEvaluator {
 				return type;
 			}
 			// TODO: Add class methods here to check.
-		} else if (node instanceof ExtendedVariableReference) {
+		} else if (node instanceof ExtendedVariableReferenceInterface) {
 			return evaluateExtendedReferenceType(
-					(ExtendedVariableReference) node, scope);
+					(ExtendedVariableReferenceInterface) node, scope);
 		}
 		return UnknownType.INSTANCE;
 	}
 
 	private IEvaluatedType evaluateExtendedReferenceType(
-			ExtendedVariableReference reference, ASTNode scope) {
+			ExtendedVariableReferenceInterface reference, ASTNode scope) {
 
 		unknownExtendedCount += 1;
 		// TODO: Add correct multi extended variables handling here.
 		// Tonay only simple variables are handled.
-		List/*<Expression>*/ expressions = reference.getExpressions();
+		List flatNodeList = reference.getFlatNodeList();
+//		List/*<Expression>*/ expressions = reference.getExpressions();
 		IEvaluatedType type = null;
 		Expression expr = null;
 		int index = 0;
-		while (index < expressions.size()) {
-			expr = (Expression)expressions.get(index);
+		while (index < flatNodeList.size()) {
+			expr = (Expression)flatNodeList.get(index);
 			// This is method call.
-			if (reference.isCall(index)) {
-				CallHolder callHolder = (CallHolder) expressions.get(index + 1);
+			
+			if (ExtendedVariableReferences.isCall(flatNodeList, index)) {
+				CallHolder callHolder = (CallHolder) flatNodeList.get(index + 1);
+				
 				if (type == null) { // This is first
 					type = evaluateFunctionCall(expr, callHolder, scope);
 				}
@@ -275,11 +281,12 @@ public class PythonASTTypeEvaluator {
 				}
 				// Need to evaluate in the selected class or variable.
 				index += 2;
-			} else if (reference.isDot(index) || reference.isLast(index)) {
+			} else if (ExtendedVariableReferences.isDot(flatNodeList, index)
+					|| ExtendedVariableReferences.isLast(flatNodeList, index)) {
 				if (type == null) { // first
 					// lets firstly check for dotted import names and then check
 					// for simple name.
-					type = checkDottedImports(expressions, expr, scope);
+					type = checkDottedImports(flatNodeList, expr, scope);
 					if (type == null) {
 						type = evaluateIdentifier(expr, scope);
 					}
@@ -315,7 +322,7 @@ public class PythonASTTypeEvaluator {
 					ModelModuleType modelModuleType = (ModelModuleType) type;
 					index += modelModuleType.getStepCount() - 1;
 				}
-			} else if (reference.isIndex(index)) {
+			} else if (ExtendedVariableReferences.isIndex(flatNodeList, index)) {
 				unknownExtendedUnDetectedIndex += 1;
 				return UnknownType.INSTANCE;
 			}
@@ -1527,11 +1534,12 @@ public class PythonASTTypeEvaluator {
 							return new SimpleType(SimpleType.TYPE_NONE);
 						}
 					}
-				} else if (left instanceof ExtendedVariableReference) {
-					ExtendedVariableReference ref = (ExtendedVariableReference) left;
-					if (ref.isDot(0) && ref.getExpressionCount() == 2) {
-						Expression first = ref.getExpression(0);
-						Expression second = ref.getExpression(1);
+				} else if (left instanceof ExtendedVariableReferenceInterface) {
+					ExtendedVariableReferenceInterface ref = (ExtendedVariableReferenceInterface) left;
+					List flatNodeList = ref.getFlatNodeList();
+					if (flatNodeList.size() == 2) {
+						Expression first = (Expression) flatNodeList.get(0);
+						Expression second = (Expression) flatNodeList.get(1);
 						// TODO: Replace self with appropriate first argument of
 						// function.
 						if (first instanceof VariableReference
