@@ -1572,7 +1572,7 @@ public class BuildpathModifier {
 	 */
 	private static String completeName(String name) {
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add Buildpath name completion here");
+			System.err.println("Add Buildpath name completion here"); //$NON-NLS-1$
 		}
 //		if (!DLTKCore.isScriptLikeFileName(name)) {
 //			name= name + "/"; //$NON-NLS-1$

@@ -1568,7 +1568,7 @@ public class ModelManager implements ISaveParticipant {
 			ok = true;
 		} catch (CoreException e) {
 			// ignore
-			System.err.println("Exception while initializing all containers");
+			System.err.println("Exception while initializing all containers"); //$NON-NLS-1$
 			// Util.log(e, "Exception while initializing all containers");
 			// //$NON-NLS-1$
 		} finally {
@@ -1639,22 +1639,22 @@ public class ModelManager implements ISaveParticipant {
 						if (container == CONTAINER_INITIALIZATION_IN_PROGRESS) {
 							Util
 									.verbose("CPContainer INIT - FAILED (initializer did not initialize container)\n" + //$NON-NLS-1$
-											"	project: "
+											"	project: " //$NON-NLS-1$
 											+ project.getElementName()
 											+ '\n'
 											+ //$NON-NLS-1$
-											"	container path: "
+											"	container path: " //$NON-NLS-1$
 											+ containerPath
 											+ '\n' + //$NON-NLS-1$
 											"	initializer: " + initializer); //$NON-NLS-1$
 						} else {
 							Util
 									.verbose("CPContainer INIT - FAILED (see exception above)\n" + //$NON-NLS-1$
-											"	project: "
+											"	project: " //$NON-NLS-1$
 											+ project.getElementName()
 											+ '\n'
 											+ //$NON-NLS-1$
-											"	container path: "
+											"	container path: " //$NON-NLS-1$
 											+ containerPath
 											+ '\n' + //$NON-NLS-1$
 											"	initializer: " + initializer); //$NON-NLS-1$
@@ -1825,11 +1825,11 @@ public class ModelManager implements ISaveParticipant {
 			if (!newEntries[i].equals(oldEntries[i])) {
 				if (BP_RESOLVE_VERBOSE) {
 					Util.verbose("CPContainer SET  - missbehaving container\n" + //$NON-NLS-1$
-							"	container path: "
+							"	container path: " //$NON-NLS-1$
 							+ containerPath
 							+ '\n'
 							+ //$NON-NLS-1$
-							"	projects: {"
+							"	projects: {" //$NON-NLS-1$
 							+ //$NON-NLS-1$
 							Util.toString(projects, new Util.Displayable() {
 								public String displayString(Object o) {
