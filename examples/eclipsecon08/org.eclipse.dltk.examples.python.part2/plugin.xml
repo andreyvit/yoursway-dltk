@@ -18,7 +18,7 @@
       <parser
             class="org.eclipse.dltk.python.internal.core.parser.PythonSourceElementParser"
             nature="org.eclipse.dltk.examples.python.nature"
-            priority="2">
+            priority="1">
       </parser>
    </extension>
 </plugin>
