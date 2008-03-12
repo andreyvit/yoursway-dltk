@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui;
 
-import org.eclipse.dltk.ruby.internal.ui.text.RubyColorConstants;
+import org.eclipse.dltk.ruby.internal.ui.text.IRubyColorConstants;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.preferences.NewScriptProjectPreferencePage;
@@ -32,7 +32,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * @see org.eclipse.jface.resource.StringConverter
 	 * @see org.eclipse.jface.preference.PreferenceConverter
 	 */
-	public final static String EDITOR_SINGLE_LINE_COMMENT_COLOR = RubyColorConstants.RUBY_SINGLE_LINE_COMMENT;
+	public final static String EDITOR_SINGLE_LINE_COMMENT_COLOR = IRubyColorConstants.RUBY_SINGLE_LINE_COMMENT;
 
 	/**
 	 * A named preference that controls whether single line comments are rendered in bold.
@@ -41,7 +41,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * rendered using no font style attribute.
 	 * </p>
 	 */
-	public final static String EDITOR_SINGLE_LINE_COMMENT_BOLD = RubyColorConstants.RUBY_SINGLE_LINE_COMMENT + EDITOR_BOLD_SUFFIX;
+	public final static String EDITOR_SINGLE_LINE_COMMENT_BOLD = IRubyColorConstants.RUBY_SINGLE_LINE_COMMENT + EDITOR_BOLD_SUFFIX;
 
 	/**
 	 * A named preference that controls whether single line comments are rendered in italic.
@@ -50,7 +50,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * are rendered using no italic font style attribute.
 	 * </p>
 	 */
-	public final static String EDITOR_SINGLE_LINE_COMMENT_ITALIC = RubyColorConstants.RUBY_SINGLE_LINE_COMMENT + EDITOR_ITALIC_SUFFIX;
+	public final static String EDITOR_SINGLE_LINE_COMMENT_ITALIC = IRubyColorConstants.RUBY_SINGLE_LINE_COMMENT + EDITOR_ITALIC_SUFFIX;
 
 	/**
 	 * A named preference that controls whether single line comments are rendered in strikethrough.
@@ -59,7 +59,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * the are rendered using no italic font style attribute.
 	 * </p>
 	 */
-	public final static String EDITOR_SINGLE_LINE_COMMENT_STRIKETHROUGH = RubyColorConstants.RUBY_SINGLE_LINE_COMMENT + EDITOR_STRIKETHROUGH_SUFFIX;
+	public final static String EDITOR_SINGLE_LINE_COMMENT_STRIKETHROUGH = IRubyColorConstants.RUBY_SINGLE_LINE_COMMENT + EDITOR_STRIKETHROUGH_SUFFIX;
 
 	/**
 	 * A named preference that controls whether single line comments are rendered in underline.
@@ -70,7 +70,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * 
 	 *
 	 */
-	public final static String EDITOR_SINGLE_LINE_COMMENT_UNDERLINE = RubyColorConstants.RUBY_SINGLE_LINE_COMMENT + EDITOR_UNDERLINE_SUFFIX;
+	public final static String EDITOR_SINGLE_LINE_COMMENT_UNDERLINE = IRubyColorConstants.RUBY_SINGLE_LINE_COMMENT + EDITOR_UNDERLINE_SUFFIX;
 
 	/*
 	 * Key worlds
@@ -84,7 +84,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * @see org.eclipse.jface.resource.StringConverter
 	 * @see org.eclipse.jface.preference.PreferenceConverter
 	 */
-	public final static String EDITOR_KEYWORD_COLOR = RubyColorConstants.RUBY_KEYWORD;
+	public final static String EDITOR_KEYWORD_COLOR = IRubyColorConstants.RUBY_KEYWORD;
 
 	/**
 	 * A named preference that controls whether kwyword are rendered in bold.
@@ -93,7 +93,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * rendered using no font style attribute.
 	 * </p>
 	 */
-	public final static String EDITOR_KEYWORD_BOLD = RubyColorConstants.RUBY_KEYWORD + EDITOR_BOLD_SUFFIX;
+	public final static String EDITOR_KEYWORD_BOLD = IRubyColorConstants.RUBY_KEYWORD + EDITOR_BOLD_SUFFIX;
 
 	/**
 	 * A named preference that controls whether keyword are rendered in italic.
@@ -102,7 +102,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * are rendered using no italic font style attribute.
 	 * </p>
 	 */
-	public final static String EDITOR_KEYWORD_ITALIC = RubyColorConstants.RUBY_KEYWORD + EDITOR_ITALIC_SUFFIX;
+	public final static String EDITOR_KEYWORD_ITALIC = IRubyColorConstants.RUBY_KEYWORD + EDITOR_ITALIC_SUFFIX;
 
 	/**
 	 * A named preference that controls whether single line comments are rendered in strikethrough.
@@ -111,7 +111,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * the are rendered using no italic font style attribute.
 	 * </p>
 	 */
-	public final static String EDITOR_KEYWORD_STRIKETHROUGH = RubyColorConstants.RUBY_KEYWORD + EDITOR_STRIKETHROUGH_SUFFIX;
+	public final static String EDITOR_KEYWORD_STRIKETHROUGH = IRubyColorConstants.RUBY_KEYWORD + EDITOR_STRIKETHROUGH_SUFFIX;
 
 	/**
 	 * A named preference that controls whether keyword are rendered in underline.
@@ -122,67 +122,67 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * 
 	 *
 	 */
-	public final static String EDITOR_KEYWORD_UNDERLINE = RubyColorConstants.RUBY_KEYWORD + EDITOR_UNDERLINE_SUFFIX;
+	public final static String EDITOR_KEYWORD_UNDERLINE = IRubyColorConstants.RUBY_KEYWORD + EDITOR_UNDERLINE_SUFFIX;
 	
-	public final static String EDITOR_DOC_COLOR = RubyColorConstants.RUBY_DOC;
-	public final static String EDITOR_DOC_BOLD = RubyColorConstants.RUBY_DOC + EDITOR_BOLD_SUFFIX;
-	public final static String EDITOR_DOC_ITALIC = RubyColorConstants.RUBY_DOC + EDITOR_ITALIC_SUFFIX;
-	public final static String EDITOR_DOC_STRIKETHROUGH = RubyColorConstants.RUBY_DOC + EDITOR_STRIKETHROUGH_SUFFIX;
-	public final static String EDITOR_DOC_UNDERLINE = RubyColorConstants.RUBY_DOC + EDITOR_UNDERLINE_SUFFIX;
+	public final static String EDITOR_DOC_COLOR = IRubyColorConstants.RUBY_DOC;
+	public final static String EDITOR_DOC_BOLD = IRubyColorConstants.RUBY_DOC + EDITOR_BOLD_SUFFIX;
+	public final static String EDITOR_DOC_ITALIC = IRubyColorConstants.RUBY_DOC + EDITOR_ITALIC_SUFFIX;
+	public final static String EDITOR_DOC_STRIKETHROUGH = IRubyColorConstants.RUBY_DOC + EDITOR_STRIKETHROUGH_SUFFIX;
+	public final static String EDITOR_DOC_UNDERLINE = IRubyColorConstants.RUBY_DOC + EDITOR_UNDERLINE_SUFFIX;
 	
-	public final static String EDITOR_DOC_TOPIC_COLOR = RubyColorConstants.RUBY_DOC_TOPIC;
-	public final static String EDITOR_DOC_TOPIC_BOLD = RubyColorConstants.RUBY_DOC_TOPIC + EDITOR_BOLD_SUFFIX;
-	public final static String EDITOR_DOC_TOPIC_ITALIC = RubyColorConstants.RUBY_DOC_TOPIC + EDITOR_ITALIC_SUFFIX;
-	public final static String EDITOR_DOC_TOPIC_STRIKETHROUGH = RubyColorConstants.RUBY_DOC_TOPIC + EDITOR_STRIKETHROUGH_SUFFIX;
-	public final static String EDITOR_DOC_TOPIC_UNDERLINE = RubyColorConstants.RUBY_DOC_TOPIC + EDITOR_UNDERLINE_SUFFIX;
+	public final static String EDITOR_DOC_TOPIC_COLOR = IRubyColorConstants.RUBY_DOC_TOPIC;
+	public final static String EDITOR_DOC_TOPIC_BOLD = IRubyColorConstants.RUBY_DOC_TOPIC + EDITOR_BOLD_SUFFIX;
+	public final static String EDITOR_DOC_TOPIC_ITALIC = IRubyColorConstants.RUBY_DOC_TOPIC + EDITOR_ITALIC_SUFFIX;
+	public final static String EDITOR_DOC_TOPIC_STRIKETHROUGH = IRubyColorConstants.RUBY_DOC_TOPIC + EDITOR_STRIKETHROUGH_SUFFIX;
+	public final static String EDITOR_DOC_TOPIC_UNDERLINE = IRubyColorConstants.RUBY_DOC_TOPIC + EDITOR_UNDERLINE_SUFFIX;
 	
-	public final static String EDITOR_VARIABLE_COLOR = RubyColorConstants.RUBY_VARIABLE;
-	public final static String EDITOR_VARIABLE_BOLD = RubyColorConstants.RUBY_VARIABLE + EDITOR_BOLD_SUFFIX;
-	public final static String EDITOR_VARIABLE_ITALIC = RubyColorConstants.RUBY_VARIABLE + EDITOR_ITALIC_SUFFIX;
-	public final static String EDITOR_VARIABLE_STRIKETHROUGH = RubyColorConstants.RUBY_VARIABLE + EDITOR_STRIKETHROUGH_SUFFIX;
-	public final static String EDITOR_VARIABLE_UNDERLINE = RubyColorConstants.RUBY_VARIABLE + EDITOR_UNDERLINE_SUFFIX;
+	public final static String EDITOR_VARIABLE_COLOR = IRubyColorConstants.RUBY_VARIABLE;
+	public final static String EDITOR_VARIABLE_BOLD = IRubyColorConstants.RUBY_VARIABLE + EDITOR_BOLD_SUFFIX;
+	public final static String EDITOR_VARIABLE_ITALIC = IRubyColorConstants.RUBY_VARIABLE + EDITOR_ITALIC_SUFFIX;
+	public final static String EDITOR_VARIABLE_STRIKETHROUGH = IRubyColorConstants.RUBY_VARIABLE + EDITOR_STRIKETHROUGH_SUFFIX;
+	public final static String EDITOR_VARIABLE_UNDERLINE = IRubyColorConstants.RUBY_VARIABLE + EDITOR_UNDERLINE_SUFFIX;
 	
-	public final static String EDITOR_CLASS_VARIABLE_COLOR = RubyColorConstants.RUBY_CLASS_VARIABLE;
-	public final static String EDITOR_CLASS_VARIABLE_BOLD = RubyColorConstants.RUBY_CLASS_VARIABLE + EDITOR_BOLD_SUFFIX;
-	public final static String EDITOR_CLASS_VARIABLE_ITALIC = RubyColorConstants.RUBY_CLASS_VARIABLE + EDITOR_ITALIC_SUFFIX;
-	public final static String EDITOR_CLASS_VARIABLE_STRIKETHROUGH = RubyColorConstants.RUBY_CLASS_VARIABLE + EDITOR_STRIKETHROUGH_SUFFIX;
-	public final static String EDITOR_CLASS_VARIABLE_UNDERLINE = RubyColorConstants.RUBY_CLASS_VARIABLE + EDITOR_UNDERLINE_SUFFIX;
+	public final static String EDITOR_CLASS_VARIABLE_COLOR = IRubyColorConstants.RUBY_CLASS_VARIABLE;
+	public final static String EDITOR_CLASS_VARIABLE_BOLD = IRubyColorConstants.RUBY_CLASS_VARIABLE + EDITOR_BOLD_SUFFIX;
+	public final static String EDITOR_CLASS_VARIABLE_ITALIC = IRubyColorConstants.RUBY_CLASS_VARIABLE + EDITOR_ITALIC_SUFFIX;
+	public final static String EDITOR_CLASS_VARIABLE_STRIKETHROUGH = IRubyColorConstants.RUBY_CLASS_VARIABLE + EDITOR_STRIKETHROUGH_SUFFIX;
+	public final static String EDITOR_CLASS_VARIABLE_UNDERLINE = IRubyColorConstants.RUBY_CLASS_VARIABLE + EDITOR_UNDERLINE_SUFFIX;
 	
-	public final static String EDITOR_GLOBAL_VARIABLE_COLOR = RubyColorConstants.RUBY_GLOBAL_VARIABLE;
-	public final static String EDITOR_GLOBAL_VARIABLE_BOLD = RubyColorConstants.RUBY_GLOBAL_VARIABLE + EDITOR_BOLD_SUFFIX;
-	public final static String EDITOR_GLOBAL_VARIABLE_ITALIC = RubyColorConstants.RUBY_GLOBAL_VARIABLE + EDITOR_ITALIC_SUFFIX;
-	public final static String EDITOR_GLOBAL_VARIABLE_STRIKETHROUGH = RubyColorConstants.RUBY_GLOBAL_VARIABLE + EDITOR_STRIKETHROUGH_SUFFIX;
-	public final static String EDITOR_GLOBAL_VARIABLE_UNDERLINE = RubyColorConstants.RUBY_GLOBAL_VARIABLE + EDITOR_UNDERLINE_SUFFIX;
+	public final static String EDITOR_GLOBAL_VARIABLE_COLOR = IRubyColorConstants.RUBY_GLOBAL_VARIABLE;
+	public final static String EDITOR_GLOBAL_VARIABLE_BOLD = IRubyColorConstants.RUBY_GLOBAL_VARIABLE + EDITOR_BOLD_SUFFIX;
+	public final static String EDITOR_GLOBAL_VARIABLE_ITALIC = IRubyColorConstants.RUBY_GLOBAL_VARIABLE + EDITOR_ITALIC_SUFFIX;
+	public final static String EDITOR_GLOBAL_VARIABLE_STRIKETHROUGH = IRubyColorConstants.RUBY_GLOBAL_VARIABLE + EDITOR_STRIKETHROUGH_SUFFIX;
+	public final static String EDITOR_GLOBAL_VARIABLE_UNDERLINE = IRubyColorConstants.RUBY_GLOBAL_VARIABLE + EDITOR_UNDERLINE_SUFFIX;
 	
-	public final static String EDITOR_CONSTANT_VARIABLE_COLOR = RubyColorConstants.RUBY_CONSTANT_VARIABLE;
-	public final static String EDITOR_CONSTANT_VARIABLE_BOLD = RubyColorConstants.RUBY_CONSTANT_VARIABLE + EDITOR_BOLD_SUFFIX;
-	public final static String EDITOR_CONSTANT_VARIABLE_ITALIC = RubyColorConstants.RUBY_CONSTANT_VARIABLE + EDITOR_ITALIC_SUFFIX;
-	public final static String EDITOR_CONSTANT_VARIABLE_STRIKETHROUGH = RubyColorConstants.RUBY_CONSTANT_VARIABLE + EDITOR_STRIKETHROUGH_SUFFIX;
-	public final static String EDITOR_CONSTANT_VARIABLE_UNDERLINE = RubyColorConstants.RUBY_CONSTANT_VARIABLE + EDITOR_UNDERLINE_SUFFIX;
+	public final static String EDITOR_CONSTANT_VARIABLE_COLOR = IRubyColorConstants.RUBY_CONSTANT_VARIABLE;
+	public final static String EDITOR_CONSTANT_VARIABLE_BOLD = IRubyColorConstants.RUBY_CONSTANT_VARIABLE + EDITOR_BOLD_SUFFIX;
+	public final static String EDITOR_CONSTANT_VARIABLE_ITALIC = IRubyColorConstants.RUBY_CONSTANT_VARIABLE + EDITOR_ITALIC_SUFFIX;
+	public final static String EDITOR_CONSTANT_VARIABLE_STRIKETHROUGH = IRubyColorConstants.RUBY_CONSTANT_VARIABLE + EDITOR_STRIKETHROUGH_SUFFIX;
+	public final static String EDITOR_CONSTANT_VARIABLE_UNDERLINE = IRubyColorConstants.RUBY_CONSTANT_VARIABLE + EDITOR_UNDERLINE_SUFFIX;
 	
-	public final static String EDITOR_INSTANCE_VARIABLE_COLOR = RubyColorConstants.RUBY_INSTANCE_VARIABLE;
-	public final static String EDITOR_INSTANCE_VARIABLE_BOLD = RubyColorConstants.RUBY_INSTANCE_VARIABLE + EDITOR_BOLD_SUFFIX;
-	public final static String EDITOR_INSTANCE_VARIABLE_ITALIC = RubyColorConstants.RUBY_INSTANCE_VARIABLE + EDITOR_ITALIC_SUFFIX;
-	public final static String EDITOR_INSTANCE_VARIABLE_STRIKETHROUGH = RubyColorConstants.RUBY_INSTANCE_VARIABLE + EDITOR_STRIKETHROUGH_SUFFIX;
-	public final static String EDITOR_INSTANCE_VARIABLE_UNDERLINE = RubyColorConstants.RUBY_INSTANCE_VARIABLE + EDITOR_UNDERLINE_SUFFIX;
+	public final static String EDITOR_INSTANCE_VARIABLE_COLOR = IRubyColorConstants.RUBY_INSTANCE_VARIABLE;
+	public final static String EDITOR_INSTANCE_VARIABLE_BOLD = IRubyColorConstants.RUBY_INSTANCE_VARIABLE + EDITOR_BOLD_SUFFIX;
+	public final static String EDITOR_INSTANCE_VARIABLE_ITALIC = IRubyColorConstants.RUBY_INSTANCE_VARIABLE + EDITOR_ITALIC_SUFFIX;
+	public final static String EDITOR_INSTANCE_VARIABLE_STRIKETHROUGH = IRubyColorConstants.RUBY_INSTANCE_VARIABLE + EDITOR_STRIKETHROUGH_SUFFIX;
+	public final static String EDITOR_INSTANCE_VARIABLE_UNDERLINE = IRubyColorConstants.RUBY_INSTANCE_VARIABLE + EDITOR_UNDERLINE_SUFFIX;
 	
-	public final static String EDITOR_PSEUDO_VARIABLE_COLOR = RubyColorConstants.RUBY_PSEUDO_VARIABLE;
-	public final static String EDITOR_PSEUDO_VARIABLE_BOLD = RubyColorConstants.RUBY_PSEUDO_VARIABLE + EDITOR_BOLD_SUFFIX;
-	public final static String EDITOR_PSEUDO_VARIABLE_ITALIC = RubyColorConstants.RUBY_PSEUDO_VARIABLE + EDITOR_ITALIC_SUFFIX;
-	public final static String EDITOR_PSEUDO_VARIABLE_STRIKETHROUGH = RubyColorConstants.RUBY_PSEUDO_VARIABLE + EDITOR_STRIKETHROUGH_SUFFIX;
-	public final static String EDITOR_PSEUDO_VARIABLE_UNDERLINE = RubyColorConstants.RUBY_PSEUDO_VARIABLE + EDITOR_UNDERLINE_SUFFIX;
+	public final static String EDITOR_PSEUDO_VARIABLE_COLOR = IRubyColorConstants.RUBY_PSEUDO_VARIABLE;
+	public final static String EDITOR_PSEUDO_VARIABLE_BOLD = IRubyColorConstants.RUBY_PSEUDO_VARIABLE + EDITOR_BOLD_SUFFIX;
+	public final static String EDITOR_PSEUDO_VARIABLE_ITALIC = IRubyColorConstants.RUBY_PSEUDO_VARIABLE + EDITOR_ITALIC_SUFFIX;
+	public final static String EDITOR_PSEUDO_VARIABLE_STRIKETHROUGH = IRubyColorConstants.RUBY_PSEUDO_VARIABLE + EDITOR_STRIKETHROUGH_SUFFIX;
+	public final static String EDITOR_PSEUDO_VARIABLE_UNDERLINE = IRubyColorConstants.RUBY_PSEUDO_VARIABLE + EDITOR_UNDERLINE_SUFFIX;
 	
-	public final static String EDITOR_PREDEFINED_VARIABLE_COLOR = RubyColorConstants.RUBY_PREDEFINED_VARIABLE;
-	public final static String EDITOR_PREDEFINED_VARIABLE_BOLD = RubyColorConstants.RUBY_PREDEFINED_VARIABLE + EDITOR_BOLD_SUFFIX;
-	public final static String EDITOR_PREDEFINED_VARIABLE_ITALIC = RubyColorConstants.RUBY_PREDEFINED_VARIABLE + EDITOR_ITALIC_SUFFIX;
-	public final static String EDITOR_PREDEFINED_VARIABLE_STRIKETHROUGH = RubyColorConstants.RUBY_PREDEFINED_VARIABLE + EDITOR_STRIKETHROUGH_SUFFIX;
-	public final static String EDITOR_PREDEFINED_VARIABLE_UNDERLINE = RubyColorConstants.RUBY_PREDEFINED_VARIABLE + EDITOR_UNDERLINE_SUFFIX;
+	public final static String EDITOR_PREDEFINED_VARIABLE_COLOR = IRubyColorConstants.RUBY_PREDEFINED_VARIABLE;
+	public final static String EDITOR_PREDEFINED_VARIABLE_BOLD = IRubyColorConstants.RUBY_PREDEFINED_VARIABLE + EDITOR_BOLD_SUFFIX;
+	public final static String EDITOR_PREDEFINED_VARIABLE_ITALIC = IRubyColorConstants.RUBY_PREDEFINED_VARIABLE + EDITOR_ITALIC_SUFFIX;
+	public final static String EDITOR_PREDEFINED_VARIABLE_STRIKETHROUGH = IRubyColorConstants.RUBY_PREDEFINED_VARIABLE + EDITOR_STRIKETHROUGH_SUFFIX;
+	public final static String EDITOR_PREDEFINED_VARIABLE_UNDERLINE = IRubyColorConstants.RUBY_PREDEFINED_VARIABLE + EDITOR_UNDERLINE_SUFFIX;
 	
-	public final static String EDITOR_SYMBOLS_COLOR = RubyColorConstants.RUBY_SYMBOLS;
-	public final static String EDITOR_SYMBOLS_BOLD = RubyColorConstants.RUBY_SYMBOLS + EDITOR_BOLD_SUFFIX;
-	public final static String EDITOR_SYMBOLS_ITALIC = RubyColorConstants.RUBY_SYMBOLS + EDITOR_ITALIC_SUFFIX;
-	public final static String EDITOR_SYMBOLS_STRIKETHROUGH = RubyColorConstants.RUBY_SYMBOLS + EDITOR_STRIKETHROUGH_SUFFIX;
-	public final static String EDITOR_SYMBOLS_UNDERLINE = RubyColorConstants.RUBY_SYMBOLS + EDITOR_UNDERLINE_SUFFIX;	
+	public final static String EDITOR_SYMBOLS_COLOR = IRubyColorConstants.RUBY_SYMBOLS;
+	public final static String EDITOR_SYMBOLS_BOLD = IRubyColorConstants.RUBY_SYMBOLS + EDITOR_BOLD_SUFFIX;
+	public final static String EDITOR_SYMBOLS_ITALIC = IRubyColorConstants.RUBY_SYMBOLS + EDITOR_ITALIC_SUFFIX;
+	public final static String EDITOR_SYMBOLS_STRIKETHROUGH = IRubyColorConstants.RUBY_SYMBOLS + EDITOR_STRIKETHROUGH_SUFFIX;
+	public final static String EDITOR_SYMBOLS_UNDERLINE = IRubyColorConstants.RUBY_SYMBOLS + EDITOR_UNDERLINE_SUFFIX;	
 	/*
 	 * keyword return color
 	 */
@@ -195,7 +195,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * @see org.eclipse.jface.resource.StringConverter
 	 * @see org.eclipse.jface.preference.PreferenceConverter
 	 */
-	public final static String EDITOR_KEYWORD_RETURN_COLOR = RubyColorConstants.RUBY_KEYWORD_RETURN;
+	public final static String EDITOR_KEYWORD_RETURN_COLOR = IRubyColorConstants.RUBY_KEYWORD_RETURN;
 
 	/**
 	 * A named preference that controls whether kwyword are rendered in bold.
@@ -204,7 +204,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * rendered using no font style attribute.
 	 * </p>
 	 */
-	public final static String EDITOR_KEYWORD_RETURN_BOLD = RubyColorConstants.RUBY_KEYWORD_RETURN + EDITOR_BOLD_SUFFIX;
+	public final static String EDITOR_KEYWORD_RETURN_BOLD = IRubyColorConstants.RUBY_KEYWORD_RETURN + EDITOR_BOLD_SUFFIX;
 
 	/**
 	 * A named preference that controls whether keyword are rendered in italic.
@@ -213,7 +213,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * are rendered using no italic font style attribute.
 	 * </p>
 	 */
-	public final static String EDITOR_KEYWORD_RETURN_ITALIC = RubyColorConstants.RUBY_KEYWORD_RETURN + EDITOR_ITALIC_SUFFIX;
+	public final static String EDITOR_KEYWORD_RETURN_ITALIC = IRubyColorConstants.RUBY_KEYWORD_RETURN + EDITOR_ITALIC_SUFFIX;
 
 	/**
 	 * A named preference that controls whether single line comments are rendered in strikethrough.
@@ -222,7 +222,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * the are rendered using no italic font style attribute.
 	 * </p>
 	 */
-	public final static String EDITOR_KEYWORD_RETURN_STRIKETHROUGH = RubyColorConstants.RUBY_KEYWORD_RETURN + EDITOR_STRIKETHROUGH_SUFFIX;
+	public final static String EDITOR_KEYWORD_RETURN_STRIKETHROUGH = IRubyColorConstants.RUBY_KEYWORD_RETURN + EDITOR_STRIKETHROUGH_SUFFIX;
 
 	/**
 	 * A named preference that controls whether keyword are rendered in underline.
@@ -233,7 +233,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * 
 	 *
 	 */
-	public final static String EDITOR_KEYWORD_RETURN_UNDERLINE = RubyColorConstants.RUBY_KEYWORD_RETURN + EDITOR_UNDERLINE_SUFFIX;
+	public final static String EDITOR_KEYWORD_RETURN_UNDERLINE = IRubyColorConstants.RUBY_KEYWORD_RETURN + EDITOR_UNDERLINE_SUFFIX;
 
 	/*
 	 * Numbers
@@ -247,7 +247,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * @see org.eclipse.jface.resource.StringConverter
 	 * @see org.eclipse.jface.preference.PreferenceConverter
 	 */
-	public final static String EDITOR_NUMBER_COLOR = RubyColorConstants.RUBY_NUMBER;
+	public final static String EDITOR_NUMBER_COLOR = IRubyColorConstants.RUBY_NUMBER;
 
 	/**
 	 * A named preference that controls whether number are rendered in bold.
@@ -256,7 +256,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * rendered using no font style attribute.
 	 * </p>
 	 */
-	public final static String EDITOR_NUMBER_BOLD = RubyColorConstants.RUBY_NUMBER + EDITOR_BOLD_SUFFIX;
+	public final static String EDITOR_NUMBER_BOLD = IRubyColorConstants.RUBY_NUMBER + EDITOR_BOLD_SUFFIX;
 
 	/**
 	 * A named preference that controls whether NUMBER are rendered in italic.
@@ -265,7 +265,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * are rendered using no italic font style attribute.
 	 * </p>
 	 */
-	public final static String EDITOR_NUMBER_ITALIC = RubyColorConstants.RUBY_NUMBER + EDITOR_ITALIC_SUFFIX;
+	public final static String EDITOR_NUMBER_ITALIC = IRubyColorConstants.RUBY_NUMBER + EDITOR_ITALIC_SUFFIX;
 
 	/**
 	 * A named preference that controls whether single line comments are rendered in strikethrough.
@@ -274,7 +274,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * the are rendered using no italic font style attribute.
 	 * </p>
 	 */
-	public final static String EDITOR_NUMBER_STRIKETHROUGH = RubyColorConstants.RUBY_NUMBER + EDITOR_STRIKETHROUGH_SUFFIX;
+	public final static String EDITOR_NUMBER_STRIKETHROUGH = IRubyColorConstants.RUBY_NUMBER + EDITOR_STRIKETHROUGH_SUFFIX;
 
 	/**
 	 * A named preference that controls whether NUMBER are rendered in underline.
@@ -286,7 +286,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 *
 	 */
 
-	public final static String EDITOR_NUMBER_UNDERLINE = RubyColorConstants.RUBY_NUMBER + EDITOR_UNDERLINE_SUFFIX;		
+	public final static String EDITOR_NUMBER_UNDERLINE = IRubyColorConstants.RUBY_NUMBER + EDITOR_UNDERLINE_SUFFIX;		
 	
 	/*
 	 * Strings
@@ -300,7 +300,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * @see org.eclipse.jface.resource.StringConverter
 	 * @see org.eclipse.jface.preference.PreferenceConverter
 	 */
-	public final static String EDITOR_STRING_COLOR = RubyColorConstants.RUBY_STRING;
+	public final static String EDITOR_STRING_COLOR = IRubyColorConstants.RUBY_STRING;
 
 	/**
 	 * A named preference that controls whether STRING are rendered in bold.
@@ -309,7 +309,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * rendered using no font style attribute.
 	 * </p>
 	 */
-	public final static String EDITOR_STRING_BOLD = RubyColorConstants.RUBY_STRING + EDITOR_BOLD_SUFFIX;
+	public final static String EDITOR_STRING_BOLD = IRubyColorConstants.RUBY_STRING + EDITOR_BOLD_SUFFIX;
 
 	/**
 	 * A named preference that controls whether STRING are rendered in italic.
@@ -318,7 +318,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * are rendered using no italic font style attribute.
 	 * </p>
 	 */
-	public final static String EDITOR_STRING_ITALIC = RubyColorConstants.RUBY_STRING + EDITOR_ITALIC_SUFFIX;
+	public final static String EDITOR_STRING_ITALIC = IRubyColorConstants.RUBY_STRING + EDITOR_ITALIC_SUFFIX;
 
 	/**
 	 * A named preference that controls whether single line comments are rendered in strikethrough.
@@ -327,7 +327,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 * the are rendered using no italic font style attribute.
 	 * </p>
 	 */
-	public final static String EDITOR_STRING_STRIKETHROUGH = RubyColorConstants.RUBY_STRING + EDITOR_STRIKETHROUGH_SUFFIX;
+	public final static String EDITOR_STRING_STRIKETHROUGH = IRubyColorConstants.RUBY_STRING + EDITOR_STRIKETHROUGH_SUFFIX;
 
 	/**
 	 * A named preference that controls whether STRING are rendered in underline.
@@ -339,7 +339,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 	 *
 	 */
 
-	public final static String EDITOR_STRING_UNDERLINE = RubyColorConstants.RUBY_STRING + EDITOR_UNDERLINE_SUFFIX;
+	public final static String EDITOR_STRING_UNDERLINE = IRubyColorConstants.RUBY_STRING + EDITOR_UNDERLINE_SUFFIX;
 	
 	
 	public static void initializeDefaultValues( IPreferenceStore store ) {
@@ -402,9 +402,9 @@ public class RubyPreferenceConstants extends PreferenceConstants
 //		store.setDefault(PreferenceConstants.EDITOR_FOLDING_METHODS, false);
 //		store.setDefault(PreferenceConstants.EDITOR_FOLDING_IMPORTS, true);
 		
-		store.setDefault (CodeFormatterConstants.FORMATTER_TAB_CHAR, CodeFormatterConstants.SPACE);
-		store.setDefault (CodeFormatterConstants.FORMATTER_TAB_SIZE, "2");
-		store.setDefault (CodeFormatterConstants.FORMATTER_INDENTATION_SIZE, "2");
+		store.setDefault (CodeFormatterConstants.FORMATTER_TAB_CHAR, CodeFormatterConstants.TAB);
+		store.setDefault (CodeFormatterConstants.FORMATTER_TAB_SIZE, "2"); //$NON-NLS-1$
+		store.setDefault (CodeFormatterConstants.FORMATTER_INDENTATION_SIZE, "2"); //$NON-NLS-1$
 		
 		NewScriptProjectPreferencePage.initDefaults(store);
 		
@@ -415,6 +415,6 @@ public class RubyPreferenceConstants extends PreferenceConstants
 		
 		store.setDefault(PreferenceConstants.SHOW_SOURCE_MODULE_CHILDREN, true);
 		
-		store.setDefault(PreferenceConstants.CODEASSIST_AUTOACTIVATION_TRIGGERS, ".:$@");
+		store.setDefault(PreferenceConstants.CODEASSIST_AUTOACTIVATION_TRIGGERS, ".:$@"); //$NON-NLS-1$
 	}
 }

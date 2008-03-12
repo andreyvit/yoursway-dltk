@@ -147,7 +147,7 @@ public abstract class ContributedExtensionOptionsBlock extends
 
 		String contribId = getValue(getSavedContributionKey());
 
-		if (contribId == null || "".equals(contribId)) {
+		if (contribId == null || "".equals(contribId)) { //$NON-NLS-1$
 			// no entry exists in the preference store for the pref key
 			IDLTKContributedExtension contrib = getDefaultContribution();
 			if (contrib != null) {
@@ -188,6 +188,6 @@ public abstract class ContributedExtensionOptionsBlock extends
 	}
 
 	private boolean hasValidId(String id) {
-		return (id != null && !"".equals(id));
+		return (id != null && !"".equals(id)); //$NON-NLS-1$
 	}
 }

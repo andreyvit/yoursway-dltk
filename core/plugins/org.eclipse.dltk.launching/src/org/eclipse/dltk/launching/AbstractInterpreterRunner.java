@@ -195,7 +195,7 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		
 		Process p = DebugPlugin.exec(cmdLine, workingDirectory, environment);
 		if (p == null) {
-			abort("Execution was cancelled", null);
+			abort(LaunchingMessages.AbstractInterpreterRunner_executionWasCancelled, null);
 		}
 
 		launch.setAttribute(DLTKLaunchingPlugin.LAUNCH_COMMAND_LINE,
@@ -210,15 +210,15 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 	private void traceExecution(String processLabel,
 			String cmdLineLabel, File workingDirectory, String[] environment) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("-----------------------------------------------\n");
-		sb.append("Running ").append(processLabel).append('\n');
-		sb.append("Command line: ").append(cmdLineLabel).append('\n');
-		sb.append("Working directory: ").append(workingDirectory).append('\n');
-		sb.append("Environment:\n");
+		sb.append("-----------------------------------------------\n"); //$NON-NLS-1$
+		sb.append("Running ").append(processLabel).append('\n'); //$NON-NLS-1$
+		sb.append("Command line: ").append(cmdLineLabel).append('\n'); //$NON-NLS-1$
+		sb.append("Working directory: ").append(workingDirectory).append('\n'); //$NON-NLS-1$
+		sb.append("Environment:\n"); //$NON-NLS-1$
 		for (int i=0; i<environment.length; i++) {
 			sb.append('\t').append(environment[i]).append('\n');
 		}
-		sb.append("-----------------------------------------------\n");
+		sb.append("-----------------------------------------------\n"); //$NON-NLS-1$
 		System.out.println(sb);
 	}
 
@@ -229,13 +229,13 @@ public abstract class AbstractInterpreterRunner implements IInterpreterRunner {
 		}
 
 		try {
-			monitor.beginTask("Launching...", 5);
+			monitor.beginTask(LaunchingMessages.AbstractInterpreterRunner_launching, 5);
 			if (monitor.isCanceled()) {
 				return;
 			}
 			alterConfig(launch, config);
 			monitor.worked(1);
-			monitor.subTask("Running");
+			monitor.subTask(LaunchingMessages.AbstractInterpreterRunner_running);
 			rawRun(launch, config);
 			monitor.worked(4);
 

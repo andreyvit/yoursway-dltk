@@ -128,7 +128,7 @@ public abstract class AbstractInterpreterLibraryBlock implements
 
 		if (isEnableButtonSupported()) {
 			fEnabledButton = new Button(comp2, SWT.CHECK);
-			fEnabledButton.setText("Set path visible to DLTK");
+			fEnabledButton.setText(InterpretersMessages.AbstractInterpreterLibraryBlock_setPathVisibleToDltk);
 			fEnabledButton.addSelectionListener(this);
 			this.fLibraryViewer
 					.addDoubleClickListener(new IDoubleClickListener() {
@@ -173,7 +173,7 @@ public abstract class AbstractInterpreterLibraryBlock implements
 				InterpretersMessages.InterpreterLibraryBlock_9);
 		fDefaultButton.addSelectionListener(this);
 		if (this.fDialog.isRediscoverSupported()) {
-			fRediscoverButton = createPushButton(pathButtonComp, "Rediscover");
+			fRediscoverButton = createPushButton(pathButtonComp, InterpretersMessages.AbstractInterpreterLibraryBlock_rediscover);
 			fRediscoverButton.addSelectionListener(this);
 		}
 

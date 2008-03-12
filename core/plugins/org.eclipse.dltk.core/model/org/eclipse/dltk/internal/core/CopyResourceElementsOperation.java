@@ -163,7 +163,7 @@ public class CopyResourceElementsOperation extends MultiOperation {
 		boolean containsReadOnlyScriptFolder = false;
 		IContainer parentFolder = (IContainer) root.getResource();
 		ModelElementDelta projectDelta = null;
-		IPath sideEffectPackageName = new Path("");
+		IPath sideEffectPackageName = new Path(""); //$NON-NLS-1$
 		char[][] inclusionPatterns = root.fullInclusionPatternChars();
 		char[][] exclusionPatterns = root.fullExclusionPatternChars();
 		for (int i = 0; i < newFragName.segmentCount(); i++) {
@@ -318,7 +318,7 @@ public class CopyResourceElementsOperation extends MultiOperation {
 						} else {
 							if (DLTKCore.DEBUG) {
 								System.err
-										.println("TODO: Add correct status message here...");
+										.println("TODO: Add correct status message here..."); //$NON-NLS-1$
 							}
 							throw new ModelException(new ModelStatus(
 									IModelStatusConstants.NAME_COLLISION,
@@ -368,7 +368,7 @@ public class CopyResourceElementsOperation extends MultiOperation {
 			if (newCUName != null) {
 				// the main type has been renamed
 				if (DLTKCore.DEBUG) {
-					System.err.println("TODO: Add remove extensions here...");
+					System.err.println("TODO: Add remove extensions here..."); //$NON-NLS-1$
 				}
 				String oldName = /* Util.getNameWithoutScriptLikeExtension( */source
 						.getElementName();// );
@@ -603,7 +603,7 @@ public class CopyResourceElementsOperation extends MultiOperation {
 							continue;
 						if (DLTKCore.DEBUG) {
 							System.err
-									.println("TODO:Add source module modification code here...");
+									.println("TODO:Add source module modification code here..."); //$NON-NLS-1$
 						}
 						// this.parser.setSource(cu);
 						// SourceModule astCU = (SourceModule)

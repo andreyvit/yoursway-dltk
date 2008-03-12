@@ -39,7 +39,7 @@ import org.eclipse.dltk.debug.core.model.IScriptVariable;
 public class ScriptStackFrame extends ScriptDebugElement implements
 		IScriptStackFrame {
 
-	private static final String STACK_FRAME_LABEL = "Stack frame #{0}";
+	private static final String STACK_FRAME_LABEL = Messages.ScriptStackFrame_stackFrame;
 
 	private IScriptStack stack;
 
@@ -116,13 +116,13 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 
 		if (showGlobal && names.containsKey(globalId)) {
 			all.add(new ScriptVariableWrapper(getDebugTarget(),
-					"Global Variables", readVariables(this,
+					Messages.ScriptStackFrame_globalVariables, readVariables(this,
 							globalId.intValue(), commands)));
 		}
 
 		if (showClass && names.containsKey(classId)) {
 			all.add(new ScriptVariableWrapper(getDebugTarget(),
-					"Class Variables", readVariables(this, classId.intValue(),
+					Messages.ScriptStackFrame_classVariables, readVariables(this, classId.intValue(),
 							commands)));
 		}
 
@@ -186,7 +186,7 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 			name = toString();
 		}
 
-		name += " (" + level.getFileURI().getPath() + ")";
+		name += " (" + level.getFileURI().getPath() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 
 		return name;
 	}
@@ -215,7 +215,7 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 			} catch (DbgpException e) {
 				variables = new IScriptVariable[0];
 				Status status = new Status(IStatus.ERROR,
-						DLTKDebugPlugin.PLUGIN_ID, "Unable to load variables",
+						DLTKDebugPlugin.PLUGIN_ID, Messages.ScriptStackFrame_unableToLoadVariables,
 						e);
 				throw new DebugException(status);
 			}

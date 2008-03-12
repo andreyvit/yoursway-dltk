@@ -21,8 +21,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatusConstants;
@@ -289,7 +287,7 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 	}
 
 	public void printNode(CorePrinter output) {
-		output.formatPrint("ScriptProject fragment:" + getPath().toOSString());
+		output.formatPrint("ScriptProject fragment:" + getPath().toOSString()); //$NON-NLS-1$
 		output.indent();
 		try {
 			IModelElement modelElements[] = this.getChildren();
@@ -298,7 +296,7 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 				if (element instanceof ModelElement) {
 					((ModelElement) element).printNode(output);
 				} else {
-					output.print("Unknown element:" + element);
+					output.print("Unknown element:" + element); //$NON-NLS-1$
 				}
 			}
 		} catch (ModelException ex) {
@@ -360,22 +358,14 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 	 */
 	public IBuildpathEntry getRawBuildpathEntry() throws ModelException {
 		IBuildpathEntry rawEntry = null;
-		ScriptProject project = (ScriptProject) this.getScriptProject();
-		project.getResolvedBuildpath(true/*ignoreUnresolvedEntry*/, false/*don't generateMarkerOnError*/, false/*don't returnResolutionInProgress*/); // force the reverse rawEntry cache to be populated
-										// be populated
-		Map resolvedPathToRawEntries = project.getPerProjectInfo().resolvedPathToRawEntries;
-		if (resolvedPathToRawEntries != null) {
-			rawEntry = (IBuildpathEntry) resolvedPathToRawEntries.get(this.getPath());
-			//try to guest map from internal element.
-			if( rawEntry != null && rawEntry.getEntryKind() == IBuildpathEntry.BPE_CONTAINER ) {
-				IBuildpathContainer container = DLTKCore.getBuildpathContainer(rawEntry.getPath(), project);
-				IBuildpathEntry entrys[] = container.getBuildpathEntries();
-				for( int i = 0; i < entrys.length; ++i ) {
-					if( entrys[i].getPath().equals(this.getPath())) {
-						return entrys[i];
-					}
-				}
-			}
+		ScriptProject project = (ScriptProject)this.getScriptProject();
+		project.getResolvedBuildpath(); // force the reverse rawEntry cache to be populated
+		Map rootPathToRawEntries = project.getPerProjectInfo().resolvedPathToRawEntries;
+		if (rootPathToRawEntries != null) {
+			rawEntry = (IBuildpathEntry) rootPathToRawEntries.get(this.getPath());
+		}
+		if (rawEntry == null) {
+			throw new ModelException(new ModelStatus(IModelStatusConstants.ELEMENT_NOT_ON_BUILDPATH, this));
 		}
 		return rawEntry;
 	}

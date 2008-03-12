@@ -19,7 +19,7 @@ public class ScriptConsoleHistory {
 
 	public ScriptConsoleHistory() {
 		this.lines = new ArrayList();
-		this.lines.add("");
+		this.lines.add(""); //$NON-NLS-1$
 		this.currLine = 0;
 	}
 
@@ -34,7 +34,7 @@ public class ScriptConsoleHistory {
 
 		lines.set(lines.size() - 1, get());
 
-		lines.add("");
+		lines.add(""); //$NON-NLS-1$
 		currLine = lines.size() - 1;
 	}
 

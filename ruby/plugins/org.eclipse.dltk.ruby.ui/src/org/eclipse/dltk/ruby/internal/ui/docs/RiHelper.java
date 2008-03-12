@@ -28,7 +28,7 @@ import org.eclipse.dltk.ruby.internal.ui.RubyUI;
 import org.eclipse.dltk.utils.DeployHelper;
 
 public class RiHelper {
-	private final static String DOC_TERMINATION_LINE = "DLTKDOCEND";
+	private final static String DOC_TERMINATION_LINE = "DLTKDOCEND"; //$NON-NLS-1$
 
 	private static RiHelper instance;
 
@@ -65,11 +65,11 @@ public class RiHelper {
 			throw new CoreException(Status.CANCEL_STATUS);
 		}
 
-		File script = DeployHelper.deploy(RubyUI.getDefault(), "support/")
-				.append("dltkri.rb").toFile();
+		File script = DeployHelper.deploy(RubyUI.getDefault(), "support/") //$NON-NLS-1$
+				.append("dltkri.rb").toFile(); //$NON-NLS-1$
 		riProcess = ScriptLaunchUtil.runScriptWithInterpreter(install
 				.getInstallLocation().getAbsolutePath(), script, null, null,
-				null);
+				null, install.getEnvironmentVariables());
 
 		writer = new OutputStreamWriter(riProcess.getOutputStream());
 		reader = new BufferedReader(new InputStreamReader(riProcess
@@ -93,7 +93,7 @@ public class RiHelper {
 		String errorLine = null;
 		while ((errorLine = errorReader.readLine()) != null) {
 			sb.append(errorLine);
-			sb.append("\n");
+			sb.append("\n"); //$NON-NLS-1$
 		}
 		String error = sb.toString().trim();
 
@@ -117,7 +117,7 @@ public class RiHelper {
 
 	protected String loadRiDoc(String keyword) throws IOException {
 		// Write
-		writer.write(keyword + "\n");
+		writer.write(keyword + "\n"); //$NON-NLS-1$
 		writer.flush();
 
 		// Stderr

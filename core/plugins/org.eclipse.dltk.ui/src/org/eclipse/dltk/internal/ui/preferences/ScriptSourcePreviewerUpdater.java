@@ -45,7 +45,7 @@ public class ScriptSourcePreviewerUpdater {
 		final IPropertyChangeListener fontChangeListener = new IPropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent event) {
 				System.err
-						.println("DLTKSourcePreviewerUpdater: TODO: Editor Text Font usage code");
+						.println("DLTKSourcePreviewerUpdater: TODO: Editor Text Font usage code"); //$NON-NLS-1$
 				// if
 				// (event.getProperty().equals(PreferenceConstants.EDITOR_TEXT_FONT))
 				// {

@@ -30,7 +30,7 @@ public class RubyCompletionProposalLabelProvider extends
 		nameBuffer.append(')');
 
 		IMethod method = (IMethod) methodProposal.getModelElement();
-		nameBuffer.append(" - ");
+		nameBuffer.append(" - "); //$NON-NLS-1$
 		if (method instanceof FakeMethod
 				&& ((FakeMethod) method).getReceiver() != null) {
 			nameBuffer.append(((FakeMethod) method).getReceiver());
@@ -38,7 +38,7 @@ public class RubyCompletionProposalLabelProvider extends
 			IModelElement parent = method.getParent();
 			if (parent instanceof IType) {
 				IType type = (IType) parent;
-				nameBuffer.append(type.getTypeQualifiedName("::"));
+				nameBuffer.append(type.getTypeQualifiedName("::")); //$NON-NLS-1$
 			} else {
 				nameBuffer.append(parent.getElementName());
 			}
@@ -60,7 +60,7 @@ public class RubyCompletionProposalLabelProvider extends
 		nameBuffer.append(")"); //$NON-NLS-1$
 
 		IMethod method = (IMethod) methodProposal.getModelElement();
-		nameBuffer.append(" - ");
+		nameBuffer.append(" - "); //$NON-NLS-1$
 		if (method instanceof FakeMethod
 				&& ((FakeMethod) method).getReceiver() != null) {
 			String receiver = ((FakeMethod) method).getReceiver();
@@ -69,7 +69,7 @@ public class RubyCompletionProposalLabelProvider extends
 			IModelElement parent = method.getParent();
 			if (parent instanceof IType) {
 				IType type = (IType) parent;
-				nameBuffer.append(type.getTypeQualifiedName("::"));
+				nameBuffer.append(type.getTypeQualifiedName("::")); //$NON-NLS-1$
 			} else {
 				nameBuffer.append(parent.getElementName());
 			}
@@ -84,7 +84,7 @@ public class RubyCompletionProposalLabelProvider extends
 		nameBuffer.append(typeProposal.getName());
 
 		IType type = (IType) typeProposal.getModelElement();
-		nameBuffer.append(" - ");
+		nameBuffer.append(" - "); //$NON-NLS-1$
 		IModelElement parent = type.getParent();
 		if (parent instanceof IType) {
 			IType type2 = (IType) parent;

@@ -25,29 +25,29 @@ import org.w3c.dom.NodeList;
 public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 		IDbgpBreakpointCommands {
 
-	private static final String BREAKPOINT_SET_COMMAND = "breakpoint_set";
+	private static final String BREAKPOINT_SET_COMMAND = "breakpoint_set"; //$NON-NLS-1$
 
-	private static final String BREAKPOINT_GET_COMMAND = "breakpoint_get";
+	private static final String BREAKPOINT_GET_COMMAND = "breakpoint_get"; //$NON-NLS-1$
 
-	private static final String BREAKPOINT_UPDATE_COMMAND = "breakpoint_update";
+	private static final String BREAKPOINT_UPDATE_COMMAND = "breakpoint_update"; //$NON-NLS-1$
 
-	private static final String BREAKPOINT_REMOVE_COMMAND = "breakpoint_remove";
+	private static final String BREAKPOINT_REMOVE_COMMAND = "breakpoint_remove"; //$NON-NLS-1$
 
-	private static final String BREAKPOINT_LIST_COMMAND = "breakpoint_list";
+	private static final String BREAKPOINT_LIST_COMMAND = "breakpoint_list"; //$NON-NLS-1$
 
-	private static final String BREAKPOINT_TAG = "breakpoint";
+	private static final String BREAKPOINT_TAG = "breakpoint"; //$NON-NLS-1$
 
-	final String LINE_BREAKPOINT = "line";
+	final String LINE_BREAKPOINT = "line"; //$NON-NLS-1$
 
-	final String CALL_BREAKPOINT = "call";
+	final String CALL_BREAKPOINT = "call"; //$NON-NLS-1$
 
-	final String RETURN_BREAKPOINT = "return";
+	final String RETURN_BREAKPOINT = "return"; //$NON-NLS-1$
 
-	final String EXCEPTION_BREAKPOINT = "exception";
+	final String EXCEPTION_BREAKPOINT = "exception"; //$NON-NLS-1$
 
-	final String CONDITIONAL_BREAKPOINT = "conditional";
+	final String CONDITIONAL_BREAKPOINT = "conditional"; //$NON-NLS-1$
 
-	final String WATCH_BREAKPOINT = "watch";
+	final String WATCH_BREAKPOINT = "watch"; //$NON-NLS-1$
 
 	protected IDbgpBreakpoint[] parseBreakpointsResponse(Element response) {
 		List list = new ArrayList();
@@ -64,7 +64,7 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 
 	protected String parseSetBreakpointResponse(Element response)
 			throws DbgpException {
-		return response.getAttribute("id");
+		return response.getAttribute("id"); //$NON-NLS-1$
 	}
 
 	protected String setBreakpoint(String type, URI uri, Integer lineNumber,
@@ -72,31 +72,31 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 			throws DbgpException {
 
 		DbgpRequest request = createRequest(BREAKPOINT_SET_COMMAND);
-		request.addOption("-t", type);
+		request.addOption("-t", type); //$NON-NLS-1$
 
 		if (uri != null) {
-			request.addOption("-f", uri.toASCIIString());
+			request.addOption("-f", uri.toASCIIString()); //$NON-NLS-1$
 		}
 
 		if (lineNumber != null) {
-			request.addOption("-n", lineNumber.toString());
+			request.addOption("-n", lineNumber.toString()); //$NON-NLS-1$
 		}
 
 		if (function != null) {
-			request.addOption("-m", function);
+			request.addOption("-m", function); //$NON-NLS-1$
 		}
 
 		if (exception != null) {
-			request.addOption("-x", exception);
+			request.addOption("-x", exception); //$NON-NLS-1$
 		}
 
 		if (info != null) {
-			request.addOption("-s", info.getStateString());
-			request.addOption("-r", info.getTemporaryString());
+			request.addOption("-s", info.getStateString()); //$NON-NLS-1$
+			request.addOption("-r", info.getTemporaryString()); //$NON-NLS-1$
 
 			if (info.getHitValue() != -1 && info.getHitCondition() != -1) {
-				request.addOption("-h", info.getHitValue());
-				request.addOption("-o", info.getHitConditionString());
+				request.addOption("-h", info.getHitValue()); //$NON-NLS-1$
+				request.addOption("-o", info.getHitConditionString()); //$NON-NLS-1$
 			}
 
 			String expression = info.getExpression();
@@ -155,7 +155,7 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 
 	public IDbgpBreakpoint getBreakpoint(String id) throws DbgpException {
 		DbgpRequest request = createRequest(BREAKPOINT_GET_COMMAND);
-		request.addOption("-d", id);
+		request.addOption("-d", id); //$NON-NLS-1$
 		IDbgpBreakpoint[] breakpoints = parseBreakpointsResponse(communicate(request));
 		if (breakpoints.length > 0) {
 			return breakpoints[0];
@@ -169,26 +169,26 @@ public class DbgpBreakpointCommands extends DbgpBaseCommands implements
 		}
 
 		DbgpRequest request = createRequest(BREAKPOINT_REMOVE_COMMAND);
-		request.addOption("-d", id);
+		request.addOption("-d", id); //$NON-NLS-1$
 		communicate(request);
 	}
 
 	public void updateBreakpoint(String id, DbgpBreakpointConfig config)
 			throws DbgpException {
 		DbgpRequest request = createRequest(BREAKPOINT_UPDATE_COMMAND);
-		request.addOption("-d", id);
-		request.addOption("-s", config.getStateString());
+		request.addOption("-d", id); //$NON-NLS-1$
+		request.addOption("-s", config.getStateString()); //$NON-NLS-1$
 
 		if (config.getHitValue() != -1) {
-			request.addOption("-h", config.getHitValue());
+			request.addOption("-h", config.getHitValue()); //$NON-NLS-1$
 		}
 
 		if (config.getHitCondition() != -1) {
-			request.addOption("-o", config.getHitConditionString());
+			request.addOption("-o", config.getHitConditionString()); //$NON-NLS-1$
 		}
 		
 		if (config.getLineNo() != -1) {
-			request.addOption("-n", config.getLineNo());			
+			request.addOption("-n", config.getLineNo()); //$NON-NLS-1$			
 		}
 		
 		// not sure that this is correct but it looks that this is possible

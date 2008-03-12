@@ -25,7 +25,7 @@ import org.osgi.framework.BundleContext;
 public class ScriptConsoleUIPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.dltk.console.ui";
+	public static final String PLUGIN_ID = "org.eclipse.dltk.console.ui"; //$NON-NLS-1$
 
 	// The shared instance
 	private static ScriptConsoleUIPlugin plugin;
@@ -76,9 +76,9 @@ public class ScriptConsoleUIPlugin extends AbstractUIPlugin {
 	}
 
 	private static final String[][] IMAGES = new String[][] {
-			{ "icons/elcl16/save.gif",
+			{ "icons/elcl16/save.gif", //$NON-NLS-1$
 					ScriptConsoleUIConstants.SAVE_SESSION_ICON },
-			{ "icons/elcl16/terminate.gif",
+			{ "icons/elcl16/terminate.gif", //$NON-NLS-1$
 					ScriptConsoleUIConstants.TERMINATE_ICON } };
 
 	protected void initializeImageRegistry(ImageRegistry registry) {

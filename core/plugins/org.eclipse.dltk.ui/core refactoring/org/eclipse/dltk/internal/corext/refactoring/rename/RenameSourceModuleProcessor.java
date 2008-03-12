@@ -106,7 +106,7 @@ public class RenameSourceModuleProcessor extends ScriptRenameProcessor
 		result.rename(fCu, new RenameArguments(getNewElementName(),
 				getUpdateReferences()));
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: Add type renaming here if required...");
+			System.err.println("TODO: Add type renaming here if required..."); //$NON-NLS-1$
 		}
 		return result;
 	}
@@ -135,7 +135,7 @@ public class RenameSourceModuleProcessor extends ScriptRenameProcessor
 		Assert.isNotNull(newName, "new name"); //$NON-NLS-1$
 		// String typeName= removeFileNameExtension(newName);
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: Add correct name cheking here...");
+			System.err.println("TODO: Add correct name cheking here..."); //$NON-NLS-1$
 		}
 		RefactoringStatus result = new RefactoringStatus();// Checks.checkSourceModuleName(newName);
 		if (Checks.isAlreadyNamed(fCu, newName))

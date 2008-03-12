@@ -402,7 +402,7 @@ public abstract class BuildpathsBlock {
 			list.add(new BPListElement(jproj, IBuildpathEntry.BPE_SOURCE, srcFolder.getFullPath(), srcFolder, false));
 		}
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add default library");
+			System.err.println("Add default library"); //$NON-NLS-1$
 		}
 		// IBuildpathEntry[] InterpreterEnvironmentEntries=
 		// PreferenceConstants.getDefaultInterpreterEnvironmentLibrary();
@@ -547,7 +547,7 @@ public abstract class BuildpathsBlock {
 			System.arraycopy(prevNatures, 0, newNatures, 0, prevNatures.length);
 			newNatures[prevNatures.length]= nature;
 			if (DLTKCore.DEBUG) {
-				System.err.println("Add selection of possible natures here");
+				System.err.println("Add selection of possible natures here"); //$NON-NLS-1$
 			}
 			description.setNatureIds(newNatures);
 			project.setDescription(description, monitor);

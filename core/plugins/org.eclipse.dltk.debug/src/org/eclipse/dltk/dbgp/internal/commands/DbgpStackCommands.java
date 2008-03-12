@@ -23,13 +23,13 @@ import org.w3c.dom.NodeList;
 
 public class DbgpStackCommands extends DbgpBaseCommands implements
 		IDbgpStatckCommands {
-	private static final String STACK_DEPTH_COMMAND = "stack_depth";
+	private static final String STACK_DEPTH_COMMAND = "stack_depth"; //$NON-NLS-1$
 
-	private static final String STACK_GET_COMMAND = "stack_get";
+	private static final String STACK_GET_COMMAND = "stack_get"; //$NON-NLS-1$
 
-	private static final String TAG_STACK = "stack";
+	private static final String TAG_STACK = "stack"; //$NON-NLS-1$
 
-	private static final String ATTR_DEPTH = "depth";
+	private static final String ATTR_DEPTH = "depth"; //$NON-NLS-1$
 
 	protected int parseStackDepthResponse(Element response)
 			throws DbgpDebuggingEngineException {
@@ -60,7 +60,7 @@ public class DbgpStackCommands extends DbgpBaseCommands implements
 
 	public IDbgpStackLevel getStackLevel(int stackDepth) throws DbgpException {
 		DbgpRequest request = createRequest(STACK_GET_COMMAND);
-		request.addOption("-d", stackDepth);
+		request.addOption("-d", stackDepth); //$NON-NLS-1$
 		IDbgpStackLevel[] levels = parseStackLevels(communicate(request));
 
 		if (levels.length < 1) {

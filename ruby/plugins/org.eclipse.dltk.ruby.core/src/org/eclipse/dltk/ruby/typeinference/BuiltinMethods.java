@@ -22,17 +22,17 @@ import org.eclipse.dltk.ti.types.IEvaluatedType;
 
 public class BuiltinMethods {
 
-	private static final RubyClassType fixnumType = new RubyClassType("Fixnum");
+	private static final RubyClassType fixnumType = new RubyClassType("Fixnum"); //$NON-NLS-1$
 	
-	private static final RubyClassType arrayType = new RubyClassType("Array");
+	private static final RubyClassType arrayType = new RubyClassType("Array"); //$NON-NLS-1$
 	
-	private static final RubyClassType strType = new RubyClassType("String");
+	private static final RubyClassType strType = new RubyClassType("String"); //$NON-NLS-1$
 
-	private static final RubyClassType classType = new RubyClassType("Class");
+	private static final RubyClassType classType = new RubyClassType("Class"); //$NON-NLS-1$
 
 	private static final IEvaluatedType boolType = new AmbiguousType(new IEvaluatedType[] {
-			new RubyClassType("TrueClass"),
-			new RubyClassType("FalseClass")});
+			new RubyClassType("TrueClass"), //$NON-NLS-1$
+			new RubyClassType("FalseClass")}); //$NON-NLS-1$
 
 	private static final class NewMethod implements IntrinsicMethod {
 		public boolean dependsOnArguments() {
@@ -51,8 +51,8 @@ public class BuiltinMethods {
 			if (receiver instanceof RubyClassType) {
 				RubyClassType rubyClassType = (RubyClassType) receiver;
 				String key = rubyClassType.getModelKey();
-				if (!key.endsWith("%"))
-					return new RubyClassType(key + "%");
+				if (!key.endsWith("%")) //$NON-NLS-1$
+					return new RubyClassType(key + "%"); //$NON-NLS-1$
 				return null;
 			} else if (receiver instanceof AmbiguousType) {
 				Set possibleReturns = new HashSet();
@@ -182,36 +182,36 @@ public class BuiltinMethods {
 	static {
 		BuiltinClass klass;
 
-		klass = addClass(new BuiltinClass("Object"));
-		klass.addMethod("object_id", new SimpleIntrinsicMethod(fixnumType));
-		klass.addMethod("__id__", new SimpleIntrinsicMethod(fixnumType));
-		klass.addMethod("send", new SimpleIntrinsicMethod(UnknownType.INSTANCE));
-		klass.addMethod("class", new ClassMethod());
-		klass.addMethod("clone", new ReceiverTypeReturningMethod());
-		klass.addMethod("dup", new ReceiverTypeReturningMethod());
-		klass.addMethod("extend", new SimpleIntrinsicMethod(UnknownType.INSTANCE));
-		klass.addMethod("freeze", new ReceiverTypeReturningMethod());
-		klass.addMethod("frozen?", new SimpleIntrinsicMethod(boolType));
-		klass.addMethod("hash", new SimpleIntrinsicMethod(fixnumType));
-		klass.addMethod("inspect", new SimpleIntrinsicMethod(strType));
-		klass.addMethod("instance_eval", new SimpleIntrinsicMethod(UnknownType.INSTANCE));
-		klass.addMethod("instance_of?", new SimpleIntrinsicMethod(boolType));
-		klass.addMethod("instance_variable_get", new SimpleIntrinsicMethod(UnknownType.INSTANCE));
-		klass.addMethod("instance_variable_set", new SimpleIntrinsicMethod(UnknownType.INSTANCE));
-		klass.addMethod("instance_variables", new SimpleIntrinsicMethod(arrayType));
-		klass.addMethod("is_a?", new SimpleIntrinsicMethod(boolType));
-		klass.addMethod("kind_of?", new SimpleIntrinsicMethod(boolType));
-		klass.addMethod("nil?", new SimpleIntrinsicMethod(boolType));
-		klass.addMethod("respond_to?", new SimpleIntrinsicMethod(boolType));
-		klass.addMethod("to_a", new SimpleIntrinsicMethod(arrayType));
-		klass.addMethod("to_s", new SimpleIntrinsicMethod(strType));
-		klass.addMethod("to_i", new SimpleIntrinsicMethod(fixnumType));
+		klass = addClass(new BuiltinClass("Object")); //$NON-NLS-1$
+		klass.addMethod("object_id", new SimpleIntrinsicMethod(fixnumType)); //$NON-NLS-1$
+		klass.addMethod("__id__", new SimpleIntrinsicMethod(fixnumType)); //$NON-NLS-1$
+		klass.addMethod("send", new SimpleIntrinsicMethod(UnknownType.INSTANCE)); //$NON-NLS-1$
+		klass.addMethod("class", new ClassMethod()); //$NON-NLS-1$
+		klass.addMethod("clone", new ReceiverTypeReturningMethod()); //$NON-NLS-1$
+		klass.addMethod("dup", new ReceiverTypeReturningMethod()); //$NON-NLS-1$
+		klass.addMethod("extend", new SimpleIntrinsicMethod(UnknownType.INSTANCE)); //$NON-NLS-1$
+		klass.addMethod("freeze", new ReceiverTypeReturningMethod()); //$NON-NLS-1$
+		klass.addMethod("frozen?", new SimpleIntrinsicMethod(boolType)); //$NON-NLS-1$
+		klass.addMethod("hash", new SimpleIntrinsicMethod(fixnumType)); //$NON-NLS-1$
+		klass.addMethod("inspect", new SimpleIntrinsicMethod(strType)); //$NON-NLS-1$
+		klass.addMethod("instance_eval", new SimpleIntrinsicMethod(UnknownType.INSTANCE)); //$NON-NLS-1$
+		klass.addMethod("instance_of?", new SimpleIntrinsicMethod(boolType)); //$NON-NLS-1$
+		klass.addMethod("instance_variable_get", new SimpleIntrinsicMethod(UnknownType.INSTANCE)); //$NON-NLS-1$
+		klass.addMethod("instance_variable_set", new SimpleIntrinsicMethod(UnknownType.INSTANCE)); //$NON-NLS-1$
+		klass.addMethod("instance_variables", new SimpleIntrinsicMethod(arrayType)); //$NON-NLS-1$
+		klass.addMethod("is_a?", new SimpleIntrinsicMethod(boolType)); //$NON-NLS-1$
+		klass.addMethod("kind_of?", new SimpleIntrinsicMethod(boolType)); //$NON-NLS-1$
+		klass.addMethod("nil?", new SimpleIntrinsicMethod(boolType)); //$NON-NLS-1$
+		klass.addMethod("respond_to?", new SimpleIntrinsicMethod(boolType)); //$NON-NLS-1$
+		klass.addMethod("to_a", new SimpleIntrinsicMethod(arrayType)); //$NON-NLS-1$
+		klass.addMethod("to_s", new SimpleIntrinsicMethod(strType)); //$NON-NLS-1$
+		klass.addMethod("to_i", new SimpleIntrinsicMethod(fixnumType)); //$NON-NLS-1$
 		
-		klass = addClass(new BuiltinClass("Class"));
-		klass.addMethod("new", new NewMethod());
+		klass = addClass(new BuiltinClass("Class")); //$NON-NLS-1$
+		klass.addMethod("new", new NewMethod()); //$NON-NLS-1$
 
-		klass = addClass(new BuiltinClass("Fixnum"));
-		klass.addMethod("abs", new SimpleIntrinsicMethod(fixnumType));
+		klass = addClass(new BuiltinClass("Fixnum")); //$NON-NLS-1$
+		klass.addMethod("abs", new SimpleIntrinsicMethod(fixnumType)); //$NON-NLS-1$
 	}
 
 	public static IEvaluatedType getIntrinsicMethodReturnType(IEvaluatedType receiver,
@@ -270,18 +270,18 @@ public class BuiltinMethods {
 
 	private static String getPossibleIntrinsicClassName(IClassType receiver) {
 		/*if (receiver instanceof RubyMetaClassType) {
-			return "Class";
+			return "Class"; //$NON-NLS-1$
 		} else*/ if (receiver instanceof RubyClassType) {
 //			RubyClassType type = (RubyClassType) receiver;						
 //			return RubyMixinModel.getInstance().createRubyClass(type).getName();
-			return "Class";
+			return "Class"; //$NON-NLS-1$
 		} /*else if (receiver instanceof SimpleType) {
 			SimpleType type = (SimpleType) receiver;
 			switch (type.getType()) {
 			case SimpleType.TYPE_NUMBER:
-				return "Fixnum";
+				return "Fixnum"; //$NON-NLS-1$
 			case SimpleType.TYPE_STRING:
-				return "Str";
+				return "Str"; //$NON-NLS-1$
 			}
 		}*/
 		return null;

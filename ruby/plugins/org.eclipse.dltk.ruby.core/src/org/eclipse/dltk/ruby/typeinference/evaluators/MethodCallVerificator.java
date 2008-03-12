@@ -97,7 +97,7 @@ public class MethodCallVerificator extends GoalEvaluator {
 		String parentModelKey = goal2.getGoal().getParentModelKey();
 		String name = goal2.getGoal().getName();
 		String requiredKey = ((parentModelKey != null)?(parentModelKey
-				+ MixinModel.SEPARATOR):"") + name;
+				+ MixinModel.SEPARATOR):"") + name; //$NON-NLS-1$
 		RubyMixinClass rclass = RubyMixinModel.getInstance().createRubyClass(
 				type);
 		RubyMixinMethod method = null;
@@ -109,7 +109,7 @@ public class MethodCallVerificator extends GoalEvaluator {
 		}
 		if (method != null) {
 			String key = method.getKey();
-			if (key.equals(requiredKey) || (parentModelKey.equals("Object") && key.equals(name))) {
+			if (key.equals(requiredKey) || (parentModelKey.equals("Object") && key.equals(name))) { //$NON-NLS-1$
 				result = new RubyMethodReference(name,
 						parentModelKey, position,
 						RubyMethodReference.ACCURATE);

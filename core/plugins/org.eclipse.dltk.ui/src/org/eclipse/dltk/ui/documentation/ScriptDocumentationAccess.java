@@ -35,9 +35,9 @@ import org.eclipse.dltk.ui.DLTKUIPlugin;
  * </p>
  */
 public class ScriptDocumentationAccess {
-	private static final String DOCUMENTATION_PROVIDERS_EXTENSION_POINT = "org.eclipse.dltk.ui.scriptDocumentationProviders";
-	private static final String ATTR_CLASS = "class";
-	private static final String ATTR_NATURE = "nature";
+	private static final String DOCUMENTATION_PROVIDERS_EXTENSION_POINT = "org.eclipse.dltk.ui.scriptDocumentationProviders"; //$NON-NLS-1$
+	private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
+	private static final String ATTR_NATURE = "nature"; //$NON-NLS-1$
 	private static IScriptDocumentationProvider[] documentationProviders = null;
 	private static Map providerNatures = new HashMap();
 

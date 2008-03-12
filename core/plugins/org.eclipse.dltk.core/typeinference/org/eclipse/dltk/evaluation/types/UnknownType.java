@@ -23,7 +23,7 @@ public class UnknownType implements IEvaluatedType {
 	}
 
 	public String getTypeName() {
-		return "unknown";
+		return "unknown"; //$NON-NLS-1$
 	}
 
 	public boolean subtypeOf(IEvaluatedType type) {

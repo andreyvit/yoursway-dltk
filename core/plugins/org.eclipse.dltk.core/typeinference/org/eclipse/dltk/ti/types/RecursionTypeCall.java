@@ -21,8 +21,7 @@ public class RecursionTypeCall implements IEvaluatedType {
 	}
 
 	public String getTypeName() {
-
-		return "recursion type call";
+		return "recursion type call"; //$NON-NLS-1$
 	}
 
 	public boolean subtypeOf(IEvaluatedType type) {

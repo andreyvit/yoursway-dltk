@@ -15,7 +15,7 @@ import org.eclipse.dltk.internal.debug.core.model.ScriptValue;
 import org.eclipse.ui.IEditorInput;
 
 public class RubyDebugModelPresentation extends ScriptDebugModelPresentation {
-	private static final String RUBY_EDITOR_ID = "org.eclipse.dltk.ruby.ui.editor.RubyEditor";
+	private static final String RUBY_EDITOR_ID = "org.eclipse.dltk.ruby.ui.editor.RubyEditor"; //$NON-NLS-1$
 
 	public String getEditorId(IEditorInput input, Object element) {
 		return RUBY_EDITOR_ID;

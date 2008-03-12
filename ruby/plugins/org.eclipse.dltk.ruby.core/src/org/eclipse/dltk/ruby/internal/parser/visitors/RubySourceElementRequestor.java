@@ -39,12 +39,12 @@ import org.eclipse.dltk.ruby.core.RubyConstants;
 
 public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
-	private static final String NEW_CALL = "new";
-	private static final String ATTR = "attr";
-	private static final String VALUE = "value";
-	private static final String ATTR_ACCESSOR = "attr_accessor";
-	private static final String ATTR_WRITER = "attr_writer";
-	private static final String ATTR_READER = "attr_reader";
+	private static final String NEW_CALL = "new"; //$NON-NLS-1$
+	private static final String ATTR = "attr"; //$NON-NLS-1$
+	private static final String VALUE = "value"; //$NON-NLS-1$
+	private static final String ATTR_ACCESSOR = "attr_accessor"; //$NON-NLS-1$
+	private static final String ATTR_WRITER = "attr_writer"; //$NON-NLS-1$
+	private static final String ATTR_READER = "attr_reader"; //$NON-NLS-1$
 
 	private static class TypeField {
 		private String fName;
@@ -133,7 +133,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
 		if (left == null) {
 			throw new IllegalArgumentException(
-					"addVariable expression can't be null");
+					Messages.RubySourceElementRequestor_addVariableExpressionCantBeNull);
 		}
 
 		if (left instanceof VariableReference) {
@@ -176,11 +176,11 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 			if (expr instanceof SimpleReference) {
 				names.add(((SimpleReference) expr).getName());
 			} else if (expr instanceof RubyColonExpression) { // FIXME
-				String name = "";
+				String name = ""; //$NON-NLS-1$
 
 				while (expr instanceof RubyColonExpression) {
 					RubyColonExpression colonExpression = (RubyColonExpression) expr;
-					name = "::" + colonExpression.getName();
+					name = "::" + colonExpression.getName(); //$NON-NLS-1$
 					ASTNode left = colonExpression.getLeft();
 					if (!colonExpression.isFull() && left == null) {
 						name = name.substring(2);
@@ -200,7 +200,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 	}
 
 	protected String makeLanguageDependentValue(ASTNode value) {
-		String outValue = "";
+		String outValue = ""; //$NON-NLS-1$
 		/*
 		 * if (value instanceof ExtendedVariableReference) { StringWriter
 		 * stringWriter = new StringWriter(); CorePrinter printer = new
@@ -217,7 +217,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 	// Visiting methods
 	protected void onEndVisitMethod(MethodDeclaration method) {
 		if (DLTKCore.DEBUG) {
-			System.out.println("==> Method: " + method.getName());
+			System.out.println("==> Method: " + method.getName()); //$NON-NLS-1$
 		}
 
 		Iterator it = fNotAddedFields.iterator();
@@ -251,7 +251,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 	// Visiting expressions
 	public boolean visit(ASTNode expression) throws Exception {
 		if (DLTKCore.DEBUG) {
-			System.out.println("==> Expression: " + expression.toString());
+			System.out.println("==> Expression: " + expression.toString()); //$NON-NLS-1$
 		}
 
 		if (expression instanceof RubyAssignment) {
@@ -292,7 +292,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 					String attr = RubyAttributeHandler.getText(n);
 					ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
 					mi.parameterNames = new String[] { VALUE };
-					mi.name = attr + "=";
+					mi.name = attr + "="; //$NON-NLS-1$
 					mi.modifiers = RubyConstants.RubyAttributeModifier;
 					mi.nameSourceStart = n.sourceStart();
 					mi.nameSourceEnd = n.sourceEnd() - 1;
@@ -303,7 +303,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 				}
 			}
 
-			if (name.equals("require")) {
+			if (name.equals("require")) { //$NON-NLS-1$
 				// TODO
 			}
 
@@ -363,7 +363,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 		} else if (expression instanceof RubyAliasExpression) {
 			RubyAliasExpression alias = (RubyAliasExpression) expression;
 			String oldValue = alias.getOldValue();
-			if (!oldValue.startsWith("$")) {
+			if (!oldValue.startsWith("$")) { //$NON-NLS-1$
 				String newValue = alias.getNewValue();
 				ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
 

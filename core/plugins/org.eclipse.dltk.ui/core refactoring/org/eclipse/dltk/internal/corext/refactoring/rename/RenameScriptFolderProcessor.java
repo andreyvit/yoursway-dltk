@@ -73,7 +73,7 @@ public class RenameScriptFolderProcessor extends ScriptRenameProcessor implement
 	private TextChangeManager fChangeManager;
 	static {
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: RenameScriptFolderProcessor add import manager supprot code here...");
+			System.err.println("TODO: RenameScriptFolderProcessor add import manager supprot code here..."); //$NON-NLS-1$
 		}
 	}
 	//private ImportsManager fImportsManager;
@@ -138,7 +138,7 @@ public class RenameScriptFolderProcessor extends ScriptRenameProcessor implement
 			combined.addAll(Arrays.asList(ResourceUtil.getFiles(fPackage.getSourceModules())));
 		}
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: RenameScriptFolderProcessor Add fQualifiedNameSearchResult suppor code");
+			System.err.println("TODO: RenameScriptFolderProcessor Add fQualifiedNameSearchResult suppor code"); //$NON-NLS-1$
 		}
 //		if (fQualifiedNameSearchResult != null)
 //			combined.addAll(Arrays.asList(fQualifiedNameSearchResult.getAllFiles()));
@@ -224,7 +224,7 @@ public class RenameScriptFolderProcessor extends ScriptRenameProcessor implement
 		Assert.isNotNull(newName, "new name"); //$NON-NLS-1$
 		//RefactoringStatus result= Checks.checkPackageName(newName);
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: Add correct package name validation here...");
+			System.err.println("TODO: Add correct package name validation here..."); //$NON-NLS-1$
 		}
 		//#replace begin
 		RefactoringStatus result= new RefactoringStatus();
@@ -290,7 +290,7 @@ public class RenameScriptFolderProcessor extends ScriptRenameProcessor implement
 //			fImportsManager.rewriteImports(fChangeManager, new SubProgressMonitor(pm, 3));
 			
 			if (DLTKCore.DEBUG) {
-				System.err.println("TODO: Add updating of fUpdateQualifiedNames");
+				System.err.println("TODO: Add updating of fUpdateQualifiedNames"); //$NON-NLS-1$
 			}
 //			if (fUpdateQualifiedNames)
 //				computeQualifiedNameMatches(new SubProgressMonitor(pm, 10));
@@ -520,7 +520,7 @@ public class RenameScriptFolderProcessor extends ScriptRenameProcessor implement
 			
 		private void addReferenceUpdates(IProgressMonitor pm) throws CoreException {
 			if (DLTKCore.DEBUG) {
-				System.err.println("TODO: Add search support code.");
+				System.err.println("TODO: Add search support code."); //$NON-NLS-1$
 			}
 	
 //			if (fReferencesToTypesInNamesakes.size() != 0) {

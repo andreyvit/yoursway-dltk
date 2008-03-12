@@ -23,7 +23,7 @@ public interface IProjectFragment extends IParent, IModelElement, IOpenable {
  	*/
 	public static final String DEFAULT_SCRIPT_FOLDER_NAME = ""; //$NON-NLS-1$	
 
-	public static final String DEFAULT_PACKAGE_ROOT = "";
+	public static final String DEFAULT_PACKAGE_ROOT = ""; //$NON-NLS-1$
 	
 	/**
 	 * Update model flag constant (bit mask value 1) indicating that the operation

@@ -27,6 +27,6 @@ class ColumnFormData {
 	 * @return a string representation of the event
 	 */
 	public String toString() {
-		return getName() + " {weight=" + width + "}"; //$NON-NLS-2$
+		return getName() + " {weight=" + width + "}";  //$NON-NLS-1$//$NON-NLS-2$
 	}
 }

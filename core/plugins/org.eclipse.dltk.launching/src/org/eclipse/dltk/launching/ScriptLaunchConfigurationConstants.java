@@ -71,9 +71,9 @@ public class ScriptLaunchConfigurationConstants {
 	 */
 	public static final String ATTR_DEFAULT_BUILDPATH = "defaultBuildpath"; //$NON-NLS-1$
 
-	public static final String ATTR_DEFAULT_SOURCEPATH = "defaultSourcePath";
+	public static final String ATTR_DEFAULT_SOURCEPATH = "defaultSourcePath"; //$NON-NLS-1$
 	
-	public static final String ATTR_SOURCEPATH = "sourcePath";
+	public static final String ATTR_SOURCEPATH = "sourcePath"; //$NON-NLS-1$
 	
 	/**
 	 * Launch configuration attribute key. The attribute value is an ordered
@@ -107,7 +107,7 @@ public class ScriptLaunchConfigurationConstants {
 	 */
 	public static final String ATTR_BUILDPATH_PROVIDER = "buildpathProvider"; //$NON-NLS-1$
 	
-	public static final String ATTR_SOURCEPATH_PROVIDER = "sourcepathProvider";
+	public static final String ATTR_SOURCEPATH_PROVIDER = "sourcepathProvider"; //$NON-NLS-1$
 
 	public static final String ATTR_DEBUG_CONNECTOR = "debugConnector"; //$NON-NLS-1$
 
@@ -120,12 +120,12 @@ public class ScriptLaunchConfigurationConstants {
 	 * working directory of a remote debugging session, and is used in an
 	 * attempt to map the remote source file to a project in the workspace.
 	 */
-	public static final String ATTR_DLTK_DBGP_REMOTE_WORKING_DIR = "remoteWorkingDir";
+	public static final String ATTR_DLTK_DBGP_REMOTE_WORKING_DIR = "remoteWorkingDir"; //$NON-NLS-1$
 	
 	public static final String ID_SCRIPT_PROCESS_TYPE = "script"; //$NON-NLS-1$
 
-	public static final String ENABLE_BREAK_ON_FIRST_LINE = "enableBreakOnFirstLine";
-	public static final String ENABLE_DBGP_LOGGING = "enableDbgpLogging";
+	public static final String ENABLE_BREAK_ON_FIRST_LINE = "enableBreakOnFirstLine"; //$NON-NLS-1$
+	public static final String ENABLE_DBGP_LOGGING = "enableDbgpLogging"; //$NON-NLS-1$
 	
 	// Errors
 	public static final int ERR_INTERNAL_ERROR = 100;

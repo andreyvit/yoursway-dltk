@@ -129,7 +129,7 @@ public class SetFilterWizardPage extends NewElementWizardPage {
 		setControl(inner);
 		Dialog.applyDialogFont(inner);
 		if(DLTKCore.DEBUG) {
-			System.err.println("SetFilterWizardOage add help support here");
+			System.err.println("SetFilterWizardOage add help support here"); //$NON-NLS-1$
 		}
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(inner, IDLTKHelpContextIds.INCLUSION_EXCLUSION_WIZARD_PAGE);
 	}
@@ -297,7 +297,7 @@ public class SetFilterWizardPage extends NewElementWizardPage {
 	 */
 	protected void configureShell(Shell newShell) {
 		if (DLTKCore.DEBUG) {
-			System.err.println("SetFilterWizardPage add help support here");
+			System.err.println("SetFilterWizardPage add help support here"); //$NON-NLS-1$
 		}
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(newShell, IDLTKHelpContextIds.EXCLUSION_PATTERN_DIALOG);
 	}

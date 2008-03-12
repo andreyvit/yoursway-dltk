@@ -29,9 +29,9 @@ public class ScriptConsolePartitioner extends FastPartitioner
 	private List ranges = new ArrayList ();
 	
 	private static class Constants {
-		public static final String MY_DOUBLE_QUOTED = "__my_double";
+		public static final String MY_DOUBLE_QUOTED = "__my_double"; //$NON-NLS-1$
 
-		public static final String MY_SINGLE_QUOTED = "__my_single";
+		public static final String MY_SINGLE_QUOTED = "__my_single"; //$NON-NLS-1$
 	}
 	
 	private static class MyPartitionScanner extends RuleBasedPartitionScanner {
@@ -41,8 +41,8 @@ public class ScriptConsolePartitioner extends FastPartitioner
 
 			List rules = new ArrayList();
 
-			rules.add(new MultiLineRule("\'", "\'", mySingle, '\\'));
-			rules.add(new MultiLineRule("\"", "\"", myDouble, '\\'));
+			rules.add(new MultiLineRule("\'", "\'", mySingle, '\\')); //$NON-NLS-1$ //$NON-NLS-2$
+			rules.add(new MultiLineRule("\"", "\"", myDouble, '\\')); //$NON-NLS-1$ //$NON-NLS-2$
 
 			IPredicateRule[] result = new IPredicateRule[rules.size()];
 			rules.toArray(result);

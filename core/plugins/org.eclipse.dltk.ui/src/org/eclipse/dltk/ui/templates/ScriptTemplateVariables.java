@@ -22,7 +22,7 @@ public final class ScriptTemplateVariables {
 	}
 
 	public static class File extends TemplateVariableResolver {
-		public static final String NAME = "file";
+		public static final String NAME = "file"; //$NON-NLS-1$
 
 		public File() {
 			super(NAME, TemplateMessages.Variable_File_Description);
@@ -39,7 +39,7 @@ public final class ScriptTemplateVariables {
 	}
 
 	public static class Language extends TemplateVariableResolver {
-		public static final String NAME = "language";
+		public static final String NAME = "language"; //$NON-NLS-1$
 
 		public Language() {
 			super(NAME, TemplateMessages.Variable_Language_Description);
@@ -68,7 +68,7 @@ public final class ScriptTemplateVariables {
 	}
 
 	public static class Interpreter extends TemplateVariableResolver {
-		public static final String NAME = "interpreter";
+		public static final String NAME = "interpreter"; //$NON-NLS-1$
 
 		public Interpreter() {
 			super(NAME, TemplateMessages.Variable_Interpreter_Description);

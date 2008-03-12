@@ -64,7 +64,7 @@ public class TextFieldNavigationHandler {
 	
 	private static boolean isSubWordNavigationEnabled() {
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add language dependent code here");
+			System.err.println("Add language dependent code here"); //$NON-NLS-1$
 		}
 //		IPreferenceStore preferenceStore= DLTKPlugin.getDefault().getCombinedPreferenceStore();
 //		return preferenceStore.getBoolean(PreferenceConstants.EDITOR_SUB_WORD_NAVIGATION);

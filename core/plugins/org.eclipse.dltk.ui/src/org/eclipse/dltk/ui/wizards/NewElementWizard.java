@@ -150,7 +150,7 @@ public abstract class NewElementWizard extends Wizard implements INewWizard {
 			// }
 			if (DLTKCore.DEBUG) {
 				System.err
-						.println("NewElementWizard: Add templates support here");
+						.println("NewElementWizard: Add templates support here"); //$NON-NLS-1$
 			}
 			String title = NewWizardMessages.NewElementWizard_typecomment_deprecated_title;
 			String message = NewWizardMessages.NewElementWizard_typecomment_deprecated_message;

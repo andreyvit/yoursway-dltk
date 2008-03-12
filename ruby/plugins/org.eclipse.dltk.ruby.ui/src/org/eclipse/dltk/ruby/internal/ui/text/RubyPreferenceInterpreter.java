@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui.text;
 
+import org.eclipse.dltk.ruby.internal.ui.RubyUI;
 import org.eclipse.dltk.ui.CodeFormatterConstants;
 import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.text.util.AutoEditUtils;
@@ -17,60 +18,65 @@ import org.eclipse.dltk.ui.text.util.TabStyle;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 public class RubyPreferenceInterpreter implements ITabPreferencesProvider {
-
+	private static RubyPreferenceInterpreter instance;
 	private final IPreferenceStore store;
+
+	public static final RubyPreferenceInterpreter getDefault() {
+		if (instance == null)
+			instance = new RubyPreferenceInterpreter(RubyUI.getDefault()
+					.getPreferenceStore());
+		return instance;
+	}
 
 	public RubyPreferenceInterpreter(IPreferenceStore store) {
 		this.store = store;
 	}
-	
-	public boolean  isSmartTab() {
-		return store.getBoolean(PreferenceConstants.EDITOR_SMART_TAB);
-	}
-	
-	public  boolean isSmartMode() {
+
+	public boolean isSmartMode() {
 		return store.getBoolean(PreferenceConstants.EDITOR_SMART_INDENT);
-	}	
-	
-	public boolean closeBrackets() {
-		return store.getBoolean(PreferenceConstants.EDITOR_CLOSE_BRACKETS);
 	}
-	
+
 	public boolean isSmartPaste() {
 		return store.getBoolean(PreferenceConstants.EDITOR_SMART_PASTE);
 	}
-	
-	public boolean closeStrings () {
-		return store.getBoolean(PreferenceConstants.EDITOR_CLOSE_STRINGS);
+
+	public boolean closeBlocks() {
+		return closeBraces();
 	}
-	
+
+	public boolean closeBraces() {
+		return store.getBoolean(PreferenceConstants.EDITOR_CLOSE_BRACES);
+	}
+
 	public int getIndentSize() {
 		return store.getInt(CodeFormatterConstants.FORMATTER_INDENTATION_SIZE);
 	}
-	
+
 	public int getTabSize() {
 		return store.getInt(CodeFormatterConstants.FORMATTER_TAB_SIZE);
 	}
-	
+
 	public TabStyle getTabStyle() {
-		return TabStyle.forName(store.getString(CodeFormatterConstants.FORMATTER_TAB_CHAR),
+		return TabStyle.forName(store
+				.getString(CodeFormatterConstants.FORMATTER_TAB_CHAR),
 				TabStyle.TAB);
 	}
-	
-	public String getIndent() {		
+
+	public String getIndent() {
 		if (getTabStyle() == TabStyle.SPACES) {
 			return AutoEditUtils.getNSpaces(getIndentSize());
 		} else
-			return "\t";
+			return "\t"; //$NON-NLS-1$
 	}
-	
-	public String getIndentByVirtualSize(int size) {		
+
+	public String getIndentByVirtualSize(int size) {
 		if (getTabStyle() == TabStyle.SPACES) {
 			return AutoEditUtils.getNSpaces(size);
 		} else {
 			int tabs = size / getTabSize();
 			int leftover = size - tabs * getTabSize();
-			return AutoEditUtils.getNChars(tabs, '\t') + AutoEditUtils.getNSpaces(leftover);
+			return AutoEditUtils.getNChars(tabs, '\t')
+					+ AutoEditUtils.getNSpaces(leftover);
 		}
 	}
 
@@ -80,9 +86,5 @@ public class RubyPreferenceInterpreter implements ITabPreferencesProvider {
 		for (int i = 0; i < count; i++)
 			result.append(indent);
 		return result.toString();
-	}
-
-	public boolean getTabAlwaysIndents() {
-		return store.getBoolean(PreferenceConstants.EDITOR_TAB_ALWAYS_INDENT);
 	}
 }

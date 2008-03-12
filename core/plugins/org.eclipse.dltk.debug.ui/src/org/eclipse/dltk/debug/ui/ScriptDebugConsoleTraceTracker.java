@@ -19,7 +19,7 @@ public class ScriptDebugConsoleTraceTracker extends ScriptDebugConsoleTracker {
 	}
 
 	public String getPattern() {
-		return "\\t*#\\d+ +file:(.*) \\[(\\d+)\\]";
+		return "\\t*#\\d+ +file:(.*) \\[(\\d+)\\]"; //$NON-NLS-1$
 	}
 
 }

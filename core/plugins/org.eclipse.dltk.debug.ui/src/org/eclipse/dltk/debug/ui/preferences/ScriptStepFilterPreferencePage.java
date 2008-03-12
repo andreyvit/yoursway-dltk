@@ -359,8 +359,8 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 						.getProgressService(), SearchEngine
 						.createWorkspaceScope(fToolkit),
 				IDLTKSearchConstants.TYPE, fToolkit);
-		dialog.setMessage("Search");
-		dialog.setInitialPattern("");
+		dialog.setMessage(Messages.ScriptStepFilterPreferencePage_search);
+		dialog.setInitialPattern(""); //$NON-NLS-1$
 		dialog
 				.setTitle(ScriptDebugPreferencesMessages.ScriptStepFilterPreferencePage_Add_type_to_step_filters_20);
 		dialog
@@ -370,7 +370,7 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 			if (types != null && types.length > 0) {
 				IType type = (IType) types[0];
 				try {
-					addFilter(type.getTypeQualifiedName("."), true, type
+					addFilter(type.getTypeQualifiedName("."), true, type //$NON-NLS-1$
 							.getFlags());
 				} catch (ModelException e) {
 					if (DLTKCore.DEBUG) {
@@ -411,7 +411,7 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 						IType type = (IType) element;
 						Filter filter;
 						try {
-							filter = new Filter(type.getTypeQualifiedName("."),
+							filter = new Filter(type.getTypeQualifiedName("."), //$NON-NLS-1$
 									true, type.getFlags());
 							addFilter(filter);
 						} catch (ModelException e) {
@@ -453,7 +453,7 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 		Filter[] filters = getAllFiltersFromTable();
 		for (int i = 0; i < filters.length; i++) {
 			name = filters[i].getName();
-			String modifiers = ":"
+			String modifiers = ":" //$NON-NLS-1$
 					+ Integer.toString(filters[i].getModifiers());
 			if (filters[i].isChecked()) {
 				active.add(name + modifiers);
@@ -560,7 +560,7 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 		}
 		filters = new Filter[activefilters.length + inactivefilters.length];
 		for (int i = 0; i < activefilters.length; i++) {
-			String[] split = activefilters[i].split(":");
+			String[] split = activefilters[i].split(":"); //$NON-NLS-1$
 			if (split.length == 1) {
 				filters[i] = new Filter(split[0], true, 0);
 			} else {
@@ -569,7 +569,7 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 			}
 		}
 		for (int i = 0; i < inactivefilters.length; i++) {
-			String[] split = inactivefilters[i].split(":");
+			String[] split = inactivefilters[i].split(":"); //$NON-NLS-1$
 			if (split.length == 1) {
 				filters[i + activefilters.length] = new Filter(split[0], false,
 						0);

@@ -96,7 +96,7 @@ public class CreateCopyOfSourceModuleChange extends CreateTextFileChange {
 		ISourceModule wc= cu.getPrimary().getWorkingCopy(null);
 		try {
 			if (DLTKCore.DEBUG) {
-				System.err.println("TODO: CreateCopyOfSourceModuleChange add content pewview...");
+				System.err.println("TODO: CreateCopyOfSourceModuleChange add content pewview..."); //$NON-NLS-1$
 			}
 //			TextChangeManager manager= createChangeManager(pm, wc, newTypeName);
 //			String result= manager.get(wc).getPreviewContent(new NullProgressMonitor());

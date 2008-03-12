@@ -12,7 +12,7 @@ package org.eclipse.dltk.ruby.internal.ui.formatting;
 import java.util.Map;
 
 public class IndentationState {
-	private String lastIndentationBasedOnLevel = "";
+	private String lastIndentationBasedOnLevel = ""; //$NON-NLS-1$
 	private int indentationLevel ;
 	private int offset ;
 	private int pos ;
@@ -102,7 +102,7 @@ public class IndentationState {
 	protected String getIndentationString(Map options) {
 		StringBuffer sb = new StringBuffer() ;
         for (int i = 0; i < this.getOffset(); i++) {
-            sb.append(" ");
+            sb.append(" "); //$NON-NLS-1$
         }
 		if (this.getIndentation() != -1) {
 			sb.append(lastIndentationBasedOnLevel) ;		

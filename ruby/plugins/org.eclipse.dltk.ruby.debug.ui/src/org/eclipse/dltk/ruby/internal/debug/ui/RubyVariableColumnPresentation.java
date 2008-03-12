@@ -6,7 +6,7 @@ public class RubyVariableColumnPresentation extends VariableColumnPresentation {
 	/**
 	 * Constant identifier for the Java variable column presentation.
 	 */
-	public final static String RUBY_VARIABLE_COLUMN_PRESENTATION = "Ruby" + ".VARIALBE_COLUMN_PRESENTATION"; //$NON-NLS-1$
+	public final static String RUBY_VARIABLE_COLUMN_PRESENTATION = "Ruby" + ".VARIALBE_COLUMN_PRESENTATION"; //$NON-NLS-1$ //$NON-NLS-2$
 	/**
 	 * Default column identifiers
 	 */
@@ -30,7 +30,7 @@ public class RubyVariableColumnPresentation extends VariableColumnPresentation {
 
 	public String getHeader(String id) {
 		if (COLUMN_INSTANCE_ID.equals(id)) {
-			return "Object ID";
+			return "Object ID"; //$NON-NLS-1$
 		}
 
 		return super.getHeader(id);

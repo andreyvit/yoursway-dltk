@@ -46,7 +46,7 @@ public class DecoratingModelLabelProvider extends DecoratingLabelProvider implem
 		super(labelProvider, PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator());
 		
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: DecoratingModelLabelProvider: Add ProblemsLabelDecorator");
+			System.err.println("TODO: DecoratingModelLabelProvider: Add ProblemsLabelDecorator"); //$NON-NLS-1$
 		}
 //		if (errorTick) {
 //			labelProvider.addLabelDecorator(new ProblemsLabelDecorator(null));
@@ -63,7 +63,7 @@ public class DecoratingModelLabelProvider extends DecoratingLabelProvider implem
 			setDecorationContext(DecorationContext.DEFAULT_CONTEXT);
 		} 
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: DecoratingModelLabelProvider: Add HierarchicalDecorationContext");
+			System.err.println("TODO: DecoratingModelLabelProvider: Add HierarchicalDecorationContext"); //$NON-NLS-1$
 		}
 //		else {
 //			setDecorationContext(HierarchicalDecorationContext.CONTEXT);

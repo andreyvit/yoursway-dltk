@@ -13,9 +13,9 @@ import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.launching.RubyLaunchingPlugin;
 
 public class JRubyInstallType extends AbstractInterpreterInstallType {
-	private static final String INSTALL_TYPE_NAME = "JRuby";
+	private static final String INSTALL_TYPE_NAME = "JRuby"; //$NON-NLS-1$
 
-	private static final String[] INTERPRETER_NAMES = { "jruby" };
+	private static final String[] INTERPRETER_NAMES = { "jruby" }; //$NON-NLS-1$
 
 	public String getNatureId() {
 		return RubyNature.NATURE_ID;
@@ -38,12 +38,12 @@ public class JRubyInstallType extends AbstractInterpreterInstallType {
 	}
 
 	protected File createPathFile() throws IOException {
-		return storeToMetadata(RubyLaunchingPlugin.getDefault(), "path.rb",
-				"scripts/path.rb");
+		return storeToMetadata(RubyLaunchingPlugin.getDefault(), "path.rb", //$NON-NLS-1$
+				"scripts/path.rb"); //$NON-NLS-1$
 	}
 
 	protected String getBuildPathDelimeter() {
-		return ";:";
+		return ";:"; //$NON-NLS-1$
 	}
 
 	protected ILog getLog() {
@@ -52,7 +52,7 @@ public class JRubyInstallType extends AbstractInterpreterInstallType {
 
 	public IStatus validateInstallLocation(File installLocation) {
 		if (!Platform.getOS().equals(Platform.OS_WIN32)) {
-			if (installLocation.getName().indexOf(".bat") != -1) {
+			if (installLocation.getName().indexOf(".bat") != -1) { //$NON-NLS-1$
 				return createStatus(
 						IStatus.ERROR,
 						InterpreterMessages.errNonExistentOrInvalidInstallLocation,

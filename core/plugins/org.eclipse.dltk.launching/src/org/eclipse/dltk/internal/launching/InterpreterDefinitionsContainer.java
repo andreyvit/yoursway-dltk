@@ -59,22 +59,22 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class InterpreterDefinitionsContainer {
 
-	private static final String PATH_ATTR = "path";
-	private static final String INTERPRETER_NAME_ATTR = "name";
-	private static final String INTERPRETER_TAG = "interpreter";
-	private static final String INTERPRETER_TYPE_TAG = "interpreterType";
-	private static final String ID_ATTR = "id";
-	private static final String NATURE_ATTR = "nature";
-	private static final String DEFAULT_INTERPRETER_TAG = "defaultInterpreter";
-	private static final String INTERPRETER_SETTINGS_TAG = "interpreterSettings";
-	private static final String VARIABLE_VALUE_ATTR = "variableValue";
-	private static final String VARIABLE_NAME_ATTR = "variableName";
-	private static final String LIBRARY_PATH_ATTR = "libraryPath";
-	private static final String IARGS_ATTR = "iargs";
-	private static final String ENVIRONMENT_VARIABLES_TAG = "environmentVariables";
-	private static final String ENVIRONMENT_VARIABLE_TAG = "environmentVariable";
-	private static final String LIBRARY_LOCATIONS_TAG = "libraryLocations";
-	private static final String LIBRARY_LOCATION_TAG = "libraryLocation";
+	private static final String PATH_ATTR = "path"; //$NON-NLS-1$
+	private static final String INTERPRETER_NAME_ATTR = "name"; //$NON-NLS-1$
+	private static final String INTERPRETER_TAG = "interpreter"; //$NON-NLS-1$
+	private static final String INTERPRETER_TYPE_TAG = "interpreterType"; //$NON-NLS-1$
+	private static final String ID_ATTR = "id"; //$NON-NLS-1$
+	private static final String NATURE_ATTR = "nature"; //$NON-NLS-1$
+	private static final String DEFAULT_INTERPRETER_TAG = "defaultInterpreter"; //$NON-NLS-1$
+	private static final String INTERPRETER_SETTINGS_TAG = "interpreterSettings"; //$NON-NLS-1$
+	private static final String VARIABLE_VALUE_ATTR = "variableValue"; //$NON-NLS-1$
+	private static final String VARIABLE_NAME_ATTR = "variableName"; //$NON-NLS-1$
+	private static final String LIBRARY_PATH_ATTR = "libraryPath"; //$NON-NLS-1$
+	private static final String IARGS_ATTR = "iargs"; //$NON-NLS-1$
+	private static final String ENVIRONMENT_VARIABLES_TAG = "environmentVariables"; //$NON-NLS-1$
+	private static final String ENVIRONMENT_VARIABLE_TAG = "environmentVariable"; //$NON-NLS-1$
+	private static final String LIBRARY_LOCATIONS_TAG = "libraryLocations"; //$NON-NLS-1$
+	private static final String LIBRARY_LOCATION_TAG = "libraryLocation"; //$NON-NLS-1$
 
 	/**
 	 * Map of InterpreterInstallTypes to Lists of corresponding
@@ -356,7 +356,7 @@ public class InterpreterDefinitionsContainer {
 		for (Iterator iter = fDefaultInterpreterInstallConnectorTypeID.keySet()
 				.iterator(); iter.hasNext();) {
 			String nature = (String) iter.next();
-			Element defaulte = doc.createElement("defaultInterpreterConnector");
+			Element defaulte = doc.createElement("defaultInterpreterConnector"); //$NON-NLS-1$
 			config.appendChild(defaulte);
 			defaulte.setAttribute(NATURE_ATTR, nature);
 			defaulte.setAttribute(ID_ATTR,

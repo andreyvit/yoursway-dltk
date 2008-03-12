@@ -40,8 +40,8 @@ public class RubyActiveStateDebuggerPreferencePage extends
 			RubyActiveStateDebuggerPlugin.PLUGIN_ID,
 			RubyActiveStateDebuggerConstants.LOG_FILE_NAME);
 
-	private static final String PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug.engines.activestatedebugger";
-	private static final String PROPERTY_PAGE_ID = "org.eclipse.dltk.ruby.propertyPage.debug.engines.activestatedebugger";
+	private static final String PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug.engines.activestatedebugger"; //$NON-NLS-1$
+	private static final String PROPERTY_PAGE_ID = "org.eclipse.dltk.ruby.propertyPage.debug.engines.activestatedebugger"; //$NON-NLS-1$
 
 	/*
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#createOptionsBlock(org.eclipse.dltk.ui.util.IStatusChangeListener,

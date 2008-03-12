@@ -32,12 +32,12 @@ import org.w3c.dom.NodeList;
 
 public class ExternalChecker extends AbstractValidator {
 
-	private static final String EXTENSIONS = "scriptPattrn";
+	private static final String EXTENSIONS = "scriptPattrn"; //$NON-NLS-1$
 	private String arguments;
 	private IPath commmand;
 	boolean initialized = false;
-	private static final String ARGUMENTS = "arguments";
-	private static final String COMMAND = "command";
+	private static final String ARGUMENTS = "arguments"; //$NON-NLS-1$
+	private static final String COMMAND = "command"; //$NON-NLS-1$
 	private List rules = new ArrayList();
 	private String extensions;
 
@@ -62,7 +62,7 @@ public class ExternalChecker extends AbstractValidator {
 		private int[] codeLineLengths;
 
 		public ExternalCheckerCodeModel(String code) {
-			this.codeLines = code.split("\n");
+			this.codeLines = code.split("\n"); //$NON-NLS-1$
 			int count = this.codeLines.length;
 
 			this.codeLineLengths = new int[count];
@@ -113,15 +113,15 @@ public class ExternalChecker extends AbstractValidator {
 
 	public ExternalChecker(String id, String name, IValidatorType type) {
 		super(id, name, type);
-		this.arguments = "%f";
-		this.commmand = new Path("");
-		this.extensions = "*";
+		this.arguments = "%f"; //$NON-NLS-1$
+		this.commmand = new Path(""); //$NON-NLS-1$
+		this.extensions = "*"; //$NON-NLS-1$
 	}
 
 	protected ExternalChecker(String id, IValidatorType type) {
 		super(id, null, type);
-		this.arguments = "%f";
-		this.commmand = new Path("");
+		this.arguments = "%f"; //$NON-NLS-1$
+		this.commmand = new Path(""); //$NON-NLS-1$
 	}
 
 	protected ExternalChecker(String id, Element element, IValidatorType type)
@@ -143,10 +143,10 @@ public class ExternalChecker extends AbstractValidator {
 		NodeList nodes = element.getChildNodes();
 		rules.clear();
 		for (int i = 0; i < nodes.getLength(); i++) {
-			if (nodes.item(i).getNodeName() == "rule") {
+			if (nodes.item(i).getNodeName() == "rule") { //$NON-NLS-1$
 				NamedNodeMap map = nodes.item(i).getAttributes();
-				String ruletext = map.getNamedItem("TEXT").getNodeValue();
-				String ruletype = map.getNamedItem("TYPE").getNodeValue();
+				String ruletext = map.getNamedItem("TEXT").getNodeValue(); //$NON-NLS-1$
+				String ruletype = map.getNamedItem("TYPE").getNodeValue(); //$NON-NLS-1$
 				Rule r = new Rule(ruletext, ruletype);
 				rules.add(r);
 			}
@@ -160,9 +160,9 @@ public class ExternalChecker extends AbstractValidator {
 		element.setAttribute(EXTENSIONS, this.extensions);
 
 		for (int i = 0; i < rules.size(); i++) {
-			Element elem = doc.createElement("rule");
-			elem.setAttribute("TEXT", ((Rule) rules.get(i)).getDescription());
-			elem.setAttribute("TYPE", ((Rule) rules.get(i)).getType());
+			Element elem = doc.createElement("rule"); //$NON-NLS-1$
+			elem.setAttribute("TEXT", ((Rule) rules.get(i)).getDescription()); //$NON-NLS-1$
+			elem.setAttribute("TYPE", ((Rule) rules.get(i)).getType()); //$NON-NLS-1$
 			element.appendChild(elem);
 		}
 
@@ -205,7 +205,7 @@ public class ExternalChecker extends AbstractValidator {
 		if (monitor == null)
 			monitor = new NullProgressMonitor();
 
-		monitor.beginTask("Checking with external executable...", modules.length);
+		monitor.beginTask(Messages.ExternalChecker_checkingWithExternalExecutable, modules.length);
 		try {
 			for (int i = 0; i < modules.length; i++) {
 				if (monitor.isCanceled())
@@ -222,15 +222,15 @@ public class ExternalChecker extends AbstractValidator {
 	public IStatus validate(ISourceModule module, OutputStream console) {
 
 		String elementName = module.getElementName();
-		String[] split = this.extensions.split(";");
+		String[] split = this.extensions.split(";"); //$NON-NLS-1$
 		boolean found = false;
 		for (int i = 0; i < split.length; i++) {
-			if (elementName.endsWith(split[i]) || split[i].equals("*")) {
+			if (elementName.endsWith(split[i]) || split[i].equals("*")) { //$NON-NLS-1$
 				found = true;
 				break;
 			}
 		}
-		if (this.extensions.equals("")) {
+		if (this.extensions.equals("")) { //$NON-NLS-1$
 			found = true;
 		}
 		if (!found) {
@@ -239,7 +239,7 @@ public class ExternalChecker extends AbstractValidator {
 		IResource resource = module.getResource();
 		if (resource == null) {
 			return new Status(IStatus.ERROR, ValidatorsCore.PLUGIN_ID,
-					"SourceModule resource is null");
+					Messages.ExternalChecker_sourceModuleResourceIsNull);
 		}
 
 		try {
@@ -254,7 +254,7 @@ public class ExternalChecker extends AbstractValidator {
 		// String filepath = resource.getLocation().makeAbsolute().toOSString();
 		String com = this.commmand.toOSString();
 		String args = this.processArguments(resource);
-		String[] sArgs = args.split("::");
+		String[] sArgs = args.split("::"); //$NON-NLS-1$
 
 		List coms = new ArrayList();
 		coms.add(com);
@@ -288,12 +288,12 @@ public class ExternalChecker extends AbstractValidator {
 			String line = null;
 			while ((line = input.readLine()) != null) {
 				if (console != null) {
-					console.write((line + "\n").getBytes());
+					console.write((line + "\n").getBytes()); //$NON-NLS-1$
 				}
 				lines.add(line);
 			}
 
-			String content = "";
+			String content = ""; //$NON-NLS-1$
 			content = module.getSource();
 			ExternalCheckerCodeModel model = new ExternalCheckerCodeModel(
 					content);
@@ -303,10 +303,10 @@ public class ExternalChecker extends AbstractValidator {
 				ExternalCheckerProblem problem = parseProblem(line1);
 				if (problem != null) {
 					int[] bounds = model.getBounds(problem.getLineNumber() - 1);
-					if (problem.getType().indexOf("Error") != -1) {
+					if (problem.getType().indexOf(Messages.ExternalChecker_error) != -1) {
 						reportErrorProblem(resource, problem, bounds[0],
 								bounds[1]);
-					} else if (problem.getType().indexOf("Warning") != -1) {
+					} else if (problem.getType().indexOf(Messages.ExternalChecker_warning) != -1) {
 						reportWarningProblem(resource, problem, bounds[0],
 								bounds[1]);
 					}
@@ -340,8 +340,8 @@ public class ExternalChecker extends AbstractValidator {
 		String path = resource.getLocation().makeAbsolute().toOSString();
 		String arguments = this.arguments;
 
-		String user = replaceSequence(arguments.replaceAll("\t", "::")
-				.replaceAll(" ", "::"), 'f', path);
+		String user = replaceSequence(arguments.replaceAll("\t", "::") //$NON-NLS-1$ //$NON-NLS-2$
+				.replaceAll(" ", "::"), 'f', path); //$NON-NLS-1$ //$NON-NLS-2$
 		return user;
 	}
 

@@ -24,7 +24,7 @@ public class DbgpBaseCommands {
 
 	protected DbgpRequest createRequest(String command) {
 		DbgpRequest request = new DbgpRequest(command);
-		request.addOption("-i", DbgpTransactionManager.getInstance()
+		request.addOption("-i", DbgpTransactionManager.getInstance() //$NON-NLS-1$
 				.generateId());
 		return request;
 	}

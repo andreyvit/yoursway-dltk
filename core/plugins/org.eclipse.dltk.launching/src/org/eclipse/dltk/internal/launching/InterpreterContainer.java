@@ -145,7 +145,7 @@ public class InterpreterContainer implements IBuildpathContainer {
 										
 					// compare, if it contains some another					
 					if (entryPath.isPrefixOf(otherPath) && !otherPath.equals(entryPath) ) {						
-						IPath pattern = otherPath.removeFirstSegments(entryPath.segmentCount()).append("*");
+						IPath pattern = otherPath.removeFirstSegments(entryPath.segmentCount()).append("*"); //$NON-NLS-1$
 						if( !excluded.contains(pattern ) ) {
 							excluded.add(pattern);
 						}

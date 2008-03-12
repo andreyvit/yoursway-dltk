@@ -48,7 +48,7 @@ public class TypeDeclarationLocator extends PatternLocator {
 				}
 			}
 			if (DLTKCore.DEBUG) {
-				System.err.println("TODO: Check here, may be needed POSSIBLE_PATCH...");
+				System.err.println("TODO: Check here, may be needed POSSIBLE_PATCH..."); //$NON-NLS-1$
 			}
 			return nodeSet.addMatch(node, ACCURATE_MATCH);
 		}

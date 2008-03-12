@@ -22,7 +22,7 @@ public class DLTKToken {
 	protected int type = INVALID_TYPE;
 
 	// the illegal token object
-	public static DLTKToken badToken = new DLTKToken(INVALID_TYPE, "<no text>");
+	public static DLTKToken badToken = new DLTKToken(INVALID_TYPE, "<no text>"); //$NON-NLS-1$
 
 	public DLTKToken() {
 		line = 0;
@@ -65,7 +65,7 @@ public class DLTKToken {
 	}
 
 	public String toString() {
-		return "[\"" + getText() + "\",<" + getType() + ">]";
+		return "[\"" + getText() + "\",<" + getType() + ">]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	public void setLine(int line) {

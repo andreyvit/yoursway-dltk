@@ -181,7 +181,7 @@ public class Util {
 		if( name == null ) {
 			return false;
 		}
-		return name.toLowerCase().endsWith(".zip") || name.toLowerCase().endsWith(".zip");
+		return name.toLowerCase().endsWith(".zip") || name.toLowerCase().endsWith(".zip"); //$NON-NLS-1$ //$NON-NLS-2$
 	}	
 	/* TODO (philippe) should consider promoting it to CharOperation
 	 * Returns whether the given resource path matches one of the inclusion/exclusion

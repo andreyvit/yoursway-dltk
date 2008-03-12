@@ -81,7 +81,7 @@ public class ArchiveProjectFragment extends ProjectFragment {
 				if (pkgName == null)
 					continue;
 				ArrayList[] entries = (ArrayList[]) packageFragToTypes.get(pkgName);
-				String path = "";
+				String path = ""; //$NON-NLS-1$
 				if (pkgName.length >= 1) {
 					path = pkgName[0];
 					for (int e = 1; e < pkgName.length; ++e) {

@@ -50,7 +50,7 @@ public class DLTKSearchDocument extends SearchDocument {
 	public String getContents() {
 		char[] contents = getCharContents();
 		if( contents == null ) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		String ret = new String(contents);
 		return ret;

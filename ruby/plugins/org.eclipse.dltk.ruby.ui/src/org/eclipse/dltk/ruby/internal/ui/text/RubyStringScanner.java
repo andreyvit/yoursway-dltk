@@ -16,12 +16,15 @@ import org.eclipse.dltk.ui.text.AbstractScriptScanner;
 import org.eclipse.dltk.ui.text.IColorManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.rules.WhitespaceRule;
+import org.eclipse.jface.text.rules.WordPatternRule;
 
 public class RubyStringScanner extends AbstractScriptScanner {
 
 	private static final String[] fgTokenProperties = new String[] {
-		RubyColorConstants.RUBY_STRING		
-	};
+			IRubyColorConstants.RUBY_STRING, IRubyColorConstants.RUBY_DEFAULT,
+			IRubyColorConstants.RUBY_CLASS_VARIABLE,
+			IRubyColorConstants.RUBY_GLOBAL_VARIABLE,
+			IRubyColorConstants.RUBY_INSTANCE_VARIABLE };
 
 	public RubyStringScanner(IColorManager manager, IPreferenceStore store) {
 		super(manager, store);
@@ -29,23 +32,26 @@ public class RubyStringScanner extends AbstractScriptScanner {
 		initialize();
 	}
 
-	
 	protected String[] getTokenProperties() {
 		return fgTokenProperties;
 	}
 
-	
 	protected List createRules() {
-		List/*<IRule>*/ rules = new ArrayList/*<IRule>*/();
+		List rules = new ArrayList/* <IRule> */();
 
 		// Add generic whitespace rule.
 		rules.add(new WhitespaceRule(new RubyWhitespaceDetector()));
-		
-		//TODO: Add here % and %{name} variables handling.
-				
-		setDefaultReturnToken(getToken(RubyColorConstants.RUBY_STRING));
+		rules.add(new WordPatternRule(new RubyWordDetector(), "#$", "", //$NON-NLS-1$ //$NON-NLS-2$
+				getToken(IRubyColorConstants.RUBY_GLOBAL_VARIABLE)));
+		rules.add(new WordPatternRule(new RubyWordDetector(), "#@@", "", //$NON-NLS-1$ //$NON-NLS-2$
+				getToken(IRubyColorConstants.RUBY_CLASS_VARIABLE)));
+		rules.add(new WordPatternRule(new RubyWordDetector(), "#@", "", //$NON-NLS-1$ //$NON-NLS-2$
+				getToken(IRubyColorConstants.RUBY_INSTANCE_VARIABLE)));
+//		rules.add(new MultiLineRule("#{", "}",
+//				getToken(IRubyColorConstants.RUBY_DEFAULT)));
+
+		setDefaultReturnToken(getToken(IRubyColorConstants.RUBY_STRING));
 
 		return rules;
 	}
-
 }

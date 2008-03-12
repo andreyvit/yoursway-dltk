@@ -56,7 +56,7 @@ import org.eclipse.ui.dialogs.ElementListSelectionDialog;
  */
 public abstract class ScriptLaunchConfigurationTab extends
 		AbstractLaunchConfigurationTab {
-	protected static final String EMPTY_STRING = "";
+	protected static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
 	private Button breakOnFirstLine;
 	private Button enableLogging;
@@ -103,7 +103,7 @@ public abstract class ScriptLaunchConfigurationTab extends
 	 *            the parent composite
 	 */
 	protected void createDebugOptionsGroup(Composite parent) {
-		String text = "Debug Options"; // TODO Externalize
+		String text = DLTKLaunchConfigurationsMessages.ScriptLaunchConfigurationTab_debugOptions;
 		Font font = parent.getFont();
 		Group group = new Group(parent, SWT.NONE);
 		group.setText(text);

@@ -54,7 +54,7 @@ final class CompletionProposalComputerDescriptor {
 	/** The extension schema name of the partition child elements. */
 	private static final String PARTITION = "partition"; //$NON-NLS-1$
 
-	public static final String TOOLKITID = "toolkitId";
+	public static final String TOOLKITID = "toolkitId"; //$NON-NLS-1$
 
 	/** Set of Script partition types. */
 	private static final Set PARTITION_SET = new HashSet();
@@ -84,7 +84,7 @@ final class CompletionProposalComputerDescriptor {
 
 	static {
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: Add langauge dependent code here...");
+			System.err.println("TODO: Add langauge dependent code here..."); //$NON-NLS-1$
 		}
 	}
 

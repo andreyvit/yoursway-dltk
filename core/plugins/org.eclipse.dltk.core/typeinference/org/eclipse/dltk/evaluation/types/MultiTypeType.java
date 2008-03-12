@@ -37,13 +37,13 @@ public class MultiTypeType implements IEvaluatedType {
 	}
 
 	public String getTypeName() {
-		String names = "";
+		String names = ""; //$NON-NLS-1$
 		Iterator i = fTypes.iterator();
 		while (i.hasNext()) {
 			IEvaluatedType type = (IEvaluatedType) i.next();
-			names += type.getTypeName() + " ";
+			names += type.getTypeName() + " "; //$NON-NLS-1$
 		}
-		return "multitype:" + names;
+		return "multitype:" + names; //$NON-NLS-1$
 	}
 
 	public List/* < IEvaluatedType > */getTypes() {

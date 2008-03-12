@@ -20,7 +20,7 @@ public class RubyModuleDeclaration extends TypeDeclaration {
 	private ASTNode name;
 	
 	public RubyModuleDeclaration(ASTNode name, Block body, int start, int end) {
-		super("", name.sourceStart(), name.sourceEnd(), start, end);
+		super("", name.sourceStart(), name.sourceEnd(), start, end); //$NON-NLS-1$
 		ASTListNode el = new ASTListNode();
 		this.setSuperClasses(el);
 		this.name = name;

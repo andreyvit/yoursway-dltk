@@ -92,7 +92,7 @@ public class GoalEvalutationRecorder implements IEvaluationStatisticsRequestor {
 			stat.getSteps().add(step);
 			return stat;
 		} else {
-			System.err.println("Unknown goal: " + goal);
+			System.err.println("Unknown goal: " + goal); //$NON-NLS-1$
 		}
 		return null;
 	}
@@ -103,7 +103,7 @@ public class GoalEvalutationRecorder implements IEvaluationStatisticsRequestor {
 		if (stat != null) {
 			stat.setEvaluator(evaluator);
 		} else {
-			System.err.println("Unknown goal: " + goal);
+			System.err.println("Unknown goal: " + goal); //$NON-NLS-1$
 		}
 	}
 
@@ -113,7 +113,7 @@ public class GoalEvalutationRecorder implements IEvaluationStatisticsRequestor {
 		if (stat != null) {
 			stat.setState(state);
 		} else {
-			System.err.println("Unknown goal: " + goal);
+			System.err.println("Unknown goal: " + goal); //$NON-NLS-1$
 		}
 	}
 

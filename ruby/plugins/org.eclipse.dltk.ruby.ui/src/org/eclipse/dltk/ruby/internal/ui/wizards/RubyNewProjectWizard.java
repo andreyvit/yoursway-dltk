@@ -36,7 +36,7 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 
 public class RubyNewProjectWizard extends NewElementWizard implements
 		INewWizard, IExecutableExtension {
-	public static final String WIZARD_ID = "org.eclipse.dltk.ruby.wizards.newproject";
+	public static final String WIZARD_ID = "org.eclipse.dltk.ruby.wizards.newproject"; //$NON-NLS-1$
 
 	private ProjectWizardFirstPage fFirstPage;
 	private ProjectWizardSecondPage fSecondPage;
@@ -64,7 +64,7 @@ public class RubyNewProjectWizard extends NewElementWizard implements
 				}
 
 				protected String getIntereprtersPreferencePageId() {
-					return "org.eclipse.dltk.ruby.preferences.interpreters";
+					return "org.eclipse.dltk.ruby.preferences.interpreters"; //$NON-NLS-1$
 				}
 			};
 

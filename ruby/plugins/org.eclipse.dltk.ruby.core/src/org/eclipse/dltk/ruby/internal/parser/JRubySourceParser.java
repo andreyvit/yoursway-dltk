@@ -100,22 +100,22 @@ public class JRubySourceParser extends AbstractSourceParser {
 	}
 
 	private static final boolean TRACE_AST_JRUBY = Boolean.valueOf(
-			Platform.getDebugOption("org.eclipse.dltk.core/traceAST/jruby"))
+			Platform.getDebugOption("org.eclipse.dltk.core/traceAST/jruby")) //$NON-NLS-1$
 			.booleanValue();
 
 	private static final boolean TRACE_AST_DLTK = Boolean.valueOf(
-			Platform.getDebugOption("org.eclipse.dltk.core/traceAST/dltk"))
+			Platform.getDebugOption("org.eclipse.dltk.core/traceAST/dltk")) //$NON-NLS-1$
 			.booleanValue();
 
-	private static final Pattern DOT_FIXER = Pattern.compile("\\.(?=\\s|$)");
-	private static final Pattern DOLLAR_FIXER = Pattern.compile("\\$(?=\\s|$)");
-	private static final Pattern AT_FIXER = Pattern.compile("@(?=\\s|$)");
-	private static final Pattern COLON_FIXER = Pattern.compile("::(?=\\s|$)");
-	private static final Pattern INST_BRACK_FIXER = Pattern.compile("@(])");
-	private static final Pattern GLOB_BRACK_FIXER = Pattern.compile("\\$(])");
+	private static final Pattern DOT_FIXER = Pattern.compile("\\.(?=\\s|$)"); //$NON-NLS-1$
+	private static final Pattern DOLLAR_FIXER = Pattern.compile("\\$(?=\\s|$)"); //$NON-NLS-1$
+	private static final Pattern AT_FIXER = Pattern.compile("@(?=\\s|$)"); //$NON-NLS-1$
+	private static final Pattern COLON_FIXER = Pattern.compile("::(?=\\s|$)"); //$NON-NLS-1$
+	private static final Pattern INST_BRACK_FIXER = Pattern.compile("@(])"); //$NON-NLS-1$
+	private static final Pattern GLOB_BRACK_FIXER = Pattern.compile("\\$(])"); //$NON-NLS-1$
 	private IProblemReporter problemReporter;
-	private static final String missingName  = "_missing_method_name_";
-	private static final String missingName2 = "NoConstant___________";
+	private static final String missingName  = "_missing_method_name_"; //$NON-NLS-1$
+	private static final String missingName2 = "NoConstant___________"; //$NON-NLS-1$
 	private static final int magicLength = missingName.length(); // missingName.len should == missingName2.len
 
 	private final List fixPositions = new ArrayList();
@@ -142,27 +142,27 @@ public class JRubySourceParser extends AbstractSourceParser {
 	}
 	
 	private String fixBrokenDots(String content) {
-		return fixBrokenThings(DOT_FIXER, content, "." + missingName, 1);
+		return fixBrokenThings(DOT_FIXER, content, "." + missingName, 1); //$NON-NLS-1$
 	}
 	
 	private String fixBrokenColons(String content) {
-		return fixBrokenThings(COLON_FIXER, content, "::" + missingName2, 2);
+		return fixBrokenThings(COLON_FIXER, content, "::" + missingName2, 2); //$NON-NLS-1$
 	}
 	
 	private String fixBrokenDollars(String content) {
-		return fixBrokenThings(DOLLAR_FIXER, content, "$" + missingName, 1);
+		return fixBrokenThings(DOLLAR_FIXER, content, "$" + missingName, 1); //$NON-NLS-1$
 	}
 	
 	private String fixBrokenAts(String content) {
-		return fixBrokenThings(AT_FIXER, content, "@" + missingName, 1);
+		return fixBrokenThings(AT_FIXER, content, "@" + missingName, 1); //$NON-NLS-1$
 	}
 	
 	private String fixBrokenInstbracks(String content) {
-		return fixBrokenThings(INST_BRACK_FIXER, content, "@" + missingName, 1);
+		return fixBrokenThings(INST_BRACK_FIXER, content, "@" + missingName, 1); //$NON-NLS-1$
 	}
 	
 	private String fixBrokenGlobbracks(String content) {
-		return fixBrokenThings(GLOB_BRACK_FIXER, content, "$" + missingName, 1);
+		return fixBrokenThings(GLOB_BRACK_FIXER, content, "$" + missingName, 1); //$NON-NLS-1$
 	}
 
 	private final boolean[] errorState = new boolean[1];
@@ -188,6 +188,10 @@ public class JRubySourceParser extends AbstractSourceParser {
 
 		public void clearMarkers() {
 			this.original.clearMarkers();
+		}
+
+		public boolean isMarkersCleaned() {
+			return original.isMarkersCleaned();
 		}
 	}
 	
@@ -215,7 +219,7 @@ public class JRubySourceParser extends AbstractSourceParser {
 			errorState[0] = false;
 
 			long timeStart = System.currentTimeMillis();
-			Node node = parser.parse("", new CharArrayReader(content),
+			Node node = parser.parse("", new CharArrayReader(content), //$NON-NLS-1$
 					proxyProblemReporter);
 			fixPositions.clear();
 			if (!parser.isSuccess() || errorState[0]) {
@@ -226,7 +230,7 @@ public class JRubySourceParser extends AbstractSourceParser {
 				content2 = fixBrokenInstbracks(content2);
 				content2 = fixBrokenGlobbracks(content2);
 
-				Node node2 = parser.parse("", new StringReader(content2), null);
+				Node node2 = parser.parse("", new StringReader(content2), null); //$NON-NLS-1$
 				if (node2 != null)
 					node = node2;
 				else
@@ -241,11 +245,11 @@ public class JRubySourceParser extends AbstractSourceParser {
 
 			if (node != null) {
 				if (TRACE_AST_JRUBY || TRACE_AST_DLTK)
-					System.out.println("\n\nAST rebuilt\n");
+					System.out.println("\n\nAST rebuilt\n"); //$NON-NLS-1$
 				if (TRACE_AST_JRUBY)
-					System.out.println("JRuby AST:\n" + node.toString());
+					System.out.println("JRuby AST:\n" + node.toString()); //$NON-NLS-1$
 				if (TRACE_AST_DLTK)
-					System.out.println("DLTK AST:\n" + module.toString());
+					System.out.println("DLTK AST:\n" + module.toString()); //$NON-NLS-1$
 			}
 
 			if (!fixPositions.isEmpty())
@@ -257,8 +261,8 @@ public class JRubySourceParser extends AbstractSourceParser {
 
 			long timeEnd = System.currentTimeMillis();
 			if (TRACE_AST_DLTK)
-				System.out.println("Parsing took " + (timeEnd - timeStart)
-						+ " ms");
+				System.out.println("Parsing took " + (timeEnd - timeStart) //$NON-NLS-1$
+						+ " ms"); //$NON-NLS-1$
 			return module;
 		} catch (Throwable t) {
 			if( DLTKCore.DEBUG ) {

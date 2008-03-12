@@ -24,6 +24,10 @@ public final class PreferencesMessages extends NLS {
 		// Do not instantiate
 	}
 	
+	public static String AbstractConfigurationBlock_emptyPath;
+	public static String AbstractConfigurationBlock_fileDoesntExist;
+	public static String AbstractConfigurationBlock_pathIsntAFile;
+	public static String AbstractConfigurationBlock_valuesItemsAndLabelMustNotBeNull;
 	public static String BuildPathsPropertyPage_no_script_project_message;
 	//public static String BuildPathDialog_error_title;
 	//public static String BuildPathDialog_error_message;
@@ -146,6 +150,7 @@ public final class PreferencesMessages extends NLS {
 	public static String DLTKEditorHoverConfigurationBlock_insertModifierAndDelimiter;
 	public static String DLTKEditorHoverConfigurationBlock_insertDelimiterAndModifier;
 	public static String DLTKEditorHoverConfigurationBlock_showAffordance;
+	public static String FoldingConfigurationBlock_noFoldingPreferenceBlock;
 	
 //	public static String MarkOccurrencesConfigurationBlock_title;
 //	public static String MarkOccurrencesConfigurationBlock_markOccurrences;

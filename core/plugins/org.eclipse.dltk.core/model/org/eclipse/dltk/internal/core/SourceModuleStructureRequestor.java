@@ -228,15 +228,15 @@ public class SourceModuleStructureRequestor implements ISourceElementRequestor {
 		try {
 			SourceType element = null;
 			if (parentName.startsWith(delimiter)) {
-				element = this.findTypeFrom( this.module.getChildren(), "", parentName, delimiter );
+				element = this.findTypeFrom( this.module.getChildren(), "", parentName, delimiter ); //$NON-NLS-1$
 				return element;
 			} else {
 				parentName = delimiter + parentName;
 				SourceType enc = this.getCurrentType();
 				if (enc == null) {
-					element = this.findTypeFrom( this.module.getChildren(), "", parentName, delimiter );
+					element = this.findTypeFrom( this.module.getChildren(), "", parentName, delimiter ); //$NON-NLS-1$
 				} else {
-					element = this.findTypeFrom( enc.getChildren(), "", parentName, delimiter );
+					element = this.findTypeFrom( enc.getChildren(), "", parentName, delimiter ); //$NON-NLS-1$
 				}
 				return element;
 			}

@@ -46,7 +46,7 @@ public abstract class AbstractOpenPreferencePageStatusHandler implements
 							.getActiveWorkbenchShell(), title, status
 							.getMessage());
 				} else {
-					final String message = status.getMessage() + " "
+					final String message = status.getMessage() + " " //$NON-NLS-1$
 							+ getQuestion();
 					result[0] = (MessageDialog.openQuestion(DLTKDebugUIPlugin
 							.getActiveWorkbenchShell(), title, message));

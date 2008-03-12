@@ -230,7 +230,7 @@ class ProjectElementInfo extends OpenableElementInfo {
 				IModelElement[] frags = null;
 				try {
 					if(DLTKCore.DEBUG) {
-						System.err.println("TODO: Require to check for ExternalProjectFragment compatibility.");
+						System.err.println("TODO: Require to check for ExternalProjectFragment compatibility."); //$NON-NLS-1$
 					}
 					if (root.isArchive() && !root.isOpen()) {
 						ArchiveProjectFragmentInfo info = new ArchiveProjectFragmentInfo();

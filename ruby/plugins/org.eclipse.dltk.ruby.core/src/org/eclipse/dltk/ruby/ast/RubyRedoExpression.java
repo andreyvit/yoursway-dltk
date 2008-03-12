@@ -15,7 +15,7 @@ import org.eclipse.dltk.ast.expressions.CallExpression;
 public class RubyRedoExpression extends CallExpression {
 
 	public RubyRedoExpression(int start, int end) {
-		super(start, end, null, "redo", CallArgumentsList.EMPTY);
+		super(start, end, null, "redo", CallArgumentsList.EMPTY); //$NON-NLS-1$
 	}
 	
 	

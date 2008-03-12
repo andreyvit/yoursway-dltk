@@ -119,7 +119,7 @@ public class ExternalSourceModule extends AbstractExternalSourceModule {
 
 		try {
 			content = org.eclipse.dltk.compiler.util.Util
-					.getInputStreamAsCharArray(stream, -1, "utf-8");
+					.getInputStreamAsCharArray(stream, -1, "utf-8"); //$NON-NLS-1$
 		} catch (IOException e) {
 			throw new ModelException(e, IModelStatusConstants.IO_EXCEPTION);
 		} finally {
@@ -137,7 +137,7 @@ public class ExternalSourceModule extends AbstractExternalSourceModule {
 	 * @see org.eclipse.dltk.internal.core.AbstractExternalSourceModule#getModuleType()
 	 */
 	protected String getModuleType() {
-		return "DLTK External Source Moule: ";
+		return "DLTK External Source Moule: "; //$NON-NLS-1$
 	}
 
 	/*

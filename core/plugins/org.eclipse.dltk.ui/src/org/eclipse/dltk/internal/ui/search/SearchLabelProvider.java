@@ -59,7 +59,7 @@ public abstract class SearchLabelProvider extends AppearanceAwareLabelProvider {
 	public SearchLabelProvider(DLTKSearchResultPage page) {		
 		super(DEFAULT_SEARCH_TEXTFLAGS, DEFAULT_SEARCH_IMAGEFLAGS, DLTKUIPlugin.getDefault().getPreferenceStore());
 		if (DLTKCore.DEBUG) {
-			System.out.println("TODO: Add language dependent preference store support here...");
+			System.out.println("TODO: Add language dependent preference store support here..."); //$NON-NLS-1$
 		}
 		addLabelDecorator(new ProblemsLabelDecorator());
 		

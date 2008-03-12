@@ -28,7 +28,7 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.ViewPart;
 
 public class ScriptDebugLogView extends ViewPart {
-	public static final String VIEW_ID = "org.eclipse.dltk.debug.ui.dbgpLogView";
+	public static final String VIEW_ID = "org.eclipse.dltk.debug.ui.dbgpLogView"; //$NON-NLS-1$
 
 	private IDocument document;
 	private TextViewer viewer;
@@ -67,8 +67,8 @@ public class ScriptDebugLogView extends ViewPart {
 	private IAction copyAction;
 	private IAction clearAction;
 
-	private final String COPY_ACTION_NAME = "Copy";
-	private final String CLEAR_ACTION_NAME = "Clear";
+	private final String COPY_ACTION_NAME = Messages.ScriptDebugLogView_copy;
+	private final String CLEAR_ACTION_NAME = Messages.ScriptDebugLogView_clear;
 
 	public void createActions() {
 		copyAction = new Action(COPY_ACTION_NAME) {
@@ -80,7 +80,7 @@ public class ScriptDebugLogView extends ViewPart {
 		clearAction = new Action(CLEAR_ACTION_NAME) {
 			public void run() {
 				try {
-					document.replace(0, document.getLength(), "");
+					document.replace(0, document.getLength(), ""); //$NON-NLS-1$
 				} catch (BadLocationException e) {
 				}
 			}

@@ -51,10 +51,10 @@ public class RubyColonExpression extends ASTNode {
 	}
 	
 	public void printNode(CorePrinter output) {
-		output.formatPrintLn("ColonExpression" + this.getSourceRange().toString() + ":");
+		output.formatPrintLn("ColonExpression" + this.getSourceRange().toString() + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		output.indent();
 		if (isFull())
-			output.formatPrint("::");
+			output.formatPrint("::"); //$NON-NLS-1$
 		if (this.left != null) {
 			this.left.printNode(output);
 		}

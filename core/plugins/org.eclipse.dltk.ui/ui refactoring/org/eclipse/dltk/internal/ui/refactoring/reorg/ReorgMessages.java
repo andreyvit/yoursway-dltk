@@ -20,6 +20,8 @@ public final class ReorgMessages extends NLS {
 	}
 
 	public static String CutAction_text;
+	public static String NewNameQueries_invalidFileName;
+	public static String NewNameQueries_mustBeAScriptProject;
 	public static String ScriptMoveAction_update_references;
 	public static String ReorgQueries_enterNewNameQuestion;
 	public static String ReorgQueries_nameConflictMessage;

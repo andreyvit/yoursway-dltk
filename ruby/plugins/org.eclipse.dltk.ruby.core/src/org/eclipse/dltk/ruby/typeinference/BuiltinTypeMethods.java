@@ -12,375 +12,375 @@ package org.eclipse.dltk.ruby.typeinference;
 public interface BuiltinTypeMethods {
 
 	public String[] objectMethods = {
-			"untaint",
-			"kind_of?",
-			"id",
-			"method_dump",
-			"instance_variable_get",
-			"method",
-			"nil?",
-			"inspect",
-			"frozen?",
-			"object_id",
-			"taint",
-			"public_methods",
-			"=~",
-			"__send__",
-			"to_a",
-			"instance_eval",
-			"extend",
-			"clone",
-			"protected_methods",
-			"hash",
-			"freeze",
-			"is_a?",
-			"type",
-			"instance_variable_set",
-			"respond_to?",
-			"equal?",
-			"methods",
-			"instance_of?",
-			"instance_variables",
-			"display",
-			"to_s",
-			"dup",
-			"private_methods",
-			"==",
-			"send",
-			"__id__",
-			"===",
-			"tainted?",
-			"class",
-			"eql?",
-			"singleton_methods"
+			"untaint", //$NON-NLS-1$
+			"kind_of?", //$NON-NLS-1$
+			"id", //$NON-NLS-1$
+			"method_dump", //$NON-NLS-1$
+			"instance_variable_get", //$NON-NLS-1$
+			"method", //$NON-NLS-1$
+			"nil?", //$NON-NLS-1$
+			"inspect", //$NON-NLS-1$
+			"frozen?", //$NON-NLS-1$
+			"object_id", //$NON-NLS-1$
+			"taint", //$NON-NLS-1$
+			"public_methods", //$NON-NLS-1$
+			"=~", //$NON-NLS-1$
+			"__send__", //$NON-NLS-1$
+			"to_a", //$NON-NLS-1$
+			"instance_eval", //$NON-NLS-1$
+			"extend", //$NON-NLS-1$
+			"clone", //$NON-NLS-1$
+			"protected_methods", //$NON-NLS-1$
+			"hash", //$NON-NLS-1$
+			"freeze", //$NON-NLS-1$
+			"is_a?", //$NON-NLS-1$
+			"type", //$NON-NLS-1$
+			"instance_variable_set", //$NON-NLS-1$
+			"respond_to?", //$NON-NLS-1$
+			"equal?", //$NON-NLS-1$
+			"methods", //$NON-NLS-1$
+			"instance_of?", //$NON-NLS-1$
+			"instance_variables", //$NON-NLS-1$
+			"display", //$NON-NLS-1$
+			"to_s", //$NON-NLS-1$
+			"dup", //$NON-NLS-1$
+			"private_methods", //$NON-NLS-1$
+			"==", //$NON-NLS-1$
+			"send", //$NON-NLS-1$
+			"__id__", //$NON-NLS-1$
+			"===", //$NON-NLS-1$
+			"tainted?", //$NON-NLS-1$
+			"class", //$NON-NLS-1$
+			"eql?", //$NON-NLS-1$
+			"singleton_methods" //$NON-NLS-1$
 	};
 	
 	public String[] stringMethods = {
-			"%",
-			"rindex",
-			"map",
-			"<<",
-			"split",
-			"any?",
-			"sort",
-			"strip",
-			"size",
-			"downcase",
-			"min",
-			"gsub!",
-			"count",
-			"include?",
-			"succ!",
-			"downcase!",
-			"intern",
-			"squeeze!",
-			"*",
-			"next",
-			"find_all",
-			"each",
-			"rstrip!",
-			"each_line",
-			"+",
-			"sub",
-			"slice!",
-			"tr",
-			"replace",
-			"inject",
-			"reverse",
-			"sort_by",
-			"lstrip",
-			"capitalize",
-			"max",
-			"chop!",
-			"capitalize!",
-			"scan",
-			"select",
-			"each_byte",
-			"casecmp",
-			"gsub",
-			"empty?",
-			"to_str",
-			"partition",
-			"tr_s",
-			"tr!",
-			"match",
-			"grep",
-			"rstrip",
-			"to_sym",
-			"next!",
-			"swapcase",
-			"chomp!",
-			"swapcase!",
-			"ljust",
-			"between?",
-			"reject",
-			"upto",
-			"hex",
-			"sum",
-			"reverse!",
-			"chop",
-			"<=>",
-			"insert",
-			"<",
-			"delete",
-			"dump",
-			"member?",
-			"tr_s!",
-			"unpack",
-			">",
-			"concat",
-			"succ",
-			"find",
-			"strip!",
-			"each_with_index",
-			">=",
-			"to_i",
-			"rjust",
-			"<=",
-			"index",
-			"collect",
-			"slice",
-			"oct",
-			"all?",
-			"length",
-			"entries",
-			"chomp",
-			"upcase",
-			"sub!",
-			"squeeze",
-			"upcase!",
-			"crypt",
-			"delete!",
-			"detect",
-			"zip",
-			"[]",
-			"lstrip!",
-			"center",
-			"[]=",
-			"to_f"
+			"%", //$NON-NLS-1$
+			"rindex", //$NON-NLS-1$
+			"map", //$NON-NLS-1$
+			"<<", //$NON-NLS-1$
+			"split", //$NON-NLS-1$
+			"any?", //$NON-NLS-1$
+			"sort", //$NON-NLS-1$
+			"strip", //$NON-NLS-1$
+			"size", //$NON-NLS-1$
+			"downcase", //$NON-NLS-1$
+			"min", //$NON-NLS-1$
+			"gsub!", //$NON-NLS-1$
+			"count", //$NON-NLS-1$
+			"include?", //$NON-NLS-1$
+			"succ!", //$NON-NLS-1$
+			"downcase!", //$NON-NLS-1$
+			"intern", //$NON-NLS-1$
+			"squeeze!", //$NON-NLS-1$
+			"*", //$NON-NLS-1$
+			"next", //$NON-NLS-1$
+			"find_all", //$NON-NLS-1$
+			"each", //$NON-NLS-1$
+			"rstrip!", //$NON-NLS-1$
+			"each_line", //$NON-NLS-1$
+			"+", //$NON-NLS-1$
+			"sub", //$NON-NLS-1$
+			"slice!", //$NON-NLS-1$
+			"tr", //$NON-NLS-1$
+			"replace", //$NON-NLS-1$
+			"inject", //$NON-NLS-1$
+			"reverse", //$NON-NLS-1$
+			"sort_by", //$NON-NLS-1$
+			"lstrip", //$NON-NLS-1$
+			"capitalize", //$NON-NLS-1$
+			"max", //$NON-NLS-1$
+			"chop!", //$NON-NLS-1$
+			"capitalize!", //$NON-NLS-1$
+			"scan", //$NON-NLS-1$
+			"select", //$NON-NLS-1$
+			"each_byte", //$NON-NLS-1$
+			"casecmp", //$NON-NLS-1$
+			"gsub", //$NON-NLS-1$
+			"empty?", //$NON-NLS-1$
+			"to_str", //$NON-NLS-1$
+			"partition", //$NON-NLS-1$
+			"tr_s", //$NON-NLS-1$
+			"tr!", //$NON-NLS-1$
+			"match", //$NON-NLS-1$
+			"grep", //$NON-NLS-1$
+			"rstrip", //$NON-NLS-1$
+			"to_sym", //$NON-NLS-1$
+			"next!", //$NON-NLS-1$
+			"swapcase", //$NON-NLS-1$
+			"chomp!", //$NON-NLS-1$
+			"swapcase!", //$NON-NLS-1$
+			"ljust", //$NON-NLS-1$
+			"between?", //$NON-NLS-1$
+			"reject", //$NON-NLS-1$
+			"upto", //$NON-NLS-1$
+			"hex", //$NON-NLS-1$
+			"sum", //$NON-NLS-1$
+			"reverse!", //$NON-NLS-1$
+			"chop", //$NON-NLS-1$
+			"<=>", //$NON-NLS-1$
+			"insert", //$NON-NLS-1$
+			"<", //$NON-NLS-1$
+			"delete", //$NON-NLS-1$
+			"dump", //$NON-NLS-1$
+			"member?", //$NON-NLS-1$
+			"tr_s!", //$NON-NLS-1$
+			"unpack", //$NON-NLS-1$
+			">", //$NON-NLS-1$
+			"concat", //$NON-NLS-1$
+			"succ", //$NON-NLS-1$
+			"find", //$NON-NLS-1$
+			"strip!", //$NON-NLS-1$
+			"each_with_index", //$NON-NLS-1$
+			">=", //$NON-NLS-1$
+			"to_i", //$NON-NLS-1$
+			"rjust", //$NON-NLS-1$
+			"<=", //$NON-NLS-1$
+			"index", //$NON-NLS-1$
+			"collect", //$NON-NLS-1$
+			"slice", //$NON-NLS-1$
+			"oct", //$NON-NLS-1$
+			"all?", //$NON-NLS-1$
+			"length", //$NON-NLS-1$
+			"entries", //$NON-NLS-1$
+			"chomp", //$NON-NLS-1$
+			"upcase", //$NON-NLS-1$
+			"sub!", //$NON-NLS-1$
+			"squeeze", //$NON-NLS-1$
+			"upcase!", //$NON-NLS-1$
+			"crypt", //$NON-NLS-1$
+			"delete!", //$NON-NLS-1$
+			"detect", //$NON-NLS-1$
+			"zip", //$NON-NLS-1$
+			"[]", //$NON-NLS-1$
+			"lstrip!", //$NON-NLS-1$
+			"center", //$NON-NLS-1$
+			"[]=", //$NON-NLS-1$
+			"to_f" //$NON-NLS-1$
 	};
 	
 	public String[] regexpMethods = {
-			"source",
-			"casefold?",
-			"~",
-			"options",
-			"match",
-			"kcode"
+			"source", //$NON-NLS-1$
+			"casefold?", //$NON-NLS-1$
+			"~", //$NON-NLS-1$
+			"options", //$NON-NLS-1$
+			"match", //$NON-NLS-1$
+			"kcode" //$NON-NLS-1$
 	};
 	
 	public String[] fixnumMethods = {
-			"%",
-			"<<",
-			">>",
-			"prec_f",
-			"modulo",
-			"&",
-			"zero?",
-			"to_int",
-			"size",
-			"*",
-			"next",
-			"+",
-			"step",
-			"-",
-			"remainder",
-			"nonzero?",
-			"id2name",
-			"/",
-			"floor",
-			"|",
-			"quo",
-			"~",
-			"downto",
-			"abs",
-			"to_sym",
-			"coerce",
-			"^",
-			"+@",
-			"ceil",
-			"between?",
-			"-@",
-			"upto",
-			"prec",
-			"**",
-			"div",
-			"singleton_method_added",
-			"<=>",
-			"times",
-			"<",
-			">",
-			"succ",
-			">=",
-			"round",
-			"to_i",
-			"<=",
-			"prec_i",
-			"divmod",
-			"chr",
-			"integer?",
-			"[]",
-			"truncate",
-			"to_f"
+			"%", //$NON-NLS-1$
+			"<<", //$NON-NLS-1$
+			">>", //$NON-NLS-1$
+			"prec_f", //$NON-NLS-1$
+			"modulo", //$NON-NLS-1$
+			"&", //$NON-NLS-1$
+			"zero?", //$NON-NLS-1$
+			"to_int", //$NON-NLS-1$
+			"size", //$NON-NLS-1$
+			"*", //$NON-NLS-1$
+			"next", //$NON-NLS-1$
+			"+", //$NON-NLS-1$
+			"step", //$NON-NLS-1$
+			"-", //$NON-NLS-1$
+			"remainder", //$NON-NLS-1$
+			"nonzero?", //$NON-NLS-1$
+			"id2name", //$NON-NLS-1$
+			"/", //$NON-NLS-1$
+			"floor", //$NON-NLS-1$
+			"|", //$NON-NLS-1$
+			"quo", //$NON-NLS-1$
+			"~", //$NON-NLS-1$
+			"downto", //$NON-NLS-1$
+			"abs", //$NON-NLS-1$
+			"to_sym", //$NON-NLS-1$
+			"coerce", //$NON-NLS-1$
+			"^", //$NON-NLS-1$
+			"+@", //$NON-NLS-1$
+			"ceil", //$NON-NLS-1$
+			"between?", //$NON-NLS-1$
+			"-@", //$NON-NLS-1$
+			"upto", //$NON-NLS-1$
+			"prec", //$NON-NLS-1$
+			"**", //$NON-NLS-1$
+			"div", //$NON-NLS-1$
+			"singleton_method_added", //$NON-NLS-1$
+			"<=>", //$NON-NLS-1$
+			"times", //$NON-NLS-1$
+			"<", //$NON-NLS-1$
+			">", //$NON-NLS-1$
+			"succ", //$NON-NLS-1$
+			">=", //$NON-NLS-1$
+			"round", //$NON-NLS-1$
+			"to_i", //$NON-NLS-1$
+			"<=", //$NON-NLS-1$
+			"prec_i", //$NON-NLS-1$
+			"divmod", //$NON-NLS-1$
+			"chr", //$NON-NLS-1$
+			"integer?", //$NON-NLS-1$
+			"[]", //$NON-NLS-1$
+			"truncate", //$NON-NLS-1$
+			"to_f" //$NON-NLS-1$
 	};
 	
 	public String[] floatMethods = {
-			"%",
-			"prec_f",
-			"modulo",
-			"infinite?",
-			"zero?",
-			"to_int",
-			"*",
-			"+",
-			"step",
-			"-",
-			"remainder",
-			"finite?",
-			"nonzero?",
-			"/",
-			"floor",
-			"quo",
-			"abs",
-			"coerce",
-			"+@",
-			"ceil",
-			"between?",
-			"-@",
-			"prec",
-			"**",
-			"div",
-			"singleton_method_added",
-			"<=>",
-			"<",
-			">",
-			">=",
-			"round",
-			"to_i",
-			"<=",
-			"nan?",
-			"prec_i",
-			"divmod",
-			"integer?",
-			"truncate",
-			"to_f"
+			"%", //$NON-NLS-1$
+			"prec_f", //$NON-NLS-1$
+			"modulo", //$NON-NLS-1$
+			"infinite?", //$NON-NLS-1$
+			"zero?", //$NON-NLS-1$
+			"to_int", //$NON-NLS-1$
+			"*", //$NON-NLS-1$
+			"+", //$NON-NLS-1$
+			"step", //$NON-NLS-1$
+			"-", //$NON-NLS-1$
+			"remainder", //$NON-NLS-1$
+			"finite?", //$NON-NLS-1$
+			"nonzero?", //$NON-NLS-1$
+			"/", //$NON-NLS-1$
+			"floor", //$NON-NLS-1$
+			"quo", //$NON-NLS-1$
+			"abs", //$NON-NLS-1$
+			"coerce", //$NON-NLS-1$
+			"+@", //$NON-NLS-1$
+			"ceil", //$NON-NLS-1$
+			"between?", //$NON-NLS-1$
+			"-@", //$NON-NLS-1$
+			"prec", //$NON-NLS-1$
+			"**", //$NON-NLS-1$
+			"div", //$NON-NLS-1$
+			"singleton_method_added", //$NON-NLS-1$
+			"<=>", //$NON-NLS-1$
+			"<", //$NON-NLS-1$
+			">", //$NON-NLS-1$
+			">=", //$NON-NLS-1$
+			"round", //$NON-NLS-1$
+			"to_i", //$NON-NLS-1$
+			"<=", //$NON-NLS-1$
+			"nan?", //$NON-NLS-1$
+			"prec_i", //$NON-NLS-1$
+			"divmod", //$NON-NLS-1$
+			"integer?", //$NON-NLS-1$
+			"truncate", //$NON-NLS-1$
+			"to_f" //$NON-NLS-1$
 	};
 	
 	public String[] arrayMethods = {
-			"nitems",
-			"rindex",
-			"map",
-			"<<",
-			"any?",
-			"unshift",
-			"&",
-			"sort",
-			"join",
-			"fill",
-			"size",
-			"min",
-			"include?",
-			"uniq!",
-			"compact",
-			"*",
-			"find_all",
-			"each",
-			"last",
-			"+",
-			"slice!",
-			"delete_if",
-			"-",
-			"replace",
-			"inject",
-			"each_index",
-			"reverse",
-			"sort!",
-			"assoc",
-			"sort_by",
-			"to_ary",
-			"max",
-			"|",
-			"select",
-			"push",
-			"empty?",
-			"partition",
-			"pack",
-			"reverse_each",
-			"rassoc",
-			"grep",
-			"collect!",
-			"compact!",
-			"at",
-			"reject",
-			"reject!",
-			"flatten",
-			"pop",
-			"reverse!",
-			"<=>",
-			"transpose",
-			"insert",
-			"delete",
-			"member?",
-			"indexes",
-			"concat",
-			"map!",
-			"uniq",
-			"find",
-			"fetch",
-			"each_with_index",
-			"values_at",
-			"index",
-			"collect",
-			"slice",
-			"shift",
-			"all?",
-			"clear",
-			"length",
-			"entries",
-			"indices",
-			"detect",
-			"flatten!",
-			"zip",
-			"[]",
-			"first",
-			"[]=",
-			"delete_at"
+			"nitems", //$NON-NLS-1$
+			"rindex", //$NON-NLS-1$
+			"map", //$NON-NLS-1$
+			"<<", //$NON-NLS-1$
+			"any?", //$NON-NLS-1$
+			"unshift", //$NON-NLS-1$
+			"&", //$NON-NLS-1$
+			"sort", //$NON-NLS-1$
+			"join", //$NON-NLS-1$
+			"fill", //$NON-NLS-1$
+			"size", //$NON-NLS-1$
+			"min", //$NON-NLS-1$
+			"include?", //$NON-NLS-1$
+			"uniq!", //$NON-NLS-1$
+			"compact", //$NON-NLS-1$
+			"*", //$NON-NLS-1$
+			"find_all", //$NON-NLS-1$
+			"each", //$NON-NLS-1$
+			"last", //$NON-NLS-1$
+			"+", //$NON-NLS-1$
+			"slice!", //$NON-NLS-1$
+			"delete_if", //$NON-NLS-1$
+			"-", //$NON-NLS-1$
+			"replace", //$NON-NLS-1$
+			"inject", //$NON-NLS-1$
+			"each_index", //$NON-NLS-1$
+			"reverse", //$NON-NLS-1$
+			"sort!", //$NON-NLS-1$
+			"assoc", //$NON-NLS-1$
+			"sort_by", //$NON-NLS-1$
+			"to_ary", //$NON-NLS-1$
+			"max", //$NON-NLS-1$
+			"|", //$NON-NLS-1$
+			"select", //$NON-NLS-1$
+			"push", //$NON-NLS-1$
+			"empty?", //$NON-NLS-1$
+			"partition", //$NON-NLS-1$
+			"pack", //$NON-NLS-1$
+			"reverse_each", //$NON-NLS-1$
+			"rassoc", //$NON-NLS-1$
+			"grep", //$NON-NLS-1$
+			"collect!", //$NON-NLS-1$
+			"compact!", //$NON-NLS-1$
+			"at", //$NON-NLS-1$
+			"reject", //$NON-NLS-1$
+			"reject!", //$NON-NLS-1$
+			"flatten", //$NON-NLS-1$
+			"pop", //$NON-NLS-1$
+			"reverse!", //$NON-NLS-1$
+			"<=>", //$NON-NLS-1$
+			"transpose", //$NON-NLS-1$
+			"insert", //$NON-NLS-1$
+			"delete", //$NON-NLS-1$
+			"member?", //$NON-NLS-1$
+			"indexes", //$NON-NLS-1$
+			"concat", //$NON-NLS-1$
+			"map!", //$NON-NLS-1$
+			"uniq", //$NON-NLS-1$
+			"find", //$NON-NLS-1$
+			"fetch", //$NON-NLS-1$
+			"each_with_index", //$NON-NLS-1$
+			"values_at", //$NON-NLS-1$
+			"index", //$NON-NLS-1$
+			"collect", //$NON-NLS-1$
+			"slice", //$NON-NLS-1$
+			"shift", //$NON-NLS-1$
+			"all?", //$NON-NLS-1$
+			"clear", //$NON-NLS-1$
+			"length", //$NON-NLS-1$
+			"entries", //$NON-NLS-1$
+			"indices", //$NON-NLS-1$
+			"detect", //$NON-NLS-1$
+			"flatten!", //$NON-NLS-1$
+			"zip", //$NON-NLS-1$
+			"[]", //$NON-NLS-1$
+			"first", //$NON-NLS-1$
+			"[]=", //$NON-NLS-1$
+			"delete_at" //$NON-NLS-1$
 	};
 	
 	public String[] classMethods = {
-			"include?",
-			"private_instance_methods",
-			"protected_method_defined?",
-			"const_defined?",
-			"name",
-			"public_class_method",
-			"autoload",
-			"new",
-			"instance_method",
-			"constants",
-			"ancestors",
-			"private_class_method",
-			"const_missing",
-			"instance_methods",
-			"superclass",
-			"method_defined?",
-			"const_get",
-			"autoload?",
-			"module_eval",
-			"class_variables",
-			"allocate",
-			"<=>",
-			"<",
-			"public_instance_methods",
-			"public_method_defined?",
-			">",
-			"included_modules",
-			"const_set",
-			">=",
-			"<=",
-			"class_eval",
-			"protected_instance_methods",
-			"private_method_defined?"
+			"include?", //$NON-NLS-1$
+			"private_instance_methods", //$NON-NLS-1$
+			"protected_method_defined?", //$NON-NLS-1$
+			"const_defined?", //$NON-NLS-1$
+			"name", //$NON-NLS-1$
+			"public_class_method", //$NON-NLS-1$
+			"autoload", //$NON-NLS-1$
+			"new", //$NON-NLS-1$
+			"instance_method", //$NON-NLS-1$
+			"constants", //$NON-NLS-1$
+			"ancestors", //$NON-NLS-1$
+			"private_class_method", //$NON-NLS-1$
+			"const_missing", //$NON-NLS-1$
+			"instance_methods", //$NON-NLS-1$
+			"superclass", //$NON-NLS-1$
+			"method_defined?", //$NON-NLS-1$
+			"const_get", //$NON-NLS-1$
+			"autoload?", //$NON-NLS-1$
+			"module_eval", //$NON-NLS-1$
+			"class_variables", //$NON-NLS-1$
+			"allocate", //$NON-NLS-1$
+			"<=>", //$NON-NLS-1$
+			"<", //$NON-NLS-1$
+			"public_instance_methods", //$NON-NLS-1$
+			"public_method_defined?", //$NON-NLS-1$
+			">", //$NON-NLS-1$
+			"included_modules", //$NON-NLS-1$
+			"const_set", //$NON-NLS-1$
+			">=", //$NON-NLS-1$
+			"<=", //$NON-NLS-1$
+			"class_eval", //$NON-NLS-1$
+			"protected_instance_methods", //$NON-NLS-1$
+			"private_method_defined?" //$NON-NLS-1$
 	};
 	
 }

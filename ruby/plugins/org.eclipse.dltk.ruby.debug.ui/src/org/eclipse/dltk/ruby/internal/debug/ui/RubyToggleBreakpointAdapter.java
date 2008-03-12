@@ -10,7 +10,7 @@ import org.eclipse.ui.IWorkbenchPart;
 
 public class RubyToggleBreakpointAdapter extends ScriptToggleBreakpointAdapter {
 	private static final IScriptBreakpointLineValidator validator = ScriptBreakpointLineValidatorFactory
-			.createNonEmptyNoCommentValidator("#");
+			.createNonEmptyNoCommentValidator("#"); //$NON-NLS-1$
 
 	protected String getDebugModelId() {
 		return RubyDebugConstants.DEBUG_MODEL_ID;

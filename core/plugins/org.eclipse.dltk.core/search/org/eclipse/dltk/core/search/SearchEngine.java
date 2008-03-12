@@ -54,7 +54,7 @@ import org.eclipse.dltk.internal.core.util.HandleFactory;
  */
 public class SearchEngine {
 
-	private static final String SPECIAL_MIXIN = "#special#mixin#";
+	private static final String SPECIAL_MIXIN = "#special#mixin#"; //$NON-NLS-1$
 	// Search engine now uses basic engine functionalities
 	private BasicSearchEngine basicEngine;
 

@@ -91,6 +91,6 @@ public class ExternalCheckerConsoleTracker implements IPatternMatchListener {
 	}
 
 	public String getPattern() {
-		return ".+";
+		return ".+"; //$NON-NLS-1$
 	}
 }

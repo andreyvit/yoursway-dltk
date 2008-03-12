@@ -31,11 +31,11 @@ public final class ScriptConsoleXmlHelper {
 	}
 
 	protected static int convertState(String state) {
-		if (state.equals("new")) {
+		if (state.equals("new")) { //$NON-NLS-1$
 			return IScriptConsoleInterpreter.WAIT_NEW_COMMAND;
-		} else if (state.equals("continue")) {
+		} else if (state.equals("continue")) { //$NON-NLS-1$
 			return IScriptConsoleInterpreter.WAIT_CONTINUE_COMMAND;
-		} else if (state.equals("user")) {
+		} else if (state.equals("user")) { //$NON-NLS-1$
 			return IScriptConsoleInterpreter.WAIT_USER_INPUT;
 		}
 
@@ -79,15 +79,15 @@ public final class ScriptConsoleXmlHelper {
 		for (int i = 0; i < children.getLength(); ++i) {
 			Node node = children.item(i);
 
-			if (!isElement(node, "case")) {
+			if (!isElement(node, "case")) { //$NON-NLS-1$
 				continue;
 			}
 
 			Element element = (Element) node;
 
-			String display = element.getAttribute("display");
-			String insert = element.getAttribute("insert");
-			String type = element.getAttribute("type");
+			String display = element.getAttribute("display"); //$NON-NLS-1$
+			String insert = element.getAttribute("insert"); //$NON-NLS-1$
+			String type = element.getAttribute("type"); //$NON-NLS-1$
 
 			completions.add(new ScriptConsoleCompletionProposal(insert,
 					display, type));
@@ -103,14 +103,14 @@ public final class ScriptConsoleXmlHelper {
 			return null;
 		}
 
-		NodeList list = doc.getElementsByTagName("console");
+		NodeList list = doc.getElementsByTagName("console"); //$NON-NLS-1$
 		Node node = list.item(0);
 
 		list = node.getChildNodes();
 		for (int i = 0; i < list.getLength(); ++i) {
 			Node n = list.item(i);
-			if (isElement(n, "info")) {
-				return ((Element) n).getAttribute("id");
+			if (isElement(n, "info")) { //$NON-NLS-1$
+				return ((Element) n).getAttribute("id"); //$NON-NLS-1$
 			}
 		}
 
@@ -124,27 +124,27 @@ public final class ScriptConsoleXmlHelper {
 			return null;
 		}
 
-		NodeList list1 = doc.getElementsByTagName("console");
+		NodeList list1 = doc.getElementsByTagName("console"); //$NON-NLS-1$
 		Node node = list1.item(0);
 
 		list1 = node.getChildNodes();
 		for (int i = 0; i < list1.getLength(); ++i) {
 			Node n1 = list1.item(i);
-			if (isElement(n1, "shell")) {
+			if (isElement(n1, "shell")) { //$NON-NLS-1$
 				NodeList list2 = n1.getChildNodes();
 				for (int j = 0; j < list2.getLength(); ++j) {
 					Node n2 = list2.item(j);
-					if (isElement(n2, "completion")) {
+					if (isElement(n2, "completion")) { //$NON-NLS-1$
 						List completions = parseCompletionList(n2);
 						return new ShellResponse(completions);
-					} else if (isElement(n2, "description")) {
+					} else if (isElement(n2, "description")) { //$NON-NLS-1$
 						if (n2.getChildNodes().getLength() == 0) {
-							return new ShellResponse("");
+							return new ShellResponse(""); //$NON-NLS-1$
 						} else {
 							return new ShellResponse(n2.getFirstChild()
 									.getNodeValue());
 						}
-					} else if (isElement(n2, "close")) {
+					} else if (isElement(n2, "close")) { //$NON-NLS-1$
 						return new ShellResponse();
 					}
 				}
@@ -157,14 +157,14 @@ public final class ScriptConsoleXmlHelper {
 	public static InterpreterResponse parseInterpreterXml(String xml) {
 		Document doc = parse(xml);
 
-		NodeList list = doc.getElementsByTagName("console").item(0)
+		NodeList list = doc.getElementsByTagName("console").item(0) //$NON-NLS-1$
 				.getChildNodes();
 
 		for (int i = 0; i < list.getLength(); ++i) {
 			Node n = list.item(i);
-			if (isElement(n, "interpreter")) {
-				String state = getAttrib(n.getAttributes(), "state");
-				String response = "";
+			if (isElement(n, "interpreter")) { //$NON-NLS-1$
+				String state = getAttrib(n.getAttributes(), "state"); //$NON-NLS-1$
+				String response = ""; //$NON-NLS-1$
 
 				// Check for empty response
 				if (n.getChildNodes().getLength() > 0) {

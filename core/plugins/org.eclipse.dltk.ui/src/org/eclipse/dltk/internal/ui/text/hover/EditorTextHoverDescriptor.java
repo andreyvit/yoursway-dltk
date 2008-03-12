@@ -104,7 +104,7 @@ public class EditorTextHoverDescriptor {
 				return (IScriptEditorTextHover) fElement.createExecutableExtension(CLASS_ATTRIBUTE);
 			} catch (CoreException x) {
 				DLTKUIPlugin.log(new Status(IStatus.ERROR, DLTKUIPlugin.getPluginId(), 0,
-						"DLTKHoverMessages.JavaTextHover_createTextHover", null));
+						"DLTKHoverMessages.JavaTextHover_createTextHover", null)); //$NON-NLS-1$
 			}
 		}
 		return null;

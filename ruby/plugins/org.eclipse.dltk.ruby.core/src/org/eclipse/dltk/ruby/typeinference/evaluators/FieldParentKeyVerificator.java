@@ -70,7 +70,7 @@ public class FieldParentKeyVerificator extends GoalEvaluator {
 				
 				boolean approve = false;
 				
-				if (name.startsWith("$"))
+				if (name.startsWith("$")) //$NON-NLS-1$
 					approve = true;
 				else if (goal.getGoal().getParentModelKey().equals(
 								selfClass.getModelKey())) {

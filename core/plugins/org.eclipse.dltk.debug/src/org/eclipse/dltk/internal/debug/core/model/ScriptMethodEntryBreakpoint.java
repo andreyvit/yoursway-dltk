@@ -15,19 +15,19 @@ public class ScriptMethodEntryBreakpoint extends ScriptLineBreakpoint implements
 		IScriptMethodEntryBreakpoint {
 
 	private static final String METHOD_NAME = DLTKDebugPlugin.PLUGIN_ID
-			+ ".methodName";
+			+ ".methodName"; //$NON-NLS-1$
 
 	private static final String BREAK_ON_ENTRY = DLTKDebugPlugin.PLUGIN_ID
-			+ ".methodEntry";
+			+ ".methodEntry"; //$NON-NLS-1$
 
 	private static final String BREAK_ON_EXIT = DLTKDebugPlugin.PLUGIN_ID
-			+ ".methodExit";
+			+ ".methodExit"; //$NON-NLS-1$
 
 	private static final String ENTRY_ID = DLTKDebugPlugin.PLUGIN_ID
-			+ ".entryBrId";
+			+ ".entryBrId"; //$NON-NLS-1$
 
 	private static final String EXIT_ID = DLTKDebugPlugin.PLUGIN_ID
-			+ ".exitBrId";
+			+ ".exitBrId"; //$NON-NLS-1$
 
 	protected String getMarkerId() {
 		return ScriptMarkerFactory.METHOD_ENTRY_MARKER_ID;
@@ -52,7 +52,7 @@ public class ScriptMethodEntryBreakpoint extends ScriptLineBreakpoint implements
 
 	// Method name
 	public String getMethodName() throws CoreException {
-		return ensureMarker().getAttribute(METHOD_NAME, "");
+		return ensureMarker().getAttribute(METHOD_NAME, ""); //$NON-NLS-1$
 	}
 
 	// Break on entry

@@ -22,7 +22,7 @@ public class RenameTypeWizard extends RenameRefactoringWizard {
 
 	public RenameTypeWizard(Refactoring refactoring) {
 		this(refactoring, RefactoringMessages.RenameTypeWizard_defaultPageTitle, RefactoringMessages.RenameTypeWizardInputPage_description, DLTKPluginImages.DESC_WIZBAN_REFACTOR_TYPE,
-				""/*IScriptHelpContextIds.RENAME_TYPE_WIZARD_PAGE*/);
+				""/*IScriptHelpContextIds.RENAME_TYPE_WIZARD_PAGE*/); //$NON-NLS-1$
 	}
 
 	public RenameTypeWizard(Refactoring refactoring, String defaultPageTitle, String inputPageDescription, ImageDescriptor inputPageImageDescriptor, String pageContextHelpId) {

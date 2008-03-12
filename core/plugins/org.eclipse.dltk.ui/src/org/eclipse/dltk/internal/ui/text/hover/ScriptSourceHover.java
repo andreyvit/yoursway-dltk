@@ -50,7 +50,7 @@ public class ScriptSourceHover extends AbstractScriptEditorTextHover implements
 					return null;
 
 				// source = removeLeadingComments(source);
-				String delim = System.getProperty("line.separator", "\n");
+				String delim = System.getProperty("line.separator", "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 
 				String[] sourceLines = Strings.convertIntoLines(source);
 				String firstLine = sourceLines[0];

@@ -40,7 +40,7 @@ import org.w3c.dom.Document;
 public class ValidatorsCore extends Plugin implements IPropertyChangeListener {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.dltk.validators.core";
+	public static final String PLUGIN_ID = "org.eclipse.dltk.validators.core"; //$NON-NLS-1$
 
 	// The shared instance
 	private static ValidatorsCore plugin;
@@ -144,7 +144,7 @@ public class ValidatorsCore extends Plugin implements IPropertyChangeListener {
 				return ValidatorDefinitionsContainer
 						.parseXMLIntoContainer(stream);
 			} catch (IOException e) {
-				ValidatorsCore.getDefault().getLog().log(new Status( 0, ValidatorsCore.PLUGIN_ID, 0, "Exception", e ));
+				ValidatorsCore.getDefault().getLog().log(new Status( 0, ValidatorsCore.PLUGIN_ID, 0, Messages.ValidatorsCore_exception, e ));
 			}
 		}
 		return new ValidatorDefinitionsContainer();

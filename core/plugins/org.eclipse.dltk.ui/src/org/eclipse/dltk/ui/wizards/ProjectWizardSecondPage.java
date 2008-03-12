@@ -422,7 +422,7 @@ public abstract class ProjectWizardSecondPage extends
 			if (!fKeepContent) {
 				if (DLTKCore.DEBUG) {
 					System.err
-							.println("Add compiler compilance options here...");
+							.println("Add compiler compilance options here..."); //$NON-NLS-1$
 				}
 				// String compliance= fFirstPage.getCompilerCompliance();
 				// if (compliance != null) {

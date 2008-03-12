@@ -74,9 +74,9 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		int ending = Math.min(line.getOffset() + line.getLength(), offset);
 		int token = scanner.previousToken(ending, beginning);
 		if (token == IRubySymbols.TokenLBRACE) {
-			return "}";
+			return "}"; //$NON-NLS-1$
 		} else {
-			return "end";
+			return "end"; //$NON-NLS-1$
 		}
 	}
 
@@ -156,12 +156,12 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		int token = scanner.previousTokenAfterInput(c.offset, c.text);
 
 		if (Arrays.binarySearch(INDENT_TO_BLOCK_TOKENS, token) >= 0) {
-			String indent = "";
+			String indent = ""; //$NON-NLS-1$
 			indent = getBlockIndent(d, info.getOffset(), scanner);
 
 			int pos = scanner.findNonWhitespaceForwardInAnyPartition(info
 					.getOffset(), c.offset);
-			String line = "";
+			String line = ""; //$NON-NLS-1$
 			if (pos != RubyHeuristicScanner.NOT_FOUND) {
 				line = d.get(pos, c.offset - pos);
 			}
@@ -188,7 +188,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 
 				int pos = scanner.findNonWhitespaceForwardInAnyPartition(info
 						.getOffset(), c.offset);
-				String line = "";
+				String line = ""; //$NON-NLS-1$
 				if (pos != RubyHeuristicScanner.NOT_FOUND) {
 					line = d.get(pos, c.offset - pos);
 				}
@@ -212,7 +212,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 				DLTKUIPlugin.log(e);
 			}
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	private String getBlockIndent(IDocument d, int offset,
@@ -226,7 +226,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 				DLTKUIPlugin.log(e);
 			}
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	private void smartIndentAfterNewLine(IDocument d, DocumentCommand c)
@@ -344,7 +344,7 @@ public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		boolean addLastDelimiter = c.text.endsWith(delimiter);
 		String[] lines = c.text.split(delimiter);
 		if (lines.length > startFixFrom) {
-			String currentIndent = "";
+			String currentIndent = ""; //$NON-NLS-1$
 			for (int i = startFixFrom; i < lines.length; i++) {
 				if (lines[i].trim().length() != 0) {
 					currentIndent = AutoEditUtils.getLineIndent(lines[i]);

@@ -58,7 +58,7 @@ public class RenameAction extends SelectionDispatchAction {
 		fRenameResource= new RenameResourceAction(site);
 		fRenameResource.setText(getText());
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
 		
 	//	PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IScriptHelpContextIds.RENAME_ACTION);

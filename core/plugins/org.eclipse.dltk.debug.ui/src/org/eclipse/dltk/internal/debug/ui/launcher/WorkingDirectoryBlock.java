@@ -284,8 +284,8 @@ public class WorkingDirectoryBlock extends CommonScriptLaunchTab {
 		try {
 			ILaunchConfiguration config = getLaunchConfiguration();
 			if (config != null) {
-				String projectName = config.getAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, "");
-				if (!projectName.equals("")) {
+				String projectName = config.getAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, ""); //$NON-NLS-1$
+				if (!projectName.equals("")) { //$NON-NLS-1$
 					IScriptProject project = DLTKCore.create(getWorkspaceRoot()).getScriptProject(projectName);
 					if (project != null) {
 						setDefaultWorkingDirectoryText("${workspace_loc:" + project.getPath().makeRelative().toOSString() + "}");  //$NON-NLS-1$//$NON-NLS-2$

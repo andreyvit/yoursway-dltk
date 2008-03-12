@@ -169,7 +169,7 @@ public class RefactorActionGroup extends ActionGroup {
 	private static class NoActionAvailable extends Action {
 		public NoActionAvailable() {
 			setEnabled(true);
-			setText("<no refactoring available>");//RefactoringMessages.RefactorActionGroup_no_refactoring_available); 
+			setText(ActionMessages.RefactorActionGroup_noRefactoringAvailable); 
 		}
 	}
 	private Action fNoActionAvailable= new NoActionAvailable(); 

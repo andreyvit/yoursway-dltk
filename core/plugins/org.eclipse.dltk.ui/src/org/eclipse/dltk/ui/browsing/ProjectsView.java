@@ -101,7 +101,7 @@ public class ProjectsView extends ScriptBrowsingPart {
 	 */
 	protected String getHelpContextId() {
 		// return IJavaHelpContextIds.PROJECTS_VIEW;
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	protected String getLinkToEditorKey() {

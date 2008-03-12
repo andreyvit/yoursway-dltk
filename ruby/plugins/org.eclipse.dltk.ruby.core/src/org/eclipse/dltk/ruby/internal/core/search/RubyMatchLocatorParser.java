@@ -44,7 +44,7 @@ public class RubyMatchLocatorParser extends MatchLocatorParser {
 			 * (CallExpression) new CallExpression(start, end,
 			 * call.getReceiver(), call.getName(), call.getArgs())
 			 */call, this.getNodeSet());
-			if (call.getName().equals("new")) {
+			if (call.getName().equals("new")) { //$NON-NLS-1$
 				ASTNode receiver = call.getReceiver();
 				if (receiver instanceof ConstantReference) {
 					TypeReference ref = new TypeReference(receiver

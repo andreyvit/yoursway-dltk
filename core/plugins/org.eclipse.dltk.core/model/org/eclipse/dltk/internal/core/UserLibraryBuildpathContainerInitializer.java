@@ -65,7 +65,7 @@ public class UserLibraryBuildpathContainerInitializer extends
 			String userLibName = containerPath.segment(1);
 			IDLTKLanguageToolkit tk;
 			tk = DLTKLanguageManager.getLanguageToolkit(project);
-			int pos = userLibName.indexOf("#");
+			int pos = userLibName.indexOf("#"); //$NON-NLS-1$
 			if (tk == null && pos != -1) {
 				String nature = userLibName.substring(0, pos);
 				tk = DLTKLanguageManager.getLanguageToolkit(nature);
@@ -76,7 +76,7 @@ public class UserLibraryBuildpathContainerInitializer extends
 			}
 			if (tk == null) {
 				throw new CoreException(new Status(IStatus.ERROR,
-						DLTKCore.PLUGIN_ID, "DLTK Langauge toolkit are null"));
+						DLTKCore.PLUGIN_ID, Messages.UserLibraryBuildpathContainerInitializer_dltkLanguageToolkitIsNull));
 			}
 			UserLibrary userLibrary = ModelManager.getUserLibraryManager()
 					.getUserLibrary(userLibName, tk);

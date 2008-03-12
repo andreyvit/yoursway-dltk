@@ -38,7 +38,7 @@ import org.eclipse.dltk.ruby.core.RubyNature;
 public class ASTUtils {
 
 	private ASTUtils() {
-		throw new AssertionError("Cannot instantiate utility class");
+		throw new AssertionError("Cannot instantiate utility class"); //$NON-NLS-1$
 	}
 
 	public static void setVisibility(MethodDeclaration methodDeclaration,
@@ -183,7 +183,7 @@ public class ASTUtils {
 					}
 
 					if (DLTKCore.DEBUG_SELECTION)
-						System.out.println("Found " + s.getClass().getName());
+						System.out.println("Found " + s.getClass().getName()); //$NON-NLS-1$
 				}
 				return true;
 			}
@@ -225,7 +225,7 @@ public class ASTUtils {
 				if (Math.abs(sourceEnd - boundaryOffset) <= 0) { // XXX: was
 					// ... <= 1
 					result = s;
-					System.out.println("Found " + s.getClass().getName());
+					System.out.println("Found " + s.getClass().getName()); //$NON-NLS-1$
 				}
 				return true;
 			}
@@ -251,7 +251,7 @@ public class ASTUtils {
 		try {
 			ISourceParser sourceParser = DLTKLanguageManager
 					.getSourceParser(RubyNature.NATURE_ID);
-			ModuleDeclaration declaration = sourceParser.parse("RawSource"
+			ModuleDeclaration declaration = sourceParser.parse("RawSource" //$NON-NLS-1$
 					.toCharArray(), cs, null);
 			return declaration;
 		} catch (ModelException e) {

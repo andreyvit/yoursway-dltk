@@ -1092,7 +1092,7 @@ public class FilteredTypesSelectionDialog extends FilteredItemsSelectionDialog
 			if( stype.getParent().getElementType() == IModelElement.TYPE ) {
 				result.append(ScriptElementLabels.CONCAT_STRING);
 				IType parent = (IType) stype.getParent(); 
-				result.append(parent.getTypeQualifiedName("."));
+				result.append(parent.getTypeQualifiedName(".")); //$NON-NLS-1$
 			}
 			// String containerName = type.getTypeContainerName();
 			// if (containerName.length() > 0) {
@@ -1115,7 +1115,7 @@ public class FilteredTypesSelectionDialog extends FilteredItemsSelectionDialog
 
 		public String getQualificationText(TypeNameMatch type) {
 			StringBuffer result = new StringBuffer();
-			result.append(type.getType().getTypeQualifiedName("."));
+			result.append(type.getType().getTypeQualifiedName(".")); //$NON-NLS-1$
 			result.append(ScriptElementLabels.CONCAT_STRING);
 			result.append(getContainerName(type));
 			return result.toString();
@@ -1142,7 +1142,7 @@ public class FilteredTypesSelectionDialog extends FilteredItemsSelectionDialog
 			String result = info.getTypeContainerName();
 			if (result.length() > 0)
 				return result;
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 
 		private String getContainerName(TypeNameMatch type) {

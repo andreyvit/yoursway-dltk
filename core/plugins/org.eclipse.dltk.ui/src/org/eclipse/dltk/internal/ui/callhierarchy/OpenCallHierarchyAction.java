@@ -60,7 +60,7 @@ public class OpenCallHierarchyAction extends SelectionDispatchAction {
         setDescription(CallHierarchyMessages.OpenCallHierarchyAction_description); 
 //        PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IJavaHelpContextIds.CALL_HIERARCHY_OPEN_ACTION);
         if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}		
 
     }
@@ -238,6 +238,6 @@ public class OpenCallHierarchyAction extends SelectionDispatchAction {
         return new Status(IStatus.INFO, DLTKUIPlugin.getPluginId(), IDLTKStatusConstants.INTERNAL_ERROR, message, null);
     }         
     public String getCallHierarchyID() {
-    	return "org.eclipse.dltk.callhierarchy.view";
+    	return "org.eclipse.dltk.callhierarchy.view"; //$NON-NLS-1$
     }
 }

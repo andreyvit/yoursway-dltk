@@ -60,13 +60,13 @@ public class UserLibraryManager {
 
 	public static String makeLibraryName(String libName, IDLTKLanguageToolkit toolkit) {
 		if( toolkit == null ) {
-			return "#" + libName;
+			return "#" + libName; //$NON-NLS-1$
 		}
-		return toolkit.getNatureId() + "#" + libName;
+		return toolkit.getNatureId() + "#" + libName; //$NON-NLS-1$
 	}
 
 	private String getLibraryName(String key) {
-		int pos = key.indexOf("#");
+		int pos = key.indexOf("#"); //$NON-NLS-1$
 		if (pos != -1) {
 			return key.substring(pos + 1);
 		}
@@ -74,7 +74,7 @@ public class UserLibraryManager {
 	}
 
 	private IDLTKLanguageToolkit getToolkitFromKey(String key) {
-		int pos = key.indexOf("#");
+		int pos = key.indexOf("#"); //$NON-NLS-1$
 		if (pos != -1) {
 			String nature = key.substring(0, pos);
 			try {
@@ -98,7 +98,7 @@ public class UserLibraryManager {
 		Set result = new HashSet();
 		for (Iterator iterator = set.iterator(); iterator.hasNext();) {
 			String key = (String) iterator.next();
-			int pos = key.indexOf("#");
+			int pos = key.indexOf("#"); //$NON-NLS-1$
 			if (pos != -1) {
 				String nature = key.substring(0, pos);
 				if (toolkit.getNatureId().equals(nature)) {

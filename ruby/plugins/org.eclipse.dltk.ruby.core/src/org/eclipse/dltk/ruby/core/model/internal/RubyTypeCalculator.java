@@ -61,7 +61,7 @@ public class RubyTypeCalculator {
 						}
 
 						public String getName() {
-							return "ceil";
+							return "ceil"; //$NON-NLS-1$
 						}
 						
 					};

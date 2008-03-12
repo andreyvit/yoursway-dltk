@@ -99,7 +99,7 @@ public class DbgpSession extends DbgpTermination implements IDbgpSession,
 
 		// Stream manager
 		this.streamManager = new DbgpStreamManager(engine,
-				"DBGP - Stream manager");
+				"DBGP - Stream manager"); //$NON-NLS-1$
 		this.streamManager.addTerminationListener(this);
 
 		// Commands
@@ -119,7 +119,7 @@ public class DbgpSession extends DbgpTermination implements IDbgpSession,
 	}
 
 	public String toString() {
-		return "Session. appid: " + info.getApplicationId();
+		return "Session. appid: " + info.getApplicationId(); //$NON-NLS-1$
 	}
 
 	public IDbgpCoreCommands getCoreCommands() {

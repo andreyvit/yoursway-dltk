@@ -10,15 +10,15 @@
 package org.eclipse.dltk.dbgp.breakpoints;
 
 public class DbgpBreakpointConfig {
-	private static final String TEMPORARY_TRUE = "1";
-	private static final String TEMPORARY_FALSE = "0";
+	private static final String TEMPORARY_TRUE = "1"; //$NON-NLS-1$
+	private static final String TEMPORARY_FALSE = "0"; //$NON-NLS-1$
 
-	private static final String STATE_ENABLED = "enabled";
-	private static final String STATE_DISABLED = "disabled";
+	private static final String STATE_ENABLED = "enabled"; //$NON-NLS-1$
+	private static final String STATE_DISABLED = "disabled"; //$NON-NLS-1$
 
-	private static final String HIT_CONDITION_GREATER = ">=";
-	private static final String HIT_CONDITION_EQUAL = "==";
-	private static final String HIT_CONDITION_MULTIPLE = "%";
+	private static final String HIT_CONDITION_GREATER = ">="; //$NON-NLS-1$
+	private static final String HIT_CONDITION_EQUAL = "=="; //$NON-NLS-1$
+	private static final String HIT_CONDITION_MULTIPLE = "%"; //$NON-NLS-1$
 
 	private boolean enabled;
 

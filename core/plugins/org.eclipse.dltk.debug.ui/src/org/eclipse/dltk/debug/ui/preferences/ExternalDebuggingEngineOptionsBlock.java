@@ -88,7 +88,7 @@ public abstract class ExternalDebuggingEngineOptionsBlock extends
 		SWTFactory.createLabel(group, ScriptDebugPreferencesMessages.PathLabel,
 				1);
 
-		enginePath = SWTFactory.createText(group, SWT.BORDER, 1, "");
+		enginePath = SWTFactory.createText(group, SWT.BORDER, 1, ""); //$NON-NLS-1$
 		bindControl(enginePath, getDebuggingEnginePathKey(),
 				FieldValidators.PATH_VALIDATOR);
 

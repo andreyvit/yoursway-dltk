@@ -26,6 +26,7 @@ import org.eclipse.dltk.core.IPackageDeclaration;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceElementParser;
+import org.eclipse.dltk.core.ISourceElementParserExtension;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceModuleInfoCache;
 import org.eclipse.dltk.core.ISourceRange;
@@ -197,7 +198,7 @@ public abstract class AbstractSourceModule extends Openable implements
 		case JEM_IMPORTDECLARATION: {
 			if (DLTKCore.DEBUG) {
 				System.err
-						.println("Add import support in SourceModule getHandleFromMemento");
+						.println("Add import support in SourceModule getHandleFromMemento"); //$NON-NLS-1$
 			}
 			// ModelElement container = (ModelElement)getImportContainer();
 			// return container.getHandleFromMemento(token, memento,
@@ -308,7 +309,7 @@ public abstract class AbstractSourceModule extends Openable implements
 	public String getSource() throws ModelException {
 		IBuffer buffer = getBufferNotOpen();
 		if (buffer == null)
-			return new String( getBufferContent() ); //$NON-NLS-1$
+			return new String(getBufferContent()); //$NON-NLS-1$
 		return buffer.getContents();
 	}
 
@@ -317,7 +318,7 @@ public abstract class AbstractSourceModule extends Openable implements
 		if (buffer == null)
 			return getBufferContent(); //$NON-NLS-1$
 		return buffer.getContents().toCharArray();
-//		return getSource().toCharArray();
+		// return getSource().toCharArray();
 	}
 
 	public String getSourceContents() {
@@ -327,7 +328,7 @@ public abstract class AbstractSourceModule extends Openable implements
 			if (DLTKCore.DEBUG) {
 				e.printStackTrace();
 			}
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 
@@ -405,7 +406,7 @@ public abstract class AbstractSourceModule extends Openable implements
 					((ModelElement) element).printNode(output);
 				} else {
 
-					output.print("Unknown element:" + element);
+					output.print("Unknown element:" + element); //$NON-NLS-1$
 				}
 			}
 		} catch (ModelException ex) {
@@ -468,6 +469,12 @@ public abstract class AbstractSourceModule extends Openable implements
 
 			IProblemReporter problemReporter = getProblemReporter(natureId);
 			ISourceElementParser parser = getSourceElementParser(natureId);
+			if (!isReadOnly()) {
+				if (parser instanceof ISourceElementParserExtension) {
+					((ISourceElementParserExtension) parser)
+							.setScriptProject(this.getScriptProject());
+				}
+			}
 
 			parser.setRequestor(requestor);
 			parser.setReporter(problemReporter);
@@ -484,7 +491,7 @@ public abstract class AbstractSourceModule extends Openable implements
 					.toCharArray());
 
 			if (DEBUG_PRINT_MODEL) {
-				System.out.println("Source Module Debug print:");
+				System.out.println("Source Module Debug print:"); //$NON-NLS-1$
 
 				CorePrinter printer = new CorePrinter(System.out);
 				printNode(printer);
@@ -521,7 +528,7 @@ public abstract class AbstractSourceModule extends Openable implements
 		IScriptProject project = getScriptProject();
 		if (project == null || !project.getProject().hasNature(natureId))
 			return null;
-		
+
 		IProblemFactory factory = DLTKLanguageManager
 				.getProblemFactory(natureId);
 		return factory.createReporter(getResource());

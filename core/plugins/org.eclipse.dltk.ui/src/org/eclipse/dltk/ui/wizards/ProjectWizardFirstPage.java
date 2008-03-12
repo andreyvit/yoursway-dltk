@@ -414,7 +414,7 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 			if (inst != null)
 				return inst.getName();
 			else
-				return "undefined";
+				return "undefined"; //$NON-NLS-1$
 		}
 
 		private String getDefaultInterpreterLabel() {
@@ -582,7 +582,7 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 		public void widgetDefaultSelected(SelectionEvent e) {
 			if (DLTKCore.DEBUG) {
 				System.err
-						.println("DetectGroup show compilancePreferencePage...");
+						.println("DetectGroup show compilancePreferencePage..."); //$NON-NLS-1$
 			}
 			// String InterpreterEnvironmentID=
 			// BuildPathSupport.InterpreterEnvironment_PREF_PAGE_ID;
@@ -665,7 +665,7 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 			}
 			if (supportInterpreter() && interpeterRequired()) {
 				if (!interpretersPresent) {
-					setErrorMessage("Please configure interpreters");
+					setErrorMessage(NewWizardMessages.ProjectWizardFirstPage_atLeastOneInterpreterMustBeConfigured);
 					setPageComplete(false);
 					return;
 				}
@@ -761,7 +761,7 @@ public abstract class ProjectWizardFirstPage extends WizardPage {
 		setControl(composite);
 		Dialog.applyDialogFont(composite);
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
 		// PlatformUI.getWorkbench().getHelpSystem().setHelp(composite,
 		// IDLTKHelpContextIds.NEW_JAVAPROJECT_WIZARD_PAGE);

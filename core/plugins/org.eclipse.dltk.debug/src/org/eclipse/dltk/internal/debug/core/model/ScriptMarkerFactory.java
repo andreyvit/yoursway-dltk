@@ -16,9 +16,9 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 
 public class ScriptMarkerFactory {
-	public static final String LINE_BREAKPOINT_MARKER_ID = "org.eclipse.dltk.debug.scriptLineBreakpointMarker";
-	public static final String METHOD_ENTRY_MARKER_ID = "org.eclipse.dltk.debug.scriptMethodEntryBreakpointMarker";
-	public static final String WATCHPOINT_MARKER_ID = "org.eclipse.dltk.debug.scriptWatchPointMarker";
+	public static final String LINE_BREAKPOINT_MARKER_ID = "org.eclipse.dltk.debug.scriptLineBreakpointMarker"; //$NON-NLS-1$
+	public static final String METHOD_ENTRY_MARKER_ID = "org.eclipse.dltk.debug.scriptMethodEntryBreakpointMarker"; //$NON-NLS-1$
+	public static final String WATCHPOINT_MARKER_ID = "org.eclipse.dltk.debug.scriptWatchPointMarker"; //$NON-NLS-1$
 
 	public static IMarker makeMarker(IResource resource, Map attributes,
 			String id) throws CoreException {

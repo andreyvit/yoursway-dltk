@@ -46,14 +46,14 @@ public class ScriptDebugLogManager implements ILaunchListener,
 	 * @see org.eclipse.dltk.dbgp.IDbgpRawListener#dbgpPacketReceived(java.lang.String)
 	 */
 	public void dbgpPacketReceived(String content) {
-		append("<< " + content);
+		append("<< " + content); //$NON-NLS-1$
 	}
 
 	/*
 	 * @see org.eclipse.dltk.dbgp.IDbgpRawListener#dbgpPacketSent(java.lang.String)
 	 */
 	public void dbgpPacketSent(String content) {
-		append(">> " + content);
+		append(">> " + content); //$NON-NLS-1$
 	}
 
 	/*
@@ -67,7 +67,7 @@ public class ScriptDebugLogManager implements ILaunchListener,
 		for (int i = 0; i < events.length; ++i) {
 			DebugEvent event = events[i];
 
-			append("Event: " + getDebugEventKind(event.getKind()) + " from "
+			append("Event: " + getDebugEventKind(event.getKind()) + " from " //$NON-NLS-1$ //$NON-NLS-2$
 					+ event.getSource().getClass().getName());
 
 			if (event.getKind() == DebugEvent.CREATE) {
@@ -127,37 +127,37 @@ public class ScriptDebugLogManager implements ILaunchListener,
 	protected synchronized void append(final String text) {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
-				view.append(text + "\n");
+				view.append(text + "\n"); //$NON-NLS-1$
 			}
 		});
 	}
 
 	private static String getDebugEventKind(int kind) {
-		String eventName = "UNKNOWN";
+		String eventName = "UNKNOWN"; //$NON-NLS-1$
 
 		switch (kind) {
 		case DebugEvent.CREATE: {
-			eventName = "CREATE";
+			eventName = "CREATE"; //$NON-NLS-1$
 			break;
 		}
 		case DebugEvent.TERMINATE: {
-			eventName = "TERMINATE";
+			eventName = "TERMINATE"; //$NON-NLS-1$
 			break;
 		}
 		case DebugEvent.CHANGE: {
-			eventName = "CHANGE";
+			eventName = "CHANGE"; //$NON-NLS-1$
 			break;
 		}
 		case DebugEvent.SUSPEND: {
-			eventName = "SUSPEND";
+			eventName = "SUSPEND"; //$NON-NLS-1$
 			break;
 		}
 		case DebugEvent.RESUME: {
-			eventName = "RESUME";
+			eventName = "RESUME"; //$NON-NLS-1$
 			break;
 		}
 		case DebugEvent.MODEL_SPECIFIC: {
-			eventName = "MODEL_SPECIFIC";
+			eventName = "MODEL_SPECIFIC"; //$NON-NLS-1$
 			break;
 		}
 		}

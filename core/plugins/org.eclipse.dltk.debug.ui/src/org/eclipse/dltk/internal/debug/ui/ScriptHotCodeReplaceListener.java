@@ -50,24 +50,18 @@ public class ScriptHotCodeReplaceListener implements IHotCodeReplaceListener {
 		if (exception == null) {
 			status = new Status(IStatus.WARNING, DLTKDebugUIPlugin
 					.getUniqueIdentifier(), IStatus.WARNING,
-					"The target doesn't support hot code replace", null);
+					Messages.ScriptHotCodeReplaceListener_theTargetDoesntSupportHotCodeReplace, null);
 			preference = IDLTKDebugUIPreferenceConstants.PREF_ALERT_HCR_NOT_SUPPORTED;
-			alertMessage = "Do not show error &when hot code replace is not supported";
+			alertMessage = Messages.ScriptHotCodeReplaceListener_doNotShowErrorWhenHotCodeReplaceIsNotSupported;
 		} else {
 			status = new Status(IStatus.WARNING, DLTKDebugUIPlugin
 					.getUniqueIdentifier(), IStatus.WARNING, exception
 					.getMessage(), exception.getCause());
 			preference = IDLTKDebugUIPreferenceConstants.PREF_ALERT_HCR_FAILED;
-			alertMessage = "Do not show error &when hot code replace fails";
+			alertMessage = Messages.ScriptHotCodeReplaceListener_doNotShowErrorWhenHotCodeReplaceFails;
 		}
-		final String title = "Hot Code Replace Failed";
-		final String message = MessageFormat
-				.format("Some code changes cannot be hot swapped into a running interpreter, " +
-						"such as changing method names or introducing errors into running code.\n\n" +
-						"The current target interpreter from launch [{0}] was unable to replace " +
-						"the running code with the code in the workspace.\n\nIt is safe to " +
-						"continue running the application, but you may notice discrepancies " +
-						"when debugging this application.",
+		final String title = Messages.ScriptHotCodeReplaceListener_hotCodeReplaceFailed;
+		final String message = MessageFormat.format(Messages.ScriptHotCodeReplaceListener_someCodeChangesCannotBeHotSwappedIntoARunningInterpreter,
 						new Object[] { launchName });
 		display.asyncExec(new Runnable() {
 			public void run() {

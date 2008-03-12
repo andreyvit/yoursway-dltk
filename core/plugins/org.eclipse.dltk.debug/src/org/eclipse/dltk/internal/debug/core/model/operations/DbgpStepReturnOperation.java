@@ -14,7 +14,7 @@ import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 
 public class DbgpStepReturnOperation extends DbgpStepOperation {
-	private static final String JOB_NAME = "StepReturn operation";
+	private static final String JOB_NAME = Messages.DbgpStepReturnOperation_stepReturnOperation;
 
 	public DbgpStepReturnOperation(IScriptThread thread, IResultHandler finish) {
 		super(thread, JOB_NAME, finish);

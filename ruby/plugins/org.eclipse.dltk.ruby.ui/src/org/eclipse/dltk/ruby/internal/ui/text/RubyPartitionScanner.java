@@ -12,8 +12,9 @@ package org.eclipse.dltk.ruby.internal.ui.text;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.dltk.ruby.core.text.RubyContext;
-import org.eclipse.dltk.ruby.internal.ui.text.syntax.RubyContextUtils;
+import org.eclipse.dltk.ruby.internal.ui.text.rules.RubyGlobalVarRule;
+import org.eclipse.dltk.ruby.internal.ui.text.rules.RubyPercentStringRule;
+import org.eclipse.dltk.ruby.internal.ui.text.rules.RubySlashRegexpRule;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IPredicateRule;
@@ -27,61 +28,42 @@ public class RubyPartitionScanner extends RuleBasedPartitionScanner {
 	private Token comment;
 	private Token rubyDoc;
 	private Token defaultToken;
-	
+	private Token singleQuoteString;
+
 	/**
 	 * Creates the partitioner and sets up the appropriate rules.
 	 */
 	public RubyPartitionScanner() {
 		super();
+
+		defaultToken = new Token(IDocument.DEFAULT_CONTENT_TYPE);
+
+		string = new Token(IRubyPartitions.RUBY_STRING);
+
+		singleQuoteString = new Token(IRubyPartitions.RUBY_SINGLE_QUOTE_STRING);
+
+		comment = new Token(IRubyPartitions.RUBY_COMMENT);
+
+		rubyDoc = new Token(IRubyPartitions.RUBY_DOC);
+
+		List rules = new ArrayList();
+
+		rules.add(new MultiLineRule("=begin", "=end", rubyDoc)); //$NON-NLS-1$ //$NON-NLS-2$
+
+		rules.add(new EndOfLineRule("#", comment)); //$NON-NLS-1$
+
+		rules.add(new MultiLineRule("\"", "\"", string, '\\', true)); //$NON-NLS-1$ //$NON-NLS-2$
 		
-		defaultToken = new Token (IDocument.DEFAULT_CONTENT_TYPE);
-
-		string = new Token(RubyPartitions.RUBY_STRING);
-
-		comment = new Token(RubyPartitions.RUBY_COMMENT);
-
-		rubyDoc = new Token(RubyPartitions.RUBY_DOC);
-
-		List/* < IPredicateRule > */rules = new ArrayList/* <IPredicateRule> */();
-
-		rules.add(new MultiLineRule("=begin", "=end", rubyDoc));
-
-		rules.add(new EndOfLineRule("#", comment));
-
-		rules.add(new MultiLineRule("\'", "\'", string, '\\', true));
-
-		rules.add(new MultiLineRule("\"", "\"", string, '\\', true));
+		rules.add(new MultiLineRule("'", "'", singleQuoteString, '\\', true)); //$NON-NLS-1$ //$NON-NLS-2$
 
 		rules.add(new RubyPercentStringRule(string, false));
 
 		rules.add(new RubySlashRegexpRule(string));
-		
+
 		rules.add(new RubyGlobalVarRule(defaultToken));
 
 		IPredicateRule[] result = new IPredicateRule[rules.size()];
 		rules.toArray(result);
 		setPredicateRules(result);
-	}
-
-	public int getOffsetForLaterContextLookup() {
-		return fOffset;		
-	}
-
-	public RubyContext getCurrentContext() {
-		return RubyContextUtils.determineContext(fDocument, fOffset, RubyContext.MODE_FULL);
-	}
-
-	public RubyContext getContext(int offset) {
-		return RubyContextUtils.determineContext(fDocument, offset, RubyContext.MODE_FULL);
-	}
-
-	protected Token getToken(String key) {
-		if (RubyPartitions.RUBY_STRING.equals(key))
-			return string;
-		if (RubyPartitions.RUBY_COMMENT.equals(key))
-			return comment;
-		if (RubyPartitions.RUBY_DOC.equals(key))
-			return rubyDoc;
-		return null;
 	}
 }

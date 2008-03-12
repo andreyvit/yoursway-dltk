@@ -113,7 +113,7 @@ public class ScriptDebugConfigurationBlock extends
 		portCombo.add(ScriptDebugPreferencesMessages.CustomLabel,
 				CUSTOM_PORT_INDEX);
 
-		portText = SWTFactory.createText(portCompsite, SWT.BORDER, 0, "");
+		portText = SWTFactory.createText(portCompsite, SWT.BORDER, 0, ""); //$NON-NLS-1$
 		bindControl(portText, FieldValidators.PORT_VALIDATOR);
 
 		portCombo.addSelectionListener(new SelectionListener() {
@@ -126,7 +126,7 @@ public class ScriptDebugConfigurationBlock extends
 				portText.setEnabled(isCustom);
 
 				if (!isCustom) {
-					portText.setText("");
+					portText.setText(""); //$NON-NLS-1$
 				} else {
 					portText.setText(portText.getText());
 				}
@@ -137,7 +137,7 @@ public class ScriptDebugConfigurationBlock extends
 		SWTFactory.createLabel(group,
 				ScriptDebugPreferencesMessages.ConnectionTimeoutLabel, 1);
 		final Text connectionTimeout = SWTFactory.createText(group, SWT.BORDER,
-				1, "");
+				1, ""); //$NON-NLS-1$
 		bindControl(connectionTimeout,
 				DLTKDebugPreferenceConstants.PREF_DBGP_CONNECTION_TIMEOUT,
 				FieldValidators.POSITIVE_NUMBER_VALIDATOR);
@@ -146,7 +146,7 @@ public class ScriptDebugConfigurationBlock extends
 		SWTFactory.createLabel(group,
 				ScriptDebugPreferencesMessages.ResponseTimeoutLabel, 1);
 		final Text responseTimeout = SWTFactory.createText(group, SWT.BORDER,
-				1, "");
+				1, ""); //$NON-NLS-1$
 		bindControl(responseTimeout,
 				DLTKDebugPreferenceConstants.PREF_DBGP_RESPONSE_TIMEOUT,
 				FieldValidators.POSITIVE_NUMBER_VALIDATOR);
@@ -199,7 +199,7 @@ public class ScriptDebugConfigurationBlock extends
 				String message = MessageFormat
 						.format(
 								ScriptDebugPreferencesMessages.LinkToLanguageDebugOptions,
-								new Object[] { "{0}", languageName });
+								new Object[] { "{0}", languageName }); //$NON-NLS-1$
 
 				PreferenceLinkArea area = new PreferenceLinkArea(composite,
 						SWT.NONE, pageId, message,
@@ -231,7 +231,7 @@ public class ScriptDebugConfigurationBlock extends
 		int port = store.getInt(DLTKDebugPreferenceConstants.PREF_DBGP_PORT);
 		if (port == DLTKDebugPreferenceConstants.DBGP_AVAILABLE_PORT) {
 			portText.setEnabled(false);
-			portText.setText("");
+			portText.setText(""); //$NON-NLS-1$
 			portCombo.select(AUTO_SELECT_PORT_INDEX);
 		} else {
 			portText.setEnabled(true);

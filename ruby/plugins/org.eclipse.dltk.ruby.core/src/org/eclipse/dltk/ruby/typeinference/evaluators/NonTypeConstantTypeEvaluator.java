@@ -27,23 +27,23 @@ public class NonTypeConstantTypeEvaluator extends GoalEvaluator {
 
 	public NonTypeConstantTypeEvaluator(IGoal goal) {
 		super(goal);
-		hardcoredTypes.put("FALSE", new RubyClassType("FalseClass%"));
-		hardcoredTypes.put("RUBY_RELEASE_DATE", new RubyClassType("String%"));
-		hardcoredTypes.put("STDERR", new RubyClassType("IO%"));
-		hardcoredTypes.put("MatchingData", new RubyClassType("Class%"));
-		hardcoredTypes.put("TOPLEVEL_BINDING", new RubyClassType("Binding%"));
-		hardcoredTypes.put("ENV", new RubyClassType("Object%"));
-		hardcoredTypes.put("STDIN", new RubyClassType("IO%"));
-		hardcoredTypes.put("TRUE", new RubyClassType("TrueClass%"));
-		hardcoredTypes.put("RELEASE_DATE", new RubyClassType("String%"));
-		hardcoredTypes.put("NIL", new RubyClassType("NilClass%"));
-		hardcoredTypes.put("RUBY_PLATFORM", new RubyClassType("String%"));
-		hardcoredTypes.put("RUBY_VERSION", new RubyClassType("String%"));
-		hardcoredTypes.put("STDOUT", new RubyClassType("IO%"));
-		hardcoredTypes.put("PLATFORM", new RubyClassType("String%"));
-		hardcoredTypes.put("ARGV", new RubyClassType("Array%"));
-		hardcoredTypes.put("ARGF", new RubyClassType("Object%"));
-		hardcoredTypes.put("VERSION", new RubyClassType("String%"));
+		hardcoredTypes.put("FALSE", new RubyClassType("FalseClass%")); //$NON-NLS-1$ //$NON-NLS-2$
+		hardcoredTypes.put("RUBY_RELEASE_DATE", new RubyClassType("String%")); //$NON-NLS-1$ //$NON-NLS-2$
+		hardcoredTypes.put("STDERR", new RubyClassType("IO%")); //$NON-NLS-1$ //$NON-NLS-2$
+		hardcoredTypes.put("MatchingData", new RubyClassType("Class%")); //$NON-NLS-1$ //$NON-NLS-2$
+		hardcoredTypes.put("TOPLEVEL_BINDING", new RubyClassType("Binding%")); //$NON-NLS-1$ //$NON-NLS-2$
+		hardcoredTypes.put("ENV", new RubyClassType("Object%")); //$NON-NLS-1$ //$NON-NLS-2$
+		hardcoredTypes.put("STDIN", new RubyClassType("IO%")); //$NON-NLS-1$ //$NON-NLS-2$
+		hardcoredTypes.put("TRUE", new RubyClassType("TrueClass%")); //$NON-NLS-1$ //$NON-NLS-2$
+		hardcoredTypes.put("RELEASE_DATE", new RubyClassType("String%")); //$NON-NLS-1$ //$NON-NLS-2$
+		hardcoredTypes.put("NIL", new RubyClassType("NilClass%")); //$NON-NLS-1$ //$NON-NLS-2$
+		hardcoredTypes.put("RUBY_PLATFORM", new RubyClassType("String%")); //$NON-NLS-1$ //$NON-NLS-2$
+		hardcoredTypes.put("RUBY_VERSION", new RubyClassType("String%")); //$NON-NLS-1$ //$NON-NLS-2$
+		hardcoredTypes.put("STDOUT", new RubyClassType("IO%")); //$NON-NLS-1$ //$NON-NLS-2$
+		hardcoredTypes.put("PLATFORM", new RubyClassType("String%")); //$NON-NLS-1$ //$NON-NLS-2$
+		hardcoredTypes.put("ARGV", new RubyClassType("Array%")); //$NON-NLS-1$ //$NON-NLS-2$
+		hardcoredTypes.put("ARGF", new RubyClassType("Object%")); //$NON-NLS-1$ //$NON-NLS-2$
+		hardcoredTypes.put("VERSION", new RubyClassType("String%")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	private NonTypeConstantTypeGoal getTypedGoal () {

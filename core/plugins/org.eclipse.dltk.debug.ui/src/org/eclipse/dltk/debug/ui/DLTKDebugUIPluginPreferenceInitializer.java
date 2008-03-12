@@ -15,9 +15,9 @@ public class DLTKDebugUIPluginPreferenceInitializer extends
 				.getPluginPreferences();
 		
 		prefs.setDefault(
-				IDLTKDebugUIPreferenceConstants.PREF_ACTIVE_FILTERS_LIST, "");
+				IDLTKDebugUIPreferenceConstants.PREF_ACTIVE_FILTERS_LIST, ""); //$NON-NLS-1$
 		prefs.setDefault(
-				IDLTKDebugUIPreferenceConstants.PREF_INACTIVE_FILTERS_LIST, "");
+				IDLTKDebugUIPreferenceConstants.PREF_INACTIVE_FILTERS_LIST, ""); //$NON-NLS-1$
 
 		prefs.setDefault(IDLTKDebugUIPreferenceConstants.PREF_ALERT_HCR_FAILED,
 				true);

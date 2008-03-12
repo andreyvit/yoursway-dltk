@@ -54,7 +54,7 @@ public abstract class ExternalDebuggingEngineRunner extends
 		String qualifier = getDebuggingEnginePreferenceQualifier();
 
 		String path = delegate.getString(qualifier, key);
-		if (!(path == null && "".equals(path))) {
+		if (!(path == null && "".equals(path))) { //$NON-NLS-1$
 			return PlatformFileUtils
 					.findAbsoluteOrEclipseRelativeFile(new File(path));
 		}

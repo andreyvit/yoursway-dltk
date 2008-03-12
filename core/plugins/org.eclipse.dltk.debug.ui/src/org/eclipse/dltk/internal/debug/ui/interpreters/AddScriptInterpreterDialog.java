@@ -200,7 +200,7 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 		block.setLayoutData(gd);
 
 		l = new Label(parent, SWT.NONE);
-		l.setText("Interpreter environment variables");
+		l.setText(InterpretersMessages.AddScriptInterpreterDialog_interpreterEnvironmentVariables);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = 3;
 		l.setLayoutData(gd);
@@ -402,11 +402,11 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 		FileDialog dialog = new FileDialog(getShell());
 		dialog.setFilterPath(fInterpreterPath.getText());
 		if (Platform.getOS().equals(Platform.OS_WIN32)) {
-			dialog.setFilterExtensions(new String[] { "*.exe;*.bat;*.exe" });
+			dialog.setFilterExtensions(new String[] { "*.exe;*.bat;*.exe" }); //$NON-NLS-1$
 		} else {
-			dialog.setFilterExtensions(new String[] { "*" });
+			dialog.setFilterExtensions(new String[] { "*" }); //$NON-NLS-1$
 		}
-		dialog.setFilterNames(new String[] { "Executables" });
+		dialog.setFilterNames(new String[] { InterpretersMessages.AddScriptInterpreterDialog_executables });
 		String newPath = dialog.open();
 		if (newPath != null) {
 			fInterpreterPath.setText(newPath);

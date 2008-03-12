@@ -24,7 +24,7 @@ public class DbgpServer extends DbgpWorkingThread {
 	public static int findAvailablePort(int fromPort, int toPort) {
 		if (fromPort > toPort) {
 			throw new IllegalArgumentException(
-					"startPort should be less or equal than endPort");
+					Messages.DbgpServer_startPortShouldBeLessThanOrEqualToEndPort);
 		}
 
 		int port = fromPort;
@@ -66,7 +66,7 @@ public class DbgpServer extends DbgpWorkingThread {
 	}
 
 	private void createSession(final Socket client) {
-		Job job = new Job("Accepting debugging engine connection") {
+		Job job = new Job(Messages.DbgpServer_acceptingDebuggingEngineConnection) {
 			protected IStatus run(IProgressMonitor monitor) {
 				if (listener != null) {
 					DbgpDebugingEngine dbgpDebugingEngine = null;
@@ -101,7 +101,7 @@ public class DbgpServer extends DbgpWorkingThread {
 	}
 
 	public DbgpServer(int port, int serverTimeout, int clientTimeout) {
-		super("DbgpServer");
+		super("DbgpServer"); //$NON-NLS-1$
 
 		this.port = port;
 		this.serverTimeout = serverTimeout;

@@ -76,9 +76,9 @@ public class Block extends Expression {
 		Iterator it = statements.iterator();
 		while (it.hasNext()) {
 			((ASTNode) it.next()).printNode(output);
-			output.formatPrint("");
+			output.formatPrint(""); //$NON-NLS-1$
 		}
-		output.formatPrint("");
+		output.formatPrint(""); //$NON-NLS-1$
 		output.dedent();
 	}
 

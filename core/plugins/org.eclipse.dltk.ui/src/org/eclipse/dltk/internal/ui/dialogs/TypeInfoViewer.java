@@ -399,7 +399,7 @@ public class TypeInfoViewer {
 
 		private String getTypeContainerName(TypeNameMatch info, int infoLevel) {
 // String result= info.getTypeContainerName();
-			String result = "";
+			String result = ""; //$NON-NLS-1$
 			IDLTKUILanguageToolkit toolkit = DLTKUILanguageManager
 					.getLanguageToolkit(info.getType());
 			if (toolkit != null) {

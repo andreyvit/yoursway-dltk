@@ -29,7 +29,7 @@ import org.eclipse.dltk.ruby.debug.RubyDebugPlugin;
 public class RubyActiveStateDebuggerRunner extends
 		ExternalDebuggingEngineRunner {
 
-	public static final String ENGINE_ID = "org.eclipse.dltk.ruby.activestatedebugger";
+	public static final String ENGINE_ID = "org.eclipse.dltk.ruby.activestatedebugger"; //$NON-NLS-1$
 
 	public RubyActiveStateDebuggerRunner(IInterpreterInstall install) {
 		super(install);
@@ -52,13 +52,13 @@ public class RubyActiveStateDebuggerRunner extends
 		 * unset if not explicity set to a value by user? see:
 		 * http://aspn.activestate.com/ASPN/docs/Komodo/komodo-doc-debugruby.html
 		 */
-		config.addEnvVar("RUBYDB_OPTS", "RemotePort=" + host + ":" + port);
-		config.addEnvVar("DBGP_IDEKEY", sessionId);
+		config.addEnvVar("RUBYDB_OPTS", "RemotePort=" + host + ":" + port); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		config.addEnvVar("DBGP_IDEKEY", sessionId); //$NON-NLS-1$
 		// ruby -I"$dbgdir" -r "$dbgdir"/rdbgp.rb <Program_To_Debug.rb>
-		config.addInterpreterArg("-I");
+		config.addInterpreterArg("-I"); //$NON-NLS-1$
 		config.addInterpreterArg(dir);
 
-		config.addInterpreterArg("-r");
+		config.addInterpreterArg("-r"); //$NON-NLS-1$
 		config.addInterpreterArg(debugEnginePath.getAbsolutePath());
 
 		return config;

@@ -18,7 +18,7 @@ import org.eclipse.dltk.validators.internal.core.ValidatorsCore;
 
 public final class ExternalCheckerMarker {
 
-	public static final String PROBLEM_ID = ValidatorsCore.PLUGIN_ID + ".externalcheckerproblem";
+	public static final String PROBLEM_ID = ValidatorsCore.PLUGIN_ID + ".externalcheckerproblem"; //$NON-NLS-1$
 	
 	private static class ProblemRemover implements IResourceVisitor {
 

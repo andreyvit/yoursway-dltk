@@ -201,7 +201,7 @@ public class NewSourceFolderWizardPage extends NewElementWizardPage {
 		setControl(composite);
 		Dialog.applyDialogFont(composite);
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
 		
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, IScriptHelpContextIds.NEW_PACKAGEROOT_WIZARD_PAGE);		

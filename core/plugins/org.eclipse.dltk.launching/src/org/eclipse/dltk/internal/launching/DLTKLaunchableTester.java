@@ -52,7 +52,7 @@ public class DLTKLaunchableTester extends PropertyTester {
 	private static final String PROPERTY_BUILDPATH_REFERENCE = "buildpathReference"; //$NON-NLS-1$
 	public DLTKLaunchableTester() {
 		if( DLTKCore.VERBOSE ) {
-			System.out.println("DLTKLaunchableTester:initialized...");
+			System.out.println("DLTKLaunchableTester:initialized..."); //$NON-NLS-1$
 		}
 	}
 	/**

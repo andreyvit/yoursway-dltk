@@ -74,7 +74,7 @@ public class NewNameQueries implements INewNameQueries {
 
 	public INewNameQuery createNewSourceModuleNameQuery(ISourceModule cu, String initialSuggestedName) {
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO:add removeScriptLikeExtensions code here...");
+			System.err.println("TODO:add removeScriptLikeExtensions code here..."); //$NON-NLS-1$
 		}
 		String[] keys= {/*DLTKCore.removeScriptLikeExtension(*/cu.getElementName()/*)*/};
 		String message= Messages.format(ReorgMessages.ReorgQueries_enterNewNameQuestion, keys); 
@@ -169,13 +169,13 @@ public class NewNameQueries implements INewNameQueries {
 				} catch (CoreException e) {
 					e.printStackTrace();
 				}
-				IStatus status= new Status(IStatus.ERROR, DLTKUIPlugin.PLUGIN_ID, 0, "Not Script Project",null);
+				IStatus status= new Status(IStatus.ERROR, DLTKUIPlugin.PLUGIN_ID, 0, ReorgMessages.NewNameQueries_mustBeAScriptProject,null);
 				if( toolkit != null ) {
 					if( DLTKContentTypeManager.isValidFileNameForContentType(toolkit, newCuName)) {
 						status = IModelStatus.VERIFIED_OK;
 					}
 					else {
-						status = new Status(IStatus.ERROR, DLTKUIPlugin.PLUGIN_ID, "Invalid file name");
+						status = new Status(IStatus.ERROR, DLTKUIPlugin.PLUGIN_ID, ReorgMessages.NewNameQueries_invalidFileName);
 					}
 				}
 				if (status.getSeverity() == IStatus.ERROR)
@@ -217,7 +217,7 @@ public class NewNameQueries implements INewNameQueries {
 //				try {
 					if (parent instanceof IProjectFragment){
 						if (DLTKCore.DEBUG) {
-							System.err.println("TODO:NewNamequeries add isPackageNameOkInRoot check...");
+							System.err.println("TODO:NewNamequeries add isPackageNameOkInRoot check..."); //$NON-NLS-1$
 						}
 //						if (! RenamePackageProcessor.isPackageNameOkInRoot(newText, (IProjectFragment)parent))
 //							return ReorgMessages.ReorgQueries_packagewithThatNameexistsMassage;	 

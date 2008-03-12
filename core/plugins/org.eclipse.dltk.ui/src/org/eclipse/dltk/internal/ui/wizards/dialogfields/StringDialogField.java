@@ -34,7 +34,7 @@ public class StringDialogField extends DialogField {
 	public StringDialogField() {
 		super();
 		if(DLTKCore.DEBUG) {
-			System.err.println("StringDialogField: Add content assist here.");
+			System.err.println("StringDialogField: Add content assist here."); //$NON-NLS-1$
 		}
 		fText= ""; //$NON-NLS-1$
 	}

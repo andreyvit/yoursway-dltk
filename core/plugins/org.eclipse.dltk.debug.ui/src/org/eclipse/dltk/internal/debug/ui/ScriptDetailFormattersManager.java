@@ -19,15 +19,15 @@ import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
 
 public class ScriptDetailFormattersManager {
-	private static final String DEFAULT_FORMATTER_TYPE = "#DEFAULT#";
-	private static final String ATTR_SNIPPET = "snippet";
-	private static final String ATTR_TYPE = "type";
-	private static final String ATTR_NATURE = "nature";
+	private static final String DEFAULT_FORMATTER_TYPE = "#DEFAULT#"; //$NON-NLS-1$
+	private static final String ATTR_SNIPPET = "snippet"; //$NON-NLS-1$
+	private static final String ATTR_TYPE = "type"; //$NON-NLS-1$
+	private static final String ATTR_NATURE = "nature"; //$NON-NLS-1$
 	private static final String SCRIPT_DETAIL_FORMATTER_EXTENSION = DLTKDebugUIPlugin.PLUGIN_ID
-			+ ".scriptDetailFormatter";
+			+ ".scriptDetailFormatter"; //$NON-NLS-1$
 
 	private static HashMap managerInstances = new HashMap();
-	private static final String CANNOT_EVALUATE = "Can't evaluate details.";
+	private static final String CANNOT_EVALUATE = Messages.ScriptDetailFormattersManager_cantEvaluateDetails;
 	private HashMap formatters = new HashMap();
 	private DetailFormatter defaultFormatter = null;
 

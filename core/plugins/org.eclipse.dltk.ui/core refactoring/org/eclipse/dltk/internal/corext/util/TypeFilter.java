@@ -39,7 +39,7 @@ public class TypeFilter implements IPropertyChangeListener {
 	}
 	
 	protected String concatenate( char[]packageName, char[]typeName ) {
-		return new String(packageName) + " " + new String( typeName );
+		return new String(packageName) + " " + new String( typeName ); //$NON-NLS-1$
 	}
 		
 	public boolean isFiltered(char[] packageName, char[] typeName) {

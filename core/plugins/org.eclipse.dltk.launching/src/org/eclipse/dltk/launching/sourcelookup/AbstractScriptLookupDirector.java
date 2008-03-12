@@ -9,7 +9,7 @@ import org.eclipse.debug.core.model.IStackFrame;
 
 public class AbstractScriptLookupDirector implements IPersistableSourceLocator {
 
-	private static final String ATTR_PROJECT = "project";
+	private static final String ATTR_PROJECT = "project"; //$NON-NLS-1$
 	private String project;
 	
 	public String getMemento() throws CoreException {

@@ -19,7 +19,7 @@ public interface IModelStatus extends IStatus {
 	/**
 	 * Singleton OK object
 	 */
-	public static final IModelStatus VERIFIED_OK = new ModelStatus(OK, OK, "OK");
+	public static final IModelStatus VERIFIED_OK = new ModelStatus(OK, OK, "OK"); //$NON-NLS-1$
 	/**
 	 * Returns whether this status indicates that a script model element does not exist.
 	 * This convenience method is equivalent to

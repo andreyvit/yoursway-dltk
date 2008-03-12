@@ -299,17 +299,17 @@ public class ScriptElementLabels {
 	/**
 	 * User-readable string for separating post qualified names (e.g. " - ").
 	 */
-	public final static String CONCAT_STRING = " - ";
+	public final static String CONCAT_STRING = " - "; //$NON-NLS-1$
 
 	/**
 	 * User-readable string for separating list items (e.g. ", ").
 	 */
-	public final static String COMMA_STRING = ", ";
+	public final static String COMMA_STRING = ", "; //$NON-NLS-1$
 
 	/**
 	 * User-readable string for separating the return type (e.g. " : ").
 	 */
-	public final static String DECL_STRING = " : ";
+	public final static String DECL_STRING = " : "; //$NON-NLS-1$
 
 	/**
 	 * User-readable string for ellipsis ("...").
@@ -320,9 +320,9 @@ public class ScriptElementLabels {
 	 * User-readable string for the default package name (e.g. "(default
 	 * package)").
 	 */
-	public final static String DEFAULT_PACKAGE = "(default package)";
+	public final static String DEFAULT_PACKAGE = "(default package)"; //$NON-NLS-1$
 
-	public final static String BUILTINS_FRAGMENT = "(builtins)";
+	public final static String BUILTINS_FRAGMENT = "(builtins)"; //$NON-NLS-1$
 
 	private final static long QUALIFIER_FLAGS = P_COMPRESSED | USE_RESOLVED;
 
@@ -659,7 +659,7 @@ public class ScriptElementLabels {
 						for (int i = 0; i < superNames.length; ++i) {
 
 							if (count > 0) {
-								typeName += COMMA_STRING + " ";
+								typeName += COMMA_STRING + " "; //$NON-NLS-1$
 							}
 							typeName += superNames[i];
 							count++;
@@ -668,7 +668,7 @@ public class ScriptElementLabels {
 				}
 			} catch (ModelException e) {
 				// ignore
-				typeName = "";
+				typeName = ""; //$NON-NLS-1$
 			}
 		}
 
@@ -754,7 +754,7 @@ public class ScriptElementLabels {
 						// initializers[i].length()
 						// > 0
 						// ) {
-						buf.append("=\"" + initializers[i] + "\"");
+						buf.append("=\"" + initializers[i] + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			} else {
@@ -959,12 +959,12 @@ public class ScriptElementLabels {
 		if (pack instanceof ExternalProjectFragment) {
 			buf.append(pack.getElementName().replace(
 					ExternalProjectFragment.JEM_SKIP_DELIMETER, Path.SEPARATOR)
-					+ " ");
+					+ " "); //$NON-NLS-1$
 		} else {
 			if (pack instanceof BuiltinProjectFragment) {
-				buf.append(BUILTINS_FRAGMENT + " ");
+				buf.append(BUILTINS_FRAGMENT + " "); //$NON-NLS-1$
 			} else {
-				buf.append(pack.getElementName() + " ");
+				buf.append(pack.getElementName() + " "); //$NON-NLS-1$
 			}
 		}
 		// }

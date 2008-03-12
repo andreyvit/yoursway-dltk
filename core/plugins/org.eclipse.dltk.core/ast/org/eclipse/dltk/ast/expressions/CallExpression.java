@@ -87,17 +87,17 @@ public class CallExpression extends Expression {
 	}
 	
 	public void printNode(CorePrinter output) {
-		output.formatPrint("CallExpression" + this.getSourceRange().toString() + ":");
+		output.formatPrint("CallExpression" + this.getSourceRange().toString() + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		if (this.receiver != null) {
-			output.formatPrint("{");
+			output.formatPrint("{"); //$NON-NLS-1$
 			this.receiver.printNode(output);
-			output.formatPrint("}.");
+			output.formatPrint("}."); //$NON-NLS-1$
 		}
-		output.formatPrint(this.getName() + "(");
+		output.formatPrint(this.getName() + "("); //$NON-NLS-1$
 		if (this.getArgs() != null) {
 			this.getArgs().printNode(output);
 		}
-		output.formatPrintLn(")");
+		output.formatPrintLn(")"); //$NON-NLS-1$
 	}
 
 }

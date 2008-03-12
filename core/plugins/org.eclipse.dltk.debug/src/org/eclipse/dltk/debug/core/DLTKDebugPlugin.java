@@ -23,7 +23,7 @@ import org.osgi.framework.BundleContext;
 
 public class DLTKDebugPlugin extends Plugin {
 
-	public static final String PLUGIN_ID = "org.eclipse.dltk.debug";
+	public static final String PLUGIN_ID = "org.eclipse.dltk.debug"; //$NON-NLS-1$
 
 	public static final int INTERNAL_ERROR = 120;
 
@@ -84,7 +84,7 @@ public class DLTKDebugPlugin extends Plugin {
 		}
 
 		log(new Status(IStatus.ERROR, PLUGIN_ID, INTERNAL_ERROR,
-				"Internal error logged from DLTKDebugPlugin: ", top));
+				Messages.DLTKDebugPlugin_internalErrorLoggedFromDltkDebugPlugin, top));
 	}
 
 	public static void log(IStatus status) {

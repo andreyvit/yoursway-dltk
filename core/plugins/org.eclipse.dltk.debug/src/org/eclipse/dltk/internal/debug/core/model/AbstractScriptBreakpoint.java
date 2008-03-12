@@ -32,41 +32,41 @@ public abstract class AbstractScriptBreakpoint extends Breakpoint implements
 	 * session)
 	 */
 	public static final String ENGINE_IDENTIFIER = DLTKDebugPlugin.PLUGIN_ID
-			+ ".id";
+			+ ".id"; //$NON-NLS-1$
 
 	/**
 	 * The number of breakpoint hits during debug session (available only during
 	 * debug session)
 	 */
 	public static final String HIT_COUNT = DLTKDebugPlugin.PLUGIN_ID
-			+ ".hit_count";
+			+ ".hit_count"; //$NON-NLS-1$
 
 	/**
 	 * Condition expression that should be valid for suspend on this breakpoint
 	 */
 	public static final String EXPRESSION = DLTKDebugPlugin.PLUGIN_ID
-			+ ".expression";
+			+ ".expression"; //$NON-NLS-1$
 
 	/**
 	 * State of condition expression (enabled or disabled)
 	 */
-	public static final String EXPRESSION_STATE = EXPRESSION + ".state";
+	public static final String EXPRESSION_STATE = EXPRESSION + ".state"; //$NON-NLS-1$
 
 	/**
 	 * The number of hits for suspend on this breakpoint
 	 */
 	public static final String HIT_VALUE = DLTKDebugPlugin.PLUGIN_ID
-			+ ".hit_value";
+			+ ".hit_value"; //$NON-NLS-1$
 
 	/**
 	 * The hit condition related to hit value
 	 */
 	public static final String HIT_CONDITION = DLTKDebugPlugin.PLUGIN_ID
-			+ ".hit_condition";
+			+ ".hit_condition"; //$NON-NLS-1$
 
 	public static URI makeUri(IPath location) {
 		try {
-			return new URI("file", "///"
+			return new URI("file", "///" //$NON-NLS-1$ //$NON-NLS-2$
 					+ location.toPortableString(), null);
 		} catch (URISyntaxException e) {
 			// TODO: log exception

@@ -37,7 +37,7 @@ public class DbgpFeature implements IDbgpFeature {
 	}
 
 	public String toString() {
-		return "DbgpFeature (name: " + name + "; value: " + value
-				+ "; supported: " + supported + ")";
+		return "DbgpFeature (name: " + name + "; value: " + value //$NON-NLS-1$ //$NON-NLS-2$
+				+ "; supported: " + supported + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

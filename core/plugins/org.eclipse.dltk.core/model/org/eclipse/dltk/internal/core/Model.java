@@ -146,7 +146,7 @@ public class Model extends Openable implements IScriptModel {
 			return new ScriptProject((IProject) resource, this);
 		default:
 			throw new IllegalArgumentException(
-					"invalid resource for the project");
+					Messages.Model_invalidResourceForTheProject);
 		}
 	}
 
@@ -261,7 +261,7 @@ public class Model extends Openable implements IScriptModel {
 	}
 
 	public void printNode(CorePrinter output) {
-		output.formatPrint("DLTK Model:" + getElementName());
+		output.formatPrint("DLTK Model:" + getElementName()); //$NON-NLS-1$
 		output.indent();
 		try {
 			IModelElement modelElements[] = this.getChildren();
@@ -270,7 +270,7 @@ public class Model extends Openable implements IScriptModel {
 				if (element instanceof ModelElement) {
 					((ModelElement) element).printNode(output);
 				} else {
-					output.print("Unknown element:" + element);
+					output.print("Unknown element:" + element); //$NON-NLS-1$
 				}
 			}
 		} catch (ModelException ex) {
@@ -290,7 +290,7 @@ public class Model extends Openable implements IScriptModel {
 			// force).runOperation(monitor);
 		}
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add Delete operations");
+			System.err.println("Add Delete operations"); //$NON-NLS-1$
 		}
 	}
 
@@ -379,7 +379,7 @@ public class Model extends Openable implements IScriptModel {
 					containers, force), elements, siblings, renamings, monitor);
 		} else {
 			if (DLTKCore.DEBUG) {
-				System.err.println("TODO:Add move elements operation");
+				System.err.println("TODO:Add move elements operation"); //$NON-NLS-1$
 			}
 			// runOperation(new MoveElementsOperation(elements, containers,
 			// force), elements, siblings, renamings, monitor);

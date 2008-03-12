@@ -51,7 +51,7 @@ class FiltersDialog extends StatusDialog {
         newShell.setText(CallHierarchyMessages.FiltersDialog_filter); 
 //        PlatformUI.getWorkbench().getHelpSystem().setHelp(newShell, IJavaHelpContextIds.CALL_HIERARCHY_FILTERS_DIALOG);
         if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
 		
     }

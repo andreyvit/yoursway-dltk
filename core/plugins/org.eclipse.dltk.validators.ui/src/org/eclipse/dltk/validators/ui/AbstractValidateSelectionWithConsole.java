@@ -32,7 +32,7 @@ import org.eclipse.ui.console.IPatternMatchListener;
 public abstract class AbstractValidateSelectionWithConsole implements
 		IObjectActionDelegate {
 
-	public static final String DLTK_VALIDATORS_CONSOLE = "DLTK Validators output:";
+	public static final String DLTK_VALIDATORS_CONSOLE = Messages.AbstractValidateSelectionWithConsole_dltkValidatorOutput;
 
 	protected abstract void invoceValidationFor(final OutputStream out,
 			final List elements, final List resources, IProgressMonitor monitor);

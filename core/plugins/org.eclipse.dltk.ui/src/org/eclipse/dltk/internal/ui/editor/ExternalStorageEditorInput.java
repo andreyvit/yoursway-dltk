@@ -47,7 +47,7 @@ public class ExternalStorageEditorInput implements IEditorInput,
 	public String getToolTipText() {
 		IPath path = fStorage.getFullPath();
 		if (path == null) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 
 		return path.toOSString();

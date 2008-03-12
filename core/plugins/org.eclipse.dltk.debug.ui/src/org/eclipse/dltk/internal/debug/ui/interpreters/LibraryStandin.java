@@ -33,7 +33,10 @@ public final class LibraryStandin {
 	 */	
 	public LibraryStandin(LibraryLocation libraryLocation) {
 		fSystemLibrary= libraryLocation.getLibraryPath();
-	}		
+	}	
+	public LibraryStandin(IPath path) {
+		fSystemLibrary= path;
+	}	
 		
 	/**
 	 * Returns the InterpreterEnvironment library archive location.
@@ -109,7 +112,7 @@ public final class LibraryStandin {
 		File f = getSystemLibraryPath().toFile();
 		if (!f.exists()) {
 			IPath path = getSystemLibraryPath();
-			String message = "Path is empty";
+			String message = InterpretersMessages.LibraryStandin_pathIsEmpty;
 			if( path != null ) {
 				message = path.toOSString();
 			}

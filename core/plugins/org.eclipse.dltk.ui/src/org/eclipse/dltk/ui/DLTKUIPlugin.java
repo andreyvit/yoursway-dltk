@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ui;
 
@@ -47,6 +47,7 @@ import org.eclipse.dltk.ui.viewsupport.ProblemMarkerManager;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
@@ -66,31 +67,31 @@ import org.osgi.framework.BundleContext;
  */
 public class DLTKUIPlugin extends AbstractUIPlugin {
 
-	public static final String PLUGIN_ID = "org.eclipse.dltk.ui";
-	public static final String ID_SCRIPTEXPLORER = "org.eclipse.dltk.ui.ScriptExplorer";
-	public static final String ID_TYPE_HIERARCHY = "org.eclipse.dltk.ui.TypeHierarchy";
+	public static final String PLUGIN_ID = "org.eclipse.dltk.ui"; //$NON-NLS-1$
+	public static final String ID_SCRIPTEXPLORER = "org.eclipse.dltk.ui.ScriptExplorer"; //$NON-NLS-1$
+	public static final String ID_TYPE_HIERARCHY = "org.eclipse.dltk.ui.TypeHierarchy"; //$NON-NLS-1$
 	// The shared instance.
 	private static DLTKUIPlugin plugin;
 
 	private MembersOrderPreferenceCache fMembersOrderPreferenceCache;
-	
+
 	private static ISharedImages fgSharedImages= null;
-	
+
 
 	/**
 	 * Content assist history.
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	private ContentAssistHistory fContentAssistHistory;
-	
+
 	private BuildpathAttributeConfigurationDescriptors fBuildpathAttributeConfigurationDescriptors;
 
 	/**
 	 * The constructor.
 	 */
 	public DLTKUIPlugin() {
-		plugin = this;
+		DLTKUIPlugin.plugin = this;
 	}
 
 	/**
@@ -104,9 +105,10 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 				ISourceModule original = workingCopy.getPrimary();
 				IResource resource = original.getResource();
 				if (resource != null) {
-					if (resource instanceof IFile)
+					if (resource instanceof IFile) {
 						return new DocumentAdapter(workingCopy,
 								(IFile) resource);
+					}
 				} else if (original instanceof ExternalSourceModule) {
 					IProjectFragment fragment = (IProjectFragment) original
 							.getAncestor(IModelElement.PROJECT_FRAGMENT);
@@ -152,13 +154,14 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 			fMembersOrderPreferenceCache = null;
 		}
 		super.stop(context);
-		plugin = null;
+		DLTKUIPlugin.plugin = null;
 	}
 
 	private IWorkbenchPage internalGetActivePage() {
 		IWorkbenchWindow window = getWorkbench().getActiveWorkbenchWindow();
-		if (window == null)
+		if (window == null) {
 			return null;
+		}
 		return getWorkbench().getActiveWorkbenchWindow().getActivePage();
 	}
 
@@ -166,28 +169,37 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 	 * Returns the shared instance.
 	 */
 	public static DLTKUIPlugin getDefault() {
-		return plugin;
+		return DLTKUIPlugin.plugin;
+	}
+
+	public IDialogSettings getDialogSettingsSection(String name) {
+		IDialogSettings dialogSettings= getDialogSettings();
+		IDialogSettings section= dialogSettings.getSection(name);
+		if (section == null) {
+			section= dialogSettings.addNewSection(name);
+		}
+		return section;
 	}
 
 	public static IWorkbenchPage getActivePage() {
-		return getDefault().internalGetActivePage();
+		return DLTKUIPlugin.getDefault().internalGetActivePage();
 	}
 
 	public static IWorkbenchWindow getActiveWorkbenchWindow() {
-		return getDefault().getWorkbench().getActiveWorkbenchWindow();
+		return DLTKUIPlugin.getDefault().getWorkbench().getActiveWorkbenchWindow();
 	}
 
 	/**
 	 * Returns an image descriptor for the image file at the given plug-in
 	 * relative path.
-	 * 
+	 *
 	 * @param path
 	 *            the path
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return AbstractUIPlugin.imageDescriptorFromPlugin(
-				"org.eclipse.dltk.ui", path);
+				"org.eclipse.dltk.ui", path); //$NON-NLS-1$
 	}
 
 	private IWorkingCopyManager fWorkingCopyManager;
@@ -216,18 +228,19 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 	}
 
 	public static ImageDescriptorRegistry getImageDescriptorRegistry() {
-		return getDefault().internalGetImageDescriptorRegistry();
+		return DLTKUIPlugin.getDefault().internalGetImageDescriptorRegistry();
 	}
 
 	private ImageDescriptorRegistry internalGetImageDescriptorRegistry() {
-		if (fImageDescriptorRegistry == null)
+		if (fImageDescriptorRegistry == null) {
 			fImageDescriptorRegistry = new ImageDescriptorRegistry();
+		}
 		return fImageDescriptorRegistry;
 	}
 
 	/**
 	 * Returns the model element wrapped by the given editor input.
-	 * 
+	 *
 	 * @param editorInput
 	 *            the editor input
 	 * @return the model element wrapped by <code>editorInput</code> or
@@ -236,7 +249,7 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 	public static IModelElement getEditorInputModelElement(
 			IEditorInput editorInput) {
 		// Performance: check working copy manager first: this is faster
-		IModelElement je = getDefault().getWorkingCopyManager().getWorkingCopy(
+		IModelElement je = DLTKUIPlugin.getDefault().getWorkingCopyManager().getWorkingCopy(
 				editorInput);
 		if (je != null) {
 			return je;
@@ -250,33 +263,33 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 	}
 
 	public static void log(IStatus status) {
-		getDefault().getLog().log(status);
+		DLTKUIPlugin.getDefault().getLog().log(status);
 	}
 
 	public static void log(Throwable e) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID,
+		DLTKUIPlugin.log(new Status(IStatus.ERROR, DLTKUIPlugin.PLUGIN_ID,
 				IDLTKStatusConstants.INTERNAL_ERROR,
 				DLTKUIMessages.ScriptPlugin_internal_error, e));
 	}
 
 	public static void logErrorMessage(String message) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID,
+		DLTKUIPlugin.log(new Status(IStatus.ERROR, DLTKUIPlugin.PLUGIN_ID,
 				IDLTKStatusConstants.INTERNAL_ERROR, message, null));
 	}
 
 	public static void logErrorStatus(String message, IStatus status) {
 		if (status == null) {
-			logErrorMessage(message);
+			DLTKUIPlugin.logErrorMessage(message);
 			return;
 		}
-		MultiStatus multi = new MultiStatus(PLUGIN_ID,
+		MultiStatus multi = new MultiStatus(DLTKUIPlugin.PLUGIN_ID,
 				IDLTKStatusConstants.INTERNAL_ERROR, message, null);
 		multi.add(status);
-		log(multi);
+		DLTKUIPlugin.log(multi);
 	}
 
 	public static Shell getActiveWorkbenchShell() {
-		IWorkbenchWindow window = getActiveWorkbenchWindow();
+		IWorkbenchWindow window = DLTKUIPlugin.getActiveWorkbenchWindow();
 		if (window != null) {
 			return window.getShell();
 		}
@@ -285,13 +298,14 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 
 	/**
 	 * Creates the DLTK plug-in's standard groups for view context menus.
-	 * 
+	 *
 	 * @param menu
 	 *            the menu manager to be populated
 	 */
 	public static void createStandardGroups(IMenuManager menu) {
-		if (!menu.isEmpty())
+		if (!menu.isEmpty()) {
 			return;
+		}
 
 		menu.add(new Separator(IContextMenuConstants.GROUP_NEW));
 		menu.add(new GroupMarker(IContextMenuConstants.GROUP_GOTO));
@@ -313,14 +327,14 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 	}
 
 	public static String getPluginId() {
-		return PLUGIN_ID;
+		return DLTKUIPlugin.PLUGIN_ID;
 	}
 
 	/**
 	 * Returns the Script content assist history.
-	 * 
+	 *
 	 * @return the Script content assist history
-	 * 
+	 *
 	 */
 	public ContentAssistHistory getContentAssistHistory() {
 		if (fContentAssistHistory == null) {
@@ -329,10 +343,11 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 						getPluginPreferences(),
 						PreferenceConstants.CODEASSIST_LRU_HISTORY);
 			} catch (CoreException x) {
-				log(x);
+				DLTKUIPlugin.log(x);
 			}
-			if (fContentAssistHistory == null)
+			if (fContentAssistHistory == null) {
 				fContentAssistHistory = new ContentAssistHistory();
+			}
 		}
 
 		return fContentAssistHistory;
@@ -346,8 +361,8 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 	 * This will force a rebuild of the descriptors the next time a client asks
 	 * for them.
 	 * </p>
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	public void resetEditorTextHoverDescriptors() {
 		fEditorTextHoverDescriptors = null;
@@ -355,7 +370,7 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 
 	/**
 	 * Returns all editor text hovers contributed to the workbench.
-	 * 
+	 *
 	 * @param store
 	 *            preference store to initialize settings from
 	 * @return an array of EditorTextHoverDescriptor *
@@ -388,7 +403,7 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 	 * elements inside a compilation unit or class file, the parent is opened in
 	 * the editor is opened and the element revealed. If there already is an
 	 * open Java editor for the given element, it is returned.
-	 * 
+	 *
 	 * @param element
 	 *            the input element; either a compilation unit (<code>ICompilationUnit</code>)
 	 *            or a class file (<code>IClassFile</code>) or source
@@ -405,7 +420,7 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 	 */
 	public static IEditorPart openInEditor(IModelElement element)
 			throws ModelException, PartInitException {
-		return openInEditor(element, true, true);
+		return DLTKUIPlugin.openInEditor(element, true, true);
 	}
 
 	/**
@@ -414,7 +429,7 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 	 * elements inside a compilation unit or class file, the parent is opened in
 	 * the editor is opened. If there already is an open Java editor for the
 	 * given element, it is returned.
-	 * 
+	 *
 	 * @param element
 	 *            the input element; either a compilation unit (<code>ICompilationUnit</code>)
 	 *            or a class file (<code>IClassFile</code>) or source
@@ -448,8 +463,9 @@ public class DLTKUIPlugin extends AbstractUIPlugin {
 	}
 
 	public synchronized ProblemMarkerManager getProblemMarkerManager() {
-		if (fProblemMarkerManager == null)
+		if (fProblemMarkerManager == null) {
 			fProblemMarkerManager = new ProblemMarkerManager();
+		}
 		return fProblemMarkerManager;
 	}
 

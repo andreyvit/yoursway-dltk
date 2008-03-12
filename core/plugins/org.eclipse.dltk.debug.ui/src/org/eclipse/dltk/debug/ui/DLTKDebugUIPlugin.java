@@ -57,7 +57,7 @@ import org.osgi.framework.BundleContext;
 public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.dltk.debug.ui";
+	public static final String PLUGIN_ID = "org.eclipse.dltk.debug.ui"; //$NON-NLS-1$
 
 	private ImageDescriptorRegistry fImageDescriptorRegistry;
 
@@ -288,7 +288,7 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 	 */
 	public static void log(Throwable e) {
 		log(new Status(IStatus.ERROR, getUniqueIdentifier(),
-				IDLTKDebugUIConstants.INTERNAL_ERROR, "Internal error", e));
+				IDLTKDebugUIConstants.INTERNAL_ERROR, Messages.DLTKDebugUIPlugin_internalError, e));
 	}
 
 	public static void errorDialog(String message, IStatus status) {
@@ -297,7 +297,7 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 		if (shell != null) {
 			ErrorDialog
 					.openError(shell,
-							"DebugUIMessages.JDIDebugUIPlugin_Error_1",
+							"DebugUIM0essages.JDIDebugUIPlugin_Error_1", //$NON-NLS-1$
 							message, status);
 		}
 	}
@@ -314,7 +314,7 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 					"Error logged from DLTK Debug UI: ", t); //$NON-NLS-1$	
 			ErrorDialog
 					.openError(shell,
-							"DebugUIMessages.JDIDebugUIPlugin_Error_1",
+							"DebugUIMessages.JDIDebugUIPlugin_Error_1", //$NON-NLS-1$
 							message, status);
 		}
 	}
@@ -340,7 +340,7 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 						IStatus.ERROR,
 						getUniqueIdentifier(),
 						IDLTKDebugUIConstants.INTERNAL_ERROR,
-						"DebugUIMessages.JDIDebugUIPlugin_An_error_occurred_retrieving_a_InterpreterInstallType_page_1",
+						"DebugUIMessages.JDIDebugUIPlugin_An_error_occurred_retrieving_a_InterpreterInstallType_page_1", //$NON-NLS-1$
 						ce));
 			}
 		}
@@ -389,7 +389,7 @@ public class DLTKDebugUIPlugin extends AbstractUIPlugin {
 						IDebugModelPresentation lp;
 						try {
 							return (ScriptDebugModelPresentation) elt
-									.createExecutableExtension("class");
+									.createExecutableExtension("class"); //$NON-NLS-1$
 						} catch (CoreException e) {
 							DLTKDebugUIPlugin.log(e);
 						}

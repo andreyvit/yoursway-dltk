@@ -42,9 +42,9 @@ public class ClassInstanceType implements IClassType {
 
 	public String getTypeName() {
 		if (fClass != null) {
-			return "class:" + fClass.getName() + " instance";
+			return "class:" + fClass.getName() + " instance"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		return "class instance: !!unknown!!";
+		return "class instance: !!unknown!!"; //$NON-NLS-1$
 	}
 
 	public boolean subtypeOf(IEvaluatedType type) {

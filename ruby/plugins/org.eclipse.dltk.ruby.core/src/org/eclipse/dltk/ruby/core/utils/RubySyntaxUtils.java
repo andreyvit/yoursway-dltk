@@ -14,16 +14,16 @@ import org.eclipse.dltk.internal.core.SourceRange;
 
 public class RubySyntaxUtils {
 	
-	public static final String ARRAY_GET_METHOD = "[]".intern();
+	public static final String ARRAY_GET_METHOD = "[]".intern(); //$NON-NLS-1$
 	
-	public static final String ARRAY_PUT_METHOD = "[]=".intern();
+	public static final String ARRAY_PUT_METHOD = "[]=".intern(); //$NON-NLS-1$
 	
 	// FIXME Kalugin-WTF get the actual list from Andrey Tarantsov
 	private static final String[] operatorMethods = 
-		{"[]", "[]=", "**", "!", "~", "+", "-", "*", 
-		"/", "%", "<<", ">>", "&", "^", "|", "<=", 
-		">", "<", ">=", "<=>", "==", "===", "!=", "=~",
-		"+@", "-@"};
+		{"[]", "[]=", "**", "!", "~", "+", "-", "*",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+		"/", "%", "<<", ">>", "&", "^", "|", "<=",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+		">", "<", ">=", "<=>", "==", "===", "!=", "=~", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+		"+@", "-@"}; //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * If position is located inside a operator method, returns full
@@ -125,7 +125,7 @@ public class RubySyntaxUtils {
 			if (operatorMethods[i].equals(str))
 				return true;
 		}				
-		return str.matches("^(@{0,2}|\\$)[_a-zA-Z0-9]+[\\?!=]?$");
+		return str.matches("^(@{0,2}|\\$)[_a-zA-Z0-9]+[\\?!=]?$"); //$NON-NLS-1$
 	}
 
 	public static boolean isLessStrictIdentifierCharacter(char ch) {

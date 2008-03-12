@@ -67,7 +67,7 @@ public class DBGPSourceModule extends AbstractExternalSourceModule {
 			return new ByteArrayInputStream(contents);
 		} catch (DbgpException e) {
 			throw new CoreException(new Status(IStatus.ERROR,
-					DLTKCore.PLUGIN_ID, "dbgp source lookup", e));
+					DLTKCore.PLUGIN_ID, Messages.DBGPSourceModule_dbgpSourceLookup, e));
 		}
 	}
 
@@ -124,7 +124,7 @@ public class DBGPSourceModule extends AbstractExternalSourceModule {
 	 * @see org.eclipse.dltk.internal.core.AbstractExternalSourceModule#getModuleType()
 	 */
 	protected String getModuleType() {
-		return "DLTK Remote Source Moule: ";
+		return "DLTK Remote Source Moule: "; //$NON-NLS-1$
 	}
 
 	/*

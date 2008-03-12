@@ -25,6 +25,6 @@ public class ValidateSelectionWithConsoleAction extends AbstractValidateSelectio
 	}
 
 	protected String getJobName() {
-		return "Validation";
+		return Messages.ValidateSelectionWithConsoleAction_validation;
 	}
 }

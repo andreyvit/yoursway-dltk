@@ -144,8 +144,8 @@ public class ValidatorBlock implements ISelectionProvider,
 					return validator.getValidatorType().getName();
 				case 2:
 					String nature = validator.getValidatorType().getNature();
-					if (nature == "#") {
-						return "All";
+					if (nature == "#") { //$NON-NLS-1$
+						return ValidatorMessages.ValidatorBlock_all;
 					}
 					try {
 						IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
@@ -155,7 +155,7 @@ public class ValidatorBlock implements ISelectionProvider,
 						}
 					} catch (CoreException e) {
 					}
-					return "Unknown";
+					return ValidatorMessages.ValidatorBlock_unknown;
 				}
 			}
 			return element.toString();

@@ -32,18 +32,18 @@ public class DotFileFilter extends ViewerFilter {
 			Path path = new Path(name);
 			for (int i = 0; i < path.segmentCount(); i++) {
 				String segment = path.segment(i);
-				if (segment.startsWith(".")) {
+				if (segment.startsWith(".")) { //$NON-NLS-1$
 					return false;
 				}
 			}
 		} else if (element instanceof ISourceModule) {
-			if (((ISourceModule) element).getElementName().startsWith(".")) {
+			if (((ISourceModule) element).getElementName().startsWith(".")) { //$NON-NLS-1$
 				return false;
 			}
 		} else if (element instanceof IResource) {
 			String lastSegment = ((IResource) element).getFullPath()
 					.lastSegment();
-			if (lastSegment.startsWith(".")) {
+			if (lastSegment.startsWith(".")) { //$NON-NLS-1$
 				return false;
 			}
 		}

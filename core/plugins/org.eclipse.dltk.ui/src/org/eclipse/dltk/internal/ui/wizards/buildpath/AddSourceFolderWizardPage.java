@@ -328,7 +328,7 @@ public class AddSourceFolderWizardPage extends NewElementWizardPage {
 		setControl(composite);
 		Dialog.applyDialogFont(composite);
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support");
+			System.err.println("Add help support"); //$NON-NLS-1$
 		}
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, IDLTKHelpContextIds.NEW_PACKAGEROOT_WIZARD_PAGE);		
 	}
@@ -686,7 +686,7 @@ public class AddSourceFolderWizardPage extends NewElementWizardPage {
 			protected Control createDialogArea(Composite parent) {
 				Control result= super.createDialogArea(parent);
 				if (DLTKCore.DEBUG) {
-					System.err.println("TODO: Add help support here");
+					System.err.println("TODO: Add help support here"); //$NON-NLS-1$
 				}
 				//PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, IDLTKHelpContextIds.BP_CHOOSE_EXISTING_FOLDER_TO_MAKE_SOURCE_FOLDER);
 				return result;

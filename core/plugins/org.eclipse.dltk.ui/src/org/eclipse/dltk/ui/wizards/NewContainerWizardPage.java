@@ -136,7 +136,7 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 					IProjectFragment fragment = ScriptModelUtil.getProjectFragment(elem);
 					if (fragment != null && fragment.getKind() == IProjectFragment.K_SOURCE &&
 							!fragment.isExternal() )
-						initRoot = fragment.getScriptFolder("");
+						initRoot = fragment.getScriptFolder(""); //$NON-NLS-1$
 					
 					if (initRoot == null) {
 						IScriptProject project = elem.getScriptProject();
@@ -147,14 +147,14 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 										.getProjectFragments();
 								for (int i = 0; i < roots.length; i++) {
 									if (roots[i].getKind() == IProjectFragment.K_SOURCE) {
-										initRoot = roots[i].getScriptFolder("");
+										initRoot = roots[i].getScriptFolder(""); //$NON-NLS-1$
 										break;
 									}
 								}
 							}
 							if (initRoot == null) {
 								initRoot = project.getProjectFragment(project
-										.getResource()).getScriptFolder("");
+										.getResource()).getScriptFolder(""); //$NON-NLS-1$
 							}
 						}
 					}
@@ -320,7 +320,7 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 				
 				IScriptProject jproject = DLTKCore.create(proj);			
 				if (resType == IResource.PROJECT)
-					currRoot = jproject.getProjectFragment(res).getScriptFolder("");
+					currRoot = jproject.getProjectFragment(res).getScriptFolder(""); //$NON-NLS-1$
 				else {
 					currRoot = jproject.getProjectFragment(res).getScriptFolder(path);					
 				}					
@@ -500,11 +500,11 @@ public abstract class NewContainerWizardPage extends NewElementWizardPage {
 			Object element = dialog.getFirstResult();
 			if (element instanceof IScriptProject) {				
 				IScriptProject jproject = (IScriptProject) element;
-				return jproject.getProjectFragment(jproject.getResource()).getScriptFolder("");				
+				return jproject.getProjectFragment(jproject.getResource()).getScriptFolder(""); //$NON-NLS-1$				
 			} else if (element instanceof IScriptFolder) {
 				return (IScriptFolder) element;
 			} else if (element instanceof IProjectFragment) {
-				return ((IProjectFragment) element).getScriptFolder("");
+				return ((IProjectFragment) element).getScriptFolder(""); //$NON-NLS-1$
 			}
 			return null;
 		}

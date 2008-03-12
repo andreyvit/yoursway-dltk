@@ -24,12 +24,12 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 		IScriptWatchpoint {
 
 	private static final String FIELD_NAME = DLTKDebugPlugin.PLUGIN_ID
-			+ ".fieldName";
+			+ ".fieldName"; //$NON-NLS-1$
 
-	private static final String ACCESS = DLTKDebugPlugin.PLUGIN_ID + ".access";
+	private static final String ACCESS = DLTKDebugPlugin.PLUGIN_ID + ".access"; //$NON-NLS-1$
 
 	private static final String MODIFICATION = DLTKDebugPlugin.PLUGIN_ID
-			+ ".modification";
+			+ ".modification"; //$NON-NLS-1$
 
 	public ScriptWatchpoint(String debugModelId, IResource resource,
 			IPath path, int lineNumber, int start, int end, String fieldName)
@@ -42,7 +42,7 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 	}
 
 	public String getFieldName() throws CoreException {
-		return this.getMarker().getAttribute(FIELD_NAME, "");
+		return this.getMarker().getAttribute(FIELD_NAME, ""); //$NON-NLS-1$
 	}
 
 	public void setFieldName(String name) throws CoreException {
@@ -54,12 +54,12 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 	}
 
 	public boolean isAccess() throws CoreException {
-		return (new Boolean(this.getMarker().getAttribute(ACCESS, "true")))
+		return (new Boolean(this.getMarker().getAttribute(ACCESS, "true"))) //$NON-NLS-1$
 				.booleanValue();
 	}
 
 	public boolean isModification() throws CoreException {
-		return (new Boolean(this.getMarker().getAttribute(MODIFICATION, "true")))
+		return (new Boolean(this.getMarker().getAttribute(MODIFICATION, "true"))) //$NON-NLS-1$
 				.booleanValue();
 	}
 

@@ -31,6 +31,8 @@ import org.eclipse.dltk.debug.core.model.IScriptTypeFactory;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.internal.debug.core.eval.ScriptEvaluationCommand;
 
+import java.text.MessageFormat;
+
 public class ScriptValue extends ScriptDebugElement implements IScriptValue,
 		IIndexedValue {
 	final private IScriptType type;
@@ -128,7 +130,7 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue,
 				sb.append(type.getName());
 				String id = getInstanceId();
 				if (id != null) {
-					sb.append(" (id = " + id + ")"); // TODO add constant
+					sb.append(" (id = " + id + ")"); // TODO add constant //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				value = sb.toString();
 			}
@@ -196,7 +198,7 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue,
 			String messageTemplate, IScriptThread thread) {
 		IScriptEvaluationEngine engine = thread.getEvaluationEngine();
 
-		String pattern = "(%variable%)";
+		String pattern = "(%variable%)"; //$NON-NLS-1$
 		String evalName = getEvalName();
 		if (messageTemplate.indexOf(pattern) != -1) {
 			String snippet = replacePattern(messageTemplate, pattern, evalName);
@@ -204,8 +206,7 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue,
 		} else {
 			DLTKDebugPlugin.log(new Status(IStatus.WARNING,
 					DLTKDebugPlugin.PLUGIN_ID,
-					"Detail formatter required to contain " + pattern
-							+ " identifier."));
+					MessageFormat.format(Messages.ScriptValue_detailFormatterRequiredToContainIdentifier, new Object[] { pattern })));
 			return new ScriptEvaluationCommand(engine, evalName, frame);
 		}
 	}
@@ -236,7 +237,7 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue,
 			}
 			return variables[offset];
 		} catch (DbgpException e) {
-			throw wrapDbgpException("Unable to load children of " + name, e);
+			throw wrapDbgpException(MessageFormat.format(Messages.ScriptValue_unableToLoadChildrenOf, new Object[] { name }), e);
 		}
 	}
 

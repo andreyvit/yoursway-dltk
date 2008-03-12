@@ -553,7 +553,7 @@ public abstract class ScriptCompletionProposalCollector extends CompletionReques
 //							relevance, fSuggestedMethodNames, fJavaProposals);
 					if (DLTKCore.DEBUG) {
 						System.out
-								.println("TODO: Add method completion proposal support here...");
+								.println("TODO: Add method completion proposal support here..."); //$NON-NLS-1$
 					}
 				}
 			}

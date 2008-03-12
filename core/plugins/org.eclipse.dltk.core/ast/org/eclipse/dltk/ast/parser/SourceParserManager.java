@@ -13,9 +13,9 @@ import org.eclipse.dltk.core.DLTKCore;
 public class SourceParserManager extends DLTKContributionExtensionManager {
 
 	private static final String SOURCE_PARSER_EXT_POINT = DLTKCore.PLUGIN_ID
-			+ ".sourceParsers";
+			+ ".sourceParsers"; //$NON-NLS-1$
 
-	private static final String PARSER_TAG = "parser";
+	private static final String PARSER_TAG = "parser"; //$NON-NLS-1$
 
 	private static SourceParserManager instance;
 

@@ -29,7 +29,7 @@ public class ScriptLaunchUtil {
 	// Create file with script content
 	public static File createScriptFileWithContent(String scriptContent)
 			throws IOException {
-		File file = File.createTempFile("script", null);
+		File file = File.createTempFile("script", null); //$NON-NLS-1$
 
 		FileWriter writer = null;
 		try {
@@ -81,7 +81,7 @@ public class ScriptLaunchUtil {
 			file = workingDirectoryPath.toFile();
 		}
 		if (DLTKLaunchingPlugin.TRACE_EXECUTION) {
-			traceExecution("runScript with interpreter", cmdLine,
+			traceExecution("runScript with interpreter", cmdLine, //$NON-NLS-1$
 					environmentAsStrings);
 		}
 		return DebugPlugin.exec(cmdLine, file, environmentAsStrings);
@@ -90,19 +90,19 @@ public class ScriptLaunchUtil {
 	private static void traceExecution(String processLabel,
 			String[] cmdLineLabel, String[] environment) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("-----------------------------------------------\n");
-		sb.append("Running ").append(processLabel).append('\n');
+		sb.append("-----------------------------------------------\n"); //$NON-NLS-1$
+		sb.append("Running ").append(processLabel).append('\n'); //$NON-NLS-1$
 		// sb.append("Command line: ").append(cmdLineLabel).append('\n');
-		sb.append("Command line: ");
+		sb.append("Command line: "); //$NON-NLS-1$
 		for (int i = 0; i < cmdLineLabel.length; i++) {
-			sb.append(" " + cmdLineLabel[i]);
+			sb.append(" " + cmdLineLabel[i]); //$NON-NLS-1$
 		}
-		sb.append("\n");
-		sb.append("Environment:\n");
+		sb.append("\n"); //$NON-NLS-1$
+		sb.append("Environment:\n"); //$NON-NLS-1$
 		for (int i = 0; i < environment.length; i++) {
 			sb.append('\t').append(environment[i]).append('\n');
 		}
-		sb.append("-----------------------------------------------\n");
+		sb.append("-----------------------------------------------\n"); //$NON-NLS-1$
 		System.out.println(sb);
 	}
 

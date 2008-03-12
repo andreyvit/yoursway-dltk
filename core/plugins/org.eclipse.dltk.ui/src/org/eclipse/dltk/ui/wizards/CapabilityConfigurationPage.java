@@ -136,7 +136,7 @@ public abstract class CapabilityConfigurationPage extends NewElementWizardPage {
 		control.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		Dialog.applyDialogFont(composite);
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
 		
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, IDLTKHelpContextIds.NEW_JAVAPROJECT_WIZARD_PAGE);

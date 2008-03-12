@@ -14,13 +14,13 @@ package org.eclipse.dltk.core;
  */
 public interface IDLTKContributedExtension {
 
-	static final String ID = "id";
-	static final String NAME = "name";
-	static final String DESCRIPTION = "description";
-	static final String PREF_PAGE_ID = "preferencePageId";
-	static final String PROP_PAGE_ID = "propertyPageId";
-	static final String PRIORITY = "priority";
-	static final String NATURE_ID = "natureId";
+	static final String ID = "id"; //$NON-NLS-1$
+	static final String NAME = "name"; //$NON-NLS-1$
+	static final String DESCRIPTION = "description"; //$NON-NLS-1$
+	static final String PREF_PAGE_ID = "preferencePageId"; //$NON-NLS-1$
+	static final String PROP_PAGE_ID = "propertyPageId"; //$NON-NLS-1$
+	static final String PRIORITY = "priority"; //$NON-NLS-1$
+	static final String NATURE_ID = "natureId"; //$NON-NLS-1$
 
 	/**
 	 * Returns the contribution id

@@ -16,8 +16,7 @@ public class ErrorDefinedType implements IEvaluatedType {
 	public static final IEvaluatedType INSTANCE = new ErrorDefinedType();
 
 	public String getTypeName() {
-
-		return "error defined";
+		return "error defined"; //$NON-NLS-1$
 	}
 
 	public boolean subtypeOf(IEvaluatedType type) {

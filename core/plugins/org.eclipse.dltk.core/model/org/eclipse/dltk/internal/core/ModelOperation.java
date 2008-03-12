@@ -212,7 +212,7 @@ public abstract class ModelOperation implements IWorkspaceRunnable, IProgressMon
 	 */
 	protected void checkCanceled() {
 		if (isCanceled()) {
-			throw new OperationCanceledException("Operation cancelled");
+			throw new OperationCanceledException(Messages.ModelOperation_operationCancelled);
 		}
 	}
 

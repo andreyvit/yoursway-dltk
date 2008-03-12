@@ -16,14 +16,14 @@ public class DLTKExecuteExtensionHelper {
 			nature = (String) data;
 
 		} else if (data instanceof Map) {
-			nature = (String) ((Map) data).get("nature");
+			nature = (String) ((Map) data).get("nature"); //$NON-NLS-1$
 		}
 		if (nature != null) {
 			try {
 				IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(nature);
 				if( toolkit == null ) {
 					throw new RuntimeException(
-							"Nature attribute should be specified and correct");
+							Messages.DLTKExecuteExtensionHelper_natureAttributeMustBeSpecifiedAndCirrect);
 				}
 				return toolkit;
 			} catch (CoreException e) {
@@ -31,11 +31,11 @@ public class DLTKExecuteExtensionHelper {
 					e.printStackTrace();
 				}
 				throw new RuntimeException(
-						"Nature attribute should be specified and correct", e);
+						Messages.DLTKExecuteExtensionHelper_natureAttributeMustBeSpecifiedAndCirrect, e);
 			}
 		} else {
 			throw new RuntimeException(
-					"Nature attribute should be specified and correct");
+					Messages.DLTKExecuteExtensionHelper_natureAttributeMustBeSpecifiedAndCirrect);
 		}
 	}
 }

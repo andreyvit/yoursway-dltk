@@ -85,8 +85,8 @@ public class DbgpProperty implements IDbgpProperty {
 	}
 
 	public String toString() {
-		return "DbgpProperty (Name: " + name + "; Full name: " + fullName
-				+ "; Type: " + type + "; Value: " + value + ")";
+		return "DbgpProperty (Name: " + name + "; Full name: " + fullName //$NON-NLS-1$ //$NON-NLS-2$
+				+ "; Type: " + type + "; Value: " + value + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	public String getKey() {

@@ -114,7 +114,7 @@ public abstract class ScriptSourceViewerConfiguration extends
 	 */
 	public String[] getDefaultPrefixes(ISourceViewer sourceViewer,
 			String contentType) {
-		return new String[] { getCommentPrefix(), "" };
+		return new String[] { getCommentPrefix(), "" }; //$NON-NLS-1$
 	}
 
 	/**
@@ -126,7 +126,7 @@ public abstract class ScriptSourceViewerConfiguration extends
 	 * </p>
 	 */
 	protected String getCommentPrefix() {
-		return "#";
+		return "#"; //$NON-NLS-1$
 	}
 
 	/**

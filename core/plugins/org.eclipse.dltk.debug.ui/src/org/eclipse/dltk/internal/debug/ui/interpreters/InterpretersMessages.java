@@ -13,7 +13,21 @@ import org.eclipse.osgi.util.NLS;
 
 public class InterpretersMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.dltk.internal.debug.ui.interpreters.InterpretersMessages";//$NON-NLS-1$
+	public static String AbstractInterpreterEnvironmentVariablesBlock_add;
+	public static String AbstractInterpreterEnvironmentVariablesBlock_addFromEnvironment;
+	public static String AbstractInterpreterEnvironmentVariablesBlock_addVariable;
+	public static String AbstractInterpreterEnvironmentVariablesBlock_edit;
+	public static String AbstractInterpreterEnvironmentVariablesBlock_editVariable;
+	public static String AbstractInterpreterEnvironmentVariablesBlock_name;
+	public static String AbstractInterpreterEnvironmentVariablesBlock_value;
+	public static String AbstractInterpreterLibraryBlock_rediscover;
+	public static String AbstractInterpreterLibraryBlock_setPathVisibleToDltk;
 	public static String addInterpreterDialog_InterpreterEnvironmentName;
+	public static String AddScriptInterpreterDialog_executables;
+	public static String AddScriptInterpreterDialog_interpreterEnvironmentVariables;
+	public static String EnvironmentTab_19;
+	public static String EnvironmentTab_20;
+	public static String EnvironmentTab_7;
 	public static String InterpretersBlock_0;
 	public static String InterpretersPreferencePage_1;
 	public static String InterpretersPreferencePage_2;
@@ -65,6 +79,7 @@ public class InterpretersMessages extends NLS {
 	public static String InterpreterContainerWizardPage_Select_the_Interpreter_used_to_build_this_project__4;
 	public static String InstalledInterpretersBlock_113;
 	public static String AddInterpreterDialog_iArgs;
+	public static String LibraryStandin_pathIsEmpty;
 		
 	private InterpretersMessages() {
 	// dont instatiate

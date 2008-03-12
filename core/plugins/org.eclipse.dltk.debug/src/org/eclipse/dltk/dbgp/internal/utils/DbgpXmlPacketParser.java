@@ -20,21 +20,21 @@ public class DbgpXmlPacketParser extends DbgpXmlParser {
 	}
 
 	public static DbgpResponsePacket parseResponsePacket(Element element) {
-		final String ATTR_TRANSACTION_ID = "transaction_id";
+		final String ATTR_TRANSACTION_ID = "transaction_id"; //$NON-NLS-1$
 
 		int id = Integer.parseInt(element.getAttribute(ATTR_TRANSACTION_ID));
 		return new DbgpResponsePacket(element, id);
 	}
 
 	public static DbgpNotifyPacket parseNotifyPacket(Element element) {
-		final String ATTR_NAME = "name";
+		final String ATTR_NAME = "name"; //$NON-NLS-1$
 
 		String name = element.getAttribute(ATTR_NAME);
 		return new DbgpNotifyPacket(element, name);
 	}
 
 	public static DbgpStreamPacket parseStreamPacket(Element element) {
-		final String ATTR_TYPE = "type";
+		final String ATTR_TYPE = "type"; //$NON-NLS-1$
 
 		String type = element.getAttribute(ATTR_TYPE);
 		String textContent = DbgpXmlParser.parseBase64Content(element);

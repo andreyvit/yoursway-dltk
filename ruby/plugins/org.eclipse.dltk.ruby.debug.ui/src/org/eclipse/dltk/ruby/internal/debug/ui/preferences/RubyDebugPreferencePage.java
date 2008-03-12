@@ -25,8 +25,8 @@ public class RubyDebugPreferencePage extends
 			RubyDebugPlugin.PLUGIN_ID,
 			DLTKDebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING);
 
-	private static String PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug";
-	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.ruby.propertyPage.debug";
+	private static String PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug"; //$NON-NLS-1$
+	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.ruby.propertyPage.debug"; //$NON-NLS-1$
 
 	protected AbstractOptionsBlock createOptionsBlock(
 			IStatusChangeListener newStatusChangedListener, IProject project,

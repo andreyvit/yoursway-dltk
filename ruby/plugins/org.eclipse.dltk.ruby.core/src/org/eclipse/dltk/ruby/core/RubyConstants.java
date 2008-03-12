@@ -16,7 +16,7 @@ public class RubyConstants {
 
 	}
 
-	public final static String RUBY_PARTITIONING = "__ruby_partitioning";
+	public final static String RUBY_PARTITIONING = "__ruby_partitioning"; //$NON-NLS-1$
 
 	public static final int RubyAttributeModifier = Modifiers.USER_MODIFIER * 2;
 	

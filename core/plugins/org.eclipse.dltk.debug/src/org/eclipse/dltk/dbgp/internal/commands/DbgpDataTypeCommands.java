@@ -20,12 +20,12 @@ import org.w3c.dom.NodeList;
 
 public class DbgpDataTypeCommands extends DbgpBaseCommands implements
 		IDbgpDataTypeCommands {
-	private static final String TYPEMAP_GET_COMMAND = "typemap_get";
+	private static final String TYPEMAP_GET_COMMAND = "typemap_get"; //$NON-NLS-1$
 
-	private static final String ATTR_TYPE = "type";
-	private static final String ATTR_NAME = "name";
+	private static final String ATTR_TYPE = "type"; //$NON-NLS-1$
+	private static final String ATTR_NAME = "name"; //$NON-NLS-1$
 
-	private static final String TAG_MAP = "map";
+	private static final String TAG_MAP = "map"; //$NON-NLS-1$
 
 	private final Map converter;
 
@@ -37,15 +37,15 @@ public class DbgpDataTypeCommands extends DbgpBaseCommands implements
 		super(communicator);
 
 		converter = new HashMap();
-		converter.put("bool", new Integer(BOOL_TYPE));
-		converter.put("int", new Integer(INT_TYPE));
-		converter.put("float", new Integer(FLOAT_TYPE));
-		converter.put("string", new Integer(STRING_TYPE));
-		converter.put("null", new Integer(NULL_TYPE));
-		converter.put("array", new Integer(ARRAY_TYPE));
-		converter.put("hash", new Integer(HASH_TYPE));
-		converter.put("object", new Integer(OBJECT_TYPE));
-		converter.put("resource", new Integer(RESOURCE_TYPE));
+		converter.put("bool", new Integer(BOOL_TYPE)); //$NON-NLS-1$
+		converter.put("int", new Integer(INT_TYPE)); //$NON-NLS-1$
+		converter.put("float", new Integer(FLOAT_TYPE)); //$NON-NLS-1$
+		converter.put("string", new Integer(STRING_TYPE)); //$NON-NLS-1$
+		converter.put("null", new Integer(NULL_TYPE)); //$NON-NLS-1$
+		converter.put("array", new Integer(ARRAY_TYPE)); //$NON-NLS-1$
+		converter.put("hash", new Integer(HASH_TYPE)); //$NON-NLS-1$
+		converter.put("object", new Integer(OBJECT_TYPE)); //$NON-NLS-1$
+		converter.put("resource", new Integer(RESOURCE_TYPE)); //$NON-NLS-1$
 	}
 
 	public Map getTypeMap() throws DbgpException {
@@ -63,7 +63,7 @@ public class DbgpDataTypeCommands extends DbgpBaseCommands implements
 			Integer intType = typeToInteger(type);
 
 			if (intType == null) {
-				throw new DbgpException("Invalid type attribute");
+				throw new DbgpException(Messages.DbgpDataTypeCommands_invalidTypeAttribute);
 			}
 
 			String name = map.getAttribute(ATTR_NAME);

@@ -74,7 +74,7 @@ public class OpenAction extends SelectionDispatchAction {
 		setToolTipText(ActionMessages.OpenAction_tooltip);
 		setDescription(ActionMessages.OpenAction_description);
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
 
 		// PlatformUI.getWorkbench().getHelpSystem().setHelp(this,

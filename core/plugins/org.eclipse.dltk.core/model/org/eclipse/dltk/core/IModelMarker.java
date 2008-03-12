@@ -44,7 +44,7 @@ public interface IModelMarker {
 	 * 
 	 *
 	 */
-	public static final String ARGUMENTS = "arguments";
+	public static final String ARGUMENTS = "arguments"; //$NON-NLS-1$
 
 	/**
 	 * Buildpath file format marker attribute (value
@@ -53,18 +53,18 @@ public interface IModelMarker {
 	 * 
 	 *
 	 */
-	public static final String BUILDPATH_FILE_FORMAT = "buildpathFileFormat";
+	public static final String BUILDPATH_FILE_FORMAT = "buildpathFileFormat"; //$NON-NLS-1$
 
 	/**
 	 * Cycle detected marker attribute (value <code>"cycleDetected"</code>).
 	 * Used only on buildpath problem markers. The value of this attribute is
 	 * either "true" or "false".
 	 */
-	public static final String CYCLE_DETECTED = "cycleDetected";
+	public static final String CYCLE_DETECTED = "cycleDetected"; //$NON-NLS-1$
 
 	/**
 	 * Id marker attribute (value <code>"id"</code>).
 	 */
-	public static final String ID = "id";
+	public static final String ID = "id"; //$NON-NLS-1$
 
 }

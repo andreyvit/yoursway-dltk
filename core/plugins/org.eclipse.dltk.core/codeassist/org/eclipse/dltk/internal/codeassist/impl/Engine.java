@@ -125,7 +125,7 @@ public abstract class Engine implements ITypeRequestor {
 
 		getParser().handleNotInElement(type, position);
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: Engine: Add fields support.");
+			System.err.println("TODO: Engine: Add fields support."); //$NON-NLS-1$
 		}
 
 		return null;

@@ -44,7 +44,7 @@ public class SourceElementRequestVisitor extends ASTVisitor {
 	}
 
 	protected String makeLanguageDependentValue(ASTNode expr) {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	/**
@@ -89,9 +89,9 @@ public class SourceElementRequestVisitor extends ASTVisitor {
 
 
 
-		String value = "";
+		String value = ""; //$NON-NLS-1$
 		if (stmt instanceof StringLiteral) {
-			value = "\"" + ((StringLiteral) stmt).getValue() + "\"";
+			value = "\"" + ((StringLiteral) stmt).getValue() + "\""; //$NON-NLS-1$ //$NON-NLS-2$
 		} else if (stmt instanceof Literal) {
 			value = ((Literal) stmt).getValue();
 		} else /*if (stmt instanceof ExtendedVariableReference) */{

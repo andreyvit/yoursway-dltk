@@ -211,7 +211,7 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 		private void initializeImages() {
 			// http://bugs.eclipse.org/bugs/show_bug.cgi?id=18936
 			if (DLTKCore.DEBUG) {
-				System.err.println("TODO: Add quick fixes here.");
+				System.err.println("TODO: Add quick fixes here."); //$NON-NLS-1$
 			}
 			if (!fQuickFixImagesInitialized) {
 				// if (!isQuickFixableStateSet())
@@ -949,7 +949,7 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 		provider = new SourceForwardingDocumentProvider(provider);
 		if (DLTKCore.DEBUG) {
 			System.out
-					.println("Don't know how to put stuff like this into language depend core");
+					.println("Don't know how to put stuff like this into language depend core"); //$NON-NLS-1$
 		}
 		setParentDocumentProvider(provider);
 
@@ -1009,7 +1009,7 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 			IDocument document, boolean overwrite) throws CoreException {
 
 		System.out
-				.println("Todo: Add save document operation here. to correct commit of model changes.");
+				.println("Todo: Add save document operation here. to correct commit of model changes."); //$NON-NLS-1$
 		if (!fIsAboutToSave) {
 			return;
 		}
@@ -1239,10 +1239,10 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 				// in another editor
 				// see https://bugs.eclipse.org/bugs/show_bug.cgi?id=85519
 				System.out
-						.println("SourceModuleDocumentProvider: need to replace with messages api");
+						.println("SourceModuleDocumentProvider: need to replace with messages api"); //$NON-NLS-1$
 				Status status = new Status(IStatus.WARNING,
 						EditorsUI.PLUGIN_ID, IStatus.ERROR,
-						"Save as Target open in editor", null);
+						Messages.SourceModuleDocumentProvider_saveAsTargetOpenInEditor, null);
 				throw new CoreException(status);
 			}
 

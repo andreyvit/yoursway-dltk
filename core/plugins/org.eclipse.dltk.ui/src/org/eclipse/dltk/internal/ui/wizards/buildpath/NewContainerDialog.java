@@ -151,7 +151,7 @@ public class NewContainerDialog extends StatusDialog {
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 		if (DLTKCore.DEBUG) {
-			System.err.println("NewContainerDialog: Add help support");
+			System.err.println("NewContainerDialog: Add help support"); //$NON-NLS-1$
 		}
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(newShell, IDLTKHelpContextIds.NEW_CONTAINER_DIALOG);
 	}

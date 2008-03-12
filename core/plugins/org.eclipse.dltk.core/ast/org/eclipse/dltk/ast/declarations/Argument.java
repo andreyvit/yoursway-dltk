@@ -107,7 +107,7 @@ public class Argument extends Declaration {
 	}
 
 	public void printNode(CorePrinter output) {
-		output.formatPrint("Argument" + this.getSourceRange().toString() + ":");
+		output.formatPrint("Argument" + this.getSourceRange().toString() + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		output.formatPrintLn(super.toString());
 	}
 

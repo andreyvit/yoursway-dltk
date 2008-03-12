@@ -40,16 +40,16 @@ public class DbgpStatus implements IDbgpStatus {
 	public static Map reasonParser = new TreeMap(String.CASE_INSENSITIVE_ORDER);
 
 	static {
-		statusParser.put("starting", STATUS_STARTING);
-		statusParser.put("stopping", STATUS_STOPPING);
-		statusParser.put("stopped", STATUS_STOPPED);
-		statusParser.put("running", STATUS_RUNNING);
-		statusParser.put("break", STATUS_BREAK);
+		statusParser.put("starting", STATUS_STARTING); //$NON-NLS-1$
+		statusParser.put("stopping", STATUS_STOPPING); //$NON-NLS-1$
+		statusParser.put("stopped", STATUS_STOPPED); //$NON-NLS-1$
+		statusParser.put("running", STATUS_RUNNING); //$NON-NLS-1$
+		statusParser.put("break", STATUS_BREAK); //$NON-NLS-1$
 
-		reasonParser.put("ok", REASON_OK);
-		reasonParser.put("error", REASON_ERROR);
-		reasonParser.put("aborted", REASON_ABORTED);
-		reasonParser.put("exception", REASON_EXCEPTION);
+		reasonParser.put("ok", REASON_OK); //$NON-NLS-1$
+		reasonParser.put("error", REASON_ERROR); //$NON-NLS-1$
+		reasonParser.put("aborted", REASON_ABORTED); //$NON-NLS-1$
+		reasonParser.put("exception", REASON_EXCEPTION); //$NON-NLS-1$
 	}
 
 	public static IDbgpStatus parse(String status, String reason) {
@@ -124,7 +124,7 @@ public class DbgpStatus implements IDbgpStatus {
 	}
 
 	public String toString() {
-		return "Status: " + status.toString() + "; Reason: "
+		return "Status: " + status.toString() + "; Reason: " //$NON-NLS-1$ //$NON-NLS-2$
 				+ reason.toString();
 	}
 }

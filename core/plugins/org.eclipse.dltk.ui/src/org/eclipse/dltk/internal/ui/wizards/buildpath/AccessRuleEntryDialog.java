@@ -167,7 +167,7 @@ public class AccessRuleEntryDialog extends StatusDialog {
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 		if( DLTKCore.DEBUG ) {
-			System.err.println("TODO: AccessRuleEntryDialog: add help");
+			System.err.println("TODO: AccessRuleEntryDialog: add help"); //$NON-NLS-1$
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(newShell, IDLTKHelpContextIds.ACCESS_RULES_DIALOG);
 		}
 	}

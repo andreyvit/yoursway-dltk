@@ -20,7 +20,7 @@ import org.eclipse.dltk.core.IType;
 public class DLTKImplementorFinder implements IImplementorFinder {    
 	public Collection findImplementingTypes(IType type, IProgressMonitor progressMonitor) {
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: Add findImplementinTypes call");
+			System.err.println("TODO: Add findImplementinTypes call"); //$NON-NLS-1$
 		}
 //        ITypeHierarchy typeHierarchy;
 //

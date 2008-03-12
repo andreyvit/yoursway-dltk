@@ -22,13 +22,13 @@ public class ScriptConsoleSession implements IScriptConsoleListener,
 
 	public void interpreterResponse(String text) {		
 		if (text != null) {
-			session.append("> ");
+			session.append("> "); //$NON-NLS-1$
 			session.append(text);
 		}
 	}
 
 	public void userRequest(String text) {
-		session.append("< ");
+		session.append("< "); //$NON-NLS-1$
 		session.append(text);
 		session.append('\n');
 	}

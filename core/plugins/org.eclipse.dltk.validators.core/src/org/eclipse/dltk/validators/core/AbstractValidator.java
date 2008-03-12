@@ -36,13 +36,13 @@ public abstract class AbstractValidator implements IValidator {
 
 	protected void loadFrom(Element element) {
 		this.name = element.getAttribute("name"); //$NON-NLS-1$
-		this.active = (new Boolean(element.getAttribute("active")))
+		this.active = (new Boolean(element.getAttribute("active"))) //$NON-NLS-1$
 				.booleanValue();
 	}
 
 	public void storeTo(Document doc, Element element) {
 		element.setAttribute("name", getName()); //$NON-NLS-1$
-		element.setAttribute("active", Boolean.toString(isActive()));
+		element.setAttribute("active", Boolean.toString(isActive())); //$NON-NLS-1$
 	}
 
 	public void clean(IResource resource) {

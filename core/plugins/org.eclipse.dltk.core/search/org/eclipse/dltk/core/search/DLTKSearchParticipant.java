@@ -133,7 +133,7 @@ public class DLTKSearchParticipant extends SearchParticipant {
 				return false;
 			}
 			String containerPath = index.containerPath;
-			if( containerPath.startsWith("#special#mixin")) {
+			if( containerPath.startsWith("#special#mixin")) { //$NON-NLS-1$
 				return false;
 			}
 			return true;

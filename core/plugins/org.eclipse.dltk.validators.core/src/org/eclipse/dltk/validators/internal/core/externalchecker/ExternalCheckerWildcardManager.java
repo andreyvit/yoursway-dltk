@@ -23,19 +23,19 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 public class ExternalCheckerWildcardManager {
-	private static final String STRING = "wildcards";
-	private static final String WILDCARD = "wildcard";
-	private static final String DESCRIPTION = "description";
-	private static final String PATTERN = "pattern";
-	private static final String LETTER = "letter";
+	private static final String STRING = "wildcards"; //$NON-NLS-1$
+	private static final String WILDCARD = "wildcard"; //$NON-NLS-1$
+	private static final String DESCRIPTION = "description"; //$NON-NLS-1$
+	private static final String PATTERN = "pattern"; //$NON-NLS-1$
+	private static final String LETTER = "letter"; //$NON-NLS-1$
 	public static final String WILDCARDS = ValidatorsCore.PLUGIN_ID
-			+ ".wildcards";
+			+ ".wildcards"; //$NON-NLS-1$
 
 	public static String getDefaultWildcards() {
 		CustomWildcard[] wildcards = {
-				new CustomWildcard("f", "[\\w]?:?.+", "File name"),
-				new CustomWildcard("m", ".*", "Message"),
-				new CustomWildcard("n", "[0-9]+", "Line number") };
+				new CustomWildcard("f", "[\\w]?:?.+", Messages.ExternalCheckerWildcardManager_fileName), //$NON-NLS-1$ //$NON-NLS-2$
+				new CustomWildcard("m", ".*", Messages.ExternalCheckerWildcardManager_message), //$NON-NLS-1$ //$NON-NLS-2$
+				new CustomWildcard("n", "[0-9]+", Messages.ExternalCheckerWildcardManager_lineNumber) }; //$NON-NLS-1$ //$NON-NLS-2$
 		return rulesToXML(wildcards);
 	}
 
@@ -46,7 +46,7 @@ public class ExternalCheckerWildcardManager {
 		if (DLTKCore.DEBUG) {
 			System.out.println(preference);
 		}
-		if (preference != "") {
+		if (preference != "") { //$NON-NLS-1$
 			try {
 				DocumentBuilderFactory factorryr = DocumentBuilderFactory
 						.newInstance();
@@ -113,8 +113,8 @@ public class ExternalCheckerWildcardManager {
 			TransformerFactory tfactory = TransformerFactory.newInstance();
 			Transformer trannsformer = tfactory.newTransformer();
 			trannsformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,
-					"yes");
-			trannsformer.setOutputProperty(OutputKeys.INDENT, "yes");
+					"yes"); //$NON-NLS-1$
+			trannsformer.setOutputProperty(OutputKeys.INDENT, "yes"); //$NON-NLS-1$
 			;
 
 			StringWriter sw = new StringWriter();

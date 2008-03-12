@@ -73,28 +73,28 @@ public class DefaultRubyEvaluatorFactory implements IGoalEvaluatorFactory {
 
 		// literals
 		if (expr instanceof RubyRegexpExpression)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("Regexp%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("Regexp%")); //$NON-NLS-1$
 		if (expr instanceof RubyHashExpression)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("Hash%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("Hash%")); //$NON-NLS-1$
 		if (expr instanceof BigNumericLiteral)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("Bignum%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("Bignum%")); //$NON-NLS-1$
 		if (expr instanceof NumericLiteral)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("Fixnum%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("Fixnum%")); //$NON-NLS-1$
 		if (expr instanceof StringLiteral)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("String%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("String%")); //$NON-NLS-1$
 		if (expr instanceof RubyDynamicBackquoteStringExpression)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("String%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("String%")); //$NON-NLS-1$
 		if (expr instanceof RubyDynamicStringExpression)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("String%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("String%")); //$NON-NLS-1$
 		if (expr instanceof RubyBacktickStringLiteral)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("String%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("String%")); //$NON-NLS-1$
 		if (expr instanceof RubyArrayExpression)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("Array%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("Array%")); //$NON-NLS-1$
 		if (expr instanceof MethodDeclaration)
 			return new FixedAnswerEvaluator(goal,
-					new RubyClassType("NilClass%"));
+					new RubyClassType("NilClass%")); //$NON-NLS-1$
 		if (expr instanceof RubySymbolReference)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("Symbol%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("Symbol%")); //$NON-NLS-1$
 
 		if (expr instanceof BooleanLiteral)
 			return new BooleanLiteralEvaluator(goal);

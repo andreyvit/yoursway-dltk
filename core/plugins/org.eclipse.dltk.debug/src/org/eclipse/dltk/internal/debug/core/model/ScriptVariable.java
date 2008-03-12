@@ -70,7 +70,7 @@ public class ScriptVariable extends ScriptDebugElement implements
 			}
 		} catch (DbgpException e) {
 			// TODO: localize
-			throw wrapDbgpException("Can't assign variable", e);
+			throw wrapDbgpException(Messages.ScriptVariable_cantAssignVariable, e);
 		}
 	}
 

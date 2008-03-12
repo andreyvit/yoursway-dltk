@@ -135,7 +135,7 @@ public class CreateScriptFolderOperation extends ModelOperation {
 		if (getParentElement() == null) {
 			return new ModelStatus(IModelStatusConstants.NO_ELEMENTS_TO_PROCESS);
 		}
-		IPath packageName = this.pkgName == null ? null : this.pkgName.append(".");
+		IPath packageName = this.pkgName == null ? null : this.pkgName.append("."); //$NON-NLS-1$
 		String packageNameValue = null;
 		if (packageName != null) {
 			packageNameValue = packageName.toOSString();

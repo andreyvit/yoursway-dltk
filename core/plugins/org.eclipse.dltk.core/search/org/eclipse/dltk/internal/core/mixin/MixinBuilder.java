@@ -10,6 +10,7 @@
 package org.eclipse.dltk.internal.core.mixin;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -86,12 +87,12 @@ public class MixinBuilder implements IScriptBuilder {
 			// waitUntilIndexReady(toolkit);
 			IPath fullPath = project.getProject().getFullPath();
 
-			mixinIndex = manager.getSpecialIndex("mixin", /* project.getProject() */
+			mixinIndex = manager.getSpecialIndex("mixin", /* project.getProject() */ //$NON-NLS-1$
 			fullPath.toString(), fullPath.toOSString());
 			imon = mixinIndex.monitor;
 			imon.enterWrite();
-			String name = "Building runtime model for "
-					+ project.getElementName();
+			String name = MessageFormat.format(Messages.MixinBuilder_buildingRuntimeModelFor,
+					new Object[] { project.getElementName() });
 			if (monitor != null) {
 				monitor.beginTask(name, elementsSize);
 			}
@@ -107,10 +108,8 @@ public class MixinBuilder implements IScriptBuilder {
 					}
 				}
 
-				String taskTitle = "Building runtime model for "
-						+ project.getElementName() + " ("
-						+ (elements.size() - fileIndex) + "):"
-						+ element.getElementName();
+				String taskTitle = MessageFormat.format(Messages.MixinBuilder_buildingRuntimeModelFor2,
+						new Object[] { project.getElementName(), (elements.size() - fileIndex), element.getElementName() });
 				++fileIndex;
 				if (monitor != null) {
 					monitor.subTask(taskTitle);
@@ -127,7 +126,7 @@ public class MixinBuilder implements IScriptBuilder {
 						currentIndex = (Index) indexes.get(path);
 						containerPath = path;
 					} else {
-						Index index = manager.getSpecialIndex("mixin", path
+						Index index = manager.getSpecialIndex("mixin", path //$NON-NLS-1$
 								.toString(), path.toOSString());
 						if (index != null) {
 							currentIndex = index;
@@ -203,12 +202,12 @@ public class MixinBuilder implements IScriptBuilder {
 					Index index = (Index) ind.next();
 					if (monitor != null) {
 						String containerPath = index.containerPath;
-						if (containerPath.startsWith("#special#")) {
+						if (containerPath.startsWith("#special#")) { //$NON-NLS-1$
 							containerPath = containerPath.substring(
-									containerPath.lastIndexOf("#"),
+									containerPath.lastIndexOf("#"), //$NON-NLS-1$
 									containerPath.length());
 						}
-						monitor.subTask("Saving index for:" + containerPath);
+						monitor.subTask(MessageFormat.format(Messages.MixinBuilder_savingIndexFor, new Object[] { containerPath }));
 					}
 					try {
 						index.save();

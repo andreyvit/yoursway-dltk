@@ -37,7 +37,7 @@ public class InternalSearchDocument {
 					//ModelManager manager = ModelManager.getModelManager();
 					//manager.secondaryTypeAdding(getPath(), key);
 					if(DLTKCore.DEBUG) {
-						System.err.println("TODO: Scondary type index. Do we need it?");
+						System.err.println("TODO: Scondary type index. Do we need it?"); //$NON-NLS-1$
 					}
 				}
 			}

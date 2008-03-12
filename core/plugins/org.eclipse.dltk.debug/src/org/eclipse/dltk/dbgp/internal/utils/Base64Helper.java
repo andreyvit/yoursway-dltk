@@ -23,7 +23,7 @@ public class Base64Helper {
 	private static final BASE64Decoder decoder = new BASE64Decoder();
 
 	public static String encodeString(String s) {
-		return encoder.encode(s.getBytes()).replaceAll("\n", "");
+		return encoder.encode(s.getBytes()).replaceAll("\n", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		
 	}
 

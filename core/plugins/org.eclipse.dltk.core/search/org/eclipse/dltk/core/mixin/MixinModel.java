@@ -44,7 +44,7 @@ import org.eclipse.dltk.internal.core.mixin.MixinCache;
 import org.eclipse.dltk.internal.core.mixin.MixinManager;
 
 public class MixinModel {
-	public static final String SEPARATOR = "" + IIndexConstants.SEPARATOR;
+	public static final String SEPARATOR = "" + IIndexConstants.SEPARATOR; //$NON-NLS-1$
 	private MixinCache cache = null;
 
 	/**
@@ -93,7 +93,7 @@ public class MixinModel {
 		}
 		MixinElement element = getCreateEmpty(key);
 		if (DLTKCore.VERBOSE) {
-			System.out.println("Filling ratio:" + this.cache.fillingRatio());
+			System.out.println("Filling ratio:" + this.cache.fillingRatio()); //$NON-NLS-1$
 			this.cache.printStats();
 		}
 		buildElementTree(element);
@@ -470,8 +470,8 @@ public class MixinModel {
 		}
 
 		public String toString() {
-			return this.getLastKeySegment() + " final[" + this.bFinal + "]"
-					+ this.children + " ";
+			return this.getLastKeySegment() + " final[" + this.bFinal + "]" //$NON-NLS-1$ //$NON-NLS-2$
+					+ this.children + " "; //$NON-NLS-1$
 		}
 
 		public MixinElement(ElementInfo info, ISourceModule module) {
@@ -655,7 +655,7 @@ public class MixinModel {
 			// System.out.println("Append mixin:" + info.key);
 			// }
 			existKeysCache.add(info.key);
-			String[] list = info.key.split("\\"
+			String[] list = info.key.split("\\" //$NON-NLS-1$
 					+ IMixinRequestor.MIXIN_NAME_SEPARATOR);
 			MixinElement element = getCreateEmpty(info.key);
 			addElementToModules(element);

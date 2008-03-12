@@ -102,10 +102,10 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 		}
 	}
 
-	private static final String INIT_TAG = "init";
-	private static final String RESPONSE_TAG = "response";
-	private static final String STREAM_TAG = "stream";
-	private static final String NOTIFY_TAG = "notify";
+	private static final String INIT_TAG = "init"; //$NON-NLS-1$
+	private static final String RESPONSE_TAG = "response"; //$NON-NLS-1$
+	private static final String STREAM_TAG = "stream"; //$NON-NLS-1$
+	private static final String NOTIFY_TAG = "notify"; //$NON-NLS-1$
 
 	private final ResponcePacketWaiter responseWaiter;
 	private final PacketWaiter notifyWaiter;
@@ -164,7 +164,7 @@ public class DbgpPacketReceiver extends DbgpWorkingThread {
 	}
 
 	public DbgpPacketReceiver(InputStream input) {
-		super("DBGP - Packet receiver");
+		super("DBGP - Packet receiver"); //$NON-NLS-1$
 
 		if (input == null) {
 			throw new IllegalArgumentException();

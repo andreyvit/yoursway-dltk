@@ -10,8 +10,8 @@ import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.internal.core.ModelManager;
 
 public class SourceParserUtil {
-	private static final Object AST = "ast";
-	private static final Object FLAGS = "flags";
+	private static final Object AST = "ast"; //$NON-NLS-1$
+	private static final Object FLAGS = "flags"; //$NON-NLS-1$
 
 	/**
 	 * Used to retrive module declaration from source module.
@@ -102,12 +102,11 @@ public class SourceParserUtil {
 	public static ModuleDeclaration getModuleDeclaration(char[] filename,
 			char[] content, String nature, IProblemReporter reporter,
 			ISourceModuleInfo mifo, int flags) {
-		ISourceParser sourceParser;// = new PythonSourceParser(this.fReporter);
+		ISourceParser sourceParser;// = new SourceParser(this.fReporter);
 		try {
 			sourceParser = DLTKLanguageManager.getSourceParser(nature);
 		} catch (CoreException e) {
-			throw new RuntimeException("Failed to create python source parser",
-					e);
+			throw new RuntimeException(Messages.SourceParserUtil_failedToCreateSourceParser, e);
 		}
 		if (sourceParser instanceof ISourceParserExtension) {
 			((ISourceParserExtension) sourceParser).setFlags(flags);

@@ -52,7 +52,7 @@ class ToggleOrientationAction extends Action {
         fView= v;
         fActionOrientation= orientation;
         if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}		
         //PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IJavaHelpContextIds.CALL_HIERARCHY_TOGGLE_ORIENTATION_ACTION);
     }

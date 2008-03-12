@@ -40,7 +40,7 @@ public class RubyTypeDocumentationProvider implements
 					IEvaluatedType type = engine.evaluateType(goal, 500);
 					if (type instanceof RubyClassType) {
 						RubyClassType rubyClassType = (RubyClassType) type;
-						return new StringReader("Inferenced type: " + rubyClassType.getModelKey());
+						return new StringReader("Inferenced type: " + rubyClassType.getModelKey()); //$NON-NLS-1$
 					}
 				}
 			} catch (ModelException e) {

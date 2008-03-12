@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Enumeration;
 
 import org.eclipse.core.runtime.IPath;
@@ -70,13 +71,13 @@ public class DeployHelper {
 			// result is a directory
 			dirFile.mkdirs();
 			if (!dirFile.exists()) {
-				throw new IOException("Failed to create folder for:"
-						+ dirFile.toString());
+				throw new IOException(MessageFormat.format(Messages.DeployHelper_failedToCreateFolderFor,
+						new Object[] { dirFile.toString() }));
 			}
 
 			while (paths.hasMoreElements()) {
 				final String path = (String) paths.nextElement();
-				if (path.endsWith("/")) {
+				if (path.endsWith("/")) { //$NON-NLS-1$
 					deploy(bundle, path, diskPath);
 				} else {
 					copy(bundle.getEntry(path), diskPath.append(path).toFile());

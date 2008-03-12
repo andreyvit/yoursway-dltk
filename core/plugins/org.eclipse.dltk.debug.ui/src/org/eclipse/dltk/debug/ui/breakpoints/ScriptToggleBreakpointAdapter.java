@@ -36,6 +36,8 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.IEditorStatusLine;
 import org.eclipse.ui.texteditor.ITextEditor;
 
+import java.text.MessageFormat;
+
 public abstract class ScriptToggleBreakpointAdapter implements
 		IToggleBreakpointsTargetExtension {
 
@@ -258,11 +260,11 @@ public abstract class ScriptToggleBreakpointAdapter implements
 									BreakpointUtils.addLineBreakpoint(editor,
 											lineNumber);
 								} else {
-									report("Breakpoint already set at line "
-											+ lineNumber, part);
+									report(MessageFormat.format(Messages.ScriptToggleBreakpointAdapter_breakpointAlreadySetAtLine,
+											new Object[] { lineNumber }), part);
 								}
 							} else {
-								report("Invalid breakpoint position.", part);
+								report(Messages.ScriptToggleBreakpointAdapter_invalidBreakpointPosition, part);
 							}
 						}
 					} catch (CoreException e) {

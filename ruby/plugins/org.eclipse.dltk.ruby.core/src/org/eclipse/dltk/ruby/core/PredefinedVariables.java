@@ -22,13 +22,13 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 public class PredefinedVariables {
-	private static final String MESSAGE_PROPERTIES = "variables.properties";
+	private static final String MESSAGE_PROPERTIES = "variables.properties"; //$NON-NLS-1$
 
-	private static final String NAME = "name";
+	private static final String NAME = "name"; //$NON-NLS-1$
 
-	private static final String TYPE = "type";
+	private static final String TYPE = "type"; //$NON-NLS-1$
 
-	private static final String DOC = "doc";
+	private static final String DOC = "doc"; //$NON-NLS-1$
 
 	static Map parseProperties(Properties props, String[] postfixes) {
 		Map entries = new HashMap();
@@ -40,7 +40,7 @@ public class PredefinedVariables {
 			for (int i = 0; i < postfixes.length; ++i) {
 				final String postfix = postfixes[i];
 
-				int index = key.indexOf("_" + postfix);
+				int index = key.indexOf("_" + postfix); //$NON-NLS-1$
 				if (index != -1) {
 					String name = key.substring(0, index);
 
@@ -104,7 +104,7 @@ public class PredefinedVariables {
 			}
 		} catch (IOException e) {
 			IStatus status = new Status(IStatus.ERROR, RubyPlugin.PLUGIN_ID, 0,
-					"Can't load ruby predefined variables", e);
+					Messages.PredefinedVariables_unableToLoadRubyPredefinedVariables, e);
 			RubyPlugin.getDefault().getLog().log(status);
 		}
 	}

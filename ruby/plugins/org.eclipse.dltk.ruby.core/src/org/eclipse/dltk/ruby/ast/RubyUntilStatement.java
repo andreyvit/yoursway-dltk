@@ -51,7 +51,7 @@ public class RubyUntilStatement extends ASTNode {
 	}
 
 	public void printNode(CorePrinter output) {
-		output.formatPrintLn("while");
+		output.formatPrintLn("while"); //$NON-NLS-1$
 		if (this.fCondition != null) {
 			this.fCondition.printNode(output);
 		}
@@ -60,6 +60,6 @@ public class RubyUntilStatement extends ASTNode {
 			this.fAction.printNode(output);
 			output.dedent();
 		}
-		output.formatPrint("");
+		output.formatPrint(""); //$NON-NLS-1$
 	}
 }

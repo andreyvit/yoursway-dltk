@@ -70,7 +70,7 @@ public class CopyToClipboardAction extends SelectionDispatchAction{
 		update(getSelection());
 
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
 		
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IScriptHelpContextIds.COPY_ACTION);
@@ -330,7 +330,7 @@ public class CopyToClipboardAction extends SelectionDispatchAction{
 				return false;
 			
 			if (DLTKCore.DEBUG) {
-				System.err.println("TODO: Add inner element copy action..");
+				System.err.println("TODO: Add inner element copy action.."); //$NON-NLS-1$
 			}
 			//TODO: Add copy operation for external script folders.. Posible this is not required at all.
 			if( element instanceof ExternalScriptFolder ) {

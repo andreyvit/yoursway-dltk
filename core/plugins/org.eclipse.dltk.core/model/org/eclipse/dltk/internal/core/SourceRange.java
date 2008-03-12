@@ -30,7 +30,7 @@ public class SourceRange implements ISourceRange {
 
 	public String toString() {
 		int end = getOffset() + getLength() - 1;
-		return "["+getOffset()+","+end+"]";
+		return "["+getOffset()+","+end+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 //		StringBuffer buffer = new StringBuffer();
 //		buffer.append("[offset="); //$NON-NLS-1$
 //		buffer.append(offset);

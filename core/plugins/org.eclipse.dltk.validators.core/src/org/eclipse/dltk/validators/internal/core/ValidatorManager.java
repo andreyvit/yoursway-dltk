@@ -23,9 +23,9 @@ import org.eclipse.dltk.validators.core.IValidatorType;
 public class ValidatorManager {
 
 	private final static String LANGUAGE_EXTPOINT = ValidatorsCore.PLUGIN_ID
-			+ ".validator";
+			+ ".validator"; //$NON-NLS-1$
 
-	private final static String NATURE_ATTR = "nature";
+	private final static String NATURE_ATTR = "nature"; //$NON-NLS-1$
 
 	// Contains list of validators for selected nature.
 	private static Map validators;
@@ -84,7 +84,7 @@ public class ValidatorManager {
 		List results = new ArrayList();
 		processNature(natureId, results);
 		// Add from # nature.
-		processNature( "#", results );
+		processNature( "#", results ); //$NON-NLS-1$
 		return (IValidatorType[])results.toArray(new IValidatorType[results.size()]);
 	}
 	private static void processNature(String natureId, List results)
@@ -111,7 +111,7 @@ public class ValidatorManager {
 					else {
 						IConfigurationElement cfg = (IConfigurationElement) e;
 						IValidatorType builder = (IValidatorType) cfg
-								.createExecutableExtension("class");
+								.createExecutableExtension("class"); //$NON-NLS-1$
 						result[i] = builder;
 					}
 				}

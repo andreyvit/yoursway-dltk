@@ -193,11 +193,11 @@ public class MultipleInputDialog extends Dialog {
 			});
 		}
 		
-		Button button = createButton(comp, IDialogConstants.IGNORE_ID, "Ignore", false); 
+		Button button = createButton(comp, IDialogConstants.IGNORE_ID, Messages.MultipleInputDialog_ignore, false); 
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				DirectoryDialog dialog = new DirectoryDialog(getShell());
-				dialog.setMessage("");  
+				dialog.setMessage(""); //$NON-NLS-1$  
 				String currentWorkingDir = text.getText();
 				if (!currentWorkingDir.trim().equals("")) { //$NON-NLS-1$
 					File path = new File(currentWorkingDir);

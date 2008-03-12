@@ -14,6 +14,7 @@
 package org.eclipse.dltk.ast;
 
 import java.io.StringWriter;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -188,8 +189,7 @@ public abstract class ASTNode {
 	public abstract void traverse(ASTVisitor visitor) throws Exception;
 
 	public void printNode(CorePrinter output) {
-		output.println(this.getClass()
-				+ "(node doesn't support debug printing)\n");
+		output.println(MessageFormat.format(Messages.ASTNode_nodeDoesntSupportDebugPrinting, new Object[] { this.getClass() }));
 	}
 
 	protected ISourceRange getSourceRange() {
@@ -203,7 +203,7 @@ public abstract class ASTNode {
 	}
 
 	public String debugString() {
-		return simplifyClassName(this.getClass().getName()) + "@"
+		return simplifyClassName(this.getClass().getName()) + "@" //$NON-NLS-1$
 				+ this.getSourceRange().toString();
 	}
 

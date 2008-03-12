@@ -16,7 +16,7 @@ public class NilLiteral extends Literal {
 	}
 
 	public String getValue() {
-		return "nil";
+		return "nil"; //$NON-NLS-1$
 	}
 
 	public int getKind() {

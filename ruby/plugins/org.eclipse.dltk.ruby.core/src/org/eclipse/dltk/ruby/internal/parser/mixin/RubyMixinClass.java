@@ -137,9 +137,9 @@ public class RubyMixinClass implements IRubyMixinElement {
 		}
 		String key;
 		if (this.isMeta())
-			key = "Class%";
+			key = "Class%"; //$NON-NLS-1$
 		else
-			key = "Object";
+			key = "Object"; //$NON-NLS-1$
 		if (!this.isMeta())
 			key = key + RubyMixin.INSTANCE_SUFFIX;
 		RubyMixinClass s = (RubyMixinClass) model.createRubyElement(key);
@@ -316,8 +316,8 @@ public class RubyMixinClass implements IRubyMixinElement {
 				result.add(element);
 		}
 		RubyMixinClass superclass = getSuperclass();
-		if (superclass != null && superclass.key != "Object"
-				&& superclass.key != "Object%") {
+		if (superclass != null && superclass.key != "Object" //$NON-NLS-1$
+				&& superclass.key != "Object%") { //$NON-NLS-1$
 			if (superclass.getKey().equals(key))
 				return null;
 			RubyMixinVariable[] superFields = superclass.getFields();

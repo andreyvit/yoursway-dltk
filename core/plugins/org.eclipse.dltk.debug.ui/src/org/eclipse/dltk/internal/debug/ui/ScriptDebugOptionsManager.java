@@ -106,7 +106,7 @@ public class ScriptDebugOptionsManager implements IDebugEventSetListener,
 		updateBreakpoints(breakpoints, new IBreakpointUpdater() {
 			public void update(IScriptBreakpoint breakpoint)
 					throws CoreException {
-				breakpoint.setIdentifier("");
+				breakpoint.setIdentifier(""); //$NON-NLS-1$
 				breakpoint.setHitCount(-1);
 			}
 		});

@@ -177,7 +177,7 @@ public abstract class AbstractScriptLaunchShortcut implements ILaunchShortcut {
 				if (config
 						.getAttribute(
 								ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
-								"").equals(
+								"").equals( //$NON-NLS-1$
 								script.getProjectRelativePath().toString())
 						&& config
 								.getAttribute(
@@ -292,7 +292,7 @@ public abstract class AbstractScriptLaunchShortcut implements ILaunchShortcut {
 			try {
 				if (object instanceof IFile) {
 					IFile f = (IFile) object;
-					if (!f.getName().startsWith("."))
+					if (!f.getName().startsWith(".")) //$NON-NLS-1$
 						list.add(object);
 				} else if (object instanceof IContainer) {
 					IContainer f = (IContainer) object;

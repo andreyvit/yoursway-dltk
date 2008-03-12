@@ -1,5 +1,6 @@
 package org.eclipse.dltk.internal.debug.core.model;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
 import org.eclipse.core.resources.IResource;
@@ -30,9 +31,9 @@ public class HotCodeReplaceManager implements IResourceChangeListener,
 		ILaunchListener, IDebugEventSetListener {
 
 	private static final String HOT_CODE_REPLACE_PROVIDER_EXTENSION = DLTKDebugPlugin.PLUGIN_ID
-			+ ".hotCodeReplaceProvider";
+			+ ".hotCodeReplaceProvider"; //$NON-NLS-1$
 	private static PriorityClassDLTKExtensionManager providerManager = new PriorityClassDLTKExtensionManager(
-			HOT_CODE_REPLACE_PROVIDER_EXTENSION, "nature");
+			HOT_CODE_REPLACE_PROVIDER_EXTENSION, "nature"); //$NON-NLS-1$
 
 	private static HotCodeReplaceManager instance = null;
 
@@ -238,7 +239,7 @@ public class HotCodeReplaceManager implements IResourceChangeListener,
 					provider.performCodeReplace(target, resources);
 					fireHCRSucceeded(target);
 				} else {
-					fail("Hot code replace provider for " + natureId + " not found");
+					fail(MessageFormat.format(Messages.HotCodeReplaceManager_hotCodeReplaceProviderForNotFound, new Object[] { natureId }));
 				}
 			} catch (DebugException e) {
 				fireHCRFailed(target, e);

@@ -63,7 +63,7 @@ public class ScriptModelUtil {
 	public static IModelElement findInSourceModule(ISourceModule cu,
 			IModelElement element) {
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: Implement find in source module...");
+			System.err.println("TODO: Implement find in source module..."); //$NON-NLS-1$
 		}
 		return null;
 	}
@@ -148,7 +148,7 @@ public class ScriptModelUtil {
 			return true;
 		if (DLTKCore.DEBUG) {
 			System.err
-					.println("TODO: ModelUtil: isExceptionToBeLogged. Require addition of ModelStatus.getgetElements method...");
+					.println("TODO: ModelUtil: isExceptionToBeLogged. Require addition of ModelStatus.getgetElements method..."); //$NON-NLS-1$
 		}
 		// IModelElement[] elements= je.getModelStatus().getElements();
 		// for (int i= 0; i < elements.length; i++) {

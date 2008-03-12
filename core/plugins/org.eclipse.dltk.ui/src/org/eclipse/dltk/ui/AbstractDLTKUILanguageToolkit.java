@@ -89,7 +89,7 @@ public abstract class AbstractDLTKUILanguageToolkit implements
 	}
 
 	public String getPartitioningId() {
-		return "__default_dltk_partitioning";
+		return "__default_dltk_partitioning"; //$NON-NLS-1$
 	}
 
 	public ScriptTextTools getTextTools() {

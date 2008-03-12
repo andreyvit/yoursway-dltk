@@ -128,11 +128,11 @@ public class ScriptElementImageProvider {
 		return null;
 	}
 
-	private static final String LABELPROVIDERS_EXTENSION_POINT = "org.eclipse.dltk.ui.scriptElementLabelProviders";
+	private static final String LABELPROVIDERS_EXTENSION_POINT = "org.eclipse.dltk.ui.scriptElementLabelProviders"; //$NON-NLS-1$
 
-	private static final String ATTR_CLASS = "class";
+	private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 
-	private static final String ATTR_NATURE = "nature";
+	private static final String ATTR_NATURE = "nature"; //$NON-NLS-1$
 
 	private static Map labelProviders = null;
 

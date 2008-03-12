@@ -57,7 +57,7 @@ public class ScriptConsole extends TextConsole implements ICommandHandler {
 		super(consoleName, consoleType, null, true);
 
 		this.consoleListeners = new ListenerList(ListenerList.IDENTITY);
-		this.prompt = new ScriptConsolePrompt("=>", "->");
+		this.prompt = new ScriptConsolePrompt("=>", "->"); //$NON-NLS-1$ //$NON-NLS-2$
 		this.history = new ScriptConsoleHistory();
 
 		this.session = new ScriptConsoleSession();

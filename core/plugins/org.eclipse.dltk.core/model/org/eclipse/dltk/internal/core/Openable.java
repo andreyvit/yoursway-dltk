@@ -444,7 +444,7 @@ public abstract class Openable extends ModelElement implements IOpenable,
 			int position, CompletionRequestor requestor, WorkingCopyOwner owner)
 			throws ModelException {
 		if (requestor == null) {
-			throw new IllegalArgumentException("Completion requestor cannot be null");
+			throw new IllegalArgumentException(Messages.Openable_completionRequesterCannotBeNull);
 		}
 
 		IBuffer buffer = getBuffer();
@@ -547,7 +547,7 @@ public abstract class Openable extends ModelElement implements IOpenable,
 			if (toolkit == null) {
 				if (DLTKCore.VERBOSE) {
 					System.out
-							.println("DLTK.Openable.VERBOSE: Failed to detect language toolkit... for module:"
+							.println("DLTK.Openable.VERBOSE: Failed to detect language toolkit... for module:" //$NON-NLS-1$
 									+ this.getResource().getName());
 				}
 				return new IModelElement[0];

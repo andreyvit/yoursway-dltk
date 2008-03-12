@@ -37,9 +37,9 @@ public class ModelFunctionType implements IFunctionType {
 
 	public String getTypeName() {
 		if (fMethod != null) {
-			return "function:" + fMethod.getElementName();
+			return "function:" + fMethod.getElementName(); //$NON-NLS-1$
 		}
-		return "function: !!unknown!!";
+		return "function: !!unknown!!"; //$NON-NLS-1$
 	}
 
 	public IMethod getFunction() {

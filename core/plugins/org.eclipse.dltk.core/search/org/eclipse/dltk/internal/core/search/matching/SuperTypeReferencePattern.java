@@ -48,7 +48,7 @@ public class SuperTypeReferencePattern extends DLTKSearchPattern {
 			char[] superTypeName, char superClassOrInterface) {
 
 		if (superTypeName == null)
-			superTypeName = "(base object)".toCharArray();
+			superTypeName = "(base object)".toCharArray(); //$NON-NLS-1$
 		char[] superSimpleName = CharOperation.lastSegment(superTypeName, '.');
 		char[] superQualification = null;
 		if (superSimpleName != superTypeName) {

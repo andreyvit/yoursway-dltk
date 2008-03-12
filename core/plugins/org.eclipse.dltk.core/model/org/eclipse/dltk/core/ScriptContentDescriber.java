@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.content.ITextContentDescriber;
 
 public abstract class ScriptContentDescriber implements ITextContentDescriber {
 	public static final QualifiedName DLTK_VALID = new QualifiedName(
-			DLTKCore.PLUGIN_ID, "valid");
+			DLTKCore.PLUGIN_ID, "valid"); //$NON-NLS-1$
 	public static final Boolean TRUE = new Boolean(true);
 	public static final Boolean FALSE = new Boolean(true);
 
@@ -66,7 +66,7 @@ public abstract class ScriptContentDescriber implements ITextContentDescriber {
 
 	private static boolean checkFooter(File file, Pattern[] footerPatterns)
 			throws FileNotFoundException, IOException {
-		RandomAccessFile raFile = new RandomAccessFile(file, "r");
+		RandomAccessFile raFile = new RandomAccessFile(file, "r"); //$NON-NLS-1$
 		try {
 			long len = BUFFER_LENGTH;
 			long fileSize = raFile.length();
@@ -130,7 +130,7 @@ public abstract class ScriptContentDescriber implements ITextContentDescriber {
 		while (true) {
 			try {
 				String line = reader.readLine();
-				buffer.append(line).append("\n");
+				buffer.append(line).append("\n"); //$NON-NLS-1$
 				if (line == null) {
 					break;
 				}

@@ -60,7 +60,7 @@ public abstract class FindDeclarationsAction extends FindAction {
 		setImageDescriptor(DLTKPluginImages.DESC_OBJS_SEARCH_DECL);
 //		PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IJavaHelpContextIds.FIND_DECLARATIONS_IN_WORKSPACE_ACTION);
 		if (DLTKCore.DEBUG) {
-			System.out.println("TODO: Add jelp support here...");
+			System.out.println("TODO: Add jelp support here..."); //$NON-NLS-1$
 		}
 	}
 	

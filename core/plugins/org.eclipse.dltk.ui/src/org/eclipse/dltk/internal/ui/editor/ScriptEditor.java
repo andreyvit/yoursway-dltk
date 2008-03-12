@@ -985,7 +985,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		}
 		if (DLTKCore.DEBUG) {
 			System.err
-					.println("TODO: Add encoding support and overriding indicator support");
+					.println("TODO: Add encoding support and overriding indicator support"); //$NON-NLS-1$
 		}
 		// if (fEncodingSupport != null)
 		// fEncodingSupport.reset();
@@ -1036,18 +1036,18 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		menu.appendToGroup(IContextMenuConstants.GROUP_OPEN, action);
 
 		// Source group
-		MenuManager sourceMenu = new MenuManager("Source");
-		action = getAction("Comment");
+		MenuManager sourceMenu = new MenuManager("Source"); //$NON-NLS-1$
+		action = getAction("Comment"); //$NON-NLS-1$
 		if (action != null) {
 			sourceMenu.add(action); //$NON-NLS-1$
 		}
 
-		action = getAction("Uncomment");
+		action = getAction("Uncomment"); //$NON-NLS-1$
 		if (action != null) {
 			sourceMenu.add(action); //$NON-NLS-1$
 		}
 
-		action = getAction("ToggleComment");
+		action = getAction("ToggleComment"); //$NON-NLS-1$
 		if (action != null) {
 			sourceMenu.add(action); //$NON-NLS-1$
 		}
@@ -1291,7 +1291,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		setAction(GotoMatchingBracketAction.GOTO_MATCHING_BRACKET, action);
 
 		Action outlineAction = new TextOperationAction(DLTKEditorMessages
-				.getBundleForConstructedKeys(), "ShowOutline.", this,
+				.getBundleForConstructedKeys(), "ShowOutline.", this, //$NON-NLS-1$
 				ScriptSourceViewer.SHOW_OUTLINE, true); //$NON-NLS-1$
 		outlineAction
 				.setActionDefinitionId(IScriptEditorActionDefinitionIds.SHOW_OUTLINE);
@@ -2595,7 +2595,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 				getOverviewRuler(), isOverviewRulerVisible(), styles, store);
 
 		if (DLTKCore.DEBUG) {
-			System.err.println("Create help contexts");
+			System.err.println("Create help contexts"); //$NON-NLS-1$
 		}
 		// ScriptUIHelp.setHelp(this, viewer.getTextWidget(),
 		// IScriptHelpContextIds.JAVA_EDITOR);

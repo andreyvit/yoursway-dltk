@@ -15,7 +15,7 @@ import org.eclipse.dltk.ast.expressions.CallExpression;
 public class RubyYieldExpression extends CallExpression {
 
 	public RubyYieldExpression(int start, int end, CallArgumentsList args) {
-		super(start, end, null, "yield", args);
+		super(start, end, null, "yield", args); //$NON-NLS-1$
 	}
 
 }

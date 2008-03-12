@@ -794,7 +794,7 @@ public class ModelManager implements ISaveParticipant {
 						if (!workingCopyToInfos.containsKey(workingCopy))
 							result[index++] = primaryWorkingCopy;
 					} else {
-						System.err.println("Not valid primary working copy:"
+						System.err.println("Not valid primary working copy:" //$NON-NLS-1$
 								+ primaryWorkingCopy.getElementName());
 					}
 				}
@@ -1416,7 +1416,7 @@ public class ModelManager implements ISaveParticipant {
 	// Do not modify without modifying getDefaultOptions()
 	private Hashtable getDefaultOptionsNoInitialization() {
 		System.err
-				.println("Add language dependent compiler options. Or implement it in another whan in DLTK way...");
+				.println("Add language dependent compiler options. Or implement it in another whan in DLTK way..."); //$NON-NLS-1$
 		Map defaultOptionsMap = new HashMap(); // compiler defaults
 		return new Hashtable(defaultOptionsMap);
 	}

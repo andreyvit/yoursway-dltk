@@ -44,7 +44,7 @@ import org.eclipse.dltk.internal.core.util.Util;
 public class BuiltinProjectFragment extends ProjectFragment {
 	public final static ArrayList EMPTY_LIST = new ArrayList();
 
-	private static final Object INTERPRETER_CONTAINER = "org.eclipse.dltk.launching.INTERPRETER_CONTAINER";
+	private static final Object INTERPRETER_CONTAINER = "org.eclipse.dltk.launching.INTERPRETER_CONTAINER"; //$NON-NLS-1$
 
 	protected final IPath fPath;
 	
@@ -127,7 +127,7 @@ public class BuiltinProjectFragment extends ProjectFragment {
 			ArrayList vChildren, ArrayList vForeign, Map newElements,
 			char[][] inclusionPatterns, char[][] exclusionPatterns)
 			throws ModelException {
-		BuiltinScriptFolder fldr = (BuiltinScriptFolder)getScriptFolder(new Path(""));
+		BuiltinScriptFolder fldr = (BuiltinScriptFolder)getScriptFolder(new Path("")); //$NON-NLS-1$
 		vChildren.add(fldr);
 		if( this.builtinProvider == null ) {
 			return;

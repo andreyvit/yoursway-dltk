@@ -59,7 +59,7 @@ public abstract class NamedMember extends Member {
 					StringBuffer buffer = new StringBuffer(thisName);
 					// appendTypeParameters(buffer);
 					if (DLTKCore.DEBUG) {
-						System.err.println("TODO: NamedMember: add type parameters");
+						System.err.println("TODO: NamedMember: add type parameters"); //$NON-NLS-1$
 					}
 					return buffer.toString();
 				}
@@ -74,7 +74,7 @@ public abstract class NamedMember extends Member {
 			default:
 				return null;
 		}
-		String declTName = "";
+		String declTName = ""; //$NON-NLS-1$
 		if( declaringType != null ) {
 			declTName = declaringType.getTypeQualifiedName(typeSeparator, showParameters);
 		}
@@ -85,7 +85,7 @@ public abstract class NamedMember extends Member {
 		if (showParameters) {
 			// appendTypeParameters(buffer);
 			if (DLTKCore.DEBUG) {
-				System.err.println("TODO: NamedMember: Add type parameters.");
+				System.err.println("TODO: NamedMember: Add type parameters."); //$NON-NLS-1$
 			}
 		}
 		return buffer.toString();
@@ -140,7 +140,7 @@ public abstract class NamedMember extends Member {
 		key.append(packageName.replace('.', '/'));
 		if (packageName.length() > 0)
 			key.append('/');
-		String typeQualifiedName = type.getTypeQualifiedName("$");
+		String typeQualifiedName = type.getTypeQualifiedName("$"); //$NON-NLS-1$
 		ISourceModule cu = (ISourceModule) type.getAncestor(IModelElement.SOURCE_MODULE);
 		if (cu != null) {
 			String cuName = cu.getElementName();

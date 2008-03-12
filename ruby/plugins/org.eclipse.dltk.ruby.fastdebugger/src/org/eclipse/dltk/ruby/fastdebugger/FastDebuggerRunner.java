@@ -19,14 +19,14 @@ import org.eclipse.dltk.ruby.debug.RubyDebugPlugin;
 import org.eclipse.dltk.ruby.internal.launching.RubyGenericInstallType;
 
 public class FastDebuggerRunner extends DebuggingEngineRunner {
-	public static final String ENGINE_ID = "org.eclipse.dltk.ruby.fastdebugger";
+	public static final String ENGINE_ID = "org.eclipse.dltk.ruby.fastdebugger"; //$NON-NLS-1$
 
-	private static final String RUBY_HOST_VAR = "DBGP_RUBY_HOST";
-	private static final String RUBY_PORT_VAR = "DBGP_RUBY_PORT";
-	private static final String RUBY_KEY_VAR = "DBGP_RUBY_KEY";
-	private static final String RUBY_LOG_VAR = "DBGP_RUBY_LOG";
+	private static final String RUBY_HOST_VAR = "DBGP_RUBY_HOST"; //$NON-NLS-1$
+	private static final String RUBY_PORT_VAR = "DBGP_RUBY_PORT"; //$NON-NLS-1$
+	private static final String RUBY_KEY_VAR = "DBGP_RUBY_KEY"; //$NON-NLS-1$
+	private static final String RUBY_LOG_VAR = "DBGP_RUBY_LOG"; //$NON-NLS-1$
 
-	private static final String DEBUGGER_SCRIPT = "FastRunner.rb";
+	private static final String DEBUGGER_SCRIPT = "FastRunner.rb"; //$NON-NLS-1$
 
 	protected IPath deploy() throws CoreException {
 		try {
@@ -35,7 +35,7 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 			// TODO: add code for handler
 			throw new CoreException(new Status(IStatus.ERROR,
 					FastDebuggerPlugin.PLUGIN_ID,
-					"Can't deploy debugger source", e));
+					Messages.FastDebuggerRunner_unableToDeployDebuggerSource, e));
 		}
 	}
 
@@ -48,7 +48,7 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 		if (!(getInstall().getInterpreterInstallType() instanceof RubyGenericInstallType)) {
 			throw new DebugException(
 					new Status(IStatus.ERROR, FastDebuggerPlugin.PLUGIN_ID,
-							"Fast debugger can be runned only with Generic Ruby interpreter"));
+							Messages.FastDebuggerRunner_fastDebuggerCanOnlyBeRunWithGenericRubyInterpreter));
 		}
 		// Get debugger source location
 		final IPath sourceLocation = deploy();
@@ -57,8 +57,8 @@ public class FastDebuggerRunner extends DebuggingEngineRunner {
 		
 		// Creating new config
 		InterpreterConfig newConfig = (InterpreterConfig) config.clone();
-		newConfig.addInterpreterArg("-r" + scriptFile.toPortableString());
-		newConfig.addInterpreterArg("-I" + sourceLocation.toPortableString());
+		newConfig.addInterpreterArg("-r" + scriptFile.toPortableString()); //$NON-NLS-1$
+		newConfig.addInterpreterArg("-I" + sourceLocation.toPortableString()); //$NON-NLS-1$
 
 		// Environment
 		final DbgpInterpreterConfig dbgpConfig = new DbgpInterpreterConfig(

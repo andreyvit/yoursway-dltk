@@ -23,20 +23,20 @@ import org.eclipse.dltk.ruby.debug.RubyDebugPlugin;
 import org.eclipse.dltk.ruby.internal.launching.JRubyInstallType;
 
 public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
-	public static final String ENGINE_ID = "org.eclipse.dltk.ruby.basicdebugger";
+	public static final String ENGINE_ID = "org.eclipse.dltk.ruby.basicdebugger"; //$NON-NLS-1$
 
-	private static final String RUBY_HOST_VAR = "DBGP_RUBY_HOST";
-	private static final String RUBY_PORT_VAR = "DBGP_RUBY_PORT";
-	private static final String RUBY_KEY_VAR = "DBGP_RUBY_KEY";
-	private static final String RUBY_LOG_VAR = "DBGP_RUBY_LOG";
+	private static final String RUBY_HOST_VAR = "DBGP_RUBY_HOST"; //$NON-NLS-1$
+	private static final String RUBY_PORT_VAR = "DBGP_RUBY_PORT"; //$NON-NLS-1$
+	private static final String RUBY_KEY_VAR = "DBGP_RUBY_KEY"; //$NON-NLS-1$
+	private static final String RUBY_LOG_VAR = "DBGP_RUBY_LOG"; //$NON-NLS-1$
 
-	private static final String DEBUGGER_SCRIPT = "BasicRunner.rb";
+	private static final String DEBUGGER_SCRIPT = "BasicRunner.rb"; //$NON-NLS-1$
 
 	protected IPath deploy() throws CoreException {
 		try {
 			return RubyBasicDebuggerPlugin.getDefault().deployDebuggerSource();
 		} catch (IOException e) {
-			abort("Can't deploy debugger source", e);
+			abort(Messages.RubyBasicDebuggerRunner_unableToDeployDebuggerSource, e);
 		}
 
 		return null;
@@ -57,12 +57,12 @@ public class RubyBasicDebuggerRunner extends DebuggingEngineRunner {
 		InterpreterConfig newConfig = (InterpreterConfig) config.clone();
 
 		if (getInstall().getInterpreterInstallType() instanceof JRubyInstallType) {
-			newConfig.addEnvVar("JAVA_OPTS", "-Djruby.jit.enabled=false");
-			newConfig.addInterpreterArg("-X-C");
+			newConfig.addEnvVar("JAVA_OPTS", "-Djruby.jit.enabled=false"); //$NON-NLS-1$ //$NON-NLS-2$
+			newConfig.addInterpreterArg("-X-C"); //$NON-NLS-1$
 		}
 
-		newConfig.addInterpreterArg("-r" + scriptFile.toPortableString());
-		newConfig.addInterpreterArg("-I" + sourceLocation.toPortableString());
+		newConfig.addInterpreterArg("-r" + scriptFile.toPortableString()); //$NON-NLS-1$
+		newConfig.addInterpreterArg("-I" + sourceLocation.toPortableString()); //$NON-NLS-1$
 
 		// Environment
 		final DbgpInterpreterConfig dbgpConfig = new DbgpInterpreterConfig(

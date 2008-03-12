@@ -7,7 +7,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 
 public class SimpleClassDLTKExtensionManager extends SimpleDLTKExtensionManager {
-	private static final String CLASS_ATTR = "class";
+	private static final String CLASS_ATTR = "class"; //$NON-NLS-1$
 	
 	public SimpleClassDLTKExtensionManager(String extension) {
 		super(extension);

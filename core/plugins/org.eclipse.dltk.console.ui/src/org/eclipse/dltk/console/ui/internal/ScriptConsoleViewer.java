@@ -62,7 +62,7 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 		public void clear() {
 			try {
 				disconnectListener();
-				doc.set("");
+				doc.set(""); //$NON-NLS-1$
 				appendInvitation();
 				viewer.setCaretPosition(doc.getLength());
 				connectListener();
@@ -146,9 +146,9 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 
 				text = doc.get(offset, doc.getLength() - offset);
 
-				doc.replace(offset, text.length(), "");
+				doc.replace(offset, text.length(), ""); //$NON-NLS-1$
 
-				text = text.replaceAll("\r\n|\n|\r", delim);
+				text = text.replaceAll("\r\n|\n|\r", delim); //$NON-NLS-1$
 
 				int start = 0;
 				int index = -1;

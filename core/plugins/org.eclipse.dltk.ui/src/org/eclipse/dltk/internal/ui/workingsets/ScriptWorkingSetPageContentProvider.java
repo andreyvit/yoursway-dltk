@@ -28,7 +28,7 @@ class ScriptWorkingSetPageContentProvider extends StandardModelElementContentPro
 		if (element instanceof IScriptFolder) {
 			//IScriptFolder pkg= (IScriptFolder)element;
 			if (DLTKCore.DEBUG) {
-				System.err.println("Add binary source folder support");
+				System.err.println("Add binary source folder support"); //$NON-NLS-1$
 			}
 //			try {
 //				if (pkg.getKind() == IProjectFragment.K_BINARY)

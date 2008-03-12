@@ -306,7 +306,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 				// tok);
 				char[] name = qname.toCharArray();
 				if (DLTKCore.DEBUG_COMPLETION) {
-					System.out.println("Completion:" + qname);
+					System.out.println("Completion:" + qname); //$NON-NLS-1$
 				}
 				if (length <= name.length
 						&& CharOperation.prefixEquals(token, name, false)) {
@@ -448,7 +448,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 				String qname = processMethodName(method, tok);
 				char[] name = qname.toCharArray();
 				if (DLTKCore.DEBUG_COMPLETION) {
-					System.out.println("Completion:" + qname);
+					System.out.println("Completion:" + qname); //$NON-NLS-1$
 				}
 				if (length <= name.length
 						&& CharOperation.prefixEquals(token, name, false)) {
@@ -521,7 +521,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 				String qname = processFieldName(field, tok);
 				char[] name = qname.toCharArray();
 				if (DLTKCore.DEBUG_COMPLETION) {
-					System.out.println("Completion:" + qname);
+					System.out.println("Completion:" + qname); //$NON-NLS-1$
 				}
 				if (length <= name.length
 						&& CharOperation.prefixEquals(token, name, false)) {
@@ -570,7 +570,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 				String qname = processTypeName(type, tok);
 				char[] name = qname.toCharArray();
 				if (DLTKCore.DEBUG_COMPLETION) {
-					System.out.println("Completion:" + qname);
+					System.out.println("Completion:" + qname); //$NON-NLS-1$
 				}
 				if (length <= name.length
 						&& CharOperation.prefixEquals(token, name, false)) {

@@ -20,13 +20,13 @@ import org.w3c.dom.NodeList;
 
 public class DbgpPropertyCommands extends DbgpBaseCommands implements
 		IDbgpPropertyCommands {
-	private static final String PROPERTY_GET_COMMAND = "property_get";
+	private static final String PROPERTY_GET_COMMAND = "property_get"; //$NON-NLS-1$
 
-	private static final String PROPERTY_SET_COMMAND = "property_set";
+	private static final String PROPERTY_SET_COMMAND = "property_set"; //$NON-NLS-1$
 
 	// private static final String PROPERTY_VALUE_COMMAND = "property_value";
 
-	private static final String PROPERTY_TAG = "property";
+	private static final String PROPERTY_TAG = "property"; //$NON-NLS-1$
 
 	protected IDbgpProperty parsePropertyResponse(Element response)
 			throws DbgpException {
@@ -47,18 +47,18 @@ public class DbgpPropertyCommands extends DbgpBaseCommands implements
 	protected IDbgpProperty getProperty(Integer page, String name, Integer stackDepth,
 			Integer contextId) throws DbgpException {
 		DbgpRequest request = createRequest(PROPERTY_GET_COMMAND);
-		request.addOption("-n", name);
+		request.addOption("-n", name); //$NON-NLS-1$
 
 		if (stackDepth != null) {
-			request.addOption("-d", stackDepth);
+			request.addOption("-d", stackDepth); //$NON-NLS-1$
 		}
 
 		if (contextId != null) {
-			request.addOption("-c", contextId);
+			request.addOption("-c", contextId); //$NON-NLS-1$
 		}
 
 		if (page != null) {
-			request.addOption("-p", page);
+			request.addOption("-p", page); //$NON-NLS-1$
 		}
 		return parsePropertyResponse(communicate(request));
 	}
@@ -66,8 +66,8 @@ public class DbgpPropertyCommands extends DbgpBaseCommands implements
 	public IDbgpProperty getPropertyByKey(String name, String key)
 			throws DbgpException {
 		DbgpRequest request = createRequest(PROPERTY_GET_COMMAND);
-		request.addOption("-n", name);
-		request.addOption("-k", key);
+		request.addOption("-n", name); //$NON-NLS-1$
+		request.addOption("-k", key); //$NON-NLS-1$
 		return parsePropertyResponse(communicate(request));
 	}
 
@@ -93,7 +93,7 @@ public class DbgpPropertyCommands extends DbgpBaseCommands implements
 
 	public boolean setProperty(IDbgpProperty property) throws DbgpException {
 		DbgpRequest request = createRequest(PROPERTY_SET_COMMAND);
-		request.addOption("-n", property.getName());
+		request.addOption("-n", property.getName()); //$NON-NLS-1$
 		request.setData(property.getValue());
 		return DbgpXmlParser.parseSuccess(communicate(request));
 	}
@@ -101,8 +101,8 @@ public class DbgpPropertyCommands extends DbgpBaseCommands implements
 	public boolean setProperty(String name, int stackDepth, String value)
 			throws DbgpException {
 		DbgpRequest request = createRequest(PROPERTY_SET_COMMAND);
-		request.addOption("-n", name);
-		request.addOption("-d", stackDepth);
+		request.addOption("-n", name); //$NON-NLS-1$
+		request.addOption("-d", stackDepth); //$NON-NLS-1$
 		request.setData(value);
 		return DbgpXmlParser.parseSuccess(communicate(request));
 	}

@@ -34,7 +34,7 @@ public class RubyUILanguageToolkit implements IDLTKUILanguageToolkit {
 			String s = buffer.toString();
 			if (s != null && !s.startsWith(element.getElementName())) {
 				if (s.indexOf('$') != -1) {
-					s = s.replaceAll("\\$", ".");
+					s = s.replaceAll("\\$", "."); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 			buf.append(s);
@@ -45,7 +45,7 @@ public class RubyUILanguageToolkit implements IDLTKUILanguageToolkit {
 			super.getTypeLabel(type, flags, buffer);
 			String s = buffer.toString();
 			if (s.indexOf('$') != -1) {
-				s = s.replaceAll("\\$", "::");
+				s = s.replaceAll("\\$", "::"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			buf.append(s);
 		}
@@ -89,7 +89,7 @@ public class RubyUILanguageToolkit implements IDLTKUILanguageToolkit {
 	}
 
 	public String getInterpreterContainerId() {
-		return "org.eclipse.dltk.ruby.launching.INTERPRETER_CONTAINER";
+		return "org.eclipse.dltk.ruby.launching.INTERPRETER_CONTAINER"; //$NON-NLS-1$
 	}
 
 	public ScriptUILabelProvider createScriptUILabelProvider() {
@@ -110,12 +110,12 @@ public class RubyUILanguageToolkit implements IDLTKUILanguageToolkit {
 				getPartitioningId(), false);
 	}
 
-	private static final String INTERPRETERS_PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.interpreters";
-	private static final String DEBUG_PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug";
+	private static final String INTERPRETERS_PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.interpreters"; //$NON-NLS-1$
+	private static final String DEBUG_PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug"; //$NON-NLS-1$
 	private static final String[] EDITOR_PREFERENCE_PAGES_IDS = {
-		"org.eclipse.dltk.ruby.preferences.editor", 
-		"org.eclipse.dltk.ruby.preferences.editor.syntaxcoloring", 
-		"org.eclipse.dltk.ruby.preferences.templates"		
+		"org.eclipse.dltk.ruby.preferences.editor",  //$NON-NLS-1$
+		"org.eclipse.dltk.ruby.preferences.editor.syntaxcoloring", //$NON-NLS-1$ 
+		"org.eclipse.dltk.ruby.preferences.templates" //$NON-NLS-1$
 	};
 
 	public String getInterpreterPreferencePage() {

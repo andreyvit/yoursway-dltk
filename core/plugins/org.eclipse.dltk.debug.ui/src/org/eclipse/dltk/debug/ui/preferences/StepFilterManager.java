@@ -46,7 +46,7 @@ public class StepFilterManager {
 						.getString(IDLTKDebugUIPreferenceConstants.PREF_ACTIVE_FILTERS_LIST));
 		filters = new Filter[activefilters.length];
 		for (int i = 0; i < activefilters.length; i++) {
-			String[] split = activefilters[i].split(":");
+			String[] split = activefilters[i].split(":"); //$NON-NLS-1$
 			if (split.length == 1) {
 				filters[i] = new Filter(split[0], true, 0);
 			} else {
@@ -70,12 +70,12 @@ public class StepFilterManager {
 	}
 	public static boolean isUseStepFilters(IPreferenceStore preferenceStore) {
 		return preferenceStore.getBoolean(DLTKDebugPlugin.PLUGIN_ID
-				+ ".useStepFilters");
+				+ ".useStepFilters"); //$NON-NLS-1$
 	}
 
 	public static void setUseStepFilters(boolean selection,
 			IPreferenceStore preferenceStore) {
-		preferenceStore.setValue(DLTKDebugPlugin.PLUGIN_ID + ".useStepFilters",
+		preferenceStore.setValue(DLTKDebugPlugin.PLUGIN_ID + ".useStepFilters", //$NON-NLS-1$
 				selection);
 	}
 }

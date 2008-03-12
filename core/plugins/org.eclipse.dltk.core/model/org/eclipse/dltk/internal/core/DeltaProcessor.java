@@ -768,7 +768,7 @@ public class DeltaProcessor {
 						// fileName validation has been done in
 						// elementType(IResourceDelta, int, boolean)
 						// String fileName = path.lastSegment();
-						throw new RuntimeException("not implemented");
+						throw new RuntimeException("not implemented"); //$NON-NLS-1$
 						// element = pkgFragment.getClassFile(fileName);
 					}
 				}
@@ -1620,7 +1620,7 @@ public class DeltaProcessor {
 			int listenerCount) {
 		// TODO implement
 		if (DLTKCore.DEBUG) {
-			System.out.println("notify type hierarchies");
+			System.out.println("notify type hierarchies"); //$NON-NLS-1$
 		}
 	}
 
@@ -2616,7 +2616,7 @@ public class DeltaProcessor {
 						getSourceRequestor(element), toolkit);
 				if (DLTKCore.DEBUG) {
 					System.err
-							.println("update index: some actions are required to perform here....");
+							.println("update index: some actions are required to perform here...."); //$NON-NLS-1$
 				}
 				// Clean file from secondary types cache but do not
 				// update

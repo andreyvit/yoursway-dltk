@@ -147,24 +147,24 @@ public class MethodDeclaration extends Declaration {
 				((Decorator) i.next()).printNode(output);
 			}
 		}
-		output.formatPrintLn("Method" + this.getSourceRange().toString()
-				+ this.getNameSourceRange().toString() + ": "
+		output.formatPrintLn("Method" + this.getSourceRange().toString() //$NON-NLS-1$
+				+ this.getNameSourceRange().toString() + ": " //$NON-NLS-1$
 				+ super.toString());
-		output.formatPrintLn("(");
+		output.formatPrintLn("("); //$NON-NLS-1$
 		if (this.arguments != null && this.arguments.size() > 0) {
 			boolean first = true;
 			Iterator i = this.arguments.iterator();
 			while (i.hasNext()) {
 				Argument argument = (Argument) i.next();
 				if (!first) {
-					output.formatPrintLn(", ");
+					output.formatPrintLn(", "); //$NON-NLS-1$
 				} else {
 					first = false;
 				}
 				argument.printNode(output);
 			}
 		}
-		output.formatPrintLn(")");
+		output.formatPrintLn(")"); //$NON-NLS-1$
 		if (this.body != null) {
 			this.body.printNode(output);
 		}

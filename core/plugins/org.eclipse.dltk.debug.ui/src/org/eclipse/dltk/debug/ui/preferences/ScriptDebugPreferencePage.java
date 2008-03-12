@@ -18,7 +18,7 @@ import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore;
 public class ScriptDebugPreferencePage extends
 		AbstractConfigurationBlockPreferencePage {
 	
-	public static final String PAGE_ID = "org.eclipse.dltk.preferences.debug";
+	public static final String PAGE_ID = "org.eclipse.dltk.preferences.debug"; //$NON-NLS-1$
 
 	protected IPreferenceConfigurationBlock createConfigurationBlock(
 			OverlayPreferenceStore overlayPreferenceStore) {

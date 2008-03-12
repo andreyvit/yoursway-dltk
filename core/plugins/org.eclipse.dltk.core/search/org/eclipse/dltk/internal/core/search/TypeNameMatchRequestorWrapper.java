@@ -113,7 +113,7 @@ public class TypeNameMatchRequestorWrapper implements
 																				 * separatorIndex)
 																				 */;
 				if (DLTKCore.DEBUG) {
-					System.err.println("TODO: Add types from zips...");
+					System.err.println("TODO: Add types from zips..."); //$NON-NLS-1$
 				}
 			}
 			if (type != null) {

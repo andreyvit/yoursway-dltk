@@ -20,7 +20,7 @@ import org.w3c.dom.Element;
 public class DbgpSourceCommands extends DbgpBaseCommands implements
 		IDbgpSourceCommands {
 
-	private static final String SOURCE_COMMAND = "source";
+	private static final String SOURCE_COMMAND = "source"; //$NON-NLS-1$
 
 	public DbgpSourceCommands(IDbgpCommunicator communicator) {
 		super(communicator);
@@ -41,13 +41,13 @@ public class DbgpSourceCommands extends DbgpBaseCommands implements
 		DbgpRequest request = createRequest(SOURCE_COMMAND);
 
 		if (beginLine != null) {
-			request.addOption("-b", beginLine);
+			request.addOption("-b", beginLine); //$NON-NLS-1$
 		}
 		if (endLine != null) {
-			request.addOption("-e", endLine);
+			request.addOption("-e", endLine); //$NON-NLS-1$
 		}
 
-		request.addOption("-f", uri.toString());
+		request.addOption("-f", uri.toString()); //$NON-NLS-1$
 
 		return parseResponseXml(communicate(request));
 	}

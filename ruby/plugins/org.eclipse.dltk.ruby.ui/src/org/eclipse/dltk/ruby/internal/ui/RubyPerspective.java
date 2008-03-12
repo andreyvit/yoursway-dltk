@@ -21,7 +21,7 @@ import org.eclipse.ui.progress.IProgressConstants;
 
 public class RubyPerspective implements IPerspectiveFactory {
 	
-	public static final String PERSPECTIVE_ID = "org.eclipse.dltk.ruby.ui.RubyPerspective";
+	public static final String PERSPECTIVE_ID = "org.eclipse.dltk.ruby.ui.RubyPerspective"; //$NON-NLS-1$
 
 	public void createInitialLayout(IPageLayout layout) {
 		addFolders(layout);
@@ -34,13 +34,13 @@ public class RubyPerspective implements IPerspectiveFactory {
 	
 	protected void addFolders(IPageLayout layout) {
 		IFolderLayout leftFolder = layout.createFolder("left", IPageLayout.LEFT, (float) 0.2, layout.getEditorArea()); //$NON-NLS-1$
-		leftFolder.addView("org.eclipse.dltk.ui.ScriptExplorer");
+		leftFolder.addView("org.eclipse.dltk.ui.ScriptExplorer"); //$NON-NLS-1$
 		leftFolder.addPlaceholder(IPageLayout.ID_BOOKMARKS);
 
 		IFolderLayout bottomFolder = layout.createFolder("bottom", IPageLayout.BOTTOM, (float) 0.75, layout.getEditorArea()); //$NON-NLS-1$
 		bottomFolder.addView(IPageLayout.ID_PROBLEM_VIEW);
 		bottomFolder.addView(IPageLayout.ID_TASK_LIST);
-		bottomFolder.addView("org.eclipse.dltk.ruby.ui.RubyDocumentationView");
+		bottomFolder.addView("org.eclipse.dltk.ruby.ui.RubyDocumentationView"); //$NON-NLS-1$
 		bottomFolder.addView(IConsoleConstants.ID_CONSOLE_VIEW);		
 		bottomFolder.addPlaceholder(IPageLayout.ID_BOOKMARKS);
 		bottomFolder.addPlaceholder(IProgressConstants.PROGRESS_VIEW_ID);
@@ -48,7 +48,7 @@ public class RubyPerspective implements IPerspectiveFactory {
 	
 	protected void addActionSets(IPageLayout layout) {
 		layout.addActionSet(IPageLayout.ID_NAVIGATE_ACTION_SET);
-		layout.addActionSet("org.eclipse.dltk.ruby.ui.RubyActionSet");
+		layout.addActionSet("org.eclipse.dltk.ruby.ui.RubyActionSet"); //$NON-NLS-1$
 	}
 	
 	protected void addViews(IPageLayout layout) {
@@ -59,7 +59,7 @@ public class RubyPerspective implements IPerspectiveFactory {
 	protected void addShowViewShortcuts(IPageLayout layout) {
 		layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
 		layout.addShowViewShortcut(IPageLayout.ID_PROBLEM_VIEW);
-		layout.addShowViewShortcut("org.eclipse.dltk.ui.ScriptExplorer");
+		layout.addShowViewShortcut("org.eclipse.dltk.ui.ScriptExplorer"); //$NON-NLS-1$
 		layout.addShowViewShortcut(IPageLayout.ID_TASK_LIST);
 		layout.addShowViewShortcut(IProgressConstants.PROGRESS_VIEW_ID);
 	}
@@ -78,6 +78,6 @@ public class RubyPerspective implements IPerspectiveFactory {
 	}
 	
 	protected void addPerspectiveShotcuts(IPageLayout layout) {
-		layout.addPerspectiveShortcut("org.eclipse.debug.ui.DebugPerspective");
+		layout.addPerspectiveShortcut("org.eclipse.debug.ui.DebugPerspective"); //$NON-NLS-1$
 	}
 }

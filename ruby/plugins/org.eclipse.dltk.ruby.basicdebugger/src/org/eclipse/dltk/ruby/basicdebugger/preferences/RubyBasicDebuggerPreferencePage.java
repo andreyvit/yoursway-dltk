@@ -34,8 +34,8 @@ public class RubyBasicDebuggerPreferencePage extends
 			RubyBasicDebuggerPlugin.PLUGIN_ID,
 			RubyBasicDebuggerConstants.LOG_FILE_NAME);
 
-	private static String PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug.engines.basicdebugger";
-	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.ruby.propertyPage.debug.engines.basicdebugger";
+	private static String PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug.engines.basicdebugger"; //$NON-NLS-1$
+	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.ruby.propertyPage.debug.engines.basicdebugger"; //$NON-NLS-1$
 
 	/*
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#createOptionsBlock(org.eclipse.dltk.ui.util.IStatusChangeListener,

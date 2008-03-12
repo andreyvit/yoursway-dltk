@@ -30,7 +30,7 @@ public class CancelSearchAction extends Action {
 		// PlatformUI.getWorkbench().getHelpSystem().setHelp(this,
 		// IJavaHelpContextIds.CALL_HIERARCHY_CANCEL_SEARCH_ACTION);
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
 	}
 

@@ -22,9 +22,9 @@ public class RenameResourceWizard extends RenameRefactoringWizard {
 			RefactoringMessages.RenameResourceWizard_defaultPageTitle, 
 			RefactoringMessages.RenameResourceWizard_inputPage_description, 
 			DLTKPluginImages.DESC_WIZBAN_REFACTOR,
-			""/*IScriptHelpContextIds.RENAME_RESOURCE_WIZARD_PAGE*/);
+			""/*IScriptHelpContextIds.RENAME_RESOURCE_WIZARD_PAGE*/); //$NON-NLS-1$
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
 		
 	}

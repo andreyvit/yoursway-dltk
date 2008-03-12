@@ -1,5 +1,6 @@
 package org.eclipse.dltk.internal.debug.core.eval;
 
+import java.text.MessageFormat;
 import java.util.WeakHashMap;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -64,7 +65,7 @@ public class ScriptEvaluationEngine implements IScriptEvaluationEngine {
 			} else {
 				// TODO: localize
 				result = new FailedScriptEvaluationResult(thread, snippet,
-						new String[] { "Can't evaluate" });
+						new String[] { Messages.ScriptEvaluationEngine_cantEvaluate });
 			}
 
 		} catch (DbgpException e) {
@@ -105,7 +106,7 @@ public class ScriptEvaluationEngine implements IScriptEvaluationEngine {
 			final IScriptStackFrame frame,
 			final IScriptEvaluationListener listener) {
 		// TODO: localize
-		Job job = new Job("Evaluation of \"" + snippet + "\"") { // TODO: make constant
+		Job job = new Job(MessageFormat.format(Messages.ScriptEvaluationEngine_evaluationOf, new Object[] { snippet })) { // TODO: make constant
 			protected IStatus run(IProgressMonitor monitor) {
 				if (getScriptDebugTarget().isTerminated()) {
 					return Status.OK_STATUS;

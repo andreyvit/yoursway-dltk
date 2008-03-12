@@ -20,8 +20,8 @@ import org.eclipse.dltk.internal.ui.editor.ScriptOutlinePage;
 import org.eclipse.dltk.internal.ui.editor.ToggleCommentAction;
 import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.dltk.ruby.internal.ui.RubyUI;
+import org.eclipse.dltk.ruby.internal.ui.text.IRubyPartitions;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPairMatcher;
-import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
 import org.eclipse.dltk.ruby.internal.ui.text.folding.RubyFoldingStructureProvider;
 import org.eclipse.dltk.ui.actions.IScriptEditorActionDefinitionIds;
 import org.eclipse.dltk.ui.text.ScriptTextTools;
@@ -30,8 +30,11 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentExtension3;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextOperationTarget;
 import org.eclipse.jface.text.ITextViewerExtension;
+import org.eclipse.jface.text.ITextViewerExtension5;
+import org.eclipse.jface.text.source.ICharacterPairMatcher;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.widgets.Composite;
@@ -40,17 +43,16 @@ import org.eclipse.ui.texteditor.SourceViewerDecorationSupport;
 import org.eclipse.ui.texteditor.TextOperationAction;
 
 public class RubyEditor extends ScriptEditor {
-	public static final String EDITOR_ID = "org.eclipse.dltk.ruby.ui.editor.RubyEditor";
+	public static final String EDITOR_ID = "org.eclipse.dltk.ruby.ui.editor.RubyEditor"; //$NON-NLS-1$
 
-	public static final String EDITOR_CONTEXT = "#RubyEditorContext";
+	public static final String EDITOR_CONTEXT = "#RubyEditorContext"; //$NON-NLS-1$
 
-	public static final String RULER_CONTEXT = "#RubyRulerContext";
+	public static final String RULER_CONTEXT = "#RubyRulerContext"; //$NON-NLS-1$
 
 	private org.eclipse.dltk.internal.ui.editor.BracketInserter fBracketInserter = new RubyBracketInserter(
 			this);
 
-	private RubyPairMatcher bracketMatcher = new RubyPairMatcher("{}[]()"
-			.toCharArray());
+	private RubyPairMatcher bracketMatcher = new RubyPairMatcher();
 
 	protected void initializeEditor() {
 		super.initializeEditor();
@@ -76,7 +78,7 @@ public class RubyEditor extends ScriptEditor {
 		if (document instanceof IDocumentExtension3) {
 			IDocumentExtension3 extension = (IDocumentExtension3) document;
 			if (extension
-					.getDocumentPartitioner(RubyPartitions.RUBY_PARTITIONING) == null) {
+					.getDocumentPartitioner(IRubyPartitions.RUBY_PARTITIONING) == null) {
 				RubyDocumentSetupParticipant participant = new RubyDocumentSetupParticipant();
 				participant.setup(document);
 			}
@@ -107,7 +109,7 @@ public class RubyEditor extends ScriptEditor {
 	}
 
 	public String getCallHierarchyID() {
-		return "org.eclipse.dltk.callhierarchy.view";
+		return "org.eclipse.dltk.callhierarchy.view"; //$NON-NLS-1$
 	}
 
 	protected void initializeKeyBindingScopes() {
@@ -204,6 +206,72 @@ public class RubyEditor extends ScriptEditor {
 				MATCHING_BRACKETS_COLOR);
 
 		super.configureSourceViewerDecorationSupport(support);
+	}
+	
+	/**
+	 * Jumps to the matching bracket.
+	 */
+	public void gotoMatchingBracket() {
+		ISourceViewer sourceViewer = getSourceViewer();
+		IDocument document = sourceViewer.getDocument();
+		if (document == null)
+			return;
+
+		IRegion selection = getSignedSelection(sourceViewer);
+
+		int selectionLength = Math.abs(selection.getLength());
+		if (selectionLength > 1) {
+			setStatusLineErrorMessage(Messages.RubyEditor_nobracketSelected);
+			sourceViewer.getTextWidget().getDisplay().beep();
+			return;
+		}
+
+		// #26314
+		int sourceCaretOffset = selection.getOffset() + selection.getLength();
+		if (isSurroundedByBrackets(document, sourceCaretOffset))
+			sourceCaretOffset -= selection.getLength();
+		
+		IRegion region = bracketMatcher.match(document, sourceCaretOffset);
+		if (region == null) {
+			setStatusLineErrorMessage(Messages.RubyEditor_noMatchingBracketFound);
+			sourceViewer.getTextWidget().getDisplay().beep();
+			return;
+		}
+
+		int offset = region.getOffset();
+		int length = region.getLength();
+
+		if (length < 1)
+			return;
+
+		int anchor = bracketMatcher.getAnchor();
+		// http://dev.eclipse.org/bugs/show_bug.cgi?id=34195
+		int targetOffset = (ICharacterPairMatcher.RIGHT == anchor) ? offset + 1
+				: offset + length;
+
+		boolean visible = false;
+		if (sourceViewer instanceof ITextViewerExtension5) {
+			ITextViewerExtension5 extension = (ITextViewerExtension5) sourceViewer;
+			visible = (extension.modelOffset2WidgetOffset(targetOffset) > -1);
+		} else {
+			IRegion visibleRegion = sourceViewer.getVisibleRegion();
+			// http://dev.eclipse.org/bugs/show_bug.cgi?id=34195
+			visible = (targetOffset >= visibleRegion.getOffset() && targetOffset <= visibleRegion
+					.getOffset()
+					+ visibleRegion.getLength());
+		}
+
+		if (!visible) {
+			setStatusLineErrorMessage(Messages.RubyEditor_matchingBracketIsOutsideSelectedElement);
+			sourceViewer.getTextWidget().getDisplay().beep();
+			return;
+		}
+
+		if (selection.getLength() < 0)
+			targetOffset -= selection.getLength();
+
+		sourceViewer.setSelectedRange(targetOffset, selection.getLength());
+		sourceViewer.revealRange(targetOffset, selection.getLength());
 	}
 	
 }

@@ -178,7 +178,7 @@ public abstract class DialogPackageExplorer implements IMenuListener, ISelection
 
 		protected ImageDescriptor getSourceModuleIcon(IModelElement element, int renderFlags) {
 			if (DLTKCore.DEBUG) {
-				System.err.println("Dialog package explorer label provider returns ghost for source modules...");
+				System.err.println("Dialog package explorer label provider returns ghost for source modules..."); //$NON-NLS-1$
 			}
 			return DLTKPluginImages.DESC_OBJS_GHOST;
 		}
@@ -260,7 +260,7 @@ public abstract class DialogPackageExplorer implements IMenuListener, ISelection
     public Control createControl(Composite parent) {
         fPackageViewer= new TreeViewer(parent, SWT.MULTI);
         if (DLTKCore.DEBUG) {
-			System.err.println("Add comparer");
+			System.err.println("Add comparer"); //$NON-NLS-1$
 		}
         //fPackageViewer.setComparer(WorkingSetModel.COMPARER);
         fPackageViewer.addFilter(new PackageFilter());

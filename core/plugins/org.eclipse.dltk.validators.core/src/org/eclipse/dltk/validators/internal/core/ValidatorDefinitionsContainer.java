@@ -89,7 +89,7 @@ public class ValidatorDefinitionsContainer {
 		List res = new ArrayList(fValidatorList.size());
 		for (Iterator iter = fValidatorList.iterator(); iter.hasNext();) {
 			IValidator validator = (IValidator) iter.next();
-			String sharp = "#";
+			String sharp = "#"; //$NON-NLS-1$
 			String nature2 = validator.getValidatorType().getNature();
 			if (nature2.equals(nature) || nature2.equals(sharp)) {
 				res.add(validator);
@@ -274,7 +274,7 @@ public class ValidatorDefinitionsContainer {
 			} catch (IOException e) {
 				DLTKCore.getDefault().getLog().log(
 						new Status(0, ValidatorsCore.PLUGIN_ID, 0,
-								"Failed to load validator from XML...", null));
+								ValidatorMessages.ValidatorDefinitionsContainer_failedToLoadValidatorFromXml, null));
 			}
 		} else {
 			if (DLTKCore.DEBUG) {

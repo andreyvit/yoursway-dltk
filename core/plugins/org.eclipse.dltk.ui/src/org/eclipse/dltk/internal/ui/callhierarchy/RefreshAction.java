@@ -26,7 +26,7 @@ class RefreshAction extends Action {
 		setActionDefinitionId("org.eclipse.ui.file.refresh"); //$NON-NLS-1$
 //        PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IJavaHelpContextIds.CALL_HIERARCHY_REFRESH_ACTION);
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}		
     }
 

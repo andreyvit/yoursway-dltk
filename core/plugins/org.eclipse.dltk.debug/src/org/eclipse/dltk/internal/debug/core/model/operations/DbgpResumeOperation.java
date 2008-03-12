@@ -14,7 +14,7 @@ import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 
 public class DbgpResumeOperation extends DbgpOperation {
-	private static final String JOB_NAME = "Resume operation";
+	private static final String JOB_NAME = Messages.DbgpResumeOperation_resumeOperation;
 
 	private boolean first = true;
 	boolean breakOnFirstLine = false;

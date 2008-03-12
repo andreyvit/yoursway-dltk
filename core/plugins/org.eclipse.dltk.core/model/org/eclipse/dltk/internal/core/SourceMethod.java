@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.internal.core;
 
@@ -24,6 +24,13 @@ public class SourceMethod extends NamedMember implements IMethod {
 
 	public int getElementType() {
 		return METHOD;
+	}
+
+	public boolean equals(Object o) {
+		if (!(o instanceof SourceMethod)) {
+			return false;
+		}
+		return super.equals(o);
 	}
 
 	public String[] getParameters() throws ModelException {
@@ -45,7 +52,7 @@ public class SourceMethod extends NamedMember implements IMethod {
 	}
 
 	public void printNode(CorePrinter output) {
-		output.formatPrint("DLTK Source Method:" + getElementName());
+		output.formatPrint("DLTK Source Method:" + getElementName()); //$NON-NLS-1$
 		output.indent();
 		try {
 			IModelElement modelElements[] = this.getChildren();
@@ -54,7 +61,7 @@ public class SourceMethod extends NamedMember implements IMethod {
 				if (element instanceof ModelElement) {
 					((ModelElement) element).printNode(output);
 				} else {
-					output.print("Unknown element:" + element);
+					output.print("Unknown element:" + element); //$NON-NLS-1$
 				}
 			}
 		} catch (ModelException ex) {
@@ -89,7 +96,7 @@ public class SourceMethod extends NamedMember implements IMethod {
 	}
 
 	public String getFullyQualifiedName() {
-		return getFullyQualifiedName("$");
+		return getFullyQualifiedName("$"); //$NON-NLS-1$
 	}
 
 	public IScriptFolder getScriptFolder() {

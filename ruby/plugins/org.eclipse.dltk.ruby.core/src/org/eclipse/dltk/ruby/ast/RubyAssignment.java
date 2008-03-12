@@ -59,7 +59,7 @@ public class RubyAssignment extends RubyBinaryExpression
 		if( getLeft() != null ) {
 			getLeft().printNode( output );
 		}
-		output.formatPrintLn( " = " );
+		output.formatPrintLn( " = " ); //$NON-NLS-1$
 		if( getRight() != null ) {
 			getRight().printNode( output );
 		}

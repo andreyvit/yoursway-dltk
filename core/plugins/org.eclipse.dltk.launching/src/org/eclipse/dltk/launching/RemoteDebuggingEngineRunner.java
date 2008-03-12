@@ -19,7 +19,7 @@ public abstract class RemoteDebuggingEngineRunner extends DebuggingEngineRunner 
 			throws CoreException {
 		return configuration.getAttribute(
 				ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_SESSION_ID,
-				"");
+				""); //$NON-NLS-1$
 	}
 
 	/*

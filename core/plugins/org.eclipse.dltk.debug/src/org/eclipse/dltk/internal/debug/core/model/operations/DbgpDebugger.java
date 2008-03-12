@@ -310,53 +310,53 @@ public class DbgpDebugger {
 	public static void printEngineInfo(DbgpDebugger d) throws DbgpException {
 		// TODO: to debug log
 		System.out.println(IDbgpFeatureCommands.LANGUAGE_SUPPORTS_THREADS
-				+ ": " + d.isSupportsThreads());
-		System.out.println(IDbgpFeatureCommands.LANGUAGE_NAME + ": "
+				+ ": " + d.isSupportsThreads()); //$NON-NLS-1$
+		System.out.println(IDbgpFeatureCommands.LANGUAGE_NAME + ": " //$NON-NLS-1$
 				+ d.getLanguageName());
-		System.out.println(IDbgpFeatureCommands.LANGUAGE_VERSION + ": "
+		System.out.println(IDbgpFeatureCommands.LANGUAGE_VERSION + ": " //$NON-NLS-1$
 				+ d.getLanguageVersion());
-		System.out.println(IDbgpFeatureCommands.ENCODING + ": "
+		System.out.println(IDbgpFeatureCommands.ENCODING + ": " //$NON-NLS-1$
 				+ d.getEncoding());
-		System.out.println(IDbgpFeatureCommands.DATA_ENCODING + ": "
+		System.out.println(IDbgpFeatureCommands.DATA_ENCODING + ": " //$NON-NLS-1$
 				+ d.getDataEncoding());
-		System.out.println(IDbgpFeatureCommands.PROTOCOL_VERSION + ": "
+		System.out.println(IDbgpFeatureCommands.PROTOCOL_VERSION + ": " //$NON-NLS-1$
 				+ d.getProtocolVersion());
-		System.out.println(IDbgpFeatureCommands.SUPPORTS_ASYNC + ": "
+		System.out.println(IDbgpFeatureCommands.SUPPORTS_ASYNC + ": " //$NON-NLS-1$
 				+ d.isSupportsAsync());
-		System.out.println(IDbgpFeatureCommands.BREAKPOINT_LANGUAGES + ": "
+		System.out.println(IDbgpFeatureCommands.BREAKPOINT_LANGUAGES + ": " //$NON-NLS-1$
 				+ d.getBreakpointLanguages());
-		System.out.println(IDbgpFeatureCommands.MULTIPLE_SESSIONS + ": "
+		System.out.println(IDbgpFeatureCommands.MULTIPLE_SESSIONS + ": " //$NON-NLS-1$
 				+ d.getMultipleSessions());
-		System.out.println(IDbgpFeatureCommands.MAX_CHILDREN + ": "
+		System.out.println(IDbgpFeatureCommands.MAX_CHILDREN + ": " //$NON-NLS-1$
 				+ d.getMaxChildren());
-		System.out.println(IDbgpFeatureCommands.MAX_DATA + ": "
+		System.out.println(IDbgpFeatureCommands.MAX_DATA + ": " //$NON-NLS-1$
 				+ d.getMaxData());
-		System.out.println(IDbgpFeatureCommands.MAX_DEPTH + ": "
+		System.out.println(IDbgpFeatureCommands.MAX_DEPTH + ": " //$NON-NLS-1$
 				+ d.getMaxDepth());
 
 		if (d.isPostMortenSupported()) {
-			System.out.println("Support of "
+			System.out.println("Support of " //$NON-NLS-1$
 					+ IDbgpFeatureCommands.SUPPORTS_POSTMORTEN
-					+ ": true, value: " + d.getPostMorten());
+					+ ": true, value: " + d.getPostMorten()); //$NON-NLS-1$
 		} else {
-			System.out.println("Support of "
-					+ IDbgpFeatureCommands.SUPPORTS_POSTMORTEN + ": false");
+			System.out.println("Support of " //$NON-NLS-1$
+					+ IDbgpFeatureCommands.SUPPORTS_POSTMORTEN + ": false"); //$NON-NLS-1$
 		}
 
 		if (d.isShowHiddenSupported()) {
-			System.out.println("Support of " + IDbgpFeatureCommands.SHOW_HIDDEN
-					+ ": true, value: " + d.getShowHidden());
+			System.out.println("Support of " + IDbgpFeatureCommands.SHOW_HIDDEN //$NON-NLS-1$
+					+ ": true, value: " + d.getShowHidden()); //$NON-NLS-1$
 		} else {
-			System.out.println("Support of " + IDbgpFeatureCommands.SHOW_HIDDEN
-					+ ": false");
+			System.out.println("Support of " + IDbgpFeatureCommands.SHOW_HIDDEN //$NON-NLS-1$
+					+ ": false"); //$NON-NLS-1$
 		}
 
 		if (d.isNotifyOkSupported()) {
-			System.out.println("Support of " + IDbgpFeatureCommands.NOTIFY_OK
-					+ ": true, value: " + d.getNotifyOk());
+			System.out.println("Support of " + IDbgpFeatureCommands.NOTIFY_OK //$NON-NLS-1$
+					+ ": true, value: " + d.getNotifyOk()); //$NON-NLS-1$
 		} else {
-			System.out.println("Support of " + IDbgpFeatureCommands.NOTIFY_OK
-					+ ": false");
+			System.out.println("Support of " + IDbgpFeatureCommands.NOTIFY_OK //$NON-NLS-1$
+					+ ": false"); //$NON-NLS-1$
 		}
 	}
 }

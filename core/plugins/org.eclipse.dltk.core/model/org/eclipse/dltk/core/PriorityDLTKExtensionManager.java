@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.Platform;
  * 
  */
 public class PriorityDLTKExtensionManager {
-	public final static String PRIORITY_ATTR = "priority";
+	public final static String PRIORITY_ATTR = "priority"; //$NON-NLS-1$
 
 	private Map extensions;
 

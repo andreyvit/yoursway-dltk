@@ -150,7 +150,7 @@ public class BuildPathSupport {
 		if (initializer != null) {
 			initializer.requestBuildpathContainerUpdate(containerPath, jproject, updatedContainer);
 			if(DLTKCore.DEBUG) {
-				System.err.println("BuildPathSupport: Add user library preference page container");
+				System.err.println("BuildPathSupport: Add user library preference page container"); //$NON-NLS-1$
 			//initializer.requestBuildpathContainerUpdate(containerPath, UserLibraryPreferencePage.getPlaceholderProject(), updatedContainer);
 			//DLTKCore.setBuildpathContainer(containerPath, new IScriptProject[] {jproject, UserLibraryPreferencePage.getPlaceholderProject()}, new IBuildpathContainer[] {updatedContainer, updatedContainer}, null); // force updating of containers, bug 62250
 			}

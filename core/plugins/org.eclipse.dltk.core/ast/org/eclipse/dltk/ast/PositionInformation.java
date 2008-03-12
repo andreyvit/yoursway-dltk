@@ -25,7 +25,7 @@ public final class PositionInformation {
 	}
 
 	public String toString() {
-		return "[" + sourceStart + "," + sourceEnd + "]";
+		return "[" + sourceStart + "," + sourceEnd + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	public boolean equals(Object o) {

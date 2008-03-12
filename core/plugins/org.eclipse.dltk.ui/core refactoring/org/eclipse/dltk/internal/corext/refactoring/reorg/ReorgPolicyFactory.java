@@ -143,7 +143,7 @@ public class ReorgPolicyFactory {
 				return new CopySubCuElementsPolicy(modelElements);
 			else {
 				if (DLTKCore.DEBUG) {
-					System.err.println("TODO: ReorgPolicyFactory: Add MoveSubCuElementsPolicy support");
+					System.err.println("TODO: ReorgPolicyFactory: Add MoveSubCuElementsPolicy support"); //$NON-NLS-1$
 				}				
 				//return new MoveSubCuElementsPolicy(modelElements);
 			}
@@ -623,7 +623,7 @@ public class ReorgPolicyFactory {
 				
 				case IModelElement.TYPE:
 					if (DLTKCore.DEBUG) {
-						System.err.println("Add import support here...");
+						System.err.println("Add import support here..."); //$NON-NLS-1$
 					}
 //					int[] types1= new int[]{IModelElement.IMPORT_DECLARATION, IModelElement.IMPORT_CONTAINER, IModelElement.PACKAGE_DECLARATION};
 //					if (ReorgUtils.hasElementsOfType(getScriptElements(), types1))
@@ -879,7 +879,7 @@ public class ReorgPolicyFactory {
 
 		public Change createChange(IProgressMonitor pm, INewNameQueries copyQueries) throws ModelException {
 			if (DLTKCore.DEBUG) {
-				System.err.println("ReorgPolicyFactory:createChange return null.");
+				System.err.println("ReorgPolicyFactory:createChange return null."); //$NON-NLS-1$
 			}
 			return null;
 //			try {
@@ -1145,7 +1145,7 @@ public class ReorgPolicyFactory {
 //				if (DLTKCore.DEBUG) {
 //					System.err.println("TODO:return new CopyPackageChange(pack, destination, nameQuery);");
 //				}
-				throw new RuntimeException("return new CopyPackageChange(pack, destination, nameQuery);");
+				throw new RuntimeException("return new CopyPackageChange(pack, destination, nameQuery);"); //$NON-NLS-1$
 				//return null;
 			} else {
 				if (destination.getResource() instanceof IContainer){
@@ -1209,7 +1209,7 @@ public class ReorgPolicyFactory {
 		private static String removeTrailingScript(String name) {
 			//return DLTKCore.removeScriptLikeExtension(name);
 			if (DLTKCore.DEBUG) {
-				System.err.println("TODO: ReorgPolicyFactory add removeScriptLikeExtension code...");
+				System.err.println("TODO: ReorgPolicyFactory add removeScriptLikeExtension code..."); //$NON-NLS-1$
 			}
 			return name;
 		}
@@ -1347,7 +1347,7 @@ public class ReorgPolicyFactory {
 					}
 					else {
 						if (DLTKCore.DEBUG) {
-							System.err.println("TODO: Add correct code of copy external folders in...");
+							System.err.println("TODO: Add correct code of copy external folders in..."); //$NON-NLS-1$
 						}
 						return false;
 					}
@@ -1569,7 +1569,7 @@ public class ReorgPolicyFactory {
 		
 		public Change postCreateChange(Change[] participantChanges, IProgressMonitor pm) throws CoreException {
 			if (DLTKCore.DEBUG) {
-				System.err.println("TODO: ReorgPolicyFactory Add QualifiedNameSearchResult ");
+				System.err.println("TODO: ReorgPolicyFactory Add QualifiedNameSearchResult "); //$NON-NLS-1$
 			}
 //			if (fQualifiedNameSearchResult != null) {
 //				return fQualifiedNameSearchResult.getSingleChange(Changes.getModifiedFiles(participantChanges));
@@ -1712,7 +1712,7 @@ public class ReorgPolicyFactory {
 
 		private void handleType(IType type, IScriptFolder destination, IProgressMonitor pm) {
 			if (DLTKCore.DEBUG) {
-				System.err.println("TODO: Add QualifiedNameFinder support...");
+				System.err.println("TODO: Add QualifiedNameFinder support..."); //$NON-NLS-1$
 			}
 //			QualifiedNameFinder.process(fQualifiedNameSearchResult, type.getFullyQualifiedName(),  destination.getElementName() + "." + type.getTypeQualifiedName(), //$NON-NLS-1$
 //				fFilePatterns, type.getScriptProject().getProject(), pm);

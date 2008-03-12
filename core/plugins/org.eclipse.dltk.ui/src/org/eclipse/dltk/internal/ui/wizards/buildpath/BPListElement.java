@@ -115,7 +115,7 @@ public class BPListElement {
 			createAttributeElement(EXCLUSION, new Path[0], true);
 			if (DLTKCore.DEBUG) {
 				System.err
-						.println("TODO: Add adding containers for languages here");
+						.println("TODO: Add adding containers for languages here"); //$NON-NLS-1$
 				// createAttributeElement(NATIVE_LIB_PATH, null, false);
 			}
 			break;
@@ -129,7 +129,7 @@ public class BPListElement {
 
 			if (DLTKCore.DEBUG) {
 				System.err
-						.println("TODO: Add adding containers for languages here");
+						.println("TODO: Add adding containers for languages here"); //$NON-NLS-1$
 				// createAttributeElement(NATIVE_LIB_PATH, null, false);
 			}
 			break;
@@ -157,7 +157,7 @@ public class BPListElement {
 			// createAttributeElement( NATIVE_LIB_PATH, null, false );
 			if (DLTKCore.DEBUG) {
 				System.err
-						.println("TODO: Add adding containers for languages here");
+						.println("TODO: Add adding containers for languages here"); //$NON-NLS-1$
 				// createAttributeElement(NATIVE_LIB_PATH, null, false);
 			}
 			break;
@@ -405,7 +405,7 @@ public class BPListElement {
 		if (fParentContainer instanceof BPListElement) {
 			if (DLTKCore.DEBUG) {
 				System.err
-						.println("TODO:Add navive library containers support");
+						.println("TODO:Add navive library containers support"); //$NON-NLS-1$
 			}
 			// IPath InterpreterEnvironmentContainerPath = new Path(
 			// ScriptRuntime.InterpreterEnvironment_CONTAINER );
@@ -721,8 +721,8 @@ public class BPListElement {
 		for (Iterator iterator = this.fExtraAttributes.iterator(); iterator
 				.hasNext();) {
 			IBuildpathAttribute attr = (IBuildpathAttribute) iterator.next();
-			appendEncodedString("attr:" + attr.getName() + ":val"
-					+ attr.getValue() + ";", buf);
+			appendEncodedString("attr:" + attr.getName() + ":val" //$NON-NLS-1$ //$NON-NLS-2$
+					+ attr.getValue() + ";", buf); //$NON-NLS-1$
 		}
 		return buf;
 	}

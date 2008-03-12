@@ -187,10 +187,10 @@ public class RubyModelUtils {
 
 		if (keys != null && keys.length > 0) {
 			String inner = keys[keys.length - 1];
-			if (prefix.length() > 0 && !prefix.startsWith("@")) { // locals &
+			if (prefix.length() > 0 && !prefix.startsWith("@")) { // locals & //$NON-NLS-1$
 				// constants
 				String varkey = inner + MixinModel.SEPARATOR + prefix;
-				String[] keys2 = rubyModel.getRawModel().findKeys(varkey + "*");
+				String[] keys2 = rubyModel.getRawModel().findKeys(varkey + "*"); //$NON-NLS-1$
 				for (int i = 0; i < keys2.length; i++) {
 					IRubyMixinElement element = rubyModel
 							.createRubyElement(keys2[i]);
@@ -215,7 +215,7 @@ public class RubyModelUtils {
 		if (selfClass != null) {
 			RubyMixinVariable[] fields2 = selfClass.getFields();
 			addVariablesFrom(fields2, prefix, result);
-			if (selfClass.getKey().equals("Object")) {
+			if (selfClass.getKey().equals("Object")) { //$NON-NLS-1$
 				// variables
 				try {
 					IModelElement[] children = modelModule.getChildren();
@@ -242,9 +242,9 @@ public class RubyModelUtils {
 	 * @return
 	 */
 	private static List handleSpecialMethod(RubyMixinMethod method, RubyMixinClass selfKlass) {
-		if (method.getKey().equals("Class%{new")) {
+		if (method.getKey().equals("Class%{new")) { //$NON-NLS-1$
 			RubyMixinMethod init = selfKlass.getInstanceClass()
-					.getMethod("initialize");
+					.getMethod("initialize"); //$NON-NLS-1$
 			if (init != null) {
 				IMethod[] initMethods = init.getSourceMethods();
 				List result = new ArrayList ();
@@ -258,16 +258,16 @@ public class RubyModelUtils {
 						ISourceRange nameRange = initMethods[i].getNameRange();
 						IModelElement parent = initMethods[i].getParent();
 						FakeMethod newMethod = new FakeMethod(
-								(ModelElement) parent, "new",
+								(ModelElement) parent, "new", //$NON-NLS-1$
 								sourceRange.getOffset(), sourceRange.getLength(),
 								nameRange.getOffset(), nameRange.getLength());
 						newMethod.setParameters(parameters);
 						newMethod.setParameterInitializers(parameterInitializers);
 						newMethod.setFlags(flags);
-						String receiver = "";
+						String receiver = ""; //$NON-NLS-1$
 						if (parent instanceof IType) {
 							IType type = (IType) parent;
-							receiver = type.getTypeQualifiedName("::");
+							receiver = type.getTypeQualifiedName("::"); //$NON-NLS-1$
 						}
 						newMethod.setReceiver(receiver);
 						result.add(newMethod);
@@ -470,12 +470,12 @@ public class RubyModelUtils {
 		if (arity > 0) {
 			parameters = new String[arity];
 			for (int i = 0; i < arity; i++)
-				parameters[i] = "arg" + (i + 1);
+				parameters[i] = "arg" + (i + 1); //$NON-NLS-1$
 		} else if (arity < 0) {
 			parameters = new String[-arity];
 			for (int i = 0; i < -arity - 1; i++)
-				parameters[i] = "arg" + (i + 1);
-			parameters[-arity - 1] = "...";
+				parameters[i] = "arg" + (i + 1); //$NON-NLS-1$
+			parameters[-arity - 1] = "..."; //$NON-NLS-1$
 		}
 		method.setParameters(parameters);
 		method.setReceiver(metaclass.getName());
@@ -505,24 +505,24 @@ public class RubyModelUtils {
 	}
 
 	public static String[] getBuiltinMethodNames(String klass) {
-		if (klass.equals("Object")) {
+		if (klass.equals("Object")) { //$NON-NLS-1$
 			return BuiltinTypeMethods.objectMethods;
-		} else if (klass.equals("String")) {
+		} else if (klass.equals("String")) { //$NON-NLS-1$
 			return BuiltinTypeMethods.stringMethods;
-		} else if (klass.equals("Fixnum")) {
+		} else if (klass.equals("Fixnum")) { //$NON-NLS-1$
 			return BuiltinTypeMethods.fixnumMethods;
-		} else if (klass.equals("Float")) {
+		} else if (klass.equals("Float")) { //$NON-NLS-1$
 			return BuiltinTypeMethods.floatMethods;
-		} else if (klass.equals("Regexp")) {
+		} else if (klass.equals("Regexp")) { //$NON-NLS-1$
 			return BuiltinTypeMethods.regexpMethods;
-		} else if (klass.equals("Array")) {
+		} else if (klass.equals("Array")) { //$NON-NLS-1$
 			return BuiltinTypeMethods.arrayMethods;
 		}
 		return null;
 	}
 
 	public static String[] getBuiltinMetaMethodNames(String klass) {
-		if (klass.equals("Object")) {
+		if (klass.equals("Object")) { //$NON-NLS-1$
 			return BuiltinMethodsDatabase.objectMethods;
 		}
 		return null;
@@ -621,9 +621,9 @@ public class RubyModelUtils {
 		}
 		if (superClasses != null && superClasses.length > 0) {
 			superclass = superClasses[0];
-			if (superclass.startsWith("::"))
+			if (superclass.startsWith("::")) //$NON-NLS-1$
 				superclass = superclass.substring(2);
-			superclass = superclass.replaceAll("::", "{");
+			superclass = superclass.replaceAll("::", "{"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		// TODO: add appropriate evaluation here

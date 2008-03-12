@@ -15,9 +15,9 @@ import java.io.OutputStream;
 
 public class ScriptConsoleIO implements IScriptConsoleIO {
 
-	private static final String INTERPRETER = "interpreter";
+	private static final String INTERPRETER = "interpreter"; //$NON-NLS-1$
 
-	private static final String SHELL = "shell";
+	private static final String SHELL = "shell"; //$NON-NLS-1$
 
 	private final InputStream input;
 
@@ -119,11 +119,11 @@ public class ScriptConsoleIO implements IScriptConsoleIO {
 	public ShellResponse execShell(String command, String[] args)
 			throws IOException {
 
-		output.write((SHELL + "\n").getBytes());
-		output.write((command + "\n").getBytes());
+		output.write((SHELL + "\n").getBytes()); //$NON-NLS-1$
+		output.write((command + "\n").getBytes()); //$NON-NLS-1$
 
 		for (int i = 0; i < args.length; ++i) {
-			output.write((args[i] + "\n").getBytes());
+			output.write((args[i] + "\n").getBytes()); //$NON-NLS-1$
 		}
 
 		output.flush();
@@ -135,8 +135,8 @@ public class ScriptConsoleIO implements IScriptConsoleIO {
 
 	public InterpreterResponse execInterpreter(String command)
 			throws IOException {
-		output.write((INTERPRETER + "\n").getBytes());
-		output.write((command + "\n").getBytes());
+		output.write((INTERPRETER + "\n").getBytes()); //$NON-NLS-1$
+		output.write((command + "\n").getBytes()); //$NON-NLS-1$
 		output.flush();
 
 		final String response = readResponse(input);

@@ -78,7 +78,7 @@ public class RubyTypeInferencingUtils {
 		};
 
 		ScriptModelUtil.searchTypeDeclarations(module.getScriptProject(),
-				prefix + "*", requestor);
+				prefix + "*", requestor); //$NON-NLS-1$
 
 		return (IType[]) types.toArray(new IType[types.size()]);
 	}

@@ -58,7 +58,7 @@ public class BooleanLiteral extends Literal {
 	 * Testing purposes only. Print boolean value.
 	 */
 	public void printNode(CorePrinter output) {
-		output.formatPrintLn("Boolean:" + this.getValue());
+		output.formatPrintLn("Boolean:" + this.getValue()); //$NON-NLS-1$
 
 	}
 

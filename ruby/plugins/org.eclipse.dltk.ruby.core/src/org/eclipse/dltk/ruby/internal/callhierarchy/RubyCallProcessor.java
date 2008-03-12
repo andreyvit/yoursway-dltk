@@ -53,7 +53,7 @@ public class RubyCallProcessor implements ICallProcessor {
 							.getAncestor(IModelElement.SOURCE_MODULE);
 					SimpleReference ref = new SimpleReference(
 							match.getOffset(), match.getOffset()
-									+ match.getLength(), "");
+									+ match.getLength(), ""); //$NON-NLS-1$
 //					try {
 //						IModelElement[] e = module.codeSelect(
 //								match.getOffset(), match.getLength());

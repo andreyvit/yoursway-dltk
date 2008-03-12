@@ -110,7 +110,7 @@ public class PossibleMatch implements ISourceModule {
 			return cu.getType(new String(mainTypeName)).getFullyQualifiedName().toCharArray();
 		} 
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: Code review here...");
+			System.err.println("TODO: Code review here..."); //$NON-NLS-1$
 		}
 		return null;
 	}

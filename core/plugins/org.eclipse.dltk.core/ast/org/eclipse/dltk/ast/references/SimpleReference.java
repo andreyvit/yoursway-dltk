@@ -46,7 +46,7 @@ public class SimpleReference extends Reference {
 	}
 
 	public void printNode(CorePrinter output) {
-		output.formatPrintLn(this.fName + "(" + this.getSourceRange().toString() + ")");
+		output.formatPrintLn(this.fName + "(" + this.getSourceRange().toString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public String toString() {

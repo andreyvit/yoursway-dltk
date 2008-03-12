@@ -22,6 +22,8 @@ public final class TextMessages extends NLS {
 		// Do not instantiate
 	}
 
+	public static String ScriptOutlineInformationControl_pressToHideInheritedMembers;
+	public static String ScriptOutlineInformationControl_pressToShowInheritedMembers;
 	public static String ScriptOutlineInformationControl_SortByDefiningTypeAction_label;
 	public static String ScriptOutlineInformationControl_SortByDefiningTypeAction_tooltip;
 	public static String ScriptOutlineInformationControl_SortByDefiningTypeAction_description;

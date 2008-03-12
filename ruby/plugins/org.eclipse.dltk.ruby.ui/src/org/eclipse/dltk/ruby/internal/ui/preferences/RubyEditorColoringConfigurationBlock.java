@@ -14,7 +14,7 @@ import java.io.InputStream;
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
 import org.eclipse.dltk.ruby.internal.ui.RubyPreferenceConstants;
 import org.eclipse.dltk.ruby.internal.ui.editor.RubyDocumentSetupParticipant;
-import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
+import org.eclipse.dltk.ruby.internal.ui.text.IRubyPartitions;
 import org.eclipse.dltk.ruby.ui.preferences.RubyPreferencesMessages;
 import org.eclipse.dltk.ui.preferences.AbstractScriptEditorColoringConfigurationBlock;
 import org.eclipse.dltk.ui.preferences.IPreferenceConfigurationBlock;
@@ -34,7 +34,7 @@ public class RubyEditorColoringConfigurationBlock extends
 		AbstractScriptEditorColoringConfigurationBlock implements
 		IPreferenceConfigurationBlock {
 
-	private static final String PREVIEW_FILE_NAME = "PreviewFile.txt";
+	private static final String PREVIEW_FILE_NAME = "PreviewFile.txt"; //$NON-NLS-1$
 
 	private static final String[][] fSyntaxColorListModel = new String[][] {
 			{ RubyPreferencesMessages.RubyEditorPreferencePage_rubyDoc,
@@ -100,7 +100,7 @@ public class RubyEditorColoringConfigurationBlock extends
 			IColorManager colorManager, IPreferenceStore preferenceStore,
 			ITextEditor editor, boolean configureFormatter) {
 		return new SimpleRubySourceViewerConfiguration(colorManager,
-				preferenceStore, editor, RubyPartitions.RUBY_PARTITIONING,
+				preferenceStore, editor, IRubyPartitions.RUBY_PARTITIONING,
 				configureFormatter);
 	}
 

@@ -73,7 +73,7 @@ public class PasteAction extends SelectionDispatchAction{
 		setHoverImageDescriptor(workbenchImages.getImageDescriptor(ISharedImages.IMG_TOOL_PASTE));
 
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}		
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IScriptHelpContextIds.PASTE_ACTION);
 	}

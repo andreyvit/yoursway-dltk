@@ -16,7 +16,7 @@ import org.eclipse.dltk.dbgp.internal.utils.DbgpXmlEntityParser;
 
 public class DbgpStatusCommands extends DbgpBaseCommands implements
 		IDbgpStatusCommands {
-	private static final String STATUS_COMMAND = "status";
+	private static final String STATUS_COMMAND = "status"; //$NON-NLS-1$
 
 	public DbgpStatusCommands(IDbgpCommunicator communicator) {
 		super(communicator);

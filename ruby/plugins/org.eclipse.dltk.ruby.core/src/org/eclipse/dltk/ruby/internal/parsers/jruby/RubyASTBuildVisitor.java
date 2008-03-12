@@ -10,6 +10,7 @@
 package org.eclipse.dltk.ruby.internal.parsers.jruby;
 
 import java.math.BigInteger;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -204,7 +205,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	protected static final boolean TRACE_RECOVERING = Boolean
 			.valueOf(
 					Platform
-							.getDebugOption("org.eclipse.dltk.ruby.core/parsing/traceRecoveryWhenInterpretingAST"))
+							.getDebugOption("org.eclipse.dltk.ruby.core/parsing/traceRecoveryWhenInterpretingAST")) //$NON-NLS-1$
 			.booleanValue();
 
 	private ModuleDeclaration module;
@@ -422,16 +423,14 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		}
 		if (list.size() > 1) {
 			throw new RuntimeException(
-					"DLTKASTBuildVisitor.collectSingleStatement(): JRuby node "
-							+ node.getClass().getName()
-							+ " hasn't been converted into any DLTK AST node");
+					MessageFormat.format(Messages.RubyASTBuildVisitor_jrubyNodeHasntBeenConvertedIntoAnyDltkAstNode,
+							new Object[] { node.getClass().getName() }));
 		}
 		if (allowZero)
 			return null;
 		throw new RuntimeException(
-				"DLTKASTBuildVisitor.collectSingleStatement(): JRuby node "
-						+ node.getClass().getName()
-						+ " hasn't been converted into any DLTK AST node");
+				MessageFormat.format(Messages.RubyASTBuildVisitor_jrubyNodeHasntBeenConvertedIntoAnyDltkAstNode,
+				new Object[] { node.getClass().getName() }));
 	}
 
 	protected char[] getContent() {
@@ -511,7 +510,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	public Instruction visitBackRefNode(BackRefNode iVisited) { // done
 		ISourcePosition pos = iVisited.getPosition();
 		VariableReference ref = new VariableReference(pos.getStartOffset(), pos
-				.getEndOffset(), "$" + iVisited.getType());
+				.getEndOffset(), "$" + iVisited.getType()); //$NON-NLS-1$
 		states.peek().add(ref);
 		return null;
 	}
@@ -623,8 +622,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			// WTF?
 			if (TRACE_RECOVERING)
 				RubyPlugin
-						.log("Ruby AST: non-dot-call not recognized, non-dot found at "
-								+ dotPosition + ", function name " + methodName);
+						.log("Ruby AST: non-dot-call not recognized, non-dot found at " //$NON-NLS-1$
+								+ dotPosition + ", function name " + methodName); //$NON-NLS-1$
 		}
 
 		// trim end whitespaces
@@ -659,10 +658,10 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				else {
 					if (TRACE_RECOVERING)
 						RubyPlugin
-								.log("Ruby AST: function call, empty args, no closing paren; "
-										+ "opening paren at "
+								.log("Ruby AST: function call, empty args, no closing paren; " //$NON-NLS-1$
+										+ "opening paren at " //$NON-NLS-1$
 										+ lParenOffset
-										+ ", function name " + methodName);
+										+ ", function name " + methodName); //$NON-NLS-1$
 					callNode.setEnd(lParenOffset - 1); // don't include these
 					// parens
 				}
@@ -671,8 +670,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			if (nameEnd > firstArgStart) {
 				if (TRACE_RECOVERING)
 					RubyPlugin
-							.log("DLTKASTBuildVisitor.fixFunctionCallOffsets("
-									+ methodName + "): nameEnd > firstArgStart");
+							.log("DLTKASTBuildVisitor.fixFunctionCallOffsets(" //$NON-NLS-1$
+									+ methodName + "): nameEnd > firstArgStart"); //$NON-NLS-1$
 				return; // /XXX: it's a kind of magic, please, FIXME!!!
 			}
 			int lParenOffset = RubySyntaxUtils.skipWhitespaceForward(content,
@@ -681,9 +680,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				if (lastArgEnd <= lParenOffset) {
 					if (TRACE_RECOVERING)
 						RubyPlugin
-								.log("DLTKASTBuildVisitor.fixFunctionCallOffsets("
+								.log("DLTKASTBuildVisitor.fixFunctionCallOffsets(" //$NON-NLS-1$
 										+ methodName
-										+ "): lastArgEnd <= lParenOffset");
+										+ "): lastArgEnd <= lParenOffset"); //$NON-NLS-1$
 					return;
 				}
 				int rParenOffset = RubySyntaxUtils.skipWhitespaceForward(
@@ -693,13 +692,13 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				else {
 					if (TRACE_RECOVERING)
 						RubyPlugin
-								.log("Ruby AST: function call, non-empty args, no closing paren; "
-										+ "opening paren at "
+								.log("Ruby AST: function call, non-empty args, no closing paren; " //$NON-NLS-1$
+										+ "opening paren at " //$NON-NLS-1$
 										+ lParenOffset
-										+ ", "
-										+ "last argument ending at "
+										+ ", " //$NON-NLS-1$
+										+ "last argument ending at " //$NON-NLS-1$
 										+ lastArgEnd
-										+ ", function name "
+										+ ", function name " //$NON-NLS-1$
 										+ methodName);
 					callNode.setEnd(lastArgEnd); // probably no closing paren
 				}
@@ -724,14 +723,14 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		// TODO: uncomment when visitor is done
 		if (collector.getList().size() > 1) {
 			if (TRACE_RECOVERING)
-				RubyPlugin.log("DLTKASTBuildVisitor.visitCallNode("
-						+ methodName + "): receiver "
+				RubyPlugin.log("DLTKASTBuildVisitor.visitCallNode(" //$NON-NLS-1$
+						+ methodName + "): receiver " //$NON-NLS-1$
 						+ iVisited.getReceiverNode().getClass().getName()
-						+ " turned into multiple nodes");
+						+ " turned into multiple nodes"); //$NON-NLS-1$
 		}
 		ASTNode recv;
 		if (collector.getList().size() < 1) {
-			recv = new NumericLiteral(new DLTKToken(0, "")); // FIXME
+			recv = new NumericLiteral(new DLTKToken(0, "")); // FIXME //$NON-NLS-1$
 			recv.setStart(iVisited.getPosition().getStartOffset());
 			recv.setEnd(iVisited.getPosition().getEndOffset() + 1);
 		} else
@@ -753,8 +752,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				}
 			} else {
 				if (TRACE_RECOVERING)
-					RubyPlugin.log("DLTKASTBuildVisitor.visitCallNode("
-							+ methodName + ") - unknown args node type: "
+					RubyPlugin.log("DLTKASTBuildVisitor.visitCallNode(" //$NON-NLS-1$
+							+ methodName + ") - unknown args node type: " //$NON-NLS-1$
 							+ argsNode.getClass().getName());
 				argsNode.accept(this);
 			}
@@ -818,23 +817,23 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	private static String colons2Name(Node cpathNode) {
-		String name = "";
+		String name = ""; //$NON-NLS-1$
 		while (cpathNode instanceof Colon2Node) {
 			Colon2Node colon2Node = (Colon2Node) cpathNode;
 			if (name.length() > 0)
-				name = "::" + name;
+				name = "::" + name; //$NON-NLS-1$
 			name = colon2Node.getName() + name;
 			cpathNode = colon2Node.getLeftNode();
 		}
 		if (cpathNode instanceof Colon3Node) {
 			Colon3Node colon3Node = (Colon3Node) cpathNode;
 			if (name.length() > 0)
-				name = "::" + name;
-			name = "::" + colon3Node.getName() + name;
+				name = "::" + name; //$NON-NLS-1$
+			name = "::" + colon3Node.getName() + name; //$NON-NLS-1$
 		} else if (cpathNode instanceof ConstNode) {
 			ConstNode constNode = (ConstNode) cpathNode;
 			if (name.length() > 0)
-				name = "::" + name;
+				name = "::" + name; //$NON-NLS-1$
 			name = constNode.getName() + name;
 		}
 		return name;
@@ -1106,7 +1105,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 						aa.setModifier(RubyMethodArgument.SIMPLE);
 						arguments.add(aa);
 					} else {
-						System.err.println("unknown argument type!");
+						System.err.println(Messages.RubyASTBuildVisitor_unknownArgumentType);
 					}
 				}
 			}
@@ -1324,11 +1323,11 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		String methodName = iVisited.getName();
 
 		if (states.isClassLikeState()) {
-			if (methodName.equals("private"))
+			if (methodName.equals("private")) //$NON-NLS-1$
 				handleVisibilitySetter(iVisited, Modifiers.AccPrivate);
-			else if (methodName.equals("protected"))
+			else if (methodName.equals("protected")) //$NON-NLS-1$
 				handleVisibilitySetter(iVisited, Modifiers.AccProtected);
-			else if (methodName.equals("public"))
+			else if (methodName.equals("public")) //$NON-NLS-1$
 				handleVisibilitySetter(iVisited, Modifiers.AccPublic);
 		}
 
@@ -1345,8 +1344,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				}
 			} else {
 				if (TRACE_RECOVERING)
-					RubyPlugin.log("DLTKASTBuildVisitor.visitFCallNode("
-							+ methodName + ") - unknown args node type: "
+					RubyPlugin.log("DLTKASTBuildVisitor.visitFCallNode(" //$NON-NLS-1$
+							+ methodName + ") - unknown args node type: " //$NON-NLS-1$
 							+ argsNode.getClass().getName());
 				argsNode.accept(this);
 			}
@@ -1472,7 +1471,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			}
 		} else {
 			if (!JRubySourceParser.isSilentState()) {
-				throw new RuntimeException("visitHashNode(): Unpaired hash!");
+				throw new RuntimeException(Messages.RubyASTBuildVisitor_unpairedHash);
 			}
 		}
 
@@ -1545,7 +1544,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	private void processVariableReference(Node iVisited, String varName,
 			RubyVariableKind varKind) {
 		ISourcePosition pos2 = fixNamePosition(iVisited.getPosition());
-		if (varName.endsWith("\r")) // varName.trim() ?
+		if (varName.endsWith("\r")) // varName.trim() ? //$NON-NLS-1$
 			varName = varName.substring(0, varName.length() - 1);
 		VariableReference node = new VariableReference(pos2.getStartOffset(),
 				pos2.getEndOffset(), varName, varKind);
@@ -1644,7 +1643,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitModuleNode(ModuleNode iVisited) {
-		String name = "";
+		String name = ""; //$NON-NLS-1$
 		Node cpathNode = iVisited.getCPath();
 		if (cpathNode instanceof Colon2Node || cpathNode instanceof ConstNode) {
 			name = colons2Name(cpathNode);
@@ -1670,8 +1669,8 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 				end = blockNode.getLast().getPosition().getEndOffset(); // /XXX!!!!
 			} else {
 				if (TRACE_RECOVERING)
-					RubyPlugin.log("DLTKASTBuildVisitor.visitModuleNode("
-							+ name + "): unknown body type "
+					RubyPlugin.log("DLTKASTBuildVisitor.visitModuleNode(" //$NON-NLS-1$
+							+ name + "): unknown body type " //$NON-NLS-1$
 							+ bodyNode.getClass().getName());
 			}
 			pos = fixBorders(pos);
@@ -1723,7 +1722,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		ISourcePosition pos = iVisited.getPosition();
 		states.peek().add(
 				new VariableReference(pos.getStartOffset(), pos.getEndOffset(),
-						"$" + iVisited.getMatchNumber(),
+						"$" + iVisited.getMatchNumber(), //$NON-NLS-1$
 						RubyVariableKind.GLOBAL));
 
 		return null;
@@ -1842,16 +1841,16 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 	}
 
 	public Instruction visitSClassNode(SClassNode iVisited) {
-		String name = "";
+		String name = ""; //$NON-NLS-1$
 		Node receiver = iVisited.getReceiverNode();
 		if (receiver instanceof ConstNode) {
-			name = "<< " + ((ConstNode) iVisited.getReceiverNode()).getName();
+			name = "<< " + ((ConstNode) iVisited.getReceiverNode()).getName(); //$NON-NLS-1$
 		} else if (receiver instanceof SelfNode) {
-			name = "<< self";
+			name = "<< self"; //$NON-NLS-1$
 		} else {
 			int startOffset = receiver.getPosition().getStartOffset();
 			int endOffset = receiver.getPosition().getEndOffset();
-			name = "<< "
+			name = "<< " //$NON-NLS-1$
 					+ new String(String.copyValueOf(content, startOffset,
 							endOffset - startOffset)).trim();
 		}
@@ -1871,7 +1870,7 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 			type.setReceiver((ASTNode) obj);
 			if (obj instanceof SimpleReference) {
 				SimpleReference reference = (SimpleReference) obj;
-				type.setName("<< " + reference.getName());
+				type.setName("<< " + reference.getName()); //$NON-NLS-1$
 			}
 		}
 		states.push(new ClassState(type));
@@ -2022,11 +2021,11 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 
 		if (states.isClassLikeState()) {
 			ClassLikeState classState = states.getClassLikeState();
-			if (methodName.equals("private"))
+			if (methodName.equals("private")) //$NON-NLS-1$
 				classState.visibility = Modifiers.AccPrivate;
-			else if (methodName.equals("protected"))
+			else if (methodName.equals("protected")) //$NON-NLS-1$
 				classState.visibility = Modifiers.AccProtected;
-			else if (methodName.equals("public"))
+			else if (methodName.equals("public")) //$NON-NLS-1$
 				classState.visibility = Modifiers.AccPublic;
 		}
 

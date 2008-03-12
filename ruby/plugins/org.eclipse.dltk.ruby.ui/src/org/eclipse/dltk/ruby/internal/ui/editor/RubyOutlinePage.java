@@ -43,7 +43,7 @@ public class RubyOutlinePage extends ScriptOutlinePage {
 		// Hide variables
 		title = ActionMessages.MemberFilterActionGroup_hide_variables_label;
 
-		helpContext = "";// IDLTKHelpContextIds.FILTER_FIELDS_ACTION;
+		helpContext = "";// IDLTKHelpContextIds.FILTER_FIELDS_ACTION; //$NON-NLS-1$
 		MemberFilterAction hideVariables = new MemberFilterAction(
 				fMemberFilterActionGroup, title, new ModelElementFilter(
 						IModelElement.FIELD), helpContext, true);
@@ -57,7 +57,7 @@ public class RubyOutlinePage extends ScriptOutlinePage {
 
 		// Hid functions
 		title = ActionMessages.MemberFilterActionGroup_hide_functions_label;
-		helpContext = "";// IDLTKHelpContextIds.FILTER_STATIC_ACTION;
+		helpContext = "";// IDLTKHelpContextIds.FILTER_STATIC_ACTION; //$NON-NLS-1$
 		MemberFilterAction hideProcedures = new MemberFilterAction(
 				fMemberFilterActionGroup, title, new ModelElementFilter(
 						IModelElement.METHOD), helpContext, true);
@@ -72,7 +72,7 @@ public class RubyOutlinePage extends ScriptOutlinePage {
 
 		// Hide classes
 		title = ActionMessages.MemberFilterActionGroup_hide_classes_label;
-		helpContext = "";// IDLTKHelpContextIds.FILTER_PUBLIC_ACTION;
+		helpContext = "";// IDLTKHelpContextIds.FILTER_PUBLIC_ACTION; //$NON-NLS-1$
 		MemberFilterAction hideNamespaces = new MemberFilterAction(
 				fMemberFilterActionGroup, title, new ModelElementFilter(
 						IModelElement.TYPE), helpContext, true);

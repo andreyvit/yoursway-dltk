@@ -44,113 +44,113 @@ public abstract class Expression extends Statement implements
 	public String getOperator() {
 		switch (this.getKind()) {
 		case E_BAND:
-			return " and ";
+			return " and "; //$NON-NLS-1$
 		case E_BOR:
-			return " or ";
+			return " or "; //$NON-NLS-1$
 		case E_BXOR:
-			return " xor ";
+			return " xor "; //$NON-NLS-1$
 		case E_DIV:
-			return "/";
+			return "/"; //$NON-NLS-1$
 		case E_EQUAL:
-			return "==";
+			return "=="; //$NON-NLS-1$
 		case E_LT:
-			return "<";
+			return "<"; //$NON-NLS-1$
 		case E_LE:
-			return "<=";
+			return "<="; //$NON-NLS-1$
 		case E_GT:
-			return ">";
+			return ">"; //$NON-NLS-1$
 		case E_GE:
-			return ">=";
+			return ">="; //$NON-NLS-1$
 		case E_MOD:
-			return "%";
+			return "%"; //$NON-NLS-1$
 		case E_CONCAT:
-			return ".";
+			return "."; //$NON-NLS-1$
 		case E_XOR:
-			return " xor ";
+			return " xor "; //$NON-NLS-1$
 		case E_LAND:
-			return "&&";
+			return "&&"; //$NON-NLS-1$
 		case E_LOR:
-			return "||";
+			return "||"; //$NON-NLS-1$
 		case E_LSHIFT:
-			return "<<";
+			return "<<"; //$NON-NLS-1$
 		case E_MINUS:
-			return "-";
+			return "-"; //$NON-NLS-1$
 		case E_PLUS:
-			return "+";
+			return "+"; //$NON-NLS-1$
 		case E_MULT:
-			return "*";
+			return "*"; //$NON-NLS-1$
 		case E_RSHIFT:
-			return ">>";
+			return ">>"; //$NON-NLS-1$
 		case E_DOT_ASSIGN:
-			return ".=";
+			return ".="; //$NON-NLS-1$
 		case E_IDENTICAL:
-			return "===";
+			return "==="; //$NON-NLS-1$
 		case E_NOTIDENTICAL:
-			return "!===";
+			return "!==="; //$NON-NLS-1$
 		case E_LNOT:
-			return "!";
+			return "!"; //$NON-NLS-1$
 		case E_BNOT:
-			return "~";
+			return "~"; //$NON-NLS-1$
 		case E_BNOT_ASSIGN:
-			return "~=";
+			return "~="; //$NON-NLS-1$
 		case E_NOT_EQUAL:
-			return "!=";
+			return "!="; //$NON-NLS-1$
 		case E_NOT_EQUAL2:
-			return "<>";
+			return "<>"; //$NON-NLS-1$
 		case E_DIV_ASSIGN:
-			return "/=";
+			return "/="; //$NON-NLS-1$
 		case E_PLUS_ASSIGN:
-			return "+=";
+			return "+="; //$NON-NLS-1$
 		case E_INC:
-			return "++";
+			return "++"; //$NON-NLS-1$
 		case E_MINUS_ASSIGN:
-			return "-=";
+			return "-="; //$NON-NLS-1$
 		case E_DEC:
-			return "--";
+			return "--"; //$NON-NLS-1$
 		case E_MOD_ASSIGN:
-			return "%=";
+			return "%="; //$NON-NLS-1$
 		case E_MULT_ASSIGN:
-			return "*=";
+			return "*="; //$NON-NLS-1$
 		case E_SR_ASSIGN:
-			return ">>=";
+			return ">>="; //$NON-NLS-1$
 		case E_SL_ASSIGN:
-			return "<<=";
+			return "<<="; //$NON-NLS-1$
 		case E_BXOR_ASSIGN:
-			return "^=";
+			return "^="; //$NON-NLS-1$
 		case E_BAND_ASSIGN:
-			return "&=";
+			return "&="; //$NON-NLS-1$
 		case E_DOUBLE_ARROW:
-			return "=>";
+			return "=>"; //$NON-NLS-1$
 		case E_SINGLE_ARROW:
-			return "->";
+			return "->"; //$NON-NLS-1$
 		case E_AT:
-			return "@";
+			return "@"; //$NON-NLS-1$
 		case E_DOLLAR:
-			return "$";
+			return "$"; //$NON-NLS-1$
 		case E_COMMA:
-			return ",";
+			return ","; //$NON-NLS-1$
 		case E_BOR_ASSIGN:
-			return "|=";
+			return "|="; //$NON-NLS-1$
 		case E_CONCAT_ASSIGN:
-			return ".=";
+			return ".="; //$NON-NLS-1$
 		case E_TILDE:
-			return "~";
+			return "~"; //$NON-NLS-1$
 		case E_DOUBLESTAR_ASSIGN:
-			return "**=";
+			return "**="; //$NON-NLS-1$
 		case E_DOUBLEDIV_ASSIGN:
-			return "//=";
+			return "//="; //$NON-NLS-1$
 		case E_POWER:
-			return "**";
+			return "**"; //$NON-NLS-1$
 		}
 
-		return "*";
+		return "*"; //$NON-NLS-1$
 	}
 
 	/**
 	 * Testing purposes only. Print expression.
 	 */
 	public void printNode(CorePrinter output) {
-		output.formatPrintLn("Expression" + getSourceRange() + ":" + getKind());
+		output.formatPrintLn("Expression" + getSourceRange() + ":" + getKind()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public boolean equals(Object obj) {

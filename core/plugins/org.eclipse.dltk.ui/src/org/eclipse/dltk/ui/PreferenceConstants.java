@@ -141,7 +141,7 @@ public class PreferenceConstants {
 	 */
 	public final static String EDITOR_TAB_WIDTH = AbstractDecoratedTextEditorPreferenceConstants.EDITOR_TAB_WIDTH;
 
-	public final static String EDITOR_TAB_ALWAYS_INDENT = "tab_always_indent";
+	public final static String EDITOR_TAB_ALWAYS_INDENT = "tab_always_indent"; //$NON-NLS-1$
 
 	/**
 	 * A named preference that controls whether the outline view selection
@@ -194,7 +194,7 @@ public class PreferenceConstants {
 	 */
 	public static final String SRC_SRCNAME = "com.xore.dltk.ui.wizards.srcFoldersSrcName"; //$NON-NLS-1$	
 
-	public final static String EDITOR_SMART_INDENT = "editorSmartIndent";
+	public final static String EDITOR_SMART_INDENT = "editorSmartIndent"; //$NON-NLS-1$
 
 	public static final String APPEARANCE_FOLD_PACKAGES_IN_PACKAGE_EXPLORER = "org.eclipse.dltk.ui.flatPackagesInPackageExplorer";//$NON-NLS-1$
 
@@ -626,13 +626,13 @@ public class PreferenceConstants {
 
 	public static final String SEARCH_USE_REDUCED_MENU = "Search.usereducemenu"; //$NON-NLS-1$
 
-	public static final String EDITOR_MATCHING_BRACKETS = "editor.matching_brackets";
+	public static final String EDITOR_MATCHING_BRACKETS = "editor.matching_brackets"; //$NON-NLS-1$
 
-	public static final String EDITOR_MATCHING_BRACKETS_COLOR = "editor.matching_brackets_color";
+	public static final String EDITOR_MATCHING_BRACKETS_COLOR = "editor.matching_brackets_color"; //$NON-NLS-1$
 
 	// Notification messages
 	public static final String NOTIFICATION_NOT_ON_BUILDPATH_MESSAGE = DLTKUIPlugin.PLUGIN_ID
-			+ ".notification.not_on_buildpath";
+			+ ".notification.not_on_buildpath"; //$NON-NLS-1$
 
 	/**
 	 * A named preference that holds a list of semicolon separated fully
@@ -640,13 +640,13 @@ public class PreferenceConstants {
 	 */
 	public static final String TYPEFILTER_ENABLED = "org.eclipse.dltk.ui.typefilter.enabled"; //$NON-NLS-1$
 
-	public static final String LINK_BROWSING_MEMBERS_TO_EDITOR = "org.eclipse.dltk.ui.browsing.member.to.editor";
-	public static final String LINK_BROWSING_PROJECTS_TO_EDITOR = "org.eclipse.dltk.ui.browsing.projects.to.editor";
-	public static final String LINK_BROWSING_PACKAGES_TO_EDITOR = "org.eclipse.dltk.ui.browsing.packages.to.editor";
-	public static final String LINK_BROWSING_TYPES_TO_EDITOR = "org.eclipse.dltk.ui.browsing.types.to.editor";
+	public static final String LINK_BROWSING_MEMBERS_TO_EDITOR = "org.eclipse.dltk.ui.browsing.member.to.editor"; //$NON-NLS-1$
+	public static final String LINK_BROWSING_PROJECTS_TO_EDITOR = "org.eclipse.dltk.ui.browsing.projects.to.editor"; //$NON-NLS-1$
+	public static final String LINK_BROWSING_PACKAGES_TO_EDITOR = "org.eclipse.dltk.ui.browsing.packages.to.editor"; //$NON-NLS-1$
+	public static final String LINK_BROWSING_TYPES_TO_EDITOR = "org.eclipse.dltk.ui.browsing.types.to.editor"; //$NON-NLS-1$
 
-	public final static String EDITOR_SOURCE_HOVER_BACKGROUND_COLOR_SYSTEM_DEFAULT = "sourceHoverBackgroundColor.SystemDefault";
-	public final static String EDITOR_SOURCE_HOVER_BACKGROUND_COLOR = "sourceHoverBackgroundColor";
+	public final static String EDITOR_SOURCE_HOVER_BACKGROUND_COLOR_SYSTEM_DEFAULT = "sourceHoverBackgroundColor.SystemDefault"; //$NON-NLS-1$
+	public final static String EDITOR_SOURCE_HOVER_BACKGROUND_COLOR = "sourceHoverBackgroundColor"; //$NON-NLS-1$
 
-	public static final String APPEARANCE_DOCUMENTATION_FONT = "org.eclipse.dltk.ui.documentationFont";
+	public static final String APPEARANCE_DOCUMENTATION_FONT = "org.eclipse.dltk.ui.documentationFont"; //$NON-NLS-1$
 }

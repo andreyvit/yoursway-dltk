@@ -34,7 +34,7 @@ public abstract class DbgpWorkingThread extends DbgpTermination {
 
 			thread.start();
 		} else {
-			throw new IllegalStateException("Thread already started");
+			throw new IllegalStateException(Messages.DbgpWorkingThread_threadAlreadyStarted);
 		}
 	}
 

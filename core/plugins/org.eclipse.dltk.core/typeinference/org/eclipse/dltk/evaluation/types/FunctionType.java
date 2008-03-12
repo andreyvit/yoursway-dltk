@@ -48,14 +48,14 @@ public class FunctionType implements IFunctionType {
 	}
 
 	public String getTypeName() {
-		String add = "";
+		String add = ""; //$NON-NLS-1$
 		if (this.fWrongCall) {
-			add = " wrong arguments call";
+			add = " wrong arguments call"; //$NON-NLS-1$
 		}
 		if (fMethod != null) {
-			return "function:" + fMethod.getName() + add;
+			return "function:" + fMethod.getName() + add; //$NON-NLS-1$
 		}
-		return "function: !!unknown!!";
+		return "function: !!unknown!!"; //$NON-NLS-1$
 	}
 
 	public ASTNode getFunction() {

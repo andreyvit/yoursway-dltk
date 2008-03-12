@@ -20,9 +20,9 @@ public interface IScriptFolder extends IOpenable, IParent, IModelElement, ISourc
 	 * </p>
  	*/
 	public static final String ROOT_FOLDER_NAME = ""; //$NON-NLS-1$
-	public static final String DEFAULT_FOLDER_NAME = "";
+	public static final String DEFAULT_FOLDER_NAME = ""; //$NON-NLS-1$
 	public static final char PACKAGE_DELIMITER = '/';
-	public static final String PACKAGE_DELIMETER_STR = "/";
+	public static final String PACKAGE_DELIMETER_STR = "/"; //$NON-NLS-1$
 	
 	/**
 	 * Returns the source module with the specified name

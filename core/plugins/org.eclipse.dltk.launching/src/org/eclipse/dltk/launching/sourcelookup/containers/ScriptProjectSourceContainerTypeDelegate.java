@@ -16,7 +16,7 @@ import org.w3c.dom.Node;
 public class ScriptProjectSourceContainerTypeDelegate extends
 		AbstractSourceContainerTypeDelegate {
 
-	private static String SCRIPT_PROJECT = "scriptProject";
+	private static String SCRIPT_PROJECT = "scriptProject"; //$NON-NLS-1$
 	
 	public ISourceContainer createSourceContainer(String memento)
 			throws CoreException {

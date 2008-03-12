@@ -33,7 +33,7 @@ public class PopupScriptDisplayAction  extends ScriptDisplayAction {
         }
 
         protected String getActionText() {
-			return "Move to Display View";
+			return Messages.PopupScriptDisplayAction_moveToDisplayView;
 		}
 
 		/*protected void persist() {

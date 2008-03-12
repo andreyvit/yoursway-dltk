@@ -85,11 +85,11 @@ public abstract class DebuggingEngineConfigOptionsBlock extends
 
 		SWTFactory.createLabel(group,
 				ScriptDebugPreferencesMessages.LogNameLabel, 1);
-		logFileName = SWTFactory.createText(group, SWT.BORDER, 2, "");
+		logFileName = SWTFactory.createText(group, SWT.BORDER, 2, ""); //$NON-NLS-1$
 
 		SWTFactory.createLabel(group,
 				ScriptDebugPreferencesMessages.LogFolderLabel, 1);
-		logFilePath = SWTFactory.createText(group, SWT.BORDER, 1, "");
+		logFilePath = SWTFactory.createText(group, SWT.BORDER, 1, ""); //$NON-NLS-1$
 		logFilePath.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		Button browseButton = SWTFactory.createPushButton(group,

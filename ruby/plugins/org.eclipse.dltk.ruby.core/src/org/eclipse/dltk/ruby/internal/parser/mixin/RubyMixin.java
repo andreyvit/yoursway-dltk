@@ -17,10 +17,10 @@ import org.eclipse.dltk.core.mixin.IMixinRequestor;
 
 public class RubyMixin implements IMixinParser {
 
-	public final static String INSTANCE_SUFFIX = "%"; // suffix for instance
+	public final static String INSTANCE_SUFFIX = "%"; // suffix for instance //$NON-NLS-1$
 	// classes
 
-	public final static String VIRTUAL_SUFFIX = "%v"; // suffix for virtual
+	public final static String VIRTUAL_SUFFIX = "%v"; // suffix for virtual //$NON-NLS-1$
 	// classes
 
 	private IMixinRequestor requestor;

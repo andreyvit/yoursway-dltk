@@ -11,10 +11,10 @@ import org.eclipse.dltk.debug.core.model.IScriptTypeFactory;
 
 public class ScriptDebugManager {
 	private static final String SCRIPT_DEBUG_MODEL_EXT_POINT = DLTKDebugPlugin.PLUGIN_ID
-			+ ".scriptDebugModel";
-	private static final String NATURE_ID = "natureId";
-	private static final String DEBUG_MODEL_ID = "debugModelId";
-	private static final String TYPE_FACTORY = "typeFactory";
+			+ ".scriptDebugModel"; //$NON-NLS-1$
+	private static final String NATURE_ID = "natureId"; //$NON-NLS-1$
+	private static final String DEBUG_MODEL_ID = "debugModelId"; //$NON-NLS-1$
+	private static final String TYPE_FACTORY = "typeFactory"; //$NON-NLS-1$
 
 	private static ScriptDebugManager instance;
 

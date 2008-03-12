@@ -26,7 +26,7 @@ public class RemoveValidatorAllMarkersAction extends AbstractValidateSelectionWi
 	}
 
 	protected String getJobName() {
-		return "Validator cleanup";
+		return Messages.RemoveValidatorAllMarkersAction_validatorCleanup;
 	}
 
 	protected boolean isConsoleRequired() {

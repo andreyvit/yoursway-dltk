@@ -13,10 +13,10 @@ import org.eclipse.dltk.ruby.ast.RubyCallArgument;
 import org.eclipse.dltk.ruby.ast.RubySymbolReference;
 
 public class RubyAttributeHandler {
-	private static final String ATTR = "attr";
-	private static final String ATTR_ACCESSOR = "attr_accessor";
-	private static final String ATTR_WRITER = "attr_writer";
-	private static final String ATTR_READER = "attr_reader";
+	private static final String ATTR = "attr"; //$NON-NLS-1$
+	private static final String ATTR_ACCESSOR = "attr_accessor"; //$NON-NLS-1$
+	private static final String ATTR_WRITER = "attr_writer"; //$NON-NLS-1$
+	private static final String ATTR_READER = "attr_reader"; //$NON-NLS-1$
 
 	private final CallExpression call;
 	private List readers;

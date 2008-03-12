@@ -54,7 +54,7 @@ public class RubyTypeInferencer extends DefaultTypeInferencer {
 		IEvaluatedType type = super.evaluateType(goal, new SimplestRubyPruner(
 				timeLimit));
 		if (type == null || type instanceof UnknownType) {
-			type = new RubyClassType("Object"); // anyway, all things in ruby
+			type = new RubyClassType("Object"); // anyway, all things in ruby //$NON-NLS-1$
 												// are objects :)
 		}
 		return type;

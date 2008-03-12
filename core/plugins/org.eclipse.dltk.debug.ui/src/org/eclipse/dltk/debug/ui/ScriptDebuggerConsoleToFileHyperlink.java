@@ -26,7 +26,7 @@ import org.eclipse.ui.console.TextConsole;
 public class ScriptDebuggerConsoleToFileHyperlink extends
 		ScriptDebugConsoleGenericHyperlink {
 	static final Pattern pattern = Pattern
-			.compile("\\t*#\\d+ +file:(.*) \\[(\\d+)\\]");
+			.compile("\\t*#\\d+ +file:(.*) \\[(\\d+)\\]"); //$NON-NLS-1$
 
 	public ScriptDebuggerConsoleToFileHyperlink(TextConsole console) {
 		super(console);
@@ -43,7 +43,7 @@ public class ScriptDebuggerConsoleToFileHyperlink extends
 				IStatus.ERROR,
 				DLTKDebugUIPlugin.PLUGIN_ID,
 				0,
-				"Error"/* ConsoleMessages.TclFileHyperlink_Unable_to_parse_type_name_from_hyperlink__5 */,
+				Messages.ScriptDebuggerConsoleToFileHyperlink_error,
 				null);
 		throw new CoreException(status);
 	}

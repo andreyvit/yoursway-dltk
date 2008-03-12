@@ -54,7 +54,6 @@ import org.eclipse.dltk.ruby.ast.RubyDVarExpression;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.core.RubyPlugin;
 import org.eclipse.dltk.ruby.core.model.FakeField;
-import org.eclipse.dltk.ruby.core.text.RubyKeyword;
 import org.eclipse.dltk.ruby.core.utils.RubySyntaxUtils;
 import org.eclipse.dltk.ruby.internal.parser.mixin.IRubyMixinElement;
 import org.eclipse.dltk.ruby.internal.parser.mixin.RubyMixinClass;
@@ -81,13 +80,13 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 	private final static int RELEVANCE_METHODS = 100000;
 
-	private final static String[] globalVars = { "$DEBUG", "$$", "$-i",
-			"$deferr", "$/", "$'", "$stdout", "$-l", "$-I", "$.", "$KCODE",
-			"$binding", "$-w", "$FILENAME", "$defout", "$,", "$`", "$-F", "$*",
-			"$LOADED_FEATURES", "$stdin", "$-p", "$:", "$\\", "$=", "$!",
-			"$-v", "$>", "$&", "$;", "$SAFE", "$PROGRAM_NAME", "$\"", "$-d",
-			"$?", "$-0", "$+", "$@", "$-a", "$VERBOSE", "$stderr", "$~", "$0",
-			"$LOAD_PATH", "$<", "$_", "$-K" };
+	private final static String[] globalVars = { "$DEBUG", "$$", "$-i", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			"$deferr", "$/", "$'", "$stdout", "$-l", "$-I", "$.", "$KCODE", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+			"$binding", "$-w", "$FILENAME", "$defout", "$,", "$`", "$-F", "$*", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+			"$LOADED_FEATURES", "$stdin", "$-p", "$:", "$\\", "$=", "$!", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+			"$-v", "$>", "$&", "$;", "$SAFE", "$PROGRAM_NAME", "$\"", "$-d", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+			"$?", "$-0", "$+", "$@", "$-a", "$VERBOSE", "$stderr", "$~", "$0", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
+			"$LOAD_PATH", "$<", "$_", "$-K" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 	private DLTKTypeInferenceEngine inferencer;
 	private ISourceParser parser = null;
@@ -142,7 +141,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 					.getSourceParser(RubyNature.NATURE_ID);
 		} catch (CoreException e) {
 			throw new RuntimeException(
-					"Failed to initialize RubyCompletionEngine", e);
+					Messages.RubyCompletionEngine_failedToInitializeRubyCompletionEngine, e);
 		}
 	}
 
@@ -199,7 +198,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	private String getWordStarting(String content, int position, int maxLen) {
 		int original = position;
 		if (position <= 0)
-			return "";
+			return ""; //$NON-NLS-1$
 		if (position >= content.length())
 			position = content.length();
 		position--;
@@ -211,7 +210,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			position--;
 		}
 		if (position + 1 > original)
-			return "";
+			return ""; //$NON-NLS-1$
 		if ((position >= 0 && Character.isWhitespace(content.charAt(position)))
 				|| position == -1)
 			return content.substring(position + 1, original);
@@ -223,13 +222,13 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		if (Job.getJobManager().find(ResourcesPlugin.FAMILY_AUTO_BUILD).length > 0) {
 			// FIXIT, make more correct awaiting for building
 			this.requestor.completionFailure(new DefaultProblem(null,
-					"Please wait until building is ready...", 0, null,
+					Messages.RubyCompletionEngine_pleaseWaitUntilBuildingIsReady, 0, null,
 					IStatus.WARNING, startPosition, endPosition, -1));
 			return;
 		}
 		if (!RubyPlugin.initialized) {
 			this.requestor.completionFailure(new DefaultProblem(null,
-					"Please wait while DLTK Ruby being initialized...", 0,
+					Messages.RubyCompletionEngine_pleaseWaitWhileDltkRubyBeingInitialized, 0,
 					null, IStatus.WARNING, startPosition, endPosition, -1));
 			return;
 		}
@@ -256,13 +255,13 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 			if (afterDollar(content, position)) {
 				completeGlobalVar((org.eclipse.dltk.core.ISourceModule) module,
-						moduleDeclaration, "$", position);
+						moduleDeclaration, "$", position); //$NON-NLS-1$
 			} else if (afterAt2(content, position)) {
 				completeSimpleRef((org.eclipse.dltk.core.ISourceModule) module,
-						moduleDeclaration, "@@", position);
+						moduleDeclaration, "@@", position); //$NON-NLS-1$
 			} else if (afterAt(content, position)) {
 				completeSimpleRef((org.eclipse.dltk.core.ISourceModule) module,
-						moduleDeclaration, "@", position);
+						moduleDeclaration, "@", position); //$NON-NLS-1$
 			} else if (afterColons(content, position)) {
 
 				ASTNode node = ASTUtils.findMaximalNodeEndingAt(
@@ -274,9 +273,9 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 					ExpressionTypeGoal goal = new ExpressionTypeGoal(
 							basicContext, node);
 					IEvaluatedType type = inferencer.evaluateType(goal, 3000);
-					reportSubElements(modelModule, type, "");
+					reportSubElements(modelModule, type, ""); //$NON-NLS-1$
 				} else {
-					completeConstant(modelModule, moduleDeclaration, "",
+					completeConstant(modelModule, moduleDeclaration, "", //$NON-NLS-1$
 							position, true);
 				}
 			} else {
@@ -321,7 +320,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 												&& !children[j]
 														.getElementName()
 														.trim()
-														.startsWith("<<"))
+														.startsWith("<<")) //$NON-NLS-1$
 											reportType((IType) children[j], rel);
 									}
 							} catch (ModelException e) {
@@ -430,7 +429,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 		this.setSourceRange(position - prefix.length(), position);
 
 		IMixinElement[] elements = RubyMixinModel.getRawInstance().find(
-				prefix + "*");
+				prefix + "*"); //$NON-NLS-1$
 
 		// String[] findKeys = RubyMixinModel.getRawInstance().findKeys(
 		// prefix + "*");
@@ -480,7 +479,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			}
 		}
 
-		if (prefix.startsWith("$")) { // globals
+		if (prefix.startsWith("$")) { // globals //$NON-NLS-1$
 			completeGlobalVar(module, moduleDeclaration, prefix, position);
 		} else { // class & instance & locals
 			IField[] fields = RubyModelUtils.findFields(module,
@@ -586,7 +585,7 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 			return;
 		}
 
-		if (starting.startsWith("::")) {
+		if (starting.startsWith("::")) { //$NON-NLS-1$
 			this.setSourceRange(position - starting.length() + 2, position);
 			completeConstant(module, moduleDeclaration, starting.substring(2),
 					position, true);
@@ -621,9 +620,9 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 		// try {
 		if (prefix.length() > 0) {
-			String varkey = "Object" + MixinModel.SEPARATOR + prefix;
+			String varkey = "Object" + MixinModel.SEPARATOR + prefix; //$NON-NLS-1$
 			RubyMixinModel rubyModel = RubyMixinModel.getInstance();
-			String[] keys2 = rubyModel.getRawModel().findKeys(varkey + "*");
+			String[] keys2 = rubyModel.getRawModel().findKeys(varkey + "*"); //$NON-NLS-1$
 			for (int i = 0; i < keys2.length; i++) {
 				IRubyMixinElement element = rubyModel
 						.createRubyElement(keys2[i]);
@@ -700,8 +699,8 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 
 		this.setSourceRange(position - starting.length(), position);
 
-		if (starting.startsWith("__")) {
-			String[] keywords = RubyKeyword.findByPrefix("__");
+		if (starting.startsWith("__")) { //$NON-NLS-1$
+			String[] keywords = RubyKeyword.findByPrefix("__"); //$NON-NLS-1$
 			for (int j = 0; j < keywords.length; j++) {
 				reportKeyword(keywords[j]);
 			}

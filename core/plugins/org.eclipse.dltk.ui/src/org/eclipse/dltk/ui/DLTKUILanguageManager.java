@@ -19,7 +19,7 @@ import org.eclipse.dltk.ui.viewsupport.ScriptUILabelProvider;
 public class DLTKUILanguageManager extends PriorityClassDLTKExtensionManager {
 	private static DLTKUILanguageManager instance = new DLTKUILanguageManager();
 	private final static String LANGUAGE_EXTPOINT = DLTKUIPlugin.PLUGIN_ID
-			+ ".language";
+			+ ".language"; //$NON-NLS-1$
 
 	private DLTKUILanguageManager() {
 		super(LANGUAGE_EXTPOINT);

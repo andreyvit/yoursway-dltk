@@ -10,7 +10,7 @@ public class RubyDebugPreferenceInitializer extends
 	public void initializeDefaultPreferences() {
 		Preferences store = RubyDebugPlugin.getDefault().getPluginPreferences();
 
-		store.setDefault(RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY, "");
+		store.setDefault(RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY, ""); //$NON-NLS-1$
 
 		store.setDefault(
 				DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE,

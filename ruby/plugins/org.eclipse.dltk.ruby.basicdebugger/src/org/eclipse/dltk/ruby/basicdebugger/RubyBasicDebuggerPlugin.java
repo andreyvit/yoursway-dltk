@@ -24,7 +24,7 @@ import org.osgi.framework.BundleContext;
 public class RubyBasicDebuggerPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.basicdebugger";
+	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.basicdebugger"; //$NON-NLS-1$
 
 	// The shared instance
 	private static RubyBasicDebuggerPlugin plugin;
@@ -54,7 +54,7 @@ public class RubyBasicDebuggerPlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 	
-	private static final String DEBUGGER_DIR = "debugger";
+	private static final String DEBUGGER_DIR = "debugger"; //$NON-NLS-1$
 
 	public IPath deployDebuggerSource() throws IOException {
 		AbstractRubyDebuggerPlugin.getDefault().deployDebuggerSource(this);

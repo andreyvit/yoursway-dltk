@@ -18,7 +18,7 @@ import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 public abstract class AbstractDebuggingOptionsBlock extends
 		AbstractOptionsBlock {
 
-	private static String DLTK_DEBUG_PREF_PAGE_ID = "org.eclipse.dltk.preferences.debug";
+	private static String DLTK_DEBUG_PREF_PAGE_ID = "org.eclipse.dltk.preferences.debug"; //$NON-NLS-1$
 
 	public AbstractDebuggingOptionsBlock(IStatusChangeListener context,
 			IProject project, PreferenceKey[] allKeys,

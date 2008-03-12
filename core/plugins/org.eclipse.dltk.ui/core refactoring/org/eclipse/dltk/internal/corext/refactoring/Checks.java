@@ -60,7 +60,7 @@ public class Checks {
 		if (!(modelElement instanceof IScriptProject) && !modelElement.isStructureKnown())
 			return false;
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add binary modules support.");
+			System.err.println("Add binary modules support."); //$NON-NLS-1$
 		}
 //		if (modelElement instanceof IMember && ((IMember)modelElement).isBinary())
 //			return false;

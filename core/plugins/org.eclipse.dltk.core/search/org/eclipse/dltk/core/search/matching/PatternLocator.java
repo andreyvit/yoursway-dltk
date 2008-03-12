@@ -77,7 +77,7 @@ public abstract class PatternLocator implements IIndexConstants {
 	// while...
 	public static PatternLocator patternLocator(SearchPattern pattern) {
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: Add other patternLocators");
+			System.err.println("TODO: Add other patternLocators"); //$NON-NLS-1$
 		}
 		switch (((InternalSearchPattern) pattern).kind) {
 			// case IIndexConstants.PKG_REF_PATTERN:
@@ -380,7 +380,7 @@ public abstract class PatternLocator implements IIndexConstants {
 	 */
 	protected void updateMatch(MatchLocator locator, char[][] patternArguments, boolean hasTypeParameters) {
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: updateMatch");
+			System.err.println("TODO: updateMatch"); //$NON-NLS-1$
 		}
 	}
 

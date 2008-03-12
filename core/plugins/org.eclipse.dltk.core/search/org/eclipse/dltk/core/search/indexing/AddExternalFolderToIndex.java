@@ -122,7 +122,7 @@ class AddExternalFolderToIndex extends IndexRequest {
 				org.eclipse.dltk.internal.core.util.Util
 						.verbose("-> indexing " + containerPath.toOSString()); //$NON-NLS-1$
 			long initialTime = System.currentTimeMillis();
-			String[] paths = index.queryDocumentNames(""); // all file names
+			String[] paths = index.queryDocumentNames(""); // all file names //$NON-NLS-1$
 			// //$NON-NLS-1$
 			if (paths != null) {
 				int max = paths.length;
@@ -241,7 +241,7 @@ class AddExternalFolderToIndex extends IndexRequest {
 					if (org.eclipse.dltk.internal.core.util.Util
 							.isValidSourceModuleName(project, path)) {
 						if (DLTKCore.DEBUG) {
-							System.err.println("Out:" + path);
+							System.err.println("Out:" + path); //$NON-NLS-1$
 						}
 						if (this.exclusionPatterns == null
 								&& this.inclusionPatterns == null) {

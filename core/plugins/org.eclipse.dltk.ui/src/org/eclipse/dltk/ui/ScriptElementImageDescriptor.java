@@ -99,13 +99,13 @@ public class ScriptElementImageDescriptor extends CompositeImageDescriptor
 			ImageData data = descriptor.getImageData( ); // see bug 51965: getImageData can return null
 			if( data == null ) {
 				data = DEFAULT_IMAGE_DATA;
-				System.err.println( "Image data not available: " + descriptor.toString( ) );
+				System.err.println( "Image data not available: " + descriptor.toString( ) ); //$NON-NLS-1$
 				// DLTKUIPlugin.logErrorMessage("Image data not available: " + descriptor.toString()); //$NON-NLS-1$
 			}
 			return data;
 		}
 		else {			
-			System.err.println( "Image data not available: " + descriptor.toString( ) );
+			System.err.println( "Image data not available: " + descriptor.toString( ) ); //$NON-NLS-1$
 			return DEFAULT_IMAGE_DATA;
 		}
 	}

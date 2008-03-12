@@ -15,10 +15,10 @@ import org.eclipse.core.runtime.IConfigurationElement;
 
 public class PriorityClassDLTKExtensionManager extends PriorityDLTKExtensionManager {
 
-	private static final String CLASS_ATTR = "class";
+	private static final String CLASS_ATTR = "class"; //$NON-NLS-1$
 
 	public PriorityClassDLTKExtensionManager(String extensionPoint) {
-		super(extensionPoint, "nature");
+		super(extensionPoint, "nature"); //$NON-NLS-1$
 	}
 	public PriorityClassDLTKExtensionManager(String extensionPoint, String id) {
 		super(extensionPoint, id);

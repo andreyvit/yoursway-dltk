@@ -30,10 +30,10 @@ public class RubyLanguageToolkit extends AbstractLanguageToolkit {
 	}
 
 	public String getLanguageName() {
-		return "Ruby";
+		return "Ruby"; //$NON-NLS-1$
 	}
 
 	public String getLanguageContentType() {
-		return "org.eclipse.dltk.rubyContentType";
+		return "org.eclipse.dltk.rubyContentType"; //$NON-NLS-1$
 	}
 }

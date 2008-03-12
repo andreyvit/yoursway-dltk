@@ -7,7 +7,7 @@ import org.eclipse.dltk.ui.wizards.NewSourceModuleWizard;
 
 public class RubyNewModuleWizard extends NewSourceModuleWizard {
 	
-	public static final String WIZARD_ID = "org.eclipse.dltk.ruby.wizards.newmodule";
+	public static final String WIZARD_ID = "org.eclipse.dltk.ruby.wizards.newmodule"; //$NON-NLS-1$
 
 	public RubyNewModuleWizard() {
 		setDefaultPageImageDescriptor(RubyImages.DESC_WIZBAN_FILE_CREATION);
@@ -29,7 +29,7 @@ public class RubyNewModuleWizard extends NewSourceModuleWizard {
 				String text = getFileText();
 				String className = Character.toUpperCase(text.charAt(0))
 						+ text.substring(1);
-				return "module " + className + "\nend";
+				return "module " + className + "\nend"; //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		};
 	}

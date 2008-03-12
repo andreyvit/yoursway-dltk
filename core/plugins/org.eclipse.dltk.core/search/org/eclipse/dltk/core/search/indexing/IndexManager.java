@@ -305,10 +305,10 @@ public class IndexManager extends JobManager implements IIndexConstants {
 		// String containerPath = project.getFullPath().toOSString();
 		// String path = project.getFullPath();
 
-		boolean mixin = id.equals("mixin");
+		boolean mixin = id.equals("mixin"); //$NON-NLS-1$
 
-		String indexLocation = computeIndexLocation(new Path("#special#" + id
-				+ "#" + path));
+		String indexLocation = computeIndexLocation(new Path("#special#" + id //$NON-NLS-1$
+				+ "#" + path)); //$NON-NLS-1$
 
 		Index index = (Index) indexes.get(indexLocation);
 
@@ -404,7 +404,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 	public synchronized Index getIndex(IPath containerPath,
 			String indexLocation, boolean reuseExistingFile,
 			boolean createIfMissing) {
-		boolean mixin = containerPath.toString().startsWith("#special#mixin#");
+		boolean mixin = containerPath.toString().startsWith("#special#mixin#"); //$NON-NLS-1$
 		// Path is already canonical per construction
 		Index index = (Index) indexes.get(indexLocation);
 		if (index == null) {
@@ -753,7 +753,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 	 * Warning: Does not check whether index is consistent (not being used)
 	 */
 	public synchronized Index recreateIndex(IPath containerPath) {
-		boolean mixin = containerPath.toString().startsWith("#special#mixin#");
+		boolean mixin = containerPath.toString().startsWith("#special#mixin#"); //$NON-NLS-1$
 		// only called to over write an existing cached index...
 		String containerPathString = containerPath.getDevice() == null ? containerPath
 				.toString()

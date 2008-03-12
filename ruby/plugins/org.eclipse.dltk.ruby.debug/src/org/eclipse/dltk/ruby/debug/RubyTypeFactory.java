@@ -8,16 +8,16 @@ import org.eclipse.dltk.debug.core.model.IScriptTypeFactory;
 import org.eclipse.dltk.debug.core.model.StringScriptType;
 
 public class RubyTypeFactory implements IScriptTypeFactory {
-	private static final String[] atomicTypes = { "NilClass", "Fixnum",
-			"TrueClass", "FalseClass", "Integer", "Bignum" };
-	private static final String[] collectionTypes = { "Array", "Hash" };
+	private static final String[] atomicTypes = { "NilClass", "Fixnum", //$NON-NLS-1$ //$NON-NLS-2$
+			"TrueClass", "FalseClass", "Integer", "Bignum" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	private static final String[] collectionTypes = { "Array", "Hash" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	public RubyTypeFactory() {
 
 	}
 
 	public IScriptType buildType(String type) {
-		if ("String".equals(type)) {
+		if ("String".equals(type)) { //$NON-NLS-1$
 			return new StringScriptType(type);
 		}
 		

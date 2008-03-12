@@ -139,7 +139,7 @@ public class TypeInfoFilter {
 //		int index= text.lastIndexOf("."); //$NON-NLS-1$
 //		if (index == -1) {\
 		if(DLTKCore.DEBUG ) {
-			System.err.println("TODO: Add check here...");
+			System.err.println("TODO: Add check here..."); //$NON-NLS-1$
 		}
 			fNameMatcher= new PatternMatcher(text, true);
 //		} else {

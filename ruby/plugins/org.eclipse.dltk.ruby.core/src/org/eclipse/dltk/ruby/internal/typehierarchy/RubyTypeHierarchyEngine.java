@@ -31,11 +31,11 @@ public class RubyTypeHierarchyEngine {
 		try {
 			String[] superTypes = type.getSuperClasses();
 			List types = new ArrayList();
-			monitor.beginTask("Collecting types...", superTypes.length);
+			monitor.beginTask(Messages.RubyTypeHierarchyEngine_collectingTypes, superTypes.length);
 			IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(DLTKLanguageManager.getLanguageToolkit(type));
 			for( int i = 0; i < superTypes.length; ++i ) {
 				if( DEBUG ) {
-					System.out.println("Type:" + type.getElementName() + " has supertype:" + superTypes[i]);
+					System.out.println("Type:" + type.getElementName() + " has supertype:" + superTypes[i]); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				TypeNameMatch[] possibleTypes = searchTypesForName(superTypes[i], monitor, scope);
 				for( int j = 0; j < possibleTypes.length; ++i ) {
@@ -62,7 +62,7 @@ public class RubyTypeHierarchyEngine {
 	private static TypeNameMatch[] searchTypesForName(String name, IProgressMonitor monitor, IDLTKSearchScope scope ) {
 		SearchRequestor reqestor = new SearchRequestor();
 		SearchEngine engine= new SearchEngine((WorkingCopyOwner)null);
-		monitor.setTaskName("Search types...");
+		monitor.setTaskName(Messages.RubyTypeHierarchyEngine_searchingTypes);
 		try {
 			engine.searchAllTypeNames(
 				null, 

@@ -142,7 +142,7 @@ public final class EnvironmentResolver {
 	private static EnvironmentVariable resolveVariable(EnvironmentVariable var,
 			String name, String value) {
 		String result = var.getValue();
-		String pattern = "$" + name;
+		String pattern = "$" + name; //$NON-NLS-1$
 		if (value.indexOf(pattern) != -1) {
 			return null;
 		}
@@ -186,7 +186,7 @@ public final class EnvironmentResolver {
 			throw new IllegalArgumentException();
 		}
 		String name = var.getValue();
-		if (name.indexOf("$") == -1) {
+		if (name.indexOf("$") == -1) { //$NON-NLS-1$
 			return true;
 		}
 		return false;
@@ -197,7 +197,7 @@ public final class EnvironmentResolver {
 			throw new IllegalArgumentException();
 		}
 		String name = var.getValue();
-		if (name.indexOf("$" + vName) != -1) {
+		if (name.indexOf("$" + vName) != -1) { //$NON-NLS-1$
 			return true;
 		}
 		return false;

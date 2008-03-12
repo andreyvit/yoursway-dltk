@@ -8,7 +8,7 @@ import org.w3c.dom.Element;
 
 public class ExternalCheckerType extends AbstractValidatorType {
 
-	public final String ID = "org.eclipse.dltk.validators.core.externalChecker";
+	public final String ID = "org.eclipse.dltk.validators.core.externalChecker"; //$NON-NLS-1$
 
 	public ExternalCheckerType() {
 	}
@@ -33,11 +33,11 @@ public class ExternalCheckerType extends AbstractValidatorType {
 	}
 
 	public String getName() {
-		return "External Checker";
+		return Messages.ExternalCheckerType_externalChecker;
 	}
 
 	public String getNature() {
-		return "#";
+		return "#"; //$NON-NLS-1$
 	}
 
 	public boolean isConfigurable() {

@@ -14,7 +14,7 @@ import org.eclipse.dltk.internal.debug.ui.interpreters.InterpretersBlock;
 
 public class RubyInterpreterPreferencePage extends ScriptInterpreterPreferencePage {
 	
-	public static final String PAGE_ID = "org.eclipse.dltk.ruby.preferences.interpreters";
+	public static final String PAGE_ID = "org.eclipse.dltk.ruby.preferences.interpreters"; //$NON-NLS-1$
 
 	public InterpretersBlock createInterpretersBlock() {
 		return new RubyInterpretersBlock();

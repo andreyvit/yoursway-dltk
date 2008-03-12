@@ -66,7 +66,7 @@ public class PreferencesLookupDelegate {
 	 *         defined
 	 */
 	public String getString(String qualifier, String key) {
-		return service.getString(qualifier, key, "", contexts);
+		return service.getString(qualifier, key, "", contexts); //$NON-NLS-1$
 	}
 
 	/**

@@ -72,7 +72,7 @@ public class DebugConsoleManager implements ILaunchListener {
 			return;
 		}
 
-		launchToConsoleMap.put(launch, createConsole("Debug console", launch));
+		launchToConsoleMap.put(launch, createConsole(Messages.DebugConsoleManager_debugConsole, launch));
 	}
 
 	public void launchChanged(ILaunch launch) {

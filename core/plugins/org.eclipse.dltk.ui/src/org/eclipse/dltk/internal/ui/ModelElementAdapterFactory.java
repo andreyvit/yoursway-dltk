@@ -71,7 +71,7 @@ public class ModelElementAdapterFactory implements IAdapterFactory,
 		}
 		if (DLTKCore.DEBUG_SCOPES) {
 			System.err
-					.println("Add search scope computer support in ModelElementAdapterFactory");
+					.println("Add search scope computer support in ModelElementAdapterFactory"); //$NON-NLS-1$
 		}
 		if (fSearchPageScoreComputer != null
 				&& ISearchPageScoreComputer.class.equals(key)) {
@@ -127,7 +127,7 @@ public class ModelElementAdapterFactory implements IAdapterFactory,
 			IProjectFragment root = (IProjectFragment) element
 					.getAncestor(IModelElement.PROJECT_FRAGMENT);
 			if (DLTKCore.DEBUG_SCOPES) {
-				System.err.println("Check for archives");
+				System.err.println("Check for archives"); //$NON-NLS-1$
 			}
 			if (!root.isArchive()) {
 				return element.getResource();
@@ -173,7 +173,7 @@ public class ModelElementAdapterFactory implements IAdapterFactory,
 
 	private void updateLazyLoadedAdapters() {
 		if (DLTKCore.DEBUG_SCOPES) {
-			System.err.println("Add search page scope compiler");
+			System.err.println("Add search page scope compiler"); //$NON-NLS-1$
 		}
 		if (fSearchPageScoreComputer == null
 				&& SearchUtil.isSearchPlugInActivated())
@@ -182,7 +182,7 @@ public class ModelElementAdapterFactory implements IAdapterFactory,
 
 	private void createSearchPageScoreComputer() {
 		if (DLTKCore.DEBUG_SCOPES) {
-			System.err.println("Add search page scope compiler");
+			System.err.println("Add search page scope compiler"); //$NON-NLS-1$
 		}
 		fSearchPageScoreComputer = new DLTKSearchPageScoreComputer();
 		PROPERTIES = new Class[] { IPropertySource.class, IResource.class,
@@ -211,7 +211,7 @@ public class ModelElementAdapterFactory implements IAdapterFactory,
 		// return fgTaskListAdapter;
 		if (DLTKCore.DEBUG_SCOPES) {
 			System.err
-					.println("Add Task list adaptor to ModelElementAdapterFactory");
+					.println("Add Task list adaptor to ModelElementAdapterFactory"); //$NON-NLS-1$
 		}
 		return null;
 	}

@@ -112,7 +112,7 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 			throws DebugException {
 		IScriptValue value = result.getValue();
 		String str = getModelPresentation().getText(value);
-		return prepareHtml(result.getSnippet() + " = " + str);
+		return prepareHtml(result.getSnippet() + " = " + str); //$NON-NLS-1$
 	}
 
 	protected String getVariableText(IVariable variable) throws DebugException {

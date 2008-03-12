@@ -536,7 +536,7 @@ public abstract class AbstractDocumentationView extends AbstractInfoView {
 	 */
 	protected String getHelpContextId() {
 		//return IJavaHelpContextIds.JAVADOC_VIEW;
-		System.err.println("TODO: add help support here");
-		return "";
+		System.err.println("TODO: add help support here"); //$NON-NLS-1$
+		return ""; //$NON-NLS-1$
 	}
 }

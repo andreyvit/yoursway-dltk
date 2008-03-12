@@ -68,6 +68,7 @@ public final class NewWizardMessages extends NLS {
 	public static String NewPackageWizardPage_title;
 	public static String NewPackageWizardPage_description;
 	public static String NewPackageWizardPage_info;
+	public static String ProjectWizardFirstPage_atLeastOneInterpreterMustBeConfigured;
 	
 	public static String RemoveFromBuildpathAction_ErrorTitle;
 	

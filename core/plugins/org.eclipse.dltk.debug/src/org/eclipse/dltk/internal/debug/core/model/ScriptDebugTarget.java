@@ -47,8 +47,8 @@ import org.eclipse.dltk.debug.core.model.IScriptVariable;
 public class ScriptDebugTarget extends ScriptDebugElement implements
 		IScriptDebugTarget, IScriptThreadManagerListener {
 
-	private static final String LAUNCH_CONFIGURATION_ATTR_PROJECT = "project";
-	private static final String LAUNCH_CONFIGURATION_ATTR_BREAK_ON_FIRST_LINE = "enableBreakOnFirstLine";
+	private static final String LAUNCH_CONFIGURATION_ATTR_PROJECT = "project"; //$NON-NLS-1$
+	private static final String LAUNCH_CONFIGURATION_ATTR_BREAK_ON_FIRST_LINE = "enableBreakOnFirstLine"; //$NON-NLS-1$
 
 	private static final int THREAD_TERMINATION_TIMEOUT = 5000; // 5 seconds
 
@@ -113,7 +113,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		this.threadManager.addListener(this);
 
 		DebugEventHelper.fireCreateEvent(this);
-		targets.put(this, "");
+		targets.put(this, ""); //$NON-NLS-1$
 	}
 
 	public void shutdown() {
@@ -332,7 +332,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	public String toString() {
-		return "Debugging engine (id = " + this.sessionId + ")";
+		return "Debugging engine (id = " + this.sessionId + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	// IScriptDebugTarget

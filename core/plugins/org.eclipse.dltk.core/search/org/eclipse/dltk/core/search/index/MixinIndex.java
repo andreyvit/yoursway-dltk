@@ -32,7 +32,7 @@ import org.eclipse.dltk.internal.core.util.Util;
 
 public class MixinIndex extends Index {
 
-	private static final String HEADER = "MIXIN INDEX 0.1";
+	private static final String HEADER = "MIXIN INDEX 0.1"; //$NON-NLS-1$
 
 	private HashtableOfObject docNamesToKeys;
 
@@ -216,10 +216,10 @@ public class MixinIndex extends Index {
 		fouts.close();
 		this.dirty = false;
 		if (DLTKCore.DEBUG_INDEX) {
-			System.out.println("Mixin index for " + this.containerPath + " ("
-					+ new Path(this.fileName).lastSegment() + ") saved, took "
+			System.out.println("Mixin index for " + this.containerPath + " (" //$NON-NLS-1$ //$NON-NLS-2$
+					+ new Path(this.fileName).lastSegment() + ") saved, took " //$NON-NLS-1$
 					+ (System.currentTimeMillis() - t));
-			System.out.println("Mixin modules: " + this.docNamesToKeys.size());
+			System.out.println("Mixin modules: " + this.docNamesToKeys.size()); //$NON-NLS-1$
 		}
 	}
 

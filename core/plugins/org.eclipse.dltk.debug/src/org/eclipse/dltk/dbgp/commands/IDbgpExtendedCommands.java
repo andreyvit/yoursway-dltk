@@ -17,15 +17,15 @@ public interface IDbgpExtendedCommands {
 
 	int REDIRECT = 1;
 
-	String BREAK_COMMAND = "break";
+	String BREAK_COMMAND = "break"; //$NON-NLS-1$
 
-	String STDIN_COMMAND = "stdin";
+	String STDIN_COMMAND = "stdin"; //$NON-NLS-1$
 
-	String EVAL_COMMAND = "eval";
+	String EVAL_COMMAND = "eval"; //$NON-NLS-1$
 
-	String EXEC_COMMAND = "exec";
+	String EXEC_COMMAND = "exec"; //$NON-NLS-1$
 
-	String EXPR_COMMAND = "expr";
+	String EXPR_COMMAND = "expr"; //$NON-NLS-1$
 
 	boolean configureStdin(int value) throws DbgpException;
 

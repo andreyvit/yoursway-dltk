@@ -8,11 +8,11 @@ import org.eclipse.dltk.ui.actions.IActionFilterTester;
 import org.eclipse.ui.IActionFilter;
 
 public class ModelElementActionFilterAdapter implements IActionFilter {
-	private final static String ACTION_FILTER_TESTER = "org.eclipse.dltk.ui.actionFilterTester";
+	private final static String ACTION_FILTER_TESTER = "org.eclipse.dltk.ui.actionFilterTester"; //$NON-NLS-1$
 	private static class IdBasedExtensionManager extends PriorityDLTKExtensionManager {
-		private static final String CLASS_ATTR = "class";
+		private static final String CLASS_ATTR = "class"; //$NON-NLS-1$
 		public IdBasedExtensionManager(String extension) {
-			super(extension, "id");
+			super(extension, "id"); //$NON-NLS-1$
 		}
 		public IActionFilterTester getObject(String id) throws CoreException {
 			ElementInfo ext = this.getElementInfo(id);

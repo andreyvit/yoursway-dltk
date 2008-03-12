@@ -125,16 +125,16 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 			if (proxy != null) {
 				OutputStream stdout = proxy.getStderr();
 				try {
-					String message = "\n" + e.getMessage() + "\n";
+					String message = "\n" + e.getMessage() + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
 					stdout.write(message.getBytes());
 					stack.update();
 					IStackFrame[] frames = stack.getFrames();
-					stdout.write("\nStack trace:\n".getBytes());
+					stdout.write("\nStack trace:\n".getBytes()); //$NON-NLS-1$
 					for (int i = 0; i < frames.length; i++) {
 						IScriptStackFrame frame = (IScriptStackFrame) frames[i];
-						String line = "\t#" + frame.getLevel() + " file:"
-								+ frame.getSourceURI().getPath() + " ["
-								+ frame.getLineNumber() + "]\n";
+						String line = "\t#" + frame.getLevel() + " file:" //$NON-NLS-1$ //$NON-NLS-2$
+								+ frame.getSourceURI().getPath() + " [" //$NON-NLS-1$
+								+ frame.getLineNumber() + "]\n"; //$NON-NLS-1$
 						stdout.write(line.getBytes());
 					}
 				} catch (IOException e1) {
@@ -362,7 +362,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	// Object
 	public String toString() {
-		return "Thread (" + session.getInfo().getThreadId() + ")";
+		return "Thread (" + session.getInfo().getThreadId() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void notifyModified() {

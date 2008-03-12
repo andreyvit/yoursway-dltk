@@ -24,7 +24,7 @@ public class WildcardMatcher {
 		if (matcher.matches()) {
 			String fileName = null;
 			int lineNumber = -1;
-			String message = "";
+			String message = ""; //$NON-NLS-1$
 			Pattern lPattern = Pattern.compile(this.getPattern('n', wcards));
 			Pattern mPattern = Pattern.compile(this.getPattern('m', wcards));
 			Pattern fPattern = Pattern.compile(this.getPattern('f', wcards));
@@ -73,11 +73,11 @@ public class WildcardMatcher {
 		for (int j = 0; j < wildcard.length(); j++) {
 			if (wildcard.charAt(j) == '%') {
 				if (sbstatus == FULL) {
-					list.add(new WildcardToken("string", sb.toString()));
+					list.add(new WildcardToken("string", sb.toString())); //$NON-NLS-1$
 					sbstatus = CLEAN;
 					sb.delete(0, sb.length());
 				}
-				list.add(new WildcardToken("wcard", recognizeWildcard(wildcard
+				list.add(new WildcardToken("wcard", recognizeWildcard(wildcard //$NON-NLS-1$
 						.charAt(j + 1))));
 
 				j = j + 1;
@@ -88,7 +88,7 @@ public class WildcardMatcher {
 			}
 		}
 		if (sbstatus == FULL) {
-			list.add(new WildcardToken("string", sb.toString()));
+			list.add(new WildcardToken("string", sb.toString())); //$NON-NLS-1$
 			sbstatus = CLEAN;
 			sb.delete(0, sb.length());
 		}
@@ -121,7 +121,7 @@ public class WildcardMatcher {
 // sb.append("(");
 				}
 				if (Character.isWhitespace(c)) {
-					sb.append("[\\s]+");
+					sb.append("[\\s]+"); //$NON-NLS-1$
 				} else {
 					sb.append(c);
 				}
@@ -133,19 +133,19 @@ public class WildcardMatcher {
 
 				String pattern = getPattern(input.charAt(i + 1), wcards);
 				if (pattern == null) {
-					pattern = "";
+					pattern = ""; //$NON-NLS-1$
 				}
-				sb.append("(");
+				sb.append("("); //$NON-NLS-1$
 				sb.append(pattern);
-				sb.append(")");
+				sb.append(")"); //$NON-NLS-1$
 				i = i + 1;
 				status = UNDEFINED;
 			}
 		}
 		if (status == IN_STRING) {
-			sb.append(")");
+			sb.append(")"); //$NON-NLS-1$
 		}
-		sb.append(".*");
+		sb.append(".*"); //$NON-NLS-1$
 		return sb.toString();
 	}
 
@@ -164,7 +164,7 @@ public class WildcardMatcher {
 		for (int i = 0; i < tokenList.size(); i++) {
 			WildcardToken tok = (WildcardToken) tokenList.get(i);
 			String value = (String) tok.getValue();
-			if (value.equals("n")) {
+			if (value.equals("n")) { //$NON-NLS-1$
 				return i;
 			}
 		}

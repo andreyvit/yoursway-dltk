@@ -43,7 +43,7 @@ public class SourceModule extends AbstractSourceModule implements ISourceModule 
 		super(parent, name, owner, false);
 
 		if (DLTKCore.VERBOSE) {
-			System.out.println("SourceModule.SourceModule#" + id + "()");
+			System.out.println("SourceModule.SourceModule#" + id + "()"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -365,7 +365,7 @@ public class SourceModule extends AbstractSourceModule implements ISourceModule 
 	public void save(IProgressMonitor pm, boolean force) throws ModelException {
 		if (isWorkingCopy()) {
 			// no need to save the buffer for a working copy (this is a noop)
-			throw new RuntimeException("not implemented"); // not simply
+			throw new RuntimeException("not implemented"); // not simply //$NON-NLS-1$
 			// makeConsistent,
 			// also computes
 			// fine-grain deltas
@@ -441,7 +441,7 @@ public class SourceModule extends AbstractSourceModule implements ISourceModule 
 	 * @see org.eclipse.dltk.internal.core.AbstractSourceModule#getModuleType()
 	 */
 	protected String getModuleType() {
-		return "DLTK Source Module: ";
+		return "DLTK Source Module: "; //$NON-NLS-1$
 	}
 
 	/*

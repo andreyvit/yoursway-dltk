@@ -23,7 +23,7 @@ public interface IMixinRequestor {
 		 */
 		public Object object;
 		public String toString() {
-			return key + " : " + object;
+			return key + " : " + object; //$NON-NLS-1$
 		}
 	}
 	void reportElement( ElementInfo info );

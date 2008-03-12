@@ -13,21 +13,21 @@ import org.eclipse.dltk.core.PriorityClassDLTKExtensionManager;
 
 public class InternalDLTKLanguageManager {
 	private final static String LANGUAGE_EXTPOINT = DLTKCore.PLUGIN_ID
-			+ ".language";
+			+ ".language"; //$NON-NLS-1$
 	private final static String SOURCE_ELEMENT_PARSERS_EXTPOINT = DLTKCore.PLUGIN_ID
-			+ ".sourceElementParsers";
+			+ ".sourceElementParsers"; //$NON-NLS-1$
 	private final static String SOURCE_PARSERS_EXTPOINT = DLTKCore.PLUGIN_ID
-			+ ".sourceParsers";
+			+ ".sourceParsers"; //$NON-NLS-1$
 	private final static String PROBLEM_FACTORY_EXTPOINT = DLTKCore.PLUGIN_ID
-			+ ".problemFactory";
+			+ ".problemFactory"; //$NON-NLS-1$
 	private final static String COMPLETION_ENGINE_EXTPOINT = DLTKCore.PLUGIN_ID
-			+ ".completionEngine";
+			+ ".completionEngine"; //$NON-NLS-1$
 	private final static String SELECTION_ENGINE_EXTPOINT = DLTKCore.PLUGIN_ID
-			+ ".selectionEngine";
+			+ ".selectionEngine"; //$NON-NLS-1$
 	private final static String SEARCH_EXTPOINT = DLTKCore.PLUGIN_ID
-			+ ".search";
+			+ ".search"; //$NON-NLS-1$
 	private final static String CALLHIERARCHY_EXTPOINT = DLTKCore.PLUGIN_ID
-			+ ".callHierarchy";
+			+ ".callHierarchy"; //$NON-NLS-1$
 	
 	private static PriorityClassDLTKExtensionManager languageToolkitsManager = new PriorityClassDLTKExtensionManager(
 			LANGUAGE_EXTPOINT);

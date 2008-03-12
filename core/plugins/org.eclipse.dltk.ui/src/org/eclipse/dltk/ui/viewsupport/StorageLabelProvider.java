@@ -131,7 +131,7 @@ public class StorageLabelProvider extends LabelProvider {
 		IEditorDescriptor[] descs = getEditorRegistry().getEditors(name);
 		for (int e = 0; e < descs.length; ++e) {
 			String id = descs[e].getId();
-			if (id.indexOf("dltk") > 0) {
+			if (id.indexOf("dltk") > 0) { //$NON-NLS-1$
 				desc = descs[e].getImageDescriptor();
 			}
 		}

@@ -53,6 +53,8 @@ public class DLTKPluginImages {
 	public static final String IMG_OBJS_LIBRARY = NAME_PREFIX + "library_obj.gif"; //$NON-NLS-1$	
 	public static final String IMG_OBJS_ACCESSRULES_ATTRIB = NAME_PREFIX + "access_restriction_attrib.gif"; //$NON-NLS-1$
 	
+	public static final String IMG_CORRECTION_CHANGE= NAME_PREFIX + "correction_change.gif"; //$NON-NLS-1$
+	
 	public static final String IMG_OBJS_ANNOTATION= NAME_PREFIX + "annotation_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_ANNOTATION_DEFAULT= NAME_PREFIX + "annotation_default_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_ANNOTATION_PROTECTED= NAME_PREFIX + "annotation_protected_obj.gif"; //$NON-NLS-1$
@@ -187,7 +189,7 @@ public class DLTKPluginImages {
 	public static final ImageDescriptor DESC_WIZBAN_ADD_LIBRARY = createUnManaged(T_WIZBAN, "addlibrary_wiz.png");//$NON-NLS-1$
 	public static final ImageDescriptor DESC_WIZBAN_CLEAN_UP = createUnManaged(T_WIZBAN, "cleanup_wiz.png"); //$NON-NLS-1$
 	
-	public static final ImageDescriptor DESC_TOOL_BUILDPATH_ORDER= createUnManaged(T_OBJ, "cp_order_obj.gif"); 		//$N
+	public static final ImageDescriptor DESC_TOOL_BUILDPATH_ORDER= createUnManaged(T_OBJ, "cp_order_obj.gif"); //$NON-NLS-1$
 	/*
 	 * Set of predefined Image Descriptors.
 	 */
@@ -412,7 +414,7 @@ public class DLTKPluginImages {
 		if (fgImageRegistry != null) {
 			// Plugin.logErrorMessage("Image registry already defined");
 			// //$NON-NLS-1$
-			System.err.println("Image registry already defined");
+			System.err.println("Image registry already defined"); //$NON-NLS-1$
 		}		
 		return result;
 		}

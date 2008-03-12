@@ -34,7 +34,7 @@ public class RubySymbolReference extends Reference {
 
 	
 	public void printNode(CorePrinter output) {
-		output.formatPrintLn("SelfReference" + this.getSourceRange().toString());
+		output.formatPrintLn("RubySymbolReference" + this.getSourceRange().toString()); //$NON-NLS-1$
 	}
 	
 	public boolean equals(Object obj) {

@@ -172,7 +172,7 @@ public class RubyFileHyperlink implements IHyperlink {
 	 *                if unable to parse the type name
 	 */
 	protected String getFileName(String linkText) throws CoreException {
-		Pattern p = Pattern.compile("^(.+rb):(\\d+)$");
+		Pattern p = Pattern.compile("^(.+rb):(\\d+)$"); //$NON-NLS-1$
 		Matcher m = p.matcher(linkText);
 		if (m.find()) {
 			String name = m.group(1);			
@@ -203,7 +203,7 @@ public class RubyFileHyperlink implements IHyperlink {
 	 *                if unable to parse the number
 	 */
 	protected int getLineNumber(String linkText) throws CoreException {
-		Pattern p = Pattern.compile("^(.+rb):(\\d+)$");
+		Pattern p = Pattern.compile("^(.+rb):(\\d+)$"); //$NON-NLS-1$
 		Matcher m = p.matcher(linkText);
 		if (m.find()) {
 			String lineText = m.group(2);

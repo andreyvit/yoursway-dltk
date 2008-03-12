@@ -180,7 +180,7 @@ public class SelectionConverter {
 
 	public static IModelElement[] codeResolve(IModelElement input, ITextSelection selection) throws ModelException {
 		if (DLTKCore.DEBUG) {
-			System.err.println("SelectionConverter: Add Code assist support");
+			System.err.println("SelectionConverter: Add Code assist support"); //$NON-NLS-1$
 		}
 			if (input instanceof ICodeAssist) {
 				if (input instanceof ISourceModule) {

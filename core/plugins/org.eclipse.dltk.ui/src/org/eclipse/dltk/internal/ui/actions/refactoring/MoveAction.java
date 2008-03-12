@@ -72,7 +72,7 @@ public class MoveAction extends SelectionDispatchAction{
 		fReorgMoveAction= new ReorgMoveAction(site);
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IScriptHelpContextIds.MOVE_ACTION);
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}		
 	}
 	
@@ -89,7 +89,7 @@ public class MoveAction extends SelectionDispatchAction{
 		fReorgMoveAction= new ReorgMoveAction(editor.getEditorSite());
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IScriptHelpContextIds.MOVE_ACTION);
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
 		
 	}	

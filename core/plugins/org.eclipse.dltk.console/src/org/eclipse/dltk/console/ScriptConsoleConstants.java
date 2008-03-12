@@ -13,9 +13,9 @@ public final class ScriptConsoleConstants {
 	private ScriptConsoleConstants() {
 	}
 
-	public static final String SCRIPT_GROUP = "scriptGroup";
+	public static final String SCRIPT_GROUP = "scriptGroup"; //$NON-NLS-1$
 
-	public static final String SCRIPT_INTERPRETER_EP = "org.eclipse.dltk.console.scriptInterpreter";
-	public static final String SCRIPT_INTERPRETER_CLASS = "class";
-	public static final String SCRIPT_INTERPRETER_NATURE_ID = "natureID";
+	public static final String SCRIPT_INTERPRETER_EP = "org.eclipse.dltk.console.scriptInterpreter"; //$NON-NLS-1$
+	public static final String SCRIPT_INTERPRETER_CLASS = "class"; //$NON-NLS-1$
+	public static final String SCRIPT_INTERPRETER_NATURE_ID = "natureID"; //$NON-NLS-1$
 }

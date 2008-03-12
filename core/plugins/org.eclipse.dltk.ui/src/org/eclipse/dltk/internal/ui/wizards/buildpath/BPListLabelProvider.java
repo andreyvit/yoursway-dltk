@@ -184,7 +184,7 @@ public class BPListLabelProvider extends LabelProvider
 			}
 		}
 		if( DLTKCore.DEBUG ) {
-			System.err.println( "Add native library support" );
+			System.err.println( "Add native library support" ); //$NON-NLS-1$
 		}
 		// } else if (key.equals(CPListElement.NATIVE_LIB_PATH)) {
 		// String arg= (String) attrib.getValue();

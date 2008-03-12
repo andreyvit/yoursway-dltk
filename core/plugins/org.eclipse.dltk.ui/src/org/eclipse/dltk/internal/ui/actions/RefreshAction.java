@@ -69,7 +69,7 @@ public class RefreshAction extends SelectionDispatchAction {
 		setToolTipText(ActionMessages.RefreshAction_toolTip); 
 		DLTKPluginImages.setLocalImageDescriptors(this, "refresh_nav.gif");//$NON-NLS-1$
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
 		
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IScriptHelpContextIds.REFRESH_ACTION);
@@ -129,7 +129,7 @@ public class RefreshAction extends SelectionDispatchAction {
 				}
 				//IScriptModel model= DLTKCore.create(ResourcesPlugin.getWorkspace().getRoot());
 				if (DLTKCore.DEBUG) {
-					System.err.println("Add refreshing of external archives...");
+					System.err.println("Add refreshing of external archives..."); //$NON-NLS-1$
 				}
 //				model.refreshExternalArchives(
 //					(IModelElement[]) modelElements.toArray(new IModelElement[modelElements.size()]),

@@ -29,11 +29,11 @@ import org.eclipse.dltk.utils.PlatformFileUtils;
 
 public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 	// Launch attributes
-	public static final String LAUNCH_ATTR_DEBUGGING_ENGINE_ID = "debugging_engine_id";
+	public static final String LAUNCH_ATTR_DEBUGGING_ENGINE_ID = "debugging_engine_id"; //$NON-NLS-1$
 
-	private static final String LOCALHOST = "127.0.0.1";
+	private static final String LOCALHOST = "127.0.0.1"; //$NON-NLS-1$
 
-	public static final String OVERRIDE_EXE = "OVERRIDE_EXE";
+	public static final String OVERRIDE_EXE = "OVERRIDE_EXE"; //$NON-NLS-1$
 
 	protected String getSessionId(ILaunchConfiguration configuration)
 			throws CoreException {
@@ -105,7 +105,7 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			monitor = new NullProgressMonitor();
 		}
 
-		monitor.beginTask("Launching...", 5);
+		monitor.beginTask(InterpreterMessages.DebuggingEngineRunner_launching, 5);
 		if (monitor.isCanceled()) {
 			return;
 		}
@@ -122,7 +122,7 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 						ExtendedDebugEventDetails.BEFORE_VM_STARTED);
 
 				// Running
-				monitor.subTask("Running");
+				monitor.subTask(InterpreterMessages.DebuggingEngineRunner_running);
 				process = rawRun(launch, newConfig);
 			} catch (CoreException e) {
 				abort(InterpreterMessages.errDebuggingEngineNotStarted, e);

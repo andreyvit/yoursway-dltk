@@ -1,6 +1,7 @@
 package org.eclipse.dltk.launching.sourcelookup;
 
 import java.net.URI;
+import java.text.MessageFormat;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -29,8 +30,8 @@ public class DBGPSourceLookupParticipant extends
 		ScriptStackFrame frame = (ScriptStackFrame) object;
 
 		URI uri = frame.getFileName();
-		if ("dbgp".equals(uri.getScheme())) {
-			return "Debug resource:" + uri.getPath();
+		if ("dbgp".equals(uri.getScheme())) { //$NON-NLS-1$
+			return MessageFormat.format(Messages.DBGPSourceLookupParticipant_debugResource, new Object[] { uri.getPath() });
 		}
 		return uri.toString();
 	}
@@ -48,7 +49,7 @@ public class DBGPSourceLookupParticipant extends
 
 			URI uri = frame.getFileName();
 			
-			if (!("dbgp".equals(uri.getScheme()))) {
+			if (!("dbgp".equals(uri.getScheme()))) { //$NON-NLS-1$
 				return null;
 			}
 			return new Object[] { new DBGPSourceModule(scriptProject, frame

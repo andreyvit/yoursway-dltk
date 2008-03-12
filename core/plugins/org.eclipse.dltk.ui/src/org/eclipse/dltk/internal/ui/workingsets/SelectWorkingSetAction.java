@@ -49,7 +49,7 @@ public class SelectWorkingSetAction extends Action {
 		setToolTipText(WorkingSetMessages.SelectWorkingSetAction_toolTip); 
 		fActionGroup= actionGroup;
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
 		
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IScriptHelpContextIds.SELECT_WORKING_SET_ACTION);

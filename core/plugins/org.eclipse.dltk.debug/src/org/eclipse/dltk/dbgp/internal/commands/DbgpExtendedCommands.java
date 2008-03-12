@@ -23,7 +23,7 @@ public class DbgpExtendedCommands extends DbgpBaseCommands implements
 	
 	private IDbgpProperty parseResponse(Element response) {
 		if (DbgpXmlParser.parseSuccess(response)) {
-			NodeList list = response.getElementsByTagName("property");
+			NodeList list = response.getElementsByTagName("property"); //$NON-NLS-1$
 			return DbgpXmlEntityParser.parseProperty((Element) list.item(0));
 		}
 		return null;
@@ -41,7 +41,7 @@ public class DbgpExtendedCommands extends DbgpBaseCommands implements
 
 	public boolean configureStdin(int value) throws DbgpException {
 		DbgpRequest request = createRequest(STDIN_COMMAND);
-		request.addOption("-c", value);
+		request.addOption("-c", value); //$NON-NLS-1$
 		return DbgpXmlParser.parseSuccess(communicate(request));
 	}
 
@@ -60,7 +60,7 @@ public class DbgpExtendedCommands extends DbgpBaseCommands implements
 	public IDbgpProperty evaluate(String snippet, int depth) throws DbgpException {
 		DbgpRequest request = createRequest(EVAL_COMMAND);
 		request.setData(snippet);
-		request.addOption("-d", depth);
+		request.addOption("-d", depth); //$NON-NLS-1$
 		return parseResponse(communicate(request));
 	}
 

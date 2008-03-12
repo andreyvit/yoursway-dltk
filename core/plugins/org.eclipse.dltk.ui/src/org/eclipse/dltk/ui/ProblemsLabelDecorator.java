@@ -322,7 +322,7 @@ public class ProblemsLabelDecorator implements ILabelDecorator, ILightweightLabe
 	public void dispose() {
 		if (fProblemChangedListener != null) {
 			if (DLTKCore.DEBUG) {
-				System.err.println("Add removind listener from problem marker manager...");
+				System.err.println("Add removind listener from problem marker manager..."); //$NON-NLS-1$
 			}
 			DLTKUIPlugin.getDefault().getProblemMarkerManager().removeListener(fProblemChangedListener);
 			fProblemChangedListener= null;
@@ -354,7 +354,7 @@ public class ProblemsLabelDecorator implements ILabelDecorator, ILightweightLabe
 				}
 			};
 			if (DLTKCore.DEBUG) {
-				System.err.println("Add problem marker manager listener support");
+				System.err.println("Add problem marker manager listener support"); //$NON-NLS-1$
 			}
 			DLTKUIPlugin.getDefault().getProblemMarkerManager().addListener(fProblemChangedListener);
 		}
@@ -368,7 +368,7 @@ public class ProblemsLabelDecorator implements ILabelDecorator, ILightweightLabe
 			fListeners.remove(listener);
 			if (fListeners.isEmpty() && fProblemChangedListener != null) {
 				if (DLTKCore.DEBUG) {
-					System.err.println("Add problem marker manager listener support");
+					System.err.println("Add problem marker manager listener support"); //$NON-NLS-1$
 				}
 				DLTKUIPlugin.getDefault().getProblemMarkerManager().removeListener(fProblemChangedListener);
 				fProblemChangedListener= null;
