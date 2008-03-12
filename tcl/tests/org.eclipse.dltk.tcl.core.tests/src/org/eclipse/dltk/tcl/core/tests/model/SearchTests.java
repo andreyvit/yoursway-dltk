@@ -148,7 +148,7 @@ public class SearchTests extends AbstractDLTKSearchTests implements IDLTKSearchC
 			"src/p3/X.tcl  p3/Y$T2$T3$T4$src_p3_X_Y_T2_T3_T4_function(arg1, arg2, arg3)\n"+
 			"src/p3/X.tcl  p3/Z$foo()\n"+
 			"src/p3/X.tcl  $src_p3_X_function(arg1, arg2, arg3)\n"+
-			"src/p3/X.tcl  p3/global2$namespace2$function(arg1, arg2, arg3)\n"+
+			"src/p3/X.tcl  $function(arg1, arg2, arg3)\n"+
 			"src/q5/AQ.tcl  q5/I$k(arg)\n"+
 			"src/q5/AQ.tcl  q5/I2$k(arg)\n"+
 			"src/q5/AQ.tcl  $m()"

@@ -881,7 +881,7 @@ public class XOTclSelectionTests extends AbstractModelCompletionTests {
 				"selection004.tcl");
 		String s = "obj obj_proc";
 		IModelElement element = process041(cu, s, 4, 8);
-		IMethod method = getMethodByName(cu.getField("obj").getChildren(),
+		IMethod method = getMethodByName(cu.getType("obj").getChildren(),
 				"obj_proc");
 		assertEquals(method, element);
 	}

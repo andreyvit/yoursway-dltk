@@ -679,7 +679,12 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		if (location == null) {
 			return null;
 		}
-		return location.append(mainScriptName).toPortableString();
+		IPath workspaceLocation = location.append(mainScriptName);
+		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(workspaceLocation);
+		if( file.exists() && file.getLocation() != null ) {
+			return file.getLocation().toPortableString();
+		}
+		return workspaceLocation.toPortableString();
 	}
 
 	// Should be overriden in for any language

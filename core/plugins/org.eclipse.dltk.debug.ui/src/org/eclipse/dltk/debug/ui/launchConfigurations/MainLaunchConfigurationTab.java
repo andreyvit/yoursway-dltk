@@ -9,8 +9,12 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.ui.launchConfigurations;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.dltk.core.IScriptProject;
@@ -155,9 +159,18 @@ public abstract class MainLaunchConfigurationTab extends
 		String projectName = getProjectName();
 		IScriptProject proj = getScriptModel().getScriptProject(projectName);
 
-		String script = proj.getProject().getLocation().toPortableString()
-				+ '/' + getScriptName();
-		IStatus result = validator.validate(script);
+		IPath location = proj.getProject().getLocation();
+		if (location == null) {
+			setErrorMessage(DLTKLaunchConfigurationsMessages.error_notAValidProject);
+			return false;
+		}
+		IPath script = location.append(new Path( getScriptName()));
+		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(script);
+		if( file.exists() && file.getLocation() != null ) {
+			script = file.getLocation();
+		}
+
+		IStatus result = validator.validate(script.toPortableString());
 
 		if (!result.isOK()) {
 			setErrorMessage(DLTKLaunchConfigurationsMessages.error_scriptNotFound);
