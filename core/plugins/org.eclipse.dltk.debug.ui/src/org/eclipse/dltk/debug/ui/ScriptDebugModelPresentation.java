@@ -38,7 +38,6 @@ import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IValueDetailListener;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.debug.core.ScriptDebugManager;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
@@ -143,8 +142,9 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		IDebuggingEngine engine = getDebuggingEngine(target);
 
 		if (engine != null) {
-			return MessageFormat.format(Messages.ScriptDebugModelPresentation_debugTargetText, new Object[] {
-					engine.getName(), target.getSessionId() });
+			return MessageFormat.format(
+					Messages.ScriptDebugModelPresentation_debugTargetText,
+					new Object[] { engine.getName(), target.getSessionId() });
 		}
 
 		return target.toString();
@@ -153,9 +153,12 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	// Text
 	protected String getThreadText(IScriptThread thread) {
 		try {
-			return MessageFormat.format(Messages.ScriptDebugModelPresentation_threadText, new Object[] {
-					thread.getName(),
-					thread.isSuspended() ? SUSPENDED_LABEL : RUNNING_LABEL });
+			return MessageFormat.format(
+					Messages.ScriptDebugModelPresentation_threadText,
+					new Object[] {
+							thread.getName(),
+							thread.isSuspended() ? SUSPENDED_LABEL
+									: RUNNING_LABEL });
 
 		} catch (DebugException e) {
 			DLTKDebugUIPlugin.log(e);
@@ -225,7 +228,8 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			if (sourceLine == null || sourceLine.length() == 0) {
 				final int level = stackFrame.getStack().size()
 						- stackFrame.getLevel() - 1;
-				sourceLine = MessageFormat.format(Messages.ScriptDebugModelPresentation_stackFrameText,
+				sourceLine = MessageFormat.format(
+						Messages.ScriptDebugModelPresentation_stackFrameText,
 						new Object[] { new Integer(level) });
 			}
 
@@ -233,9 +237,10 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			final IPath path = getStackFrameRelativePath(stackFrame);
 
 			// TODO: may be make external option for file:line
-			return MessageFormat.format(Messages.ScriptDebugModelPresentation_stackFrameText2, new Object[] {
-					sourceLine, path.toPortableString(),
-					new Integer(stackFrame.getLineNumber()) });
+			return MessageFormat.format(
+					Messages.ScriptDebugModelPresentation_stackFrameText2,
+					new Object[] { sourceLine, path.toPortableString(),
+							new Integer(stackFrame.getLineNumber()) });
 		} catch (CoreException e) {
 			DLTKDebugUIPlugin.log(e);
 		}
@@ -281,7 +286,7 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	public String getDetailPaneText(IScriptValue value) {
 		return getValueText(value);
 	}
-	
+
 	protected String renderUnknownValue(IScriptValue value)
 			throws DebugException {
 		return value.getValueString();
@@ -304,8 +309,8 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 				final String fieldName = w.getFieldName();
 
 				sb.append(MessageFormat.format(
-						Messages.ScriptDebugModelPresentation_breakpointText, new Object[] {
-								language, file, new Integer(lineNumber),
+						Messages.ScriptDebugModelPresentation_breakpointText,
+						new Object[] { language, file, new Integer(lineNumber),
 								fieldName }));
 			} else if (breakpoint instanceof IScriptLineBreakpoint) { // IScriptLineBreakpoint
 				IScriptLineBreakpoint b = (IScriptLineBreakpoint) breakpoint;
@@ -313,9 +318,12 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 				final String file = b.getResourceName();
 				final int lineNumber = b.getLineNumber();
 
-				sb.append(MessageFormat
-						.format(Messages.ScriptDebugModelPresentation_breakpointText2, new Object[] {
-								language, file, new Integer(lineNumber) }));
+				sb
+						.append(MessageFormat
+								.format(
+										Messages.ScriptDebugModelPresentation_breakpointText2,
+										new Object[] { language, file,
+												new Integer(lineNumber) }));
 			} else if (breakpoint instanceof IScriptExceptionBreakpoint) {
 				IScriptExceptionBreakpoint b = (IScriptExceptionBreakpoint) breakpoint;
 				String typeName = b.getTypeName();
@@ -323,8 +331,9 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 					typeName += Messages.ScriptDebugModelPresentation_breakpointText3;
 				}
 
-				sb.append(MessageFormat.format(Messages.ScriptDebugModelPresentation_breakpointText4, new Object[] {
-						language, typeName }));
+				sb.append(MessageFormat.format(
+						Messages.ScriptDebugModelPresentation_breakpointText4,
+						new Object[] { language, typeName }));
 
 				/*
 				 * TODO: Uncomment this comment when add support for caught and
@@ -340,7 +349,9 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			}
 
 			if (hitCount != -1) {
-				sb.append(MessageFormat.format(Messages.ScriptDebugModelPresentation_breakpointText5, new Object[] { hitCount }));
+				sb.append(MessageFormat.format(
+						Messages.ScriptDebugModelPresentation_breakpointText5,
+						new Object[] { new Integer(hitCount) }));
 			}
 
 			return sb.toString();
@@ -371,8 +382,9 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 				}
 			}
 
-			return MessageFormat.format(Messages.ScriptDebugModelPresentation_expressionText, new Object[] {
-					expressionText, getValueText(value) });
+			return MessageFormat.format(
+					Messages.ScriptDebugModelPresentation_expressionText,
+					new Object[] { expressionText, getValueText(value) });
 		}
 
 		return expressionText;
@@ -501,12 +513,12 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 				HandleFactory fac = new HandleFactory();
 				IDLTKSearchScope scope = DLTKSearchScopeFactory.getInstance()
 						.createWorkspaceScope(true, toolkit);
-				Openable openable = fac.createOpenable(path
-						.toOSString(), scope);
-				
+				Openable openable = fac
+						.createOpenable(path.toOSString(), scope);
+
 				if (openable instanceof IStorage) {
 					return new ExternalStorageEditorInput((IStorage) openable);
-				}					
+				}
 			}
 		} catch (CoreException e) {
 			DLTKUIPlugin.log(e);

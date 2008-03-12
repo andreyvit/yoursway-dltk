@@ -104,7 +104,11 @@ public class DbgpDebuggingEngineException extends DbgpException {
 	}
 
 	public DbgpDebuggingEngineException(int code, String message) {
-		super(MessageFormat.format(Messages.DbgpDebuggingEngineException_dbgpDebuggingEngineException, new Object[] { code, message }));
+		super(
+				MessageFormat
+						.format(
+								Messages.DbgpDebuggingEngineException_dbgpDebuggingEngineException,
+								new Object[] { new Integer(code), message }));
 		this.code = code;
 	}
 
@@ -115,7 +119,12 @@ public class DbgpDebuggingEngineException extends DbgpException {
 
 	public DbgpDebuggingEngineException(int code, String message,
 			Throwable cause) {
-		super(MessageFormat.format(Messages.DbgpDebuggingEngineException_dbgpDebuggingEngineException2, new Object[] { message, code }), cause);
+		super(
+				MessageFormat
+						.format(
+								Messages.DbgpDebuggingEngineException_dbgpDebuggingEngineException2,
+								new Object[] { message, new Integer(code) }),
+				cause);
 		this.code = code;
 	}
 

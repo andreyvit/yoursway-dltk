@@ -49,8 +49,13 @@ public class RubyLaunchingTests extends ScriptLaunchingTests {
 				"src/test.rb", arguments);
 	}
 
-	protected void startLaunch(ILaunch launch) throws CoreException {
-		final AbstractScriptLaunchConfigurationDelegate delegate = new RubyLaunchConfigurationDelegate();
+	protected void startLaunch(ILaunch launch, final IInterpreterInstall install) throws CoreException {
+		final AbstractScriptLaunchConfigurationDelegate delegate = new RubyLaunchConfigurationDelegate() {
+			public IInterpreterInstall getInterpreterInstall(
+					ILaunchConfiguration configuration) throws CoreException {
+				return install;
+			}
+		};
 		delegate.launch(launch.getLaunchConfiguration(),
 				launch.getLaunchMode(), launch, null);
 	}

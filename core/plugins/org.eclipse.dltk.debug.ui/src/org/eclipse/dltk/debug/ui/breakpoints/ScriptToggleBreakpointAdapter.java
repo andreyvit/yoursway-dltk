@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.ui.breakpoints;
 
+import java.text.MessageFormat;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -35,8 +37,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.IEditorStatusLine;
 import org.eclipse.ui.texteditor.ITextEditor;
-
-import java.text.MessageFormat;
 
 public abstract class ScriptToggleBreakpointAdapter implements
 		IToggleBreakpointsTargetExtension {
@@ -261,7 +261,7 @@ public abstract class ScriptToggleBreakpointAdapter implements
 											lineNumber);
 								} else {
 									report(MessageFormat.format(Messages.ScriptToggleBreakpointAdapter_breakpointAlreadySetAtLine,
-											new Object[] { lineNumber }), part);
+											new Object[] { new Integer( lineNumber ) }), part);
 								}
 							} else {
 								report(Messages.ScriptToggleBreakpointAdapter_invalidBreakpointPosition, part);
