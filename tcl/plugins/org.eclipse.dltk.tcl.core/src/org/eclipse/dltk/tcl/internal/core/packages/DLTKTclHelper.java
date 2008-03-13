@@ -99,18 +99,19 @@ public class DLTKTclHelper {
 
 	public static String[] getDefaultPath(File installLocation,
 			EnvironmentVariable[] environment) {
-		Process process = deployExecute(installLocation.getAbsolutePath(),
-				new String[] { "get-paths" }, environment);
-		List content = getScriptOutput(process);
-		String[] autoPath = getAutoPath(content);
-		for (int i = 0; i < autoPath.length; i++) {
-			Path p = new Path(autoPath[i]);
-			if (p.lastSegment().startsWith("tcl8.")) {
-				return new String[] { autoPath[i] };
-			}
-		}
-		process.destroy();
-		return autoPath;
+//		Process process = deployExecute(installLocation.getAbsolutePath(),
+//				new String[] { "get-paths" }, environment);
+//		List content = getScriptOutput(process);
+//		String[] autoPath = getAutoPath(content);
+//		for (int i = 0; i < autoPath.length; i++) {
+//			Path p = new Path(autoPath[i]);
+//			if (p.lastSegment().startsWith("tcl8.")) {
+//				return new String[] { autoPath[i] };
+//			}
+//		}
+//		process.destroy();
+		return new String[0];
+//		return autoPath;
 	}
 
 	public static TclPackage[] getSrcs(File installLocation,

@@ -99,7 +99,7 @@ public class TclActiveStateDebuggerPreferencePage extends
 
 				pdxPath = SWTFactory.createText(group, SWT.BORDER, 1, "");
 				bindControl(pdxPath, PDX_PATH,
-						FieldValidators.PATH_VALIDATOR);
+						FieldValidators.DIR_PATH_VALIDATOR);
 
 				// Browse
 				final Button button = SWTFactory.createPushButton(group,
