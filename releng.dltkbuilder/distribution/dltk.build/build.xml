@@ -248,6 +248,10 @@
 			<arg line="-o -qq dltk-xotcl${corename}-${buildLabel}-incubation.zip -d ${buildDirectory}/tempforrezippin3" />
 		</exec>
 		
+		<exec dir="${buildDirectory}/${buildLabel}" executable="unzip" failonerror="false">
+			<arg line="-o -qq dltk-itcl${corename}-${buildLabel}-incubation.zip -d ${buildDirectory}/tempforrezippin3" />
+		</exec>
+		
 		<zip destfile="${buildDirectory}/${buildLabel}/${archiveName}" basedir="${buildDirectory}/tempforrezippin3" />
 	
 		<delete dir="${buildDirectory}/tempforrezippin3" failonerror="false"/>
