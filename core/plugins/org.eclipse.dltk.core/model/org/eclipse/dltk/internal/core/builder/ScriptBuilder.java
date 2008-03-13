@@ -54,7 +54,6 @@ import org.eclipse.dltk.internal.core.ExternalProjectFragment;
 import org.eclipse.dltk.internal.core.ExternalSourceModule;
 import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.ScriptProject;
-import org.eclipse.dltk.internal.core.util.HandleFactory;
 
 public class ScriptBuilder extends IncrementalProjectBuilder {
 	public static final boolean DEBUG = DLTKCore.DEBUG_SCRIPT_BUILDER;
@@ -442,7 +441,7 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 	protected void buildResources(Set resources, IProgressMonitor monitor,
 			int tiks, int buildType, Set externalFoldersBefore,
 			Set externalFolders, Set allresources) {
-		HandleFactory factory = new HandleFactory();
+//		HandleFactory factory = new HandleFactory();
 		List status = new ArrayList();
 		IDLTKSearchScope scope = SearchEngine
 				.createSearchScope(new IModelElement[] { scriptProject });
@@ -464,8 +463,9 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			if (sub.isCanceled()) {
 				return;
 			}
-			IModelElement element = factory.createOpenable(res.getFullPath()
-					.toString(), scope);
+//			IModelElement element2 = DLTKCore.create(res);
+			IModelElement element = DLTKCore.create(res);
+//			factory.createOpenable(res.getFullPath().toString(), scope);
 			if (element != null
 					&& element.getElementType() == IModelElement.SOURCE_MODULE
 					&& element.exists()) {

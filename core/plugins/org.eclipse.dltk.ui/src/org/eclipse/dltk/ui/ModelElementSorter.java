@@ -18,14 +18,14 @@ import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.ScriptModelUtil;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.internal.ui.scriptview.BuildPathContainer;
 import org.eclipse.jface.viewers.ContentViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
@@ -71,6 +71,7 @@ public class ModelElementSorter extends ViewerSorter {
 	private MembersOrderPreferenceCache fMemberOrderCache;
 	private Collator fNewCollator; // collator from ICU
 
+	private boolean innerElements = true;
 	/**
 	 * Constructor.
 	 */
@@ -80,6 +81,17 @@ public class ModelElementSorter extends ViewerSorter {
 				.getMemberOrderPreferenceCache();
 		fNewCollator = null;
 	}
+	
+
+	public boolean isInnerElements() {
+		return innerElements;
+	}
+
+
+	public void setInnerElements(boolean innerElements) {
+		this.innerElements = innerElements;
+	}
+
 
 	/*
 	 * @see ViewerSorter#category
@@ -197,7 +209,14 @@ public class ModelElementSorter extends ViewerSorter {
 
 		String name1 = getElementName(e1);
 		String name2 = getElementName(e2);
-
+		
+		//If 
+		if( !this.isInnerElements() && e1 instanceof IModelElement ) {
+			IModelElement me = (IModelElement) e1;
+			if( me.getElementType() > IModelElement.BINARY_MODULE ) {
+				return 0;
+			}
+		}
 		if (e1 instanceof IType) { // handle anonymous types
 			if (name1.length() == 0) {
 				if (name2.length() == 0) {
@@ -338,7 +357,7 @@ public class ModelElementSorter extends ViewerSorter {
 		if (element instanceof IModelElement) {
 			return ((IModelElement) element).getElementName();
 		} else if (element instanceof BuildPathContainer) {
-			return ((BuildPathContainer) element).getLabel(element);
+			return ((BuildPathContainer) element).getLabel();
 		} else {
 			return element.toString();
 		}

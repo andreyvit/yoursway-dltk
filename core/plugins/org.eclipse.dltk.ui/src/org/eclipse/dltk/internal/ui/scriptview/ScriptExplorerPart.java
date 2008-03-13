@@ -1783,9 +1783,13 @@ public class ScriptExplorerPart extends ViewPart implements
 
 	private void setComparator() {
 		if (getRootMode() == ScriptExplorerPart.WORKING_SETS_AS_ROOTS) {
-			fViewer.setComparator(new WorkingSetAwareModelElementSorter());
+			WorkingSetAwareModelElementSorter comparator = new WorkingSetAwareModelElementSorter();
+			comparator.setInnerElements(false);
+			fViewer.setComparator(comparator);
 		} else {
-			fViewer.setComparator(new ModelElementSorter());
+			ModelElementSorter comparator = new ModelElementSorter();
+			comparator.setInnerElements(false);
+			fViewer.setComparator(comparator);
 		}
 	}
 

@@ -28,13 +28,10 @@ import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.SourceParserUtil;
-import org.eclipse.dltk.core.search.IDLTKSearchScope;
-import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.internal.core.BuiltinProjectFragment;
 import org.eclipse.dltk.internal.core.BuiltinSourceModule;
 import org.eclipse.dltk.internal.core.ExternalProjectFragment;
 import org.eclipse.dltk.internal.core.ExternalSourceModule;
-import org.eclipse.dltk.internal.core.util.HandleFactory;
 import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.core.ast.TclPackageDeclaration;
 import org.eclipse.dltk.tcl.internal.core.packages.PackagesContainerHelper;
@@ -119,7 +116,7 @@ public class FixAllDependenciesActionDelegate implements
 		}
 	}
 
-	private static HandleFactory factory = new HandleFactory();
+//	private static HandleFactory factory = new HandleFactory();
 
 	private static Object convertResourceToModelElement(Object o) {
 		if (o instanceof IModelElement) {
@@ -133,12 +130,13 @@ public class FixAllDependenciesActionDelegate implements
 		if (!DLTKLanguageManager.hasScriptNature(project)) {
 			return null; // Lets pass not script projects.
 		}
-		IScriptProject scriptProject = DLTKCore.create(project);
-		IDLTKSearchScope scope = SearchEngine
-				.createSearchScope(new IModelElement[] { scriptProject });
+//		IScriptProject scriptProject = DLTKCore.create(project);
+//		IDLTKSearchScope scope = SearchEngine
+//				.createSearchScope(new IModelElement[] { scriptProject });
 
-		IModelElement element = factory.createOpenable(res.getFullPath()
-				.toString(), scope);
+//		IModelElement element = factory.createOpenable(res.getFullPath()
+//				.toString(), scope);
+		IModelElement element = DLTKCore.create(res);
 		if (element != null
 				&& element.getElementType() == IModelElement.SOURCE_MODULE
 				&& element.exists()) {
