@@ -5,7 +5,7 @@
    <extension-point id="testRunListeners" name="%testRunListeners.name" schema="schema/testRunListeners.exsd"/>
    <extension-point id="testingLaunchConfigs" name="%testingLaunchConfigs.name" schema="schema/testingLaunchConfigs.exsd"/>
    <extension-point id="internal_testKinds" name="%testKinds.name" schema="schema/internal_testKinds.exsd"/>
-   <extension-point id="memberResolver" name="memberResolver" schema="schema/memberResolver.exsd"/>
+   <extension-point id="memberResolver" name="%extension-point.name.memberResolver" schema="schema/memberResolver.exsd"/>
 
    <extension
          point="org.eclipse.ui.views">

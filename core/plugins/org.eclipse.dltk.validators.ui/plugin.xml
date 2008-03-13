@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension-point id="validatorConfigPage" name="validatorConfigPage" schema="schema/validatorConfigPage.exsd"/>
-   <extension-point id="validatorConsoleTracker" name="validatorConsoleTracker" schema="schema/validatorConsoleTracker.exsd"/>
+   <extension-point id="validatorConfigPage" name="%extension-point.name.validatorConfigPage" schema="schema/validatorConfigPage.exsd"/>
+   <extension-point id="validatorConsoleTracker" name="%extension-point.name.validatorConsoleTracker" schema="schema/validatorConsoleTracker.exsd"/>
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
             category="org.eclipse.dltk.preferences"
             class="org.eclipse.dltk.validators.internal.ui.ValidatorPreferencePage"
             id="org.eclipse.dltk.preferences.validators"
-            name="Validators">
+            name="%page.name.validators">
       </page>
       <!--page
             category="org.eclipse.dltk.preferences.validators"
@@ -27,23 +27,27 @@
             objectClass="org.eclipse.dltk.core.IModelElement">
          <menu
                id="org.eclipse.dltk.validators.ui.menu"
-               label="DLTK Validators"
+               label="%menu.label.dltkValidators"
                path="additions">
             <separator
-                  name="top">
+                  name="sep">
             </separator>
+            <groupMarker
+                  name="bottom">
+            </groupMarker>
          </menu>
          <action
-               class="org.eclipse.dltk.validators.internal.ui.popup.actions.ValidatorSelectionWithConsoleAction"
-               id="org.eclipse.dltk.validators.ui.newAction"
-               label="Validate selection with console"
-               menubarPath="org.eclipse.dltk.validators.ui.menu/top"
-               >
+               class="org.eclipse.dltk.validators.internal.ui.popup.actions.ValidateSelectionWithConsoleAction"
+               icon="icons/goto_input.gif"
+               id="org.eclipse.dltk.validators.ui.execActive"
+               label="%action.label.validateSelectionWithConsole"
+               menubarPath="org.eclipse.dltk.validators.ui.menu/top">
          </action>
          <action
                class="org.eclipse.dltk.validators.internal.ui.popup.actions.RemoveValidatorAllMarkersAction"
-               id="org.eclipse.dltk.validators.ui.action2"
-               label="Remove all validator markers"
+               icon="icons/clear_co.gif"
+               id="org.eclipse.dltk.validators.ui.clean"
+               label="%action.label.removeValidatorAllMarkers"
                menubarPath="org.eclipse.dltk.validators.ui.menu/top">
          </action>
          <visibility>

@@ -39,7 +39,7 @@
   <extension
          point="org.eclipse.ui.views">
       <view
-            name="MochPluginView"
+            name="%view.name.mockPluginView"
             class="org.eclipse.dltk.ui.tests.navigator.scriptexplorer.MockPluginView"
             id="org.eclipse.dltk.ui.tests.packageview.MockPluginView">
       </view>

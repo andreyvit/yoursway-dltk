@@ -3,10 +3,10 @@
 <plugin>
 	<extension point="org.eclipse.ui.actionSets">
 		<actionSet id="org.eclipse.dltk.ruby.debug.ui.ScriptDebugActionSet"
-			label="Ruby debugger action set" visible="true">
+			label="%actionSet.label.rubyDebug" visible="true">
 			<menu
          		id="org.eclipse.ui.run"
-         		label="&amp;Run"
+         		label="%menu.label.run"
          		path="additions">
       			<separator
         	  		 name="scriptGroup">

@@ -59,7 +59,7 @@
            describer="org.eclipse.dltk.core.tests.TestContentDescriber"
            file-extensions="txt"
            id="org.eclipse.dltk.core.test.testContentType"
-           name="DLTK Test Content type"
+           name="%content-type.name.dltkTest"
            priority="high">
      </content-type>
   </extension>

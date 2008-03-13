@@ -6,7 +6,7 @@
 	<extension-point id="interpreterInstallTypePage"
 		name="%interpreterInstallTypePage"
 		schema="schema/interpreterInstallTypePage.exsd" />
- <extension-point id="scriptDetailFormatter" name="scriptDetailFormatter" schema="schema/scriptDetailFormatter.exsd"/>
+ <extension-point id="scriptDetailFormatter" name="%extension-point.name.scriptDetailFormatter" schema="schema/scriptDetailFormatter.exsd"/>
  <extension
        point="org.eclipse.core.runtime.preferences">
     <initializer
@@ -129,7 +129,7 @@
 
 	<extension point="org.eclipse.ui.actionSets">
 		<actionSet id="org.eclipse.dltk.debug.ui.ScriptDebugActionSet"
-			label="Script debugger action set" visible="false">
+			label="%actionSet.label.scriptDebugger" visible="false">
 			<menu label="%RunMenu.label" path="additions"
 				id="org.eclipse.ui.run">
 				<separator name="scriptGroup"></separator>
@@ -294,7 +294,7 @@
 		<page
 			class="org.eclipse.dltk.debug.ui.breakpoints.ScriptLineBreakpointPropertyPage"
 			id="org.eclipse.dltk.debug.ui.breakpoints.ScriptLineBreakpointPropertyPage"
-			name="Script Line Breakpoint">
+			name="%page.name.scriptLineBreakpoint">
 			<enabledWhen>
 				<and>
 					<or>
@@ -319,7 +319,7 @@
 		<page
 			class="org.eclipse.dltk.debug.ui.breakpoints.ScriptWatchpointPropertyPage"
 			id="org.eclipse.dltk.debug.ui.breakpoints.ScriptWatchpointPropertyPage"
-			name="Script Watchpoint">
+			name="%page.name.scriptWatchpoint">
 			<enabledWhen>
 				<or>
 					<instanceof
@@ -334,7 +334,7 @@
 		<page
 			class="org.eclipse.dltk.debug.ui.breakpoints.ScriptMethodBreakpointPropertyPage"
 			id="org.eclipse.dltk.debug.ui.breakpoints.ScriptMethodBreakpointPropertyPage"
-			name="Script Method Breakpoint">
+			name="%page.name.scriptMethodBreakpoint">
 			<enabledWhen>
 				<or>
 					<instanceof
@@ -349,7 +349,7 @@
 		<page
 			class="org.eclipse.dltk.debug.ui.breakpoints.ScriptExceptionBreakpointPropertyPage"
 			id="org.eclipse.dltk.debug.ui.breakpoints.ScriptExceptionBreakpointPropertyPage"
-			name="Script Exception Breakpoint">
+			name="%page.name.scriptExceptionBreakpoint">
 			<enabledWhen>
 				<or>
 					<instanceof
@@ -396,7 +396,7 @@
 	<extension point="org.eclipse.ui.views">
 		<view
 			class="org.eclipse.dltk.internal.debug.ui.log.ScriptDebugLogView"
-			id="org.eclipse.dltk.debug.ui.dbgpLogView" name="Script Debug Log">
+			id="org.eclipse.dltk.debug.ui.dbgpLogView" name="%view.name.scriptDebugLog">
 		</view>
 	</extension>
 	<extension point="org.eclipse.ui.commands">

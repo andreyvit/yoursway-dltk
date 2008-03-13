@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-	<extension-point id="scriptDebugModel" name="Script Debug Model"
+	<extension-point id="scriptDebugModel" name="%extension-point.name.scriptDebugModel"
 		schema="schema/scriptDebugModel.exsd" />
- <extension-point id="smartStepEvaluator" name="smartStepEvaluator" schema="schema/smartStepEvaluator.exsd"/>
- <extension-point id="hotCodeReplaceProvider" name="Hot Code Replace Provider" schema="schema/hotCodeReplaceProvider.exsd"/>
+ <extension-point id="smartStepEvaluator" name="%extension-point.name.smartStepEvaluator" schema="schema/smartStepEvaluator.exsd"/>
+ <extension-point id="hotCodeReplaceProvider" name="%extension-point.name.hotCodeReplaceProvider" schema="schema/hotCodeReplaceProvider.exsd"/>
 	
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer

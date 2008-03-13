@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-   <extension-point id="dltkElementFilters" name="Dltk Element Filters" schema="schema/dltkElementFilters.exsd"/>  
-   <extension-point id="buildpathContainerPage" name="%buildpathContainerPageExtensionPoint" schema="schema/buildpathContainerPage.exsd"/>
-   <extension-point id="scriptCompletionProposalComputer" name="%scriptCompletionProposalComputer" schema="schema/scriptCompletionProposalComputer.exsd"/>
-   <extension-point id="scriptCompletionProposalSorters" name="%scriptCompletionProposalSorters" schema="schema/scriptCompletionProposalSorters.exsd"/>
-   <extension-point id="editorTextHovers" name="%editorTextHovers" schema="schema/editorTextHovers.exsd"/>
-   <extension-point id="scriptDocumentationProviders" name="Script documentation providers" schema="schema/scriptDocumentationProviders.exsd"/>
-   <extension-point id="language" name="DLTK UI Language Toolkit" schema="schema/language.exsd"/>
-   <extension-point id="actionFilterTester" name="actionFilterTester" schema="schema/actionFilterTester.exsd"/>  
+   <extension-point id="dltkElementFilters" name="%extension-point.name.dltkElementFilters" schema="schema/dltkElementFilters.exsd"/>  
+   <extension-point id="buildpathContainerPage" name="%extension-point.name.buildpathContainerPage" schema="schema/buildpathContainerPage.exsd"/>
+   <extension-point id="scriptCompletionProposalComputer" name="%extension-point.name.scriptCompletionProposalComputer" schema="schema/scriptCompletionProposalComputer.exsd"/>
+   <extension-point id="scriptCompletionProposalSorters" name="%extension-point.name.scriptCompletionProposalSorters" schema="schema/scriptCompletionProposalSorters.exsd"/>
+   <extension-point id="editorTextHovers" name="%extension-point.name.editorTextHovers" schema="schema/editorTextHovers.exsd"/>
+   <extension-point id="scriptDocumentationProviders" name="%extension-point.name.scriptDocumentationProviders" schema="schema/scriptDocumentationProviders.exsd"/>
+   <extension-point id="language" name="%extension-point.name.language" schema="schema/language.exsd"/>
+   <extension-point id="actionFilterTester" name="%extension-point.name.actionFilterTester" schema="schema/actionFilterTester.exsd"/>  
    <extension
     	id="DLTKSearchResultPage"
         point="org.eclipse.search.searchResultViewPages">
@@ -76,7 +76,7 @@
    </extension>
  <extension
          id="modelProvider"
-         name="DLTK Model provider"
+         name="%extension.name.dltkModelProvider"
          point="org.eclipse.core.resources.modelProviders">
       <modelProvider
             class="org.eclipse.dltk.internal.ui.model.ScriptModelProvider"/>
