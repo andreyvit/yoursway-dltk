@@ -9,7 +9,9 @@
  *******************************************************************************/
 package org.eclipse.dltk.core;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 
 public interface IDLTKLanguageToolkit {
 
@@ -20,6 +22,7 @@ public interface IDLTKLanguageToolkit {
 	String getLanguageContentType();
 
 	boolean validateSourcePackage(IPath path);
+	IStatus validateSourceModule(IResource resource);
 
 	/*
 	 * Different stuff

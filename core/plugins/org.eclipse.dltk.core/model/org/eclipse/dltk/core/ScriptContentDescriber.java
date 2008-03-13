@@ -43,16 +43,15 @@ public abstract class ScriptContentDescriber implements ITextContentDescriber {
 
 			String header = new String(buf);
 
-			if (header != null) {
-				if (checkBufferForPatterns(header, headerPatterns)) {
+			if (checkBufferForPatterns(header, headerPatterns)) {
+				return true;
+			}
+			if (file.length() < BUFFER_LENGTH && footerPatterns != null) {
+				if (checkBufferForPatterns(header, footerPatterns)) {
 					return true;
 				}
-				if (file.length() < BUFFER_LENGTH && footerPatterns != null) {
-					if (checkBufferForPatterns(header, footerPatterns)) {
-						return true;
-					}
-				}
 			}
+
 			return false;
 		} finally {
 			if (reader != null) {
@@ -121,7 +120,6 @@ public abstract class ScriptContentDescriber implements ITextContentDescriber {
 		}
 		return false;
 	}
-	
 
 	public static boolean checkPatterns(Reader stream,
 			Pattern[] headerPatterns, Pattern[] footerPatterns) {
@@ -143,12 +141,13 @@ public abstract class ScriptContentDescriber implements ITextContentDescriber {
 		}
 		String content = buffer.toString();
 		String header = content;
-		if( header.length() > HEADER_LENGTH ) {
+		if (header.length() > HEADER_LENGTH) {
 			header = header.substring(0, HEADER_LENGTH);
 		}
 		String footer = content;
-		if( footer.length() > FOOTER_LENGTH) {
-			footer = footer.substring(footer.length() - FOOTER_LENGTH, footer.length()-1);
+		if (footer.length() > FOOTER_LENGTH) {
+			footer = footer.substring(footer.length() - FOOTER_LENGTH, footer
+					.length() - 1);
 		}
 		if (checkBufferForPatterns(header, headerPatterns)) {
 			return true;

@@ -9,7 +9,10 @@
  *******************************************************************************/
 package org.eclipse.dltk.core;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 	public AbstractLanguageToolkit() {
@@ -23,11 +26,10 @@ public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 		return true;
 	}
 
-	public String getDelimeterReplacerString() {
-		return ".";
-	}
-
 	public IType[] getParentTypes(IType type) {
 		return null;
+	}
+	public IStatus validateSourceModule(IResource resource) {
+		return Status.OK_STATUS; 
 	}
 }

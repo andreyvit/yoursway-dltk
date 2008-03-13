@@ -11,6 +11,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.content.IContentType;
@@ -84,6 +85,11 @@ public class DLTKContentTypeManager {
 	public static boolean isValidResourceForContentType(
 			IDLTKLanguageToolkit toolkit, IResource resource) {
 		if (resource instanceof IFile) {
+			// Custom filtering via language tookit
+			IStatus status = toolkit.validateSourceModule(resource);
+			if( status.getSeverity() != IStatus.OK) {
+				return false;
+			}
 			IFile file = (IFile) resource;
 			IContentType masterType = getMasterContentType(toolkit
 					.getLanguageContentType());
