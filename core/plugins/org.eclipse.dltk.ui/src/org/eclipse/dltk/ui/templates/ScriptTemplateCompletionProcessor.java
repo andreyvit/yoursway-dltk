@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
 import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
@@ -114,11 +115,15 @@ public abstract class ScriptTemplateCompletionProcessor extends
 		if (contextType instanceof ScriptTemplateContextType) {
 			IDocument document = viewer.getDocument();
 
+			ISourceModule sourceModule = getContext().getSourceModule();
+			if (sourceModule == null) {
+				return null;
+			}
 			return ((ScriptTemplateContextType) contextType).createContext(
 					document, region.getOffset(), region.getLength(),
-					getContext().getSourceModule());
-		} 
-		
+					sourceModule);
+		}
+
 		return super.createContext(viewer, region);
 	}
 
@@ -150,7 +155,7 @@ public abstract class ScriptTemplateCompletionProcessor extends
 		if (part instanceof ScriptEditor) {
 			return (ScriptEditor) part;
 		}
-		
+
 		return null;
 	}
 

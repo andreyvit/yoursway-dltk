@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,6 +21,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IMarkerDelta;
@@ -88,6 +92,7 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IStorageEditorInput;
+import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 import org.eclipse.ui.texteditor.AbstractMarkerAnnotationModel;
@@ -857,36 +862,38 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 			return (IMarker[]) locationMarkers
 					.toArray(new IMarker[locationMarkers.size()]);
 		}
-		
+
 		/**
 		 * Updates this model to the given marker deltas.
-		 *
-		 * @param markerDeltas the array of marker deltas
+		 * 
+		 * @param markerDeltas
+		 *            the array of marker deltas
 		 */
 		protected void update(IMarkerDelta[] markerDeltas) {
 
-			if (markerDeltas.length ==  0)
+			if (markerDeltas.length == 0)
 				return;
 
 			String moduleLocation = location.toPortableString();
 
-			for (int i= 0; i < markerDeltas.length; i++) {
-				IMarkerDelta delta= markerDeltas[i];
+			for (int i = 0; i < markerDeltas.length; i++) {
+				IMarkerDelta delta = markerDeltas[i];
 				IMarker marker = delta.getMarker();
 
-				if (moduleLocation.equals(marker.getAttribute(IMarker.LOCATION, moduleLocation))) {
+				if (moduleLocation.equals(marker.getAttribute(IMarker.LOCATION,
+						moduleLocation))) {
 					switch (delta.getKind()) {
-					case IResourceDelta.ADDED :
+					case IResourceDelta.ADDED:
 						addMarkerAnnotation(marker);
 						break;
-					case IResourceDelta.REMOVED :
+					case IResourceDelta.REMOVED:
 						removeMarkerAnnotation(marker);
 						break;
-					case IResourceDelta.CHANGED :
+					case IResourceDelta.CHANGED:
 						modifyMarkerAnnotation(marker);
 						break;
 					}
-				}					
+				}
 			}
 
 			fireModelChanged();
@@ -947,10 +954,6 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 
 		IDocumentProvider provider = new TextFileDocumentProvider();
 		provider = new SourceForwardingDocumentProvider(provider);
-		if (DLTKCore.DEBUG) {
-			System.out
-					.println("Don't know how to put stuff like this into language depend core"); //$NON-NLS-1$
-		}
 		setParentDocumentProvider(provider);
 
 		fGlobalAnnotationModelListener = new GlobalAnnotationModelListener();
@@ -995,21 +998,11 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 			return cuInfo.fCopy;
 
 		return null;
-		// if( element instanceof IScriptFileEditorInput ) {
-		// FileInfo fileInfo = getFileInfo( element );
-		// if( fileInfo instanceof SourceModuleInfo ) {
-		// SourceModuleInfo info = ( SourceModuleInfo )fileInfo;
-		// return info.fCopy;
-		// }
-		// }
-		// return null;
 	}
 
 	public void saveDocumentContent(IProgressMonitor monitor, Object element,
 			IDocument document, boolean overwrite) throws CoreException {
 
-		System.out
-				.println("Todo: Add save document operation here. to correct commit of model changes."); //$NON-NLS-1$
 		if (!fIsAboutToSave) {
 			return;
 		}
@@ -1141,7 +1134,7 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 		if (info.fModel == null) {
 			// There is no resource for this ISourceModule, so markers are set
 			// to workspace root
-			
+
 			IPath location = original.getPath();
 			info.fModel = new ExternalSourceModuleAnnotationModel(location);
 		}
@@ -1240,9 +1233,12 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 				// see https://bugs.eclipse.org/bugs/show_bug.cgi?id=85519
 				System.out
 						.println("SourceModuleDocumentProvider: need to replace with messages api"); //$NON-NLS-1$
-				Status status = new Status(IStatus.WARNING,
-						EditorsUI.PLUGIN_ID, IStatus.ERROR,
-						Messages.SourceModuleDocumentProvider_saveAsTargetOpenInEditor, null);
+				Status status = new Status(
+						IStatus.WARNING,
+						EditorsUI.PLUGIN_ID,
+						IStatus.ERROR,
+						Messages.SourceModuleDocumentProvider_saveAsTargetOpenInEditor,
+						null);
 				throw new CoreException(status);
 			}
 
@@ -1477,11 +1473,53 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 	 */
 	private ISourceModule createFakeSourceModule(Object element,
 			boolean setContents) {
-		if (!(element instanceof IStorageEditorInput))
+		if (element instanceof IStorageEditorInput)
+			return createFakeSourceModule((IStorageEditorInput) element,
+					setContents);
+		else if (element instanceof IURIEditorInput)
+			return createFakeSourceModule((IURIEditorInput) element);
+		return null;
+	}
+
+	private ISourceModule createFakeSourceModule(final IURIEditorInput editorInput) {
+		try {
+			final URI uri= editorInput.getURI();
+			final IFileStore fileStore= EFS.getStore(uri);
+			final IPath path= URIUtil.toPath(uri);
+			if (fileStore.getName() == null || path == null)
+				return null;
+			
+			WorkingCopyOwner woc= new WorkingCopyOwner() {
+				/*
+				 * @see org.eclipse.jdt.core.WorkingCopyOwner#createBuffer(org.eclipse.jdt.core.ICompilationUnit)
+				 * @since 3.2
+				 */
+				public IBuffer createBuffer(ISourceModule workingCopy) {
+					return new DocumentAdapter(workingCopy, path);
+				}
+			};
+			
+			IBuildpathEntry[] cpEntries= null;
+			IScriptProject jp= findScriptProject(path);
+			if (jp != null)
+				cpEntries= jp.getResolvedBuildpath(true);
+			
+			if (cpEntries == null || cpEntries.length == 0)
+				cpEntries= new IBuildpathEntry[] { ScriptRuntime.getDefaultInterpreterContainerEntry() };
+			
+			final ISourceModule cu= woc.newWorkingCopy(fileStore.getName(), cpEntries, null, getProgressMonitor());
+			
+			if (!isModifiable(editorInput))
+				ScriptModelUtil.reconcile(cu);
+
+			return cu;
+		} catch (CoreException ex) {
 			return null;
+		}
+	}
 
-		final IStorageEditorInput sei = (IStorageEditorInput) element;
-
+	private ISourceModule createFakeSourceModule(final IStorageEditorInput sei,
+			boolean setContents) {
 		try {
 			final IStorage storage = sei.getStorage();
 			final IPath storagePath = storage.getFullPath();
@@ -1535,7 +1573,7 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 				cu.getBuffer().setContents(buffer.toString());
 			}
 
-			if (!isModifiable(element))
+			if (!isModifiable(sei))
 				ScriptModelUtil.reconcile(cu);
 
 			return cu;
@@ -1582,6 +1620,5 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 		}
 		return super.isReadOnly(element);
 	}
-	
-	
+
 }

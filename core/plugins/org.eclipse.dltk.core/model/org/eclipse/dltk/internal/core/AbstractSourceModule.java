@@ -526,6 +526,11 @@ public abstract class AbstractSourceModule extends Openable implements
 	protected IProblemReporter getProblemReporter(String natureId)
 			throws CoreException {
 		IScriptProject project = getScriptProject();
+		if (project != null
+				&& ExternalScriptProject.EXTERNAL_PROJECT_NAME.equals(project
+						.getElementName())) {
+			return null;
+		}
 		if (project == null || !project.getProject().hasNature(natureId))
 			return null;
 
