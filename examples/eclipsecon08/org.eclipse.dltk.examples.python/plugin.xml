@@ -58,5 +58,20 @@
             priority="high">
       </content-type>
    </extension>
-
+   <!-- Interpreters support-->
+   <extension
+         point="org.eclipse.dltk.launching.interpreterInstallTypes">
+          <interpreterInstallType
+            class="org.eclipse.dltk.examples.internal.python.interpreter.ExamplePythonInstallType"
+            id="org.eclipse.dltk.internal.debug.ui.launcher.ExamplePythonInstallType">
+      </interpreterInstallType>   
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.eclipse.dltk.examples.internal.python.interpreter.ui.ExamplePythonInterpreterPreferencePage"
+            id="org.eclipse.dltk.python.examples.preferences.interpreters"
+            name="Example Python Interpreters"/>
+   </extension>
 </plugin>
