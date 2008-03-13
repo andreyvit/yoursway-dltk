@@ -508,11 +508,11 @@ public abstract class AbstractInterpreterInstallType implements
 		if (Platform.getOS().equals(Platform.OS_WIN32)) {
 			for (int i = 0; i < possibleNames.length; ++i) {
 				final String possibleName = possibleNames[i].toLowerCase();
-				String fName = nPath.removeFileExtension().lastSegment()
+				String fName = nPath.removeFileExtension().toString()
 						.toLowerCase();
 				String ext = nPath.getFileExtension();
-				if ((ext.equalsIgnoreCase("exe") || ext.equalsIgnoreCase("bat")) //$NON-NLS-1$ //$NON-NLS-2$
-						&& fName.equals(possibleName)) {
+				if (possibleName.equals(fName)
+						&& ("exe".equalsIgnoreCase(ext) || "bat".equalsIgnoreCase(ext))) { //$NON-NLS-1$ //$NON-NLS-2$
 					matchFound = true;
 					break;
 				}
