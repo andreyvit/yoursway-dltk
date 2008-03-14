@@ -14,12 +14,9 @@ import java.util.Map;
 import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.IScriptProject;
-import org.eclipse.dltk.core.ISearchableEnvironment;
 
 public interface ICompletionEngine {
 	void complete(ISourceModule module, int position, int i);
-
-	void setEnvironment(ISearchableEnvironment environment);
 
 	void setRequestor(CompletionRequestor requestor);
 

@@ -5,7 +5,6 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.core;
 
@@ -23,10 +22,6 @@ public interface IDLTKLanguageToolkit {
 
 	boolean validateSourcePackage(IPath path);
 	IStatus validateSourceModule(IResource resource);
-
-	/*
-	 * Different stuff
-	 */
 
 	boolean languageSupportZIPBuildpath();
 

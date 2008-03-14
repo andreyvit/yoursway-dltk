@@ -41,7 +41,7 @@ public class InternalDLTKLanguageManager {
 	private static PriorityClassDLTKExtensionManager selectionEngineManager = new NewInstanceClassBasedDLTKExtensionManager(
 			SELECTION_ENGINE_EXTPOINT);
 	private static PriorityClassDLTKExtensionManager completionEngineManager = new NewInstanceClassBasedDLTKExtensionManager(
-			COMPLETION_ENGINE_EXTPOINT);
+			COMPLETION_ENGINE_EXTPOINT, true);
 	private static PriorityClassDLTKExtensionManager sourceParsersManager = new NewInstanceClassBasedDLTKExtensionManager(
 			SOURCE_PARSERS_EXTPOINT);
 

@@ -178,8 +178,17 @@ public abstract class ScriptCompletionProposalCollector extends CompletionReques
 		return fInvocationContext;
 	}
 
-	protected abstract ScriptContentAssistInvocationContext createScriptContentAssistInvocationContext(
-			ISourceModule sourceModule);
+//	protected abstract ScriptContentAssistInvocationContext createScriptContentAssistInvocationContext(
+//			ISourceModule sourceModule);
+	// Invocation context
+	protected ScriptContentAssistInvocationContext createScriptContentAssistInvocationContext(
+			ISourceModule sourceModule) {
+		return new ScriptContentAssistInvocationContext(sourceModule) {
+			protected CompletionProposalLabelProvider createLabelProvider() {
+				return new CompletionProposalLabelProvider();
+			}
+		};
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -233,7 +242,10 @@ public abstract class ScriptCompletionProposalCollector extends CompletionReques
 		this.getLabelProvider().setContext(context);
 	}
 
-	protected abstract CompletionProposalLabelProvider createLabelProvider();
+	// Label provider
+	protected CompletionProposalLabelProvider createLabelProvider() {
+		return new CompletionProposalLabelProvider();
+	}
 
 	protected CompletionProposalLabelProvider getLabelProvider() {
 		if (fLabelProvider == null) {
@@ -616,10 +628,13 @@ public abstract class ScriptCompletionProposalCollector extends CompletionReques
 		int start = proposal.getReplaceStart();
 		int length = getLength(proposal);
 		String label = getLabelProvider().createSimpleLabel(proposal);
+		Image img = getImage(getLabelProvider().createImageDescriptor(
+				proposal));
 		int relevance = computeRelevance(proposal);
-		return createScriptCompletionProposal(completion, start, length, null,
+		return createScriptCompletionProposal(completion, start, length, img,
 				label, relevance);
 	}
+	
 
 	protected IScriptCompletionProposal createPackageProposal(
 			CompletionProposal proposal) {

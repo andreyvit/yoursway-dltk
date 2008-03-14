@@ -68,7 +68,7 @@ public class PriorityDLTKExtensionManager {
 		Assert.isNotNull(this.identifier);
 	}
 
-	private void initialize() {
+	protected void initialize() {
 		if (extensions != null) {
 			return;
 		}

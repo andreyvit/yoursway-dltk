@@ -77,7 +77,7 @@ public class DLTKSearchParticipant extends SearchParticipant {
 	 */
 	public void locateMatches(SearchDocument[] indexMatches, SearchPattern pattern, IDLTKSearchScope scope, SearchRequestor requestor,
 			IProgressMonitor monitor) throws CoreException {
-		MatchLocator matchLocator = createMatchLocator(pattern, requestor, scope, monitor == null ? null: new SubProgressMonitor(monitor, 95));
+		MatchLocator matchLocator = createMatchLocator(pattern, requestor, scope, monitor);
 		/* eliminating false matches and locating them */
 		if (monitor != null && monitor.isCanceled())
 			throw new OperationCanceledException();
@@ -99,7 +99,7 @@ public class DLTKSearchParticipant extends SearchParticipant {
 		return modules;
 	}
 
-	protected MatchLocator createMatchLocator(SearchPattern pattern, SearchRequestor requestor, IDLTKSearchScope scope, SubProgressMonitor monitor) {
+	protected MatchLocator createMatchLocator(SearchPattern pattern, SearchRequestor requestor, IDLTKSearchScope scope, IProgressMonitor monitor) {
 		IDLTKLanguageToolkit toolkit = scope.getLanguageToolkit();
 		if( toolkit != null ) {
 			MatchLocator locator = DLTKLanguageManager.createMatchLocator(toolkit.getNatureId(), pattern, requestor, scope, monitor == null ? null: new SubProgressMonitor(monitor, 95));

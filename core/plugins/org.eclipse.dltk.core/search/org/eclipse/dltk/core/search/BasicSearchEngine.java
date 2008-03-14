@@ -237,10 +237,7 @@ public class BasicSearchEngine {
 			throw new OperationCanceledException();
 		}
 
-		/* initialize progress monitor */
-		if (monitor != null) {
-			monitor.beginTask(Messages.engine_searching, 100);
-		}
+	
 		if (VERBOSE) {
 			Util.verbose("Searching for pattern: " + pattern.toString()); //$NON-NLS-1$
 			Util.verbose(scope.toString());
@@ -251,6 +248,9 @@ public class BasicSearchEngine {
 			}
 			return;
 		}
+		int length = participants.length;
+		if (monitor != null)
+			monitor.beginTask(Messages.engine_searching, 100 * length); 
 
 		IndexManager indexManager = ModelManager.getModelManager()
 				.getIndexManager();
@@ -262,35 +262,20 @@ public class BasicSearchEngine {
 					throw new OperationCanceledException();
 				}
 
-				SubProgressMonitor subMonitor = monitor == null ? null
-						: new SubProgressMonitor(monitor, 1000);
-				if (subMonitor != null) {
-					subMonitor.beginTask("", 1000); //$NON-NLS-1$
-				}
 				try {
-					if (subMonitor != null) {
-						subMonitor.subTask(Messages.bind(
-								Messages.engine_searching_indexing,
-								new String[] { participant.getDescription() }));
-					}
+					if (monitor != null) monitor.subTask(Messages.bind(Messages.engine_searching_indexing, new String[] {participant.getDescription()})); 
 					participant.beginSearching();
 					requestor.enterParticipant(participant);
 					PathCollector pathCollector = new PathCollector();
 					indexManager.performConcurrentJob(new PatternSearchJob(
 							pattern, participant, scope, pathCollector),
 							IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
-							subMonitor);
-					if (monitor != null && monitor.isCanceled()) {
-						throw new OperationCanceledException();
-					}
+							monitor==null ? null : new SubProgressMonitor(monitor, 50));
+					if (monitor != null && monitor.isCanceled()) throw new OperationCanceledException();
 
 					// locate index matches if any (note that all search matches
 					// could have been issued during index querying)
-					if (subMonitor != null) {
-						subMonitor.subTask(Messages.bind(
-								Messages.engine_searching_matching,
-								new String[] { participant.getDescription() }));
-					}
+					if (monitor != null) monitor.subTask(Messages.bind(Messages.engine_searching_matching, new String[] {participant.getDescription()})); 
 					String[] indexMatchPaths = pathCollector.getPaths();
 					if (indexMatchPaths != null) {
 						pathCollector = null; // release
@@ -322,7 +307,7 @@ public class BasicSearchEngine {
 								.toArray(new SearchDocument[filteredMatches
 										.size()]);
 						participant.locateMatches(fmatches, pattern, scope,
-								requestor, subMonitor);
+								requestor, monitor==null ? null : new SubProgressMonitor(monitor, 50));
 					}
 				} catch (Exception e) {
 					e.printStackTrace();

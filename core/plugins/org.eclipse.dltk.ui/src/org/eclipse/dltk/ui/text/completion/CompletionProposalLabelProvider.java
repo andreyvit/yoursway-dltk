@@ -25,7 +25,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * but based on signatures and {@link CompletionProposal}s.
  * 
  */
-public abstract class CompletionProposalLabelProvider {
+public class CompletionProposalLabelProvider {
 
 	/**
 	 * The completion context.
