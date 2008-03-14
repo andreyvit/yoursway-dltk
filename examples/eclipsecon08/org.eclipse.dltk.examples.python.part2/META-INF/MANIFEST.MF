@@ -10,3 +10,9 @@ Require-Bundle: org.eclipse.dltk.core,
  org.eclipse.core.resources
 Eclipse-LazyStart: true
 Bundle-Activator: org.eclipse.dltk.python.internal.core.parser.PythonParserPlugin
+Export-Package: org.eclipse.dltk.python.internal.core.parser,
+ org.eclipse.dltk.python.internal.core.parser.visitors,
+ org.eclipse.dltk.python.internal.core.parsers,
+ org.eclipse.dltk.python.parser.ast,
+ org.eclipse.dltk.python.parser.ast.expressions,
+ org.eclipse.dltk.python.parser.ast.statements

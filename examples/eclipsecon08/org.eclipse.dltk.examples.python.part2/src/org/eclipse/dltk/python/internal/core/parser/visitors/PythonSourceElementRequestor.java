@@ -29,7 +29,6 @@ import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
-import org.eclipse.dltk.python.parser.ast.PythonImportFromStatement;
 import org.eclipse.dltk.python.parser.ast.PythonImportStatement;
 import org.eclipse.dltk.python.parser.ast.expressions.Assignment;
 import org.eclipse.dltk.python.parser.ast.expressions.ExtendedVariableReference;
@@ -52,7 +51,8 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 		private ASTNode fToNode;
 
 		private ASTNode declaredIn; // The node where the declaration was found
-									// (should be either class or method node)
+
+		// (should be either class or method node)
 		TypeField(String name, String initValue, PositionInformation pos,
 				Expression expression, ASTNode toNode, ASTNode declaredIn) {
 
@@ -110,14 +110,10 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 
 	}
 
-	private static String ANONYMOUS_LAMBDA_FORM_MARKER = "<anonymous>";
-	// Used to prehold fields if adding in methods.
 	private List fNotAddedFields = new ArrayList();
-	
-	private String lastLambdaFormName = ANONYMOUS_LAMBDA_FORM_MARKER;
 
 	/**
-	 * Used to depermine duplicate names.
+	 * Used to determine duplicate names.
 	 */
 	private Map fTypeVariables = new HashMap();
 
@@ -133,8 +129,6 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 
 		String outValue = "";
 		if (value instanceof ExtendedVariableReference) {
-			// Lets use AST Printer to print extended variable in python like
-			// syntax.
 			StringWriter stringWriter = new StringWriter();
 			CorePrinter printer = new CorePrinter(stringWriter);
 			value.printNode(printer);
@@ -144,8 +138,8 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 		return outValue;
 	}
 
-	private void onVisitLambdaAssignnment(String ref, PythonLambdaExpression lambdaExpression)
-	{
+	private void onVisitLambdaAssignnment(String ref,
+			PythonLambdaExpression lambdaExpression) {
 		// Declare new Method.
 		List/* < Argument > */args = lambdaExpression.getArguments();
 
@@ -167,15 +161,12 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 		mi.declarationStart = lambdaExpression.sourceStart();
 
 		this.fRequestor.enterMethod(mi);
-//FIXME		Expression body = lambdaExpression.getBodyExpression();
-//FIXME		if (body instanceof PythonLambdaExpression)
-//FIXME			onVisitLambdaAssignnment(ANONYMOUS_LAMBDA_FORM_MARKER,(PythonLambdaExpression)body);
 		this.fRequestor.exitMethod(lambdaExpression.sourceEnd());
 	}
-	private void onVisitStaticVariableAssignment(SimpleReference var, Statement val)
-	{
-		// for module static of class static variables.
-		
+
+	private void onVisitStaticVariableAssignment(SimpleReference var,
+			Statement val) {
+
 		if (canAddVariables((ASTNode) this.fNodes.peek(), var.getName())) {
 			ISourceElementRequestor.FieldInfo info = new ISourceElementRequestor.FieldInfo();
 			info.modifiers = Modifiers.AccStatic;
@@ -191,21 +182,21 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 			}
 		}
 	}
-	private void onVisitInstanceVariableAssignment(ExtendedVariableReference extendedVariable, Statement right)
-	{
+
+	private void onVisitInstanceVariableAssignment(
+			ExtendedVariableReference extendedVariable, Statement right) {
 		List varParts = extendedVariable.getExpressions();
 		if (extendedVariable.isDot(0)) {
 			Expression first = (Expression) varParts.get(0);
 			Expression second = (Expression) varParts.get(1);
 
-			if (first instanceof VariableReference && second instanceof VariableReference) {
+			if (first instanceof VariableReference
+					&& second instanceof VariableReference) {
 				String varName = ((VariableReference) first).getName();
-				MethodDeclaration currentMethod = this
-						.getCurrentMethod();
+				MethodDeclaration currentMethod = this.getCurrentMethod();
 				List arguments = currentMethod.getArguments();
 				if (arguments != null && arguments.size() > 0) {
-					Argument firstArgument = (Argument) arguments
-							.get(0);
+					Argument firstArgument = (Argument) arguments.get(0);
 					String argumentName = firstArgument.getName();
 					if (argumentName.equals(varName)) {
 						VariableReference var = (VariableReference) second;
@@ -215,19 +206,21 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 							initialValueStart = right.sourceStart();
 							initialValueEnd = right.sourceEnd();
 						}
-						PositionInformation pos = new PositionInformation(
-								var.sourceStart(), var.sourceEnd(),
+						PositionInformation pos = new PositionInformation(var
+								.sourceStart(), var.sourceEnd(),
 								initialValueStart, initialValueEnd);
 						String initialString = this.makeValue(right);
 						ASTNode method = (ASTNode) this.fNodes.pop();
 						ASTNode toClass = (ASTNode) this.fNodes.peek();
 						this.fNodes.push(method);
-						if (toClass instanceof TypeDeclaration) 
-						{
-							List decorators = ((MethodDeclaration)method).getDecorators();
-							if (null == decorators || null != decorators && decorators.size() == 0)
-							{
-								TypeField field = new TypeField(var.getName(), initialString, pos, extendedVariable, toClass, method);
+						if (toClass instanceof TypeDeclaration) {
+							List decorators = ((MethodDeclaration) method)
+									.getDecorators();
+							if (null == decorators || null != decorators
+									&& decorators.size() == 0) {
+								TypeField field = new TypeField(var.getName(),
+										initialString, pos, extendedVariable,
+										toClass, method);
 								this.fNotAddedFields.add(field);
 							}
 						}
@@ -236,51 +229,50 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 			}
 		}
 	}
-	private void onVisitTestListAssignment(ExpressionList left, Statement right)
-	{
+
+	private void onVisitTestListAssignment(ExpressionList left, Statement right) {
 		Iterator iter = left.getChilds().iterator();
-		if (right instanceof ExpressionList)
-		{
-			ExpressionList exprs = (ExpressionList)right;
+		if (right instanceof ExpressionList) {
+			ExpressionList exprs = (ExpressionList) right;
 			Iterator j = exprs.getChilds().iterator();
-			while (iter.hasNext() && j.hasNext())
-			{
-				Expression expr = (Expression)iter.next();
-				processAssignment(expr, (Expression)j.next());
+			while (iter.hasNext() && j.hasNext()) {
+				Expression expr = (Expression) iter.next();
+				processAssignment(expr, (Expression) j.next());
 			}
-			
-		}
-		else
-		{
-			while (iter.hasNext())
-			{
-				Expression expr = (Expression)iter.next();
+
+		} else {
+			while (iter.hasNext()) {
+				Expression expr = (Expression) iter.next();
 				processAssignment(expr, right);
 			}
 		}
 	}
-	private void processAssignment(Statement left, Statement right)
-	{
-		if (left instanceof Assignment)
-		{
+
+	private void processAssignment(Statement left, Statement right) {
+		if (left instanceof Assignment) {
 			Assignment assignment = (Assignment) left;
 			processAssignment(assignment.getLeft(), right);
 			processAssignment(assignment.getRight(), right);
-		}
-		else if (left instanceof SimpleReference && right instanceof PythonLambdaExpression)
-			onVisitLambdaAssignnment(((SimpleReference)left).getName(), (PythonLambdaExpression)right);
-		else if (left instanceof VariableReference && !this.fInMethod)							// Handle static variables
-			onVisitStaticVariableAssignment((VariableReference)left, right);
-		else if (left instanceof ExtendedVariableReference && this.fInClass && this.fInMethod) 	// This is for in class and in method.
-			onVisitInstanceVariableAssignment((ExtendedVariableReference)left, right);
+		} else if (left instanceof SimpleReference
+				&& right instanceof PythonLambdaExpression)
+			onVisitLambdaAssignnment(((SimpleReference) left).getName(),
+					(PythonLambdaExpression) right);
+		else if (left instanceof VariableReference && !this.fInMethod) // Handle
+			// static
+			// variables
+			onVisitStaticVariableAssignment((VariableReference) left, right);
+		else if (left instanceof ExtendedVariableReference && this.fInClass
+				&& this.fInMethod) // This is for in class and in method.
+			onVisitInstanceVariableAssignment((ExtendedVariableReference) left,
+					right);
 		else if (left instanceof ExpressionList)
-			onVisitTestListAssignment((ExpressionList)left, right);
+			onVisitTestListAssignment((ExpressionList) left, right);
 		else {// TODO: dynamic variable handling not yet
-				// supported.
+			// supported.
 		}
 	}
-	public boolean visit(Expression expression) throws Exception {
 
+	public boolean visit(Expression expression) throws Exception {
 		if (expression instanceof Assignment) {
 			// this is static variable assignment.
 			Assignment assignment = (Assignment) expression;
@@ -292,7 +284,26 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 				// null");
 			}
 			processAssignment(left, right);
-			return false;
+			return true;
+		} else if (expression instanceof ExtendedVariableReference) {
+			ExtendedVariableReference ref = (ExtendedVariableReference) expression;
+			int expressionCount = ref.getExpressionCount();
+			for (int i = 0; i < expressionCount; i++) {
+				Expression e = ref.getExpression(i);
+				if (ref.isCall(i) && e instanceof VariableReference) {
+					this.fRequestor.acceptMethodReference(
+							((VariableReference) e).getName().toCharArray(), 0,
+							e.sourceStart(), e.sourceEnd());
+				} else if (e instanceof VariableReference) {
+					this.fRequestor.acceptFieldReference(
+							((VariableReference) e).getName().toCharArray(), e
+									.sourceStart());
+				}
+			}
+		} else if (expression instanceof VariableReference) {
+			this.fRequestor.acceptFieldReference(
+					((VariableReference) expression).getName().toCharArray(),
+					expression.sourceStart());
 		}
 		return true;
 	}
@@ -303,18 +314,16 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 
 	protected void onEndVisitMethod(MethodDeclaration method) {
 
-		if (fNotAddedFields.size() >= 1)
-		{	
+		if (fNotAddedFields.size() >= 1) {
 			TypeField typeField = (TypeField) fNotAddedFields.get(0);
-			if (null != typeField && typeField.getDeclaredIn().equals(method))
-			{
+			if (null != typeField && typeField.getDeclaredIn().equals(method)) {
 				Iterator i = this.fNotAddedFields.iterator();
 				while (i.hasNext()) {
 					TypeField field = (TypeField) i.next();
 					if (canAddVariables(field.getToNode(), field.getName())) {
-		
+
 						PositionInformation pos = field.getPos();
-		
+
 						ISourceElementRequestor.FieldInfo info = new ISourceElementRequestor.FieldInfo();
 						info.modifiers = Modifiers.AccStatic;
 						info.name = field.getName();
@@ -323,7 +332,6 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 						info.declarationStart = pos.sourceStart;
 						this.fRequestor.enterField(info);
 						this.fRequestor.exitField(pos.sourceEnd);
-		
 					}
 				}
 				this.fNotAddedFields.clear();
@@ -356,34 +364,16 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 					PythonImportExpression importName = (PythonImportExpression) ex;
 
 					String name = importName.getName();
-					// this.builder.declareField( Modifiers.AccModule, name,
-					// null, position);
-					// this.builder.declareImport(ex, position);
-					// TODO: Add correct import declarations here? Or may be not
-					// add it here?
 
 					if (name.indexOf(".") != -1) { // also adding modules like
 						// a.b.c and a and a.b
 						String sname = name;
 						while (sname.indexOf(".") != -1) {
 							sname = sname.substring(0, sname.lastIndexOf("."));
-							// TODO: Add correct import declarations here? Or
-							// may be not add it here?
-							// this.builder.declareField( Modifiers.AccModule,
-							// sname, null, position);
-							// this.builder.declareImport( sname, position, name
-							// );
 						}
 					}
 				}
 			}
-		} else if (statement instanceof PythonImportFromStatement) {
-			// PythonImportFromStatement importStatement =
-			// (PythonImportFromStatement) statement;
-			// PositionInformation position = importStatement.getPosition();
-			// this.builder.declareImport( statement, position);
-			// TODO: Add correct import declarations here? Or may be not add it
-			// here?
 		}
 		return true;
 	}
