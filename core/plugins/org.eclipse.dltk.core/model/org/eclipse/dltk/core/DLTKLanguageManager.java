@@ -29,6 +29,7 @@ import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.core.search.indexing.SourceIndexerRequestor;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
+import org.eclipse.dltk.core.search.matching.MatchLocatorParser;
 import org.eclipse.dltk.internal.core.InternalDLTKLanguageManager;
 
 public class DLTKLanguageManager {
@@ -223,7 +224,8 @@ public class DLTKLanguageManager {
 		if (factory != null) {
 			return factory.createMatchParser(matchLocator);
 		}
-		return null;
+		return new MatchLocatorParser(matchLocator) {
+		};
 	}
 
 	public static ICalleeProcessor createCalleeProcessor(String natureID,
