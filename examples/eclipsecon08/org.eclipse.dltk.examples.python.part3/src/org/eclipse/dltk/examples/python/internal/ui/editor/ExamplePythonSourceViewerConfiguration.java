@@ -13,6 +13,8 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.DefaultIndentLineAutoEditStrategy;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.contentassist.ContentAssistant;
+import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.information.IInformationPresenter;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
@@ -101,5 +103,13 @@ public class ExamplePythonSourceViewerConfiguration extends
 	public boolean affectsTextPresentation(PropertyChangeEvent event) {
 		return this.fCodeScanner.affectsBehavior(event)
 				|| this.fStringScanner.affectsBehavior(event);
+	}
+
+	protected void alterContentAssistant(ContentAssistant assistant) {
+		// IDocument.DEFAULT_CONTENT_TYPE
+		IContentAssistProcessor scriptProcessor = new ExamplePythonCompletionProcessor(
+				getEditor(), assistant, IDocument.DEFAULT_CONTENT_TYPE);
+		assistant.setContentAssistProcessor(scriptProcessor,
+				IDocument.DEFAULT_CONTENT_TYPE);
 	}
 }

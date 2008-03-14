@@ -12,5 +12,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.dltk.examples.python,
  org.eclipse.dltk.examples.python.part2,
  org.eclipse.dltk.examples.python.part3,
- org.eclipse.search;bundle-version="3.4.0"
-Eclipse-LazyStart: true
+ org.eclipse.search,
+ org.eclipse.jface.text
+Bundle-ActivationPolicy: lazy

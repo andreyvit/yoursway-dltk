@@ -39,4 +39,38 @@
          </action>
    </actionSet>
 </extension>
+<extension
+      point="org.eclipse.dltk.core.selectionEngine">
+   <selectionEngine
+         class="org.eclipse.dltk.examples.python.internal.selection.ExamplePythonSelectionEngine"
+         nature="org.eclipse.dltk.examples.python.nature"
+         priority="0">
+   </selectionEngine>
+</extension>
+<extension
+      point="org.eclipse.dltk.ui.scriptDocumentationProviders">
+   <provider
+         class="org.eclipse.dltk.examples.python.internal.selection.ExamplePythonCommentDocumentationProvider"
+         id="org.eclipse.dltk.tcl.ui.ExamplePythonCommentDocumentationProvider"
+         nature="org.eclipse.dltk.examples.python.nature">
+   </provider>
+</extension>
+<extension
+      point="org.eclipse.dltk.core.completionEngine">
+   <completionEngine
+         class="org.eclipse.dltk.examples.python.internal.completion.ExamplePythonCompletionEngine"
+         nature="org.eclipse.dltk.examples.python.nature"
+         priority="0">
+   </completionEngine>
+</extension>
+<extension
+		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+		id="ExamplePythonTypeCompletionProposalComputer">
+		<scriptCompletionProposalComputer 
+			class="org.eclipse.dltk.examples.python.internal.completion.ExamplePythonCompletionProposalComputer"
+			categoryId="org.eclipse.dltk.ui.scriptTypeProposalCategory"
+			toolkitId="org.eclipse.dltk.examples.python.nature">
+			<partition type="__dftl_partition_content_type"/>
+		</scriptCompletionProposalComputer>	
+</extension> 
 </plugin>
