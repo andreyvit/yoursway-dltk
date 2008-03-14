@@ -1,5 +1,6 @@
 package org.eclipse.dltk.examples.python.internal.completion;
 
+import org.eclipse.dltk.examples.python.internal.completion.templates.ExamplePythonTemplateCompletionProcessor;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalCollector;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalComputer;
 import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
@@ -18,6 +19,6 @@ public class ExamplePythonCompletionProposalComputer extends
 
 	protected TemplateCompletionProcessor createTemplateProposalComputer(
 			ScriptContentAssistInvocationContext context) {
-		return null;
+		return new ExamplePythonTemplateCompletionProcessor(context);
 	}
 }

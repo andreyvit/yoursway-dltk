@@ -14,3 +14,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.dltk.ui,
  org.eclipse.dltk.core
 Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.dltk.examples.python.internal,
+ org.eclipse.dltk.examples.python.internal.ui.editor,
+ org.eclipse.dltk.examples.python.internal.ui.editor.text

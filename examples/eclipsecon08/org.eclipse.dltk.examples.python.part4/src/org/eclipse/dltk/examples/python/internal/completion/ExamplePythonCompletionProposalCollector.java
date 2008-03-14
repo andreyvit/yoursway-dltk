@@ -1,13 +1,10 @@
 package org.eclipse.dltk.examples.python.internal.completion;
 
-import org.eclipse.dltk.core.CompletionProposal;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
-import org.eclipse.dltk.ui.text.completion.CompletionProposalLabelProvider;
-import org.eclipse.dltk.ui.text.completion.IScriptCompletionProposal;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposal;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalCollector;
-import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
+import org.eclipse.dltk.ui.text.completion.ScriptOverrideCompletionProposal;
 import org.eclipse.swt.graphics.Image;
 
 public class ExamplePythonCompletionProposalCollector extends
@@ -22,21 +19,6 @@ public class ExamplePythonCompletionProposalCollector extends
 
 	public ExamplePythonCompletionProposalCollector(ISourceModule module) {
 		super(module);
-	}
-
-	// Label provider
-	protected CompletionProposalLabelProvider createLabelProvider() {
-		return new CompletionProposalLabelProvider();
-	}
-
-	// Invocation context
-	protected ScriptContentAssistInvocationContext createScriptContentAssistInvocationContext(
-			ISourceModule sourceModule) {
-		return new ScriptContentAssistInvocationContext(sourceModule) {
-			protected CompletionProposalLabelProvider createLabelProvider() {
-				return new CompletionProposalLabelProvider();
-			}
-		};
 	}
 
 	// Specific proposals creation. May be use factory?
@@ -58,21 +40,8 @@ public class ExamplePythonCompletionProposalCollector extends
 			IScriptProject scriptProject, ISourceModule compilationUnit,
 			String name, String[] paramTypes, int start, int length,
 			String displayName, String completionProposal) {
-		return new ExamplePythonOverrideCompletionProposal(scriptProject, compilationUnit,
+		return new ScriptOverrideCompletionProposal(scriptProject, compilationUnit,
 				name, paramTypes, start, length, displayName,
 				completionProposal);
-	}
-
-	protected IScriptCompletionProposal createKeywordProposal(
-			CompletionProposal proposal) {
-		String completion = String.valueOf(proposal.getCompletion());
-		int start = proposal.getReplaceStart();
-		int length = getLength(proposal);
-		String label = getLabelProvider().createSimpleLabel(proposal);
-		Image img = getImage(getLabelProvider().createImageDescriptor(
-				proposal));
-		int relevance = computeRelevance(proposal);
-		return createScriptCompletionProposal(completion, start, length, img,
-				label, relevance);
 	}
 }

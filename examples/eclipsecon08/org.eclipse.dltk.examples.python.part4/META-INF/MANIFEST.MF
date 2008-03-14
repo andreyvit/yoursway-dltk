@@ -13,5 +13,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.dltk.examples.python.part2,
  org.eclipse.dltk.examples.python.part3,
  org.eclipse.search,
- org.eclipse.jface.text
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors;bundle-version="3.4.0"
 Bundle-ActivationPolicy: lazy

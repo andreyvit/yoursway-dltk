@@ -36,5 +36,5 @@ public class ExamplePythonUILanguageToolkit extends AbstractDLTKUILanguageToolki
 	}
 	public IDLTKLanguageToolkit getCoreToolkit() {
 		return ExamplePythonLanguageToolkit.getDefault();
-	} 
+	}
 }

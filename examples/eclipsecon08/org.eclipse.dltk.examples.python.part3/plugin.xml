@@ -20,4 +20,12 @@
             class="org.eclipse.dltk.examples.python.internal.ExamplePythonUIPreferenceInitializer">
       </initializer>
    </extension>
+   <extension
+         point="org.eclipse.dltk.ui.language">
+      <language
+            class="org.eclipse.dltk.examples.python.internal.ui.ExamplePythonUILanguageToolkit2"
+            nature="org.eclipse.dltk.examples.python.nature"
+            priority="1">
+      </language>
+   </extension>
 </plugin>

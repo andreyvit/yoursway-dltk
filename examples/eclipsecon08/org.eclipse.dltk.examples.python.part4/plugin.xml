@@ -72,5 +72,24 @@
 			toolkitId="org.eclipse.dltk.examples.python.nature">
 			<partition type="__dftl_partition_content_type"/>
 		</scriptCompletionProposalComputer>	
+</extension>
+<extension
+       point="org.eclipse.ui.preferencePages">
+         <page
+              class="org.eclipse.dltk.examples.python.internal.completion.templates.ExamplePythonCodeTemplatesPreferencePage"
+              id="org.eclipse.dltk.examples.python.ui.editor.Templates"
+              name="Examples Python Templates"/>
 </extension> 
+ <extension
+       point="org.eclipse.ui.editors.templates">
+       <contextType
+          class="org.eclipse.dltk.examples.python.internal.completion.templates.ExamplePythonUniversalTemplateContextType"
+          id="examplePythonUniversalTemplateContextType"
+          name="Python Template content">
+       </contextType> 
+       <include
+          file="templates/templates.xml"
+          translations="templates/templates.properties">
+       </include>         
+    </extension>
 </plugin>
