@@ -322,9 +322,10 @@ public abstract class ScriptSourceViewerConfiguration extends
 			assistant
 					.setInformationControlCreator(getInformationControlCreator(sourceViewer));
 			
+			alterContentAssistant(assistant);
+			
 			getContentAssistPreference().configure(assistant, fPreferenceStore);
 			
-			alterContentAssistant(assistant);
 			
 			return assistant;
 		}
