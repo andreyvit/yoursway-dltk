@@ -294,6 +294,26 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 			processAssignment(left, right);
 			return false;
 		}
+		else if (expression instanceof ExtendedVariableReference) {
+			ExtendedVariableReference ref = (ExtendedVariableReference) expression;
+			int expressionCount = ref.getExpressionCount();
+			for (int i = 0; i < expressionCount; i++) {
+				Expression e = ref.getExpression(i);
+				if (ref.isCall(i) && e instanceof VariableReference ) {
+					this.fRequestor.acceptMethodReference(
+							((VariableReference) e).getName().toCharArray(), 0,
+							e.sourceStart(), e.sourceEnd());
+				} else if (e instanceof VariableReference) {
+					this.fRequestor.acceptFieldReference(
+							((VariableReference) e).getName().toCharArray(), e
+									.sourceStart());
+				}
+			}
+		} else if (expression instanceof VariableReference) {
+			this.fRequestor.acceptFieldReference(
+					((VariableReference) expression).getName().toCharArray(),
+					expression.sourceStart());
+		}
 		return true;
 	}
 
