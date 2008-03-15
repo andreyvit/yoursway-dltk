@@ -3,6 +3,7 @@ package org.eclipse.dltk.python.parser.ast.expressions;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
@@ -71,6 +72,14 @@ public class PythonVariableAccessExpression extends Expression implements Extend
 		}
 		list.add(variable);
 		return list;
+	}
+
+	public ASTNode getReceiver() {
+		return receiver;
+	}
+
+	public String getName() {
+		return variable.getName();
 	}
 
 }
