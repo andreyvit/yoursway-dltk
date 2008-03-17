@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.internal.core;
 
@@ -20,6 +20,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.IBuildpathContainer;
+import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.IProjectFragment;
@@ -29,12 +31,11 @@ import org.eclipse.dltk.core.WorkingCopyOwner;
 import org.eclipse.dltk.internal.core.util.MementoTokenizer;
 import org.eclipse.dltk.internal.core.util.Util;
 
-
 /**
  * Project fragment to external source folder.
- * 
+ *
  * @author haiodo
- * 
+ *
  */
 public class ExternalProjectFragment extends ProjectFragment {
 	public final static ArrayList EMPTY_LIST = new ArrayList();
@@ -46,7 +47,8 @@ public class ExternalProjectFragment extends ProjectFragment {
 	protected final boolean fReadOnly;
 	protected final boolean fOnlyScriptResources;
 
-	protected ExternalProjectFragment(IPath path, ScriptProject project, boolean isReadOnly, boolean onlyScriptResources) {
+	protected ExternalProjectFragment(IPath path, ScriptProject project,
+			boolean isReadOnly, boolean onlyScriptResources) {
 		super(null, project);
 		this.fPath = path;
 		this.fReadOnly = isReadOnly;
@@ -56,13 +58,15 @@ public class ExternalProjectFragment extends ProjectFragment {
 	/**
 	 * Compute the package fragment children of this package fragment root.
 	 */
-	protected boolean computeChildren(OpenableElementInfo info, Map newElements) throws ModelException {
+	protected boolean computeChildren(OpenableElementInfo info, Map newElements)
+			throws ModelException {
 		ArrayList vChildren = new ArrayList(5);
 		ArrayList vForeign = new ArrayList(5);
-		char[][] inclusionPatterns = fullInclusionPatternChars();
-		char[][] exclusionPatterns = fullExclusionPatternChars();
-		computeFolderChildren(this.fPath, 
-				!Util.isExcluded(this.fPath, inclusionPatterns, exclusionPatterns, true), vChildren, vForeign, newElements, inclusionPatterns, exclusionPatterns);
+		char[][] inclusionPatterns = this.fullInclusionPatternChars();
+		char[][] exclusionPatterns = this.fullExclusionPatternChars();
+		this.computeFolderChildren(this.fPath, !Util.isExcluded(this.fPath,
+				inclusionPatterns, exclusionPatterns, true), vChildren,
+				vForeign, newElements, inclusionPatterns, exclusionPatterns);
 		IModelElement[] children = new IModelElement[vChildren.size()];
 		vChildren.toArray(children);
 		info.setChildren(children);
@@ -72,45 +76,53 @@ public class ExternalProjectFragment extends ProjectFragment {
 	/**
 	 * Starting at this folder, create folders and add them to the collection of
 	 * children.
-	 * @param newElements 
-	 * 
+	 *
+	 * @param newElements
+	 *
 	 * @exception ModelException
 	 *                The resource associated with this project fragment does
 	 *                not exist
 	 */
-	protected void computeFolderChildren(IPath path, boolean isIncluded, ArrayList vChildren, ArrayList vForeign, Map newElements, char[][] inclusionPatterns, char[][] exclusionPatterns) throws ModelException {
+	protected void computeFolderChildren(IPath path, boolean isIncluded,
+			ArrayList vChildren, ArrayList vForeign, Map newElements,
+			char[][] inclusionPatterns, char[][] exclusionPatterns)
+			throws ModelException {
 		IPath lpath = path.removeFirstSegments(this.fPath.segmentCount());
-		ExternalScriptFolder fldr = (ExternalScriptFolder)getScriptFolder(lpath);
-		boolean valid = Util.isValidSourcePackageName(this, path );
-		if( ( lpath.segmentCount() == 0 || valid ) && isIncluded ) {			
+		ExternalScriptFolder fldr = (ExternalScriptFolder) this
+				.getScriptFolder(lpath);
+		boolean valid = Util.isValidSourcePackageName(this, path);
+		if ((lpath.segmentCount() == 0 || valid) && isIncluded) {
 			vChildren.add(fldr);
+		} else {
+			if (this.fOnlyScriptResources) {
+				return;
+			}
+			if (!valid) {
+				return;
+			}
 		}
-		else {			
-			if( this.fOnlyScriptResources ) {
-				return;
-			}
-			if( !valid ) {
-				return;
-			}
-		}		
 		List scriptElements = new ArrayList();
 		List nonScriptElements = new ArrayList();
 		try {
 			File file = new File(path.toOSString());
 			String[] members = file.list();
-			if( members != null ) {
+			if (members != null) {
 				for (int i = 0, max = members.length; i < max; i++) {
 					String member = members[i];
 					IPath memberPath = path.append(member);
 					File memberFile = new File(memberPath.toOSString());
 					if (memberFile.isDirectory()) {
-						boolean isMemberIncluded = !Util.isExcluded(memberPath, inclusionPatterns, exclusionPatterns, true);
-						computeFolderChildren(memberPath, isMemberIncluded, vChildren, vForeign, newElements, inclusionPatterns, exclusionPatterns );						
+						boolean isMemberIncluded = !Util.isExcluded(memberPath,
+								inclusionPatterns, exclusionPatterns, true);
+						this.computeFolderChildren(memberPath,
+								isMemberIncluded, vChildren, vForeign,
+								newElements, inclusionPatterns,
+								exclusionPatterns);
 					} else {
 						if (Util.isValidSourceModule(this, memberPath)) {
 							scriptElements.add(memberPath);
 						} else {
-							if( !this.fOnlyScriptResources || valid ) {
+							if (!this.fOnlyScriptResources || valid) {
 								nonScriptElements.add(memberPath);
 							}
 						}
@@ -122,7 +134,8 @@ public class ExternalProjectFragment extends ProjectFragment {
 			fldr.computeForeignResources(fragInfo, nonScriptElements);
 			newElements.put(fldr, fragInfo);
 		} catch (IllegalArgumentException e) {
-			throw new ModelException(e, IModelStatusConstants.ELEMENT_DOES_NOT_EXIST);
+			throw new ModelException(e,
+					IModelStatusConstants.ELEMENT_DOES_NOT_EXIST);
 			/*
 			 * could be thrown by ElementTree when path is not found
 			 */
@@ -132,27 +145,28 @@ public class ExternalProjectFragment extends ProjectFragment {
 	}
 
 	public IScriptFolder getScriptFolder(IPath path) {
-			try {
-				List childs = getChildrenOfType(SCRIPT_FOLDER);
-				for( int i = 0; i < childs.size(); ++i ) {
-					IScriptFolder folder = (IScriptFolder)childs.get(i);
-					if( folder.getElementName().equals(path.toPortableString())) {
-						return folder;
-					}
-				}
-			} catch (ModelException e) {
-				if( DLTKCore.DEBUG ) {
-					e.printStackTrace();
+		try {
+			List childs = this.getChildrenOfType(SCRIPT_FOLDER);
+			for (int i = 0; i < childs.size(); ++i) {
+				IScriptFolder folder = (IScriptFolder) childs.get(i);
+				if (folder.getElementName().equals(path.toPortableString())) {
+					return folder;
 				}
 			}
+		} catch (ModelException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+		}
 		return new ExternalScriptFolder(this, path);
 	}
+
 	public IScriptFolder getScriptFolder(String path) {
-		return getScriptFolder(new Path(path));
+		return this.getScriptFolder(new Path(path));
 	}
 
 	public boolean isReadOnly() {
-		return fReadOnly;
+		return this.fReadOnly;
 	}
 
 	protected Object createElementInfo() {
@@ -176,7 +190,7 @@ public class ExternalProjectFragment extends ProjectFragment {
 	}
 
 	public IPath getPath() {
-		if (isExternal()) {
+		if (this.isExternal()) {
 			return this.fPath;
 		} else {
 			return super.getPath();
@@ -185,7 +199,8 @@ public class ExternalProjectFragment extends ProjectFragment {
 
 	public IResource getResource() {
 		if (this.resource == null) {
-			this.resource = Model.getTarget(ResourcesPlugin.getWorkspace().getRoot(), this.fPath, false);
+			this.resource = Model.getTarget(ResourcesPlugin.getWorkspace()
+					.getRoot(), this.fPath, false);
 		}
 		if (this.resource instanceof IResource) {
 			return super.getResource();
@@ -208,52 +223,79 @@ public class ExternalProjectFragment extends ProjectFragment {
 	}
 
 	protected void toStringAncestors(StringBuffer buffer) {
-		if (isExternal())
+		if (this.isExternal()) {
 			return;
+		}
 		super.toStringAncestors(buffer);
 	}
+
 	public int getKind() {
 		return IProjectFragment.K_SOURCE;
 	}
+
 	public boolean equals(Object o) {
-		if (this == o)
+		if (this == o) {
 			return true;
+		}
 		if (o instanceof ExternalProjectFragment) {
-			ExternalProjectFragment other= (ExternalProjectFragment) o;
+			ExternalProjectFragment other = (ExternalProjectFragment) o;
 			return this.fPath.equals(other.fPath);
 		}
 		return false;
 	}
-	public String getElementName() {		
-		return fPath.toOSString().replace(File.separatorChar, JEM_SKIP_DELIMETER);		
+
+	public String getElementName() {
+		return this.fPath.toOSString().replace(File.separatorChar,
+				JEM_SKIP_DELIMETER);
 	}
-	public IModelElement getHandleFromMemento(String token, MementoTokenizer memento, WorkingCopyOwner owner) {
+
+	public IModelElement getHandleFromMemento(String token,
+			MementoTokenizer memento, WorkingCopyOwner owner) {
 		switch (token.charAt(0)) {
-			case JEM_SCRIPTFOLDER:
-				String pkgName;
-				if (memento.hasMoreTokens()) {
-					pkgName = memento.nextToken();
-					char firstChar = pkgName.charAt(0);
-					if (firstChar == JEM_SOURCEMODULE || firstChar == JEM_COUNT) {
-						token = pkgName;
-						pkgName = IProjectFragment.DEFAULT_SCRIPT_FOLDER_NAME;
-					} else {
-						token = null;
-					}
+		case JEM_SCRIPTFOLDER:
+			String pkgName;
+			if (memento.hasMoreTokens()) {
+				pkgName = memento.nextToken();
+				char firstChar = pkgName.charAt(0);
+				if (firstChar == JEM_SOURCEMODULE || firstChar == JEM_COUNT) {
+					token = pkgName;
+					pkgName = IProjectFragment.DEFAULT_SCRIPT_FOLDER_NAME;
 				} else {
-					pkgName = IScriptFolder.DEFAULT_FOLDER_NAME;
 					token = null;
 				}
-				ModelElement pkg = (ModelElement) getScriptFolder(pkgName);
-				if (token == null) {
-					return pkg.getHandleFromMemento(memento, owner);
-				} else {
-					return pkg.getHandleFromMemento(token, memento, owner);
-				}
+			} else {
+				pkgName = IScriptFolder.DEFAULT_FOLDER_NAME;
+				token = null;
+			}
+			ModelElement pkg = (ModelElement) this.getScriptFolder(pkgName);
+			if (token == null) {
+				return pkg.getHandleFromMemento(memento, owner);
+			} else {
+				return pkg.getHandleFromMemento(token, memento, owner);
+			}
 		}
 		return null;
 	}
+
 	protected char getHandleMementoDelimiter() {
 		return JEM_PROJECTFRAGMENT;
+	}
+
+	public IBuildpathEntry getBuildpathEntry() throws ModelException {
+		IBuildpathEntry rawEntry = super.getRawBuildpathEntry();
+		// try to guest map from internal element.
+		if (rawEntry != null
+				&& rawEntry.getEntryKind() == IBuildpathEntry.BPE_CONTAINER) {
+			IBuildpathContainer container = DLTKCore.getBuildpathContainer(
+					rawEntry.getPath(), this.getScriptProject());
+			IBuildpathEntry entrys[] = container.getBuildpathEntries();
+			for (int i = 0; i < entrys.length; ++i) {
+				if (entrys[i].getPath().equals(this.getPath())) {
+					return entrys[i];
+				}
+			}
+		}
+
+		return rawEntry;
 	}
 }
