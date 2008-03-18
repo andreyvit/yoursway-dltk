@@ -18,6 +18,14 @@ public class PythonArrayAccessExpression extends Expression implements ExtendedV
 		this.index = index;
 	}
 	
+	public Expression getArray() {
+        return array;
+    }
+	
+	public Expression getIndex() {
+        return index;
+    }
+	
 	@Override
 	public int getKind() {
 		return 0;
