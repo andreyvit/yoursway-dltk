@@ -11,25 +11,35 @@ package org.eclipse.dltk.ast.expressions;
 
 import java.math.BigInteger;
 
+import org.eclipse.dltk.ast.DLTKToken;
 import org.eclipse.dltk.utils.CorePrinter;
-
 
 public class BigNumericLiteral extends Literal {
 
 	private BigInteger bigValue;
-	
 
 	public BigNumericLiteral(int start, int end, BigInteger value) {
 		super(start, end);
 		this.bigValue = value;
 	}
-	
+
 	public BigNumericLiteral(int start, int end, String value, int radix) {
 		super(start, end);
 		this.bigValue = new BigInteger(value, radix);
 	}
 
-	
+	public BigNumericLiteral(DLTKToken token) {
+		super(token);
+		if (fLiteralValue.equals("0")) 
+			this.bigValue = BigInteger.ZERO;
+		else if (fLiteralValue.startsWith("0x") || fLiteralValue.startsWith("0X"))
+			this.bigValue = new BigInteger(fLiteralValue.substring(2), 16);
+		else if(fLiteralValue.startsWith("0"))
+			this.bigValue = new BigInteger(fLiteralValue.substring(1), 8);
+		else
+			this.bigValue = new BigInteger(fLiteralValue);
+	}
+
 	public String getValue() {
 		return bigValue.toString();
 	}

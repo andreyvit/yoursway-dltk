@@ -9,12 +9,16 @@
  *******************************************************************************/
 package org.eclipse.dltk.ast.expressions;
 
+import java.math.BigInteger;
+
 import org.eclipse.dltk.ast.DLTKToken;
 import org.eclipse.dltk.utils.CorePrinter;
 
 /**
  * 
- * Numeric literal. Used to hold ints, floats and complex numbers.
+ * Numeric literal. Used to hold ints and long int numbers.
+ * 
+ * Immutable.
  * 
  */
 public class NumericLiteral extends Literal {
@@ -28,7 +32,14 @@ public class NumericLiteral extends Literal {
 	 */
 	public NumericLiteral(DLTKToken number) {
 		super(number);
-		this.intValue = Long.parseLong(number.getText());
+		if (fLiteralValue.equals("0")) 
+			this.intValue = 0;
+		if(fLiteralValue.startsWith("0x") || fLiteralValue.startsWith("0X"))
+			this.intValue = Long.parseLong(fLiteralValue.substring(2), 16);
+		else if(fLiteralValue.startsWith("0"))
+			this.intValue = Long.parseLong(fLiteralValue.substring(1), 8);
+		else
+			this.intValue = Long.parseLong(fLiteralValue);
 	}
 
 	public NumericLiteral(int start, int end, long value) {
@@ -41,10 +52,6 @@ public class NumericLiteral extends Literal {
 	}
 
 	
-	public String getValue() {
-		return String.valueOf(intValue);
-	}
-
 	/**
 	 * Return kind.
 	 */

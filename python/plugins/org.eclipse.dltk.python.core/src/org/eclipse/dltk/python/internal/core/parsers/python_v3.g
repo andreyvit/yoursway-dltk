@@ -30,7 +30,9 @@ import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.ExpressionList;
+import org.eclipse.dltk.ast.expressions.Literal;
 import org.eclipse.dltk.ast.expressions.NumericLiteral;
+import org.eclipse.dltk.ast.expressions.FloatNumericLiteral;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Block;
@@ -1257,9 +1259,8 @@ atom returns [ Expression exp = null ]:
 	| lb =LCURLY { exp = new PythonDictExpression(); } rb = RCURLY { setStartEndForEmbracedExpr(exp,lb,rb); }  // for initialization like a = {}
 	| lb = BACKQUOTE exp0 = testlist { exp = exp0; } rb =  BACKQUOTE { setStartEndForEmbracedExpr(exp,lb,rb); }
 	| n =NAME { exp = new VariableReference( toDLTK( n ) ); }	
-	| i = INT  { exp = new NumericLiteral( toDLTK( i ) );} 
-    	| li = LONGINT { exp=new NumericLiteral( toDLTK( li ) );}
-    	| f = FLOAT    { exp=new NumericLiteral( toDLTK( f ) );}
+	| i = INT  { exp = Literal.createNumericLiteral( toDLTK( i ) );} 
+    	| f = FLOAT    { exp=new FloatNumericLiteral( toDLTK( f ) );}
     	| c = COMPLEX  { exp=new ComplexNumericLiteral( toDLTK( c ) ); }
 	|
 	(
@@ -1762,10 +1763,6 @@ FRACTION
 EXPONENTFLOAT 
 	:	(DIGITS | POINTFLOAT) Exponent
 	;
-LONGINT
-    :   INT ('l'|'L')
-    ;
-
 fragment
 Exponent
 	:	('e' | 'E') ( '+' | '-' )? DIGITS
@@ -1776,11 +1773,14 @@ INT :   // Hex
         ('l' | 'L')?
     |   // Octal
         '0' DIGITS*
-    |   '1'..'9' DIGITS*
+        ('l' | 'L')?
+    |   // Decimal
+    	'1'..'9' DIGITS*
+        ('l' | 'L')?
     ;
 
 COMPLEX
-    :   INT ('j'|'J')
+    :   DIGITS ('j'|'J')
     |   FLOAT ('j'|'J')
     ;
 

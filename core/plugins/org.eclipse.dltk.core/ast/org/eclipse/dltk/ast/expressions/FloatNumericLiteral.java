@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.ast.expressions;
 
+import org.eclipse.dltk.ast.DLTKToken;
 import org.eclipse.dltk.utils.CorePrinter;
 
 
@@ -27,6 +28,16 @@ public class FloatNumericLiteral extends Literal {
 		this.doubleValue = Double.parseDouble(value);
 	}
 	
+	/**
+	 * Construct from ANTLR token. With appropriate position information.
+	 * 
+	 * @param number
+	 */
+	public FloatNumericLiteral(DLTKToken number) {
+		super(number);
+		this.doubleValue = Double.parseDouble(number.getText());
+	}
+
 	public double getDoubleValue () {
 		return doubleValue;
 	}

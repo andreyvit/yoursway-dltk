@@ -22,6 +22,14 @@ import org.eclipse.dltk.utils.CorePrinter;
  */
 public abstract class Literal extends Expression {
 
+	
+	public static Literal createNumericLiteral(DLTKToken token){
+		try{
+			return new NumericLiteral(token);
+		}catch(NumberFormatException exc) {
+			return new BigNumericLiteral(token);
+		}
+	}
 	/**
 	 * Value.
 	 */
