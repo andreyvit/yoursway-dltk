@@ -20,7 +20,7 @@ public class ModelElementFilter extends AbstractModelElementFilter {
 	}
 
 	public String getFilteringType() {
-		return "ModelElementFilter:" + Integer.toString(fElementType);
+		return "ModelElementFilter:" + Integer.toString(fElementType); //$NON-NLS-1$
 	}
 
 	public boolean isFilterProperty(Object element, Object property) {

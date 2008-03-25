@@ -22,7 +22,7 @@ public class ModelElementFlagsFilter extends AbstractModelElementFilter {
 	}
 
 	public String getFilteringType() {
-		return "ModelElementFlagsFilter:" + Integer.toString(fFlags);
+		return "ModelElementFlagsFilter:" + Integer.toString(fFlags); //$NON-NLS-1$
 	}
 
 	public boolean isFilterProperty(Object element, Object property) {

@@ -11,6 +11,7 @@ package org.eclipse.dltk.console.ui.internal;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -52,12 +53,12 @@ public class HTTPConsoleHyperlink implements IHyperlink {
 		} catch (PartInitException e) {
 			IStatus status = new Status(IStatus.ERROR,
 					DLTKLaunchingPlugin.PLUGIN_ID,
-					"Failed to open browser part for:" + uri, e);
+					MessageFormat.format(Messages.HTTPConsoleHyperlink_failedToInitializeBrowserFor, new Object[] { uri }), e);
 			DLTKLaunchingPlugin.getDefault().getLog().log(status);
 		} catch (MalformedURLException e) {
 			IStatus status = new Status(IStatus.ERROR,
 					DLTKLaunchingPlugin.PLUGIN_ID,
-					"Failed to execute browser: Incorrect URI:" + uri, e);
+					MessageFormat.format(Messages.HTTPConsoleHyperlink_failedToOpenInvalidUri, new Object[] { uri }), e);
 			DLTKLaunchingPlugin.getDefault().getLog().log(status);
 		}
 	}

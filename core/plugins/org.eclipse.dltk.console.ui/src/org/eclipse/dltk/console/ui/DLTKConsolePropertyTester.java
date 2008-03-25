@@ -13,7 +13,7 @@ import org.eclipse.ui.console.TextConsole;
 
 public class DLTKConsolePropertyTester extends PropertyTester {
 
-	private static final String IS_DLTK_CONSOLE_PROPERTY = "isDLTKConsole";
+	private static final String IS_DLTK_CONSOLE_PROPERTY = "isDLTKConsole"; //$NON-NLS-1$
 
 	public DLTKConsolePropertyTester() {
 	}

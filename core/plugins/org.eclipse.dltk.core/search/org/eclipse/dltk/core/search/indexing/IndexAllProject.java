@@ -134,8 +134,7 @@ public class IndexAllProject extends IndexRequest {
 
 			monitor.enterRead(); // ask permission to read
 
-			String[] paths = index.queryDocumentNames(""); // all file names
-															// //$NON-NLS-1$
+			String[] paths = index.queryDocumentNames(""); // all file names //$NON-NLS-1$
 			int max = paths == null ? 0 : paths.length;
 			final SimpleLookupTable indexedFileNames = new SimpleLookupTable(
 					max == 0 ? 33 : max + 11);

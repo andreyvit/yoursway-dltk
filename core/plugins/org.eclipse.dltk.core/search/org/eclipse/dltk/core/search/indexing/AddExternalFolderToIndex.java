@@ -131,9 +131,7 @@ class AddExternalFolderToIndex extends IndexRequest {
 						.verbose("-> indexing " + this.containerPath.toOSString()); //$NON-NLS-1$
 			}
 			long initialTime = System.currentTimeMillis();
-			String[] paths = index.queryDocumentNames(""); // all file names
-															// //$NON-NLS-1$
-			// //$NON-NLS-1$
+			String[] paths = index.queryDocumentNames(""); // all file names //$NON-NLS-1$
 			if (paths != null) {
 				int max = paths.length;
 				/*
