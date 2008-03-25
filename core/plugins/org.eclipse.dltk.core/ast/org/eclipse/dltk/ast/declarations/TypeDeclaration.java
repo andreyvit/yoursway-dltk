@@ -21,7 +21,6 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.DLTKToken;
 import org.eclipse.dltk.ast.Modifiers;
-import org.eclipse.dltk.ast.references.Reference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.utils.ASTUtil;
@@ -378,10 +377,9 @@ public class TypeDeclaration extends Declaration {
 			Iterator i = superClasseExpressions.iterator();
 			while (i.hasNext()) {
 				ASTNode expr = (ASTNode) i.next();
-				if (expr instanceof Reference) {
+				if (expr instanceof SimpleReference) {
 					names.add(((SimpleReference) expr).getName());
 				}
-
 			}
 		}
 		return names;
