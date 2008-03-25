@@ -91,7 +91,10 @@ class AddBuiltinFolderToIndex extends IndexRequest {
 		if( cfp.startsWith(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR)) {
 			cfp = cfp.substring(IBuildpathEntry.BUILTIN_EXTERNAL_ENTRY_STR.length());
 		}
-		Index index = this.manager.getSpecialIndex("builtin", cfp, containerPath.toOSString() ); //$NON-NLS-1$
+		String pathToString = containerPath.getDevice() == null ? containerPath
+				.toString() : containerPath.toOSString();
+
+		Index index = this.manager.getSpecialIndex("builtin", cfp, pathToString); //$NON-NLS-1$
 		if (index == null) {
 			if (JobManager.VERBOSE)
 				org.eclipse.dltk.internal.core.util.Util
