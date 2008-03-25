@@ -25,10 +25,6 @@ public final class TclConstants {
 	public static final int TCL_EXECUTE_EXPRESSION = ExpressionConstants.USER_EXPRESSION_START + 4;
 
 	public static final int TCL_IDENTIFIER_EXPRESSION = ExpressionConstants.USER_EXPRESSION_START + 5;
-	
-	public final static int TCL_FIELD_TYPE_UPVAR = ExpressionConstants.USER_EXPRESSION_START + 6;
-	
-	public final static int TCL_FIELD_TYPE_GLOBAL = ExpressionConstants.USER_EXPRESSION_START + 7;
 		
 	public final static int TCL_FIELD_TYPE_NAMESPACE = ExpressionConstants.USER_EXPRESSION_START + 8;
 

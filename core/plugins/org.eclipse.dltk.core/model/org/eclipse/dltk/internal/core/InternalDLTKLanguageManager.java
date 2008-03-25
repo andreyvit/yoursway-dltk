@@ -28,6 +28,8 @@ public class InternalDLTKLanguageManager {
 			+ ".search"; //$NON-NLS-1$
 	private final static String CALLHIERARCHY_EXTPOINT = DLTKCore.PLUGIN_ID
 			+ ".callHierarchy"; //$NON-NLS-1$
+	private final static String FILE_HIERARCHY_RESOLVER_EXTPOINT = DLTKCore.PLUGIN_ID
+			+ ".fileHierarchyResolvers";//$NON-NLS-1$
 	
 	private static PriorityClassDLTKExtensionManager languageToolkitsManager = new PriorityClassDLTKExtensionManager(
 			LANGUAGE_EXTPOINT);
@@ -49,6 +51,8 @@ public class InternalDLTKLanguageManager {
 			SEARCH_EXTPOINT);
 	private static PriorityClassDLTKExtensionManager callHierarchyManager = new PriorityClassDLTKExtensionManager(
 			CALLHIERARCHY_EXTPOINT);
+	private static PriorityClassDLTKExtensionManager fileHierarchyResolversManager = new PriorityClassDLTKExtensionManager(
+			FILE_HIERARCHY_RESOLVER_EXTPOINT);
 	public static PriorityClassDLTKExtensionManager getSourceElementParsersManager() {
 		return sourceElementParsersManager;
 	}
@@ -70,6 +74,9 @@ public class InternalDLTKLanguageManager {
 	public static PriorityClassDLTKExtensionManager getCallHierarchyManager() {
 		return callHierarchyManager;
 	}
+	public static PriorityClassDLTKExtensionManager getFileHierarchyResolversManager() {
+		return fileHierarchyResolversManager;
+	}
 	public static PriorityClassDLTKExtensionManager getLanguageToolkitsManager() {
 		return languageToolkitsManager;
 	}
@@ -86,5 +93,6 @@ public class InternalDLTKLanguageManager {
 		sourceParsersManager.setPreffetedLevel(id, level);
 		searchManager.setPreffetedLevel(id, level);
 		callHierarchyManager.setPreffetedLevel(id, level);
+		fileHierarchyResolversManager.setPreffetedLevel(id, level);
 	}
 }

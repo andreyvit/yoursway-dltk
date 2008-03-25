@@ -2,5 +2,30 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension-point id="scriptConsole" name="%extension-point.name.scriptConsole" schema="schema/scriptConsole.exsd"/>
+   <extension
+         point="org.eclipse.ui.console.consolePatternMatchListeners">
+      <consolePatternMatchListener
+            class="org.eclipse.dltk.console.ui.internal.HTTPConsolePatternMatcher"
+            id="org.eclipse.dltk.console.ui.hyperlinkConsolePatternMatcher"
+            regex="http://([^ \\]|\\ |\\\\|\\)+">
+        <enablement>
+        <or>
+          <test
+                forcePluginActivation="true"
+                property="org.eclipse.dltk.console.isDLTKConsole"/>
+        </or>
+      </enablement>
+      </consolePatternMatchListener>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="org.eclipse.dltk.console.ui.DLTKConsolePropertyTester"
+            id="org.eclipse.dltk.console.ui.isDLTKConsolePropertyTester"
+            namespace="org.eclipse.dltk.console"
+            properties="isDLTKConsole"
+            type="org.eclipse.ui.console.IConsole">
+      </propertyTester>
+   </extension>
 
 </plugin>

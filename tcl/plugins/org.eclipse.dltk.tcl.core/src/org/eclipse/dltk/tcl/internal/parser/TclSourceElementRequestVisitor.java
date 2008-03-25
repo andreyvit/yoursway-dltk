@@ -28,9 +28,7 @@ import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.core.TclKeywordsManager;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.core.TclParseUtil.CodeModel;
-import org.eclipse.dltk.tcl.core.ast.TclGlobalVariableDeclaration;
 import org.eclipse.dltk.tcl.core.ast.TclPackageDeclaration;
-import org.eclipse.dltk.tcl.core.ast.TclUpvarVariableDeclaration;
 import org.eclipse.dltk.tcl.core.extensions.ISourceElementRequestVisitorExtension;
 import org.eclipse.dltk.tcl.internal.core.TclExtensionManager;
 import org.eclipse.dltk.tcl.internal.core.packages.TclCheckBuilder;
@@ -390,14 +388,7 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 		fi.nameSourceStart = decl.getNameStart();
 		fi.nameSourceEnd = decl.getNameEnd() - 1;
 		fi.declarationStart = decl.sourceStart();
-		fi.modifiers = 0;
-		if (statement instanceof TclGlobalVariableDeclaration) {
-			fi.modifiers = org.eclipse.dltk.tcl.ast.TclConstants.TCL_FIELD_TYPE_GLOBAL
-					| this.getModifiers(decl);
-		} else if (statement instanceof TclUpvarVariableDeclaration) {
-			fi.modifiers = org.eclipse.dltk.tcl.ast.TclConstants.TCL_FIELD_TYPE_UPVAR
-					| this.getModifiers(decl);
-		}
+		fi.modifiers = this.getModifiers(decl);
 
 		boolean needExit = false;
 

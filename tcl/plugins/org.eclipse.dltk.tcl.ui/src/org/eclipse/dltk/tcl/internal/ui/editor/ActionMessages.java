@@ -28,6 +28,9 @@ public final class ActionMessages extends NLS {
 	public static String MemberFilterActionGroup_hide_namespaces_label;
 	public static String MemberFilterActionGroup_hide_namespaces_tooltip;
 	public static String MemberFilterActionGroup_hide_namespaces_description;
+	public static String MemberFilterActionGroup_hide_private_label;
+	public static String MemberFilterActionGroup_hide_private_tooltip;
+	public static String MemberFilterActionGroup_hide_private_description;
 	//public static String MemberFilterActionGroup_hide_classes_label;
 	//public static String MemberFilterActionGroup_hide_classes_tooltip;
 	//public static String MemberFilterActionGroup_hide_classes_description;

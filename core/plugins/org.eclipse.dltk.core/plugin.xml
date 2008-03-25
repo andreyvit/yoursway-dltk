@@ -13,6 +13,7 @@
    <extension-point id="completionEngine" name="%extension-point.name.completionEngine" schema="schema/completionEngine.exsd"/>
    <extension-point id="callHierarchy" name="%extension-point.name.callHierarchy" schema="schema/callHierarchy.exsd"/>
    <extension-point id="problemFactory" name="%extension-point.name.problemFactory" schema="schema/problemFactory.exsd"/>
+    <extension-point id="fileHierarchyResolvers" name="File Hierarchy Resolver" schema="schema/fileHierarchyResolvers.exsd"/>
 
 <!-- =================================================================================== -->
 <!-- Extension: DLTK Problem                                                             -->

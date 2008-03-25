@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.core;
 
@@ -120,7 +120,7 @@ public class DLTKLanguageManager {
 	// CoreException {
 	// return (ISourceElementParser) sourceParsersManager.getObject(nature);
 	// }
-	//	
+	//
 	// public static ISourceParser getSourceParser( IModelElement element )
 	// throws
 	// CoreException {
@@ -251,5 +251,10 @@ public class DLTKLanguageManager {
 			return factory.createCallProcessor();
 		}
 		return null;
+	}
+
+	public static IFileHierarchyResolver getFileHierarchyResolver(String natureId) {
+		return (IFileHierarchyResolver) InternalDLTKLanguageManager
+				.getFileHierarchyResolversManager().getObject(natureId);
 	}
 }

@@ -9,18 +9,20 @@
  *******************************************************************************/
 package org.eclipse.dltk.ui.viewsupport;
 
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IMember;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.jface.viewers.Viewer;
 
-public class ModelElementFilter extends AbstractModelElementFilter {
-	private int fElementType;
+public class ModelElementFlagsFilter extends AbstractModelElementFilter {
+	private int fFlags;
 
-	public ModelElementFilter(int type) {
-		fElementType = type;
+	public ModelElementFlagsFilter(int flags) {
+		this.fFlags = flags;
 	}
 
 	public String getFilteringType() {
-		return "ModelElementFilter:" + Integer.toString(fElementType);
+		return "ModelElementFlagsFilter:" + Integer.toString(fFlags);
 	}
 
 	public boolean isFilterProperty(Object element, Object property) {
@@ -30,8 +32,14 @@ public class ModelElementFilter extends AbstractModelElementFilter {
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
 		if (element instanceof IMember) {
 			IMember member = (IMember) element;
-			if (member.getElementType() == fElementType) {
-				return false;
+			try {
+				if ((member.getFlags() & this.fFlags) != 0) {
+					return false;
+				}
+			} catch (ModelException e) {
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
 			}
 		}
 

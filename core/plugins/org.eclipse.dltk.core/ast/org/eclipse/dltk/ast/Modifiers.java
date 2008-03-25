@@ -44,6 +44,10 @@ public interface Modifiers {
 	public static final int AccNameSpace = 0x800;
 
 	public static final int AccAnnotation = 0x1000;
+	
+	public static final int AccGlobal = 0x2000;
+	
+	public static final int AccUpVar = 0x4000;
 
 	public static final int USER_MODIFIER = 0x20000;
 }

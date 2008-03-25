@@ -23,7 +23,7 @@ public class XOTclSourceElementRequestVisitorExtension implements
 	public int getModifiers(Declaration s) {
 		if ((s.getModifiers() & IXOTclModifiers.AccXOTcl) != 0) {
 			// This is ordinary class.
-			return IXOTclModifiers.AccXOTcl;
+			return s.getModifiers();
 		}
 		return 0;
 	}

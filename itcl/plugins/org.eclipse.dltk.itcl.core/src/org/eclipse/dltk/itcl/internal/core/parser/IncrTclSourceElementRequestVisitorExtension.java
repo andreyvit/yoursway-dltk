@@ -20,7 +20,7 @@ public class IncrTclSourceElementRequestVisitorExtension implements
 	public int getModifiers(Declaration s) {
 		if ((s.getModifiers() & IIncrTclModifiers.AccIncrTcl) != 0) {
 			// This is ordinary class.
-			return IIncrTclModifiers.AccIncrTcl;
+			return s.getModifiers();
 		}
 		return 0;
 	}
