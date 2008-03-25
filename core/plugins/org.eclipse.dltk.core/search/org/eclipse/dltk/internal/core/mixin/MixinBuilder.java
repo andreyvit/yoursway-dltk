@@ -86,9 +86,11 @@ public class MixinBuilder implements IScriptBuilder {
 		try {
 			// waitUntilIndexReady(toolkit);
 			IPath fullPath = project.getProject().getFullPath();
+			String fullContainerPath = ((fullPath.getDevice() == null) ?
+					fullPath.toString() : fullPath.toOSString());
 
-			mixinIndex = manager.getSpecialIndex("mixin", /* project.getProject() *///$NON-NLS-1$
-					fullPath.toString(), fullPath.toOSString());
+			mixinIndex = manager.getSpecialIndex("mixin",
+					/* project.getProject() */fullPath.toString(), fullContainerPath); //$NON-NLS-1$
 			imon = mixinIndex.monitor;
 			imon.enterWrite();
 			String name = MessageFormat.format(
@@ -130,8 +132,11 @@ public class MixinBuilder implements IScriptBuilder {
 						currentIndex = (Index) indexes.get(path);
 						containerPath = path;
 					} else {
-						Index index = manager.getSpecialIndex("mixin", path //$NON-NLS-1$
-								.toString(), path.toOSString());
+						String contPath = ((path.getDevice() == null) ?
+								path.toString() : path.toOSString());
+
+						Index index = manager.getSpecialIndex("mixin", //$NON-NLS-1$
+								path.toString(), contPath);
 						if (index != null) {
 							currentIndex = index;
 							if (!indexes.values().contains(index)) {
@@ -143,13 +148,12 @@ public class MixinBuilder implements IScriptBuilder {
 					}
 				}
 
-				char[] source = element.getSourceAsCharArray();
 				SearchParticipant participant = SearchEngine
 						.getDefaultSearchParticipant();
 
 				DLTKSearchDocument document;
 				document = new DLTKSearchDocument(element.getPath()
-						.toOSString(), containerPath, source, participant,
+						.toOSString(), containerPath, null, participant,
 						element instanceof ExternalSourceModule);
 				// System.out.println("mixin indexing:" + document.getPath());
 				((InternalSearchDocument) document).toolkit = toolkit;
@@ -177,10 +181,6 @@ public class MixinBuilder implements IScriptBuilder {
 				if (monitor != null) {
 					monitor.worked(1);
 				}
-			}
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
 			}
 		} finally {
 			final Set saveIndexesSet = new HashSet();
