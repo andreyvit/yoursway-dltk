@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
@@ -194,27 +195,28 @@ public class ExternalChecker extends AbstractValidator {
 		return arguments;
 	}
 
-	public IStatus validate(IResource[] resources, OutputStream console) {
+	public IStatus validate(IResource[] resources, OutputStream console,
+			IProgressMonitor monitor) {
 		return Status.CANCEL_STATUS;
 	}
 
-	public IStatus validate(ISourceModule[] modules, OutputStream console) {
-		if( getProgressMonitor() != null ) {
-			getProgressMonitor().beginTask("Checking with external checker", modules.length);
-		}
-		for (int i = 0; i < modules.length; i++) {
-			validate(modules[i], console);
-			if( getProgressMonitor() != null ) {
-				getProgressMonitor().worked(1);
-				if (getProgressMonitor().isCanceled()) {
+	public IStatus validate(ISourceModule[] modules, OutputStream console,
+			IProgressMonitor monitor) {
+		if (monitor == null)
+			monitor = new NullProgressMonitor();
+
+		monitor.beginTask("Checking with external executable...", modules.length);
+		try {
+			for (int i = 0; i < modules.length; i++) {
+				if (monitor.isCanceled())
 					return Status.CANCEL_STATUS;
-				}
+				validate(modules[i], console);
+				monitor.worked(1);
 			}
+		} finally {
+			monitor.done();
 		}
-		if( getProgressMonitor() != null ) {
-			getProgressMonitor().done();
-		}
-		return Status.CANCEL_STATUS;
+		return Status.OK_STATUS;
 	}
 
 	public IStatus validate(ISourceModule module, OutputStream console) {
@@ -239,7 +241,7 @@ public class ExternalChecker extends AbstractValidator {
 			return new Status(IStatus.ERROR, ValidatorsCore.PLUGIN_ID,
 					"SourceModule resource is null");
 		}
-		
+
 		try {
 			ExternalCheckerMarker.clearMarkers(resource);
 		} catch (CoreException e2) {

@@ -11,8 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.dltk.tcl.core,
  org.eclipse.dltk.core,
  org.eclipse.dltk.launching,
- org.eclipse.dltk.console,
- org.eclipse.jface
+ org.eclipse.dltk.console
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.tcl.console,
  org.eclipse.dltk.tcl.internal.launching,

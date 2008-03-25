@@ -24,6 +24,7 @@ import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.dltk.tcl.core.TclLanguageToolkit;
 import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.internal.ui.TclUI;
+import org.eclipse.dltk.ui.dialogs.TimeTriggeredProgressMonitorDialog;
 import org.eclipse.dltk.ui.preferences.UserLibraryPreferencePage;
 import org.eclipse.dltk.utils.DeployHelper;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -51,7 +52,7 @@ public class TclLibraryPreferencePage extends UserLibraryPreferencePage {
 					new InputStreamReader(process.getInputStream()));
 			// BufferedReader error = new BufferedReader(new InputStreamReader(
 			// process.getErrorStream()));
-			ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
+			ProgressMonitorDialog dialog = new TimeTriggeredProgressMonitorDialog(null, 1000);
 			dialog.run(true, true, new IRunnableWithProgress() {
 				private String packageName;
 				private Set paths = new HashSet();
@@ -168,8 +169,9 @@ public class TclLibraryPreferencePage extends UserLibraryPreferencePage {
 	}
 
 	protected boolean isDetectionSupported() {
-		IInterpreterInstall install = ScriptRuntime
-				.getDefaultInterpreterInstall(TclNature.NATURE_ID);
-		return install != null;
+//		IInterpreterInstall install = ScriptRuntime
+//				.getDefaultInterpreterInstall(TclNature.NATURE_ID);
+//		return install != null;
+		return false;
 	}
 }

@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ISourceModule;
@@ -55,45 +56,27 @@ public class TclCheckerImpl extends AbstractValidator {
 		super.storeTo(doc, element);
 	}
 
-	public IStatus validate(IResource resource[], OutputStream console) {
+	public IStatus validate(IResource resource[], OutputStream console, IProgressMonitor monitor) {
 		return Status.CANCEL_STATUS;
 	}
 
-	public IStatus validate(ISourceModule[] module, OutputStream console) {
-		try {
+	public IStatus validate(ISourceModule[] module, OutputStream console, IProgressMonitor monitor) {
 			List els = new ArrayList();
-			// els.add(module);
 			for (int i = 0; i < module.length; i++) {
 				IResource res = module[i].getResource();
 				if (res != null) {
 					els.add(module[i]);
-					try {
-						TclCheckerMarker.clearMarkers(res);
-					} catch (CoreException e) {
-						if (DLTKCore.DEBUG) {
-							e.printStackTrace();
-						}
-					}
+					clean(res);
 				}
 			}
 			if (els.size() == 0) {
 				return Status.OK_STATUS;
 			}
-			if (getProgressMonitor() != null) {
-				getProgressMonitor().beginTask("Checking with tclchecker",
-						els.size()*2);
-			}
 			TclChecker checker = new TclChecker(TclCheckerPlugin.getDefault()
 					.getPreferenceStore());
 
-			IProgressMonitor progressMonitor = getProgressMonitor();
-			checker.check(els, progressMonitor, console);
+			checker.check(els, monitor, console);
 			return Status.OK_STATUS;
-		} finally {
-			if (getProgressMonitor() != null) {
-				getProgressMonitor().done();
-			}
-		}
 	}
 
 	public boolean isValidatorValid() {

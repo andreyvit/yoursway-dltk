@@ -37,6 +37,10 @@ public class GenericDLTKProjectWizard extends NewElementWizard implements
 		setWindowTitle("New DLTK Project");
 	}
 	
+	public String getNature() {
+		return nature;
+	}
+	
 	protected IPreferenceStore getPreferenceStoreFromNature() {
 		IDLTKUILanguageToolkit languageToolkit = DLTKUILanguageManager.getLanguageToolkit(nature);
 		if( languageToolkit != null ) {

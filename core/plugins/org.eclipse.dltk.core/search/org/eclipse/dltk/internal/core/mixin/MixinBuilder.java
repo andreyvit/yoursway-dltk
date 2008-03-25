@@ -235,4 +235,8 @@ public class MixinBuilder implements IScriptBuilder {
 	public static MixinBuilder getDefault() {
 		return builder;
 	}
+
+	public int estimateElementsToBuild(List elements) {
+		return elements.size();
+	}
 }

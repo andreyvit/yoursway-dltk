@@ -1,10 +1,10 @@
 
 ! Ruby Development Tools (DLTK)
 !
-! $Id: ruby.map,v 1.46 2008/01/29 10:21:38 asobolev Exp $ 
+! $Id: ruby.map,v 1.47 2008/01/31 06:03:10 aplatov Exp $ 
 
-feature@org.eclipse.dltk.ruby=v20071031,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/features/org.eclipse.dltk.ruby-feature
-feature@org.eclipse.dltk.ruby.sdk=v20070727b,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/features/org.eclipse.dltk.ruby.sdk
+feature@org.eclipse.dltk.ruby=v20080131,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/features/org.eclipse.dltk.ruby-feature
+feature@org.eclipse.dltk.ruby.sdk=v20080131,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/features/org.eclipse.dltk.ruby.sdk
 
 plugin@org.eclipse.dltk.ruby=v20070727b,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby
 plugin@org.eclipse.dltk.ruby.core=v20080123,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.core

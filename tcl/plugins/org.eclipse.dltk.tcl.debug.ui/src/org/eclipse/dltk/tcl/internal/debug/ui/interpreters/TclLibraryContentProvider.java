@@ -1,20 +1,29 @@
 package org.eclipse.dltk.tcl.internal.debug.ui.interpreters;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.internal.debug.ui.interpreters.LibraryContentProvider;
 import org.eclipse.dltk.internal.debug.ui.interpreters.LibraryStandin;
 import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.LibraryLocation;
 import org.eclipse.dltk.tcl.internal.launching.PackagesHelper;
 import org.eclipse.dltk.tcl.internal.launching.PackagesHelper.PackageLocation;
+import org.eclipse.dltk.ui.dialogs.TimeTriggeredProgressMonitorDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
@@ -24,7 +33,7 @@ import org.eclipse.ui.PlatformUI;
 
 public class TclLibraryContentProvider extends LibraryContentProvider {
 	PackageLocation[] packageLocations;
-	private Set additions = new HashSet();
+	// private Set additions = new HashSet();
 	private static HashMap fCachedPacakges = new HashMap();
 
 	public Object[] getChildren(Object parentElement) {
@@ -52,44 +61,134 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 		}
 	}
 
-	public void initialize(File file,
-			EnvironmentVariable[] environmentVariables, boolean restoreDefault) {
+	public synchronized void initialize(final File file,
+			final EnvironmentVariable[] environmentVariables,
+			boolean restoreDefault) {
 		if (file != null && file.exists()) {
-			LibraryLocation[] additions = null;
+			final LibraryLocation[] additions;
+
+			final PackageLocation[] defaultLocations;
+			final Object defaultKey = makeKey(file, environmentVariables, null);
+			if (fCachedPacakges.containsKey(defaultKey)) {
+				defaultLocations = (PackageLocation[]) fCachedPacakges
+						.get(defaultKey);
+			} else {
+				defaultLocations = null;
+			}
+
 			if (restoreDefault) {
-				this.additions.clear();
+				// this.additions.clear();
+				additions = null;
 			} else {
-				additions = getAdditions();
+				if (defaultLocations != null
+						&& (this.packageLocations == null || packageLocations.length == 0)) {
+					additions = getAdditions(defaultLocations);
+				} else {
+					additions = getAdditions(this.packageLocations);
+				}
 			}
-			Object key = makeKey(file, environmentVariables, additions);
+
+			final Object key = makeKey(file, environmentVariables, additions);
 			if (fCachedPacakges.containsKey(key)) {
-				packageLocations = (PackageLocation[]) this.fCachedPacakges
-						.get(key);
-			} else {
-				packageLocations = PackagesHelper.getLocations(new Path(file
-						.getAbsolutePath()), environmentVariables, additions);
-				// Try to use without specific libraries.
-				if (packageLocations.length == 0) {
-					packageLocations = PackagesHelper
-							.getLocations(new Path(file.getAbsolutePath()),
-									environmentVariables, null);
+				packageLocations = (PackageLocation[]) fCachedPacakges.get(key);
+				if (packageLocations != null) {
+					if (restoreDefault) {
+						restoreDefaults();
+					}
+					this.fViewer.refresh();
+					updateColors();
+					return;
 				}
-				// Failsafe.
-				if (packageLocations.length == 0) {
-					packageLocations = createPackageLocationsFrom(this
-							.getLibraries());
+			}
+			ProgressMonitorDialog dialog = new TimeTriggeredProgressMonitorDialog(
+					null, 1000);
+			try {
+				dialog.run(true, true, new IRunnableWithProgress() {
+
+					public void run(IProgressMonitor monitor)
+							throws InvocationTargetException,
+							InterruptedException {
+						if( additions != null) {
+							monitor.beginTask("Discovering tcl packages", 2);
+						}
+						PackageLocation[] def = defaultLocations;
+						if (defaultLocations == null) {
+							IProgressMonitor sub = monitor;
+							if( additions != null ) {
+								sub = new SubProgressMonitor(monitor, 1);
+							}
+							def = PackagesHelper.getLocations(new Path(file
+									.getAbsolutePath()), environmentVariables,
+									additions, sub);
+							fCachedPacakges.put(defaultKey, def);
+						}
+						else {
+							if( additions != null ) {
+								monitor.worked(1);
+							}
+						}
+						if ((additions != null && additions.length > 0)
+								|| def == null) {
+							IProgressMonitor sub = monitor;
+							if( additions != null ) {
+								sub = new SubProgressMonitor(monitor, 1);
+							}
+							// TODO Auto-generated method stub
+							packageLocations = PackagesHelper.getLocations(
+									new Path(file.getAbsolutePath()),
+									environmentVariables, additions, sub);
+							// Try to use without specific libraries.
+							if (packageLocations.length == 0) {
+								packageLocations = def;
+							}
+						} else {
+							// if (packageLocations != null
+							// && packageLocations.length > 0) {
+							// // We need to add not pressent locations for def.
+
+							packageLocations = def;
+							// }
+						}
+						// Failsafe.
+						if (packageLocations.length == 0) {
+							packageLocations = createPackageLocationsFrom(getLibraries());
+						}
+						if( additions != null) {
+							monitor.done();
+						}
+					}
+				});
+			} catch (InvocationTargetException e) {
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
+			} catch (InterruptedException e) {
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
 				}
 			}
 
-			updateLibrariesFromPackages();
+			if (!restoreDefault) {
+				 updateLibrariesFromPackages();
+			} else {
+				restoreDefaults();
+			}
 
-			additions = getAdditions();
-			key = makeKey(file, environmentVariables, additions);
-			fCachedPacakges.put(key, this.packageLocations);
+			LibraryLocation[] adds = getAdditions(this.packageLocations);
+			Object key2 = makeKey(file, environmentVariables, adds);
+			fCachedPacakges.put(key2, packageLocations);
 
-			this.fViewer.refresh();
 			updateColors();
 		}
+	}
+
+	private void restoreDefaults() {
+		LibraryLocation[] defaultLibs = new LibraryLocation[this.packageLocations.length];
+		for (int i = 0; i < defaultLibs.length; i++) {
+			defaultLibs[i] = new LibraryLocation(Path
+					.fromOSString(this.packageLocations[i].getPath()));
+		}
+		super.setLibraries(defaultLibs);
 	}
 
 	public static Object makeKey(File installLocation,
@@ -114,13 +213,14 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 	 * 
 	 * @return
 	 */
-	private LibraryLocation[] getAdditions() {
+	private LibraryLocation[] getAdditions(PackageLocation[] pkgLocations) {
 		LibraryLocation[] libraries = super.getLibraries();
-		if (packageLocations == null || packageLocations.length == 0) {
-			return null;
+		if (pkgLocations == null || pkgLocations.length == 0) {
+			return libraries;
 		}
-		Set packages = new HashSet();
-		packages.addAll(Arrays.asList(packageLocations));
+		List additions = new ArrayList();
+		List packages = new ArrayList();
+		packages.addAll(Arrays.asList(pkgLocations));
 		for (int i = 0; i < libraries.length; i++) {
 			if (!packages.contains(new PackageLocation(libraries[i]
 					.getLibraryPath().toOSString()))) {
@@ -171,7 +271,7 @@ public class TclLibraryContentProvider extends LibraryContentProvider {
 
 		LibraryLocation[] newLocations = (LibraryLocation[]) result
 				.toArray(new LibraryLocation[result.size()]);
-		this.setLibraries(newLocations);
+		super.setLibraries(newLocations);
 	}
 
 	private void updateColors() {

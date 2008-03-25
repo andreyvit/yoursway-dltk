@@ -26,7 +26,6 @@ import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.launching.TclLaunchingPlugin;
 import org.eclipse.dltk.utils.DeployHelper;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 
 public class GenericTclInstallType extends AbstractInterpreterInstallType {
 	private static final String INSTALL_TYPE_NAME = "Generic Tcl";
@@ -67,10 +66,10 @@ public class GenericTclInstallType extends AbstractInterpreterInstallType {
 		return path.toFile();
 	}
 
-	protected IRunnableWithProgress createLookupRunnable(
+	protected ILookupRunnable createLookupRunnable(
 			final File installLocation, final List locations,
 			final EnvironmentVariable[] variables) {
-		return new IRunnableWithProgress() {
+		return new ILookupRunnable() {
 			public void run(IProgressMonitor monitor) {
 				try {
 					// This retrieval could not receive paths in some cases.
