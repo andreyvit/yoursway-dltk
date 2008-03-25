@@ -26,12 +26,15 @@
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer class="org.eclipse.dltk.internal.ui.preferences.PreferenceInitializer"/>      
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
       <page name="%buildPathPrefName"
 			category="org.eclipse.dltk.preferences.DLTKBasePreferencePage"
-			class="org.eclipse.dltk.internal.ui.preferences.NewScriptProjectPreferencePage"
+			class="org.eclipse.dltk.ui.preferences.NewScriptProjectPreferencePage"
 			id="org.eclipse.dltk.ui.preferences.BuildPathPreferencePage">
 		<keywordReference id="org.eclipse.dltk.ui.buildpathoptions"/>
-      </page>  
+      </page>
    </extension>
    <extension
          point="org.eclipse.core.runtime.adapters">
@@ -1064,13 +1067,13 @@
 
 <!-- Code completion -->
 <!-- content assist processors - do not change their order -->
-	<!--extension
+	<extension
 		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
 		id="templateProposalCategory"
 		name="%TemplateProposalCategory">
 		<proposalCategory
 			icon="/icons/full/elcl16/templateprop_co.gif"/>
-	</extension-->
+	</extension>
 
 	<!-- the parameterized content assist action and keybindings for our contributed computers -->
  
@@ -1131,23 +1134,23 @@
 	         	<separator name="extraSearchGroup"/> <!-- to be used by clients -->
          </menu>
 <!-- dialog group  -->
-         <action
+         <!--action
                label="%openScriptSearchPageAction.label"
                icon="$nl$/icons/full/obj16/jsearch_obj.gif"
                helpContextId="java_search_action_context"
                class="org.eclipse.dltk.internal.ui.search.OpenScriptSearchPageAction"
                menubarPath="org.eclipse.search.menu/dialogGroup"
                id="org.eclipse.dltk.ui.actions.OpenScriptSearchPage">
-         </action>
+         </action-->
 <!-- context menu group  -->
-         <action
+         <!--action
                definitionId="org.eclipse.dltk.ui.edit.text.script.search.occurrences.in.file.quickMenu"
                label="%occurrencesSubMenu.label"
                style="pulldown"
                class="org.eclipse.dltk.internal.ui.actions.OccurrencesSearchMenuAction"
                menubarPath="org.eclipse.search.menu/occurencesActionsGroup"
                id="org.eclipse.dltk.internal.ui.actions.OccurrencesSearchMenuAction">
-         </action>
+         </action-->
          <menu
                label="%writeAccessSubMenu.label"
                path="org.eclipse.search.menu/contextMenuActionsGroup"
