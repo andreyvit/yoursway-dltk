@@ -447,15 +447,19 @@ public abstract class AbstractSourceModule extends Openable implements
 			SourceModuleElementInfo moduleInfo = (SourceModuleElementInfo) info;
 
 			// get buffer contents
+			char[] contents;
 			IBuffer buffer = getBufferManager().getBuffer(this);
-			if (buffer == null) {
-				buffer = openBuffer(pm, moduleInfo); // open buffer
-				// independently
-				// from the info, since we are building the info
+			if (buffer != null) {
+			  contents = buffer.getCharacters();
+			}
+			else {
+			  //ssanders: PERFORMANCE - Avoid using a Buffer, if there isn't one already
+			  contents = getBufferContent();
+              //buffer = openBuffer(pm, moduleInfo); // open buffer
+              // independently
+              // from the info, since we are building the info
 			}
 
-			final char[] contents = (buffer == null) ? null : buffer
-					.getCharacters();
 			// generate structure and compute syntax problems if needed
 			SourceModuleStructureRequestor requestor = new SourceModuleStructureRequestor(
 					this, moduleInfo, newElements);
