@@ -54,7 +54,7 @@ public class PriorityClassDLTKExtensionManager extends PriorityDLTKExtensionMana
 	}
 
 	public Object getObject(IModelElement element) {
-		if (element.getElementType() == IModelElement.SCRIPT_MODEL) {
+		if (element == null || element.getElementType() == IModelElement.SCRIPT_MODEL) {
 			return null;
 		}
 		IProject project = element.getScriptProject().getProject();
