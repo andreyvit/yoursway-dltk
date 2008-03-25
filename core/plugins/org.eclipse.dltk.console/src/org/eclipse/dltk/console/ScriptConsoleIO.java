@@ -12,6 +12,7 @@ package org.eclipse.dltk.console;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.SocketTimeoutException;
 
 public class ScriptConsoleIO implements IScriptConsoleIO {
 
@@ -39,23 +40,35 @@ public class ScriptConsoleIO implements IScriptConsoleIO {
 			throws IOException {
 		byte[] buffer = new byte[len];
 		int from = 0;
-		while (from < buffer.length) {
-			int n = input.read(buffer, from, buffer.length - from);
-			if (n == -1) {
-				return null;
+		try {
+			while (from < buffer.length) {
+				int n;
+				try {
+				  n = input.read(buffer, from, buffer.length - from);
+				}
+				catch (SocketTimeoutException sxcn) {
+				    n = input.read(buffer, from, buffer.length - from);
+				}
+				if (n == -1) {
+					return null;
+				}
+				from += n;
 			}
-			from += n;
 		}
-		return new String(buffer);
+		catch (SocketTimeoutException sxcn) {
+			sxcn.printStackTrace();
+		}
+
+		return new String(buffer, 0, from);
 	}
 
 	protected static int readLength(InputStream input) throws IOException {
-		String strLen = readFixed(10, input);
-		if (strLen == null) {
+		try {
+			return Integer.parseInt(readFixed(10, input));
+		}
+		catch (NumberFormatException e) {
 			return -1;
 		}
-
-		return Integer.parseInt(strLen);
 	}
 
 	protected static String readResponse(InputStream input) throws IOException {

@@ -83,6 +83,7 @@ public class ScriptConsoleServer implements Runnable {
 
 			while (true) {
 				final Socket client = server.accept();
+				client.setSoTimeout(30000);
 
 				Thread clientHandler = new Thread(new Runnable() {
 					public void run() {

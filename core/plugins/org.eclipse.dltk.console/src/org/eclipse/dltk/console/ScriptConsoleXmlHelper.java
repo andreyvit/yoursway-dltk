@@ -52,6 +52,9 @@ public final class ScriptConsoleXmlHelper {
 	}
 
 	protected static Document parse(String xml) {
+		if ((xml == null) || (xml.length() == 0))
+			return null;
+
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory
 					.newInstance();
@@ -156,6 +159,10 @@ public final class ScriptConsoleXmlHelper {
 
 	public static InterpreterResponse parseInterpreterXml(String xml) {
 		Document doc = parse(xml);
+
+		if (doc == null) {
+			return null;
+		}
 
 		NodeList list = doc.getElementsByTagName("console").item(0) //$NON-NLS-1$
 				.getChildNodes();
