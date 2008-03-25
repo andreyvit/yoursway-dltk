@@ -89,7 +89,7 @@ public class DLTKLanguageManager {
 			throws CoreException {
 		IDLTKLanguageToolkit toolkit = (IDLTKLanguageToolkit) InternalDLTKLanguageManager
 				.getLanguageToolkitsManager().getObject(element);
-		if (toolkit == null
+		if (toolkit == null && element != null
 				&& element.getElementType() == IModelElement.SOURCE_MODULE) {
 			return findAppropriateToolkitByObject(element.getPath());
 		}
@@ -97,7 +97,17 @@ public class DLTKLanguageManager {
 	}
 
 	public static IDLTKLanguageToolkit findToolkit(IResource resource) {
-		return findAppropriateToolkitByObject(resource);
+		IDLTKLanguageToolkit toolkit = findAppropriateToolkitByObject(resource);
+		if (toolkit == null) {
+			IScriptProject scriptProject = DLTKCore.create(resource
+					.getProject());
+			try {
+				toolkit = getLanguageToolkit(scriptProject);
+			} catch (CoreException cxcn) {
+				cxcn.printStackTrace();
+			}
+		}
+		return toolkit;
 	}
 
 	public static IDLTKLanguageToolkit findToolkit(IPath path) {
