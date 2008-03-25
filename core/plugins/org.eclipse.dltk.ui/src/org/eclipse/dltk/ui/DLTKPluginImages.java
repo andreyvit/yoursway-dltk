@@ -106,7 +106,8 @@ public class DLTKPluginImages {
 	public static final String IMG_OBJS_ENV_VAR = NAME_PREFIX + "envvar_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_MODEL = NAME_PREFIX + "java_model_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_UNKNOWN = NAME_PREFIX + "unknown_obj.gif"; //$NON-NLS-1$
-	public static final String IMG_OBJS_LOCAL_VARIABLE = NAME_PREFIX + "localvariable_obj.gif"; //$NON-NLS-1$	
+	public static final String IMG_OBJS_LOCAL_VARIABLE = NAME_PREFIX + "localvariable_obj.gif"; //$NON-NLS-1$
+	public static final String IMG_OBJS_KEYWORD = NAME_PREFIX + "keyword_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_PROJECT_SETTINGS = NAME_PREFIX + "settings_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_TEMPLATE= NAME_PREFIX + "template_obj.gif"; 		//$NON-NLS-1$	
 	public static final String IMG_OBJS_PACKDECL= NAME_PREFIX + "packd_obj.gif"; 			//$NON-NLS-1$
@@ -293,6 +294,7 @@ public class DLTKPluginImages {
 	public static final ImageDescriptor DESC_FIELD_DEFAULT= createManagedFromKey(T_OBJ, IMG_FIELD_DEFAULT);
 	
 	public static final ImageDescriptor DESC_OBJS_LOCAL_VARIABLE= createManagedFromKey(T_OBJ, IMG_OBJS_LOCAL_VARIABLE);
+	public static final ImageDescriptor DESC_OBJS_KEYWORD= createManagedFromKey(T_OBJ, IMG_OBJS_KEYWORD);
 	
 	public static final ImageDescriptor DESC_METHOD_PUBLIC= createManagedFromKey(T_OBJ, IMG_METHOD_PUBLIC);
 	public static final ImageDescriptor DESC_METHOD_PROTECTED= createManagedFromKey(T_OBJ, IMG_METHOD_PROTECTED);

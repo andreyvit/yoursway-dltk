@@ -301,6 +301,8 @@ public class CompletionProposalLabelProvider {
 			descriptor = DLTKPluginImages.DESC_OBJS_PACKAGE;
 			break;
 		case CompletionProposal.KEYWORD:
+		    descriptor = DLTKPluginImages.DESC_OBJS_KEYWORD;
+		    break;
 		case CompletionProposal.LABEL_REF:
 			descriptor = null;
 			break;
