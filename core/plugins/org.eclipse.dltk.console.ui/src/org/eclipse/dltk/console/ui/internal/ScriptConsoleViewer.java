@@ -57,7 +57,7 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 		private List viewerList = new ArrayList();
 
 		private void addViewer(ScriptConsoleViewer viewer) {
-		  viewerList.add(viewer);
+			viewerList.add(viewer);
 		}
 
 		protected void connectListener() {
@@ -74,7 +74,8 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 				doc.set(""); //$NON-NLS-1$
 				appendInvitation();
 				for (Iterator iter = viewerList.iterator(); iter.hasNext();) {
-				  ((ScriptConsoleViewer)iter.next()).setCaretPosition(doc.getLength());
+					((ScriptConsoleViewer) iter.next()).setCaretPosition(doc
+							.getLength());
 				}
 				connectListener();
 			} catch (BadLocationException e) {
@@ -82,8 +83,8 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 			}
 		}
 
-		public ConsoleDocumentListener(ICommandHandler handler, ScriptConsolePrompt prompt,
-				ScriptConsoleHistory history) {
+		public ConsoleDocumentListener(ICommandHandler handler,
+				ScriptConsolePrompt prompt, ScriptConsoleHistory history) {
 			this.prompt = prompt;
 			this.handler = handler;
 			this.history = history;
@@ -127,25 +128,28 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 				ScriptConsoleViewer viewer;
 
 				for (Iterator iter = viewerList.iterator(); iter.hasNext();) {
-					viewer = (ScriptConsoleViewer)iter.next();
-				  if (viewer.styleProvider != null) {
-					  StyleRange[] styles = viewer.styleProvider.createInterpreterOutputStyle(result, start);
-					  if ((styles != null) && (styles.length > 0)) {
-						  addToPartitioner(viewer, styles);
-					  }
-				  }
+					viewer = (ScriptConsoleViewer) iter.next();
+					if (viewer.styleProvider != null) {
+						StyleRange[] styles = viewer.styleProvider
+								.createInterpreterOutputStyle(result, start);
+						if ((styles != null) && (styles.length > 0)) {
+							addToPartitioner(viewer, styles);
+						}
+					}
 				}
-				
+
 				history.commit();
 				offset = getLastLineLength();
 			}
 			appendInvitation();
 		}
-		
-		private void addToPartitioner (ScriptConsoleViewer viewer, StyleRange[] styles) {
-			IDocumentPartitioner partitioner = viewer.getDocument().getDocumentPartitioner();
+
+		private void addToPartitioner(ScriptConsoleViewer viewer,
+				StyleRange[] styles) {
+			IDocumentPartitioner partitioner = viewer.getDocument()
+					.getDocumentPartitioner();
 			if (partitioner instanceof ScriptConsolePartitioner) {
-				ScriptConsolePartitioner scriptConsolePartitioner = (ScriptConsolePartitioner) partitioner;						
+				ScriptConsolePartitioner scriptConsolePartitioner = (ScriptConsolePartitioner) partitioner;
 				scriptConsolePartitioner.addRanges(styles);
 				viewer.getTextWidget().redraw();
 			}
@@ -169,15 +173,17 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 					ScriptConsoleViewer viewer;
 
 					for (Iterator iter = viewerList.iterator(); iter.hasNext();) {
-						viewer = (ScriptConsoleViewer)iter.next();
-					  if (viewer.styleProvider != null) {
-						  StyleRange[] styles = viewer.styleProvider.createUserInputStyle(getCommandLine(), getCommandLineOffset());
-						  if ((styles != null) && (styles.length > 0)) {
-							  addToPartitioner(viewer, styles);
-						  }
-					  }
+						viewer = (ScriptConsoleViewer) iter.next();
+						if (viewer.styleProvider != null) {
+							StyleRange[] styles = viewer.styleProvider
+									.createUserInputStyle(getCommandLine(),
+											getCommandLineOffset());
+							if ((styles != null) && (styles.length > 0)) {
+								addToPartitioner(viewer, styles);
+							}
+						}
 					}
-					
+
 					history.update(getCommandLine());
 					start = index + delim.length();
 					handleCommandLine();
@@ -210,15 +216,16 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 			ScriptConsoleViewer viewer;
 
 			for (Iterator iter = viewerList.iterator(); iter.hasNext();) {
-				viewer = (ScriptConsoleViewer)iter.next();
-			  viewer.setCaretPosition(doc.getLength());
-			  viewer.revealEndOfDocument();
-			  if (viewer.styleProvider != null) {
-				  StyleRange[] styles = viewer.styleProvider.createPromptStyle(prompt, start);
-				  if ((styles != null) && (styles.length > 0)) {
-					  addToPartitioner(viewer, styles);
-				  }
-			  }
+				viewer = (ScriptConsoleViewer) iter.next();
+				viewer.setCaretPosition(doc.getLength());
+				viewer.revealEndOfDocument();
+				if (viewer.styleProvider != null) {
+					StyleRange[] styles = viewer.styleProvider
+							.createPromptStyle(prompt, start);
+					if ((styles != null) && (styles.length > 0)) {
+						addToPartitioner(viewer, styles);
+					}
+				}
 			}
 		}
 
@@ -272,13 +279,15 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 					switch (action) {
 					case ST.LINE_UP:
 						history.prev();
-						console.getDocumentListener().setCommandLine(history.get());
+						console.getDocumentListener().setCommandLine(
+								history.get());
 						setCaretOffset(getDocument().getLength());
 						return;
 
 					case ST.LINE_DOWN:
 						history.next();
-						console.getDocumentListener().setCommandLine(history.get());
+						console.getDocumentListener().setCommandLine(
+								history.get());
 						setCaretOffset(getDocument().getLength());
 						return;
 
@@ -363,9 +372,10 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 	}
 
 	public ScriptConsoleViewer(Composite parent, final ScriptConsole console,
-			final IScriptConsoleContentHandler contentHandler, IConsoleStyleProvider styleProvider) {
+			final IScriptConsoleContentHandler contentHandler,
+			IConsoleStyleProvider styleProvider) {
 		super(parent, console);
-		
+
 		this.console = console;
 		this.styleProvider = styleProvider;
 
@@ -395,26 +405,26 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 				try {
 					if (event.character != '\0') {
 						// Printable character
-			            // ssanders: Ensure selection is on last line
-			            ConsoleDocumentListener listener = console.getDocumentListener();
-			            int selStart = getSelectedRange().x;
-			            int selEnd = (getSelectedRange().x + getSelectedRange().y);
-			            int clOffset = listener.getCommandLineOffset();
-			            int clLength = listener.getCommandLineLength();
-			            if (selStart < clOffset) {
-			              int selLength;
+						// ssanders: Ensure selection is on last line
+						ConsoleDocumentListener listener = console
+								.getDocumentListener();
+						int selStart = getSelectedRange().x;
+						int selEnd = (getSelectedRange().x + getSelectedRange().y);
+						int clOffset = listener.getCommandLineOffset();
+						int clLength = listener.getCommandLineLength();
+						if (selStart < clOffset) {
+							int selLength;
 
-			              if (selEnd < clOffset) {
-			                selStart = (clOffset + clLength);
-			                selLength = 0;
-			              }
-			              else {
-			                selStart = clOffset;
-			                selLength = (selEnd - selStart);
-			              }
+							if (selEnd < clOffset) {
+								selStart = (clOffset + clLength);
+								selLength = 0;
+							} else {
+								selStart = clOffset;
+								selLength = (selEnd - selStart);
+							}
 
-			              setSelectedRange(selStart, selLength);
-			            }
+							setSelectedRange(selStart, selLength);
+						}
 
 						if (beginLineOffset() < console.getDocumentListener()
 								.getLastLineReadOnlySize()) {
@@ -481,26 +491,27 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements
 	public void insertText(String text) {
 		getTextWidget().append(text);
 	}
+
 	public boolean canDoOperation(int operation) {
-	    boolean canDoOperation = super.canDoOperation(operation);
+		boolean canDoOperation = super.canDoOperation(operation);
 
-	    if (canDoOperation) {
-	      switch (operation) {
-	        case CUT:
-	        case DELETE:
-	        case PASTE:
-	        case SHIFT_LEFT:
-	        case SHIFT_RIGHT:
-	        case PREFIX:
-	        case STRIP_PREFIX:
-	          canDoOperation = isCaretOnLastLine();
-	      }
-	    }
+		if (canDoOperation) {
+			switch (operation) {
+			case CUT:
+			case DELETE:
+			case PASTE:
+			case SHIFT_LEFT:
+			case SHIFT_RIGHT:
+			case PREFIX:
+			case STRIP_PREFIX:
+				canDoOperation = isCaretOnLastLine();
+			}
+		}
 
-	    return canDoOperation;
-	  }
+		return canDoOperation;
+	}
 
 	public void setStyleProvider(IConsoleStyleProvider provider) {
-		this.styleProvider = provider;		
+		this.styleProvider = provider;
 	}
 }
