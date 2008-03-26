@@ -148,12 +148,14 @@ public abstract class ScriptLaunchConfigurationTab extends
 		config.setAttribute(
 				ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, project);
 
-		config.setAttribute(
-				ScriptLaunchConfigurationConstants.ENABLE_BREAK_ON_FIRST_LINE,
-				breakOnFirstLine.getSelection());
-		config.setAttribute(
-				ScriptLaunchConfigurationConstants.ENABLE_DBGP_LOGGING,
-				enableLogging.getSelection());
+		if (breakOnFirstLine != null)
+			config.setAttribute(
+					ScriptLaunchConfigurationConstants.ENABLE_BREAK_ON_FIRST_LINE,
+					breakOnFirstLine.getSelection());
+		if (enableLogging != null)
+			config.setAttribute(
+					ScriptLaunchConfigurationConstants.ENABLE_DBGP_LOGGING,
+					enableLogging.getSelection());
 
 		doPerformApply(config);
 	}
@@ -481,8 +483,10 @@ public abstract class ScriptLaunchConfigurationTab extends
 		PreferencesLookupDelegate delegate = new PreferencesLookupDelegate(
 				getProject());
 
-		breakOnFirstLine.setSelection(breakOnFirstLinePrefEnabled(delegate));
-		enableLogging.setSelection(dbpgLoggingPrefEnabled(delegate));
+		if (breakOnFirstLine != null)
+			breakOnFirstLine.setSelection(breakOnFirstLinePrefEnabled(delegate));
+		if (enableLogging != null)
+			enableLogging.setSelection(dbpgLoggingPrefEnabled(delegate));
 	}
 
 	/**
@@ -499,10 +503,12 @@ public abstract class ScriptLaunchConfigurationTab extends
 
 		setProjectName(projectName);
 
-		breakOnFirstLine.setSelection(LaunchConfigurationUtils
-				.isBreakOnFirstLineEnabled(config));
-		enableLogging.setSelection(LaunchConfigurationUtils
-				.isDbgpLoggingEnabled(config));
+		if (breakOnFirstLine != null)
+			breakOnFirstLine.setSelection(LaunchConfigurationUtils
+					.isBreakOnFirstLineEnabled(config));
+		if (enableLogging != null)
+			enableLogging.setSelection(LaunchConfigurationUtils
+					.isDbgpLoggingEnabled(config));
 	}
 
 	protected boolean validateProject() {
