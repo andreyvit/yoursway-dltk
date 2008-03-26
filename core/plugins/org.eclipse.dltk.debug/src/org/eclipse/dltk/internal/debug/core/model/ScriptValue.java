@@ -32,6 +32,7 @@ import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.internal.debug.core.eval.ScriptEvaluationCommand;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
 
 public class ScriptValue extends ScriptDebugElement implements IScriptValue,
 		IIndexedValue {
@@ -99,6 +100,8 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue,
 			IDbgpProperty p = properties[i];
 			variables[offset + i] = new ScriptVariable(frame, p, p.getName());
 		}
+		Arrays.sort(this.variables, offset, offset + properties.length,
+				new VariableNameComparator());
 		Assert.isLegal(pageSize > 0 || properties.length == variables.length);
 	}
 
@@ -121,13 +124,30 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue,
 	}
 
 	public String getValueString() {
-		if (value == null) {
+		if (value == null || value.length() == 0) {
 			if (type.isString()) {
 				value = prepareString(rawValue);
 			}
 			else if (!type.isAtomic()) {
 				StringBuffer sb = new StringBuffer();
-				sb.append(type.getName());
+				if ("Array".equals(type.getName())) { //$NON-NLS-1$
+					try {
+						if (getVariables().length > 0)
+							sb.append(getVariable(0).getReferenceTypeName());
+						else
+							sb.append("Object"); //$NON-NLS-1$
+					}
+					catch (DebugException e) {
+						sb.append("Object"); //$NON-NLS-1$
+					}
+					try {
+						sb.append("[" + getVariables().length + "]"); //$NON-NLS-1$ //$NON-NLS-2$
+					}
+					catch (DebugException e) {
+						sb.append("[]"); //$NON-NLS-1$
+					}
+				} else
+					sb.append(type.getName());
 				String id = getInstanceId();
 				if (id != null) {
 					sb.append(" (id = " + id + ")"); // TODO add constant //$NON-NLS-1$ //$NON-NLS-2$
@@ -150,7 +170,9 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue,
 			return null;
 		}
 		StringBuffer escaped = new StringBuffer();
-		escaped.append('"');
+		if ((!string.startsWith("'") || !string.endsWith("'")) //$NON-NLS-1$ //$NON-NLS-2$
+				&& (!string.startsWith("\"") || !string.endsWith("\""))) //$NON-NLS-1$ //$NON-NLS-2$
+			escaped.append('"');
 		for (int i = 0; i < string.length(); i++) {
 			char c = string.charAt(i);
 			switch (c) {
@@ -162,7 +184,9 @@ public class ScriptValue extends ScriptDebugElement implements IScriptValue,
 					break;
 			}
 		}
-		escaped.append('"');
+		if ((!string.startsWith("'") || !string.endsWith("'")) //$NON-NLS-1$ //$NON-NLS-2$
+				&& (!string.startsWith("\"") || !string.endsWith("\""))) //$NON-NLS-1$ //$NON-NLS-2$
+			escaped.append('"');
 		return escaped.toString();
 	}
 
