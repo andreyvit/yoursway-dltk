@@ -45,10 +45,10 @@ public class RubyAssignment extends RubyBinaryExpression
 	}
 
 	/**
-	 * Convert to string in pettern: "left = right"
+	 * Convert to string in pattern: "left = right"
 	 */
 	public String toString( ) {
-		return getLeft().toString( ) + '=' + getRight().toString( );
+		return String.valueOf(getLeft()) + '=' + String.valueOf(getRight());
 	}
 
 	/**
