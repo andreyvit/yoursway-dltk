@@ -10,6 +10,7 @@
 package org.eclipse.dltk.internal.ui;
 
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IParent;
 import org.eclipse.dltk.core.ModelException;
@@ -65,7 +66,9 @@ public class DLTKWorkbenchAdapter implements IWorkbenchAdapter {
 	
 	private IModelElement getModelElement(Object element) {
 		if (element instanceof IModelElement)
-			return (IModelElement)element;		
+			return (IModelElement)element;
+		else if (element instanceof IAdaptable)
+		    return (IModelElement)((IAdaptable)element).getAdapter(IModelElement.class);
 
 		return null;
 	}
