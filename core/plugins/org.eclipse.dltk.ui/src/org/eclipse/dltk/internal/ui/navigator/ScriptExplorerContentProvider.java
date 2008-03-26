@@ -1029,7 +1029,7 @@ public class ScriptExplorerContentProvider extends
 		fShowLibrariesNode = state;
 	}
 
-	private void postRefresh(Object root, final int relation,
+	protected void postRefresh(Object root, final int relation,
 			final Object affectedElement, final Collection runnables) {
 		// JFace doesn't refresh when object isn't part of the viewer
 		// Therefore move the refresh start down to the viewer's input
