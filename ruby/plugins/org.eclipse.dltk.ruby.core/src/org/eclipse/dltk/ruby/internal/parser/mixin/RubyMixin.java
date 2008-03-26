@@ -9,11 +9,23 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.parser.mixin;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
+import org.eclipse.dltk.ast.parser.ISourceParserConstants;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.ISourceModuleInfoCache;
 import org.eclipse.dltk.core.SourceParserUtil;
+import org.eclipse.dltk.core.ISourceModuleInfoCache.ISourceModuleInfo;
 import org.eclipse.dltk.core.mixin.IMixinParser;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
+import org.eclipse.dltk.internal.core.BuiltinSourceModule;
+import org.eclipse.dltk.internal.core.ModelManager;
+import org.eclipse.dltk.ruby.core.RubyNature;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class RubyMixin implements IMixinParser {
 
@@ -25,21 +37,79 @@ public class RubyMixin implements IMixinParser {
 
 	private IMixinRequestor requestor;
 
+    private static char[] loadContent(ISourceModule module) throws CoreException {
+      char[] content = null;
+
+      IPath absolutePath;
+      if (module.getResource() != null) {
+        absolutePath = module.getResource().getLocation();
+      }
+      else {
+        absolutePath = module.getPath();
+      }
+      if (absolutePath.toFile().exists()) {
+        InputStreamReader reader = null;
+        try {
+          StringBuilder builder = new StringBuilder();
+          reader = new InputStreamReader(new FileInputStream(absolutePath.toFile()));
+
+          char[] cbuf = new char[12 * 1024];
+          while (reader.ready() == true) {
+            int read = reader.read(cbuf);
+            builder.append(cbuf, 0, read);
+          }
+
+          content = new char[builder.length()];
+          builder.getChars(0, content.length, content, 0);
+        }
+        catch (IOException ixcn) {
+          ixcn.printStackTrace();
+        }
+        finally {
+          if (reader != null) {
+            try {
+              reader.close();
+            }
+            catch (IOException ixcn) {
+              ixcn.printStackTrace();
+            }
+          }
+        }
+      }
+      else if (module instanceof BuiltinSourceModule) {
+        content = ((BuiltinSourceModule)module).getSourceAsCharArray();
+      }
+      else {
+        content = module.getSourceAsCharArray();
+      }
+
+      return content;
+    }
+
 	public void parserSourceModule(boolean signature, ISourceModule module) {
 		// if( module != null ) {
 		// RubyMixinModel.getRawInstance().remove(module);
 		// }
 		// long start = System.currentTimeMillis();
 
-		ModuleDeclaration moduleDeclaration = SourceParserUtil
-				.getModuleDeclaration(module, null);
+	    try {
+	      //ssanders - Avoid using Buffer in order to improve build performance
+          ISourceModuleInfoCache sourceModuleInfoCache = ModelManager.getModelManager().getSourceModuleInfoCache();
+          ISourceModuleInfo sourceModuleInfo = sourceModuleInfoCache.get(module);
+          ModuleDeclaration moduleDeclaration = SourceParserUtil.getModuleFromCache(sourceModuleInfo, ISourceParserConstants.DEFAULT);
+          if (moduleDeclaration == null) {
+            // ssanders: PERFORMANCE - Avoid using a buffer
+            char[] content = loadContent(module);
+		    moduleDeclaration = SourceParserUtil
+				.getModuleDeclaration(module.getPath().toOSString().toCharArray(),
+				                      content, RubyNature.NATURE_ID, null, sourceModuleInfo);
+          }
 
 		// long end = System.currentTimeMillis();
 		// System.out.println("RubyMixin: parsing took " + (end - start));
 		// start = end;
-		RubyMixinBuildVisitor visitor = new RubyMixinBuildVisitor(
+		  RubyMixinBuildVisitor visitor = new RubyMixinBuildVisitor(
 				moduleDeclaration, module, signature, requestor);
-		try {
 			moduleDeclaration.traverse(visitor);
 		} catch (Exception e) {
 			e.printStackTrace();
