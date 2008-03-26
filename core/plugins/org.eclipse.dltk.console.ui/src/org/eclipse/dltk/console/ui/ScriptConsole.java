@@ -137,6 +137,10 @@ public class ScriptConsole extends TextConsole implements ICommandHandler {
 		};
 	}
 
+	public ScriptConsole(String consoleName, String consoleType) {
+		this(consoleName, consoleType, null);
+	}
+
 	public IScriptConsoleSession getSession() {
 		return session;
 	}
