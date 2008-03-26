@@ -12,6 +12,7 @@ package org.eclipse.dltk.core.tests.model;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -206,7 +207,7 @@ public abstract class AbstractModelTests extends SuiteOfTestCases {
 		for (int i = 0; i < files.length; i++) {
 			File sourceChild = files[i];
 			String name = sourceChild.getName();
-			if (name.equals("CVS"))
+			if (name.equals("CVS") || name.equals(".svn"))
 				continue;
 			File targetChild = new File(target, name);
 			if (sourceChild.isDirectory()) {
@@ -221,29 +222,31 @@ public abstract class AbstractModelTests extends SuiteOfTestCases {
 	 * Copy file from src (path to the original file) to dest (path to the
 	 * destination file).
 	 */
-	public void copy(File src, File dest) throws IOException {
-		// read source bytes
-		byte[] srcBytes = this.read(src);
+	public static void copy(File src, File dest) throws IOException {
+	  InputStream in = null;
+	  OutputStream out = null;
+	  byte[] buffer = new byte[12 * 1024];
+	  int read;
 
-		// write bytes to dest
-		FileOutputStream out = new FileOutputStream(dest);
-		out.write(srcBytes);
-		out.close();
-	}
+	  try {
+	    in = new FileInputStream(src);
 
-	public byte[] read(java.io.File file) throws java.io.IOException {
-		int fileLength;
-		byte[] fileBytes = new byte[fileLength = (int) file.length()];
-		java.io.FileInputStream stream = new java.io.FileInputStream(file);
-		int bytesRead = 0;
-		int lastReadSize = 0;
-		while ((lastReadSize != -1) && (bytesRead != fileLength)) {
-			lastReadSize = stream.read(fileBytes, bytesRead, fileLength
-					- bytesRead);
-			bytesRead += lastReadSize;
-		}
-		stream.close();
-		return fileBytes;
+	    try {
+	      out = new FileOutputStream(dest);
+
+	      while ((read = in.read(buffer)) != -1) {
+	        out.write(buffer, 0, read); 
+	      }
+	    } finally {
+	      if (out != null) {
+	        out.close();
+	      }
+	    }
+	  } finally {
+	    if (in != null) {
+	      in.close();
+	    }
+	  }
 	}
 
 	protected IProject setUpProject(final String projectName)
