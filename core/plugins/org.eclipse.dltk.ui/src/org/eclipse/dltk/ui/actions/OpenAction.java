@@ -17,6 +17,7 @@ import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
@@ -113,11 +114,17 @@ public class OpenAction extends SelectionDispatchAction {
 			return false;
 		for (Iterator iter = selection.iterator(); iter.hasNext();) {
 			Object element = iter.next();
-			if (element instanceof ISourceReference)
+			if ((element instanceof ISourceReference)
+					|| ((element instanceof IAdaptable) && (((IAdaptable) element)
+							.getAdapter(ISourceReference.class) != null)))
 				continue;
-			if (element instanceof IFile)
+			if ((element instanceof IFile)
+					|| ((element instanceof IAdaptable) && (((IAdaptable) element)
+							.getAdapter(IFile.class) != null)))
 				continue;
-			if (element instanceof IStorage)
+			if ((element instanceof IStorage)
+					|| ((element instanceof IAdaptable) && (((IAdaptable) element)
+							.getAdapter(IStorage.class) != null)))
 				continue;
 			return false;
 		}
@@ -273,7 +280,31 @@ public class OpenAction extends SelectionDispatchAction {
 	 *             if an error occurs while accessing the Script model
 	 */
 	public Object getElementToOpen(Object object) throws ModelException {
-		return object;
+		Object target = null;
+
+		if (((object instanceof ISourceReference) != true)
+				&& ((object instanceof ISourceReference) != true)
+				&& ((object instanceof ISourceReference) != true)
+				&& (object instanceof IAdaptable)) {
+			IAdaptable adaptable = (IAdaptable) object;
+
+			target = adaptable.getAdapter(ISourceReference.class);
+			if (target == null) {
+				target = adaptable.getAdapter(IModelElement.class);
+				if (target == null) {
+					target = adaptable.getAdapter(IFile.class);
+					if (target == null) {
+						target = adaptable.getAdapter(IStorage.class);
+					}
+				}
+			}
+		}
+
+		if (target == null) {
+			target = object;
+		}
+
+		return target;
 	}
 
 	private String getDialogTitle() {
