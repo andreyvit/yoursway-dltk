@@ -194,8 +194,11 @@ public abstract class DLTKElementResourceMapping extends ResourceMapping {
 				return new ResourceTraversal[] {
 					new ResourceTraversal(new IResource[] {fPack.getResource()}, IResource.DEPTH_ONE, 0)
 				};
-			} else {
+			} else if (fPack.getResource() != null) {
 				return new ResourceTraversal[] { new LocalPackageFragementTraversal(fPack) };
+			}
+			else {
+			  return new ResourceTraversal[0];
 			}
 		}
 		public void accept(ResourceMappingContext context, IResourceVisitor visitor, IProgressMonitor monitor) throws CoreException {
@@ -336,7 +339,7 @@ public abstract class DLTKElementResourceMapping extends ResourceMapping {
 	}
 	
 	public static ResourceMapping create(ISourceModule unit) {
-		if (unit == null)
+		if ((unit == null) || (unit.getResource() == null))
 			return null;
 		return new SourceModuleResourceMapping(unit.getPrimary());
 	}	
