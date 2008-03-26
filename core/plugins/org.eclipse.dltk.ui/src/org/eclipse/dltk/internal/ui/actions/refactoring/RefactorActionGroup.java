@@ -211,13 +211,14 @@ public class RefactorActionGroup extends ActionGroup {
 
 		fSite= editor.getEditorSite();
 		fEditor= editor;
+		
 		fGroupName= groupName;
 		ISelectionProvider provider= editor.getSelectionProvider();
 		ISelection selection= provider.getSelection();
 		
 		fRenameAction= new RenameAction(editor);
 		initAction(fRenameAction, selection, IScriptEditorActionDefinitionIds.RENAME_ELEMENT);
-		editor.setAction("RenameElement", fRenameAction); //$NON-NLS-1$
+        editor.setAction("RenameElement", fRenameAction); //$NON-NLS-1$
 //		
 		fMoveAction= new MoveAction(editor);
 		initAction(fMoveAction, selection, IScriptEditorActionDefinitionIds.MOVE_ELEMENT);
@@ -505,7 +506,7 @@ public class RefactorActionGroup extends ActionGroup {
 						refactorMenuShown(manager);
 					}
 				});
-				refactorSubmenu.add(fNoActionAvailable);
+//				refactorSubmenu.add(fNoActionAvailable); //TODO(mhowe)
 				menu.appendToGroup(fGroupName, refactorSubmenu);
 			} 
 		} else {
@@ -513,8 +514,9 @@ public class RefactorActionGroup extends ActionGroup {
 			for (Iterator iter= fActions.iterator(); iter.hasNext(); ) {
 				((SelectionDispatchAction)iter.next()).update(selection);
 			}
-			if (fillRefactorMenu(refactorSubmenu) > 0)
+			if (fillRefactorMenu(refactorSubmenu) > 0) {
 				menu.appendToGroup(fGroupName, refactorSubmenu);
+			}
 		}
 	}
 	
@@ -524,30 +526,30 @@ public class RefactorActionGroup extends ActionGroup {
 		added+= addAction(refactorSubmenu, fRenameAction);
 		added+= addAction(refactorSubmenu, fMoveAction);
 		refactorSubmenu.add(new Separator(GROUP_CODING));
-		added+= addAction(refactorSubmenu, fModifyParametersAction);
-		added+= addAction(refactorSubmenu, fExtractMethodAction);
-		added+= addAction(refactorSubmenu, fExtractTempAction);
-		added+= addAction(refactorSubmenu, fExtractConstantAction);
-		added+= addAction(refactorSubmenu, fInlineAction);
+//		added+= addAction(refactorSubmenu, fModifyParametersAction);
+//		added+= addAction(refactorSubmenu, fExtractMethodAction);
+//		added+= addAction(refactorSubmenu, fExtractTempAction);
+//		added+= addAction(refactorSubmenu, fExtractConstantAction);
+//		added+= addAction(refactorSubmenu, fInlineAction);
 		refactorSubmenu.add(new Separator(GROUP_REORG2));
-		added+= addAction(refactorSubmenu, fConvertAnonymousToNestedAction);
-		added+= addAction(refactorSubmenu, fConvertNestedToTopAction);
-		added+= addAction(refactorSubmenu, fConvertLocalToFieldAction);
+//		added+= addAction(refactorSubmenu, fConvertAnonymousToNestedAction);
+//		added+= addAction(refactorSubmenu, fConvertNestedToTopAction);
+//		added+= addAction(refactorSubmenu, fConvertLocalToFieldAction);
 		refactorSubmenu.add(new Separator(GROUP_TYPE));
-		added+= addAction(refactorSubmenu, fExtractInterfaceAction);
-		added+= addAction(refactorSubmenu, fExtractSupertypeAction);
-		added+= addAction(refactorSubmenu, fUseSupertypeAction);
-		added+= addAction(refactorSubmenu, fPullUpAction);
-		added+= addAction(refactorSubmenu, fPushDownAction);
+//		added+= addAction(refactorSubmenu, fExtractInterfaceAction);
+//		added+= addAction(refactorSubmenu, fExtractSupertypeAction);
+//		added+= addAction(refactorSubmenu, fUseSupertypeAction);
+//		added+= addAction(refactorSubmenu, fPullUpAction);
+//		added+= addAction(refactorSubmenu, fPushDownAction);
 		refactorSubmenu.add(new Separator(GROUP_CODING2));
-		added+= addAction(refactorSubmenu, fIntroduceIndirectionAction);
-		added+= addAction(refactorSubmenu, fIntroduceFactoryAction);
-		added+= addAction(refactorSubmenu, fIntroduceParameterAction);
-		added+= addAction(refactorSubmenu, fSelfEncapsulateField);
+//		added+= addAction(refactorSubmenu, fIntroduceIndirectionAction);
+//		added+= addAction(refactorSubmenu, fIntroduceFactoryAction);
+//		added+= addAction(refactorSubmenu, fIntroduceParameterAction);
+//		added+= addAction(refactorSubmenu, fSelfEncapsulateField);
 //		added+= addAction(refactorSubmenu, fReplaceInvocationsAction);
 		refactorSubmenu.add(new Separator(GROUP_TYPE2));
-		added+= addAction(refactorSubmenu, fChangeTypeAction);
-		added+= addAction(refactorSubmenu, fInferTypeArgumentsAction);
+//		added+= addAction(refactorSubmenu, fChangeTypeAction);
+//		added+= addAction(refactorSubmenu, fInferTypeArgumentsAction);
 		return added;
 	}
 	
@@ -556,7 +558,7 @@ public class RefactorActionGroup extends ActionGroup {
 			menu.add(action);
 			return 1;
 		}
-		return 0;
+		return 1;
 	}
 	
 	private void refactorMenuShown(final IMenuManager refactorSubmenu) {
@@ -576,8 +578,8 @@ public class RefactorActionGroup extends ActionGroup {
 			SelectionDispatchAction action= (SelectionDispatchAction)iter.next();
 			action.update(javaSelection);
 		}
-		refactorSubmenu.removeAll();
-		if (fillRefactorMenu(refactorSubmenu) == 0)
+//		refactorSubmenu.removeAll();//TODO(mhowe)
+		if (fillRefactorMenu(refactorSubmenu) == 0) 
 			refactorSubmenu.add(fNoActionAvailable);
 	}
 	
