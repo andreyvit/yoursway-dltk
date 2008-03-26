@@ -31,20 +31,16 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.ruby.ast.RubyASTUtil;
 import org.eclipse.dltk.ruby.ast.RubyAliasExpression;
 import org.eclipse.dltk.ruby.ast.RubyAssignment;
-import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyConstantDeclaration;
 import org.eclipse.dltk.ruby.core.RubyConstants;
 
 public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
 	private static final String NEW_CALL = "new"; //$NON-NLS-1$
-	private static final String ATTR = "attr"; //$NON-NLS-1$
 	private static final String VALUE = "value"; //$NON-NLS-1$
-	private static final String ATTR_ACCESSOR = "attr_accessor"; //$NON-NLS-1$
-	private static final String ATTR_WRITER = "attr_writer"; //$NON-NLS-1$
-	private static final String ATTR_READER = "attr_reader"; //$NON-NLS-1$
 
 	private static class TypeField {
 		private String fName;
@@ -172,26 +168,8 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 		List expressions = list.getChilds();
 		List names = new ArrayList();
 		for (Iterator iter = expressions.iterator(); iter.hasNext();) {
-			ASTNode expr = (ASTNode) iter.next();
-			if (expr instanceof SimpleReference) {
-				names.add(((SimpleReference) expr).getName());
-			} else if (expr instanceof RubyColonExpression) { // FIXME
-				String name = ""; //$NON-NLS-1$
-
-				while (expr instanceof RubyColonExpression) {
-					RubyColonExpression colonExpression = (RubyColonExpression) expr;
-					name = "::" + colonExpression.getName(); //$NON-NLS-1$
-					ASTNode left = colonExpression.getLeft();
-					if (!colonExpression.isFull() && left == null) {
-						name = name.substring(2);
-					}
-					expr = left;
-				}
-
-				if (expr instanceof ConstantReference) {
-					ConstantReference constant = (ConstantReference) expr;
-					name = constant.getName() + name;
-				}
+			String name = RubyASTUtil.resolveClassName((ASTNode) iter.next());
+			if (name != null && name.length() > 0) {
 				names.add(name);
 			}
 		}
@@ -241,11 +219,6 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 		}
 
 		fNotAddedFields.clear();
-	}
-
-	protected static boolean isAttrLike(String name) {
-		return name.equals(ATTR_READER) || name.equals(ATTR_WRITER)
-				|| name.equals(ATTR_ACCESSOR) || name.equals(ATTR);
 	}
 
 	// Visiting expressions
