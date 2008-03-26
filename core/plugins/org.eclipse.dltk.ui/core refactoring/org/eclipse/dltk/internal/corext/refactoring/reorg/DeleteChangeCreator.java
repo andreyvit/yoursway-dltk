@@ -22,11 +22,13 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceManipulation;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.internal.corext.refactoring.Checks;
 import org.eclipse.dltk.internal.corext.refactoring.RefactoringCoreMessages;
 import org.eclipse.dltk.internal.corext.refactoring.changes.DeleteFileChange;
@@ -39,6 +41,9 @@ import org.eclipse.dltk.internal.corext.refactoring.util.TextChangeManager;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.NullChange;
+import org.eclipse.ltk.core.refactoring.TextFileChange;
+import org.eclipse.text.edits.DeleteEdit;
+import org.eclipse.text.edits.MultiTextEdit;
 
 
 
@@ -93,13 +98,44 @@ class DeleteChangeCreator {
 	/*
 	 * List<IModelElement> modelElements
 	 */
+	//Added my mhowe - added delete IType and IMethod model elements
 	private static Change createDeleteChange(ISourceModule cu, List modelElements, TextChangeManager manager) throws CoreException {
 //		SourceModule cuNode= RefactoringASTParser.parseWithASTProvider(cu, false, null);
 //		SourceModuleRewrite rewriter= new SourceModuleRewrite(cu, cuNode);
-//		IModelElement[] elements= (IModelElement[]) modelElements.toArray(new IModelElement[modelElements.size()]);
-//		ASTNodeDeleteUtil.markAsDeleted(elements, rewriter, null);
+	  Assert.isNotNull(cu);
+	  Assert.isNotNull(modelElements);
+	  Assert.isNotNull(manager);
+      TextFileChange textFileChange = null;
+	  if (cu != null && cu.getResource() instanceof IFile) {
+	    textFileChange = new TextFileChange(cu.getElementName(), (IFile)cu.getResource());
+	    MultiTextEdit fileChangeRootEdit = new MultiTextEdit();
+	    textFileChange.setEdit(fileChangeRootEdit);
+
+	    manager.manage(cu, textFileChange);
+
+	    IModelElement[] elements= (IModelElement[]) modelElements.toArray(new IModelElement[modelElements.size()]);
+
+		for (int cnt = 0, max = elements.length; cnt < max; cnt++) {
+		  ISourceRange sourceRange = null;
+		  if (elements[cnt] instanceof IMember) {
+		    IMember type = (IMember)elements[cnt];
+		    sourceRange = type.getSourceRange();
+		  }
+		  if (sourceRange != null) {
+		    DeleteEdit edit = new DeleteEdit(sourceRange.getOffset(), sourceRange.getLength());
+		    
+		    fileChangeRootEdit.addChild(edit);
+		    if (cu.isWorkingCopy()) {
+		      textFileChange.setSaveMode(TextFileChange.LEAVE_DIRTY);
+		    }
+
+		  }
+        }
+	  }
+		
+		//		ASTNodeDeleteUtil.markAsDeleted(elements, rewriter, null);
 //		return addTextEditFromRewrite(manager, cu, rewriter.getASTRewrite());
-		return null;
+	  return textFileChange;
 	}
 
 //	private static TextChange addTextEditFromRewrite(TextChangeManager manager, ISourceModule cu, ASTRewrite rewrite) throws CoreException {
