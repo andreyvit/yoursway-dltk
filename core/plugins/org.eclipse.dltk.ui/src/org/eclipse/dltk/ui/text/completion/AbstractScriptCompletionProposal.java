@@ -907,7 +907,7 @@ public abstract class AbstractScriptCompletionProposal implements
 		return fSortString;
 	}
 
-	protected void setSortString(String string) {
+	public void setSortString(String string) {
 		fSortString = string;
 	}
 
