@@ -44,9 +44,11 @@ import org.eclipse.dltk.internal.ui.StandardModelElementContentProvider;
 import org.eclipse.dltk.internal.ui.dnd.DLTKViewerDragSupport;
 import org.eclipse.dltk.internal.ui.dnd.DLTKViewerDropSupport;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
+import org.eclipse.dltk.internal.ui.editor.ExternalStorageEditorInput;
 import org.eclipse.dltk.internal.ui.navigator.ScriptExplorerContentProvider;
 import org.eclipse.dltk.internal.ui.navigator.ScriptExplorerLabelProvider;
 import org.eclipse.dltk.internal.ui.workingsets.ConfigureWorkingSetAction;
+import org.eclipse.dltk.internal.ui.workingsets.ViewActionGroup;
 import org.eclipse.dltk.internal.ui.workingsets.WorkingSetFilterActionGroup;
 import org.eclipse.dltk.internal.ui.workingsets.WorkingSetModel;
 import org.eclipse.dltk.ui.DLTKUILanguageManager;
@@ -105,6 +107,7 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPartListener2;
@@ -119,6 +122,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.actions.ActionContext;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.part.ISetSelectionTarget;
 import org.eclipse.ui.part.IShowInSource;
 import org.eclipse.ui.part.IShowInTarget;
@@ -779,11 +783,15 @@ public class ScriptExplorerPart extends ViewPart implements
 		}
 	}
 
-	private ScriptExplorerLabelProvider createLabelProvider() {
+	protected ScriptExplorerLabelProvider createLabelProvider() {
 
 		final IPreferenceStore store = DLTKUIPlugin.getDefault()
 				.getPreferenceStore();
 		return new ScriptExplorerLabelProvider(fContentProvider, store);
+	}
+	
+	protected ScriptExplorerContentProvider getContentProvider() {
+	  return fContentProvider;
 	}
 
 	private IElementComparer createElementComparer() {
@@ -1207,7 +1215,7 @@ public class ScriptExplorerPart extends ViewPart implements
 	 * @param editor
 	 *            the activated editor
 	 */
-	void editorActivated(IEditorPart editor) {
+	protected void editorActivated(IEditorPart editor) {
 		IEditorInput editorInput = editor.getEditorInput();
 		if (editorInput == null) {
 			return;
@@ -1248,7 +1256,7 @@ public class ScriptExplorerPart extends ViewPart implements
 		return input;
 	}
 
-	private boolean inputIsSelected(IEditorInput input) {
+	protected boolean inputIsSelected(IEditorInput input) {
 		IStructuredSelection selection = (IStructuredSelection) fViewer
 				.getSelection();
 		if (selection.size() != 1) {
@@ -1268,7 +1276,7 @@ public class ScriptExplorerPart extends ViewPart implements
 		return input.equals(selectionAsInput);
 	}
 
-	boolean showInput(Object input) {
+	protected boolean showInput(Object input) {
 		Object element = null;
 
 		if (input instanceof IFile && isOnBuildpath((IFile) input)) {
@@ -1361,9 +1369,23 @@ public class ScriptExplorerPart extends ViewPart implements
 		}
 	}
 
+	protected Object getElementOfInput(IEditorInput input) {
+		if (input instanceof IFileEditorInput)
+			return ((IFileEditorInput)input).getFile();
+		else if (input instanceof ExternalStorageEditorInput)
+			return ((ExternalStorageEditorInput)input).getStorage();
+	    else if (input instanceof FileStoreEditorInput) {
+	      ISourceModule module = DLTKUIPlugin.resolveSourceModule((FileStoreEditorInput)input);
+	      if (module != null) {
+	        return module;
+	      }
+	    }
+		return null;
+	}
+	
 	/**
-	 * Returns the TreeViewer.
-	 */
+ 	 * Returns the TreeViewer.
+ 	 */
 	public TreeViewer getTreeViewer() {
 		return fViewer;
 	}
@@ -1780,9 +1802,17 @@ public class ScriptExplorerPart extends ViewPart implements
 	public int getRootMode() {
 		return fRootMode;
 	}
-
-	private void setComparator() {
-		if (getRootMode() == ScriptExplorerPart.WORKING_SETS_AS_ROOTS) {
+	
+	protected boolean showProjects() {
+		return fRootMode == ViewActionGroup.SHOW_PROJECTS;
+	}
+	
+	protected boolean showWorkingSets() {
+		return fRootMode == ViewActionGroup.SHOW_WORKING_SETS;
+	}
+	
+	protected void setComparator() {
+		if (showWorkingSets()) {
 			WorkingSetAwareModelElementSorter comparator = new WorkingSetAwareModelElementSorter();
 			comparator.setInnerElements(false);
 			fViewer.setComparator(comparator);
