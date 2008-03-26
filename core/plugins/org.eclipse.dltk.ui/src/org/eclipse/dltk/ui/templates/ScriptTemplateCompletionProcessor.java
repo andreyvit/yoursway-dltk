@@ -14,7 +14,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
 import org.eclipse.dltk.ui.DLTKPluginImages;
@@ -34,6 +37,7 @@ import org.eclipse.jface.text.templates.TemplateContext;
 import org.eclipse.jface.text.templates.TemplateContextType;
 import org.eclipse.jface.text.templates.TemplateException;
 import org.eclipse.jface.text.templates.TemplateProposal;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.part.IWorkbenchPartOrientation;
@@ -136,27 +140,22 @@ public abstract class ScriptTemplateCompletionProcessor extends
 	}
 
 	private IInformationControlCreator getInformationControlCreator() {
-		int orientation;
-		ScriptEditor editor = getScriptEditor();
-		// compiler says editor already instanceof IWorkbenchPartOrientation
-		orientation = ((IWorkbenchPartOrientation) editor).getOrientation();
-		return new TemplateInformationControlCreator(orientation, editor
-				.getLanguageToolkit());
-	}
-
-	/**
-	 * Returns the currently active java editor, or <code>null</code> if it
-	 * cannot be determined.
-	 * 
-	 * @return the currently active java editor, or <code>null</code>
-	 */
-	private ScriptEditor getScriptEditor() {
-		IEditorPart part = DLTKUIPlugin.getActivePage().getActiveEditor();
-		if (part instanceof ScriptEditor) {
-			return (ScriptEditor) part;
+		int orientation = Window.getDefaultOrientation();
+		IEditorPart editor = getContext().getEditor();
+		if (editor == null)
+			editor = DLTKUIPlugin.getActivePage().getActiveEditor();
+		if (editor instanceof IWorkbenchPartOrientation)
+			orientation = ((IWorkbenchPartOrientation) editor).getOrientation();
+		IDLTKLanguageToolkit toolkit = null;
+		try {
+			toolkit = DLTKLanguageManager.getLanguageToolkit(getContext()
+					.getLangaugeNatureID());
+		} catch (CoreException cxcn) {
+			cxcn.printStackTrace();
 		}
-
-		return null;
+		if ((toolkit == null) && (editor instanceof ScriptEditor))
+			toolkit = ((ScriptEditor) editor).getLanguageToolkit();
+		return new TemplateInformationControlCreator(orientation, toolkit);
 	}
 
 	protected abstract String getContextTypeId();
