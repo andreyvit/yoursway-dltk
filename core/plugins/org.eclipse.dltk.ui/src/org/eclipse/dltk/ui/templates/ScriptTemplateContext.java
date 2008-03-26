@@ -49,10 +49,11 @@ public class ScriptTemplateContext extends DocumentTemplateContext {
 			StringBuffer sb = new StringBuffer();
 			for (int i = 0; i < indent.length(); ++i) {
 				char ch = indent.charAt(i);
-				if (ch != ' ' && ch != '\t') {
+				if (ch == ' ' || ch == '\t') {
 					sb.append(' ');
-				} else {
-					sb.append(ch);
+				}
+				else {
+				  break;
 				}
 			}
 
