@@ -12,6 +12,7 @@ package org.eclipse.dltk.internal.debug.core.model;
 import java.net.URI;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -81,6 +82,8 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 				}
 				variables[i] = new ScriptVariable(parentFrame, property, name);
 			}
+
+	        Arrays.sort(variables, new VariableNameComparator());
 
 			return variables;
 		} catch (DbgpDebuggingEngineException e) {
