@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.core.search;
 
+import java.util.Iterator;
+
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.compiler.CharOperation;
@@ -172,14 +174,50 @@ public class TypeNameMatchRequestorWrapper implements
 		ISourceModule unit = pkgFragment.getSourceModule(simpleName);
 		int etnLength = enclosingTypeNames == null ? 0
 				: enclosingTypeNames.length;
-		IType type = (etnLength == 0) ? unit.getType(simpleTypeName) : unit
-				.getType(new String(enclosingTypeNames[0]));
-		if (etnLength > 0) {
-			for (int i = 1; i < etnLength; i++) {
-				type = type.getType(new String(enclosingTypeNames[i]));
-			}
-			type = type.getType(simpleTypeName);
-		}
+	    String containerTypeName = (etnLength == 0) ? simpleTypeName : new String(enclosingTypeNames[0]);
+	    IType type = null;
+	    IType[] containerTypes = unit.getTypes();
+	    for (int cnt = 0, max = containerTypes.length; cnt < max; cnt++) {
+	      if (containerTypeName.equals(containerTypes[cnt].getElementName())) {
+	        if (etnLength > 1) {
+	          type = resolveType(containerTypes[cnt], enclosingTypeNames, 1);
+	          if (type != null) {
+	            type = type.getType(simpleTypeName);
+	          }
+	        }
+	        else if (etnLength == 1) {
+	          type = containerTypes[cnt].getType(simpleTypeName);
+	        }
+	        else {
+	          type = containerTypes[cnt];
+	        }
+
+            if (type != null && type.exists()) {
+              break;
+            }
+	      }
+	    }
 		return type;
 	}
+
+	private IType resolveType(IType parentType, char[][] enclosingTypeNames, int index) throws ModelException {
+	  IType resolvedType = null;
+
+	  IType[] childTypes = parentType.getTypes();
+	  for (int cnt = 0, max = childTypes.length; cnt < max; cnt++) {
+	    if (childTypes[cnt].getElementName().equals(new String(enclosingTypeNames[index]))) {
+	      if (index != (enclosingTypeNames.length - 1)) {
+	        resolvedType = resolveType(childTypes[cnt], enclosingTypeNames, (index + 1));
+	      }
+	      else if (childTypes[cnt].exists()) {
+	        resolvedType = childTypes[cnt];
+
+	        break;
+	      }
+	    }
+	  }
+
+	  return resolvedType;
+	}
+
 }
