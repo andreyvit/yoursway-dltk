@@ -205,9 +205,12 @@ public abstract class ScriptSourceViewerConfiguration extends
 		int inheritedDetectorsLength = inheritedDetectors != null ? inheritedDetectors.length
 				: 0;
 		IHyperlinkDetector[] detectors = new IHyperlinkDetector[inheritedDetectorsLength + 1];
-		detectors[0] = new ModelElementHyperlinkDetector(fTextEditor);
-		for (int i = 0; i < inheritedDetectorsLength; i++)
-			detectors[i + 1] = inheritedDetectors[i];
+
+		//TODO(mhowe) I reverse these so I can get a shot at finding the hyperlink before DLTK does.
+		//DLTK shouldn't create an action if it does nothing.
+        for (int i = 0; i < inheritedDetectorsLength; i++)
+            detectors[i] = inheritedDetectors[i];
+        detectors[inheritedDetectorsLength] = new ModelElementHyperlinkDetector(fTextEditor);
 
 		return detectors;
 	}
