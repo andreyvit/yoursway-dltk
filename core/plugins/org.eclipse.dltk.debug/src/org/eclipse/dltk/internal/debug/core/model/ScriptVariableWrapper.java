@@ -107,6 +107,10 @@ public class ScriptVariableWrapper extends ScriptDebugElement implements
 				return ""; //$NON-NLS-1$
 			}
 
+			public String getRawValue() {
+			  return ""; //$NON-NLS-1$
+			}
+
 			public String getValueString() throws DebugException {
 				return ""; //$NON-NLS-1$
 			}
