@@ -95,6 +95,7 @@ import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.texteditor.AbstractMarkerAnnotationModel;
 import org.eclipse.ui.texteditor.AnnotationPreference;
 import org.eclipse.ui.texteditor.AnnotationPreferenceLookup;
@@ -119,6 +120,18 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 	private IPropertyChangeListener fPropertyListener;
 	/** Annotation model listener added to all created CU annotation models */
 	private GlobalAnnotationModelListener fGlobalAnnotationModelListener;
+
+	public boolean isModifiable(Object element) {
+		if (element instanceof FileStoreEditorInput) {
+			ISourceModule module = DLTKUIPlugin
+					.resolveSourceModule((FileStoreEditorInput) element);
+			if (module != null) {
+				return !module.isReadOnly();
+			}
+		}
+
+		return super.isModifiable(element);
+	}
 
 	/**
 	 * Annotation representing an <code>IProblem</code>.
@@ -1617,6 +1630,13 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 	public boolean isReadOnly(Object element) {
 		if (element instanceof ExternalStorageEditorInput) {
 			return true;
+		}
+		if (element instanceof FileStoreEditorInput) {
+			ISourceModule module = DLTKUIPlugin
+					.resolveSourceModule((FileStoreEditorInput) element);
+			if (module != null) {
+				return module.isReadOnly();
+			}
 		}
 		return super.isReadOnly(element);
 	}
