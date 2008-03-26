@@ -7,16 +7,23 @@
 #
 
 ###############################################################################
+require 'bigdecimal'
+require 'complex'
+require 'date'
+require 'set'
 
-def has_children(obj)
-    atomic_types = [NilClass, TrueClass, FalseClass, 
-                    Numeric, Float, Integer, Fixnum, Bignum, 
-                    String]
-    not atomic_types.include?(obj.class)
+def atomic?(obj)
+    atomic_types = [Bignum, FalseClass, Fixnum, Float, Integer, NilClass,
+    				Numeric, Range, Regexp, String, Symbol, TrueClass]
+    atomic_types.include?(obj.class)
+end
+
+def has_children?(obj)
+	not atomic?(obj)
 end
 
 def get_string(obj)
-    obj.nil? ? 'nil' : (has_children(obj) ? '' : obj.to_s)
+    obj.nil? ? 'nil' : (atomic?(obj) ? obj.to_s : '')
 end
 
 def prepare_object(name, obj)
@@ -24,7 +31,7 @@ def prepare_object(name, obj)
           :eval_name    => name,
           :_type        => obj.class,
           :is_cosntant  => false,
-          :has_children => has_children(obj),
+          :has_children => has_children?(obj),
           :_value       => get_string(obj),
           :key          => obj.object_id }
 
@@ -33,10 +40,10 @@ def prepare_object(name, obj)
             real_var = obj.instance_variable_get(var)
 
             { :name         => var,
-              :eval_name    => sprintf("%s.instance_eval('%s')", name, var),
+              :eval_name    => ('self' == name) ? var : sprintf("%s.instance_eval('%s')", name, var),
               :_type        => real_var.class,
               :is_constant  => false,
-              :has_children => has_children(real_var),
+              :has_children => has_children?(real_var),
               :_value       => get_string(real_var),
               :key          => real_var.object_id }
         }
@@ -65,7 +72,7 @@ def prepare_array(name, array)
           :eval_name    => sprintf('%s[%d]', name, index),
           :_type         => value.class,
           :is_constant  => false,
-          :has_children => has_children(value),
+          :has_children => has_children?(value),
           :_value       => get_string(value),
           :key          => value.object_id }            
     }
@@ -89,7 +96,7 @@ def prepare_hash(name, hash)
           :eval_name    => sprintf("%s[%s]", name, key.inspect),
           :_type         => value.class,
           :is_constant  => false,
-          :has_children => has_children(value),
+          :has_children => has_children?(value),
           :_value       => get_string(value),
           :key          => value.object_id }
     }
@@ -116,7 +123,7 @@ def prepare_match_data(name, obj)
           :eval_name    => sprintf('%s[%d]', name, index),
           :_type         => value.class,
           :is_constant  => false,
-          :has_children => has_children(value),
+          :has_children => has_children?(value),
           :_value       => get_string(value),
           :key          => value.object_id }            
     }

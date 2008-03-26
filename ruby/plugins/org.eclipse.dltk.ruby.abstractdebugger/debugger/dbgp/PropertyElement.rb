@@ -31,22 +31,36 @@ module XoredDebugger
                 add_attribute('pagesize', pagesize)
             end
                         
-            value = get_value(object, num_children > 0)
+            value = get_value(object)
             data = prepare_data(value)
             if (add_children && num_children > 0)
                 data += get_children_xml(fullname, object, page, pagesize)                
             end
             set_data(data)            
         end
-        
-        def get_value(object, has_children)
-            type = object.class
-            value = if (type == String)
-               object
-            else 
-               object.nil? ? 'nil' : object.inspect
-            end
-            return value
+
+        def atomic?(obj)
+            atomic_types = [Bignum, FalseClass, Fixnum, Float, Integer, NilClass,
+                            Numeric, Range, Regexp, String, Symbol, TrueClass]
+            atomic_types.include?(obj.class)
+        end
+
+        def get_value(object)
+           type = object.class
+           value = if (type == Array)
+               '[...]'              
+           elsif (type == Hash)
+               '{...}'
+           elsif (type == MatchData)
+               '[...]'
+           elsif (type == Regexp)
+               object.inspect
+           elsif (type == Symbol)
+               object.inspect
+           else
+               object.nil? ? 'nil' : (atomic?(object) ? object.to_s : '')
+           end
+           return value
         end
                 
         def num_children(object)
@@ -105,7 +119,7 @@ module XoredDebugger
         	for index in start..finish
                 child_name = vars[index]
                 child = object.instance_variable_get(child_name)
-                child_fullname = sprintf("%s::::%s", name, child_name) 
+                child_fullname = ('self' == name) ? child_name : sprintf("%s::::%s", name, child_name)
                 children_xml += PropertyElement.new(child, child_name, @pagesize, nil, child_fullname, false).to_xml
             end    
             return children_xml
