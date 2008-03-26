@@ -1322,10 +1322,10 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 		markAsStateDependentAction("ContentAssistContextInformation", true); //$NON-NLS-1$
 
 		// GroupEdit
-		ActionGroup rg = new RefactorActionGroup(this,
-				ITextEditorActionConstants.GROUP_EDIT);
+		ActionGroup rg = new RefactorActionGroup(this, ITextEditorActionConstants.GROUP_EDIT);
 		fActionGroups.addGroup(rg);
-
+		fContextMenuGroup.addGroup(rg);
+		
 		// GoToNextMember
 		action = GoToNextPreviousMemberAction.newGoToNextMemberAction(this);
 		action
@@ -1930,7 +1930,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 	 *            the offset inside of the requested element
 	 * @return the most narrow model element
 	 */
-	protected IModelElement getElementAt(int offset) {
+	public IModelElement getElementAt(int offset) {
 		return getElementAt(offset, true);
 	}
 
@@ -1947,7 +1947,7 @@ public abstract class ScriptEditor extends AbstractDecoratedTextEditor
 	 *            <code>true</code> if working copy should be reconciled
 	 * @return the most narrow element which includes the given offset
 	 */
-	protected IModelElement getElementAt(int offset, boolean reconcile) {
+	public IModelElement getElementAt(int offset, boolean reconcile) {
 		ISourceModule unit = (ISourceModule) getInputModelElement();
 		if (unit != null) {
 			try {
