@@ -21,13 +21,17 @@ public class AliasedRubyMixinMethod extends RubyMixinMethod {
 		String newName = node.getNewValue();
 		int length = node.sourceEnd() - node.sourceStart();
 		FakeMethod fakeMethod = new FakeMethod((ModelElement) alias
-				.getSourceModule(), newName, node.sourceStart(), length,
-				node.sourceStart(), length);
-		IMethod[] sourceMethods2 = RubyMixinMethod.getSourceMethods(model, alias.getOldKey());
+				.getSourceModule(), newName, node.sourceStart(), length, node
+				.sourceStart(), length);
+		IMethod[] sourceMethods2 = RubyMixinMethod.getSourceMethods(model,
+				alias.getOldKey());
 		if (sourceMethods2.length == 1 && sourceMethods2[0] != null) {
 			IMethod method = sourceMethods2[0];
 			try {
+				fakeMethod.setFlags(method.getFlags());
 				fakeMethod.setParameters(method.getParameters());
+				fakeMethod.setParameterInitializers(method
+						.getParameterInitializers());
 			} catch (ModelException e) {
 			}
 		}
@@ -49,6 +53,6 @@ public class AliasedRubyMixinMethod extends RubyMixinMethod {
 		}
 		return (RubyMixinVariable[]) result
 				.toArray(new RubyMixinVariable[result.size()]);
-	}	
-	
+	}
+
 }
