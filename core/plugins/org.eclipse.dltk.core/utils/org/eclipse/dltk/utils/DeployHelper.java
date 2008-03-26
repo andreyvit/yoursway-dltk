@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.utils;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,10 +27,11 @@ import org.osgi.framework.Bundle;
 public class DeployHelper {
 	public static void copy(InputStream input, OutputStream output)
 			throws IOException {
-		int ch = -1;
-		while ((ch = input.read()) != -1) {
-			output.write(ch);
-		}
+	  byte[] buffer = new byte[12 * 1024];
+	  int read;
+	  while ((read = input.read(buffer)) != -1) {
+	    output.write(buffer, 0, read);
+	  }
 	}
 
 	public static void copy(InputStream input, File file) throws IOException {
@@ -49,9 +51,12 @@ public class DeployHelper {
 	}
 
 	public static void copy(URL url, File file) throws IOException {
+	    if (url.toString().contains("CVS") || url.toString().contains(".svn")) //$NON-NLS-1$ //$NON-NLS-2$
+	        return;
+
 		InputStream input = null;
 		try {
-			input = url.openStream();
+			input = new BufferedInputStream(url.openStream());
 			copy(input, file);
 		} finally {
 			if (input != null) {
@@ -65,6 +70,9 @@ public class DeployHelper {
 		// Check if directory
 		final Enumeration paths = bundle.getEntryPaths(bundlePath);
 		final IPath result = diskPath.append(bundlePath);
+
+	    if (result.toString().contains("CVS") || result.toString().contains(".svn")) //$NON-NLS-1$ //$NON-NLS-2$
+            return null;
 
 		File dirFile = result.toFile();
 		if (paths != null) {
