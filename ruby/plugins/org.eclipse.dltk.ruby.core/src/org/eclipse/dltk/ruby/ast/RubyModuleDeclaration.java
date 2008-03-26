@@ -9,16 +9,21 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.ast;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
+import org.eclipse.dltk.ast.references.Reference;
 import org.eclipse.dltk.ast.statements.Block;
 
 public class RubyModuleDeclaration extends TypeDeclaration {
 
 	private ASTNode name;
-	
+
 	public RubyModuleDeclaration(ASTNode name, Block body, int start, int end) {
 		super("", name.sourceStart(), name.sourceEnd(), start, end); //$NON-NLS-1$
 		ASTListNode el = new ASTListNode();
@@ -28,22 +33,36 @@ public class RubyModuleDeclaration extends TypeDeclaration {
 		setStart(start);
 		setEnd(end);
 	}
-	
+
 	public ASTNode getClassName() {
 		return name;
 	}
 
-	public void traverse( ASTVisitor visitor ) throws Exception {
-
-		if( visitor.visit( this ) ) {
-			if( this.getClassName() != null ) {
-				this.getClassName().traverse( visitor );
+	public void traverse(ASTVisitor visitor) throws Exception {
+		if (visitor.visit(this)) {
+			if (this.getClassName() != null) {
+				this.getClassName().traverse(visitor);
 			}
-			if( this.getBody() != null ) {
-				getBody().traverse( visitor );
+			if (this.getBody() != null) {
+				getBody().traverse(visitor);
 			}
-			visitor.endvisit( this );
+			visitor.endvisit(this);
 		}
 	}
-	
+
+	public List/* <String> */getSuperClassNames() {
+		List/* < String > */names = new ArrayList/* < String > */();
+		names.addAll(super.getSuperClassNames());
+		Object item;
+		for (Iterator iter = getSuperClasses().getChilds().iterator(); iter
+				.hasNext();) {
+			item = iter.next();
+			if ((item instanceof Reference)
+					|| (item instanceof RubyColonExpression)) {
+				names.add(RubyASTUtil.resolveClassName((ASTNode) item));
+			}
+		}
+		return names;
+	}
+
 }
