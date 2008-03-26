@@ -98,7 +98,6 @@ class DeleteChangeCreator {
 	/*
 	 * List<IModelElement> modelElements
 	 */
-	//Added my mhowe - added delete IType and IMethod model elements
 	private static Change createDeleteChange(ISourceModule cu, List modelElements, TextChangeManager manager) throws CoreException {
 //		SourceModule cuNode= RefactoringASTParser.parseWithASTProvider(cu, false, null);
 //		SourceModuleRewrite rewriter= new SourceModuleRewrite(cu, cuNode);
