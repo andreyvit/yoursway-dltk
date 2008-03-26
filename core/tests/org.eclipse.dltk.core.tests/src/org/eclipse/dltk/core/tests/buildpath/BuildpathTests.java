@@ -309,12 +309,13 @@ public class BuildpathTests extends ModifyingResourceTests {
 			URL url = ModelTestsPlugin.getDefault().getBundle().getEntry("/workspace/Buildpath3");
 			URL res = FileLocator.resolve(url);			
 			String filePath = res.getFile();			
+			IPath contPath = new Path(filePath.substring(1)).setDevice(null);
 			IScriptProject proj = this.createScriptProject("P", TEST_NATURE, new String[] { "src" });
 			IBuildpathEntry[] originalCP = proj.getRawBuildpath();
 
 			IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length + 1];
 			System.arraycopy(originalCP, 0, newCP, 0, originalCP.length);
-			newCP[originalCP.length] = DLTKCore.newContainerEntry(new Path("Testie" + filePath));
+			newCP[originalCP.length] = DLTKCore.newContainerEntry(new Path("Testie").append(contPath));
 
 			IModelStatus status = BuildpathEntry.validateBuildpath(proj, newCP);
 
@@ -442,12 +443,13 @@ public class BuildpathTests extends ModifyingResourceTests {
 
 			IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length + 1];
 			System.arraycopy(originalCP, 0, newCP, 0, originalCP.length);
-			newCP[originalCP.length] = DLTKCore.newExtLibraryEntry(new Path("/opt2"));
+			IPath libPath = new Path("/opt2");
+			newCP[originalCP.length] = DLTKCore.newExtLibraryEntry(libPath);
 
 			IModelStatus status = BuildpathEntry.validateBuildpathEntry(proj, newCP[originalCP.length], false);
 
 			assertStatus("should detect not pressent folders",
-					"Required library cannot denote external folder or archive: \'/opt2\' for project Pv0", status);
+					"Required library cannot denote external folder or archive: \'" + libPath.toOSString() + "\' for project Pv0", status);
 		} finally {
 			this.deleteProject("Pv0");
 		}
