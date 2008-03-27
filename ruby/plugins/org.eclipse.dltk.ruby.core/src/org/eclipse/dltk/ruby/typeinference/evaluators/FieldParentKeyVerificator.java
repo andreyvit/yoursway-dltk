@@ -63,8 +63,8 @@ public class FieldParentKeyVerificator extends GoalEvaluator {
 						.determineSelfClass(sourceModule, module, node
 								.sourceStart());
 				
-//				if (selfClass == null)
-//					return null;
+				if (selfClass == null)
+					return null;
 				
 				node = translateNode(node, module);
 				
