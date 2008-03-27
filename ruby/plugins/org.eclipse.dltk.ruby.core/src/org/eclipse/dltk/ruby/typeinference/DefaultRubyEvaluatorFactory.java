@@ -167,10 +167,8 @@ public class DefaultRubyEvaluatorFactory implements IGoalEvaluatorFactory {
 						reference.getName());
 			} else if (expr instanceof RubyColonExpression) {
 				RubyColonExpression colonExpression = (RubyColonExpression) expr;
-				if (context instanceof BasicContext) {
-					return new ColonExpressionGoal((BasicContext) context,
-							colonExpression);
-				}
+				return new ColonExpressionGoal(
+						(BasicContext) goal.getContext(), colonExpression);
 			}
 		}
 		return goal;
