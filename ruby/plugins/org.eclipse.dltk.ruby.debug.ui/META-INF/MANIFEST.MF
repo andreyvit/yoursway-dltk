@@ -21,7 +21,8 @@ Require-Bundle: org.eclipse.jface.text,
  org.eclipse.dltk.debug,
  org.eclipse.dltk.core,
  org.eclipse.dltk.ruby.debug,
- org.eclipse.dltk.ruby.ui
+ org.eclipse.dltk.ruby.ui,
+ org.eclipse.core.filesystem
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.ruby.internal.debug.ui,
  org.eclipse.dltk.ruby.internal.debug.ui.console,
