@@ -2,26 +2,26 @@ package org.eclipse.dltk.ruby.fastdebugger.preferences;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.dltk.debug.ui.preferences.DebuggingEngineConfigOptionsBlock;
-import org.eclipse.dltk.ruby.fastdebugger.FastDebuggerPlugin;
 import org.eclipse.dltk.ruby.fastdebugger.FastDebuggerConstants;
+import org.eclipse.dltk.ruby.fastdebugger.FastDebuggerPlugin;
 import org.eclipse.dltk.ui.preferences.PreferenceKey;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
-public class FastDebuggerConfigurationBlock extends DebuggingEngineConfigOptionsBlock {
+public class FastDebuggerConfigurationBlock extends
+		DebuggingEngineConfigOptionsBlock {
 
 	private static PreferenceKey ENABLE_LOGGING = new PreferenceKey(
-			FastDebuggerPlugin.PLUGIN_ID,
-			FastDebuggerConstants.ENABLE_LOGGING);
+			FastDebuggerPlugin.PLUGIN_ID, FastDebuggerConstants.ENABLE_LOGGING);
 
 	private static PreferenceKey LOG_FILE_PATH = new PreferenceKey(
-			FastDebuggerPlugin.PLUGIN_ID,
-			FastDebuggerConstants.LOG_FILE_PATH);
+			FastDebuggerPlugin.PLUGIN_ID, FastDebuggerConstants.LOG_FILE_PATH);
 
 	private static PreferenceKey LOG_FILE_NAME = new PreferenceKey(
-			FastDebuggerPlugin.PLUGIN_ID,
-			FastDebuggerConstants.LOG_FILE_NAME);
+			FastDebuggerPlugin.PLUGIN_ID, FastDebuggerConstants.LOG_FILE_NAME);
 
 	public FastDebuggerConfigurationBlock(IStatusChangeListener context,
 			IProject project, IWorkbenchPreferenceContainer container) {
@@ -35,6 +35,12 @@ public class FastDebuggerConfigurationBlock extends DebuggingEngineConfigOptions
 
 	protected void createEngineBlock(Composite composite) {
 		// no engine preferences, yet...
+	}
+
+	protected void createOtherBlock(Composite parent) {
+		Label noteLabel = new Label(parent, SWT.NONE);
+		noteLabel
+				.setText(FastDebuggerPreferenceMessages.FastDebuggerConfigurationBlock_rubyDebugGemMustBeInstalled);
 	}
 
 	protected PreferenceKey getEnableLoggingPreferenceKey() {
