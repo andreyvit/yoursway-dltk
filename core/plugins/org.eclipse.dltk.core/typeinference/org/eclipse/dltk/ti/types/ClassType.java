@@ -19,7 +19,7 @@ public abstract class ClassType implements IEvaluatedType {
 
 	public String getTypeName() {
 		String typeName = getModelKey().replaceAll(
-				"\\" + String.valueOf(IIndexConstants.SEPARATOR), "::"); //$NON-NLS-1$
+				"\\" + String.valueOf(IIndexConstants.SEPARATOR), "::"); //$NON-NLS-1$ //$NON-NLS-2$
 		if (typeName.endsWith("%") == true) { //$NON-NLS-1$
 			typeName = typeName.substring(0, (typeName.length() - 1));
 		}
