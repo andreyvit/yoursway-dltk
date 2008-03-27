@@ -124,8 +124,8 @@ public class CompletionTests extends AbstractModelCompletionTests {
 		int cursorLocation = str.indexOf("#2") + 4 + add;
 		cu.codeComplete(cursorLocation, requestor);
 
-		assertEquals(this.makeResult(new String[] { "::a::c::fac()", "::a::c::feac()" },
-				new String[] { "::a::c::fac", "::a::c::feac" }, new int[] { 18, 18 }), requestor
+		assertEquals(this.makeResult(new String[] { "::a::c::fac()" },
+				new String[] { "::a::c::fac" }, new int[] { 18 }), requestor
 				.getResults());
 	}
 
@@ -170,7 +170,7 @@ public class CompletionTests extends AbstractModelCompletionTests {
 		cu.codeComplete(cursorLocation, requestor);
 
 		assertEquals(this.makeResult(new String[] { "::b::fb()" },
-				new String[] { "::b::fb" }, new int[] { 18 }), requestor
+				new String[] { "::b::fb" }, new int[] { 22 }), requestor
 				.getResults());
 
 	}
