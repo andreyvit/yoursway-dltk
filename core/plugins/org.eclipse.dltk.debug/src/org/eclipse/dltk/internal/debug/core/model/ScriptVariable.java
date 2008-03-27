@@ -30,7 +30,8 @@ public class ScriptVariable extends ScriptDebugElement implements
 
 	private IValue value;
 
-	public ScriptVariable(IScriptStackFrame frame, IDbgpProperty property, String name) {
+	public ScriptVariable(IScriptStackFrame frame, IDbgpProperty property,
+			String name) {
 		this.target = frame.getDebugTarget();
 		this.session = ((IScriptThread) frame.getThread()).getDbgpSession();
 		this.name = name;
@@ -63,10 +64,10 @@ public class ScriptVariable extends ScriptDebugElement implements
 
 	public synchronized void setValue(String expression) throws DebugException {
 		try {
-	        if (("String".equals(property.getType())) && //$NON-NLS-1$
-	            (!expression.startsWith("'") || !expression.endsWith("'")) && //$NON-NLS-1$ //$NON-NLS-2$
-	            (!expression.startsWith("\"") || !expression.endsWith("\"")))  //$NON-NLS-1$ //$NON-NLS-2$
-	        	expression = "\"" + expression.replaceAll("\\\"", "\\\\\"") + "\""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			if (("String".equals(property.getType())) && //$NON-NLS-1$
+					(!expression.startsWith("'") || !expression.endsWith("'")) && //$NON-NLS-1$ //$NON-NLS-2$
+					(!expression.startsWith("\"") || !expression.endsWith("\""))) //$NON-NLS-1$ //$NON-NLS-2$
+				expression = "\"" + expression.replaceAll("\\\"", "\\\\\"") + "\""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			if (session.getCoreCommands().setProperty(property.getEvalName(),
 					frame.getLevel(), expression)) {
 				clearEvaluationManagerCache();
@@ -74,23 +75,24 @@ public class ScriptVariable extends ScriptDebugElement implements
 			}
 		} catch (DbgpException e) {
 			// TODO: localize
-			throw wrapDbgpException(Messages.ScriptVariable_cantAssignVariable, e);
+			throw wrapDbgpException(Messages.ScriptVariable_cantAssignVariable,
+					e);
 		}
 	}
 
 	private void clearEvaluationManagerCache() {
 		ScriptThread thread = (ScriptThread) frame.getThread();
 		thread.notifyModified();
-		
+
 	}
 
 	private void update() throws DbgpException {
 		this.value = null;
 
 		IDbgpCoreCommands core = session.getCoreCommands();
-		//String key = property.getKey();
+		// String key = property.getKey();
 		String name = property.getEvalName();
-		
+
 		// TODO: Use key if provided
 		this.property = core.getProperty(name, frame.getLevel());
 
