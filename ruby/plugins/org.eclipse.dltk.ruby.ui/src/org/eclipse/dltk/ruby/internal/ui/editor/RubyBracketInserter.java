@@ -9,12 +9,13 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui.editor;
 
+import org.eclipse.dltk.compiler.util.Util;
 import org.eclipse.dltk.internal.ui.editor.BracketInserter;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor.BracketLevel;
+import org.eclipse.dltk.ruby.internal.ui.text.IRubyPartitions;
+import org.eclipse.dltk.ruby.internal.ui.text.ISymbols;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyHeuristicScanner;
-import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
-import org.eclipse.dltk.ruby.internal.ui.text.Symbols;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.BadPositionCategoryException;
@@ -22,6 +23,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.Position;
+import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.jface.text.link.LinkedModeModel;
 import org.eclipse.jface.text.link.LinkedModeUI;
@@ -38,7 +40,7 @@ public class RubyBracketInserter extends BracketInserter {
 		super(scriptEditor);
 	}
 
-	public void verifyKey(VerifyEvent event) {		
+	public void verifyKey(VerifyEvent event) {
 		// early pruning to slow down normal typing as little as possible
 		if (!event.doit
 				|| this.editor.getInsertMode() != ScriptEditor.SMART_INSERT)
@@ -49,13 +51,15 @@ public class RubyBracketInserter extends BracketInserter {
 		case '[':
 		case '\'':
 		case '\"':
+		case ' ':
+		case '\r':
+		case '\n':
 			break;
 		default:
 			return;
 		}
 
-		final ISourceViewer sourceViewer = this.editor
-				.getScriptSourceViewer();
+		final ISourceViewer sourceViewer = this.editor.getScriptSourceViewer();
 		IDocument document = sourceViewer.getDocument();
 
 		final Point selection = sourceViewer.getSelectedRange();
@@ -71,66 +75,131 @@ public class RubyBracketInserter extends BracketInserter {
 			int nextToken = scanner.nextToken(offset + length, endLine
 					.getOffset()
 					+ endLine.getLength());
-			String next = nextToken == Symbols.TokenEOF ? null : document.get(
+			String next = nextToken == ISymbols.TokenEOF ? null : document.get(
 					offset, scanner.getPosition() - offset).trim();
 			int prevToken = scanner.previousToken(offset - 1, startLine
 					.getOffset());
-			int prevTokenOffset = scanner.getPosition() + 1;
-			String previous = prevToken == Symbols.TokenEOF ? null : document
-					.get(prevTokenOffset, offset - prevTokenOffset).trim();
+			int prevTokenOffset = scanner.getPosition();
+			if (prevTokenOffset < 0)
+				prevTokenOffset = 0;
+			String previous = offset > 1 && prevToken == ISymbols.TokenEOF ? null
+					: document.get(prevTokenOffset, offset - prevTokenOffset)
+							.trim();
+			boolean hasPrefixContent = false;
+			boolean hasSuffixContent = false;
+			if (previous != null) {
+				int hasOffset = startLine.getOffset();
+				int hasLength = (prevTokenOffset - startLine.getOffset());
+				hasPrefixContent = ((hasLength > 0) && (document.get(hasOffset,
+						hasLength).trim().length() > 0));
+
+				hasOffset = (prevTokenOffset + previous.length() + 1);
+				hasLength = (startLine.getLength() - (hasOffset - startLine
+						.getOffset()));
+				hasSuffixContent = ((hasLength > 0)
+						&& ((hasOffset + hasLength) <= document.getLength()) && (document
+						.get(hasOffset, hasLength).trim().length() > 0));
+			}
 
 			switch (event.character) {
 			case '(':
-				if (!fCloseBrackets || nextToken == Symbols.TokenLPAREN
-						|| nextToken == Symbols.TokenIDENT || next != null
-						&& next.length() > 1)
+				if (!fCloseBrackets || nextToken == ISymbols.TokenLPAREN
+						|| nextToken == ISymbols.TokenIDENTIFIER
+						|| next != null && next.length() > 1)
 					return;
 				break;
 
 			case '<':
 				if (!(fCloseAngularBrackets && fCloseBrackets)
-						|| nextToken == Symbols.TokenLESSTHAN
-						|| prevToken != Symbols.TokenLBRACE
-						&& prevToken != Symbols.TokenRBRACE
-						&& prevToken != Symbols.TokenSEMICOLON
-						&& (prevToken != Symbols.TokenIDENT || !isAngularIntroducer(previous))
-						&& prevToken != Symbols.TokenEOF)
+						|| nextToken == ISymbols.TokenLESSTHAN
+						|| prevToken != ISymbols.TokenLBRACE
+						&& prevToken != ISymbols.TokenRBRACE
+						&& prevToken != ISymbols.TokenSEMICOLON
+						&& (prevToken != ISymbols.TokenIDENTIFIER || !isAngularIntroducer(previous))
+						&& prevToken != ISymbols.TokenEOF)
 					return;
 				break;
 
 			case '[':
-				if (!fCloseBrackets || nextToken == Symbols.TokenIDENT
+				if (!fCloseBrackets || nextToken == ISymbols.TokenIDENTIFIER
 						|| next != null && next.length() > 1)
 					return;
 				break;
 
 			case '\'':
 			case '"':
-				if (!fCloseStrings || nextToken == Symbols.TokenIDENT
-						/*|| prevToken == Symbols.TokenIDENT*/ || next != null
-						&& next.length() > 1 || previous != null
-						&& (previous.length() > 1 && previous.charAt(0)== event.character))
+				if (!fCloseStrings
+						|| nextToken == ISymbols.TokenIDENTIFIER
+						/* || prevToken == Symbols.TokenIDENT */|| next != null
+						&& next.length() > 1
+						|| previous != null
+						&& (previous.length() > 1 && previous.charAt(0) == event.character))
+					return;
+				break;
+
+			case ' ':
+			case '\r':
+			case '\n':
+				if (!"case".equals(previous) && !"class".equals(previous) //$NON-NLS-1$ //$NON-NLS-2$
+						&& !"def".equals(previous) && !"do".equals(previous) //$NON-NLS-1$ //$NON-NLS-2$
+						&& !"if".equals(previous) && !"module".equals(previous) //$NON-NLS-1$ //$NON-NLS-2$
+						&& !"unless".equals(previous) //$NON-NLS-1$
+						&& !"while".equals(previous)) //$NON-NLS-1$
+					return;
+				if ((hasPrefixContent && !"do".equals(previous)) //$NON-NLS-1$
+						|| hasSuffixContent)
+					return;
+				if ((prevTokenOffset + previous.length()) < (offset - 1))
 					return;
 				break;
 
 			default:
 				return;
-			}					
+			}
 
-			int correctedOffset = (document.getLength() == offset)?offset - 1:offset;
+			int correctedOffset = (document.getLength() > 0 && document
+					.getLength() == offset) ? offset - 1 : offset;
 			ITypedRegion partition = TextUtilities.getPartition(document,
-					RubyPartitions.RUBY_PARTITIONING, correctedOffset, true);
+					IRubyPartitions.RUBY_PARTITIONING, correctedOffset, true);
 			if (!IDocument.DEFAULT_CONTENT_TYPE.equals(partition.getType()))
 				return;
 
 			if (!this.editor.validateEditorInputState())
 				return;
-			
+
 			final char character = event.character;
-			final char closingCharacter = getPeerCharacter(character);
+			String prefixString;
+			String suffixString;
+			if ((character == ' ') || (character == '\r')
+					|| (character == '\n')) {
+				int end = document.getLength();
+				for (int cnt = startLine.getOffset(), max = document
+						.getLength(); cnt <= max; cnt++) {
+					if (!Character.isWhitespace(document.get(cnt, 1).charAt(0))) {
+						end = cnt;
+
+						break;
+					}
+				}
+				String indent = document.get(startLine.getOffset(),
+						(end - startLine.getOffset()));
+				if ((character == '\r') || (character == '\n')) {
+					prefixString = Util.LINE_SEPARATOR + indent + "  "; //$NON-NLS-1$
+					suffixString = indent + "end"; //$NON-NLS-1$
+				} else {
+					prefixString = ""; //$NON-NLS-1$
+					suffixString = Util.LINE_SEPARATOR + indent + "  " //$NON-NLS-1$
+							+ Util.LINE_SEPARATOR + indent + "end"; //$NON-NLS-1$
+				}
+			} else {
+				prefixString = ""; //$NON-NLS-1$
+				suffixString = String.valueOf(getPeerCharacter(character));
+			}
+			final char closingCharacter = suffixString.charAt(0);
 			final StringBuffer buffer = new StringBuffer();
+			buffer.append(prefixString);
 			buffer.append(character);
-			buffer.append(closingCharacter);
+			buffer.append(suffixString);
 
 			document.replace(offset, length, buffer.toString());
 
@@ -146,16 +215,29 @@ public class RubyBracketInserter extends BracketInserter {
 			model.addGroup(group);
 			model.forceInstall();
 
-			level.fOffset = offset;
-			level.fLength = 2;
-
 			// set up position tracking for our magic peers
 			if (fBracketLevelStack.size() == 1) {
 				document.addPositionCategory(CATEGORY);
 				document.addPositionUpdater(fUpdater);
 			}
-			level.fFirstPosition = new Position(offset, 1);
-			level.fSecondPosition = new Position(offset + 1, 1);
+			if ((character == ' ') || (character == '\r')
+					|| (character == '\n')) {
+				level.fOffset = (offset - previous.length());
+				level.fLength = (previous.length() + prefixString.length() + 1 + suffixString
+						.length());
+
+				level.fFirstPosition = new Position(
+						(offset - previous.length()),
+						(previous.length() + prefixString.length()));
+				level.fSecondPosition = new Position((offset + prefixString
+						.length()), (suffixString.length() + 1));
+			} else {
+				level.fOffset = offset;
+				level.fLength = 2;
+
+				level.fFirstPosition = new Position(offset, 1);
+				level.fSecondPosition = new Position(offset + 1, 1);
+			}
 			document.addPosition(CATEGORY, level.fFirstPosition);
 			document.addPosition(CATEGORY, level.fSecondPosition);
 
@@ -170,6 +252,14 @@ public class RubyBracketInserter extends BracketInserter {
 			level.fUI.enter();
 
 			IRegion newSelection = level.fUI.getSelectedRegion();
+			if ((character == ' ') || (character == '\r')
+					|| (character == '\n')) {
+				newSelection = new Region(
+						newSelection.getOffset()
+								+ prefixString.length()
+								- (((character == '\r') || (character == '\n')) ? 1
+										: 0), newSelection.getLength());
+			}
 			sourceViewer.setSelectedRange(newSelection.getOffset(),
 					newSelection.getLength());
 
@@ -181,5 +271,4 @@ public class RubyBracketInserter extends BracketInserter {
 			DLTKUIPlugin.log(e);
 		}
 	}
-
 }
