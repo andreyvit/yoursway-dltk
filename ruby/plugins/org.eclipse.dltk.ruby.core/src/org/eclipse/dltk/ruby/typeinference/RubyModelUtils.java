@@ -196,7 +196,9 @@ public class RubyModelUtils {
 							.createRubyElement(keys2[i]);
 					if (element instanceof RubyMixinVariable) {
 						RubyMixinVariable variable = (RubyMixinVariable) element;
-						result.add(variable.getSourceFields()[0]);
+						IField field = variable.getSourceFields()[0];
+						if (prefix == null || field.getElementName().startsWith(prefix))
+							result.add(field);
 					}
 				}
 			} else {
@@ -222,7 +224,7 @@ public class RubyModelUtils {
 					for (int i = 0; i < children.length; i++) {
 						if (children[i] instanceof IField) {
 							IField field = (IField) children[i];
-							if (field.getElementName().startsWith(prefix))
+							if (prefix == null || field.getElementName().startsWith(prefix))
 								result.add(field);
 						}
 					}
@@ -465,6 +467,7 @@ public class RubyModelUtils {
 	private static FakeMethod createFakeMethod(ModelElement parent,
 			Metaclass metaclass, MethodInfo info) {
 		FakeMethod method = new FakeMethod(parent, info.getName());
+		method.setFlags(info.getFlags());
 		int arity = info.getArity();
 		String parameters[] = new String[0];
 		if (arity > 0) {
