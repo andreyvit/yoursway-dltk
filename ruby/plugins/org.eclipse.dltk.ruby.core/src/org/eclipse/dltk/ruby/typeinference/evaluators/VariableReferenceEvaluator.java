@@ -24,6 +24,8 @@ import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.mixin.MixinModel;
+import org.eclipse.dltk.evaluation.types.AmbiguousType;
+import org.eclipse.dltk.evaluation.types.UnknownType;
 import org.eclipse.dltk.ruby.ast.RubyCallArgument;
 import org.eclipse.dltk.ruby.ast.RubyDVarExpression;
 import org.eclipse.dltk.ruby.ast.RubyMethodArgument;
@@ -87,7 +89,7 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 	}
 
 	public IGoal[] init() {
-		VariableReference ref = getGoalVariableReference ();
+		VariableReference ref = getGoalVariableReference();
 		if (ref.getVariableKind() == RubyVariableKind.LOCAL) {
 			IContext context = goal.getContext();
 			ModuleDeclaration rootNode = ((ISourceModuleContext) context)
@@ -112,15 +114,18 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 			List poss = new ArrayList();
 
 			if (info != null) {
-				if (info.getLastAssignment() != null) {
-					IGoal subgoal = new ExpressionTypeGoal(context,
-							info.getLastAssignment().getRight());
+				if (info.getLastAssignment() != null
+						&& info.getLastAssignment().getRight() != null) {
+					IGoal subgoal = new ExpressionTypeGoal(context, info
+							.getLastAssignment().getRight());
 					poss.add(subgoal);
 				}
 				for (int i = 0; i < info.getConditionalAssignments().length; i++) {
-					IGoal subgoal = new ExpressionTypeGoal(context,
-							info.getConditionalAssignments()[i].getRight());
-					poss.add(subgoal);
+					if (info.getConditionalAssignments()[i].getRight() != null) {
+						IGoal subgoal = new ExpressionTypeGoal(context, info
+								.getConditionalAssignments()[i].getRight());
+						poss.add(subgoal);
+					}
 				}
 			}
 
@@ -156,6 +161,19 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 				String selfKey = ((RubyClassType) selfClass).getModelKey();
 				return new IGoal[] { new VariableTypeGoal(goal.getContext(),
 						ref.getName(), selfKey, ref.getVariableKind()) };
+			} else if (selfClass instanceof AmbiguousType) {
+				AmbiguousType ambiType = (AmbiguousType) selfClass;
+				List goalList = new ArrayList();
+				IEvaluatedType[] possibleTypes = ambiType.getPossibleTypes();
+				for (int cnt = 0, max = possibleTypes.length; cnt < max; cnt++) {
+					if (possibleTypes[cnt] instanceof RubyClassType) {
+						String selfKey = ((RubyClassType) possibleTypes[cnt])
+								.getModelKey();
+						goalList.add(new VariableTypeGoal(goal.getContext(),
+								ref.getName(), selfKey, ref.getVariableKind()));
+					}
+				}
+				return (IGoal[]) goalList.toArray(new IGoal[goalList.size()]);
 			}
 		}
 		return IGoal.NO_GOALS;
@@ -179,21 +197,21 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 		}
 		return argPos;
 	}
-	
-	private VariableReference getGoalVariableReference () {
-		ASTNode expression = ((ExpressionTypeGoal) goal)
-		.getExpression();
+
+	private VariableReference getGoalVariableReference() {
+		ASTNode expression = ((ExpressionTypeGoal) goal).getExpression();
 		if (expression instanceof VariableReference)
 			return (VariableReference) expression;
 		if (expression instanceof RubyDVarExpression) {
 			RubyDVarExpression dvar = (RubyDVarExpression) expression;
-			return new VariableReference(dvar.sourceStart(), dvar.sourceEnd(), dvar.getName(), RubyVariableKind.LOCAL);
+			return new VariableReference(dvar.sourceStart(), dvar.sourceEnd(),
+					dvar.getName(), RubyVariableKind.LOCAL);
 		}
 		return null;
 	}
 
 	private ASTNode getArgFromCall(CallExpression expr) {
-		VariableReference ref = getGoalVariableReference ();
+		VariableReference ref = getGoalVariableReference();
 		if (ref.getVariableKind() != RubyVariableKind.LOCAL)
 			return null;
 
@@ -253,7 +271,7 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 				}
 			}
 			return (IGoal[]) possibles.toArray(new IGoal[possibles.size()]);
-		} else if (result != null)
+		} else if ((result != null) && !(result instanceof UnknownType))
 			results.add(result);
 		return IGoal.NO_GOALS;
 	}
