@@ -742,6 +742,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		RubyCallArgumentsList argList = new RubyCallArgumentsList();
 		Node argsNode = iVisited.getArgsNode();
 		if (argsNode != null) {
+            argList.setStart(argsNode.getPosition().getStartOffset());
+            argList.setEnd(argsNode.getPosition().getEndOffset());
+
 			states.push(new ArgumentsState(argList));
 			if (argsNode instanceof ListNode) {
 				ListNode arrayNode = (ListNode) argsNode;
@@ -1334,6 +1337,9 @@ public class RubyASTBuildVisitor implements NodeVisitor {
 		RubyCallArgumentsList argList = new RubyCallArgumentsList();
 		Node argsNode = iVisited.getArgsNode();
 		if (argsNode != null) {
+		    argList.setStart(argsNode.getPosition().getStartOffset());
+		    argList.setEnd(argsNode.getPosition().getEndOffset());
+
 			states.push(new ArgumentsState(argList));
 			if (argsNode instanceof ListNode) {
 				ListNode arrayNode = (ListNode) argsNode;
