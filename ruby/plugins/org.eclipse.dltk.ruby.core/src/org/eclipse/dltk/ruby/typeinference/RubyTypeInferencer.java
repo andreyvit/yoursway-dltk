@@ -56,7 +56,7 @@ public class RubyTypeInferencer extends DefaultTypeInferencer {
 				timeLimit));
 		if (type == null || type instanceof UnknownType) {
 			// All things in ruby are instances of Object
-			type = new RubyClassType("Object%"); //$NON-NLS-1$
+			type = new RubyClassType("Object"); //$NON-NLS-1$
 		}
 		return type;
 	}

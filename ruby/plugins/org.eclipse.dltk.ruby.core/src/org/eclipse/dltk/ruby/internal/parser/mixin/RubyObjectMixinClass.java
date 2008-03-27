@@ -77,8 +77,4 @@ public class RubyObjectMixinClass extends RubyMixinClass {
 		return null;
 	}
 
-	public RubyMixinClass getSuperclass() {
-	  return null;
-	}
-
 }
