@@ -70,14 +70,15 @@ public class ConstantReferenceEvaluator extends GoalEvaluator {
 			if (realObj.getKind() == RubyMixinElementInfo.K_CLASS || 
 					realObj.getKind() == RubyMixinElementInfo.K_MODULE) { 
 				result = new RubyClassType(constantElement.getKey());
+				break;
 			} else if (realObj.getKind() == RubyMixinElementInfo.K_VARIABLE) {
 //				String parent = constantElement.getParent().getKey();
 //				String name = constantElement.getLastKeySegment();
 //				helperGoal = new VariableTypeGoal (goal.getContext(), name, parent, RubyVariableKind.CONSTANT);
 				Object[] allObjects = constantElement.getAllObjects();
 				helperGoal = new NonTypeConstantTypeGoal(goal.getContext(), constantElement);
+				break;
 			}
-			break;
 		}
 		if (helperGoal != null) {
 			return new IGoal[] { helperGoal };
