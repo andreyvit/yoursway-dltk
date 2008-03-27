@@ -10,7 +10,9 @@ public class RubyDebugPreferenceInitializer extends
 	public void initializeDefaultPreferences() {
 		Preferences store = RubyDebugPlugin.getDefault().getPluginPreferences();
 
-		store.setDefault(RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY, ""); //$NON-NLS-1$
+		if (store.getDefaultString(RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY) == null)
+			store.setDefault(RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY,
+					"org.eclipse.dltk.ruby.basicdebugger"); //$NON-NLS-1$
 
 		store.setDefault(
 				DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE,
