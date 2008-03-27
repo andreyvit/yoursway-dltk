@@ -54,6 +54,7 @@ import org.eclipse.dltk.ruby.typeinference.evaluators.VariableReferenceEvaluator
 import org.eclipse.dltk.ruby.typeinference.goals.ColonExpressionGoal;
 import org.eclipse.dltk.ruby.typeinference.goals.NonTypeConstantTypeGoal;
 import org.eclipse.dltk.ti.BasicContext;
+import org.eclipse.dltk.ti.IContext;
 import org.eclipse.dltk.ti.IGoalEvaluatorFactory;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.goals.FieldPositionVerificationGoal;
@@ -64,9 +65,6 @@ import org.eclipse.dltk.ti.goals.MethodCallVerificationGoal;
 import org.eclipse.dltk.ti.goals.MethodReturnTypeGoal;
 
 public class DefaultRubyEvaluatorFactory implements IGoalEvaluatorFactory {
-	
-	
-	
 
 	private GoalEvaluator createExpressionEvaluator(ExpressionTypeGoal goal) {
 		ASTNode expr = goal.getExpression();
@@ -98,7 +96,8 @@ public class DefaultRubyEvaluatorFactory implements IGoalEvaluatorFactory {
 
 		if (expr instanceof BooleanLiteral)
 			return new BooleanLiteralEvaluator(goal);
-		if (expr instanceof VariableReference || expr instanceof RubyDVarExpression)
+		if (expr instanceof VariableReference
+				|| expr instanceof RubyDVarExpression)
 			return new VariableReferenceEvaluator(goal);
 
 		if (expr instanceof RubyAssignment)
@@ -129,7 +128,7 @@ public class DefaultRubyEvaluatorFactory implements IGoalEvaluatorFactory {
 	public GoalEvaluator createEvaluator(IGoal goal) {
 		if (goal instanceof FieldPositionVerificationGoal)
 			return new FieldParentKeyVerificator(goal);
-		
+
 		if (goal instanceof MethodCallVerificationGoal)
 			return new MethodCallVerificator(goal);
 
@@ -145,30 +144,33 @@ public class DefaultRubyEvaluatorFactory implements IGoalEvaluatorFactory {
 		else if (goal instanceof NonTypeConstantTypeGoal)
 			return new NonTypeConstantTypeEvaluator(goal);
 		else if (goal instanceof VariableTypeGoal) {
-			return new RubyVariableTypeEvaluator(goal);			
+			return new RubyVariableTypeEvaluator(goal);
 		}
 
-		return null;	
+		return null;
 	}
 
 	public static IGoal translateGoal(IGoal goal) {
 		if (goal instanceof ExpressionTypeGoal) {
 			ExpressionTypeGoal exprGoal = (ExpressionTypeGoal) goal;
 			ASTNode expr = exprGoal.getExpression();
+			IContext context = goal.getContext();
 			if (expr instanceof ConstantReference) {
 				ConstantReference reference = (ConstantReference) expr;
-				return new ConstantTypeGoal(goal.getContext(), reference
-						.sourceStart(), reference.getName());
+				return new ConstantTypeGoal(context, reference.sourceStart(),
+						reference.getName());
 			} else if (expr instanceof RubyConstantDeclaration) {
 				SimpleReference reference = ((RubyConstantDeclaration) expr)
 						.getName();
 				// TODO: consider the constant's path
-				return new ConstantTypeGoal(goal.getContext(), reference
-						.sourceStart(), reference.getName());
+				return new ConstantTypeGoal(context, reference.sourceStart(),
+						reference.getName());
 			} else if (expr instanceof RubyColonExpression) {
 				RubyColonExpression colonExpression = (RubyColonExpression) expr;
-				return new ColonExpressionGoal(
-						(BasicContext) goal.getContext(), colonExpression);
+				if (context instanceof BasicContext) {
+					return new ColonExpressionGoal((BasicContext) context,
+							colonExpression);
+				}
 			}
 		}
 		return goal;

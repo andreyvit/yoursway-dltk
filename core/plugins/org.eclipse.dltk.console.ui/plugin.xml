@@ -7,7 +7,7 @@
       <consolePatternMatchListener
             class="org.eclipse.dltk.console.ui.internal.HTTPConsolePatternMatcher"
             id="org.eclipse.dltk.console.ui.hyperlinkConsolePatternMatcher"
-            regex="http://([^ \\]|\\ |\\\\|\\)+">
+            regex="http://([^\s\\]|\\ |\\\\|\\)+">
         <enablement>
         <or>
           <test

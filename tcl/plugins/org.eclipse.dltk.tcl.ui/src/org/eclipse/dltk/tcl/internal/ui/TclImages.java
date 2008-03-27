@@ -26,4 +26,9 @@ public class TclImages {
 
 	public static final ImageDescriptor DESC_WIZBAN_FILE_CREATION = helper
 			.createUnManaged(PluginImagesHelper.T_WIZBAN, "filecreate_wiz.png");
+
+	public static final ImageDescriptor DESC_OBJS_TEST = helper
+			.createUnManaged(PluginImagesHelper.T_OBJ, "test_obj.png");
+	public static final ImageDescriptor DESC_OBJS_TESTCASE = helper
+			.createUnManaged(PluginImagesHelper.T_OBJ, "testcase_obj.png");
 }
