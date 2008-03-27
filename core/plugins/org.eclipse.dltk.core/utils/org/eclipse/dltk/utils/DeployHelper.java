@@ -51,7 +51,7 @@ public class DeployHelper {
 	}
 
 	public static void copy(URL url, File file) throws IOException {
-	    if (url.toString().contains("CVS") || url.toString().contains(".svn")) //$NON-NLS-1$ //$NON-NLS-2$
+	    if (url.toString().indexOf("CVS") != -1 || url.toString().indexOf(".svn") != -1) //$NON-NLS-1$ //$NON-NLS-2$
 	        return;
 
 		InputStream input = null;
@@ -71,7 +71,7 @@ public class DeployHelper {
 		final Enumeration paths = bundle.getEntryPaths(bundlePath);
 		final IPath result = diskPath.append(bundlePath);
 
-	    if (result.toString().contains("CVS") || result.toString().contains(".svn")) //$NON-NLS-1$ //$NON-NLS-2$
+	    if (result.toString().indexOf("CVS") != -1 || result.toString().indexOf(".svn") != -1) //$NON-NLS-1$ //$NON-NLS-2$
             return null;
 
 		File dirFile = result.toFile();
