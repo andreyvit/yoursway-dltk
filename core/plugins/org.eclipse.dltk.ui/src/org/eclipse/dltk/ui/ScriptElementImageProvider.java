@@ -345,6 +345,12 @@ public class ScriptElementImageProvider {
 	}
 
 	private static ImageDescriptor getClassImageDescriptor(int flags) {
+		if ((flags & Modifiers.AccTest) != 0) {
+			return DLTKPluginImages.DESC_OBJS_TEST;
+		}
+		if ((flags & Modifiers.AccTestCase) != 0) {
+			return DLTKPluginImages.DESC_OBJS_TESTCASE;
+		}
 		if ((flags & Modifiers.AccNameSpace) != 0) {
 			return DLTKPluginImages.DESC_OBJS_NAMESPACE;
 		}
