@@ -33,6 +33,7 @@ import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.core.mixin.MixinModel;
 import org.eclipse.dltk.core.search.TypeNameMatch;
 import org.eclipse.dltk.core.search.TypeNameMatchRequestor;
+import org.eclipse.dltk.core.search.indexing.IIndexConstants;
 import org.eclipse.dltk.evaluation.types.AmbiguousType;
 import org.eclipse.dltk.evaluation.types.UnknownType;
 import org.eclipse.dltk.ruby.ast.RubyAssignment;
@@ -150,11 +151,11 @@ public class RubyTypeInferencingUtils {
 		return RubyMixinBuildVisitor.restoreScopesByNodes(allStaticScopes);
 	}
 
-	public static RubyClassType determineSelfClass(IContext context,
+	public static IEvaluatedType determineSelfClass(IContext context,
 			int keyOffset) {
 		if (context instanceof IInstanceContext) {
 			IInstanceContext instanceContext = (IInstanceContext) context;
-			return (RubyClassType) instanceContext.getInstanceType();
+			return instanceContext.getInstanceType();
 		} else {
 			ISourceModuleContext basicContext = (ISourceModuleContext) context;
 			return determineSelfClass(basicContext.getSourceModule(),
@@ -183,9 +184,16 @@ public class RubyTypeInferencingUtils {
 		if (keys != null && keys.length > 0) {
 			String inner = keys[keys.length - 1];
 			IRubyMixinElement rubyElement = rubyModel.createRubyElement(inner);
+			// ssanders: Fallback to locating the immediate parent
+			if ((rubyElement == null) && (inner.indexOf(IIndexConstants.SEPARATOR) != -1)) {
+				rubyElement = rubyModel.createRubyElement(inner.substring(0, inner.lastIndexOf(IIndexConstants.SEPARATOR)));
+			}
 			if (rubyElement instanceof RubyMixinMethod) {
 				RubyMixinMethod method = (RubyMixinMethod) rubyElement;
-				return new RubyClassType(method.getSelfType().getKey());
+				RubyMixinClass selfType = method.getSelfType();
+				if (selfType != null) {
+					return new RubyClassType(selfType.getKey());
+				}
 			} else if (rubyElement instanceof RubyMixinClass) {
 				RubyMixinClass rubyMixinClass = (RubyMixinClass) rubyElement;
 				return new RubyClassType(rubyMixinClass.getKey());
@@ -352,8 +360,7 @@ public class RubyTypeInferencingUtils {
 					return false;
 				RubyAssignment rubyAssignment = (RubyAssignment) node;
 				ASTNode lhs = rubyAssignment.getLeft();
-				if (lhs instanceof VariableReference
-						&& rubyAssignment.getRight() != null) {
+				if (lhs instanceof VariableReference) {
 					VariableReference varRef = (VariableReference) lhs;
 					if (name.equals(varRef.getName())) {
 						assignements.add(new VariableAssignment(rubyAssignment,
