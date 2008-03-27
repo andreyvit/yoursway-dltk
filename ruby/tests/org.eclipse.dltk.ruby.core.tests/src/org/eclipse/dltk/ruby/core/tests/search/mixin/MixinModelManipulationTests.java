@@ -113,7 +113,7 @@ public class MixinModelManipulationTests extends AbstractDLTKSearchTests impleme
 		assertNotNull(mixinElement);
 		Object[] objs = mixinElement.getAllObjects();
 		assertNotNull(objs);
-		assertEquals(1, objs.length);
+		assertEquals(2, objs.length);
 
 		ISourceModule sourceModule = getSourceModule(PROJECT_NAME, "src",
 				"src1.rb");
