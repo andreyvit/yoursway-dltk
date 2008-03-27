@@ -84,7 +84,7 @@ end</template>
 	description="%ifTemplate2.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.if2" 
 	name="if">if __FILE__ == $$0
-    ${cursor}
+  ${cursor}
 end</template>
 
 <template 
@@ -145,7 +145,7 @@ end while ${condition}</template>
 	description="%beginTemplate3.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.begin3" 
 	name="begin">begin
- ${begin_body}
+  ${begin_body}
 rescue ${ErrorType}
   ${rescue_body}
 end</template>
@@ -155,7 +155,7 @@ end</template>
 	description="%beginTemplate4.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.begin4" 
 	name="begin">begin
- ${begin_body}
+  ${begin_body}
 rescue ${ErrorType}
   ${rescue_body}
 ensure
@@ -181,7 +181,7 @@ end</template>
 	description="%rescueTemplate1.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.rescue1" 
 	name="rescue">rescue ${ErrorType}
-	${rescue_body}
+  ${rescue_body}
 end</template>
 
 <template 
@@ -189,7 +189,7 @@ end</template>
 	description="%rescueTemplate2.description" 
 	id="org.eclipse.dltk.ruby.ui.templates.rescue2" 
 	name="rescue">rescue ${ErrorType} =&gt; ${error_var}
-	${rescue_body}
+  ${rescue_body}
 end</template>
 
 </templates>
