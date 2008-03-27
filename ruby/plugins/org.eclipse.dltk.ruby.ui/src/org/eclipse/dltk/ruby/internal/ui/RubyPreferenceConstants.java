@@ -402,7 +402,7 @@ public class RubyPreferenceConstants extends PreferenceConstants
 //		store.setDefault(PreferenceConstants.EDITOR_FOLDING_METHODS, false);
 //		store.setDefault(PreferenceConstants.EDITOR_FOLDING_IMPORTS, true);
 		
-		store.setDefault (CodeFormatterConstants.FORMATTER_TAB_CHAR, CodeFormatterConstants.TAB);
+		store.setDefault (CodeFormatterConstants.FORMATTER_TAB_CHAR, CodeFormatterConstants.SPACE);
 		store.setDefault (CodeFormatterConstants.FORMATTER_TAB_SIZE, "2"); //$NON-NLS-1$
 		store.setDefault (CodeFormatterConstants.FORMATTER_INDENTATION_SIZE, "2"); //$NON-NLS-1$
 		
