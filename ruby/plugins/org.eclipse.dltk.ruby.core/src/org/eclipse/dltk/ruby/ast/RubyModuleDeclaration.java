@@ -17,7 +17,6 @@ import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
-import org.eclipse.dltk.ast.references.Reference;
 import org.eclipse.dltk.ast.statements.Block;
 
 public class RubyModuleDeclaration extends TypeDeclaration {
@@ -53,14 +52,12 @@ public class RubyModuleDeclaration extends TypeDeclaration {
 	public List/* <String> */getSuperClassNames() {
 		List/* < String > */names = new ArrayList/* < String > */();
 		names.addAll(super.getSuperClassNames());
-		Object item;
+		String name;
 		for (Iterator iter = getSuperClasses().getChilds().iterator(); iter
 				.hasNext();) {
-			item = iter.next();
-			if ((item instanceof Reference)
-					|| (item instanceof RubyColonExpression)) {
-				names.add(RubyASTUtil.resolveClassName((ASTNode) item));
-			}
+			name = RubyASTUtil.resolveClassName((ASTNode) iter.next());
+			if (name != null && name.length() > 0)
+				names.add(name);
 		}
 		return names;
 	}
