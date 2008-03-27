@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.tcl.core.tests.model;
 
@@ -27,7 +27,7 @@ public class CompletionTests extends AbstractModelCompletionTests {
 	}
 
 	public void setUpSuite() throws Exception {
-		PROJECT = setUpScriptProject("Completion");
+		this.PROJECT = this.setUpScriptProject("Completion");
 
 		super.setUpSuite();
 		// InternalDLTKLanguageManager.setPrefferedPriority(TclNature.NATURE_ID,
@@ -65,7 +65,7 @@ public class CompletionTests extends AbstractModelCompletionTests {
 			completions[i] = elements[i];
 			relevance[i] = RELEVANCE;
 		}
-		return makeResult(elements, completions, relevance);
+		return this.makeResult(elements, completions, relevance);
 	}
 
 	private String makeResult(String[] elements, int[] relevance) {
@@ -73,12 +73,12 @@ public class CompletionTests extends AbstractModelCompletionTests {
 		for (int i = 0; i < elements.length; ++i) {
 			completions[i] = elements[i];
 		}
-		return makeResult(elements, completions, relevance);
+		return this.makeResult(elements, completions, relevance);
 	}
 
 	public void testCompletion001() throws ModelException {
 		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
-		ISourceModule cu = getSourceModule("Completion", "src",
+		ISourceModule cu = this.getSourceModule("Completion", "src",
 				"CompletionKeywordNamespace1.tcl");
 
 		String str = cu.getSource();
@@ -87,7 +87,7 @@ public class CompletionTests extends AbstractModelCompletionTests {
 				+ completeBehind.length();
 		cu.codeComplete(cursorLocation, requestor);
 
-		assertEquals(makeResult(new String[] { "namespace",
+		assertEquals(this.makeResult(new String[] { "namespace",
 				"namespace children", "namespace code", "namespace current",
 				"namespace delete", "namespace eval", "namespace export",
 				"namespace forget", "namespace import", "namespace inscope",
@@ -97,7 +97,7 @@ public class CompletionTests extends AbstractModelCompletionTests {
 
 	public void testCompletion002() throws ModelException {
 		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
-		ISourceModule cu = getSourceModule("Completion", "src",
+		ISourceModule cu = this.getSourceModule("Completion", "src",
 				"CompletionKeywordNamespace1.tcl");
 
 		String str = cu.getSource();
@@ -106,39 +106,39 @@ public class CompletionTests extends AbstractModelCompletionTests {
 				+ completeBehind.length();
 		cu.codeComplete(cursorLocation, requestor);
 
-		assertEquals(makeResult(new String[] { "package", "package provide",
+		assertEquals(this.makeResult(new String[] { "package", "package provide",
 				"package require", "part" }), requestor.getResults());
 
 	}
 
 	public void testCompletion003() throws ModelException {
-		process003(9);
+		this.process003(9);
 	}
 
 	private void process003(int add) throws ModelException {
 		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
-		ISourceModule cu = getSourceModule("Completion", "src",
+		ISourceModule cu = this.getSourceModule("Completion", "src",
 				"Completion002.tcl");
 
 		String str = cu.getSource();
 		int cursorLocation = str.indexOf("#2") + 4 + add;
 		cu.codeComplete(cursorLocation, requestor);
 
-		assertEquals(makeResult(new String[] { "::a::c::fac()" },
-				new String[] { "::a::c::fac" }, new int[] { 18 }), requestor
+		assertEquals(this.makeResult(new String[] { "::a::c::fac()", "::a::c::feac()" },
+				new String[] { "::a::c::fac", "::a::c::feac" }, new int[] { 18, 18 }), requestor
 				.getResults());
 	}
 
 	public void REM_testCompletion004() throws ModelException {
 		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
-		ISourceModule cu = getSourceModule("Completion", "src",
+		ISourceModule cu = this.getSourceModule("Completion", "src",
 				"Completion002.tcl");
 
 		String str = cu.getSource();
 		int cursorLocation = str.indexOf("#1") + 4 + 8;
 		cu.codeComplete(cursorLocation, requestor);
 
-		assertEquals(makeResult(new String[] { "::a::c::fac()",
+		assertEquals(this.makeResult(new String[] { "::a::c::fac()",
 				"::a::c::fbac()", "::a::c::feac()" }, new String[] {
 				"::a::c::fac", "::a::c::fbac", "::a::c::feac" }, new int[] {
 				18, 18, 18 }), requestor.getResults());
@@ -147,14 +147,14 @@ public class CompletionTests extends AbstractModelCompletionTests {
 
 	public void INVALID_testCompletion005() throws ModelException {
 		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
-		ISourceModule cu = getSourceModule("Completion", "src",
+		ISourceModule cu = this.getSourceModule("Completion", "src",
 				"Completion002.tcl");
 
 		String str = cu.getSource();
 		int cursorLocation = str.indexOf("#3") + 4 + 6;
 		cu.codeComplete(cursorLocation, requestor);
 
-		assertEquals(makeResult(new String[] { "::a::f::faf",
+		assertEquals(this.makeResult(new String[] { "::a::f::faf",
 				"::a::f::q::faf_q", "::a::f::q::fafq", "::a::f::q::t::fafqt",
 				"::a::fa" }), requestor.getResults());
 
@@ -162,37 +162,37 @@ public class CompletionTests extends AbstractModelCompletionTests {
 
 	public void testCompletion006() throws ModelException {
 		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
-		ISourceModule cu = getSourceModule("Completion", "src",
+		ISourceModule cu = this.getSourceModule("Completion", "src",
 				"Completion002.tcl");
 
 		String str = cu.getSource();
 		int cursorLocation = str.indexOf("#4") + 4 + 6;
 		cu.codeComplete(cursorLocation, requestor);
 
-		assertEquals(makeResult(new String[] { "::b::fb()" },
-				new String[] { "::b::fb" }, new int[] { 22 }), requestor
+		assertEquals(this.makeResult(new String[] { "::b::fb()" },
+				new String[] { "::b::fb" }, new int[] { 18 }), requestor
 				.getResults());
 
 	}
 
 	public void testCompletion007() throws ModelException {
 		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
-		ISourceModule cu = getSourceModule("Completion", "src",
+		ISourceModule cu = this.getSourceModule("Completion", "src",
 				"completion003.tcl");
 
 		String str = cu.getSource();
-		String s = "puts";
-		int cursorLocation = str.indexOf(s) + s.length() + 1;
+		String s = "puts $";
+		int cursorLocation = str.indexOf(s) + s.length();
 		cu.codeComplete(cursorLocation, requestor);
 
-		assertEquals(makeResult(new String[] { "$::x", "$x" }, new int[] { 18,
+		assertEquals(this.makeResult(new String[] { "$::x", "$x" }, new int[] { 18,
 				18 }), requestor.getResults());
 
 	}
 
 	public void testCompletion008() throws ModelException {
 		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
-		ISourceModule cu = getSourceModule("Completion", "src",
+		ISourceModule cu = this.getSourceModule("Completion", "src",
 				"completion004.tcl");
 
 		String str = cu.getSource();
@@ -200,7 +200,7 @@ public class CompletionTests extends AbstractModelCompletionTests {
 		int cursorLocation = str.indexOf(s) + s.length() + 2;
 		cu.codeComplete(cursorLocation, requestor);
 
-		assertEquals(makeResult(new String[] { "$::x", "$x" }, new int[] { 18,
+		assertEquals(this.makeResult(new String[] { "$::x", "$x" }, new int[] { 18,
 				18 }), requestor.getResults());
 
 	}
