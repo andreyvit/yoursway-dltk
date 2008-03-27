@@ -18,8 +18,8 @@ import org.eclipse.dltk.core.search.indexing.IIndexConstants;
 public abstract class ClassType implements IEvaluatedType {
 
 	public String getTypeName() {
-		String typeName = getModelKey().replace(
-				String.valueOf(IIndexConstants.SEPARATOR), "::"); //$NON-NLS-1$
+		String typeName = getModelKey().replaceAll(
+				"\\" + String.valueOf(IIndexConstants.SEPARATOR), "::"); //$NON-NLS-1$
 		if (typeName.endsWith("%") == true) { //$NON-NLS-1$
 			typeName = typeName.substring(0, (typeName.length() - 1));
 		}

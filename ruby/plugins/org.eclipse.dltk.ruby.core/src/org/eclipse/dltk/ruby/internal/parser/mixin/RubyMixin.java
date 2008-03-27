@@ -9,6 +9,10 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.parser.mixin;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
@@ -22,10 +26,6 @@ import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.internal.core.BuiltinSourceModule;
 import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.ruby.core.RubyNature;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class RubyMixin implements IMixinParser {
 
@@ -50,7 +50,7 @@ public class RubyMixin implements IMixinParser {
       if (absolutePath.toFile().exists()) {
         InputStreamReader reader = null;
         try {
-          StringBuilder builder = new StringBuilder();
+          StringBuffer builder = new StringBuffer();
           reader = new InputStreamReader(new FileInputStream(absolutePath.toFile()));
 
           char[] cbuf = new char[12 * 1024];
