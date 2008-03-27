@@ -193,7 +193,7 @@
       </page> 
     </extension>   
 
-
+<!-- ssanders: Uncomment when matching is correct
 	<extension
 		point="org.eclipse.ui.console.consolePatternMatchListeners">
 		<consolePatternMatchListener
@@ -209,7 +209,7 @@
 			</enablement>
 		</consolePatternMatchListener>
 	</extension>
-
+-->
 	<extension point="org.eclipse.debug.ui.debugModelPresentations">
 		<debugModelPresentation
 			class="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugModelPresentation"
@@ -331,6 +331,11 @@
 	    <detailFormatter
 	          nature="org.eclipse.dltk.ruby.core.nature"
 	          snippet="(%variable%).to_s"
+	          type="BigDecimal">
+	    </detailFormatter>
+	    <detailFormatter
+	          nature="org.eclipse.dltk.ruby.core.nature"
+	          snippet="(%variable%).to_s"
 	          type="Complex">
 	    </detailFormatter>
 	    <detailFormatter
@@ -357,6 +362,16 @@
 	          nature="org.eclipse.dltk.ruby.core.nature"
 	          snippet="(%variable%).to_s"
 	          type="Rational">
+	    </detailFormatter>
+	    <detailFormatter
+	          nature="org.eclipse.dltk.ruby.core.nature"
+	          snippet="&quot;{ &quot; + (%variable%).collect{|i| i.inspect }*&quot;, &quot; + &quot; }&quot;"
+	          type="Set">
+	    </detailFormatter>
+	    <detailFormatter
+	          nature="org.eclipse.dltk.ruby.core.nature"
+	          snippet="(%variable%).string"
+	          type="StringIO">
 	    </detailFormatter>
 	    <detailFormatter
 	          nature="org.eclipse.dltk.ruby.core.nature"
