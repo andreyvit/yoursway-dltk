@@ -61,6 +61,9 @@ public class ScriptSourceLookupParticipant extends
 
 	public Object[] findSourceElements(Object object) throws CoreException {
 		Object[] elements = super.findSourceElements(object);
+		if( elements.length > 0 ) {
+			return elements;
+		}
 		ILaunchConfiguration launchConfiguration = this.getDirector()
 				.getLaunchConfiguration();
 

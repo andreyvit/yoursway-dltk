@@ -131,8 +131,7 @@ public class DBGPSourceModule extends AbstractExternalSourceModule {
 	 * @see org.eclipse.dltk.internal.core.AbstractSourceModule#getNatureId()
 	 */
 	protected String getNatureId() throws CoreException {
-		IPath path = getFullPath();
-		IDLTKLanguageToolkit toolkit = lookupLanguageToolkit(path);
+		IDLTKLanguageToolkit toolkit = lookupLanguageToolkit(getParent());
 		if (toolkit == null) 
 			return null;
 		
