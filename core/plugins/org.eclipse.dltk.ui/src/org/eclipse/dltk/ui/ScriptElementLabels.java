@@ -964,7 +964,9 @@ public class ScriptElementLabels {
 			if (pack instanceof BuiltinProjectFragment) {
 				buf.append(BUILTINS_FRAGMENT + " "); //$NON-NLS-1$
 			} else {
-				buf.append(pack.getElementName() + " "); //$NON-NLS-1$
+				if (pack != null) {
+					buf.append(pack.getElementName() + " "); //$NON-NLS-1$
+				}
 			}
 		}
 		// }
