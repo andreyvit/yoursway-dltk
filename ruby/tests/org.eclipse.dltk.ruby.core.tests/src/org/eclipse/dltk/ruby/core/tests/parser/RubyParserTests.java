@@ -9,50 +9,15 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core.tests.parser;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
-import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.core.tests.model.AbstractModelTests;
-import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.core.tests.Activator;
 
-public class RubyParserTests extends AbstractModelTests {
+public class RubyParserTests extends AbstractRubyParserTests {
 	public RubyParserTests(String name) {
 		super(Activator.PLUGIN_ID, name);
 	}
 
 	public static Suite suite() {
 		return new Suite(RubyParserTests.class);
-	}
-
-	public void processScript(String name) throws Exception {
-		InputStream input = null;
-		try {
-			input = Activator.getDefault().openResource(name);
-
-			InputStreamReader reader = new InputStreamReader(input);
-			BufferedReader br = new BufferedReader(reader);
-			StringBuffer buffer = new StringBuffer();
-			while (br.ready()) {
-				String l = br.readLine();
-				if (l != null) {
-					buffer.append(l);
-					buffer.append('\n');
-				}
-			}
-			ModuleDeclaration module = DLTKLanguageManager
-			.getSourceParser(RubyNature.NATURE_ID).parse(name.toCharArray(), buffer
-					.toString().toCharArray(), null);
-			assertNotNull(module);
-			assertFalse(module.isEmpty());
-		} finally {
-			if (input != null) {
-				input.close();
-			}
-		}
 	}
 
 	public void testJRubyParser001() throws Exception {

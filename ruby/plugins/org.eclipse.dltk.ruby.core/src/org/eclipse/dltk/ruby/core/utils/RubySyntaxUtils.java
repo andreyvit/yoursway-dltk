@@ -269,5 +269,30 @@ public class RubySyntaxUtils {
 		}
 		return false;
 	}
-	
+
+	public static boolean isValidConstant(String input) {
+		boolean result = input.matches("[A-Z][a-zA-Z0-9_]*"); //$NON-NLS-1$
+
+		return result;
+	}
+
+	public static boolean isValidClass(String input) {
+		boolean result = false;
+
+		if (input.indexOf("::") != -1) { //$NON-NLS-1$
+			String[] tokens = input.split("::"); //$NON-NLS-1$
+			for (int cnt = 0, max = tokens.length; cnt < max; cnt++) {
+				result = isValidConstant(tokens[cnt]);
+
+				if (result != true) {
+					break;
+				}
+			}
+		} else {
+			result = isValidConstant(input);
+		}
+
+		return result;
+	}
+
 }
