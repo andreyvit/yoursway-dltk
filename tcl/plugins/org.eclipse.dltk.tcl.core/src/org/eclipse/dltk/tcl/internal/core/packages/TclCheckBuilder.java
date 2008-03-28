@@ -55,14 +55,7 @@ public class TclCheckBuilder implements IScriptBuilder {
 			return null;
 		}
 		IDLTKLanguageToolkit toolkit;
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(project);
-		} catch (CoreException e2) {
-			if (DLTKCore.DEBUG) {
-				e2.printStackTrace();
-			}
-			return null;
-		}
+		toolkit = DLTKLanguageManager.getLanguageToolkit(project);
 		if (!toolkit.getNatureId().equals(TclNature.NATURE_ID)) {
 			return null;
 		}
@@ -106,16 +99,12 @@ public class TclCheckBuilder implements IScriptBuilder {
 
 		Set keySet = resourceToPackagesList.keySet();
 		IProblemFactory factory;
-		try {
-			factory = DLTKLanguageManager.getProblemFactory(toolkit
-					.getNatureId());
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-			return null;
-		}
+		factory = DLTKLanguageManager.getProblemFactory(toolkit
+				.getNatureId());
 		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
+			if( monitor != null && monitor.isCanceled()) {
+				return null;
+			}
 			ISourceModule module = (ISourceModule) iterator.next();
 			try {
 				cleanMarkers(module.getResource());

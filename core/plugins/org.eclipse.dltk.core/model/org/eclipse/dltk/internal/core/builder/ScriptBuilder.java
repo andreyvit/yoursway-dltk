@@ -318,9 +318,15 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 					Messages.ScriptBuilder_buildingScriptsIn,
 					new Object[] { currentProject.getName() }), 66);
 			Set resources = getResourcesFrom(currentProject, monitor, 1);
+			if (monitor.isCanceled()) {
+				return;
+			}
 			Set elements = getExternalElementsFrom(scriptProject, monitor, 1);
 			Set externalFolders = new HashSet();
 			externalFolders.addAll(this.lastState.externalFolderLocations);
+			if (monitor.isCanceled()) {
+				return;
+			}
 			// Project external resources should also be added into list. Only
 			// on full build we need to manage this.
 			// Call builders for resources.
@@ -332,7 +338,9 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			buildResources(resources, monitor, resourceTicks,
 					IScriptBuilder.FULL_BUILD, new HashSet(), externalFolders,
 					resources);
-
+			if (monitor.isCanceled()) {
+				return;
+			}
 			List els = new ArrayList();
 			els.addAll(elements);
 
@@ -410,9 +418,17 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 					new Object[] { currentProject.getName() }), 67);
 
 			Set allresources = getResourcesFrom(currentProject, monitor, 1);
+			if (monitor.isCanceled()) {
+				return;
+			}
 			Set resources = getResourcesFrom(delta, monitor, 1);
+			if (monitor.isCanceled()) {
+				return;
+			}
 			Set elements = getExternalElementsFrom(scriptProject, monitor, 1);
-
+			if (monitor.isCanceled()) {
+				return;
+			}
 			// New external folders set
 			externalFolders.addAll(this.lastState.externalFolderLocations);
 
@@ -424,6 +440,9 @@ public class ScriptBuilder extends IncrementalProjectBuilder {
 			buildResources(resources, monitor, resourceTicks,
 					IScriptBuilder.INCREMENTAL_BUILD, externalFoldersBefore,
 					externalFolders, allresources);
+			if (monitor.isCanceled()) {
+				return;
+			}
 			List els = new ArrayList();
 			els.addAll(elements);
 			buildElements(els, elements, monitor, 64 - resourceTicks,
