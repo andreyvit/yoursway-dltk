@@ -175,7 +175,10 @@ public class RubyHeuristicScanner extends ScriptHeuristicScanner implements
 					return true;
 				}
 			}
-
+			
+			if (Arrays.binarySearch(BLOCK_ENDINGS, token) >= 0)
+				return false;
+			
 			token = previousToken(getPosition(), offset);
 		}
 

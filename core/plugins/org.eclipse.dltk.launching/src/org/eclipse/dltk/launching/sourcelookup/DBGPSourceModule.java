@@ -96,6 +96,9 @@ public class DBGPSourceModule extends AbstractExternalSourceModule {
 	 */
 	public String getName() {
 		Path path = new Path(frame.getFileName().getPath());
+		if( path.lastSegment()== null ) {
+			return frame.toString();
+		}
 		return path.lastSegment();
 	}
 

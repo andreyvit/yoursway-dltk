@@ -16,13 +16,13 @@ import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.dltk.core.ICodeAssist;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IModelElement;
-import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
-import org.eclipse.dltk.debug.core.eval.IScriptEvaluationResult;
+import org.eclipse.dltk.dbgp.IDbgpProperty;
+import org.eclipse.dltk.dbgp.commands.IDbgpPropertyCommands;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
-import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
+import org.eclipse.dltk.internal.debug.core.model.ScriptValue;
 import org.eclipse.dltk.internal.ui.text.HTMLTextPresenter;
 import org.eclipse.dltk.internal.ui.text.ScriptWordFinder;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
@@ -77,29 +77,29 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 		IEditorInput input = editor.getEditorInput();
 		Object element = DLTKUIPlugin.getDefault().getWorkingCopyManager()
 				.getWorkingCopy(input);
-		
+
 		if (!(element instanceof ICodeAssist))
 			return null;
-			
+
 		ICodeAssist codeAssist = (ICodeAssist) element;
 		IModelElement[] resolve = null;
 		try {
 			resolve = codeAssist.codeSelect(hoverRegion.getOffset(),
 					hoverRegion.getLength());
-	
-			IScriptEvaluationEngine engine = ((IScriptThread) frame
-					.getThread()).getEvaluationEngine();
-	
+
+			IDbgpPropertyCommands propCmds = frame.getScriptThread()
+					.getDbgpSession().getCoreCommands();
+
 			for (int i = 0; i < resolve.length; i++) {
 				IModelElement scriptElement = resolve[i];
 				if (scriptElement instanceof IField) {
 					IField field = (IField) scriptElement;
 					String snippet = field.getElementName();
-					// Try to evaluate
-					IScriptEvaluationResult result = engine.syncEvaluate(
-							snippet, frame);
-					if (result != null && !result.hasErrors()) {
-						return getResultText(result);
+					try {
+						IDbgpProperty property = propCmds.getProperty(snippet);
+						return getResultText(snippet, ScriptValue.createValue(
+								frame, property));
+					} catch (DebugException e) {
 					}
 				}
 			}
@@ -108,11 +108,10 @@ public abstract class ScriptDebugHover implements IScriptEditorTextHover,
 		return null;
 	}
 
-	protected String getResultText(IScriptEvaluationResult result)
+	protected String getResultText(String snippet, IScriptValue value)
 			throws DebugException {
-		IScriptValue value = result.getValue();
 		String str = getModelPresentation().getText(value);
-		return prepareHtml(result.getSnippet() + " = " + str); //$NON-NLS-1$
+		return prepareHtml(snippet + " = " + str); //$NON-NLS-1$
 	}
 
 	protected String getVariableText(IVariable variable) throws DebugException {
