@@ -14,6 +14,7 @@
    <extension-point id="callHierarchy" name="%extension-point.name.callHierarchy" schema="schema/callHierarchy.exsd"/>
    <extension-point id="problemFactory" name="%extension-point.name.problemFactory" schema="schema/problemFactory.exsd"/>
    <extension-point id="fileHierarchyResolvers" name="%extension-point.name.fileHierarchyResolvers" schema="schema/fileHierarchyResolvers.exsd"/>
+   <extension-point id="interpreterContainerExtension" name="%extension-point.name.interpreterContainerExtension" schema="schema/interpreterContainerExtension.exsd"/>
 
 <!-- =================================================================================== -->
 <!-- Extension: DLTK Problem                                                             -->

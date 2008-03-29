@@ -27,15 +27,15 @@
          point="org.eclipse.core.runtime.preferences">
       <initializer class="org.eclipse.dltk.internal.ui.preferences.PreferenceInitializer"/>      
    </extension>
-   <extension
-         point="org.eclipse.ui.preferencePages">
+   <!--extension
+         point="org.eclipse.ui.propertyPages">
       <page name="%buildPathPrefName"
 			category="org.eclipse.dltk.preferences.DLTKBasePreferencePage"
 			class="org.eclipse.dltk.ui.preferences.NewScriptProjectPreferencePage"
 			id="org.eclipse.dltk.ui.preferences.BuildPathPreferencePage">
 		<keywordReference id="org.eclipse.dltk.ui.buildpathoptions"/>
       </page>
-   </extension>
+   </extension-->
    <extension
          point="org.eclipse.core.runtime.adapters">
       <factory
@@ -617,6 +617,13 @@
             description="%ActionDefinition.gotoType.description"
             categoryId="org.eclipse.ui.category.navigate"
             id="org.eclipse.dltk.ui.navigate.gototype">
+      </command>
+
+      <command
+            name="%ActionDefinition.ReferencesInProject.name"
+            description="%ActionDefinition.ReferencesInProject.description"
+            categoryId="org.eclipse.search.ui.category.search"
+            id="org.eclipse.dltk.ui.edit.text.script.search.references.in.project">
       </command>
  </extension>
 	<extension
