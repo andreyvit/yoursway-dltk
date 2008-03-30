@@ -81,7 +81,7 @@ public abstract class Engine implements ITypeRequestor {
 		return null;
 	}
 
-	private ASTNode parseBlockStatements(TypeDeclaration type,
+	protected ASTNode parseBlockStatements(TypeDeclaration type,
 			ModuleDeclaration unit, int position) {
 		// members
 		TypeDeclaration[] memberTypes = type.getTypes();
@@ -93,7 +93,7 @@ public abstract class Engine implements ITypeRequestor {
 						&& memberType.getNameEnd() >= position) {
 					getParser().handleNotInElement(memberType, position);
 				}
-				if (memberType.getBodyStart() > position)
+				if (memberType.sourceStart() > position)
 					continue;
 				if (memberType.sourceEnd() >= position) {
 					return parseBlockStatements(memberType, unit, position);
