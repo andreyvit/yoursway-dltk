@@ -381,7 +381,7 @@ public abstract class AbstractDocumentationView extends AbstractInfoView {
 			}
 		}
 		if (javadocHtml == null)
-			return ""; //$NON-NLS-1$
+			return null; //$NON-NLS-1$
 		return javadocHtml;
 	}
 

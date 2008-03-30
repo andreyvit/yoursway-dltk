@@ -28,11 +28,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKContentTypeManager;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.launching.ScriptRuntime;
 
@@ -40,7 +40,7 @@ import com.ibm.icu.text.Collator;
 
 /**
  */
-public class BuildpathDetector implements IResourceProxyVisitor {
+public class BuildpathDetector {
 	private HashMap fSourceFolders;
 	private List fSourceFiles;
 	private HashSet fZIPFiles;
@@ -60,18 +60,14 @@ public class BuildpathDetector implements IResourceProxyVisitor {
 		}
 	}
 
-	public BuildpathDetector(IProject project, IProgressMonitor monitor,
-			IDLTKLanguageToolkit toolkit) throws CoreException {
+	public BuildpathDetector(IProject project, IDLTKLanguageToolkit toolkit)
+			throws CoreException {
 		fSourceFolders = new HashMap();
 		fZIPFiles = new HashSet(10);
 		fSourceFiles = new ArrayList(100);
 		fProject = project;
 		fResultBuildpath = null;
 		fToolkit = toolkit;
-		if (monitor == null) {
-			monitor = new NullProgressMonitor();
-		}
-		detectBuildpath(monitor);
 	}
 
 	private boolean isNested(IPath path, Iterator iter) {
@@ -91,29 +87,40 @@ public class BuildpathDetector implements IResourceProxyVisitor {
 	 *            The progress monitor (not null)
 	 * @throws CoreException
 	 */
-	private void detectBuildpath(IProgressMonitor monitor) throws CoreException {
+	public void detectBuildpath(IProgressMonitor monitor) throws CoreException {
+		if (monitor == null) {
+			monitor = new NullProgressMonitor();
+		}
 		try {
-			monitor.beginTask(Messages.BuildpathDetector_detectingBuildpath, 4);
+			monitor.beginTask(Messages.BuildpathDetector_detectingBuildpath,
+					120);
 			fMonitor = monitor;
-			fProject.accept(this, IResource.NONE);
-			monitor.worked(1);
+			final List correctFiles = new ArrayList();
+			fProject.accept(new IResourceProxyVisitor() {
+				public boolean visit(IResourceProxy proxy) throws CoreException {
+					return BuildpathDetector.this.visit(proxy, correctFiles);
+				}
+			}, IResource.NONE);
+			monitor.worked(10);
+			SubProgressMonitor sub = new SubProgressMonitor(monitor, 80);
+			processSources(correctFiles, sub);
+			sub.done();
 			ArrayList cpEntries = new ArrayList();
 			detectSourceFolders(cpEntries);
 			if (monitor.isCanceled()) {
 				throw new OperationCanceledException();
 			}
-			monitor.worked(1);
+			monitor.worked(10);
 			if (monitor.isCanceled()) {
 				throw new OperationCanceledException();
 			}
-			monitor.worked(1);
+			monitor.worked(10);
 			detectLibraries(cpEntries);
 			if (monitor.isCanceled()) {
 				throw new OperationCanceledException();
 			}
-			monitor.worked(1);
-			cpEntries.add(DLTKCore.newContainerEntry(new Path(
-					ScriptRuntime.INTERPRETER_CONTAINER)));
+			monitor.worked(10);
+			addInterpreterContainer(cpEntries);
 			if (cpEntries.isEmpty() && fSourceFiles.isEmpty()) {
 				return;
 			}
@@ -128,6 +135,14 @@ public class BuildpathDetector implements IResourceProxyVisitor {
 		} finally {
 			monitor.done();
 		}
+	}
+
+	protected void processSources(List correctFiles, SubProgressMonitor sub) {		
+	}
+
+	protected void addInterpreterContainer(ArrayList cpEntries) {
+		cpEntries.add(DLTKCore.newContainerEntry(new Path(
+				ScriptRuntime.INTERPRETER_CONTAINER)));
 	}
 
 	private void detectLibraries(ArrayList cpEntries) {
@@ -204,7 +219,7 @@ public class BuildpathDetector implements IResourceProxyVisitor {
 	 * 
 	 * @see org.eclipse.core.resources.IResourceProxyVisitor#visit(org.eclipse.core.resources.IResourceProxy)
 	 */
-	public boolean visit(IResourceProxy proxy) {
+	public boolean visit(IResourceProxy proxy, List files) {
 		if (fMonitor.isCanceled()) {
 			throw new OperationCanceledException();
 		}
@@ -212,7 +227,9 @@ public class BuildpathDetector implements IResourceProxyVisitor {
 			String name = proxy.getName();
 			IResource res = proxy.requestResource();
 			if (isValidResource(res)) {
-				visitSourceModule((IFile) proxy.requestResource());
+				if (visitSourceModule((IFile) proxy.requestResource())) {
+					files.add(proxy.requestResource());
+				}
 			} else if (hasExtension(name, ".zip")) { //$NON-NLS-1$
 				fZIPFiles.add(proxy.requestFullPath());
 			}
@@ -221,34 +238,15 @@ public class BuildpathDetector implements IResourceProxyVisitor {
 		return true;
 	}
 
-	private void visitSourceModule(IFile file) {
-		ISourceModule cu = DLTKCore.createSourceModuleFrom(file);
-		if (cu != null) {
-//			ISourceModule workingCopy = null;
-			try {
-//				workingCopy = cu.getWorkingCopy(null);
-				IPath relPath = null;// new
-				// Path(workingCopy.getElementName());
-				IPath packPath = file.getParent().getFullPath();
-				String cuName = file.getName();
-				if (relPath == null) {
-					addToMap(fSourceFolders, packPath, new Path(cuName));
-				} else {
-					IPath folderPath = getFolderPath(packPath, relPath);
-					if (folderPath != null) {
-						addToMap(fSourceFolders, folderPath, relPath
-								.append(cuName));
-					}
-				}
-			} finally {
-//				if (workingCopy != null) {
-//					try {
-//						workingCopy.discardWorkingCopy();
-//					} catch (ModelException ignore) {
-//					}
-//				}
-			}
+	protected boolean visitSourceModule(IFile file) {
+		if (DLTKContentTypeManager.isValidFileNameForContentType(fToolkit, file
+				.getFullPath())) {
+			IPath packPath = file.getParent().getFullPath();
+			String cuName = file.getName();
+			addToMap(fSourceFolders, packPath, new Path(cuName));
+			return true;
 		}
+		return false;
 	}
 
 	public IBuildpathEntry[] getBuildpath() {

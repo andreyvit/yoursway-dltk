@@ -99,10 +99,9 @@ public class TclCheckBuilder implements IScriptBuilder {
 
 		Set keySet = resourceToPackagesList.keySet();
 		IProblemFactory factory;
-		factory = DLTKLanguageManager.getProblemFactory(toolkit
-				.getNatureId());
+		factory = DLTKLanguageManager.getProblemFactory(toolkit.getNatureId());
 		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
-			if( monitor != null && monitor.isCanceled()) {
+			if (monitor != null && monitor.isCanceled()) {
 				return null;
 			}
 			ISourceModule module = (ISourceModule) iterator.next();
@@ -225,7 +224,7 @@ public class TclCheckBuilder implements IScriptBuilder {
 		}
 	}
 
-	private static void fillPackagesDeclarations(ModuleDeclaration declaration,
+	public static void fillPackagesDeclarations(ModuleDeclaration declaration,
 			final ArrayList list, final Set packagesInBuild,
 			final Set packageNamesInProject) throws Exception {
 		declaration.traverse(new ASTVisitor() {
@@ -235,8 +234,13 @@ public class TclCheckBuilder implements IScriptBuilder {
 					if (pkg.getStyle() == TclPackageDeclaration.STYLE_REQUIRE) {
 						TclPackageDeclaration copy = new TclPackageDeclaration(
 								pkg);
-						list.add(copy);
-						packagesInBuild.add(copy.getName());
+						String name = copy.getName();
+						if (name.indexOf("$") == -1) {
+							if (list != null) {
+								list.add(copy);
+							}
+							packagesInBuild.add(name);
+						}
 					} else if (pkg.getStyle() == TclPackageDeclaration.STYLE_IFNEEDED
 							|| pkg.getStyle() == TclPackageDeclaration.STYLE_PROVIDE) {
 						packageNamesInProject.add(pkg.getName());
