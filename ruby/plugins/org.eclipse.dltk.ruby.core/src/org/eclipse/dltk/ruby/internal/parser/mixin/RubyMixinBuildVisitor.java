@@ -82,6 +82,8 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 
 		public abstract String reportInclude(String object);
 
+		public abstract String reportExtend(String object);
+
 		public abstract String getClassKey();
 
 		public abstract String getKey();
@@ -131,6 +133,10 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		}
 
 		public String reportInclude(String object) {
+			return null;
+		}
+
+		public String reportExtend(String object) {
 			return null;
 		}
 
@@ -195,6 +201,11 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 					RubyMixinElementInfo.K_INCLUDE, object));
 		}
 
+		public String reportExtend(String object) {
+			return report(classKey + INSTANCE_SUFFIX, new RubyMixinElementInfo(
+					RubyMixinElementInfo.K_EXTEND, object));
+		}
+
 	}
 
 	private class MetaClassScope extends Scope {
@@ -247,6 +258,11 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		public String reportInclude(String object) {
 			return report(classKey, new RubyMixinElementInfo(
 					RubyMixinElementInfo.K_INCLUDE, object));
+		}
+
+		public String reportExtend(String object) {
+			return report(classKey, new RubyMixinElementInfo(
+					RubyMixinElementInfo.K_EXTEND, object));
 		}
 
 	}
@@ -311,6 +327,10 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			return classScope.reportInclude(object);
 		}
 
+		public String reportExtend(String object) {
+			return classScope.reportExtend(object);
+		}
+
 	}
 
 	private Stack scopes = new Stack();
@@ -373,7 +393,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 
 	private IModelElement findModelElementFor(ASTNode decl)
 			throws ModelException {
-// return null;
+		// return null;
 		return sourceModule.getElementAt(decl.sourceStart() + 1);
 	}
 
@@ -439,7 +459,8 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 	}
 
 	public boolean visit(CallExpression call) throws Exception {
-		if (call.getReceiver() == null && call.getName().equals("include") && call.getArgs().getChilds().size() > 0) { //$NON-NLS-1$
+		if (call.getReceiver() == null
+				&& call.getName().equals("include") && call.getArgs().getChilds().size() > 0) { //$NON-NLS-1$
 			ASTNode expr = (ASTNode) call.getArgs().getChilds().get(0);
 			if (expr instanceof RubyCallArgument)
 				expr = ((RubyCallArgument) expr).getValue();
@@ -447,6 +468,19 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			String incl = evaluateClassKey(expr);
 			if (incl != null)
 				scope.reportInclude(incl);
+			return false;
+		} else if (call.getReceiver() == null
+				&& call.getName().equals("extend") //$NON-NLS-1$
+				&& call.getArgs().getChilds().size() > 0) {
+			ASTNode expr = (ASTNode) call.getArgs().getChilds().get(0);
+			if (expr instanceof RubyCallArgument)
+				expr = ((RubyCallArgument) expr).getValue();
+			scopes.push(new MetaClassScope(call, peekScope().getClassKey()));
+			Scope scope = peekScope();
+			String ext = evaluateClassKey(expr);
+			if (ext != null)
+				scope.reportExtend(ext);
+			scopes.pop();
 			return false;
 		} else if (RubyAttributeHandler.isAttributeCreationCall(call)
 				&& sourceModule != null) {
@@ -461,6 +495,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 				FakeMethod fakeMethod = new FakeMethod(
 						(ModelElement) sourceModule, attr, n.sourceStart(),
 						attr.length(), n.sourceStart(), attr.length());
+				fakeMethod.setFlags(Modifiers.AccPublic);
 				scope.reportMethod(attr, fakeMethod);
 			}
 			List writers = info.getWriters();
@@ -473,6 +508,8 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 						(ModelElement) sourceModule, attr + "=", n //$NON-NLS-1$
 								.sourceStart(), attr.length(), n.sourceStart(),
 						attr.length());
+				fakeMethod.setFlags(Modifiers.AccPublic);
+				fakeMethod.setParameters(new String[] { attr });
 				scope.reportMethod(attr + "=", fakeMethod); //$NON-NLS-1$
 			}
 			return false;
@@ -484,9 +521,8 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		IType obj = null;
 		if (moduleAvailable) {
 			IModelElement elementFor = findModelElementFor(decl);
-			if (!(elementFor instanceof IType))  {
+			if (!(elementFor instanceof IType)) {
 				elementFor = findModelElementFor(decl);
-//				System.out.println();
 			}
 			obj = (IType) elementFor;
 		}
@@ -538,14 +574,16 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 			ASTListNode superClasses = declaration.getSuperClasses();
 			if (superClasses != null && superClasses.getChilds().size() == 1) {
 				ASTNode s = (ASTNode) superClasses.getChilds().get(0);
-				if (this.sourceModule != null) {
-					SuperclassReferenceInfo ref = new SuperclassReferenceInfo(
-							s, this.module, sourceModule);
-					Scope scope = peekScope();
-					report(scope.getKey() + INSTANCE_SUFFIX,
-							new RubyMixinElementInfo(
-									RubyMixinElementInfo.K_SUPER, ref));
-				}
+				// if (this.sourceModule != null) {
+				SuperclassReferenceInfo ref = new SuperclassReferenceInfo(s,
+						this.module, sourceModule);
+				Scope scope = peekScope();
+				report(scope.getKey() + INSTANCE_SUFFIX,
+						new RubyMixinElementInfo(RubyMixinElementInfo.K_SUPER,
+								ref));
+				report(scope.getKey(), new RubyMixinElementInfo(
+						RubyMixinElementInfo.K_SUPER, ref));
+				// }
 			}
 			return true;
 		} else {
@@ -565,7 +603,7 @@ public class RubyMixinBuildVisitor extends ASTVisitor {
 		info.object = object;
 		if (requestor != null) {
 			requestor.reportElement(info);
-// System.out.println("Mixin reported: " + key);
+			// System.out.println("Mixin reported: " + key);
 		}
 		allReportedKeys.add(key);
 		return key;
