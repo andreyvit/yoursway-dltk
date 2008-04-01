@@ -12,6 +12,7 @@ package org.eclipse.dltk.internal.launching;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -21,11 +22,14 @@ import java.util.Set;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IBuiltinModuleProvider;
+import org.eclipse.dltk.core.IInterpreterContainerExtension;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallChangedListener;
@@ -180,10 +184,18 @@ public class InterpreterContainer implements IBuildpathContainer {
 	}
 
 	/**
-	 * @see IBuildpathContainer#getBuildpathEntries()
+	 * @see IBuildpathContainer#getBuildpathEntries(IScriptProject)
 	 */
-	public IBuildpathEntry[] getBuildpathEntries() {
-		return getBuildpathEntries(fInterpreterInstall);
+	public IBuildpathEntry[] getBuildpathEntries(IScriptProject project) {
+		IBuildpathEntry[] buildpathEntries = getBuildpathEntries(fInterpreterInstall);
+		List entries = new ArrayList();
+		entries.addAll(Arrays.asList(buildpathEntries));
+		// Use custom per project interpreter entries.
+		IInterpreterContainerExtension extension = DLTKLanguageManager.getInterpreterContainerExtensions(project);
+		if( extension != null ) {
+			extension.processEntres(project, entries);
+		}
+		return (IBuildpathEntry[]) entries.toArray(new IBuildpathEntry[entries.size()]);
 	}
 
 	/**
