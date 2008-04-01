@@ -1,13 +1,13 @@
 
 ! Ruby Development Tools (DLTK)
 !
-! $Id: ruby.map,v 1.59 2008/03/31 06:42:25 asobolev Exp $ 
+! $Id: ruby.map,v 1.60 2008/04/01 10:22:57 asobolev Exp $ 
 
 feature@org.eclipse.dltk.ruby=v20080204-1458,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/features/org.eclipse.dltk.ruby-feature
 feature@org.eclipse.dltk.ruby.sdk=v20080313-2125,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/features/org.eclipse.dltk.ruby.sdk
 
 plugin@org.eclipse.dltk.ruby=v20070727b,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby
-plugin@org.eclipse.dltk.ruby.core=v20080331-1339,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.core
+plugin@org.eclipse.dltk.ruby.core=v20080401-1722,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.core
 plugin@org.eclipse.dltk.ruby.launching=v20080313-2125,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.launching
 plugin@org.eclipse.dltk.ruby.debug=v20080331-1339,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.debug
 plugin@org.eclipse.dltk.ruby.ui=v20080331-1339,:pserver:anonymous@dev.eclipse.org:/cvsroot/technology,,org.eclipse.dltk/ruby/plugins/org.eclipse.dltk.ruby.ui
