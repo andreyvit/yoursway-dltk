@@ -25,8 +25,8 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 
 
@@ -176,6 +176,12 @@ public class DLTKLaunchableTester extends PropertyTester {
 		IModelElement element = null;
 		if (receiver instanceof IAdaptable) {
 			element = (IModelElement) ((IAdaptable) receiver).getAdapter(IModelElement.class);
+			if( element == null ) {
+				IResource res = (IResource) ((IAdaptable) receiver).getAdapter(IResource.class);
+				if( res != null ) {
+					element = DLTKCore.create(res);
+				}
+			}
 			if (element != null) {
 				if (!element.exists()) {
 					return false;

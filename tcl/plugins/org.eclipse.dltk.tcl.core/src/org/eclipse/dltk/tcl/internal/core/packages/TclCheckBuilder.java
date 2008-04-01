@@ -129,7 +129,10 @@ public class TclCheckBuilder implements IScriptBuilder {
 				TclPackageDeclaration pkg = (TclPackageDeclaration) iterator2
 						.next();
 				checkPackage(pkg, packageNames, reporter, model, manager,
-						install, buildpath, project);
+						install, buildpath, project, monitor);
+				if (monitor != null && monitor.isCanceled()) {
+					return null;
+				}
 			}
 		}
 
@@ -271,7 +274,8 @@ public class TclCheckBuilder implements IScriptBuilder {
 	public static void checkPackage(TclPackageDeclaration pkg,
 			Set packageNames, IProblemReporter reporter, CodeModel model,
 			PackagesManager manager, IInterpreterInstall install,
-			Set buildpath, IScriptProject scriptProject) {
+			Set buildpath, IScriptProject scriptProject,
+			IProgressMonitor monitor) {
 		if (pkg.getStyle() == TclPackageDeclaration.STYLE_REQUIRE) {
 			String packageName = pkg.getName();
 
@@ -309,6 +313,9 @@ public class TclCheckBuilder implements IScriptBuilder {
 			Map dependencies = manager.getDependencies(packageName, install);
 			for (Iterator iterator = dependencies.keySet().iterator(); iterator
 					.hasNext();) {
+				if (monitor != null && monitor.isCanceled()) {
+					return;
+				}
 				String pkgName = (String) iterator.next();
 				boolean fail = checkPackage(pkg, reporter, model, manager,
 						install, buildpath, pkgName, scriptProject);
@@ -401,7 +408,7 @@ public class TclCheckBuilder implements IScriptBuilder {
 
 	public static void checkPackage(TclPackageDeclaration pkg,
 			IProblemReporter reporter, IScriptProject scriptProject,
-			CodeModel model) {
+			CodeModel model, IProgressMonitor monitor) {
 		IInterpreterInstall install = null;
 		try {
 			install = ScriptRuntime.getInterpreterInstall(scriptProject);
@@ -417,7 +424,7 @@ public class TclCheckBuilder implements IScriptBuilder {
 		PackagesManager manager = PackagesManager.getInstance();
 		Set packageNames = manager.getPackageNames(install);
 		checkPackage(pkg, packageNames, reporter, model, manager, install,
-				buildpath, scriptProject);
+				buildpath, scriptProject, monitor);
 	}
 
 	public Set getDependencies(IScriptProject project, Set resources,
