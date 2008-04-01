@@ -26,13 +26,13 @@ public class SimpleValidator extends AbstractValidator {
 	private String value = "";
 	boolean valid = true;
 	protected SimpleValidator(String id, IValidatorType type) {
-		super(id, null, type);
+		super(id, "", type);
 	}
 	protected SimpleValidator(String id, String name, IValidatorType type) {
 		super(id, name, type);
 	}
 	protected SimpleValidator(String id, Element element, IValidatorType type) throws IOException {
-		super(id, null, type);
+		super(id, "", type);
 		this.loadFrom(element);
 	}
 	protected void loadFrom(Element element ) {

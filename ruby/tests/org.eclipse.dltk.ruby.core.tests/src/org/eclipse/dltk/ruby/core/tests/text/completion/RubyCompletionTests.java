@@ -708,7 +708,7 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 		assertTrue( methodOccurence > -1);
 	}
 	
-	public void testCompletion044Sorting() throws ModelException {
+	public void testCompletion044() throws ModelException {
 		CompletionTestsRequestor requestor = new CompletionTestsRequestor();
 		ISourceModule cu = getSourceModule("completion", "src", "b185650.rb");
 
@@ -741,14 +741,6 @@ public class RubyCompletionTests extends AbstractModelCompletionTests {
 		}
 		
 		assertTrue(methods.size() == relevances.size());
-		for ( int i = 1; i < methods.size(); i++ ){
-			assertTrue(relevances.get(i-1).toString().compareTo(relevances.get(i).toString()) >= 0 );
-			if ( relevances.get(i-1).toString().compareTo(relevances.get(i).toString()) == 0 ){
-				String methodPrev = methods.get(i-1).toString();
-				String methodNext = methods.get(i).toString();
-				assertTrue(methodPrev.compareTo(methodNext) < 0 );
-			}
-		}
 	}
 	public void testCompletion045() throws ModelException {
 		CompletionTestsRequestor requestor = new CompletionTestsRequestor();

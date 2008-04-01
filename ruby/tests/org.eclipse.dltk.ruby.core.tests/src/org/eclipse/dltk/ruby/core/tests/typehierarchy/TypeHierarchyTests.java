@@ -49,7 +49,7 @@ public class TypeHierarchyTests extends AbstractDLTKSearchTests implements IDLTK
 	
 	public void _testBuildHierarcy001() throws Exception {
 		up();
-		IType type = getSourceModule(PROJECT, "src", "src1.rb").getType("B");
+		IType type = getSourceModule(PROJECT, "src", "src1.rb").getType("BB");
 //		search(type, DECLARATIONS, getSearchScope(PROJECT));
 //		assertSearchResults("src/p3/X.tcl p3/Z$T2", resultCollector);	
 		ITypeHierarchy hierarchy = type.newTypeHierarchy(new NullProgressMonitor());

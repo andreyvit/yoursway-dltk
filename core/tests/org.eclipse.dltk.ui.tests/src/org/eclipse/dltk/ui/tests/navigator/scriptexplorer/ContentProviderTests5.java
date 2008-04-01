@@ -79,7 +79,7 @@ public class ContentProviderTests5 extends TestCase{
 			ScriptProjectHelper.setAutoBuilding(false);
 		
 		//create project
-		fJProject= ScriptProjectHelper.createScriptProject("TestProject");
+		fJProject= ScriptProjectHelper.createScriptProject("ContentProviderProject");
 		assertNotNull(fJProject);
 
 		Object[] resource = fJProject.getForeignResources();
