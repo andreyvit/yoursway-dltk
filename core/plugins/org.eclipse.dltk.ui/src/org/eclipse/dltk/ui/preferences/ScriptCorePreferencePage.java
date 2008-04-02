@@ -10,6 +10,7 @@
 package org.eclipse.dltk.ui.preferences;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -90,6 +91,10 @@ public class ScriptCorePreferencePage extends
 					});
 				}
 				return composite;
+			}
+
+			protected List createOverlayKeys() {
+				return null;
 			}
 		};
 	}

@@ -11,6 +11,7 @@ package org.eclipse.dltk.debug.ui.preferences;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
@@ -43,8 +44,7 @@ public class ScriptDebugConfigurationBlock extends
 	private PreferencePage preferencePage;
 	private Preferences fUIPreferences;
 
-	private OverlayPreferenceStore.OverlayKey[] createOverlayStoreKeys() {
-
+	protected List createOverlayKeys() {
 		ArrayList overlayKeys = new ArrayList();
 
 		// Connection
@@ -68,17 +68,12 @@ public class ScriptDebugConfigurationBlock extends
 				OverlayPreferenceStore.BOOLEAN,
 				IDLTKDebugUIPreferenceConstants.PREF_ALERT_HCR_NOT_SUPPORTED));
 
-		OverlayPreferenceStore.OverlayKey[] keys = new OverlayPreferenceStore.OverlayKey[overlayKeys
-				.size()];
-		overlayKeys.toArray(keys);
-		return keys;
-
+		return overlayKeys;
 	}
 
 	public ScriptDebugConfigurationBlock(OverlayPreferenceStore store,
 			PreferencePage mainPreferencePage) {
 		super(store, mainPreferencePage);
-		store.addKeys(createOverlayStoreKeys());
 
 		this.preferencePage = mainPreferencePage;
 		this.fUIPreferences = DLTKDebugUIPlugin.getDefault()

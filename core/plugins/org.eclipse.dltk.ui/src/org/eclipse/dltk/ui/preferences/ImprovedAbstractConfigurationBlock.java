@@ -10,9 +10,12 @@
 
 package org.eclipse.dltk.ui.preferences;
 
+import java.util.List;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.internal.ui.dialogs.StatusInfo;
 import org.eclipse.dltk.internal.ui.dialogs.StatusUtil;
+import org.eclipse.dltk.ui.preferences.OverlayPreferenceStore.OverlayKey;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
@@ -28,16 +31,17 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 		IPreferenceConfigurationBlock, IPreferenceDelegate {
 
 	private PreferencePage page;
-	private IPreferenceStore store;
-	
+	private OverlayPreferenceStore store;
+
 	private ControlBindingManager bindManager;
 
-	public ImprovedAbstractConfigurationBlock(IPreferenceStore store,
+	public ImprovedAbstractConfigurationBlock(OverlayPreferenceStore store,
 			final PreferencePage page) {
 		this.page = page;
 		this.store = store;
-		
+
 		bindManager = new ControlBindingManager(this, getStatusListener());
+		addOverlayKeys();
 	}
 
 	/*
@@ -67,7 +71,7 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 	public void dispose() {
 		// do nothing
 	}
-	
+
 	public boolean getBoolean(Object key) {
 		return store.getBoolean((String) key);
 	}
@@ -83,6 +87,17 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 	public void setString(Object key, String value) {
 		store.setValue((String) key, value);
 	}
+
+	/**
+	 * Create the {@link OverlayPreferenceStore.OverlayKey} keys for the
+	 * preference page.
+	 * 
+	 * <p>
+	 * Subclasses may return <code>null</code> in then event they are not
+	 * storing any preference values.
+	 * </p>
+	 */
+	protected abstract List createOverlayKeys();
 
 	// Binding
 	protected void bindControl(final Button button, final String key,
@@ -118,7 +133,7 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 	protected IPreferenceStore getPreferenceStore() {
 		return store;
 	}
-	
+
 	private IStatusChangeListener getStatusListener() {
 		return new IStatusChangeListener() {
 
@@ -131,5 +146,14 @@ public abstract class ImprovedAbstractConfigurationBlock implements
 				StatusUtil.applyToStatusLine(page, status);
 			}
 		};
+	}
+
+	private void addOverlayKeys() {
+		List overlayKeys = createOverlayKeys();
+		if (overlayKeys != null) {
+			OverlayKey[] keys = (OverlayKey[]) overlayKeys
+					.toArray(new OverlayKey[overlayKeys.size()]);
+			store.addKeys(keys);
+		}
 	}
 }
