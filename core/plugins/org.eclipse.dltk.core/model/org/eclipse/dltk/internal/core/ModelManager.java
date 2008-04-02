@@ -1890,6 +1890,9 @@ public class ModelManager implements ISaveParticipant {
 	 * Returns the open ZipFile at the given path. If the ZipFile does not yet
 	 * exist, it is created, opened, and added to the cache of open ZipFiles.
 	 * 
+	 * NOTE: closeZipFile() must be called for the resulting ZipFile, when the
+	 * client is done using it.
+	 * 
 	 * The path must be a file system path if representing an external zip, or
 	 * it must be an absolute workspace relative path if representing a zip
 	 * inside the workspace.

@@ -28,33 +28,39 @@ import org.eclipse.dltk.ruby.internal.parser.JRubySourceParser;
 
 public class ZippedParserSuite extends TestSuite {
 
-
 	public ZippedParserSuite(String testsZip) {
 		super(testsZip);
 		ZipFile zipFile;
 		try {
 			zipFile = new ZipFile(AbstractModelTests.storeToMetadata(Activator
 					.getDefault().getBundle(), "parser.zip", testsZip));
-			Enumeration entries = zipFile.entries();
-			while (entries.hasMoreElements()) {
-				ZipEntry entry = (ZipEntry) entries.nextElement();
-				final String fileName = entry.getName();
-				final String content = loadContent(zipFile
-						.getInputStream(entry));
+			try {
+				Enumeration entries = zipFile.entries();
+				while (entries.hasMoreElements()) {
+					ZipEntry entry = (ZipEntry) entries.nextElement();
+					final String fileName = entry.getName();
+					final String content = loadContent(zipFile
+							.getInputStream(entry));
 
-				addTest(new TestCase(entry.getName()) {
+					addTest(new TestCase(entry.getName()) {
 
-					public void setUp() {
+						public void setUp() {
 
-					}
+						}
 
-					protected void runTest() throws Throwable {
-						JRubySourceParser.setSilentState(false);
-						ModuleDeclaration module = DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID).parse(fileName.toCharArray(), content.toCharArray(), null);
-						assertNotNull(module);
-					}
+						protected void runTest() throws Throwable {
+							JRubySourceParser.setSilentState(false);
+							ModuleDeclaration module = DLTKLanguageManager
+									.getSourceParser(RubyNature.NATURE_ID)
+									.parse(fileName.toCharArray(),
+											content.toCharArray(), null);
+							assertNotNull(module);
+						}
 
-				});
+					});
+				}
+			} finally {
+				zipFile.close();
 			}
 		} catch (ZipException e) {
 			e.printStackTrace();
@@ -64,11 +70,14 @@ public class ZippedParserSuite extends TestSuite {
 	}
 
 	public static String loadContent(InputStream stream) throws IOException {
-		int length = stream.available();
-		byte[] data = new byte[length];
-		stream.read(data);
-		stream.close();
-		return new String(data, "utf-8");
+		try {
+			int length = stream.available();
+			byte[] data = new byte[length];
+			stream.read(data);
+			return new String(data, "utf-8");
+		} finally {
+			stream.close();
+		}
 	}
 
 }
