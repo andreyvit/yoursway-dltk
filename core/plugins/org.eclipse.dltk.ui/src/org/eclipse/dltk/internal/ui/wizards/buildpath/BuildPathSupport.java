@@ -51,12 +51,13 @@ public class BuildPathSupport {
 			fOriginal= original;
 		}
 
-		public IBuildpathEntry[] getBuildpathEntries() {
+
+		public IBuildpathEntry[] getBuildpathEntries(IScriptProject project) {
 			return fNewEntries;
 		}
 
-		public String getDescription() {
-			return fOriginal.getDescription();
+		public String getDescription(IScriptProject project) {
+			return fOriginal.getDescription(project);
 		}
 
 		public int getKind() {
@@ -67,8 +68,8 @@ public class BuildPathSupport {
 			return fOriginal.getPath();
 		}
 
-		public IBuiltinModuleProvider getBuiltinProvider() {
-			return fOriginal.getBuiltinProvider();
+		public IBuiltinModuleProvider getBuiltinProvider(IScriptProject project) {
+			return fOriginal.getBuiltinProvider(project);
 		}
 	}
 
@@ -104,22 +105,22 @@ public class BuildPathSupport {
 		modifyBuildpathEntry(shell, newEntry, null, jproject, containerPath, monitor);
 	}
 
-	private static void updateContainerBuildpath(IScriptProject jproject, IPath containerPath, IBuildpathEntry newEntry, String[] changedAttributes, IProgressMonitor monitor) throws CoreException {
-		IBuildpathContainer container= DLTKCore.getBuildpathContainer(containerPath, jproject);
+	private static void updateContainerBuildpath(IScriptProject project, IPath containerPath, IBuildpathEntry newEntry, String[] changedAttributes, IProgressMonitor monitor) throws CoreException {
+		IBuildpathContainer container= DLTKCore.getBuildpathContainer(containerPath, project);
 		if (container == null) {
 			throw new CoreException(new Status(IStatus.ERROR, DLTKUIPlugin.PLUGIN_ID, IStatus.ERROR, "Container " + containerPath + " cannot be resolved", null));  //$NON-NLS-1$//$NON-NLS-2$
 		}
-		IBuildpathEntry[] entries= container.getBuildpathEntries();
+		IBuildpathEntry[] entries= container.getBuildpathEntries(project);
 		IBuildpathEntry[] newEntries= new IBuildpathEntry[entries.length];
 		for (int i= 0; i < entries.length; i++) {
 			IBuildpathEntry curr= entries[i];
 			if (curr.getEntryKind() == newEntry.getEntryKind() && curr.getPath().equals(newEntry.getPath())) {
-				newEntries[i]= getUpdatedEntry(curr, newEntry, changedAttributes, jproject);
+				newEntries[i]= getUpdatedEntry(curr, newEntry, changedAttributes, project);
 			} else {
 				newEntries[i]= curr;
 			}
 		}
-		requestContainerUpdate(jproject, container, newEntries);
+		requestContainerUpdate(project, container, newEntries);
 		monitor.worked(1);
 	}
 

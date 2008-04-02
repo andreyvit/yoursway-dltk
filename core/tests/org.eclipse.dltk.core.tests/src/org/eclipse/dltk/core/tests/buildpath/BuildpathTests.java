@@ -31,13 +31,13 @@ import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IBuiltinModuleProvider;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IModelMarker;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.tests.model.ModelTestsPlugin;
@@ -72,11 +72,11 @@ public class BuildpathTests extends ModifyingResourceTests {
 			return this.path;
 		}
 
-		public IBuildpathEntry[] getBuildpathEntries() {
+		public IBuildpathEntry[] getBuildpathEntries(IScriptProject project) {
 			return this.entries;
 		}
 
-		public String getDescription() {
+		public String getDescription(IScriptProject project) {
 			return this.path.toString();
 		}
 
@@ -84,7 +84,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 			return 0;
 		}
 
-		public IBuiltinModuleProvider getBuiltinProvider() {
+		public IBuiltinModuleProvider getBuiltinProvider(IScriptProject project) {
 			// TODO Auto-generated method stub
 			return null;
 		}

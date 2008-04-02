@@ -100,7 +100,7 @@ public interface IBuildpathContainer {
 	 * 
 	 * @return String - a string description of the container
 	 */	
-    String getDescription();
+    String getDescription(IScriptProject project);
 
 	/**
 	 * Answers the kind of this container. Can be either:
@@ -128,6 +128,6 @@ public interface IBuildpathContainer {
 	 */	
     IPath getPath();
     
-    IBuiltinModuleProvider getBuiltinProvider();
+    IBuiltinModuleProvider getBuiltinProvider(IScriptProject project);
 }
 

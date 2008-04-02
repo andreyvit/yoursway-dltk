@@ -17,6 +17,7 @@ import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IBuiltinModuleProvider;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.core.util.Util;
 
 /**
@@ -34,7 +35,7 @@ public class UserLibraryBuildpathContainer implements IBuildpathContainer {
 	/* (non-Javadoc)
 	 * @see org.eclipse.jdt.core.IClasspathContainer#getClasspathEntries()
 	 */
-	public IBuildpathEntry[] getBuildpathEntries() {
+	public IBuildpathEntry[] getBuildpathEntries(IScriptProject project) {
 		UserLibrary library= getUserLibrary();
 		if (library != null) {
 			return library.getEntries();
@@ -45,7 +46,7 @@ public class UserLibraryBuildpathContainer implements IBuildpathContainer {
 	/* (non-Javadoc)
 	 * @see org.eclipse.jdt.core.IClasspathContainer#getDescription()
 	 */
-	public String getDescription() {
+	public String getDescription(IScriptProject project) {
 		return this.name;
 	}
 
@@ -81,7 +82,7 @@ public class UserLibraryBuildpathContainer implements IBuildpathContainer {
 			"	userLibraryName: " + userLibraryName); //$NON-NLS-1$
 	}
 
-	public IBuiltinModuleProvider getBuiltinProvider() {
+	public IBuiltinModuleProvider getBuiltinProvider(IScriptProject project) {
 		return null;
 	}
 }

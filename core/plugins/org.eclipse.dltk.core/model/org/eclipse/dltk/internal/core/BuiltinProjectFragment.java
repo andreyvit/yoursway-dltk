@@ -24,11 +24,11 @@ import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IBuiltinModuleProvider;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.WorkingCopyOwner;
 import org.eclipse.dltk.internal.core.util.MementoTokenizer;
@@ -80,7 +80,7 @@ public class BuiltinProjectFragment extends ProjectFragment {
 			if( buildpathContainer == null ) {
 				return null;
 			}
-			IBuiltinModuleProvider builtinProvider = buildpathContainer.getBuiltinProvider();
+			IBuiltinModuleProvider builtinProvider = buildpathContainer.getBuiltinProvider(project);
 			return builtinProvider;
 		} catch (CoreException ex) {
 			if (DLTKCore.DEBUG) {
@@ -279,7 +279,7 @@ public class BuiltinProjectFragment extends ProjectFragment {
 			//try to guest map from internal element.
 			if( rawEntry != null && rawEntry.getEntryKind() == IBuildpathEntry.BPE_CONTAINER ) {
 				IBuildpathContainer container = DLTKCore.getBuildpathContainer(rawEntry.getPath(), project);
-				IBuildpathEntry entrys[] = container.getBuildpathEntries();
+				IBuildpathEntry entrys[] = container.getBuildpathEntries(project);
 				for( int i = 0; i < entrys.length; ++i ) {
 					if( entrys[i].getPath().equals(new Path( this.getPath().segment(0)))) {
 						return entrys[i];

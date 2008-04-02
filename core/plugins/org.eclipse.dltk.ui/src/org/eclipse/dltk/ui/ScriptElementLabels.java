@@ -993,7 +993,7 @@ public class ScriptElementLabels {
 		IBuildpathContainer container = DLTKCore.getBuildpathContainer(
 				containerPath, project);
 		if (container != null) {
-			return container.getDescription();
+			return container.getDescription(project);
 		}
 		BuildpathContainerInitializer initializer = DLTKCore
 				.getBuildpathContainerInitializer(containerPath.segment(0));

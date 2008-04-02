@@ -201,7 +201,7 @@ public class InterpreterContainer implements IBuildpathContainer {
 	/**
 	 * @see IBuildpathContainer#getDescription()
 	 */
-	public String getDescription() {
+	public String getDescription(IScriptProject project) {
 		String tag = fInterpreterInstall.getName();
 		return MessageFormat.format(LaunchingMessages.InterpreterEnvironmentContainer_InterpreterEnvironment_System_Library_1, new String[] {
 			tag
@@ -222,7 +222,7 @@ public class InterpreterContainer implements IBuildpathContainer {
 		return fPath;
 	}
 
-	public IBuiltinModuleProvider getBuiltinProvider() {
+	public IBuiltinModuleProvider getBuiltinProvider(IScriptProject project) {
 		return fInterpreterInstall;
 	}
 }
