@@ -5,23 +5,14 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.dltk.internal.ui.preferences.OptionsConfigurationBlock;
 import org.eclipse.dltk.ui.dialogs.PropToPrefLinkArea;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;
-import org.eclipse.jface.preference.IPreferenceNode;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PreferenceLinkArea;
-import org.eclipse.ui.dialogs.PreferencesUtil;
-import org.eclipse.ui.internal.WorkbenchMessages;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
-
-import com.ibm.icu.text.MessageFormat;
 
 public abstract class AbstractOptionsBlock extends OptionsConfigurationBlock
 		implements IPreferenceDelegate {
