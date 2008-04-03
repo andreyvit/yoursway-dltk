@@ -1,6 +1,5 @@
 package org.eclipse.dltk.core.internal.rse;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,14 +8,15 @@ import java.util.Random;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.environment.IDeployment;
 import org.eclipse.dltk.core.environment.IEnvironment;
 import org.eclipse.dltk.core.environment.IExecutionEnvironment;
 import org.eclipse.dltk.internal.launching.execution.EFSDeployment;
 import org.eclipse.rse.core.model.IHost;
+import org.eclipse.rse.core.subsystems.ISubSystem;
 import org.eclipse.rse.internal.efs.RSEFileSystem;
-import org.eclipse.rse.services.shells.HostShellProcessAdapter;
 import org.eclipse.rse.services.shells.IHostShell;
 import org.eclipse.rse.services.shells.IShellService;
 import org.eclipse.rse.subsystems.shells.core.subsystems.servicesubsystem.IShellServiceSubSystem;
@@ -25,12 +25,10 @@ public class RSEExecEnvironment implements IExecutionEnvironment {
 	private final static String EXIT_CMD = "exit"; //$NON-NLS-1$
 	private final static String CMD_DELIMITER = ";"; //$NON-NLS-1$
 	private RSEEnvironment environment;
-	private IShellServiceSubSystem shell;
 	private static int counter = -1;
 
-	public RSEExecEnvironment(RSEEnvironment env, IShellServiceSubSystem shell) {
+	public RSEExecEnvironment(RSEEnvironment env) {
 		this.environment = env;
-		this.shell = shell;
 	}
 
 	public IDeployment createDeployment() {
@@ -50,6 +48,15 @@ public class RSEExecEnvironment implements IExecutionEnvironment {
 		return RSEFileSystem.getURIFor(host.getHostName(), rootPath);
 	}
 
+	private IShellServiceSubSystem getShellServiceSubSystem(IHost host) {
+		ISubSystem[] subsys = host.getSubSystems();
+		for (int i = 0; i < subsys.length; i++) {
+			if (subsys[i] instanceof IShellServiceSubSystem)
+				return (IShellServiceSubSystem) subsys[i];
+		}
+		return null;
+	}
+
 	private String getTempName(String prefix, String suffix) {
 		if (counter == -1) {
 			counter = new Random().nextInt() & 0xffff;
@@ -59,7 +66,13 @@ public class RSEExecEnvironment implements IExecutionEnvironment {
 	}
 
 	private String getTempDir() {
-		String temp = shell.getConnectorService().getTempDirectory();
+		IShellServiceSubSystem system = getShellServiceSubSystem(environment.getHost());
+		try {
+			system.connect(false, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String temp = system.getConnectorService().getTempDirectory();
 		if (temp.length() == 0) {
 			temp = "/tmp";
 		}
@@ -68,19 +81,42 @@ public class RSEExecEnvironment implements IExecutionEnvironment {
 
 	public Process exec(String[] cmdLine, IPath workingDir, String[] environment)
 			throws CoreException {
+		IShellServiceSubSystem shell = getShellServiceSubSystem(this.environment
+				.getHost());
 		try {
-			IShellService shellService = shell.getShellService();		
-			String command = createCommand(cmdLine);
-			IHostShell hostShell = shellService.runCommand(
-					createWorkingDir(workingDir), command,
-					environment, null);
-			return new MyHostShellProcessAdapter(command, hostShell);
-		} catch (IOException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}			
+			shell.connect(false, null);
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
+
+		if (!shell.isConnected()) {
+			return null;
+		}
+		IShellService shellService = shell.getShellService();
+		final IHostShell hostShell = shellService.launchShell(
+				"", environment, new NullProgressMonitor()); //$NON-NLS-1$
+
+		// Sometimes environment variables aren't set, so use export.
+//		if (environment != null) {
+//			for (int i = 0; i < environment.length; i++) {
+//				hostShell.writeToShell("export " + environment[i]);
+//			}
+//		}
+		String command = createCommand(cmdLine);
+		hostShell.writeToShell(command);
+//			IHostShell hostShell = shellService.runCommand(
+//					createWorkingDir(workingDir), command, environment, null);
+		Process p = null;
+		try {
+			p = new MyHostShellProcessAdapter(hostShell);
+		} catch (Exception e) {
+			if (p != null) {
+				p.destroy();
+			}
+			throw new RuntimeException("Failed to run remote command");
+		}
+		return p;
 	}
 
 	private String createWorkingDir(IPath workingDir) {
@@ -90,15 +126,21 @@ public class RSEExecEnvironment implements IExecutionEnvironment {
 	}
 
 	private String createCommand(String[] cmdLine) {
-		StringBuffer result = new StringBuffer();
-		for (int i=0; i<cmdLine.length; i++) {
-			result.append(cmdLine[i]).append(" ");
+		StringBuffer cmd = new StringBuffer();
+		for (int i = 0; i < cmdLine.length; i++) {
+			cmd.append(cmdLine[i]).append(" ");
 		}
-		return result.toString() + CMD_DELIMITER + EXIT_CMD;
+		return cmd.toString() + CMD_DELIMITER + EXIT_CMD;
 	}
 
 	public Map getEnvironmentVariables() {
-		Iterator it = shell.getHostEnvironmentVariables().iterator();
+		IShellServiceSubSystem system = getShellServiceSubSystem(environment.getHost());
+		try {
+			system.connect(false, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Iterator it = system.getHostEnvironmentVariables().iterator();
 		Map result = new HashMap();
 		while (it.hasNext()) {
 			String var = (String) it.next();

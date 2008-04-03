@@ -1,3 +1,18 @@
+/*******************************************************************************
+ * Copyright (c) 2006 PalmSource, Inc.
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Eclipse Public License v1.0 
+ * which accompanies this distribution, and is available at 
+ * http://www.eclipse.org/legal/epl-v10.html 
+ * 
+ * Contributors: 
+ * Ewa Matejska (PalmSource) - initial version
+ * Martin Oberhuber (Wind River) - adapt to IHostOutput API (bug 161773, 158312)
+ * Martin Oberhuber (Wind River) - moved from org.eclipse.rse.remotecdt (bug 161777)
+ * Martin Oberhuber (Wind River) - renamed from HostShellAdapter (bug 161777)
+ * Martin Oberhuber (Wind River) - improved Javadoc
+ *******************************************************************************/
+
 package org.eclipse.dltk.core.internal.rse;
 
 import java.io.IOException;
@@ -31,17 +46,14 @@ IHostShellOutputListener {
 	
 	private PipedOutputStream hostShellInput = null;
 	private PipedOutputStream hostShellError = null;
-	private boolean started = false;
-	private String command;
 	
 	/**
 	 * Constructor.
 	 * @param hostShell  An instance of the IHostShell class.
 	 * @throws java.io.IOException
 	 */
-	public MyHostShellProcessAdapter(String command, IHostShell hostShell) throws java.io.IOException {
+	public MyHostShellProcessAdapter(IHostShell hostShell) throws java.io.IOException {
 		this.hostShell = hostShell;
-		this.command = command;
 		hostShellInput = new PipedOutputStream();
 		hostShellError = new PipedOutputStream();
 		inputStream = new PipedInputStream(hostShellInput);
@@ -151,19 +163,8 @@ IHostShellOutputListener {
 		OutputStream outputStream = event.isError() ? hostShellError : hostShellInput;
 		try {
 		for(int i = 0; i < input.length; i++) {
-			String string = input[i].getString();
-			if (!started && string.indexOf(command) >= 0) {
-				started = true;
-				continue;
-			}
-			if (!started) {
-				continue;
-			}
-			if (string.indexOf('$') >= 0) {
-				destroy();
-				continue;
-			}
-			outputStream.write(string.getBytes());
+			outputStream.write(input[i].getString().getBytes());
+			System.out.println(input[i].getString());
 			outputStream.write('\n');
 			outputStream.flush();
 		}

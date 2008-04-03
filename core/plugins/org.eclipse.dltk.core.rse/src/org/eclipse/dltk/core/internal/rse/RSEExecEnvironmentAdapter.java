@@ -13,22 +13,10 @@ public class RSEExecEnvironmentAdapter implements IAdapterFactory {
 		if (adapterType == IExecutionEnvironment.class && 
 				adaptableObject instanceof RSEEnvironment) {
 			RSEEnvironment env = (RSEEnvironment) adaptableObject;
-			IShellServiceSubSystem shell = getShellServiceSubSystem(env.getHost());
-			if (shell != null)
-				return new RSEExecEnvironment(env, shell);
+			return new RSEExecEnvironment(env);
 		}
 		return null;
 	}
-
-	private IShellServiceSubSystem getShellServiceSubSystem(IHost host) {
-		ISubSystem[] subsys = host.getSubSystems();
-		for (int i=0; i<subsys.length; i++) {
-			if (subsys[i] instanceof IShellServiceSubSystem)
-				return (IShellServiceSubSystem) subsys[i];
-		}
-		return null;
-	}
-
 	public Class[] getAdapterList() {
 		return ADAPTER_LIST; 
 	}

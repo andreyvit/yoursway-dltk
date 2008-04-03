@@ -69,6 +69,9 @@ public class RSEEnvironment extends PlatformObject implements IEnvironment {
 	}
 
 	public boolean hasProject(IProject project) {
+		if( !project.isAccessible()) {
+			return false;
+		}
 		IProjectDescription description;
 		try {
 			description = project.getDescription();
