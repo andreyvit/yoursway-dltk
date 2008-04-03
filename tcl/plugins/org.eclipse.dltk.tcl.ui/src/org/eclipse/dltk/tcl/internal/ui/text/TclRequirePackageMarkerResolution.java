@@ -22,8 +22,8 @@ import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.internal.core.ModelManager;
 import org.eclipse.dltk.internal.core.builder.State;
 import org.eclipse.dltk.launching.IInterpreterInstall;
+import org.eclipse.dltk.launching.InterpreterContainerHelper;
 import org.eclipse.dltk.launching.ScriptRuntime;
-import org.eclipse.dltk.tcl.internal.core.packages.PackagesContainerHelper;
 import org.eclipse.dltk.tcl.internal.core.packages.PackagesManager;
 import org.eclipse.ui.IMarkerResolution;
 
@@ -61,9 +61,9 @@ final class TclRequirePackageMarkerResolution implements IMarkerResolution {
 					e.printStackTrace();
 				}
 			}
-			Set names = PackagesContainerHelper.getPackageContainerPackageNames(project);
+			Set names = InterpreterContainerHelper.getInterpreterContainerDependencies(project);
 			names.add(pkgName);
-			PackagesContainerHelper.setPackageContainerPackagesNames(project, names);
+			InterpreterContainerHelper.setInterpreterContainerDependencies(project, names);
 		}
 	}
 }

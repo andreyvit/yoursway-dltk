@@ -20,7 +20,7 @@ public class InterpreterContainerHelper {
 	private static final String PACKAGES_ATTR = "dependencies"; //$NON-NLS-1$
 	public static final String CONTAINER_PATH = ScriptRuntime.INTERPRETER_CONTAINER;
 
-	public static Set getPackageContainerPackageNames(IScriptProject project) {
+	public static Set getInterpreterContainerDependencies(IScriptProject project) {
 		Set packages = new HashSet();
 		IBuildpathEntry[] rawBuildpath = null;
 		try {
@@ -78,7 +78,7 @@ public class InterpreterContainerHelper {
 		return (String[]) result.toArray(new String[result.size()]);
 	}
 
-	public static void setPackageContainerPackagesNames(IScriptProject project,
+	public static void setInterpreterContainerDependencies(IScriptProject project,
 			Set names) {
 		IBuildpathEntry[] rawBuildpath = null;
 		try {
@@ -100,7 +100,7 @@ public class InterpreterContainerHelper {
 				newBuildpath.add(rawBuildpath[i]);
 			} else {
 				found = true;
-				newBuildpath.add(createPackagesContainer(names, containerName));
+				newBuildpath.add(createPackagesContainer(names, rawBuildpath[i].getPath()));
 			}
 		}
 		if (!found) {

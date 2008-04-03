@@ -32,9 +32,9 @@ import org.eclipse.dltk.internal.core.BuiltinProjectFragment;
 import org.eclipse.dltk.internal.core.BuiltinSourceModule;
 import org.eclipse.dltk.internal.core.ExternalProjectFragment;
 import org.eclipse.dltk.internal.core.ExternalSourceModule;
+import org.eclipse.dltk.launching.InterpreterContainerHelper;
 import org.eclipse.dltk.tcl.core.TclNature;
 import org.eclipse.dltk.tcl.core.ast.TclPackageDeclaration;
-import org.eclipse.dltk.tcl.internal.core.packages.PackagesContainerHelper;
 import org.eclipse.dltk.tcl.internal.ui.text.TclCorrectionProcessor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -80,17 +80,11 @@ public class FixAllDependenciesActionDelegate implements
 					&& !(element instanceof ExternalSourceModule || element instanceof BuiltinSourceModule)
 					&& element.getResource() != null) {
 				if (!elements.contains(element)) {
-					try {
-						IDLTKLanguageToolkit tk = DLTKLanguageManager
-								.getLanguageToolkit((IModelElement) element);
-						if (tk != null
-								&& tk.getNatureId().equals(TclNature.NATURE_ID)) {
-							elements.add(element);
-						}
-					} catch (CoreException e) {
-						if (DLTKCore.DEBUG) {
-							e.printStackTrace();
-						}
+					IDLTKLanguageToolkit tk = DLTKLanguageManager
+							.getLanguageToolkit((IModelElement) element);
+					if (tk != null
+							&& tk.getNatureId().equals(TclNature.NATURE_ID)) {
+						elements.add(element);
 					}
 				}
 				return false; // do not enter into source module content.
@@ -130,17 +124,10 @@ public class FixAllDependenciesActionDelegate implements
 		if (!DLTKLanguageManager.hasScriptNature(project)) {
 			return null; // Lets pass not script projects.
 		}
-//		IScriptProject scriptProject = DLTKCore.create(project);
-//		IDLTKSearchScope scope = SearchEngine
-//				.createSearchScope(new IModelElement[] { scriptProject });
-
-//		IModelElement element = factory.createOpenable(res.getFullPath()
-//				.toString(), scope);
 		IModelElement element = DLTKCore.create(res);
 		if (element != null
 				&& element.getElementType() == IModelElement.SOURCE_MODULE
 				&& element.exists()) {
-			// elements.add(element);
 			return element;
 		} else {
 			return res;
@@ -165,18 +152,12 @@ public class FixAllDependenciesActionDelegate implements
 				Object eo = convertResourceToModelElement(object);
 				if (eo != null) {
 					if (eo instanceof IModelElement && !elements.contains(eo)) {
-						try {
-							IDLTKLanguageToolkit tk = DLTKLanguageManager
-									.getLanguageToolkit((IModelElement) eo);
-							if (tk != null
-									&& tk.getNatureId().equals(
-											TclNature.NATURE_ID)) {
-								elements.add(eo);
-							}
-						} catch (CoreException e) {
-							if (DLTKCore.DEBUG) {
-								e.printStackTrace();
-							}
+						IDLTKLanguageToolkit tk = DLTKLanguageManager
+								.getLanguageToolkit((IModelElement) eo);
+						if (tk != null
+								&& tk.getNatureId().equals(
+										TclNature.NATURE_ID)) {
+							elements.add(eo);
 						}
 					} else if (eo instanceof IResource
 							&& !resources.contains(eo)) {
@@ -229,7 +210,7 @@ public class FixAllDependenciesActionDelegate implements
 						.hasNext();) {
 					final ISourceModule module = (ISourceModule) iterator
 							.next();
-					IResource res = module.getResource();
+//					IResource res = module.getResource();
 					ModuleDeclaration declaration = SourceParserUtil
 							.getModuleDeclaration(module, null,
 									ISourceParserConstants.RUNTIME_MODEL);
@@ -240,12 +221,12 @@ public class FixAllDependenciesActionDelegate implements
 						.hasNext();) {
 					IScriptProject project = (IScriptProject) iterator2.next();
 					Set values = (Set) projectToPackages.get(project);
-					Set names = PackagesContainerHelper
-							.getPackageContainerPackageNames(project);
+					Set names = InterpreterContainerHelper
+							.getInterpreterContainerDependencies(project);
 					names.addAll(values);
 					if (project != null) {
-						PackagesContainerHelper
-								.setPackageContainerPackagesNames(project,
+						InterpreterContainerHelper
+								.setInterpreterContainerDependencies(project,
 										names);
 					}
 				}

@@ -17,7 +17,6 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.dltk.codeassist.ICompletionEngine;
@@ -425,7 +424,7 @@ public abstract class Openable extends ModelElement implements IOpenable,
 		}
 		IBuffer buf = getBuffer();
 		if (buf != null) { // some Openables (like a ScriptProject) don't have
-							// a
+			// a
 			// buffer
 			buf.save(pm, force);
 			this.makeConsistent(pm); // update the element info of this
@@ -463,24 +462,9 @@ public abstract class Openable extends ModelElement implements IOpenable,
 
 		ScriptProject project = (ScriptProject) getScriptProject();
 
-		// TODO: Add searchable environment support.
-		SearchableEnvironment environment = project
-				.newSearchableNameEnvironment(owner);
-
-		// set unit to skip
-		environment.unitToSkip = cu;
-
 		IDLTKLanguageToolkit toolkit = null;
 
-		// TODO: rewrite this ugly code
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(this);
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
-
+		toolkit = DLTKLanguageManager.getLanguageToolkit(this);
 		if (toolkit == null) {
 			toolkit = DLTKLanguageManager.findToolkit(this.getResource());
 			if (toolkit == null) {
@@ -489,18 +473,12 @@ public abstract class Openable extends ModelElement implements IOpenable,
 		}
 
 		// code complete
-		ICompletionEngine engine = null;
-		try {
-			engine = DLTKLanguageManager.getCompletionEngine(toolkit
-					.getNatureId());
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ICompletionEngine engine = DLTKLanguageManager
+				.getCompletionEngine(toolkit.getNatureId());
 		if (engine == null) {
 			return;
 		}
-//		engine.setEnvironment(environment);
+		// engine.setEnvironment(environment);
 		engine.setRequestor(requestor);
 		engine.setOptions(project.getOptions(true));
 		engine.setProject(project);
@@ -511,15 +489,6 @@ public abstract class Openable extends ModelElement implements IOpenable,
 		 */
 
 		engine.complete(cu, position, 0);
-
-		if (NameLookup.VERBOSE) {
-			System.out
-					.println(Thread.currentThread()
-							+ " TIME SPENT in NameLoopkup#seekTypesInSourcePackage: " + environment.nameLookup.timeSpentInSeekTypesInSourcePackage + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
-			System.out
-					.println(Thread.currentThread()
-							+ " TIME SPENT in NameLoopkup#seekTypesInBinaryPackage: " + environment.nameLookup.timeSpentInSeekTypesInBinaryPackage + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
-		}
 	}
 
 	protected IModelElement[] codeSelect(
@@ -527,26 +496,13 @@ public abstract class Openable extends ModelElement implements IOpenable,
 			int length, WorkingCopyOwner owner) throws ModelException {
 
 		ScriptProject project = (ScriptProject) getScriptProject();
-//		SearchableEnvironment environment = null;
-//		try {
-//			environment = project.newSearchableNameEnvironment(owner);
-//		} catch (ModelException e) {
-//			// e.printStackTrace();
-//			return new IModelElement[0];
-//		}
 
 		IBuffer buffer = getBuffer();
 		if (buffer == null) {
 			return new IModelElement[0];
 		}
-		IDLTKLanguageToolkit toolkit = null;
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(this);
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
+		IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+				.getLanguageToolkit(this);
 		if (toolkit == null) {
 			toolkit = DLTKLanguageManager.findToolkit(this.getResource());
 			if (toolkit == null) {
@@ -565,34 +521,18 @@ public abstract class Openable extends ModelElement implements IOpenable,
 					IModelStatusConstants.INDEX_OUT_OF_BOUNDS));
 		}
 
-		ISelectionEngine engine = null;
-		try {
-			engine = DLTKLanguageManager.getSelectionEngine(toolkit
-					.getNatureId());
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
+		ISelectionEngine engine = DLTKLanguageManager
+				.getSelectionEngine(toolkit.getNatureId());
 		if (engine == null) {
 			return new IModelElement[0];
 		}
-		// engine.setEnvironment(environment);
+//		engine.setEnvironment(environment);
 		engine.setOptions(project.getOptions(true));
 		// createSelectionEngine(environment,
 		// project.getOptions(true));
 
 		IModelElement[] elements = engine.select(cu, offset, offset + length
 				- 1);
-//
-//		if (NameLookup.VERBOSE) {
-//			System.out
-//					.println(Thread.currentThread()
-//							+ " TIME SPENT in NameLoopkup#seekTypesInSourcePackage: " + environment.nameLookup.timeSpentInSeekTypesInSourcePackage + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
-//			System.out
-//					.println(Thread.currentThread()
-//							+ " TIME SPENT in NameLoopkup#seekTypesInBinaryPackage: " + environment.nameLookup.timeSpentInSeekTypesInBinaryPackage + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
-//		}
 		return elements;
 	}
 }

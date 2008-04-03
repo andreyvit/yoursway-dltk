@@ -11,13 +11,12 @@ import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.debug.ui.interpreters.AbstractInterpreterComboBlock;
 import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPage;
-import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPageExtension;
 import org.eclipse.dltk.launching.IInterpreterInstall;
+import org.eclipse.dltk.launching.InterpreterContainerHelper;
 import org.eclipse.dltk.launching.ScriptRuntime;
-import org.eclipse.dltk.tcl.internal.core.packages.PackagesContainerHelper;
 import org.eclipse.dltk.tcl.internal.core.packages.PackagesManager;
-import org.eclipse.dltk.tcl.internal.core.packages.TclPackagesBuildpathContainerInitializer;
 import org.eclipse.dltk.ui.DLTKPluginImages;
+import org.eclipse.dltk.ui.wizards.IBuildpathContainerPageExtension;
 import org.eclipse.dltk.ui.wizards.NewElementWizardPage;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -111,11 +110,11 @@ public class TclPackagesContainerPage extends NewElementWizardPage implements
 	}
 
 	public IBuildpathEntry getSelection() {
-		IBuildpathEntry createPackagesContainer = PackagesContainerHelper
+		IBuildpathEntry createPackagesContainer = InterpreterContainerHelper
 				.createPackagesContainer(
 						this.packages,
 						new Path(
-								TclPackagesBuildpathContainerInitializer.CONTAINER_PATH)
+								InterpreterContainerHelper.CONTAINER_PATH)
 								.append(this.scriptProject.getElementName()));
 		return createPackagesContainer;
 	}
@@ -256,8 +255,8 @@ public class TclPackagesContainerPage extends NewElementWizardPage implements
 	public void initialize(IScriptProject project,
 			IBuildpathEntry[] currentEntries) {
 		this.scriptProject = project;
-		Set set = PackagesContainerHelper
-				.getPackageContainerPackageNames(project);
+		Set set = InterpreterContainerHelper
+				.getInterpreterContainerDependencies(project);
 		this.packages.addAll(set);
 	}
 }
