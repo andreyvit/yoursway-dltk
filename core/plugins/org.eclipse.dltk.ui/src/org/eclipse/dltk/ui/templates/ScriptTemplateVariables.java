@@ -47,17 +47,11 @@ public final class ScriptTemplateVariables {
 
 		protected String resolve(TemplateContext context) {
 			String name = null;
-			try {
-				ISourceModule module = getSourceModule(context);
-				IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-						.getLanguageToolkit(module);
+			ISourceModule module = getSourceModule(context);
+			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+					.getLanguageToolkit(module);
 
-				name = toolkit.getLanguageName();
-			} catch (CoreException e) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
-			}
+			name = toolkit.getLanguageName();
 
 			return name;
 		}

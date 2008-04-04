@@ -11,11 +11,9 @@ package org.eclipse.dltk.internal.debug.ui.interpreters;
 
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IStatusHandler;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.debug.ui.ScriptDebugImages;
 import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPage;
@@ -56,8 +54,7 @@ public abstract class AbstractInterpreterContainerWizardPage extends WizardPage 
 		if (!status.isOK()) {
 			return false;
 		}
-		IPath path = fInterpreterEnvironmentBlock.getPath();
-		fSelection = DLTKCore.newContainerEntry(path);		
+		fSelection = fInterpreterEnvironmentBlock.getEntry();		
 		return true;
 	}
 	

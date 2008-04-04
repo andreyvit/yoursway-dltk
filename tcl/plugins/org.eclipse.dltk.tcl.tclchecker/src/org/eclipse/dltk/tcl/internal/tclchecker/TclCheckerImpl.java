@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.dltk.tcl.internal.tclchecker;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +36,7 @@ public class TclCheckerImpl extends AbstractValidator {
 		super(id, name, type);
 	}
 
-	protected TclCheckerImpl(String id, Element element, IValidatorType type)
-			throws IOException {
+	protected TclCheckerImpl(String id, Element element, IValidatorType type) {
 		super(id, null, type);
 		loadFrom(element);
 	}
@@ -110,7 +108,7 @@ public class TclCheckerImpl extends AbstractValidator {
 			}
 		}
 	}
- 
+
 	public void loadInfo(Element element) {
 		if (initialized) {
 			return;

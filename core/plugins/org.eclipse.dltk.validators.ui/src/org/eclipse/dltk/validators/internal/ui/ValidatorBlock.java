@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
@@ -147,13 +146,10 @@ public class ValidatorBlock implements ISelectionProvider,
 					if (nature == "#") { //$NON-NLS-1$
 						return ValidatorMessages.ValidatorBlock_all;
 					}
-					try {
-						IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
-								.getLanguageToolkit(nature);
-						if (languageToolkit != null) {
-							return languageToolkit.getLanguageName();
-						}
-					} catch (CoreException e) {
+					IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
+							.getLanguageToolkit(nature);
+					if (languageToolkit != null) {
+						return languageToolkit.getLanguageName();
 					}
 					return ValidatorMessages.ValidatorBlock_unknown;
 				}

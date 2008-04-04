@@ -28,7 +28,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -247,11 +246,7 @@ public class IndexManager extends JobManager implements IIndexConstants {
 	public SourceIndexerRequestor getSourceRequestor(
 			IScriptProject scriptProject) {
 		IDLTKLanguageToolkit toolkit = null;
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(scriptProject);
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
+		toolkit = DLTKLanguageManager.getLanguageToolkit(scriptProject);
 		if (toolkit != null) {
 			return DLTKLanguageManager.createSourceRequestor(toolkit
 					.getNatureId());
@@ -265,20 +260,12 @@ public class IndexManager extends JobManager implements IIndexConstants {
 		// Map options = project.getOptions(true);
 		// options.put(DLTKCore.COMPILER_TASK_TAGS, ""); //$NON-NLS-1$
 		IDLTKLanguageToolkit toolkit = null;
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(project);
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		toolkit = DLTKLanguageManager.getLanguageToolkit(project);
 		if (toolkit != null) {
 			ISourceElementParser parser = null;
-			try {
-				parser = DLTKLanguageManager.getSourceElementParser(toolkit
-						.getNatureId());
-				parser.setRequestor(requestor);
-			} catch (CoreException e) {
-			}
+			parser = DLTKLanguageManager.getSourceElementParser(toolkit
+					.getNatureId());
+			parser.setRequestor(requestor);
 			return parser;
 		}
 		return null;

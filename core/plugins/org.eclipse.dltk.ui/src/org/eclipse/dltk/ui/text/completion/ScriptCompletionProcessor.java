@@ -15,18 +15,20 @@ import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.jface.text.ITextViewer;
+import org.eclipse.jface.text.TextPresentation;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
+import org.eclipse.jface.text.contentassist.IContextInformation;
+import org.eclipse.jface.text.contentassist.IContextInformationPresenter;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.eclipse.ui.IEditorPart;
-
 
 /**
  * Script completion processor.
  */
 public abstract class ScriptCompletionProcessor extends ContentAssistProcessor {
-
+	
 	private final static String VISIBILITY = DLTKCore.CODEASSIST_VISIBILITY_CHECK;
-
+	
 	private final static String ENABLED = "enabled"; //$NON-NLS-1$
 
 	private final static String DISABLED = "disabled"; //$NON-NLS-1$
@@ -75,16 +77,12 @@ public abstract class ScriptCompletionProcessor extends ContentAssistProcessor {
 	 * @see org.eclipse.jface.text.contentassist.IContentAssistProcessor#getContextInformationValidator()
 	 */
 	public IContextInformationValidator getContextInformationValidator() {
-		if (DLTKCore.DEBUG) {
-			System.err
-					.println("TODO: Add ParameterListValidator support here.");
-		}
 		if (fValidator == null) {
-			// fValidator= new JavaParameterListValidator();
+			fValidator= new ScriptParameterListValidator();
 		}
 		return fValidator;
 	}
-	
+
 	protected List filterAndSortProposals(List proposals,
 			IProgressMonitor monitor, ContentAssistInvocationContext context) {
 		ProposalSorterRegistry.getDefault().getCurrentSorter().sortProposals(
@@ -92,6 +90,38 @@ public abstract class ScriptCompletionProcessor extends ContentAssistProcessor {
 		return proposals;
 	}
 
-	abstract protected ContentAssistInvocationContext createContext(
-			ITextViewer viewer, int offset);
+	protected abstract String getNatureId();
+
+	protected abstract CompletionProposalLabelProvider getProposalLabelProvider();
+
+	protected ContentAssistInvocationContext createContext(ITextViewer viewer,
+			int offset) {
+		return new ScriptContentAssistInvocationContext(viewer, offset,
+				fEditor, getNatureId()) {
+			protected CompletionProposalLabelProvider createLabelProvider() {
+				return getProposalLabelProvider();
+			}
+		};
+	}
+
+	protected static class ScriptParameterListValidator implements IContextInformationValidator,
+			IContextInformationPresenter {
+
+		private int initialOffset;
+
+		public void install(IContextInformation info, ITextViewer viewer,
+				int offset) {
+			initialOffset = offset;
+		}
+
+		public boolean isContextInformationValid(int offset) {
+			return Math.abs(offset - initialOffset) < 5;
+		}
+
+		public boolean updatePresentation(int documentPosition,
+				TextPresentation presentation) {
+			return false;
+		}
+	}
+
 }

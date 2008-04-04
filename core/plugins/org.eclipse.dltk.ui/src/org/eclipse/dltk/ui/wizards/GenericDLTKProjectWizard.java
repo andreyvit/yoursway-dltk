@@ -63,11 +63,7 @@ public class GenericDLTKProjectWizard extends NewElementWizard implements
 
 		protected boolean supportZips() {
 			IDLTKLanguageToolkit languageToolkit = null;
-			try {
-				languageToolkit = DLTKLanguageManager.getLanguageToolkit(nature);
-			} catch (CoreException e) {
-				return false;
-			}
+			languageToolkit = DLTKLanguageManager.getLanguageToolkit(nature);
 			if( languageToolkit != null ) {
 				return languageToolkit.languageSupportZIPBuildpath();
 			}

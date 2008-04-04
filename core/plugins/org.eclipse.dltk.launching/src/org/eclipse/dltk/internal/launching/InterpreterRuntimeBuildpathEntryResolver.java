@@ -68,13 +68,8 @@ public class InterpreterRuntimeBuildpathEntryResolver implements
 	}
 
 	private String getNatureFromProject(IScriptProject project) {
-		try {
-			return DLTKLanguageManager.getLanguageToolkit(project)
-					.getNatureId();
-		} catch (CoreException e) {
-			DLTKLaunchingPlugin.log(e);
-		}
-		return null;
+		return DLTKLanguageManager.getLanguageToolkit(project)
+				.getNatureId();
 	}
 
 	/**
@@ -108,11 +103,11 @@ public class InterpreterRuntimeBuildpathEntryResolver implements
 	 * Resolves library locations for the given Interpreter install
 	 */
 	protected IRuntimeBuildpathEntry[] resolveLibraryLocations(
-			IInterpreterInstall Interpreter, int kind) {
-		LibraryLocation[] libs = Interpreter.getLibraryLocations();
-		LibraryLocation[] defaultLibs = Interpreter.getInterpreterInstallType()
-				.getDefaultLibraryLocations(Interpreter.getInstallLocation(),
-						Interpreter.getEnvironmentVariables(), null);
+			IInterpreterInstall interpreter, int kind) {
+		LibraryLocation[] libs = interpreter.getLibraryLocations();
+		LibraryLocation[] defaultLibs = interpreter.getInterpreterInstallType()
+				.getDefaultLibraryLocations(interpreter.getInstallLocation(),
+						interpreter.getEnvironmentVariables(), null);
 		if (libs == null) {
 			// default system libs
 			libs = defaultLibs;
@@ -125,7 +120,7 @@ public class InterpreterRuntimeBuildpathEntryResolver implements
 		for (int i = 0; i < libs.length; i++) {
 			IPath systemLibraryPath = libs[i].getLibraryPath();
 			if (systemLibraryPath.toFile().exists()) {
-				resolvedEntries.add(resolveLibraryLocation(Interpreter,
+				resolvedEntries.add(resolveLibraryLocation(interpreter,
 						libs[i], kind));
 			}
 		}

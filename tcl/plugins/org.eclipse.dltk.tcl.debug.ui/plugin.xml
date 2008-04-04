@@ -324,15 +324,6 @@
       type="#DEFAULT#">
     </detailFormatter>
   </extension>
-<extension
-      point="org.eclipse.dltk.ui.buildpathContainerPage">
-   <buildpathContainerPath
-         class="org.eclipse.dltk.tcl.internal.debug.ui.interpreters.TclPackagesContainerPage"
-         id="org.eclipse.dltk.tcl.core.PACKAGES"
-         name="Libraries"
-         nature="org.eclipse.dltk.tcl.core.nature">
-   </buildpathContainerPath>
-</extension>
 
   <extension point="org.eclipse.ui.menus">
     <menuContribution locationURI="menu:org.eclipse.debug.ui.VariableView">

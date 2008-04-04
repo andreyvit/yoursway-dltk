@@ -20,6 +20,7 @@ import org.eclipse.dltk.ui.text.IColorManager;
 import org.eclipse.dltk.ui.text.ScriptPresentationReconciler;
 import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.SingleTokenScriptScanner;
+import org.eclipse.dltk.ui.text.completion.ContentAssistPreference;
 import org.eclipse.dltk.ui.text.completion.ContentAssistProcessor;
 import org.eclipse.jface.internal.text.html.HTMLTextPresenter;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -30,7 +31,6 @@ import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
-import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.formatter.IContentFormatter;
 import org.eclipse.jface.text.formatter.MultiPassContentFormatter;
 import org.eclipse.jface.text.information.IInformationPresenter;
@@ -42,7 +42,6 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.texteditor.ITextEditor;
-
 
 public class JavascriptSourceViewerConfiguration extends
 		ScriptSourceViewerConfiguration {
@@ -63,9 +62,10 @@ public class JavascriptSourceViewerConfiguration extends
 
 	public String[] getConfiguredContentTypes(ISourceViewer sourceViewer) {
 		return new String[] { IDocument.DEFAULT_CONTENT_TYPE,
-				IJavaScriptPartitions.JS_STRING, IJavaScriptPartitions.JS_COMMENT};
+				IJavaScriptPartitions.JS_STRING,
+				IJavaScriptPartitions.JS_COMMENT };
 	}
-	
+
 	public String getCommentPrefix() {
 		return "//";
 	}
@@ -73,59 +73,63 @@ public class JavascriptSourceViewerConfiguration extends
 	public String[] getIndentPrefixes(ISourceViewer sourceViewer,
 			String contentType) {
 		// XXX: what happens here?.. why " " ?
-		return new String[] { "\t", "    " }; 
+		return new String[] { "\t", "    " };
 	}
-	
+
 	/*
 	 * @see SourceViewerConfiguration#getContentFormatter(ISourceViewer)
 	 */
 	public IContentFormatter getContentFormatter(ISourceViewer sourceViewer) {
-		final MultiPassContentFormatter formatter= new MultiPassContentFormatter(getConfiguredDocumentPartitioning(sourceViewer), IDocument.DEFAULT_CONTENT_TYPE);
+		final MultiPassContentFormatter formatter = new MultiPassContentFormatter(
+				getConfiguredDocumentPartitioning(sourceViewer),
+				IDocument.DEFAULT_CONTENT_TYPE);
 
 		formatter.setMasterStrategy(new JavaScriptFormattingStrategy());
-//		formatter.setSlaveStrategy(new CommentFormattingStrategy(), IJavaPartitions.JAVA_DOC);
-//		formatter.setSlaveStrategy(new CommentFormattingStrategy(), IJavaPartitions.JAVA_SINGLE_LINE_COMMENT);
-//		formatter.setSlaveStrategy(new CommentFormattingStrategy(), IJavaPartitions.JAVA_MULTI_LINE_COMMENT);
+		// formatter.setSlaveStrategy(new CommentFormattingStrategy(),
+		// IJavaPartitions.JAVA_DOC);
+		// formatter.setSlaveStrategy(new CommentFormattingStrategy(),
+		// IJavaPartitions.JAVA_SINGLE_LINE_COMMENT);
+		// formatter.setSlaveStrategy(new CommentFormattingStrategy(),
+		// IJavaPartitions.JAVA_MULTI_LINE_COMMENT);
 
 		return formatter;
 	}
-	
-	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
 
-		if (getEditor() != null) {
+	/*
+	 * @see org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration#alterContentAssistant(org.eclipse.jface.text.contentassist.ContentAssistant)
+	 */
+	protected void alterContentAssistant(ContentAssistant assistant) {
+		IContentAssistProcessor scriptProcessor = new JavaScriptCompletionProcessor(
+				getEditor(), assistant, IDocument.DEFAULT_CONTENT_TYPE);
+		assistant.setContentAssistProcessor(scriptProcessor,
+				IDocument.DEFAULT_CONTENT_TYPE);
 
-			ContentAssistant assistant= new ContentAssistant();
-			assistant.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
+		ContentAssistProcessor singleLineProcessor = new JavaScriptCompletionProcessor(
+				getEditor(), assistant, IJavaScriptPartitions.JS_COMMENT);
+		assistant.setContentAssistProcessor(singleLineProcessor,
+				IJavaScriptPartitions.JS_COMMENT);
 
-			assistant.setRestoreCompletionProposalSize(getSettings("completion_proposal_size")); //$NON-NLS-1$
-
-			IContentAssistProcessor scriptProcessor= new JavaScriptCompletionProcessor(getEditor(), assistant, IDocument.DEFAULT_CONTENT_TYPE);
-			assistant.setContentAssistProcessor(scriptProcessor, IDocument.DEFAULT_CONTENT_TYPE);
-
-			ContentAssistProcessor singleLineProcessor= new JavaScriptCompletionProcessor(getEditor(), assistant, IJavaScriptPartitions.JS_COMMENT);
-			assistant.setContentAssistProcessor(singleLineProcessor, IJavaScriptPartitions.JS_COMMENT);
-
-			ContentAssistProcessor stringProcessor= new JavaScriptCompletionProcessor(getEditor(), assistant, IJavaScriptPartitions.JS_STRING);
-			assistant.setContentAssistProcessor(stringProcessor, IJavaScriptPartitions.JS_STRING);
-
-			JavaScriptContentAssistPreference.getDefault().configure(assistant, fPreferenceStore);
-
-			assistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
-			assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
-			
-			return assistant;
-		}
-
-		return null;
+		ContentAssistProcessor stringProcessor = new JavaScriptCompletionProcessor(
+				getEditor(), assistant, IJavaScriptPartitions.JS_STRING);
+		assistant.setContentAssistProcessor(stringProcessor,
+				IJavaScriptPartitions.JS_STRING);
 	}
-	
+
+	/*
+	 * @see org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration#getContentAssistPreference()
+	 */
+	protected ContentAssistPreference getContentAssistPreference() {
+		return JavaScriptContentAssistPreference.getDefault();
+	}
+
 	/*
 	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getTabWidth(org.eclipse.jface.text.source.ISourceViewer)
 	 */
 	public int getTabWidth(ISourceViewer sourceViewer) {
 		if (fPreferenceStore == null)
 			return super.getTabWidth(sourceViewer);
-		return fPreferenceStore.getInt(CodeFormatterConstants.FORMATTER_TAB_SIZE);
+		return fPreferenceStore
+				.getInt(CodeFormatterConstants.FORMATTER_TAB_SIZE);
 	}
 
 	protected void initializeScanners() {
@@ -160,9 +164,11 @@ public class JavascriptSourceViewerConfiguration extends
 	 * Returns the Javascript comment scanner for this configuration.
 	 * 
 	 * @return the Javascript comment scanner
-	 */	
-	protected RuleBasedScanner getCommentScanner() { return fCommentScanner; }
-	
+	 */
+	protected RuleBasedScanner getCommentScanner() {
+		return fCommentScanner;
+	}
+
 	public IPresentationReconciler getPresentationReconciler(
 			ISourceViewer sourceViewer) {
 		ScriptPresentationReconciler reconciler = new ScriptPresentationReconciler();
@@ -178,11 +184,9 @@ public class JavascriptSourceViewerConfiguration extends
 		reconciler.setDamager(dr, IJavaScriptPartitions.JS_STRING);
 		reconciler.setRepairer(dr, IJavaScriptPartitions.JS_STRING);
 
-		
 		dr = new DefaultDamagerRepairer(getCommentScanner());
 		reconciler.setDamager(dr, IJavaScriptPartitions.JS_COMMENT);
 		reconciler.setRepairer(dr, IJavaScriptPartitions.JS_COMMENT);
-
 
 		return reconciler;
 	}
@@ -233,30 +237,33 @@ public class JavascriptSourceViewerConfiguration extends
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	public IAutoEditStrategy[] getAutoEditStrategies(
 			ISourceViewer sourceViewer, String contentType) {
 		// TODO: check contentType. think, do we really need it? :)
 		String partitioning = getConfiguredDocumentPartitioning(sourceViewer);
 		return new IAutoEditStrategy[] { new JavascriptAutoEditStrategy(
-				partitioning,null) };
+				partitioning, null) };
 	}
-	
+
 	public IInformationControlCreator getInformationControlCreator(
 			ISourceViewer sourceViewer) {
 		return new IInformationControlCreator() {
 			public IInformationControl createInformationControl(Shell parent) {
-				return new DefaultInformationControl(parent, SWT.NONE, new HTMLTextPresenter(true));
+				return new DefaultInformationControl(parent, SWT.NONE,
+						new HTMLTextPresenter(true));
 			}
 		};
 	}
-	
-	protected IInformationControlCreator getOutlinePresenterControlCreator(ISourceViewer sourceViewer, final String commandId) {
+
+	protected IInformationControlCreator getOutlinePresenterControlCreator(
+			ISourceViewer sourceViewer, final String commandId) {
 		return new IInformationControlCreator() {
 			public IInformationControl createInformationControl(Shell parent) {
-				int shellStyle= SWT.RESIZE;
-				int treeStyle= SWT.V_SCROLL | SWT.H_SCROLL;
-				return new JavaScriptOutlineInformationControl(parent, shellStyle, treeStyle, commandId);
+				int shellStyle = SWT.RESIZE;
+				int treeStyle = SWT.V_SCROLL | SWT.H_SCROLL;
+				return new JavaScriptOutlineInformationControl(parent,
+						shellStyle, treeStyle, commandId);
 			}
 		};
 	}

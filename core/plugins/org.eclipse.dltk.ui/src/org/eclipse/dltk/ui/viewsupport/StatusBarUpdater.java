@@ -66,7 +66,7 @@ public class StatusBarUpdater implements ISelectionChangedListener {
 					return formatResourceMessage((IResource) elem);
 				} else if (elem instanceof BuildPathContainer) {
 					BuildPathContainer container= (BuildPathContainer) elem;
-					return container.getLabel(container) + ScriptElementLabels.CONCAT_STRING + container.getScriptProject().getElementName();
+					return container.getLabel() + ScriptElementLabels.CONCAT_STRING + container.getScriptProject().getElementName();
 				} else if (elem instanceof IAdaptable) {
 					IWorkbenchAdapter wbadapter= (IWorkbenchAdapter) ((IAdaptable)elem).getAdapter(IWorkbenchAdapter.class);
 					if (wbadapter != null) {

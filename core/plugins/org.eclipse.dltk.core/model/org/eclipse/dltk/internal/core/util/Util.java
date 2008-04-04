@@ -42,9 +42,9 @@ import org.eclipse.dltk.core.DLTKContentTypeManager;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatusConstants;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.internal.core.ProjectFragment;
@@ -569,68 +569,52 @@ public class Util {
 
 	public static boolean isValidSourceModule(IModelElement parent,
 			IResource resource) {
-		try {
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-					.getLanguageToolkit(parent);
+		IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+				.getLanguageToolkit(parent);
+		if (toolkit != null) {
+			return DLTKContentTypeManager.isValidResourceForContentType(
+					toolkit, resource);
+		} else {
+			toolkit = DLTKLanguageManager.findToolkit(resource);
 			if (toolkit != null) {
-				return DLTKContentTypeManager.isValidResourceForContentType(
-						toolkit, resource);
-			} else {
-				toolkit = DLTKLanguageManager.findToolkit(resource);
-				if (toolkit != null) {
-					return DLTKContentTypeManager
-							.isValidResourceForContentType(toolkit, resource);
-				}
-				return false;
+				return DLTKContentTypeManager
+						.isValidResourceForContentType(toolkit, resource);
 			}
-		} catch (CoreException ex) {
 			return false;
 		}
 	}
 
 	public static boolean isValidSourceModule(IModelElement parent, IPath path) {
-		try {
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-					.getLanguageToolkit(parent);
+		IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+				.getLanguageToolkit(parent);
+		if (toolkit != null) {
+			return DLTKContentTypeManager.isValidFileNameForContentType(toolkit, path);
+		} else {
+			toolkit = DLTKLanguageManager.findToolkit(path);
 			if (toolkit != null) {
 				return DLTKContentTypeManager.isValidFileNameForContentType(toolkit, path);
-			} else {
-				toolkit = DLTKLanguageManager.findToolkit(path);
-				if (toolkit != null) {
-					return DLTKContentTypeManager.isValidFileNameForContentType(toolkit, path);
-				}
-				return false;
 			}
-		} catch (CoreException ex) {
 			return false;
 		}
 	}
 
 	public static boolean isValidSourcePackageName(IModelElement parent,
 			IPath path) {
-		try {
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-					.getLanguageToolkit(parent);
-			if (toolkit != null) {
-				return toolkit.validateSourcePackage(path);
-			}
-			return false;
-		} catch (CoreException ex) {
-			return false;
+		IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+				.getLanguageToolkit(parent);
+		if (toolkit != null) {
+			return toolkit.validateSourcePackage(path);
 		}
+		return false;
 	}
 
 	public static boolean isValidSourceModuleName(IModelElement parent,
 			String name) {
-		try {
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-					.getLanguageToolkit(parent);
-			if (toolkit != null) {
-				return DLTKContentTypeManager.isValidFileNameForContentType(toolkit, name);
-			} else {
-				return false;
-			}
-		} catch (CoreException ex) {
+		IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+				.getLanguageToolkit(parent);
+		if (toolkit != null) {
+			return DLTKContentTypeManager.isValidFileNameForContentType(toolkit, name);
+		} else {
 			return false;
 		}
 	}

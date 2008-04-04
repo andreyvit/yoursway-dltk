@@ -147,17 +147,11 @@ public class ScriptProject extends Openable implements IScriptProject {
 	}
 
 	private IProjectFragment createArchiveFragment(IResource resource) {
-		try {
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-					.getLanguageToolkit(this);
-			if (toolkit != null) {
-				if (toolkit.languageSupportZIPBuildpath()) {
-					return new ArchiveProjectFragment(resource, this);
-				}
-			}
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
+		IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+				.getLanguageToolkit(this);
+		if (toolkit != null) {
+			if (toolkit.languageSupportZIPBuildpath()) {
+				return new ArchiveProjectFragment(resource, this);
 			}
 		}
 		return null;
@@ -171,17 +165,11 @@ public class ScriptProject extends Openable implements IScriptProject {
 	 * no path canonicalization
 	 */
 	public IProjectFragment getProjectFragment0(IPath archivePath) {
-		try {
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-					.getLanguageToolkit(this);
-			if (toolkit != null) {
-				if (toolkit.languageSupportZIPBuildpath()) {
-					return new ArchiveProjectFragment(archivePath, this);
-				}
-			}
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
+		IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+				.getLanguageToolkit(this);
+		if (toolkit != null) {
+			if (toolkit.languageSupportZIPBuildpath()) {
+				return new ArchiveProjectFragment(archivePath, this);
 			}
 		}
 		return null;
@@ -406,7 +394,7 @@ public class ScriptProject extends Openable implements IScriptProject {
 				}
 
 				IBuildpathEntry[] containerEntries = container
-						.getBuildpathEntries();
+						.getBuildpathEntries(this);
 				if (containerEntries == null)
 					break;
 
@@ -2116,13 +2104,9 @@ public class ScriptProject extends Openable implements IScriptProject {
 	}
 
 	public boolean isValid() {
-		try {
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-					.getLanguageToolkit(this);
-			return toolkit != null;
-		} catch (CoreException ex) {
-			return false;
-		}
+		IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+				.getLanguageToolkit(this);
+		return toolkit != null;
 	}
 
 	public void printNode(CorePrinter output) {
@@ -2659,7 +2643,7 @@ public class ScriptProject extends Openable implements IScriptProject {
 				if (container == null)
 					break;
 				IBuildpathEntry[] containerEntries = container
-						.getBuildpathEntries();
+						.getBuildpathEntries(this);
 				if (containerEntries == null)
 					break;
 				// container was bound

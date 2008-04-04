@@ -9,39 +9,26 @@
  *******************************************************************************/
 package org.eclipse.dltk.python.parser.ast.expressions;
 
-import java.math.BigDecimal;
-
 import org.eclipse.dltk.ast.DLTKToken;
-import org.eclipse.dltk.ast.expressions.Literal;
+import org.eclipse.dltk.ast.expressions.NumericLiteral;
 import org.eclipse.dltk.utils.CorePrinter;
 
 
-public class ComplexNumericLiteral extends Literal
+public class ComplexNumericLiteral extends NumericLiteral
 {
 
-	private double doubleValue;
-
 	public ComplexNumericLiteral( DLTKToken number ) {
+
 		super( number );
-		String value = number.getText();
-		try{
-			this.doubleValue = Double.parseDouble(value);
-		}catch(NumberFormatException e){
-			BigDecimal decimal = new BigDecimal(value);
-			this.doubleValue = decimal.doubleValue();
+		char c = this.fLiteralValue.charAt( this.fLiteralValue.length() - 1 );
+		if(  c == 'j' || c == 'J' ) {					
+			String value = number.getText();
+			this.fLiteralValue = value.substring(0, value.length() - 1 );
+			this.setEnd( this.sourceStart() + this.fLiteralValue.length() );
 		}
 	}
 	
 	public void printNode( CorePrinter output ) {
-		output.formatPrintLn( this.getValue() );		
-	}
-
-
-	public int getKind() {
-		return NUMBER_LITERAL;
-	}
-	
-	public double getDoubleValue() {
-		return doubleValue;
+		output.formatPrintLn( this.getValue() + "j" );		
 	}
 }

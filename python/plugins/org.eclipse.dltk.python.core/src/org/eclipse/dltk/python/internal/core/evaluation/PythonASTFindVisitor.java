@@ -29,7 +29,6 @@ import org.eclipse.dltk.python.parser.ast.PythonImportFromStatement;
 import org.eclipse.dltk.python.parser.ast.PythonImportStatement;
 import org.eclipse.dltk.python.parser.ast.expressions.Assignment;
 import org.eclipse.dltk.python.parser.ast.expressions.ExtendedVariableReference;
-import org.eclipse.dltk.python.parser.ast.expressions.ExtendedVariableReferenceInterface;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonImportAsExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonImportExpression;
 
@@ -97,12 +96,11 @@ public class PythonASTFindVisitor extends ASTVisitor {
 				}
 			}
 			// FIXME: Add correct handling of this here.
-			if (left instanceof ExtendedVariableReferenceInterface) {
-				ExtendedVariableReferenceInterface ref = (ExtendedVariableReferenceInterface) left;
-				List flatNodeList = ref.getFlatNodeList();
-				if (flatNodeList.size() == 2) {
-					Expression first = (Expression) flatNodeList.get(0);
-					Expression second = (Expression) flatNodeList.get(1);
+			if (left instanceof ExtendedVariableReference) {
+				ExtendedVariableReference ref = (ExtendedVariableReference) left;
+				if (ref.isDot(0)) {
+					Expression first = ref.getExpression(0);
+					Expression second = ref.getExpression(1);
 					if (first instanceof VariableReference
 							&& ((VariableReference) first).getName().equals(
 									"self")) {
@@ -111,7 +109,7 @@ public class PythonASTFindVisitor extends ASTVisitor {
 										.equals(this.fName)) {
 							this.fAppropriateNodes.add(expression);
 
-							List/*<Expression>*/ expressions = ref.getFlatNodeList();
+							List/*<Expression>*/ expressions = ref.getExpressions();
 							Iterator i = expressions.iterator();
 							while( i.hasNext() ) {
 								Expression exp = (Expression)i.next();
@@ -121,10 +119,10 @@ public class PythonASTFindVisitor extends ASTVisitor {
 					}
 				}
 			}
-		} else if (expression instanceof ExtendedVariableReferenceInterface) {
+		} else if (expression instanceof ExtendedVariableReference) {
 			// add child parents to map.
-			ExtendedVariableReferenceInterface ref = (ExtendedVariableReferenceInterface) expression;
-			List/*<Expression>*/ expressions = ref.getFlatNodeList();
+			ExtendedVariableReference ref = (ExtendedVariableReference) expression;
+			List/*<Expression>*/ expressions = ref.getExpressions();
 			Iterator i = expressions.iterator();
 			while( i.hasNext() ) {
 				Expression exp = (Expression)i.next();

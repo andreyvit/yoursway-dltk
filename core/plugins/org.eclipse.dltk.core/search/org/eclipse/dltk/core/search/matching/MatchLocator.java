@@ -566,11 +566,7 @@ public class MatchLocator implements ITypeRequestor {
 		this.nameEnvironment);
 
 		IDLTKLanguageToolkit tk = null;
-		try {
-			tk = DLTKLanguageManager.getLanguageToolkit(project);
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
+		tk = DLTKLanguageManager.getLanguageToolkit(project);
 		if (tk == null) {
 			throw new ModelException(new ModelStatus(
 					IModelStatusConstants.INVALID_PROJECT, project,

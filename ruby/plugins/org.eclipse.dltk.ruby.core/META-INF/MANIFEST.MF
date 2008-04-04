@@ -36,7 +36,6 @@ Export-Package: org.eclipse.dltk.ruby.ast;
    org.eclipse.dltk.typeinference,
    org.eclipse.core.runtime,
    org.eclipse.dltk.core",
- org.eclipse.dltk.ruby.core.text,
  org.eclipse.dltk.ruby.core.utils;uses:="org.eclipse.dltk.core",
  org.eclipse.dltk.ruby.internal.core.codeassist;
   uses:="org.eclipse.dltk.ast,

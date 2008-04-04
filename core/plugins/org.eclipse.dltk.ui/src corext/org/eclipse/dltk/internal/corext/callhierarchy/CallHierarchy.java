@@ -13,13 +13,16 @@ package org.eclipse.dltk.internal.corext.callhierarchy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchEngine;
 import org.eclipse.dltk.internal.ui.util.StringMatcher;
@@ -197,5 +200,25 @@ public class CallHierarchy {
         }
 
         return (StringMatcher[]) list.toArray(new StringMatcher[list.size()]);
-    }  
+    }
+    
+    public static boolean arePossibleInputElements(List elements) {
+		if (elements.size() < 1)
+			return false;
+		for (Iterator iter= elements.iterator(); iter.hasNext();) {
+			if (! isPossibleInputElement(iter.next()))
+				return false;
+		}
+		return true;
+	}
+    public static boolean isPossibleInputElement(Object element){
+    	if (! (element instanceof IMember))
+    		return false;
+    	
+    	if (element instanceof IType) {
+			return false;
+		}
+    	
+    	return true;
+    }
 }

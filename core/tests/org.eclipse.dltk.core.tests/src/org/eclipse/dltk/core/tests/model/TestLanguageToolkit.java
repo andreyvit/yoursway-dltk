@@ -155,10 +155,6 @@ public class TestLanguageToolkit implements IDLTKLanguageToolkit {
 		return null;
 	}
 
-	public String getDelimeterReplacerString() {
-		return ".";
-	}
-
 	public ICallProcessor createCallProcessor() {
 		// TODO Auto-generated method stub
 		return null;

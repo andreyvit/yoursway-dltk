@@ -175,31 +175,24 @@ public class ScriptModelUtil {
 
 	public static String getRenamedCUName(ISourceModule cu, String newMainName) {
 		String oldName = cu.getPath().lastSegment();
-		// String oldName = cu.getElementName();
-		try {
-			// Check for already specified extension in newMainName.
-			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
-					.getLanguageToolkit(cu);
+		// Check for already specified extension in newMainName.
+		IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
+				.getLanguageToolkit(cu);
 
-			String contentType = languageToolkit.getLanguageContentType();
-			IContentTypeManager manager = Platform.getContentTypeManager();
-			IContentType type = manager.getContentType(contentType);
-			String[] languageFileExtensions = null;
-			if (type != null) {
-				languageFileExtensions = type
-						.getFileSpecs(IContentType.FILE_EXTENSION_SPEC);
-			}
-			if (languageFileExtensions != null) {
-				for (int i = 0; i < languageFileExtensions.length; i++) {
-					if (newMainName.endsWith(languageFileExtensions[i])) {
-						// Return extension is OK.
-						return newMainName;
-					}
+		String contentType = languageToolkit.getLanguageContentType();
+		IContentTypeManager manager = Platform.getContentTypeManager();
+		IContentType type = manager.getContentType(contentType);
+		String[] languageFileExtensions = null;
+		if (type != null) {
+			languageFileExtensions = type
+					.getFileSpecs(IContentType.FILE_EXTENSION_SPEC);
+		}
+		if (languageFileExtensions != null) {
+			for (int i = 0; i < languageFileExtensions.length; i++) {
+				if (newMainName.endsWith(languageFileExtensions[i])) {
+					// Return extension is OK.
+					return newMainName;
 				}
-			}
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
 			}
 		}
 		// Add extension from old module name to new module name.

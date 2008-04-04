@@ -2,9 +2,7 @@ package org.eclipse.dltk.ui;
 
 import java.util.Map;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 
@@ -19,20 +17,12 @@ public class DLTKExecuteExtensionHelper {
 			nature = (String) ((Map) data).get("nature"); //$NON-NLS-1$
 		}
 		if (nature != null) {
-			try {
-				IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(nature);
-				if( toolkit == null ) {
-					throw new RuntimeException(
-							Messages.DLTKExecuteExtensionHelper_natureAttributeMustBeSpecifiedAndCirrect);
-				}
-				return toolkit;
-			} catch (CoreException e) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
+			IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(nature);
+			if( toolkit == null ) {
 				throw new RuntimeException(
-						Messages.DLTKExecuteExtensionHelper_natureAttributeMustBeSpecifiedAndCirrect, e);
+						Messages.DLTKExecuteExtensionHelper_natureAttributeMustBeSpecifiedAndCirrect);
 			}
+			return toolkit;
 		} else {
 			throw new RuntimeException(
 					Messages.DLTKExecuteExtensionHelper_natureAttributeMustBeSpecifiedAndCirrect);

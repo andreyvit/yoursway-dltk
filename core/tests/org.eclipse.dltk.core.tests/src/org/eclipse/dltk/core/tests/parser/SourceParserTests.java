@@ -1,8 +1,5 @@
 package org.eclipse.dltk.core.tests.parser;
 
-import junit.framework.Assert;
-
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.tests.model.AbstractModelTests;
@@ -22,16 +19,8 @@ public class SourceParserTests extends AbstractModelTests {
 	public void testGetSourceParser() {
 		ISourceParser parser = null;
 
-		try {
-			parser = DLTKLanguageManager
-					.getSourceParser(TestConstants.NATURE_ID);
-		} catch (CoreException e) {
-			/*
-			 *  this should actually never happen b/c the getSourceParser 
-			 *  method doesn't actually throw an exception
-			 */			
-			Assert.fail("unexpected CoreException");
-		}
+		parser = DLTKLanguageManager
+				.getSourceParser(TestConstants.NATURE_ID);
 
 		assertNotNull(parser);
 		assertTrue((parser instanceof TestSourceParser));

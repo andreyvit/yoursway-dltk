@@ -41,12 +41,8 @@ public class BreakpointUtils {
 
 	public static IDLTKLanguageToolkit getLanguageToolkit(
 			IScriptBreakpoint breakpoint) {
-		try {
-			return DLTKLanguageManager
-					.getLanguageToolkit(getNatureId(breakpoint));
-		} catch (CoreException e) {
-			return null;
-		}
+		return DLTKLanguageManager
+				.getLanguageToolkit(getNatureId(breakpoint));
 	}
 
 	public static IDLTKUILanguageToolkit getUILanguageToolkit(

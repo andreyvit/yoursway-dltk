@@ -5,11 +5,11 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.internal.ui.dnd;
 
-import org.eclipse.jface.util.TransferDragSourceListener;
+import org.eclipse.jface.util.DelegatingDragAdapter;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.swt.dnd.DragSourceEvent;
@@ -18,16 +18,16 @@ public class DLTKViewerDragAdapter extends DelegatingDragAdapter {
 
 	private StructuredViewer fViewer;
 
-	public DLTKViewerDragAdapter(StructuredViewer viewer, TransferDragSourceListener[] listeners) {
-		super(listeners);
+	public DLTKViewerDragAdapter(StructuredViewer viewer) {
+		super();
 		fViewer= viewer;
 	}
-	
+
 	public void dragStart(DragSourceEvent event) {
 		IStructuredSelection selection= (IStructuredSelection)fViewer.getSelection();
 		if (selection.isEmpty()) {
 			event.doit= false;
-			return; 
+			return;
 		}
 		super.dragStart(event);
 	}

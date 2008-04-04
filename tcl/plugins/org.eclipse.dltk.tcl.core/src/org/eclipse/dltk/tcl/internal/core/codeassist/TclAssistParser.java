@@ -13,13 +13,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.compiler.env.ISourceModule;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.tcl.core.ITclKeywords;
 import org.eclipse.dltk.tcl.core.TclNature;
@@ -40,13 +38,7 @@ public abstract class TclAssistParser implements IAssistParser {
 	protected ASTNode assistNodeParent = null;
 	
 	public TclAssistParser() {
-		try {
-			this.parser = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
-		} catch (CoreException e) {
-			if( DLTKCore.DEBUG ) {
-				e.printStackTrace();
-			}
-		}
+		this.parser = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
 	}
 
 	public ASTNode getAssistNodeParent() {

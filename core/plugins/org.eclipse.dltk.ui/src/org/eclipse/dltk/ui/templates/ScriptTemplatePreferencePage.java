@@ -65,7 +65,17 @@ public abstract class ScriptTemplatePreferencePage extends
 			return viewer;
 		}
 	}
-
+	
+	public ScriptTemplatePreferencePage()
+	{
+		setPreferenceStore();
+		
+		ScriptTemplateAccess tplAccess = getTemplateAccess();
+		setTemplateStore(tplAccess.getTemplateStore());
+		setContextTypeRegistry(tplAccess.getContextTypeRegistry());
+	}
+	
+	
 	protected Template editTemplate(Template template, boolean edit,
 			boolean isNameModifiable) {
 		EditTemplateDialog dialog = new ScriptEditTemplateDialog(getShell(),
@@ -138,6 +148,9 @@ public abstract class ScriptTemplatePreferencePage extends
 
 	protected abstract ScriptSourceViewerConfiguration createSourceViewerConfiguration();
 
+	protected abstract ScriptTemplateAccess getTemplateAccess();
+	
 	protected abstract void setDocumentParticioner(IDocument document);
 
+	protected abstract void setPreferenceStore();
 }

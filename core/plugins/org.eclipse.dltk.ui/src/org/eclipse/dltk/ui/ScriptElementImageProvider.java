@@ -22,13 +22,13 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IExternalSourceModule;
 import org.eclipse.dltk.core.IField;
 import org.eclipse.dltk.core.IMethod;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.ui.DLTKUIMessages;
@@ -162,17 +162,12 @@ public class ScriptElementImageProvider {
 					.getConfigurationElementsFor(LABELPROVIDERS_EXTENSION_POINT);
 			createProviders(elements);
 		}
-		String nature = null;
-		try {
-			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
-					.getLanguageToolkit(element);
-			if (languageToolkit == null) {
-				return null;
-			}
-			nature = languageToolkit.getNatureId();
-		} catch (CoreException e) {
+		IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
+				.getLanguageToolkit(element);
+		if (languageToolkit == null) {
 			return null;
 		}
+		String nature = languageToolkit.getNatureId();
 		ILabelProvider provider = (ILabelProvider) labelProviders.get(nature);
 		return provider;
 	}

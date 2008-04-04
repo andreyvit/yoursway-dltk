@@ -11,20 +11,19 @@ package org.eclipse.dltk.internal.ui.refactoring.reorg;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKContentTypeManager;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
-import org.eclipse.dltk.core.IModelStatus;
-import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.internal.corext.refactoring.Checks;
 import org.eclipse.dltk.internal.corext.refactoring.reorg.INewNameQueries;
 import org.eclipse.dltk.internal.corext.refactoring.reorg.INewNameQuery;
@@ -164,11 +163,7 @@ public class NewNameQueries implements INewNameQueries {
 					return INVALID_NAME_NO_MESSAGE;
 				String newCuName= ScriptModelUtil.getRenamedCUName(cu, newText);
 				IDLTKLanguageToolkit toolkit = null;
-				try {
-					toolkit = DLTKLanguageManager.getLanguageToolkit(cu);
-				} catch (CoreException e) {
-					e.printStackTrace();
-				}
+				toolkit = DLTKLanguageManager.getLanguageToolkit(cu);
 				IStatus status= new Status(IStatus.ERROR, DLTKUIPlugin.PLUGIN_ID, 0, ReorgMessages.NewNameQueries_mustBeAScriptProject,null);
 				if( toolkit != null ) {
 					if( DLTKContentTypeManager.isValidFileNameForContentType(toolkit, newCuName)) {

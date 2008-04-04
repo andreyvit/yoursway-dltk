@@ -58,7 +58,5 @@
             id="org.eclipse.dltk.internal.debug.ui.launcher.GenericTclInstallType">
       </interpreterInstallType>   
    </extension>
-  
-
 
 </plugin>

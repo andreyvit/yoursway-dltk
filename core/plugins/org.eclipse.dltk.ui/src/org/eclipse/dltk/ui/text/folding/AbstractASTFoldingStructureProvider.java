@@ -18,7 +18,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
@@ -1077,11 +1076,7 @@ public abstract class AbstractASTFoldingStructureProvider implements
 	}
 
 	protected final ISourceParser getSourceParser() {
-		try {
-			return DLTKLanguageManager.getSourceParser(getNatureId());
-		} catch (CoreException e) {
-			return null;
-		}
+		return DLTKLanguageManager.getSourceParser(getNatureId());
 	}
 	
 	/**

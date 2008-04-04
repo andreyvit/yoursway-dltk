@@ -1,6 +1,5 @@
 package org.eclipse.dltk.core;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.ast.parser.ISourceParserConstants;
@@ -40,14 +39,7 @@ public class SourceParserUtil {
 			IProblemReporter reporter, ISourceModuleInfo mifo, int flags) {
 
 		IDLTKLanguageToolkit toolkit;
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(module);
-		} catch (CoreException e1) {
-			if (DLTKCore.DEBUG) {
-				e1.printStackTrace();
-			}
-			return null;
-		}
+		toolkit = DLTKLanguageManager.getLanguageToolkit(module);
 		ModuleDeclaration moduleDeclaration = null;
 		Integer flag;
 		if (mifo != null) {
@@ -62,14 +54,8 @@ public class SourceParserUtil {
 				reporter.clearMarkers();
 			}
 			ISourceParser sourceParser = null;
-			try {
-				sourceParser = DLTKLanguageManager.getSourceParser(toolkit
-						.getNatureId());
-			} catch (CoreException e) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
-			}
+			sourceParser = DLTKLanguageManager.getSourceParser(toolkit
+					.getNatureId());
 			if (sourceParser != null) {
 				if (sourceParser instanceof ISourceParserExtension) {
 					((ISourceParserExtension) sourceParser).setFlags(flags);
@@ -103,11 +89,7 @@ public class SourceParserUtil {
 			char[] content, String nature, IProblemReporter reporter,
 			ISourceModuleInfo mifo, int flags) {
 		ISourceParser sourceParser;// = new SourceParser(this.fReporter);
-		try {
-			sourceParser = DLTKLanguageManager.getSourceParser(nature);
-		} catch (CoreException e) {
-			throw new RuntimeException(Messages.SourceParserUtil_failedToCreateSourceParser, e);
-		}
+		sourceParser = DLTKLanguageManager.getSourceParser(nature);
 		if (sourceParser instanceof ISourceParserExtension) {
 			((ISourceParserExtension) sourceParser).setFlags(flags);
 		}

@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.internal.core.hierarchy;
 
@@ -17,14 +17,16 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.dltk.compiler.env.IGenericType;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.ISearchableEnvironment;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.core.ITypeHierarchy;
 import org.eclipse.dltk.core.ModelException;
-import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.ModelElement;
 import org.eclipse.dltk.internal.core.NameLookup;
 import org.eclipse.dltk.internal.core.Openable;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.SourceTypeElementInfo;
 import org.eclipse.dltk.internal.core.util.ResourceSourceModule;
 
@@ -41,7 +43,7 @@ public abstract class HierarchyBuilder {
 	 * The resolver used to resolve type hierarchies
 	 *
 	 */
-	//protected HierarchyResolver hierarchyResolver;
+	protected HierarchyResolver hierarchyResolver;
 	/**
 	 * A temporary cache of infos to handles to speed info to handle translation -
 	 * it only contains the entries for the types in the region (in other words,
@@ -54,10 +56,14 @@ public abstract class HierarchyBuilder {
 	 */
 	protected String focusQualifiedName;
 
-	public HierarchyBuilder(TypeHierarchy hierarchy) throws ModelException {
+	public HierarchyBuilder() {
+		hierarchyResolver = new HierarchyResolver(this);
+	}
 
-		this.hierarchy = hierarchy;
-		ScriptProject project = (ScriptProject) hierarchy.javaProject();
+	public void setRequestor(ITypeHierarchy hierarchy) throws ModelException {
+
+		this.hierarchy = (TypeHierarchy) hierarchy;
+		ScriptProject project = (ScriptProject) this.hierarchy.javaProject();
 
 		IType focusType = hierarchy.getType();
 		org.eclipse.dltk.core.ISourceModule unitToLookInside = focusType == null ? null
@@ -82,7 +88,7 @@ public abstract class HierarchyBuilder {
 					.newSearchableNameEnvironment(unitsToLookInside);
 			this.nameLookup = searchableEnvironment.getNameLookup();
 		}
-		
+
 		this.infoToHandle = new HashMap(5);
 		this.focusQualifiedName = focusType == null ? null : focusType
 				.getFullyQualifiedName();
@@ -96,8 +102,9 @@ public abstract class HierarchyBuilder {
 	 */
 	protected void buildSupertypes() {
 		IType focusType = this.getType();
-		if (focusType == null)
+		if (focusType == null) {
 			return;
+		}
 		// get generic type from focus type
 //		IGenericType type;
 //		try {
@@ -112,7 +119,13 @@ public abstract class HierarchyBuilder {
 		// in the hierarchy resolver, thus there is no need to check that a type
 		// is
 		// a sub or super type of the focus type.
-//		this.hierarchyResolver.resolve(type);
+		try {
+			this.hierarchyResolver.resolve(false);
+		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+		}
 
 		// Add focus if not already in (case of a type with no explicit super
 		// type)
@@ -134,8 +147,9 @@ public abstract class HierarchyBuilder {
 		 * NullPointerException when selecting "Show in Type Hierarchy" for a
 		 * inner class
 		 */
-		if (typeHandle == null)
+		if (typeHandle == null) {
 			return;
+		}
 		if (TypeHierarchy.DEBUG) {
 			System.out
 					.println("Connecting: " + ((ModelElement) typeHandle).toStringWithAncestors()); //$NON-NLS-1$
@@ -143,11 +157,13 @@ public abstract class HierarchyBuilder {
 			if (superclassHandles == null || superclassHandles.length == 0) {
 				System.out.println(" <None>"); //$NON-NLS-1$
 			} else {
-				for (int i = 0, length = superclassHandles.length; i < length; i++) {
-					if (superclassHandles[i] == null)
+				for (int i = 0; i < superclassHandles.length; i++) {
+					IType superclassHandle = superclassHandles[i];
+					if (superclassHandle == null) {
 						continue;
+					}
 					System.out
-							.println("    " + ((ModelElement) superclassHandles[i]).toStringWithAncestors()); //$NON-NLS-1$
+							.println("    " + ((ModelElement) superclassHandle).toStringWithAncestors()); //$NON-NLS-1$
 				}
 			}
 		}
@@ -172,8 +188,9 @@ public abstract class HierarchyBuilder {
 	 * Returns a handle for the given generic type or null if not found.
 	 */
 	protected IType getHandle(IGenericType genericType) {
-		if (genericType == null)
+		if (genericType == null) {
 			return null;
+		}
 		if (genericType instanceof HierarchyType) {
 			IType handle = (IType) this.infoToHandle.get(genericType);
 			if (handle == null) {
@@ -186,8 +203,9 @@ public abstract class HierarchyBuilder {
 			IType handle = ((SourceTypeElementInfo) genericType).getHandle();
 //			return (IType) ((ModelElement) handle).resolved(binding);
 			return handle;
-		} else
+		} else {
 			return null;
+		}
 	}
 
 	protected IType getType() {

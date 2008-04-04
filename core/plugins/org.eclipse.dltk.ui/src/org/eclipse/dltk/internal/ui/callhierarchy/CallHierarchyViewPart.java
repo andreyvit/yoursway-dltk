@@ -15,7 +15,6 @@ package org.eclipse.dltk.internal.ui.callhierarchy;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
@@ -942,12 +941,7 @@ public class CallHierarchyViewPart extends ViewPart implements
 
 	protected IDLTKLanguageToolkit getMethodLanguageToolkit() {
 		if (getMethod() != null) {
-			try {
-				return DLTKLanguageManager.getLanguageToolkit(getMethod());
-			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			return DLTKLanguageManager.getLanguageToolkit(getMethod());
 		}
 		return null;
 	}

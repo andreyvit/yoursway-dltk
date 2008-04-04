@@ -30,9 +30,7 @@ import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.expressions.ExpressionList;
-import org.eclipse.dltk.ast.expressions.Literal;
 import org.eclipse.dltk.ast.expressions.NumericLiteral;
-import org.eclipse.dltk.ast.expressions.FloatNumericLiteral;
 import org.eclipse.dltk.ast.expressions.StringLiteral;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.ast.statements.Block;
@@ -60,8 +58,6 @@ import org.eclipse.dltk.python.parser.ast.expressions.IndexHolder;
 import org.eclipse.dltk.python.parser.ast.expressions.NotStrictAssignment;
 import org.eclipse.dltk.python.parser.ast.expressions.PrintExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonAllImportExpression;
-import org.eclipse.dltk.python.parser.ast.expressions.PythonArrayAccessExpression;
-import org.eclipse.dltk.python.parser.ast.expressions.PythonCallExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonDictExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonForListExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonFunctionDecorator;
@@ -73,7 +69,6 @@ import org.eclipse.dltk.python.parser.ast.expressions.PythonListForExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonSubscriptExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonTestListExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonTupleExpression;
-import org.eclipse.dltk.python.parser.ast.expressions.PythonVariableAccessExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.UnaryExpression;
 import org.eclipse.dltk.python.parser.ast.statements.BreakStatement;
 import org.eclipse.dltk.python.parser.ast.statements.ContinueStatement;
@@ -1218,34 +1213,45 @@ power returns [ Expression exp = null; ]:
 	  )
 	;		
 // expr this is initial expression.
-trailer[ Expression expr ] returns [ Expression result = null ]:
+trailer[ Expression expr ] returns [ Expression returnExpression = null ]:
 	{
 		//Expression k=null;
 		// Create extended variable reference.
-		//if( !( expr instanceof ExtendedVariableReference ) )
-		//	expr = new ExtendedVariableReference( expr );
-		//ExtendedVariableReference exVariableReference = ( ExtendedVariableReference )expr;
-		result = expr;
+		if( !( expr instanceof ExtendedVariableReference ) )
+			expr = new ExtendedVariableReference( expr );
+		ExtendedVariableReference exVariableReference = ( ExtendedVariableReference )expr;
 	}
 	(
 		lp0 = LPAREN 
 			( k = arglist )? 
 		rp0 = RPAREN
 			{
-				result = new PythonCallExpression ( result,  (ExpressionList)k ); 
+				// This is Call lets' create it
+				if( k == null )
+					k = new EmptyExpression();
+				exVariableReference.addExpression( new CallHolder( toDLTK(lp0), toDLTK(rp0), k ) );
+				returnExpression = exVariableReference;
 			}
 		| 
 		lb1 = LBRACK 
 		k = subscriptlist 
 		rb1 = RBRACK 
 			{
-				result = new PythonArrayAccessExpression ( result, k );
+				// This is subscript lets return it.
+				//a = new PythonSubscriptAppender(k);
+				//returnExpression = ExpressionConverter.getIndexed( expr, k );
+				exVariableReference.addExpression( new IndexHolder( toDLTK(lb1), toDLTK(rb1), k ) );
+				returnExpression = exVariableReference;
 			}
 		| 
 		DOT 
 		ta =NAME 
 			{
-				result = new PythonVariableAccessExpression (result, new VariableReference( toDLTK( ta ) ) );
+				//a=new PythonFieldAppenter(ta);
+				//returnExpression = ExpressionConverter.getDotted( expr, new VariableReference( toDLTK( ta ) ) );
+				//ta.setColumn(ta.getColumn()-1);
+				exVariableReference.addExpression( new VariableReference( toDLTK( ta ) ) );
+				returnExpression = exVariableReference;
 			}
 	)
 	;
@@ -1259,8 +1265,9 @@ atom returns [ Expression exp = null ]:
 	| lb =LCURLY { exp = new PythonDictExpression(); } rb = RCURLY { setStartEndForEmbracedExpr(exp,lb,rb); }  // for initialization like a = {}
 	| lb = BACKQUOTE exp0 = testlist { exp = exp0; } rb =  BACKQUOTE { setStartEndForEmbracedExpr(exp,lb,rb); }
 	| n =NAME { exp = new VariableReference( toDLTK( n ) ); }	
-	| i = INT  { exp = Literal.createNumericLiteral( toDLTK( i ) );} 
-    	| f = FLOAT    { exp=new FloatNumericLiteral( toDLTK( f ) );}
+	| i = INT  { exp = new NumericLiteral( toDLTK( i ) );} 
+    	| li = LONGINT { exp=new NumericLiteral( toDLTK( li ) );}
+    	| f = FLOAT    { exp=new NumericLiteral( toDLTK( f ) );}
     	| c = COMPLEX  { exp=new ComplexNumericLiteral( toDLTK( c ) ); }
 	|
 	(
@@ -1763,6 +1770,10 @@ FRACTION
 EXPONENTFLOAT 
 	:	(DIGITS | POINTFLOAT) Exponent
 	;
+LONGINT
+    :   INT ('l'|'L')
+    ;
+
 fragment
 Exponent
 	:	('e' | 'E') ( '+' | '-' )? DIGITS
@@ -1773,14 +1784,11 @@ INT :   // Hex
         ('l' | 'L')?
     |   // Octal
         '0' DIGITS*
-        ('l' | 'L')?
-    |   // Decimal
-    	'1'..'9' DIGITS*
-        ('l' | 'L')?
+    |   '1'..'9' DIGITS*
     ;
 
 COMPLEX
-    :   DIGITS ('j'|'J')
+    :   INT ('j'|'J')
     |   FLOAT ('j'|'J')
     ;
 

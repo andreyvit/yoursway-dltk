@@ -17,6 +17,7 @@ import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalCollector;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProposalComputer;
 import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.text.templates.TemplateCompletionProcessor;
 
 public class TclNoTypeCompletionProposalComputer extends
 		ScriptCompletionProposalComputer {
@@ -48,5 +49,10 @@ public class TclNoTypeCompletionProposalComputer extends
 								.getBoolean(TclPreferenceConstants.CODEASSIST_FILTER_INTERNAL_API));
 
 		return collector;
+	}
+
+	protected TemplateCompletionProcessor createTemplateProposalComputer(
+			ScriptContentAssistInvocationContext context) {
+		return null;
 	}
 }

@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
@@ -77,13 +76,7 @@ public class UserLibraryManager {
 		int pos = key.indexOf("#"); //$NON-NLS-1$
 		if (pos != -1) {
 			String nature = key.substring(0, pos);
-			try {
-				return DLTKLanguageManager.getLanguageToolkit(nature);
-			} catch (CoreException e) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
-			}
+			return DLTKLanguageManager.getLanguageToolkit(nature);
 		}
 		return null;
 	}

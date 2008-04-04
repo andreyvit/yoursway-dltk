@@ -3,19 +3,13 @@ package org.eclipse.dltk.core.internal.rse;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.core.runtime.ILog;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.environment.IEnvironment;
 import org.eclipse.dltk.core.environment.IEnvironmentProvider;
 import org.eclipse.rse.core.IRSESystemType;
-import org.eclipse.rse.core.RSECorePlugin;
 import org.eclipse.rse.core.model.IHost;
 import org.eclipse.rse.core.model.SystemStartHere;
 import org.eclipse.rse.subsystems.files.core.model.RemoteFileUtility;
 import org.eclipse.rse.subsystems.files.core.subsystems.IRemoteFileSubSystem;
-import org.eclipse.rse.ui.RSEUIPlugin;
 
 public class RSEEnvironmentProvider implements IEnvironmentProvider {
 	public static final String RSE_ENVIRONMENT_PREFIX = DLTKRSEPlugin.PLUGIN_ID
@@ -57,7 +51,7 @@ public class RSEEnvironmentProvider implements IEnvironmentProvider {
 		List environments = new LinkedList();
 		for (int i = 0; i < connections.length; i++) {
 			IHost connection = connections[i];
-			if (IRSESystemType.SYSTEMTYPE_LINUX_ID.equals(connection
+			if (IRSESystemType.SYSTEMTYPE_LOCAL_ID.equals(connection
 					.getSystemType().getId())) {
 				continue;
 			}
@@ -74,9 +68,9 @@ public class RSEEnvironmentProvider implements IEnvironmentProvider {
 	private void initializeRSE() {
 		if (!fakeRSEInitialized) {
 			fakeRSEInitialized = true;
-			ILog log = RSEUIPlugin.getDefault().getLog();
-			log.log(new Status(IStatus.INFO, DLTKRSEPlugin.PLUGIN_ID,
-					"Starting RSE..."));
+//			ILog log = RSEUIPlugin.getDefault().getLog();
+//			log.log(new Status(IStatus.INFO, DLTKRSEPlugin.PLUGIN_ID,
+//					"Starting RSE..."));
 		}
 	}
 }

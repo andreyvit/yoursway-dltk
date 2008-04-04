@@ -75,41 +75,26 @@ public class TclFileHyperlink implements IHyperlink {
 			}
 			Object sourceElement = getSourceModule(fileName);
 			if (sourceElement != null) {
-				IEditorInput editorInput = getEditorInput(sourceElement);
-				if (editorInput != null) {
-					String editorId = getEditorId(editorInput, sourceElement);
-					if (editorId != null) {
-						IEditorPart editorPart = DLTKDebugUIPlugin
-								.getActivePage().openEditor(editorInput,
-										editorId);
-						if (editorPart instanceof ITextEditor
-								&& lineNumber >= 0) {
-							ITextEditor textEditor = (ITextEditor) editorPart;
-							IDocumentProvider provider = textEditor
-									.getDocumentProvider();
-							provider.connect(editorInput);
-							IDocument document = provider
-									.getDocument(editorInput);
-							try {
-								IRegion line = document
-										.getLineInformation(lineNumber);
-								textEditor.selectAndReveal(line.getOffset(),
-										line.getLength());
-							} catch (BadLocationException e) {
-								MessageDialog
-										.openInformation(
-												DLTKDebugUIPlugin
-														.getActiveWorkbenchShell(),
-												ConsoleMessages.TclFileHyperlink_0,
-												MessageFormat
-														.format(
-																"{0}{1}{2}", new String[] { (lineNumber + 1) + "", ConsoleMessages.TclFileHyperlink_1, fileName })); //$NON-NLS-2$ //$NON-NLS-1$
-							}
-							provider.disconnect(editorInput);
-						}
-						return;
+				IEditorPart part = EditorUtility.openInEditor(sourceElement);
+				IEditorPart editorPart = EditorUtility
+						.openInEditor(sourceElement);
+				if (editorPart instanceof ITextEditor && lineNumber >= 0) {
+					ITextEditor textEditor = (ITextEditor) editorPart;
+					IDocumentProvider provider = textEditor
+							.getDocumentProvider();
+					IEditorInput input = part.getEditorInput();
+					provider.connect(input);
+					IDocument document = provider.getDocument(input);
+					try {
+						IRegion line = document.getLineInformation(lineNumber);
+						textEditor.selectAndReveal(line.getOffset(), line
+								.getLength());
+					} catch (BadLocationException e) {
+
 					}
+					provider.disconnect(input);
 				}
+				return;
 			}
 			// did not find source
 			MessageDialog

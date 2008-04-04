@@ -39,12 +39,7 @@ class CallerMethodWrapper extends MethodWrapper {
 	protected IDLTKSearchScope getSearchScope() {
 		IModelElement el = this.getMember();
 		IDLTKLanguageToolkit toolkit = null;
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(el);
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		toolkit = DLTKLanguageManager.getLanguageToolkit(el);
 		return CallHierarchy.getDefault().getSearchScope(toolkit);
 	}
 

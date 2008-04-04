@@ -66,14 +66,8 @@ public abstract class AbstractASTTest extends AbstractModelTests {
 
 	protected ModuleDeclaration getAST(String content) {
 		problems.reset();
-		// ISourceParser parser;
-		try {
-			return DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID)
-					.parse(null, content.toCharArray(), problems);
-		} catch (CoreException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return DLTKLanguageManager.getSourceParser(RubyNature.NATURE_ID)
+				.parse(null, content.toCharArray(), problems);
 	}
 
 	protected ASTNode getNodeAt(ASTNode root, final int start, final int end)

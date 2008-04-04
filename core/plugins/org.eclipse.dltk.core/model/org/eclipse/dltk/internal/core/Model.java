@@ -23,7 +23,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -171,17 +170,11 @@ public class Model extends Openable implements IScriptModel {
 		final List list = getChildrenOfType(SCRIPT_PROJECT);
 		final List result = new ArrayList();
 		for (int i = 0; i < list.size(); i++) {
-			try {
-				IScriptProject project = (IScriptProject) list.get(i);
-				IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-						.getLanguageToolkit(project);
-				if (toolkit.getNatureId().equals(nature)) {
-					result.add(project);
-				}
-			} catch (CoreException e) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
+			IScriptProject project = (IScriptProject) list.get(i);
+			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+					.getLanguageToolkit(project);
+			if (toolkit.getNatureId().equals(nature)) {
+				result.add(project);
 			}
 		}
 

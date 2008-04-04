@@ -87,13 +87,9 @@ public class SourceBasedResolver implements IReferenceResolver,
 	protected static IDLTKSearchScope scope;
 
 	static {
-		try {
-			toolkit = DLTKLanguageManager
-					.getLanguageToolkit(JavaScriptNature.NATURE_ID);
-			scope = SearchEngine.createWorkspaceScope(toolkit);
-		} catch (CoreException e) {
-			throw new LinkageError();
-		}
+		toolkit = DLTKLanguageManager
+				.getLanguageToolkit(JavaScriptNature.NATURE_ID);
+		scope = SearchEngine.createWorkspaceScope(toolkit);
 	}
 	protected static int EXACT_RULE = SearchPattern.R_EXACT_MATCH
 			| SearchPattern.R_CASE_SENSITIVE;

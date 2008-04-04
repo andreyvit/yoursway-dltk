@@ -118,13 +118,8 @@ public class JavaScriptSelectionEngine extends ScriptSelectionEngine {
 		if (result.size()==0)
 		{
 		IDLTKLanguageToolkit toolkit = null;
-		try {
-			toolkit = DLTKLanguageManager
-					.getLanguageToolkit(JavaScriptNature.NATURE_ID);
-		} catch (CoreException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		toolkit = DLTKLanguageManager
+				.getLanguageToolkit(JavaScriptNature.NATURE_ID);
 		Set resolveGlobals = buildContext.resolveGlobals(selection);
 		Iterator it=resolveGlobals.iterator();
 		while (it.hasNext()){
@@ -177,12 +172,7 @@ public class JavaScriptSelectionEngine extends ScriptSelectionEngine {
 			}
 		};
 		IDLTKLanguageToolkit toolkit = null;
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(JavaScriptNature.NATURE_ID);
-		} catch (CoreException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		toolkit = DLTKLanguageManager.getLanguageToolkit(JavaScriptNature.NATURE_ID);
 		IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit);
 		try {
 			search(startPart, IDLTKSearchConstants.METHOD,
@@ -218,12 +208,7 @@ public class JavaScriptSelectionEngine extends ScriptSelectionEngine {
 			}
 		};
 		IDLTKLanguageToolkit toolkit = null;
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(JavaScriptNature.NATURE_ID);
-		} catch (CoreException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		toolkit = DLTKLanguageManager.getLanguageToolkit(JavaScriptNature.NATURE_ID);
 		IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit);
 		try {
 			search(startPart + "*", IDLTKSearchConstants.FIELD,

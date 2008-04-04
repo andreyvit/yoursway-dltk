@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
@@ -23,7 +22,6 @@ import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
@@ -64,14 +62,7 @@ public class TclFoldingStructureProvider extends
 		 * getFoldingVisitor() and remove this method
 		 */
 		ISourceParser pp = null;
-		try {
-			pp = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
-		} catch (CoreException e1) {
-			if (DLTKCore.DEBUG) {
-				e1.printStackTrace();
-			}
-			return new CodeBlock[0];
-		}
+		pp = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
 		ModuleDeclaration md = pp.parse(null, code.toCharArray(), null);
 		List statements = md.getStatements();
 		if (statements == null) {

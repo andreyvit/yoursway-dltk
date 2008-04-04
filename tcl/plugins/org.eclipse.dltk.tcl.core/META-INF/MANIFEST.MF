@@ -8,7 +8,8 @@ Bundle-Vendor: %pluginProvider
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.dltk.core,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ org.eclipse.dltk.launching;bundle-version="1.0.0"
 Eclipse-AutoStart: true
 Export-Package: org.eclipse.dltk.tcl.ast,
  org.eclipse.dltk.tcl.ast.expressions,
@@ -19,6 +20,7 @@ Export-Package: org.eclipse.dltk.tcl.ast,
  org.eclipse.dltk.tcl.internal.core.codeassist,
  org.eclipse.dltk.tcl.internal.core.codeassist.completion,
  org.eclipse.dltk.tcl.internal.core.codeassist.selection,
+ org.eclipse.dltk.tcl.internal.core.packages,
  org.eclipse.dltk.tcl.internal.core.parser.processors.tcl;x-friends:="org.eclipse.dltk.xotcl.core.tests,org.eclipse.dltk.xotcl.ui",
  org.eclipse.dltk.tcl.internal.core.search,
  org.eclipse.dltk.tcl.internal.core.search.mixin,

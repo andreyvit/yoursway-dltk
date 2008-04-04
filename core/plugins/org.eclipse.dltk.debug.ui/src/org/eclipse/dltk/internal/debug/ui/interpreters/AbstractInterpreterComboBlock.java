@@ -20,6 +20,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.debug.ui.IDLTKDebugUIConstants;
 import org.eclipse.dltk.debug.ui.actions.ControlAccessibleListener;
@@ -124,7 +126,7 @@ public abstract class AbstractInterpreterComboBlock {
 	}
 	
 	private void firePropertyChange() {
-		PropertyChangeEvent event = new PropertyChangeEvent(this, PROPERTY_INTERPRETER, null, getPath());
+		PropertyChangeEvent event = new PropertyChangeEvent(this, PROPERTY_INTERPRETER, null, getInterpreterPath());
 		Object[] listeners = fListeners.getListeners();
 		for (int i = 0; i < listeners.length; i++) {
 			IPropertyChangeListener listener = (IPropertyChangeListener) listeners[i];
@@ -459,7 +461,7 @@ public abstract class AbstractInterpreterComboBlock {
 			// reset in case default has changed
 			setUseDefaultInterpreter();
 		}
-		setPath(getPath());
+		setPath(getInterpreterPath());
 		firePropertyChange();
 	}
 	
@@ -469,7 +471,7 @@ public abstract class AbstractInterpreterComboBlock {
 	 * @return buildpath container path or <code>null</code>
 
 	 */
-	public IPath getPath() {
+	public IPath getInterpreterPath() {
 		if (fSpecificButton.getSelection()) {
 			int index = fCombo.getSelectionIndex();
 			if (index >= 0) {
@@ -479,6 +481,9 @@ public abstract class AbstractInterpreterComboBlock {
 			return null;
 		}
 		return ScriptRuntime.newDefaultInterpreterContainerPath();
+	}
+	public IBuildpathEntry getEntry() {
+		return DLTKCore.newContainerEntry(getInterpreterPath());
 	}
 	
 	/**

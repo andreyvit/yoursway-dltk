@@ -9,12 +9,16 @@
  *******************************************************************************/
 package org.eclipse.dltk.ui.tests.navigator;
 
-import org.eclipse.dltk.internal.ui.navigator.ScriptNavigatorContentProvider;
+import org.eclipse.dltk.internal.ui.navigator.ScriptExplorerContentProvider;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 
-public class TestScriptNavigatorContentProvider extends ScriptNavigatorContentProvider {
+public class TestScriptNavigatorContentProvider extends ScriptExplorerContentProvider {
+
+	public TestScriptNavigatorContentProvider() {
+		super(true);
+	}
 
 	protected IPreferenceStore getPreferenceStore() {
 		return DLTKUIPlugin.getDefault().getPreferenceStore();

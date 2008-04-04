@@ -24,6 +24,14 @@ public class TclPackageDeclaration extends Declaration {
 		this.setStyle(style);
 		this.version = version;
 	}
+	public TclPackageDeclaration(TclPackageDeclaration pkg) {
+		super(pkg.sourceStart(), pkg.sourceEnd());
+		this.setName(pkg.getName());
+		this.setNameStart(pkg.getNameStart());
+		this.setNameEnd(pkg.getNameEnd());
+		this.setStyle(pkg.getStyle());
+		this.version = pkg.getVersion();
+	}
 	public int getStyle() {
 		return this.style;
 	}

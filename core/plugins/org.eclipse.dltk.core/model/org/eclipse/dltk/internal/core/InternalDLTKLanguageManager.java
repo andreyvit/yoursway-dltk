@@ -31,6 +31,9 @@ public class InternalDLTKLanguageManager {
 	private final static String FILE_HIERARCHY_RESOLVER_EXTPOINT = DLTKCore.PLUGIN_ID
 			+ ".fileHierarchyResolvers";//$NON-NLS-1$
 	
+	private final static String INTERPRETER_CONTAINER_EXTENSION_EXTPOINT = DLTKCore.PLUGIN_ID
+	+ ".interpreterContainerExtension";//$NON-NLS-1$
+	
 	private static PriorityClassDLTKExtensionManager languageToolkitsManager = new PriorityClassDLTKExtensionManager(
 			LANGUAGE_EXTPOINT);
 
@@ -53,6 +56,9 @@ public class InternalDLTKLanguageManager {
 			CALLHIERARCHY_EXTPOINT);
 	private static PriorityClassDLTKExtensionManager fileHierarchyResolversManager = new PriorityClassDLTKExtensionManager(
 			FILE_HIERARCHY_RESOLVER_EXTPOINT);
+	
+	private static PriorityClassDLTKExtensionManager interoreterContainerExtensionManager = new PriorityClassDLTKExtensionManager(
+			INTERPRETER_CONTAINER_EXTENSION_EXTPOINT);
 	public static PriorityClassDLTKExtensionManager getSourceElementParsersManager() {
 		return sourceElementParsersManager;
 	}
@@ -80,19 +86,7 @@ public class InternalDLTKLanguageManager {
 	public static PriorityClassDLTKExtensionManager getLanguageToolkitsManager() {
 		return languageToolkitsManager;
 	}
-	/**
-	 * For testing purpose only. Could be used to test language without extensions.
-	 * If level is -1 then bigger value will be used.
-	 */
-	public static void setPrefferedPriority(String id, int level) {
-		languageToolkitsManager.setPreffetedLevel(id, level);
-		sourceElementParsersManager.setPreffetedLevel(id, level);
-		problemFactoryManager.setPreffetedLevel(id, level);
-		selectionEngineManager.setPreffetedLevel(id, level);
-		completionEngineManager.setPreffetedLevel(id, level);
-		sourceParsersManager.setPreffetedLevel(id, level);
-		searchManager.setPreffetedLevel(id, level);
-		callHierarchyManager.setPreffetedLevel(id, level);
-		fileHierarchyResolversManager.setPreffetedLevel(id, level);
+	public static PriorityClassDLTKExtensionManager getInterpreterContainerExtensionManager() {
+		return interoreterContainerExtensionManager;
 	}
 }

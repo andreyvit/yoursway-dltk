@@ -27,6 +27,7 @@ import org.eclipse.dltk.internal.ui.wizards.buildpath.ArchiveFileFilter;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.BuildpathContainerWizard;
 import org.eclipse.dltk.internal.ui.wizards.buildpath.MultipleFolderSelectionDialog;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
+import org.eclipse.dltk.ui.wizards.IBuildpathContainerPageExtension;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DirectoryDialog;

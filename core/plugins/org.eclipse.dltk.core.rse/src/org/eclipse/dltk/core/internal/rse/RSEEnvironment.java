@@ -2,25 +2,22 @@ package org.eclipse.dltk.core.internal.rse;
 
 import java.net.URI;
 
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.filesystem.IFileSystem;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.PlatformObject;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.dltk.core.environment.IEnvironment;
 import org.eclipse.dltk.core.environment.IFileHandle;
 import org.eclipse.dltk.core.internal.environment.EFSFileHandle;
 import org.eclipse.rse.core.model.IHost;
-import org.eclipse.rse.core.model.SystemStartHere;
 import org.eclipse.rse.internal.efs.RSEFileSystem;
 import org.eclipse.rse.services.clientserver.messages.SystemMessageException;
 import org.eclipse.rse.subsystems.files.core.subsystems.IRemoteFile;
 import org.eclipse.rse.subsystems.files.core.subsystems.IRemoteFileSubSystem;
 
-public class RSEEnvironment extends PlatformObject implements IEnvironment {
+public class RSEEnvironment implements IEnvironment, IAdaptable {
 	private IRemoteFileSubSystem fs;
 	private IHost host;
 
@@ -64,12 +61,12 @@ public class RSEEnvironment extends PlatformObject implements IEnvironment {
 		return host.getName() + " (RSE)";
 	}
 
-	IHost getHost() {
+	public IHost getHost() {
 		return host;
 	}
 
 	public boolean hasProject(IProject project) {
-		if( !project.isAccessible()) {
+		if (!project.isAccessible()) {
 			return false;
 		}
 		IProjectDescription description;
@@ -78,11 +75,12 @@ public class RSEEnvironment extends PlatformObject implements IEnvironment {
 			URI uri = description.getLocationURI();
 			if (uri != null) {
 				String uriHost = uri.getHost();
-				if( host.getHostName().equalsIgnoreCase(uriHost)) {	
+				if (host.getHostName().equalsIgnoreCase(uriHost)) {
 					try {
-						IRemoteFile remoteFileObject = fs.getRemoteFileObject(uri.getPath(), null);
-						if( remoteFileObject != null ) {
-							if( remoteFileObject.exists() ) {
+						IRemoteFile remoteFileObject = fs.getRemoteFileObject(
+								uri.getPath(), null);
+						if (remoteFileObject != null) {
+							if (remoteFileObject.exists()) {
 								return true;
 							}
 						}
@@ -95,5 +93,22 @@ public class RSEEnvironment extends PlatformObject implements IEnvironment {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public Object getAdapter(Class adapter) {
+		return Platform.getAdapterManager()
+				.loadAdapter(this, adapter.getName());
+	}
+
+	public URI getURI(IPath location) {
+		return RSEFileSystem.getURIFor(host.getHostName(), location
+				.toPortableString());
+	}
+	public String convertPathToString(IPath path) {
+		if (host.getSystemType().isWindows()) {			
+			return path.toString().replaceAll("/", "\\");
+		} else {
+			return path.toString();
+		}
 	}
 }

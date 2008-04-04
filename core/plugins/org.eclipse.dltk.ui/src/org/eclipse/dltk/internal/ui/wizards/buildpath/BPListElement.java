@@ -139,7 +139,7 @@ public class BPListElement {
 				IBuildpathContainer container = DLTKCore.getBuildpathContainer(
 						fPath, fProject);
 				if (container != null) {
-					IBuildpathEntry[] entries = container.getBuildpathEntries();
+					IBuildpathEntry[] entries = container.getBuildpathEntries(fProject);
 					for (int i = 0; i < entries.length; i++) {
 						IBuildpathEntry entry = entries[i];
 						if (entry != null) {

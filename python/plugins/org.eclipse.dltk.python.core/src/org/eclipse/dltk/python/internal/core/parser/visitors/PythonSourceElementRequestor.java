@@ -33,7 +33,6 @@ import org.eclipse.dltk.python.parser.ast.PythonImportFromStatement;
 import org.eclipse.dltk.python.parser.ast.PythonImportStatement;
 import org.eclipse.dltk.python.parser.ast.expressions.Assignment;
 import org.eclipse.dltk.python.parser.ast.expressions.ExtendedVariableReference;
-import org.eclipse.dltk.python.parser.ast.expressions.ExtendedVariableReferenceInterface;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonImportAsExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonImportExpression;
 import org.eclipse.dltk.python.parser.ast.expressions.PythonLambdaExpression;
@@ -130,20 +129,20 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 	/**
 	 * Used to create Call value in python syntax.
 	 */
-//	protected String makeLanguageDependentValue(Expression value) {
-//
-//		String outValue = "";
-//		if (value instanceof ExtendedVariableReference) {
-//			// Lets use AST Printer to print extended variable in python like
-//			// syntax.
-//			StringWriter stringWriter = new StringWriter();
-//			CorePrinter printer = new CorePrinter(stringWriter);
-//			value.printNode(printer);
-//			printer.flush();
-//			return stringWriter.getBuffer().toString();
-//		}
-//		return outValue;
-//	}
+	protected String makeLanguageDependentValue(Expression value) {
+
+		String outValue = "";
+		if (value instanceof ExtendedVariableReference) {
+			// Lets use AST Printer to print extended variable in python like
+			// syntax.
+			StringWriter stringWriter = new StringWriter();
+			CorePrinter printer = new CorePrinter(stringWriter);
+			value.printNode(printer);
+			printer.flush();
+			return stringWriter.getBuffer().toString();
+		}
+		return outValue;
+	}
 
 	private void onVisitLambdaAssignnment(String ref, PythonLambdaExpression lambdaExpression)
 	{
@@ -192,10 +191,10 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 			}
 		}
 	}
-	private void onVisitInstanceVariableAssignment(ExtendedVariableReferenceInterface extendedVariable, Statement right)
+	private void onVisitInstanceVariableAssignment(ExtendedVariableReference extendedVariable, Statement right)
 	{
-	    List varParts = ((ExtendedVariableReferenceInterface)extendedVariable).getFlatNodeList();
-		if (varParts.size() >=2) {
+		List varParts = extendedVariable.getExpressions();
+		if (extendedVariable.isDot(0)) {
 			Expression first = (Expression) varParts.get(0);
 			Expression second = (Expression) varParts.get(1);
 
@@ -226,9 +225,9 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 						if (toClass instanceof TypeDeclaration) 
 						{
 							List decorators = ((MethodDeclaration)method).getDecorators();
-							if (null == decorators || decorators.size() == 0)
+							if (null == decorators || null != decorators && decorators.size() == 0)
 							{
-								TypeField field = new TypeField(var.getName(), initialString, pos, (Expression) extendedVariable, toClass, method);
+								TypeField field = new TypeField(var.getName(), initialString, pos, extendedVariable, toClass, method);
 								this.fNotAddedFields.add(field);
 							}
 						}
@@ -260,7 +259,6 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 			}
 		}
 	}
-	
 	private void processAssignment(Statement left, Statement right)
 	{
 		if (left instanceof Assignment)
@@ -273,8 +271,8 @@ public class PythonSourceElementRequestor extends SourceElementRequestVisitor {
 			onVisitLambdaAssignnment(((SimpleReference)left).getName(), (PythonLambdaExpression)right);
 		else if (left instanceof VariableReference && !this.fInMethod)							// Handle static variables
 			onVisitStaticVariableAssignment((VariableReference)left, right);
-		else if (left instanceof ExtendedVariableReferenceInterface && this.fInClass && this.fInMethod) 	// This is for in class and in method.
-			onVisitInstanceVariableAssignment((ExtendedVariableReferenceInterface) left, right);
+		else if (left instanceof ExtendedVariableReference && this.fInClass && this.fInMethod) 	// This is for in class and in method.
+			onVisitInstanceVariableAssignment((ExtendedVariableReference)left, right);
 		else if (left instanceof ExpressionList)
 			onVisitTestListAssignment((ExpressionList)left, right);
 		else {// TODO: dynamic variable handling not yet

@@ -8,7 +8,6 @@ import java.util.List;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
@@ -360,17 +359,11 @@ public class ExtendedClassesView extends ViewPart implements
 	private boolean checkElementNature(Object selectedElement) {
 		if (selectedElement instanceof IModelElement) {
 			String natureId = this.fToolkit.getNatureId();
-			try {
-				IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
-						.getLanguageToolkit((IModelElement) selectedElement);
-				if (languageToolkit != null
-						&& natureId.equals(languageToolkit.getNatureId())) {
-					return true;
-				}
-			} catch (CoreException e) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
+			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
+					.getLanguageToolkit((IModelElement) selectedElement);
+			if (languageToolkit != null
+					&& natureId.equals(languageToolkit.getNatureId())) {
+				return true;
 			}
 		}
 		return false;

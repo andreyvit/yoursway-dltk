@@ -27,7 +27,6 @@ import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 
 public class RubyCallProcessor implements ICallProcessor {
-
 	public final static int GENERICS_AGNOSTIC_MATCH_RULE = SearchPattern.R_EXACT_MATCH
 			| SearchPattern.R_CASE_SENSITIVE | SearchPattern.R_ERASURE_MATCH;
 
@@ -83,5 +82,4 @@ public class RubyCallProcessor implements ICallProcessor {
 		}
 		return elements;
 	}
-
 }

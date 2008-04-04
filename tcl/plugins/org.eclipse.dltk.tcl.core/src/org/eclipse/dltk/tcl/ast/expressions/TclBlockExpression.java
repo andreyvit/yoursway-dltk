@@ -11,11 +11,9 @@ package org.eclipse.dltk.tcl.ast.expressions;
 
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.tcl.ast.TclConstants;
 import org.eclipse.dltk.tcl.core.ITclSourceParser;
@@ -61,26 +59,19 @@ public class TclBlockExpression extends Expression {
 		return parseBlockSimple(true);
 	}
 	public List parseBlockSimple(boolean useProcessors) {
-		try {
-			if (this.fBlockContent == null) {
-				return null;
-			}
-			
-			String content = this.fBlockContent.substring(1, this.fBlockContent
-					.length() - 1);
-			ITclSourceParser parser = null;
-			parser = (ITclSourceParser) DLTKLanguageManager
-					.getSourceParser(TclNature.NATURE_ID);
-			parser.setProcessorsState(useProcessors);
-			parser.setOffset(this.sourceStart() + 1);
-			ModuleDeclaration module = parser.parse(this.fileName, content
-					.toCharArray(), null);
-			return module.getStatements();
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
+		if (this.fBlockContent == null) {
+			return null;
 		}
-		return null;
+		
+		String content = this.fBlockContent.substring(1, this.fBlockContent
+				.length() - 1);
+		ITclSourceParser parser = null;
+		parser = (ITclSourceParser) DLTKLanguageManager
+				.getSourceParser(TclNature.NATURE_ID);
+		parser.setProcessorsState(useProcessors);
+		parser.setOffset(this.sourceStart() + 1);
+		ModuleDeclaration module = parser.parse(this.fileName, content
+				.toCharArray(), null);
+		return module.getStatements();
 	}	
 }

@@ -44,7 +44,7 @@ public abstract class ScriptTemplateAccess {
 		try {
 			fStore.load();
 		} catch (IOException e) {
-			DLTKUIPlugin.logErrorMessage(MessageFormat.format(Messages.ScriptTemplateAccess_unableToLoadTemplateStore, new Object[] { e }));
+			DLTKUIPlugin.logErrorMessage(MessageFormat.format(TemplateMessages.ScriptTemplateAccess_unableToLoadTemplateStore, new Object[] { e }));
 		}
 	}
 }

@@ -17,7 +17,6 @@ import java.util.Map;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.core.DLTKContentTypeManager;
@@ -367,26 +366,20 @@ public class DLTKSearchScope extends AbstractSearchScope {
 	}
 
 	private boolean natureFilter(IModelElement element) {
-		try {
-			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
-					.getLanguageToolkit(element);
-			IDLTKLanguageToolkit languageToolkit2 = this.getLanguageToolkit();
+		IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
+				.getLanguageToolkit(element);
+		IDLTKLanguageToolkit languageToolkit2 = this.getLanguageToolkit();
 
-			// For all projects scope
-			if (languageToolkit2 == null) {
-				return true;
-			}
-			if (languageToolkit != null
-					&& languageToolkit2 != null
-					&& languageToolkit.getNatureId().equals(
-							languageToolkit2.getNatureId())) {
-				// Filter by nature.
-				return true;
-			}
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
+		// For all projects scope
+		if (languageToolkit2 == null) {
+			return true;
+		}
+		if (languageToolkit != null
+				&& languageToolkit2 != null
+				&& languageToolkit.getNatureId().equals(
+						languageToolkit2.getNatureId())) {
+			// Filter by nature.
+			return true;
 		}
 		return false;
 	}
@@ -548,14 +541,11 @@ public class DLTKSearchScope extends AbstractSearchScope {
 	public boolean encloses(IModelElement element) {
 
 		IDLTKLanguageToolkit languageToolkit = getLanguageToolkit();
-		try {
-			IDLTKLanguageToolkit langaugeToolkit2 = DLTKLanguageManager
-					.getLanguageToolkit(element);
-			if (!languageToolkit.getNatureId().equals(
-					langaugeToolkit2.getNatureId())) {
-				return false;
-			}
-		} catch (CoreException e) {
+		IDLTKLanguageToolkit langaugeToolkit2 = DLTKLanguageManager
+				.getLanguageToolkit(element);
+		if (!languageToolkit.getNatureId().equals(
+				langaugeToolkit2.getNatureId())) {
+			return false;
 		}
 
 		if (this.elements != null) {

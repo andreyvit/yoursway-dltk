@@ -23,8 +23,8 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.corext.buildpath.BuildpathModifier;
 import org.eclipse.dltk.internal.ui.wizards.BuildpathDialogAccess;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
@@ -149,11 +149,7 @@ public class AddArchiveToBuildpathAction extends Action implements ISelectionCha
 			return false;
 		}
 		IDLTKLanguageToolkit toolkit = null;
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(fScriptProject);
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
+		toolkit = DLTKLanguageManager.getLanguageToolkit(fScriptProject);
 		if( toolkit != null ) {
 			return toolkit.languageSupportZIPBuildpath();
 		}

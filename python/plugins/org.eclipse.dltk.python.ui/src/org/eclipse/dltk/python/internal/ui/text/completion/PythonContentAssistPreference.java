@@ -5,15 +5,22 @@ import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.dltk.ui.text.completion.ContentAssistPreference;
 
 public class PythonContentAssistPreference extends ContentAssistPreference {
-	static PythonContentAssistPreference sDefault;
+
+	private static PythonContentAssistPreference instance;
+	
+	public static ContentAssistPreference getDefault() {
+		if (instance == null) {
+			instance = new PythonContentAssistPreference();
+		}
+		
+		return instance;
+	}
+				
+	/*
+	 * @see org.eclipse.dltk.ui.text.completion.ContentAssistPreference#getTextTools()
+	 */
 	protected ScriptTextTools getTextTools() {
 		return PythonUI.getDefault().getTextTools();
 	}
 
-	public static ContentAssistPreference getDefault() {
-		if( sDefault == null ) {
-			sDefault = new PythonContentAssistPreference();
-		}
-		return sDefault;
-	}
 }

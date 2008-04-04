@@ -31,13 +31,13 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IOpenable;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
 import org.eclipse.dltk.core.IScriptModel;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
@@ -1128,12 +1128,7 @@ public class ReorgPolicyFactory {
 		private Change createChange(IScriptFolder pack, IProjectFragment destination, NewNameProposer nameProposer, INewNameQueries copyQueries) {
 			String newName= nameProposer.createNewName(pack, destination);
 			IDLTKLanguageToolkit tk = null;
-			try {
-				tk = DLTKLanguageManager.getLanguageToolkit(pack);
-			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			tk = DLTKLanguageManager.getLanguageToolkit(pack);
 			IPath newPath = destination.getResource().getFullPath().append(newName);
 			if (newName == null || ( tk != null && tk.validateSourcePackage( newPath ) )){
 //				INewNameQuery nameQuery;

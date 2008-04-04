@@ -1440,7 +1440,7 @@ public final class ScriptRuntime {
 				if (container != null) {
 					IBuildpathEntry[] requiredProjects = processScriptLibraryPathEntries(
 							project, collectRequired, container
-									.getBuildpathEntries(), entries);
+									.getBuildpathEntries(project), entries);
 					if (requiredProjects != null) {
 						if (req == null) {
 							req = new ArrayList();
@@ -2122,7 +2122,7 @@ public final class ScriptRuntime {
 			// execution will not reach here - exception will be thrown
 			return null;
 		}
-		IBuildpathEntry[] cpes = container.getBuildpathEntries();
+		IBuildpathEntry[] cpes = container.getBuildpathEntries(project);
 		int property = -1;
 		switch (container.getKind()) {
 		case IBuildpathContainer.K_APPLICATION:

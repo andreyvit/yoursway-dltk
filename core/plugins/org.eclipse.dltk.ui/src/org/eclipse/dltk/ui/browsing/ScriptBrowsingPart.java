@@ -22,7 +22,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
@@ -1437,15 +1436,7 @@ public abstract class ScriptBrowsingPart extends ViewPart implements
 			nature = (String) ((Map) data).get("nature"); //$NON-NLS-1$
 		}
 		if (nature != null) {
-			try {
-				this.fToolkit = DLTKLanguageManager.getLanguageToolkit(nature);
-			} catch (CoreException e) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
-				throw new RuntimeException(
-						ScriptBrowsingMessages.ScriptBrowsingPart_natureAttributeMustBeSpecifiedAndCorrect, e);
-			}
+			this.fToolkit = DLTKLanguageManager.getLanguageToolkit(nature);
 		} else {
 			throw new RuntimeException(
 					ScriptBrowsingMessages.ScriptBrowsingPart_natureAttributeMustBeSpecifiedAndCorrect);

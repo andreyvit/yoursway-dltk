@@ -12,6 +12,7 @@ package org.eclipse.dltk.ruby.internal.ui.text;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.dltk.ruby.internal.ui.text.IRubyColorConstants;
 import org.eclipse.dltk.ruby.internal.ui.text.rules.BeginOfLineRule;
 import org.eclipse.dltk.ui.text.AbstractScriptScanner;
 import org.eclipse.dltk.ui.text.IColorManager;
@@ -21,8 +22,8 @@ import org.eclipse.jface.text.rules.WhitespaceRule;
 
 public class RubyDocScanner extends AbstractScriptScanner {
 	private static final String[] fgTokenProperties = new String[] {
-		RubyColorConstants.RUBY_DOC,
-		RubyColorConstants.RUBY_DOC_TOPIC		
+		IRubyColorConstants.RUBY_DOC,
+		IRubyColorConstants.RUBY_DOC_TOPIC		
 	};
 
 	public RubyDocScanner(IColorManager manager, IPreferenceStore store) {
@@ -39,8 +40,8 @@ public class RubyDocScanner extends AbstractScriptScanner {
 	protected List createRules() {
 		List/*<IRule>*/ rules = new ArrayList/*<IRule>*/();
 		
-		IToken topic = getToken(RubyColorConstants.RUBY_DOC_TOPIC);
-		IToken other = getToken(RubyColorConstants.RUBY_DOC);
+		IToken topic = getToken(IRubyColorConstants.RUBY_DOC_TOPIC);
+		IToken other = getToken(IRubyColorConstants.RUBY_DOC);
 		
 		// Add generic whitespace rule.
 		rules.add(new WhitespaceRule(new RubyWhitespaceDetector()));

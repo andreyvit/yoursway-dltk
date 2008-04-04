@@ -5,19 +5,19 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.internal.core.hierarchy;
 
 import java.util.ArrayList;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IOpenable;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IRegion;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.IType;
 import org.eclipse.dltk.core.ModelException;
@@ -33,7 +33,7 @@ public class RegionBasedTypeHierarchy extends TypeHierarchy {
 	 * The region of types for which to build the hierarchy
 	 */
 	protected IRegion region;
-	
+
 /**
  * Creates a TypeHierarchy on the types in the specified region,
  * considering first the given working copies,
@@ -43,7 +43,7 @@ public class RegionBasedTypeHierarchy extends TypeHierarchy {
  */
 public RegionBasedTypeHierarchy(IRegion region, ISourceModule[] workingCopies, IType type, boolean computeSubtypes) {
 	super(type, workingCopies, (IDLTKSearchScope)null, computeSubtypes);
-	
+
 	Region newRegion = new Region() {
 		public void add(IModelElement element) {
 			if (!contains(element)) {
@@ -51,14 +51,15 @@ public RegionBasedTypeHierarchy(IRegion region, ISourceModule[] workingCopies, I
 				removeAllChildren(element);
 				fRootElements.add(element);
 				if (element.getElementType() == IModelElement.SCRIPT_PROJECT) {
-					// add jar roots as well so that jars don't rely on their parent to know 
+					// add jar roots as well so that jars don't rely on their parent to know
 					// if they are contained in the region
 					// (see https://bugs.eclipse.org/bugs/show_bug.cgi?id=146615)
 					try {
 						IProjectFragment[] roots = ((IScriptProject) element).getProjectFragments();
 						for (int i = 0, length = roots.length; i < length; i++) {
-							if (roots[i].isArchive() && !fRootElements.contains(roots[i]))
+							if (roots[i].isArchive() && !fRootElements.contains(roots[i])) {
 								fRootElements.add(roots[i]);
+							}
 						}
 					} catch (ModelException e) {
 						// project doesn't exist
@@ -69,13 +70,13 @@ public RegionBasedTypeHierarchy(IRegion region, ISourceModule[] workingCopies, I
 		}
 	};
 	IModelElement[] elements = region.getElements();
-	for (int i = 0, length = elements.length; i < length; i++) {
+	for (int i = 0; i < elements.length; i++) {
 		newRegion.add(elements[i]);
-		
 	}
 	this.region = newRegion;
-	if (elements.length > 0)
+	if (elements.length > 0) {
 		this.project = elements[0].getScriptProject();
+	}
 }
 /*
  * @see TypeHierarchy#initializeRegions
@@ -84,11 +85,10 @@ protected void initializeRegions() {
 	super.initializeRegions();
 	IModelElement[] roots = this.region.getElements();
 	for (int i = 0; i < roots.length; i++) {
-		IModelElement root = roots[i];
-		if (root instanceof IOpenable) {
-			this.files.put(root, new ArrayList());
+		if (roots[i] instanceof IOpenable) {
+			this.files.put(roots[i], new ArrayList());
 		} else {
-			Openable o = (Openable) ((ModelElement) root).getOpenableParent();
+			Openable o = (Openable) ((ModelElement) roots[i]).getOpenableParent();
 			if (o != null) {
 				this.files.put(o, new ArrayList());
 			}
@@ -130,16 +130,18 @@ public void pruneDeadBranches() {
  */
 private boolean pruneDeadBranches(IType type) {
 	TypeVector subtypes = (TypeVector)this.typeToSubtypes.get(type);
-	if (subtypes == null) return true;
+	if (subtypes == null) {
+		return true;
+	}
 	pruneDeadBranches(subtypes.copy().elements());
 	subtypes = (TypeVector)this.typeToSubtypes.get(type);
 	return (subtypes == null || subtypes.size == 0);
 }
 private void pruneDeadBranches(IType[] types) {
-	for (int i = 0, length = types.length; i < length; i++) {
-		IType type = types[i];
-		if (pruneDeadBranches(type) && !this.region.contains(type)) {
-			removeType(type);
+	
+	for (int i = 0; i < types.length; i++) {
+		if (pruneDeadBranches(types[i]) && !this.region.contains(types[i])) {
+			removeType(types[i]);
 		}
 	}
 }
@@ -151,16 +153,19 @@ protected void removeType(IType type) {
 	IType[] subtypes = this.getSubtypes(type);
 	this.typeToSubtypes.remove(type);
 	if (subtypes != null) {
-		for (int i= 0; i < subtypes.length; i++) {
+		for (int i = 0; i < subtypes.length; i++) {
 			this.removeType(subtypes[i]);
 		}
 	}
-	IType[] superclasses = (IType[])this.classToSuperclass.remove(type);
-	if (superclasses != null) {
-		for (int i = 0, length = superclasses.length; i < length; i++) {
+	TypeVector superTypes = (TypeVector) this.classToSuperclass.remove(type);
+	if (superTypes != null) {
+		IType[] superclasses = superTypes.elements();
+		for (int i = 0; i < superclasses.length; i++) {
 			IType superinterface = superclasses[i];
 			TypeVector types = (TypeVector)this.typeToSubtypes.get(superinterface);
-			if (types != null) types.remove(type);
+			if (types != null) {
+				types.remove(type);
+			}
 		}
 	}
 }

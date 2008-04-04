@@ -27,8 +27,8 @@ import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.debug.ui.messages.ScriptLaunchMessages;
 import org.eclipse.dltk.internal.debug.ui.interpreters.AbstractInterpreterComboBlock;
 import org.eclipse.dltk.internal.debug.ui.interpreters.InterpreterDescriptor;
-import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.IInterpreterInstall;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.ScriptRuntime;
 import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -186,7 +186,7 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 					ScriptLaunchConfigurationConstants.ATTR_CONTAINER_PATH,
 					(String) null);
 		} else {
-			IPath containerPath = fInterpreterBlock.getPath();
+			IPath containerPath = fInterpreterBlock.getInterpreterPath();
 			String portablePath = null;
 			if (containerPath != null) {
 				portablePath = containerPath.toPortableString();
@@ -324,7 +324,7 @@ public abstract class InterpreterTab extends CommonScriptLaunchTab {
 	 * Interpreter.
 	 */
 	protected ILaunchConfigurationTab getTabForCurrentInterpreter() {
-		IPath path = fInterpreterBlock.getPath();
+		IPath path = fInterpreterBlock.getInterpreterPath();
 		if (path != null) {
 			IInterpreterInstall Interpreter = fInterpreterBlock
 					.getInterpreter();

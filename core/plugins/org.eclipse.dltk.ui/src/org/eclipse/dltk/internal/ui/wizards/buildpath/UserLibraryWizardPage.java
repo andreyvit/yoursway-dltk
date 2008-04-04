@@ -21,7 +21,6 @@ import java.util.Set;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -35,7 +34,6 @@ import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.UserLibraryManager;
 import org.eclipse.dltk.internal.ui.dialogs.StatusInfo;
 import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPage;
-import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPageExtension;
 import org.eclipse.dltk.internal.ui.wizards.IBuildpathContainerPageExtension2;
 import org.eclipse.dltk.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.CheckedListDialogField;
@@ -47,6 +45,7 @@ import org.eclipse.dltk.internal.ui.wizards.dialogfields.ListDialogField;
 import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.preferences.UserLibraryPreferencePage;
+import org.eclipse.dltk.ui.wizards.IBuildpathContainerPageExtension;
 import org.eclipse.dltk.ui.wizards.NewElementWizardPage;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
@@ -126,13 +125,7 @@ public class UserLibraryWizardPage extends NewElementWizardPage implements
 		ArrayList entriesToCheck = new ArrayList();
 
 		IDLTKLanguageToolkit toolkit = null;
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(fProject);
-		} catch (CoreException e1) {
-			if (DLTKCore.DEBUG) {
-				e1.printStackTrace();
-			}
-		}
+		toolkit = DLTKLanguageManager.getLanguageToolkit(fProject);
 		if( toolkit == null ) {
 			toolkit = this.langaugeToolkit;
 		}
@@ -369,14 +362,8 @@ public class UserLibraryWizardPage extends NewElementWizardPage implements
 	 */
 	public void initialize(IScriptProject project,
 			IBuildpathEntry[] currentEntries) {
-		try {
-			this.langaugeToolkit = DLTKLanguageManager
-					.getLanguageToolkit(project);
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
+		this.langaugeToolkit = DLTKLanguageManager
+				.getLanguageToolkit(project);
 		for (int i = 0; i < currentEntries.length; i++) {
 			IBuildpathEntry curr = currentEntries[i];
 			if (curr.getEntryKind() == IBuildpathEntry.BPE_CONTAINER) {

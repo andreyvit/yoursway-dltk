@@ -162,10 +162,18 @@
     </builder>
  </extension>
    <extension
+         point="org.eclipse.dltk.core.interpreterContainerExtension">
+      <interpreterContainerExtension
+            class="org.eclipse.dltk.tcl.internal.core.packages.TclPackagesInterpreterContainerExtension"
+            nature="org.eclipse.dltk.tcl.core.nature"
+            priority="0">
+      </interpreterContainerExtension>
+   </extension>
+   <!--extension
          point="org.eclipse.dltk.core.buildpathContainerInitializer">
       <buildpathContainerInitializer
             class="org.eclipse.dltk.tcl.internal.core.packages.TclPackagesBuildpathContainerInitializer"
             id="org.eclipse.dltk.tcl.core.PACKAGES">
       </buildpathContainerInitializer>
-   </extension>
+   </extension-->
 </plugin>

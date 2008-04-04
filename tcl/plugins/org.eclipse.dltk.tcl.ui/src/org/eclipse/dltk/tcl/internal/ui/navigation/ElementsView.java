@@ -336,14 +336,11 @@ public abstract class ElementsView extends ViewPart {
 		}
 
 		synchronized public void addElement(IModelElement element) {
-			try {
-				IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
-						.getLanguageToolkit(element);
-				if (!languageToolkit.getNatureId().equals(
-						TclLanguageToolkit.getDefault().getNatureId())) {
-					return;
-				}
-			} catch (CoreException e) {
+			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
+					.getLanguageToolkit(element);
+			if (!languageToolkit.getNatureId().equals(
+					TclLanguageToolkit.getDefault().getNatureId())) {
+				return;
 			}
 
 			String name = labelProvider.getText(element);
@@ -474,18 +471,11 @@ public abstract class ElementsView extends ViewPart {
 	}
 
 	private void removeElements(IModelElement element) {
-		try {
-			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
-					.getLanguageToolkit(element);
-			if (languageToolkit != null
-					&& !languageToolkit.getNatureId().equals(
-							TclLanguageToolkit.getDefault().getNatureId())) {
-				return;
-			}
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
+		IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
+				.getLanguageToolkit(element);
+		if (languageToolkit != null
+				&& !languageToolkit.getNatureId().equals(
+						TclLanguageToolkit.getDefault().getNatureId())) {
 			return;
 		}
 		if (isElement(element)) {

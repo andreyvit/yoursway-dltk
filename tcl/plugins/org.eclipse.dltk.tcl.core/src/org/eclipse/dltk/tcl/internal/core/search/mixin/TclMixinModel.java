@@ -1,7 +1,5 @@
 package org.eclipse.dltk.tcl.internal.core.search.mixin;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.mixin.IMixinElement;
@@ -31,25 +29,19 @@ public class TclMixinModel {
 	private MixinModel model;
 
 	private TclMixinModel() {
-		try {
-			model = new MixinModel(DLTKLanguageManager
-					.getLanguageToolkit(TclNature.NATURE_ID));
-			model
-					.addObjectInitializeListener(new IMixinObjectInitializeListener() {
-						public void initialize(IMixinElement element,
-								Object object, ISourceModule module) {
-							if (object != null
-									&& object instanceof ITclMixinElement) {
-								((ITclMixinElement) object).initialize(element,
-										module, TclMixinModel.this);
-							}
+		model = new MixinModel(DLTKLanguageManager
+				.getLanguageToolkit(TclNature.NATURE_ID));
+		model
+				.addObjectInitializeListener(new IMixinObjectInitializeListener() {
+					public void initialize(IMixinElement element,
+							Object object, ISourceModule module) {
+						if (object != null
+								&& object instanceof ITclMixinElement) {
+							((ITclMixinElement) object).initialize(element,
+									module, TclMixinModel.this);
 						}
-					});
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
+					}
+				});
 	}
 
 	public IMixinElement createElement(String key) {

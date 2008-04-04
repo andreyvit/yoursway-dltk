@@ -23,4 +23,5 @@ public final class TemplateMessages extends NLS {
 	public static String Variable_Interpreter_Description;
 	
 	public static String Validation_SeveralCursorPositions;
+	public static String ScriptTemplateAccess_unableToLoadTemplateStore;
 }

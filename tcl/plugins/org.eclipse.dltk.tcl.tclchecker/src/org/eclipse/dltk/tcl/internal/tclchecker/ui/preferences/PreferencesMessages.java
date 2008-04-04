@@ -15,6 +15,7 @@ public class PreferencesMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.dltk.tcl.internal.tclchecker.ui.preferences.messages"; //$NON-NLS-1$
 
 	public static String TclChecker_path;
+	public static String TclChecker_pcxPath;
 
 	public static String TclChecker_path_configureTitle;
 

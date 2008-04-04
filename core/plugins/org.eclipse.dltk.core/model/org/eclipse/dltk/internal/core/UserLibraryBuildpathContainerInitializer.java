@@ -114,7 +114,7 @@ public class UserLibraryBuildpathContainerInitializer extends
 						.getUserLibraryManager()
 						.setUserLibrary(
 								name,
-								containerSuggestion.getBuildpathEntries(),
+								containerSuggestion.getBuildpathEntries(project),
 								containerSuggestion.getKind() == IBuildpathContainer.K_SYSTEM,
 								toolkit);
 			} else {

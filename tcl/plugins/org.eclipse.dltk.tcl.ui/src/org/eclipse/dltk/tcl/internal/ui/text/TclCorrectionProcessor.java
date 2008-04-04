@@ -99,13 +99,7 @@ public class TclCorrectionProcessor implements IQuickAssistProcessor {
 
 	public static boolean isFixable(String pkgName, IScriptProject scriptProject) {
 		IDLTKLanguageToolkit toolkit = null;
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(scriptProject);
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
+		toolkit = DLTKLanguageManager.getLanguageToolkit(scriptProject);
 		if (toolkit != null
 				&& toolkit.getNatureId().equals(TclNature.NATURE_ID)) {
 			IInterpreterInstall install = null;

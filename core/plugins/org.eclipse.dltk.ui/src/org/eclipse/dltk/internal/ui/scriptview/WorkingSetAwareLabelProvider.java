@@ -20,13 +20,13 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IWorkingSet;
 
-
 public class WorkingSetAwareLabelProvider extends ScriptExplorerLabelProvider {
 
-	private Map fImages= new HashMap();
-	
-	public WorkingSetAwareLabelProvider(long textFlags, int imageFlags, ScriptExplorerContentProvider cp, IPreferenceStore store) {
-		super(textFlags, imageFlags, cp, store);
+	private Map fImages = new HashMap();
+
+	public WorkingSetAwareLabelProvider(ScriptExplorerContentProvider cp,
+			IPreferenceStore store) {
+		super(cp, store);
 	}
 
 	/**
@@ -34,33 +34,34 @@ public class WorkingSetAwareLabelProvider extends ScriptExplorerLabelProvider {
 	 */
 	public String getText(Object element) {
 		if (element instanceof IWorkingSet) {
-			return decorateText(((IWorkingSet)element).getLabel(), element);
-		} 
+			return decorateText(((IWorkingSet) element).getLabel(), element);
+		}
 		return super.getText(element);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public Image getImage(Object element) {
 		if (element instanceof IWorkingSet) {
-			ImageDescriptor image= ((IWorkingSet)element).getImageDescriptor();
-			Image result= (Image)fImages.get(image);
+			ImageDescriptor image = ((IWorkingSet) element)
+					.getImageDescriptor();
+			Image result = (Image) fImages.get(image);
 			if (result == null) {
-				result= image.createImage();
+				result = image.createImage();
 				fImages.put(image, result);
 			}
 			return decorateImage(result, element);
 		}
 		return super.getImage(element);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public void dispose() {
-		for (Iterator iter= fImages.values().iterator(); iter.hasNext();) {
-			((Image)iter.next()).dispose();
+		for (Iterator iter = fImages.values().iterator(); iter.hasNext();) {
+			((Image) iter.next()).dispose();
 		}
 		super.dispose();
 	}

@@ -52,102 +52,121 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.IWorkbenchSite;
 import org.eclipse.ui.part.ISetSelectionTarget;
 
-
-public class AddLibraryToBuildpathAction extends Action implements ISelectionChangedListener {
+public class AddLibraryToBuildpathAction extends Action implements
+		ISelectionChangedListener {
 
 	private IScriptProject fSelectedProject;
 	private final IWorkbenchSite fSite;
 
 	public AddLibraryToBuildpathAction(IWorkbenchSite site) {
-		super(NewWizardMessages.NewSourceContainerWorkbookPage_ToolBar_AddLibCP_label, DLTKPluginImages.DESC_OBJS_LIBRARY);
+		super(
+				NewWizardMessages.NewSourceContainerWorkbookPage_ToolBar_AddLibCP_label,
+				DLTKPluginImages.DESC_OBJS_LIBRARY);
 		setToolTipText(NewWizardMessages.NewSourceContainerWorkbookPage_ToolBar_AddLibCP_tooltip);
-		fSite= site;
+		fSite = site;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void run() {
-		final IScriptProject project= fSelectedProject;
+		final IScriptProject project = fSelectedProject;
 
-		Shell shell= fSite.getShell();
+		Shell shell = fSite.getShell();
 		if (shell == null) {
-			shell= DLTKUIPlugin.getActiveWorkbenchShell();
+			shell = DLTKUIPlugin.getActiveWorkbenchShell();
 		}
 
 		IBuildpathEntry[] Buildpath;
 		try {
-			Buildpath= project.getRawBuildpath();
+			Buildpath = project.getRawBuildpath();
 		} catch (ModelException e1) {
 			showExceptionDialog(e1);
 			return;
 		}
 
-		BuildpathContainerWizard wizard= new BuildpathContainerWizard((IBuildpathEntry) null, project, Buildpath) {
+		BuildpathContainerWizard wizard = new BuildpathContainerWizard(
+				(IBuildpathEntry) null, project, Buildpath) {
 
 			/**
 			 * {@inheritDoc}
 			 */
 			public boolean performFinish() {
 				if (super.performFinish()) {
-					IWorkspaceRunnable op= new IWorkspaceRunnable() {
-						public void run(IProgressMonitor monitor) throws CoreException, OperationCanceledException {
+					IWorkspaceRunnable op = new IWorkspaceRunnable() {
+						public void run(IProgressMonitor monitor)
+								throws CoreException,
+								OperationCanceledException {
 							try {
 								finishPage(monitor);
 							} catch (InterruptedException e) {
-								throw new OperationCanceledException(e.getMessage());
+								throw new OperationCanceledException(e
+										.getMessage());
 							}
 						}
 					};
 					try {
-						ISchedulingRule rule= null;
+						ISchedulingRule rule = null;
 						Job job = Job.getJobManager().currentJob();
 						if (job != null)
-							rule= job.getRule();
-						IRunnableWithProgress runnable= null;
+							rule = job.getRule();
+						IRunnableWithProgress runnable = null;
 						if (rule != null)
-							runnable= new WorkbenchRunnableAdapter(op, rule, true);
+							runnable = new WorkbenchRunnableAdapter(op, rule,
+									true);
 						else
-							runnable= new WorkbenchRunnableAdapter(op, ResourcesPlugin.getWorkspace().getRoot());
+							runnable = new WorkbenchRunnableAdapter(op,
+									ResourcesPlugin.getWorkspace().getRoot());
 						getContainer().run(false, true, runnable);
 					} catch (InvocationTargetException e) {
 						DLTKUIPlugin.log(e);
 						return false;
-					} catch  (InterruptedException e) {
+					} catch (InterruptedException e) {
 						return false;
 					}
 					return true;
-				} 
+				}
 				return false;
 			}
 
-			private void finishPage(IProgressMonitor pm) throws InterruptedException {
-				IBuildpathEntry[] selected= getNewEntries();
+			private void finishPage(IProgressMonitor pm)
+					throws InterruptedException {
+				IBuildpathEntry[] selected = getNewEntries();
 				if (selected != null) {
 					try {
-						pm.beginTask(NewWizardMessages.BuildpathModifier_Monitor_AddToBuildpath, 4); 
+						pm
+								.beginTask(
+										NewWizardMessages.BuildpathModifier_Monitor_AddToBuildpath,
+										4);
 
-						List addedEntries= new ArrayList();
-						for (int i= 0; i < selected.length; i++) {		
-							addedEntries.add(new BPListElement(project, selected[i].getEntryKind(), selected[i].getPath(), null, selected[i].isExported() ));
+						List addedEntries = new ArrayList();
+						for (int i = 0; i < selected.length; i++) {
+							BPListElement listElement = BPListElement
+									.createFromExisting(selected[i], project);
+							addedEntries.add(listElement);
 						}
 
 						pm.worked(1);
 						if (pm.isCanceled())
 							throw new InterruptedException();
 
-						List existingEntries= BuildpathModifier.getExistingEntries(project);
-						BuildpathModifier.setNewEntry(existingEntries, addedEntries, project, new SubProgressMonitor(pm, 1));
+						List existingEntries = BuildpathModifier
+								.getExistingEntries(project);
+						BuildpathModifier.setNewEntry(existingEntries,
+								addedEntries, project, new SubProgressMonitor(
+										pm, 1));
 						if (pm.isCanceled())
 							throw new InterruptedException();
 
-						BuildpathModifier.commitBuildPath(existingEntries, project, new SubProgressMonitor(pm, 1));
+						BuildpathModifier.commitBuildPath(existingEntries,
+								project, new SubProgressMonitor(pm, 1));
 						if (pm.isCanceled())
 							throw new InterruptedException();
 
-						List result= new ArrayList(addedEntries.size());
-						for (int i= 0; i < addedEntries.size(); i++) {
-							result.add(new BuildPathContainer(project, selected[i]));
+						List result = new ArrayList(addedEntries.size());
+						for (int i = 0; i < addedEntries.size(); i++) {
+							result.add(new BuildPathContainer(project,
+									selected[i]));
 						}
 						selectAndReveal(new StructuredSelection(result));
 
@@ -162,9 +181,10 @@ public class AddLibraryToBuildpathAction extends Action implements ISelectionCha
 		};
 		wizard.setNeedsProgressMonitor(true);
 
-		WizardDialog dialog= new WizardDialog(shell, wizard);
-		PixelConverter converter= new PixelConverter(shell);
-		dialog.setMinimumPageSize(converter.convertWidthInCharsToPixels(70), converter.convertHeightInCharsToPixels(20));
+		WizardDialog dialog = new WizardDialog(shell, wizard);
+		PixelConverter converter = new PixelConverter(shell);
+		dialog.setMinimumPageSize(converter.convertWidthInCharsToPixels(70),
+				converter.convertHeightInCharsToPixels(20));
 		dialog.create();
 		dialog.open();
 	}
@@ -179,65 +199,71 @@ public class AddLibraryToBuildpathAction extends Action implements ISelectionCha
 	}
 
 	public boolean canHandle(IStructuredSelection selection) {
-		if (selection.size() == 1 && selection.getFirstElement() instanceof IScriptProject) {
-			fSelectedProject= (IScriptProject)selection.getFirstElement();
+		if (selection.size() == 1
+				&& selection.getFirstElement() instanceof IScriptProject) {
+			fSelectedProject = (IScriptProject) selection.getFirstElement();
 			return true;
 		}
 		return false;
 	}
 
 	private void showExceptionDialog(CoreException exception) {
-		showError(exception, fSite.getShell(), NewWizardMessages.AddLibraryToBuildpathAction_ErrorTitle, exception.getMessage());
+		showError(exception, fSite.getShell(),
+				NewWizardMessages.AddLibraryToBuildpathAction_ErrorTitle,
+				exception.getMessage());
 	}
 
-	private void showError(CoreException e, Shell shell, String title, String message) {
-		IStatus status= e.getStatus();
+	private void showError(CoreException e, Shell shell, String title,
+			String message) {
+		IStatus status = e.getStatus();
 		if (status != null) {
 			ErrorDialog.openError(shell, message, title, status);
 		} else {
 			MessageDialog.openError(shell, title, message);
 		}
-	}	
+	}
 
 	private void selectAndReveal(final ISelection selection) {
 		// validate the input
-		IWorkbenchPage page= fSite.getPage();
+		IWorkbenchPage page = fSite.getPage();
 		if (page == null)
 			return;
 
 		// get all the view and editor parts
-		List parts= new ArrayList();
-		IWorkbenchPartReference refs[]= page.getViewReferences();
-		for (int i= 0; i < refs.length; i++) {
-			IWorkbenchPart part= refs[i].getPart(false);
+		List parts = new ArrayList();
+		IWorkbenchPartReference refs[] = page.getViewReferences();
+		for (int i = 0; i < refs.length; i++) {
+			IWorkbenchPart part = refs[i].getPart(false);
 			if (part != null)
 				parts.add(part);
 		}
-		refs= page.getEditorReferences();
-		for (int i= 0; i < refs.length; i++) {
+		refs = page.getEditorReferences();
+		for (int i = 0; i < refs.length; i++) {
 			if (refs[i].getPart(false) != null)
 				parts.add(refs[i].getPart(false));
 		}
 
-		Iterator itr= parts.iterator();
+		Iterator itr = parts.iterator();
 		while (itr.hasNext()) {
-			IWorkbenchPart part= (IWorkbenchPart) itr.next();
+			IWorkbenchPart part = (IWorkbenchPart) itr.next();
 
 			// get the part's ISetSelectionTarget implementation
-			ISetSelectionTarget target= null;
+			ISetSelectionTarget target = null;
 			if (part instanceof ISetSelectionTarget)
-				target= (ISetSelectionTarget) part;
+				target = (ISetSelectionTarget) part;
 			else
-				target= (ISetSelectionTarget) part.getAdapter(ISetSelectionTarget.class);
+				target = (ISetSelectionTarget) part
+						.getAdapter(ISetSelectionTarget.class);
 
 			if (target != null) {
 				// select and reveal resource
-				final ISetSelectionTarget finalTarget= target;
-				page.getWorkbenchWindow().getShell().getDisplay().asyncExec(new Runnable() {
-					public void run() {
-						finalTarget.selectReveal(selection);
-					}
-				});
+				final ISetSelectionTarget finalTarget = target;
+				page.getWorkbenchWindow().getShell().getDisplay().asyncExec(
+						new Runnable() {
+							public void run() {
+								finalTarget.selectReveal(selection);
+							}
+						});
 			}
 		}
 	}

@@ -130,14 +130,7 @@ public class BasicSearchEngine {
 	public static IDLTKSearchScope createHierarchyScope(IType type,
 			WorkingCopyOwner owner) throws ModelException {
 		IDLTKLanguageToolkit toolkit;
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(type);
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-			return null;
-		}
+		toolkit = DLTKLanguageManager.getLanguageToolkit(type);
 		return new HierarchyScope(toolkit, type, owner);
 	}
 
@@ -172,14 +165,7 @@ public class BasicSearchEngine {
 			int includeMask) {
 		IDLTKLanguageToolkit toolkit = null;
 		if (elements.length > 0) {
-			try {
-				toolkit = DLTKLanguageManager.getLanguageToolkit(elements[0]);
-			} catch (CoreException e) {
-				if (DLTKCore.DEBUG) {
-					e.printStackTrace();
-				}
-				return null;
-			}
+			toolkit = DLTKLanguageManager.getLanguageToolkit(elements[0]);
 		}
 		if (toolkit == null) {
 			return null;
@@ -1377,11 +1363,7 @@ public class BasicSearchEngine {
 
 	public DLTKSearchParticipant getSearchParticipant(IModelElement element) {
 		IDLTKLanguageToolkit toolkit = null;
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(element);
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
+		toolkit = DLTKLanguageManager.getLanguageToolkit(element);
 		if (toolkit != null) {
 			DLTKSearchParticipant par = DLTKLanguageManager
 					.createSearchParticipant(toolkit.getNatureId());

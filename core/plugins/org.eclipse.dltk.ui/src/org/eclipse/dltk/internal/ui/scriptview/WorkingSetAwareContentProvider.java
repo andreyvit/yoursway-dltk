@@ -21,9 +21,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IScriptModel;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.ui.navigator.ScriptExplorerContentProvider;
 import org.eclipse.dltk.internal.ui.workingsets.OthersWorkingSetUpdater;
 import org.eclipse.dltk.internal.ui.workingsets.ScriptWorkingSetUpdater;
@@ -228,7 +228,9 @@ public abstract class WorkingSetAwareContentProvider extends ScriptExplorerConte
 		} else if (IWorkingSetManager.CHANGE_WORKING_SET_NAME_CHANGE.equals(property)) {
 			toRefresh.add(newValue);
 		}
-		postRefresh(toRefresh, true);
+		ArrayList runnables= new ArrayList();
+		postRefresh(toRefresh, true, runnables);
+		executeRunnables(runnables);
 	}
 	
 	private boolean isChildOf(Object element, List potentialParents) {

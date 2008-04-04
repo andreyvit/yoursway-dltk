@@ -2671,11 +2671,7 @@ public class DeltaProcessor {
 				}
 			case IResourceDelta.ADDED:
 				IDLTKLanguageToolkit toolkit = null;
-				try {
-					toolkit = DLTKLanguageManager.getLanguageToolkit(element);
-				} catch (CoreException e) {
-					e.printStackTrace();
-				}
+				toolkit = DLTKLanguageManager.getLanguageToolkit(element);
 				indexManager.addSource(file, file.getProject().getFullPath(),
 						this.getSourceElementParser(element), this
 								.getSourceRequestor(element), toolkit);

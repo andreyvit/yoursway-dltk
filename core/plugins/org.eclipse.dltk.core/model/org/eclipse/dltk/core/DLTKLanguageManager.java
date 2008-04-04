@@ -11,7 +11,6 @@ package org.eclipse.dltk.core;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
@@ -34,15 +33,12 @@ import org.eclipse.dltk.internal.core.InternalDLTKLanguageManager;
 
 public class DLTKLanguageManager {
 
-	public static IDLTKLanguageToolkit getLanguageToolkit(String natureId)
-			throws CoreException {
-
+	public static IDLTKLanguageToolkit getLanguageToolkit(String natureId) {
 		return (IDLTKLanguageToolkit) InternalDLTKLanguageManager
 				.getLanguageToolkitsManager().getObject(natureId);
 	}
 
-	public static IDLTKLanguageToolkit[] getLanguageToolkits()
-			throws CoreException {
+	public static IDLTKLanguageToolkit[] getLanguageToolkits() {
 
 		ElementInfo[] elementInfos = InternalDLTKLanguageManager
 				.getLanguageToolkitsManager().getElementInfos();
@@ -85,8 +81,7 @@ public class DLTKLanguageManager {
 				.findScriptNature(project) != null;
 	}
 
-	public static IDLTKLanguageToolkit getLanguageToolkit(IModelElement element)
-			throws CoreException {
+	public static IDLTKLanguageToolkit getLanguageToolkit(IModelElement element) {
 		IDLTKLanguageToolkit toolkit = (IDLTKLanguageToolkit) InternalDLTKLanguageManager
 				.getLanguageToolkitsManager().getObject(element);
 		if (toolkit == null && element != null
@@ -101,11 +96,7 @@ public class DLTKLanguageManager {
 		if (toolkit == null) {
 			IScriptProject scriptProject = DLTKCore.create(resource
 					.getProject());
-			try {
-				toolkit = getLanguageToolkit(scriptProject);
-			} catch (CoreException cxcn) {
-				cxcn.printStackTrace();
-			}
+			toolkit = getLanguageToolkit(scriptProject);
 		}
 		return toolkit;
 	}
@@ -114,14 +105,13 @@ public class DLTKLanguageManager {
 		return findAppropriateToolkitByObject(path);
 	}
 
-	public static ISourceElementParser getSourceElementParser(String nature)
-			throws CoreException {
+	public static ISourceElementParser getSourceElementParser(String nature) {
 		return (ISourceElementParser) InternalDLTKLanguageManager
 				.getSourceElementParsersManager().getObject(nature);
 	}
 
 	public static ISourceElementParser getSourceElementParser(
-			IModelElement element) throws CoreException {
+			IModelElement element) {
 		return (ISourceElementParser) InternalDLTKLanguageManager
 				.getSourceElementParsersManager().getObject(element);
 	}
@@ -137,8 +127,7 @@ public class DLTKLanguageManager {
 	// return (ISourceElementParser) sourceParsersManager.getObject(element);
 	// }
 
-	public static IProblemFactory getProblemFactory(String natureID)
-			throws CoreException {
+	public static IProblemFactory getProblemFactory(String natureID) {
 		IProblemFactory factory = (IProblemFactory) InternalDLTKLanguageManager
 				.getProblemFactoryManager().getObject(natureID);
 		if (factory != null) {
@@ -147,8 +136,7 @@ public class DLTKLanguageManager {
 		return new DefaultProblemFactory();
 	}
 
-	public static IProblemFactory getProblemFactory(IModelElement element)
-			throws CoreException {
+	public static IProblemFactory getProblemFactory(IModelElement element) {
 		IProblemFactory factory = (IProblemFactory) InternalDLTKLanguageManager
 				.getProblemFactoryManager().getObject(element);
 		if (factory != null) {
@@ -157,34 +145,20 @@ public class DLTKLanguageManager {
 		return new DefaultProblemFactory();
 	}
 
-	public static ICompletionEngine getCompletionEngine(String natureID)
-			throws CoreException {
+	public static ICompletionEngine getCompletionEngine(String natureID) {
 		return (ICompletionEngine) InternalDLTKLanguageManager
 				.getCompletionEngineManager().getObject(natureID);
 	}
 
-	public static ISelectionEngine getSelectionEngine(String natureID)
-			throws CoreException {
+	public static ISelectionEngine getSelectionEngine(String natureID) {
 		return (ISelectionEngine) InternalDLTKLanguageManager
 				.getSelectionEngineManager().getObject(natureID);
 	}
 
-	public static ISourceParser getSourceParser(String natureID)
-			throws CoreException {
+	public static ISourceParser getSourceParser(String natureID) {
 		return SourceParserManager.getInstance()
 				.getSourceParser(null, natureID);
 	}
-
-	// /**
-	// * Return source parser witch is one level lower from top. If this is only
-	// * one source parser for selected nature then return null.
-	// *
-	// */
-	// public static ISourceParser getSourceParserLower(String natureID)
-	// throws CoreException {
-	// return (ISourceParser)
-	// InternalDLTKLanguageManager.getSourceParsersManager().getObjectLower(natureID);
-	// }
 
 	public static DLTKSearchParticipant createSearchParticipant(String natureID) {
 		ISearchFactory factory = getSearchFactory(natureID);
@@ -263,8 +237,15 @@ public class DLTKLanguageManager {
 		return null;
 	}
 
-	public static IFileHierarchyResolver getFileHierarchyResolver(String natureId) {
+	public static IFileHierarchyResolver getFileHierarchyResolver(
+			String natureId) {
 		return (IFileHierarchyResolver) InternalDLTKLanguageManager
 				.getFileHierarchyResolversManager().getObject(natureId);
+	}
+
+	public static IInterpreterContainerExtension getInterpreterContainerExtensions(
+			IScriptProject project) {
+		return (IInterpreterContainerExtension) InternalDLTKLanguageManager
+				.getInterpreterContainerExtensionManager().getObject(project);
 	}
 }

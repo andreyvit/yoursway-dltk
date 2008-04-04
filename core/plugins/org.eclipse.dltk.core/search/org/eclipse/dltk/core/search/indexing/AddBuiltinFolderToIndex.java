@@ -12,7 +12,6 @@ package org.eclipse.dltk.core.search.indexing;
 import java.io.IOException;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -43,34 +42,21 @@ class AddBuiltinFolderToIndex extends IndexRequest {
 	}
 
 	public int hashCode() {
-		// if (this.containerPath != null)
-		// return this.containerPath.hashCode();
-		try {
-			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
-					.getLanguageToolkit(scriptProject);
-			return languageToolkit.getNatureId().hashCode();
-		} catch (CoreException e) {
-			return -1;
-		}
+		IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
+				.getLanguageToolkit(scriptProject);
+		return languageToolkit.getNatureId().hashCode();
 	}
 
 	public boolean equals(Object o) {
 		if (o instanceof AddBuiltinFolderToIndex) {
-			try {
-				IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
-						.getLanguageToolkit(scriptProject);
-				IDLTKLanguageToolkit languageToolki2 = DLTKLanguageManager
-						.getLanguageToolkit(((AddBuiltinFolderToIndex) o).scriptProject);
-				if (languageToolkit.getNatureId().equals(
-						languageToolki2.getNatureId())) {
-					return true;
-				}
-			} catch (CoreException e) {
-				return false;
+			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
+					.getLanguageToolkit(scriptProject);
+			IDLTKLanguageToolkit languageToolki2 = DLTKLanguageManager
+					.getLanguageToolkit(((AddBuiltinFolderToIndex) o).scriptProject);
+			if (languageToolkit.getNatureId().equals(
+					languageToolki2.getNatureId())) {
+				return true;
 			}
-			// if (this.containerPath != null)
-			// return this.containerPath.equals(((AddBuiltinFolderToIndex)
-			// o).containerPath);
 		}
 		return false;
 	}
@@ -155,13 +141,7 @@ class AddBuiltinFolderToIndex extends IndexRequest {
 			IPath container, boolean operation, SearchParticipant participant, Index index) {
 		
 		IDLTKLanguageToolkit toolkit = null;
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(project);
-		} catch (CoreException e) {
-			if( DLTKCore.DEBUG ) {
-				e.printStackTrace();
-			}
-		}
+		toolkit = DLTKLanguageManager.getLanguageToolkit(project);
 		IBuiltinModuleProvider provider = BuiltinProjectFragment.getBuiltinProvider(project);
 		if( provider == null ) {
 			return;

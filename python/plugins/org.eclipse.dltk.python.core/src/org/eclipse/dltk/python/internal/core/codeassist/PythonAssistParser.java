@@ -13,13 +13,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.parser.ISourceParser;
 import org.eclipse.dltk.codeassist.IAssistParser;
 import org.eclipse.dltk.compiler.env.ISourceModule;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.python.core.PythonNature;
 
@@ -31,14 +29,8 @@ public abstract class PythonAssistParser implements IAssistParser {
 	protected ASTNode assistNodeParent = null;
 
 	protected PythonAssistParser() {
-		try {
-			parser = DLTKLanguageManager
-					.getSourceParser(PythonNature.NATURE_ID);
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
+		parser = DLTKLanguageManager
+				.getSourceParser(PythonNature.NATURE_ID);
 	}
 
 	public ASTNode getAssistNodeParent() {

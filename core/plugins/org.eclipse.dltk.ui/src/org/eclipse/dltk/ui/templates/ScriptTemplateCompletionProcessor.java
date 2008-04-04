@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
@@ -147,12 +146,8 @@ public abstract class ScriptTemplateCompletionProcessor extends
 		if (editor instanceof IWorkbenchPartOrientation)
 			orientation = ((IWorkbenchPartOrientation) editor).getOrientation();
 		IDLTKLanguageToolkit toolkit = null;
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(getContext()
-					.getLangaugeNatureID());
-		} catch (CoreException cxcn) {
-			cxcn.printStackTrace();
-		}
+		toolkit = DLTKLanguageManager.getLanguageToolkit(getContext()
+				.getLangaugeNatureID());
 		if ((toolkit == null) && (editor instanceof ScriptEditor))
 			toolkit = ((ScriptEditor) editor).getLanguageToolkit();
 		return new TemplateInformationControlCreator(orientation, toolkit);

@@ -7,10 +7,9 @@ import org.eclipse.jface.text.templates.TemplateContextType;
 
 public class PythonTemplateContext extends ScriptTemplateContext {
 
-	public PythonTemplateContext(TemplateContextType type,
+	protected PythonTemplateContext(TemplateContextType type,
 			IDocument document, int completionOffset, int completionLength,
 			ISourceModule sourceModule) {
 		super(type, document, completionOffset, completionLength, sourceModule);
 	}
-	
 }

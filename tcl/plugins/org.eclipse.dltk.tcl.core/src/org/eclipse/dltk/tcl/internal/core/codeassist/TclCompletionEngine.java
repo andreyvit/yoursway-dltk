@@ -1015,14 +1015,8 @@ public class TclCompletionEngine extends ScriptCompletionEngine {
 			}
 		};
 		IDLTKLanguageToolkit toolkit = null;
-		try {
-			toolkit = DLTKLanguageManager
-					.getLanguageToolkit(this.scriptProject);
-		} catch (CoreException e1) {
-			if (DLTKCore.DEBUG) {
-				e1.printStackTrace();
-			}
-		}
+		toolkit = DLTKLanguageManager
+				.getLanguageToolkit(this.scriptProject);
 		IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(toolkit);
 		if (token.length >= 1 && token[0] == '$') {
 			char[] token2 = new char[token.length - 1];

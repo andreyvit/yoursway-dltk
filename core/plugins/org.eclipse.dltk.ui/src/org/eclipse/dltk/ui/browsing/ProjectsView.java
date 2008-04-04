@@ -13,7 +13,6 @@ package org.eclipse.dltk.ui.browsing;
 import java.util.Iterator;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
@@ -157,16 +156,13 @@ public class ProjectsView extends ScriptBrowsingPart {
 			return false;
 		}
 		IDLTKLanguageToolkit languageToolkit;
-		try {
-			languageToolkit = DLTKLanguageManager
-					.getLanguageToolkit((IModelElement) element);
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-			return false;
+		languageToolkit = DLTKLanguageManager
+				.getLanguageToolkit((IModelElement) element);
+		if (languageToolkit != null) {
+			return languageToolkit.getNatureId().equals(
+					getToolkit().getNatureId());
 		}
-		return languageToolkit.getNatureId().equals(getToolkit().getNatureId());
+		return false;
 	}
 
 	/**

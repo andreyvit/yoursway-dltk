@@ -86,28 +86,27 @@ public class PythonFileHyperlink implements IHyperlink {
 				lineNumber--;
 			}
 			Object sourceElement = getSourceModule(fileName);
-			if (sourceElement != null) {				
-				IEditorInput editorInput = getEditorInput(sourceElement);
-				if (editorInput != null) {
-					String editorId = getEditorId(editorInput, sourceElement);
-					if (editorId != null) {
-						IEditorPart editorPart = DLTKDebugUIPlugin.getActivePage().openEditor(editorInput, editorId);
-						if (editorPart instanceof ITextEditor && lineNumber >= 0) {
-							ITextEditor textEditor = (ITextEditor)editorPart;
-							IDocumentProvider provider = textEditor.getDocumentProvider();
-							provider.connect(editorInput);
-							IDocument document = provider.getDocument(editorInput);
-							try {
-								IRegion line = document.getLineInformation(lineNumber);
-								textEditor.selectAndReveal(line.getOffset(), line.getLength());
-							} catch (BadLocationException e) {
-                                MessageDialog.openInformation(DLTKDebugUIPlugin.getActiveWorkbenchShell(), ConsoleMessages.PythonFileHyperlink_0, MessageFormat.format("{0}{1}{2}", new String[] {(lineNumber+1)+"", ConsoleMessages.PythonFileHyperlink_1, fileName}));  //$NON-NLS-2$ //$NON-NLS-1$
-							}
-							provider.disconnect(editorInput);
-						}
-						return;
+			if (sourceElement != null) {
+				IEditorPart part = EditorUtility.openInEditor(sourceElement);
+				IEditorPart editorPart = EditorUtility
+						.openInEditor(sourceElement);
+				if (editorPart instanceof ITextEditor && lineNumber >= 0) {
+					ITextEditor textEditor = (ITextEditor) editorPart;
+					IDocumentProvider provider = textEditor
+							.getDocumentProvider();
+					IEditorInput input = part.getEditorInput();
+					provider.connect(input);
+					IDocument document = provider.getDocument(input);
+					try {
+						IRegion line = document.getLineInformation(lineNumber);
+						textEditor.selectAndReveal(line.getOffset(), line
+								.getLength());
+					} catch (BadLocationException e) {
+
 					}
+					provider.disconnect(input);
 				}
+				return;
 			}
 			// did not find source
 			MessageDialog.openInformation(DLTKDebugUIPlugin.getActiveWorkbenchShell(), ConsoleMessages.PythonFileHyperlink_Information_1, MessageFormat.format(ConsoleMessages.PythonFileHyperlink_Source_not_found_for__0__2, new String[] {fileName}));  

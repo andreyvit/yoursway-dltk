@@ -9,116 +9,44 @@
  *******************************************************************************/
 package org.eclipse.dltk.javascript.internal.ui.text.completion;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.dltk.core.CompletionContext;
-import org.eclipse.dltk.core.IScriptProject;
-import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.javascript.core.JavaScriptNature;
 import org.eclipse.dltk.javascript.internal.ui.JavaScriptUI;
 import org.eclipse.dltk.ui.text.completion.CompletionProposalLabelProvider;
-import org.eclipse.dltk.ui.text.completion.ContentAssistInvocationContext;
 import org.eclipse.dltk.ui.text.completion.ScriptCompletionProcessor;
-import org.eclipse.dltk.ui.text.completion.ScriptContentAssistInvocationContext;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.TextPresentation;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
-import org.eclipse.jface.text.contentassist.IContextInformation;
-import org.eclipse.jface.text.contentassist.IContextInformationPresenter;
-import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.eclipse.ui.IEditorPart;
 
+/**
+ * JavaScript completion processor
+ */
 public class JavaScriptCompletionProcessor extends ScriptCompletionProcessor {
+	
 	public JavaScriptCompletionProcessor(IEditorPart editor,
 			ContentAssistant assistant, String partition) {
 		super(editor, assistant, partition);
 	}
 
-	public JavaScriptCompletionProcessor(IEditorPart editor,
-			ContentAssistant contentAssistant, String defaultContentType,
-			IScriptProject scriptProject, IResource resource) {
-		super(editor, contentAssistant, defaultContentType);
-		this.project=scriptProject;
-		this.resource=resource;
+	/*
+	 * @see org.eclipse.dltk.ui.text.completion.ScriptCompletionProcessor#getNatureId()
+	 */
+	protected String getNatureId() {
+		return JavaScriptNature.NATURE_ID;
 	}
 
-	private String fakeModuleContext;
-	private IScriptProject project;
-	private IResource resource;
+	/*
+	 * @see org.eclipse.dltk.ui.text.completion.ScriptCompletionProcessor#getProposalLabelProvider()
+	 */
+	protected CompletionProposalLabelProvider getProposalLabelProvider() {
+		return new JavaScriptCompletionProposalLabelProvider();
+	}
 
+	/*
+	 * @see org.eclipse.dltk.ui.text.completion.ContentAssistProcessor#getPreferenceStore()
+	 */
 	protected IPreferenceStore getPreferenceStore() {
 		return JavaScriptUI.getDefault().getPreferenceStore();
 	}
 
-	protected ContentAssistInvocationContext createContext(ITextViewer viewer,
-			int offset) {
-		if (this.resource==null)
-		{
-		return new ScriptContentAssistInvocationContext(viewer, offset,
-				fEditor, JavaScriptNature.NATURE_ID) {
-
-			public CompletionContext getCoreContext() {
-				return new CompletionContext();
-			}
-
-			protected CompletionProposalLabelProvider createLabelProvider() {
-				return new JavaScriptCompletionProposalLabelProvider();
-			}
-		};
-		}
-		else{
-			return new ScriptContentAssistInvocationContext(viewer, offset,
-					fEditor, JavaScriptNature.NATURE_ID) {
-
-				public CompletionContext getCoreContext() {
-					return new CompletionContext();
-				}
-
-				public IScriptProject getProject() {
-					return project;
-				}
-
-				public ISourceModule getSourceModule() {
-					return new VirialModule(project,resource,fakeModuleContext);
-				}
-
-				protected CompletionProposalLabelProvider createLabelProvider() {
-					return new JavaScriptCompletionProposalLabelProvider();
-				}
-			};			
-		}
-	}
-
-	protected static class Validator implements IContextInformationValidator,
-			IContextInformationPresenter {
-
-		private int initialOffset;
-
-		public boolean isContextInformationValid(int offset) {
-			return Math.abs(offset - initialOffset) < 5;
-		}
-
-		public void install(IContextInformation info, ITextViewer viewer,
-				int offset) {
-			initialOffset = offset;
-		}
-
-		public boolean updatePresentation(int documentPosition,
-				TextPresentation presentation) {
-			return false;
-		}
-	}
-
-	private IContextInformationValidator validator;
-
-	public IContextInformationValidator getContextInformationValidator() {
-		if (validator == null) {
-			validator = new Validator();
-		}
-		return validator;
-	}
-
-	public void setFakeModuleContext(String string) {
-		this.fakeModuleContext = string;
-	}
+	
 }

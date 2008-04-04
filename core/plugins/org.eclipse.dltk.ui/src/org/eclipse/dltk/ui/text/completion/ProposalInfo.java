@@ -12,7 +12,6 @@ package org.eclipse.dltk.ui.text.completion;
 import java.io.IOException;
 import java.io.Reader;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IMember;
@@ -136,12 +135,8 @@ public class ProposalInfo {
 	private Reader getHTMLContentReader(IMember member, IProgressMonitor monitor)
 			throws ModelException {
 		String nature = null;
-		try {
-			nature = DLTKLanguageManager.getLanguageToolkit(member)
-					.getNatureId();
-		} catch (CoreException e) {
-			return null;
-		}
+		nature = DLTKLanguageManager.getLanguageToolkit(member)
+				.getNatureId();
 		if (nature == null)
 			return null;
 		return ScriptDocumentationAccess.getHTMLContentReader(nature, member,

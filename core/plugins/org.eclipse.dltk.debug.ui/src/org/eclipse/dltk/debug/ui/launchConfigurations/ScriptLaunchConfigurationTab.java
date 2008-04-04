@@ -3,13 +3,10 @@ package org.eclipse.dltk.debug.ui.launchConfigurations;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
-
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
@@ -28,11 +25,9 @@ import org.eclipse.dltk.internal.ui.DLTKUIStatus;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.ui.DLTKUILanguageManager;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
-
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.window.Window;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -46,7 +41,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
-
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -116,7 +110,7 @@ public abstract class ScriptLaunchConfigurationTab extends
 		addBreakOnFirstLineButton(group);
 		addDbgpLoggingButton(group);
 	}
-	
+
 	/*
 	 * @see org.eclipse.debug.ui.ILaunchConfigurationTab#initializeFrom(org.eclipse.debug.core.ILaunchConfiguration)
 	 */
@@ -149,9 +143,10 @@ public abstract class ScriptLaunchConfigurationTab extends
 				ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, project);
 
 		if (breakOnFirstLine != null)
-			config.setAttribute(
-					ScriptLaunchConfigurationConstants.ENABLE_BREAK_ON_FIRST_LINE,
-					breakOnFirstLine.getSelection());
+			config
+					.setAttribute(
+							ScriptLaunchConfigurationConstants.ENABLE_BREAK_ON_FIRST_LINE,
+							breakOnFirstLine.getSelection());
 		if (enableLogging != null)
 			config.setAttribute(
 					ScriptLaunchConfigurationConstants.ENABLE_DBGP_LOGGING,
@@ -227,10 +222,13 @@ public abstract class ScriptLaunchConfigurationTab extends
 	/**
 	 * Add the 'break on first line' option to a group composite.
 	 * 
-	 * <p>Sub-classes are responsible for adding this option to a group 
-	 * composite of their choosing.</p>
+	 * <p>
+	 * Sub-classes are responsible for adding this option to a group composite
+	 * of their choosing.
+	 * </p>
 	 * 
-	 * @param group group composite
+	 * @param group
+	 *            group composite
 	 */
 	private void addBreakOnFirstLineButton(Composite group) {
 		breakOnFirstLine = createCheckButton(group,
@@ -242,10 +240,13 @@ public abstract class ScriptLaunchConfigurationTab extends
 	/**
 	 * Add the 'Dbgp logging enabled' option to a group composite.
 	 * 
-	 * <p>Sub-classes are responsible for adding this option to a group 
-	 * composite of their choosing.</p>
+	 * <p>
+	 * Sub-classes are responsible for adding this option to a group composite
+	 * of their choosing.
+	 * </p>
 	 * 
-	 * @param group group composite
+	 * @param group
+	 *            group composite
 	 */
 	private void addDbgpLoggingButton(Composite group) {
 		enableLogging = createCheckButton(group,
@@ -329,14 +330,11 @@ public abstract class ScriptLaunchConfigurationTab extends
 	}
 
 	protected String getLanguageName() {
-		try {
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-					.getLanguageToolkit(getNatureID());
+		IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+				.getLanguageToolkit(getNatureID());
+		if (toolkit != null) {
 			return toolkit.getLanguageName();
-		} catch (CoreException e) {
-			// this can never occur
 		}
-
 		return null;
 	}
 
@@ -484,7 +482,8 @@ public abstract class ScriptLaunchConfigurationTab extends
 				getProject());
 
 		if (breakOnFirstLine != null)
-			breakOnFirstLine.setSelection(breakOnFirstLinePrefEnabled(delegate));
+			breakOnFirstLine
+					.setSelection(breakOnFirstLinePrefEnabled(delegate));
 		if (enableLogging != null)
 			enableLogging.setSelection(dbpgLoggingPrefEnabled(delegate));
 	}
@@ -532,14 +531,10 @@ public abstract class ScriptLaunchConfigurationTab extends
 			return false;
 		}
 
-		try {
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-					.getLanguageToolkit(project);
-			if ((toolkit != null) && isValidToolkit(toolkit)) {
-				return true;
-			}
-		} catch (CoreException e) {
-			// this can never happen
+		IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+				.getLanguageToolkit(project);
+		if ((toolkit != null) && isValidToolkit(toolkit)) {
+			return true;
 		}
 
 		return false;

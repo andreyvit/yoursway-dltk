@@ -22,6 +22,7 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.internal.ui.dnd.DLTKViewerDragAdapter;
+import org.eclipse.dltk.internal.ui.dnd.EditorInputTransferDragAdapter;
 import org.eclipse.dltk.internal.ui.dnd.ResourceTransferDragAdapter;
 import org.eclipse.dltk.internal.ui.scriptview.SelectionTransferDragAdapter;
 import org.eclipse.dltk.internal.ui.search.DLTKSearchResult.MatchFilterEvent;
@@ -36,7 +37,6 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.util.TransferDragSourceListener;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -298,12 +298,11 @@ public class DLTKSearchResultPage extends AbstractTextSearchViewPage implements 
 		Transfer[] transfers= new Transfer[] { LocalSelectionTransfer.getInstance(), ResourceTransfer.getInstance() };
 		int ops= DND.DROP_COPY | DND.DROP_LINK;
 		
-		TransferDragSourceListener[] dragListeners= new TransferDragSourceListener[] {
-			new SelectionTransferDragAdapter(viewer),
-			new ResourceTransferDragAdapter(viewer)
-		};
-		
-		viewer.addDragSupport(ops, transfers, new DLTKViewerDragAdapter(viewer, dragListeners));
+		DLTKViewerDragAdapter dragAdapter= new DLTKViewerDragAdapter(viewer);
+		dragAdapter.addDragSourceListener(new SelectionTransferDragAdapter(viewer));
+		dragAdapter.addDragSourceListener(new EditorInputTransferDragAdapter(viewer));
+		dragAdapter.addDragSourceListener(new ResourceTransferDragAdapter(viewer));
+		viewer.addDragSupport(ops, transfers, dragAdapter);
 	}	
 
 	protected void configureTableViewer(TableViewer viewer) {

@@ -198,10 +198,22 @@ public class TclChecker {
 		monitor.beginTask("Executing TclChecker...",
 				sourceModules.size() * 2 + 1);
 
+		Map map = DebugPlugin.getDefault().getLaunchManager()
+				.getNativeEnvironmentCasePreserved();
+
+		TclCheckerHelper.passEnvironment(map, store);
+		String[] env = new String[map.size()];
+		int i = 0;
+		for (Iterator iterator = map.keySet().iterator(); iterator.hasNext();) {
+			String key = (String) iterator.next();
+			String value = (String) map.get(key);
+			env[i] = key + "=" + value;
+			++i;
+		}
 		try {
 			monitor.subTask("Launching TclChecker...");
 			process = DebugPlugin.exec((String[]) cmdLine
-					.toArray(new String[cmdLine.size()]), null);
+					.toArray(new String[cmdLine.size()]), null, env);
 
 			monitor.worked(1);
 

@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.ui.workbench.texteditor
 Eclipse-LazyStart: true
-Export-Package: org.eclipse.dltk.validators
+Export-Package: org.eclipse.dltk.validators.ui
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.4

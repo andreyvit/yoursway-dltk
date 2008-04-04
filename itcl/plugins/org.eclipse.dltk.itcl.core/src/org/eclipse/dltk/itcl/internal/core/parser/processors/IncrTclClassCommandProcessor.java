@@ -88,8 +88,8 @@ public class IncrTclClassCommandProcessor extends AbstractTclCommandProcessor {
 		}
 		Expression procCode = statement.getAt(3);
 
-		ExtendedTclMethodDeclaration method = new ExtendedTclMethodDeclaration(statement
-				.sourceStart(), statement.sourceEnd());
+		ExtendedTclMethodDeclaration method = new ExtendedTclMethodDeclaration(
+				statement.sourceStart(), statement.sourceEnd());
 		method.setName("destructor");
 		Expression o = statement.getAt(0);
 		method.setNameStart(o.sourceStart());
@@ -278,11 +278,17 @@ public class IncrTclClassCommandProcessor extends AbstractTclCommandProcessor {
 		method.setDeclaringType(type);
 		IncrTclUtils.parseBlockAdd(parser, procCode, method);
 		type.getMethodList().add(method);
-	
+
 		this.addToParent(type, method);
 	}
 
 	private void handleInherit(TclStatement statement, TypeDeclaration type,
 			ITclParser parser) {
+		for (int i = 1; i < statement.getCount(); i++) {
+			Expression expr = statement.getAt(i);
+			if (expr instanceof SimpleReference) {
+				type.addSuperClass(expr);
+			}
+		}
 	}
 }

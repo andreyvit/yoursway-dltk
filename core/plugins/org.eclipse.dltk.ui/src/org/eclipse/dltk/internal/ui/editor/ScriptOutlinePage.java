@@ -20,7 +20,6 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.ElementChangedEvent;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IElementChangedListener;
@@ -33,12 +32,11 @@ import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceRange;
 import org.eclipse.dltk.core.ISourceReference;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.internal.ui.actions.AbstractToggleLinkingAction;
 import org.eclipse.dltk.internal.ui.actions.CompositeActionGroup;
-import org.eclipse.dltk.internal.ui.dnd.DLTKViewerDragAdapter;
-import org.eclipse.dltk.internal.ui.dnd.DelegatingDropAdapter;
-import org.eclipse.dltk.internal.ui.scriptview.SelectionTransferDragAdapter;
-import org.eclipse.dltk.internal.ui.scriptview.SelectionTransferDropAdapter;
+import org.eclipse.dltk.internal.ui.dnd.DLTKViewerDragSupport;
+import org.eclipse.dltk.internal.ui.dnd.DLTKViewerDropSupport;
 import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.IContextMenuConstants;
@@ -48,9 +46,9 @@ import org.eclipse.dltk.ui.PreferenceConstants;
 import org.eclipse.dltk.ui.ScriptElementLabels;
 import org.eclipse.dltk.ui.ProblemsLabelDecorator.ProblemsLabelChangedEvent;
 import org.eclipse.dltk.ui.actions.CustomFiltersActionGroup;
-import org.eclipse.dltk.ui.actions.SearchActionGroup;
 import org.eclipse.dltk.ui.actions.MemberFilterActionGroup;
 import org.eclipse.dltk.ui.actions.OpenViewActionGroup;
+import org.eclipse.dltk.ui.actions.SearchActionGroup;
 import org.eclipse.dltk.ui.viewsupport.AppearanceAwareLabelProvider;
 import org.eclipse.dltk.ui.viewsupport.DecoratingModelLabelProvider;
 import org.eclipse.dltk.ui.viewsupport.SourcePositionSorter;
@@ -66,8 +64,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.jface.util.TransferDragSourceListener;
-import org.eclipse.jface.util.TransferDropTargetListener;
+import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelDecorator;
 import org.eclipse.jface.viewers.IPostSelectionProvider;
@@ -84,8 +81,6 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
-import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -109,7 +104,6 @@ import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.IUpdate;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
-import org.eclipse.ui.views.navigator.LocalSelectionTransfer;
 
 /**
  * The content outline page of the Java editor. The viewer implements a
@@ -128,7 +122,7 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 	 */
 	protected class ChildrenProvider implements ITreeContentProvider {
 
-//		private Object[] NO_CLASS = new Object[] { new NoClassElement() };
+		// private Object[] NO_CLASS = new Object[] { new NoClassElement() };
 		private ElementChangedListener fListener;
 
 		public void dispose() {
@@ -147,13 +141,15 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 				}
 			}
 
-			if (!initializers)
+			if (!initializers) {
 				return children;
+			}
 
 			Vector v = new Vector();
 			for (int i = 0; i < children.length; i++) {
-				if (matches(children[i]))
+				if (matches(children[i])) {
 					continue;
+				}
 				v.addElement(children[i]);
 			}
 
@@ -172,11 +168,12 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 					// don't log NotExist exceptions as this is a valid case
 					// since we might have been posted and the element
 					// removed in the meantime.
-					if (DLTKCore.DEBUG || !x.isDoesNotExist())
+					if (DLTKCore.DEBUG || !x.isDoesNotExist()) {
 						DLTKUIPlugin.log(x);
+					}
 				}
 			}
-			return NO_CHILDREN;
+			return ScriptOutlinePage.NO_CHILDREN;
 		}
 
 		public Object[] getElements(Object parent) {
@@ -202,8 +199,9 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 					// don't log NotExist exceptions as this is a valid case
 					// since we might have been posted and the element
 					// removed in the meantime.
-					if (DLTKUIPlugin.isDebug() || !x.isDoesNotExist())
+					if (DLTKUIPlugin.isDebug() || !x.isDoesNotExist()) {
 						DLTKUIPlugin.log(x);
+					}
 				}
 			}
 			return false;
@@ -246,8 +244,9 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 
 		public void elementChanged(final ElementChangedEvent e) {
 
-			if (getControl() == null)
+			if (getControl() == null) {
 				return;
+			}
 
 			Display d = getControl().getDisplay();
 			if (d != null) {
@@ -269,8 +268,9 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 		protected IModelElementDelta findElement(IModelElement unit,
 				IModelElementDelta delta) {
 
-			if (delta == null || unit == null)
+			if (delta == null || unit == null) {
 				return null;
+			}
 
 			IModelElement element = delta.getElement();
 
@@ -281,17 +281,20 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 				return null;
 			}
 
-			if (element.getElementType() > IModelElement.SOURCE_MODULE)
+			if (element.getElementType() > IModelElement.SOURCE_MODULE) {
 				return null;
+			}
 
 			IModelElementDelta[] children = delta.getAffectedChildren();
-			if (children == null || children.length == 0)
+			if (children == null || children.length == 0) {
 				return null;
+			}
 
 			for (int i = 0; i < children.length; i++) {
 				IModelElementDelta d = findElement(unit, children[i]);
-				if (d != null)
+				if (d != null) {
 					return d;
+				}
 			}
 
 			return null;
@@ -332,6 +335,8 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 		}
 	}
 
+	private DLTKViewerDropSupport fDropSupport;
+
 	/**
 	 * The tree viewer used for displaying the outline.
 	 * 
@@ -350,7 +355,7 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 
 		public ScriptOutlineViewer(Tree tree) {
 			super(tree);
-			setAutoExpandLevel(ALL_LEVELS);
+			setAutoExpandLevel(AbstractTreeViewer.ALL_LEVELS);
 			setUseHashlookup(true);
 		}
 
@@ -360,8 +365,9 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 			ViewerFilter[] filters = getFilters();
 			for (int i = 0; i < filters.length; i++) {
 				result = filters[i].filter(this, parent, result);
-				if (result.length == 0)
+				if (result.length == 0) {
 					return true;
+				}
 			}
 
 			return false;
@@ -369,11 +375,13 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 
 		protected ISourceRange getSourceRange(IModelElement element)
 				throws ModelException {
-			if (element instanceof ISourceReference)
+			if (element instanceof ISourceReference) {
 				return ((ISourceReference) element).getSourceRange();
+			}
 			if (element instanceof IMember
-			/* && !(element instanceof IInitializer) */)
+			/* && !(element instanceof IInitializer) */) {
 				return ((IMember) element).getNameRange();
+			}
 			return null;
 		}
 
@@ -474,11 +482,13 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 			if (getComparator() == null) {
 
 				Widget w = findItem(fInput);
-				if (w != null && !w.isDisposed())
+				if (w != null && !w.isDisposed()) {
 					update(w, delta);
-				if (fForceFireSelectionChanged)
+				}
+				if (fForceFireSelectionChanged) {
 					fireSelectionChanged(new SelectionChangedEvent(getSite()
 							.getSelectionProvider(), this.getSelection()));
+				}
 				if (fReorderedMembers) {
 					refresh(false);
 					fReorderedMembers = false;
@@ -496,19 +506,21 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 			Item[] c = getChildren(item);
 			if (c != null && c.length > 0) {
 
-				if (getExpanded(item))
+				if (getExpanded(item)) {
 					fReusedExpandedItem = item;
+				}
 
 				for (int k = 0; k < c.length; k++) {
-					if (c[k].getData() != null)
+					if (c[k].getData() != null) {
 						disassociate(c[k]);
+					}
 					c[k].dispose();
 				}
 			}
 
 			updateItem(item, element);
 			updatePlus(item, element);
-			internalExpandToLevel(item, ALL_LEVELS);
+			internalExpandToLevel(item, AbstractTreeViewer.ALL_LEVELS);
 
 			fReusedExpandedItem = null;
 			fForceFireSelectionChanged = true;
@@ -535,9 +547,11 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 
 				// find tree item with affected element
 				int j;
-				for (j = 0; j < children.length; j++)
-					if (affectedElement.equals(children[j].getData()))
+				for (j = 0; j < children.length; j++) {
+					if (affectedElement.equals(children[j].getData())) {
 						break;
+					}
+				}
 
 				if (j == children.length) {
 					// remove from collapsed parent
@@ -569,23 +583,27 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 							|| mustUpdateParent(affectedDelta, affectedElement);
 
 					if ((change & IModelElementDelta.F_MODIFIERS) != 0) {
-						if (filtered(parent, affectedElement))
+						if (filtered(parent, affectedElement)) {
 							deletions.addElement(item);
-						else
+						} else {
 							updateItem(item, affectedElement);
+						}
 					}
 
-					if ((change & IModelElementDelta.F_CONTENT) != 0)
+					if ((change & IModelElementDelta.F_CONTENT) != 0) {
 						updateItem(item, affectedElement);
+					}
 
 					// if ((change & IModelElementDelta.F_CATEGORIES) != 0)
 					// updateItem(item, affectedElement);
 
-					if ((change & IModelElementDelta.F_CHILDREN) != 0)
+					if ((change & IModelElementDelta.F_CHILDREN) != 0) {
 						update(item, affectedDelta);
+					}
 
-					if ((change & IModelElementDelta.F_REORDER) != 0)
+					if ((change & IModelElementDelta.F_REORDER) != 0) {
 						fReorderedMembers = true;
+					}
 				}
 			}
 
@@ -595,9 +613,10 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 				IModelElementDelta[] tmp = new IModelElementDelta[add.length
 						+ additions.size()];
 				System.arraycopy(add, 0, tmp, 0, add.length);
-				for (int i = 0; i < additions.size(); i++)
+				for (int i = 0; i < additions.size(); i++) {
 					tmp[i + add.length] = (IModelElementDelta) additions
 							.elementAt(i);
+				}
 				add = tmp;
 			}
 
@@ -607,8 +626,9 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 				try {
 
 					IModelElement e = add[i].getElement();
-					if (filtered(parent, e))
+					if (filtered(parent, e)) {
 						continue go2;
+					}
 
 					doUpdateParent = doUpdateParent
 							|| mustUpdateParent(add[i], e);
@@ -618,8 +638,9 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 					int nameOffset = Integer.MAX_VALUE;
 					if (e instanceof IField) {
 						ISourceRange nameRange = ((IField) e).getNameRange();
-						if (nameRange != null)
+						if (nameRange != null) {
 							nameOffset = nameRange.getOffset();
+						}
 					}
 
 					Item last = null;
@@ -660,8 +681,9 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 									ISourceRange nameRange = ((IField) r)
 											.getNameRange();
 									if (nameRange != null) {
-										if (nameRange.getOffset() > nameOffset)
+										if (nameRange.getOffset() > nameOffset) {
 											multiFieldOrderBefore = true;
+										}
 									}
 								}
 							}
@@ -720,10 +742,12 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 				item.dispose();
 			}
 
-			if (doUpdateParent)
+			if (doUpdateParent) {
 				updateItem(w, delta.getElement());
-			if (!doUpdateParent && doUpdateParentsPlus && w instanceof Item)
+			}
+			if (!doUpdateParent && doUpdateParentsPlus && w instanceof Item) {
 				updatePlus((Item) w, delta.getElement());
+			}
 		}
 
 	}
@@ -757,17 +781,21 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 			BusyIndicator.showWhile(fOutlineViewer.getControl().getDisplay(),
 					new Runnable() {
 						public void run() {
-							if (on)
+							if (on) {
 								fOutlineViewer.setComparator(fComparator);
-							else
+								fDropSupport.setFeedbackEnabled(false);
+							} else {
 								fOutlineViewer
 										.setComparator(fSourcePositonComparator);
+								fDropSupport.setFeedbackEnabled(true);
+							}
 						}
 					});
 
-			if (store)
+			if (store) {
 				DLTKUIPlugin.getDefault().getPreferenceStore().setValue(
 						"LexicalSortingAction.isChecked", on); //$NON-NLS-1$
+			}
 		}
 	}
 
@@ -776,8 +804,9 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 		 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(Class)
 		 */
 		public Object getAdapter(Class clas) {
-			if (clas == IWorkbenchAdapter.class)
+			if (clas == IWorkbenchAdapter.class) {
 				return this;
+			}
 			return null;
 		}
 
@@ -822,9 +851,10 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 			DLTKUIPlugin.getDefault().getPreferenceStore().setValue(
 					PreferenceConstants.EDITOR_SYNC_OUTLINE_ON_CURSOR_MOVE,
 					isChecked());
-			if (isChecked() && fEditor != null)
+			if (isChecked() && fEditor != null) {
 				fEditor.synchronizeOutlinePage(fEditor
 						.computeHighlightRangeSourceReference(), false);
+			}
 		}
 
 	}
@@ -834,7 +864,7 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 	/** A flag to show contents of top level type only */
 	// private boolean fTopLevelTypeOnly;
 	private IModelElement fInput;
-//	private String fContextMenuID;
+	// private String fContextMenuID;
 	private Menu fMenu;
 	protected ScriptOutlineViewer fOutlineViewer;
 	private ScriptEditor fEditor;
@@ -873,7 +903,7 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 
 		Assert.isNotNull(editor);
 
-//		fContextMenuID = "#CompilationUnitOutlinerContext";// contextMenuID;
+		// fContextMenuID = "#CompilationUnitOutlinerContext";// contextMenuID;
 		fEditor = editor;
 		fStore = store;
 
@@ -902,15 +932,17 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 	protected void addAction(IMenuManager menu, String group, String actionID) {
 		IAction action = getAction(actionID);
 		if (action != null) {
-			if (action instanceof IUpdate)
+			if (action instanceof IUpdate) {
 				((IUpdate) action).update();
+			}
 
 			if (action.isEnabled()) {
 				IMenuManager subMenu = menu.findMenuUsingPath(group);
-				if (subMenu != null)
+				if (subMenu != null) {
 					subMenu.add(action);
-				else
+				} else {
 					menu.appendToGroup(group, action);
+				}
 			}
 		}
 	}
@@ -920,20 +952,22 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 	 */
 	public void addPostSelectionChangedListener(
 			ISelectionChangedListener listener) {
-		if (fOutlineViewer != null)
+		if (fOutlineViewer != null) {
 			fOutlineViewer.addPostSelectionChangedListener(listener);
-		else
+		} else {
 			fPostSelectionChangedListeners.add(listener);
+		}
 	}
 
 	/*
 	 * @see ISelectionProvider#addSelectionChangedListener(ISelectionChangedListener)
 	 */
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
-		if (fOutlineViewer != null)
+		if (fOutlineViewer != null) {
 			fOutlineViewer.addSelectionChangedListener(listener);
-		else
+		} else {
 			fSelectionChangedListeners.add(listener);
+		}
 	}
 
 	protected void contextMenuAboutToShow(IMenuManager menu) {
@@ -959,7 +993,7 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 		fActionGroups.setContext(new ActionContext(selection));
 		fActionGroups.fillContextMenu(menu);
 	}
-	
+
 	protected ILabelDecorator getLabelDecorator() {
 		return null;
 	}
@@ -976,16 +1010,17 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 						| ScriptElementLabels.F_APP_TYPE_SIGNATURE
 						| ScriptElementLabels.ALL_CATEGORY,
 				AppearanceAwareLabelProvider.DEFAULT_IMAGEFLAGS, fStore);
-		
+
 		ILabelDecorator ldecorator = getLabelDecorator();
-		if (ldecorator != null)
+		if (ldecorator != null) {
 			lprovider.addLabelDecorator(ldecorator);
+		}
 
 		fOutlineViewer = new ScriptOutlineViewer(tree);
 		initDragAndDrop();
 		fOutlineViewer.setContentProvider(new ChildrenProvider());
 		fOutlineViewer.setLabelProvider(new DecoratingModelLabelProvider(
-				lprovider));		
+				lprovider));
 
 		Object[] listeners = fSelectionChangedListeners.getListeners();
 		for (int i = 0; i < listeners.length; i++) {
@@ -1076,8 +1111,9 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 
 	public void dispose() {
 
-		if (fEditor == null)
+		if (fEditor == null) {
 			return;
+		}
 
 		if (fMemberFilterActionGroup != null) {
 			fMemberFilterActionGroup.dispose();
@@ -1113,8 +1149,9 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 			fMenu = null;
 		}
 
-		if (fActionGroups != null)
+		if (fActionGroups != null) {
 			fActionGroups.dispose();
+		}
 
 		fTogglePresentation.setEditor(null);
 
@@ -1160,8 +1197,9 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 	}
 
 	public Control getControl() {
-		if (fOutlineViewer != null)
+		if (fOutlineViewer != null) {
 			return fOutlineViewer.getControl();
+		}
 		return null;
 	}
 
@@ -1179,8 +1217,9 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 	 * @see ISelectionProvider#getSelection()
 	 */
 	public ISelection getSelection() {
-		if (fOutlineViewer == null)
+		if (fOutlineViewer == null) {
 			return StructuredSelection.EMPTY;
+		}
 		return fOutlineViewer.getSelection();
 	}
 
@@ -1232,21 +1271,10 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 	}
 
 	private void initDragAndDrop() {
-		int ops = DND.DROP_COPY | DND.DROP_MOVE | DND.DROP_LINK;
-		Transfer[] transfers = new Transfer[] { LocalSelectionTransfer
-				.getInstance() };
+		fDropSupport = new DLTKViewerDropSupport(fOutlineViewer);
+		fDropSupport.start();
 
-		// Drop Adapter
-		TransferDropTargetListener[] dropListeners = new TransferDropTargetListener[] { new SelectionTransferDropAdapter(
-				fOutlineViewer) };
-		fOutlineViewer.addDropSupport(ops | DND.DROP_DEFAULT, transfers,
-				new DelegatingDropAdapter(dropListeners));
-
-		// Drag Adapter
-		TransferDragSourceListener[] dragListeners = new TransferDragSourceListener[] { new SelectionTransferDragAdapter(
-				fOutlineViewer) };
-		fOutlineViewer.addDragSupport(ops, transfers,
-				new DLTKViewerDragAdapter(fOutlineViewer, dragListeners));
+		new DLTKViewerDragSupport(fOutlineViewer).start();
 	}
 
 	/**
@@ -1273,17 +1301,17 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 	protected void registerSpecialToolbarActions(IActionBars actionBars) {
 		// derived classes could implement it
 	}
-	
+
 	private void registerToolbarActions(IActionBars actionBars) {
 		IToolBarManager toolBarManager = actionBars.getToolBarManager();
 		toolBarManager.add(new LexicalSortingAction());
 
 		fMemberFilterActionGroup = new MemberFilterActionGroup(fOutlineViewer,
-				fStore); //$NON-NLS-1$
+				fStore);
 		fMemberFilterActionGroup.contributeToToolBar(toolBarManager);
 
 		fCustomFiltersActionGroup.fillActionBars(actionBars);
-		
+
 		registerSpecialToolbarActions(actionBars);
 
 		IMenuManager viewMenuManager = actionBars.getMenuManager();
@@ -1305,10 +1333,11 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 	 */
 	public void removePostSelectionChangedListener(
 			ISelectionChangedListener listener) {
-		if (fOutlineViewer != null)
+		if (fOutlineViewer != null) {
 			fOutlineViewer.removePostSelectionChangedListener(listener);
-		else
+		} else {
 			fPostSelectionChangedListeners.remove(listener);
+		}
 	}
 
 	/*
@@ -1316,10 +1345,11 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 	 */
 	public void removeSelectionChangedListener(
 			ISelectionChangedListener listener) {
-		if (fOutlineViewer != null)
+		if (fOutlineViewer != null) {
 			fOutlineViewer.removeSelectionChangedListener(listener);
-		else
+		} else {
 			fSelectionChangedListeners.remove(listener);
+		}
 	}
 
 	public void select(ISourceReference reference) {
@@ -1340,18 +1370,20 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 
 	public void setAction(String actionID, IAction action) {
 		Assert.isNotNull(actionID);
-		if (action == null)
+		if (action == null) {
 			fActions.remove(actionID);
-		else
+		} else {
 			fActions.put(actionID, action);
+		}
 	}
 
 	/*
 	 * @see Page#setFocus()
 	 */
 	public void setFocus() {
-		if (fOutlineViewer != null)
+		if (fOutlineViewer != null) {
 			fOutlineViewer.getControl().setFocus();
+		}
 	}
 
 	public void setInput(IModelElement inputElement) {
@@ -1368,8 +1400,9 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 	 * @see ISelectionProvider#setSelection(ISelection)
 	 */
 	public void setSelection(ISelection selection) {
-		if (fOutlineViewer != null)
+		if (fOutlineViewer != null) {
 			fOutlineViewer.setSelection(selection);
+		}
 	}
 
 	/*
@@ -1380,8 +1413,9 @@ public class ScriptOutlinePage extends Page implements IContentOutlinePage,
 		if (fInput != null) {
 			ISourceModule cu = (ISourceModule) fInput
 					.getAncestor(IModelElement.SOURCE_MODULE);
-			if (cu != null && !ScriptModelUtil.isPrimary(cu))
+			if (cu != null && !ScriptModelUtil.isPrimary(cu)) {
 				provider = new EmptySelectionProvider();
+			}
 		}
 		site.setSelectionProvider(provider);
 	}

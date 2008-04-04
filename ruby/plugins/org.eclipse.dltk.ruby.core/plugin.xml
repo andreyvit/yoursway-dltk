@@ -25,7 +25,6 @@
            priority="0">
      </mixin>
   </extension>
-  <!--
   <extension
         point="org.eclipse.dltk.core.typeEvaluators">
      <evaluator
@@ -33,7 +32,6 @@
            nature="org.eclipse.dltk.ruby.core.nature">
      </evaluator>
   </extension>
-  -->
   <extension
         point="org.eclipse.dltk.core.sourceParsers">
       <parserContribution

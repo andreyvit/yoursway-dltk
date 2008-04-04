@@ -15,10 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.eclipse.core.runtime.Path;
+import org.eclipse.dltk.ruby.internal.ui.text.IRubyPartitions;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitionScanner;
-import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
-import org.eclipse.dltk.ruby.internal.ui.text.syntax.RubyBlocks;
-import org.eclipse.dltk.ui.text.blocks.BlocksConfiguration;
 import org.eclipse.dltk.ui.text.util.IRangeFilter;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
@@ -44,12 +42,12 @@ public class TestUtils {
 	 *            the document
 	 */
 	public static void installStuff(Document document) {
-		String[] types = new String[] { RubyPartitions.RUBY_STRING,
-				RubyPartitions.RUBY_COMMENT, IDocument.DEFAULT_CONTENT_TYPE };
+		String[] types = new String[] { IRubyPartitions.RUBY_STRING,
+				IRubyPartitions.RUBY_COMMENT, IDocument.DEFAULT_CONTENT_TYPE };
 		FastPartitioner partitioner = new FastPartitioner(
 				new RubyPartitionScanner(), types);
 		partitioner.connect(document);
-		document.setDocumentPartitioner(RubyPartitions.RUBY_PARTITIONING,
+		document.setDocumentPartitioner(IRubyPartitions.RUBY_PARTITIONING,
 				partitioner);
 	}
 
@@ -60,6 +58,5 @@ public class TestUtils {
 		}
 		
 	};
-	public static final BlocksConfiguration ALL_RUBY_BLOCKS = RubyBlocks.ALL_BLOCKS;
 	
 }

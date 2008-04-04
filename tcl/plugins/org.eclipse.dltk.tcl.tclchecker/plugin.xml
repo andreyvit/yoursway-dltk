@@ -103,4 +103,24 @@
             id="org.eclipse.dltk.tclchecker">
       </validatorConfigPage>
    </extension>
+<extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="false"
+            id="org.eclipse.dltk.tcl.tclchecker.ui.contribution"
+            objectClass="org.eclipse.dltk.core.IModelElement">
+         <action
+               class="org.eclipse.dltk.tcl.internal.tclchecker.TclCheckerCheckSelectionWithConsoleAction"
+               id="org.eclipse.dltk.tcl.scriptchecker.validate"
+               label="Validate with TclChecker"
+               menubarPath="org.eclipse.dltk.validators.ui.menu/bottom">
+         </action>
+          <visibility>
+            <objectState
+                  name="org.eclipse.dltk.validators.ui.visibility"
+                  value="true">
+            </objectState>
+         </visibility>
+      </objectContribution>
+   </extension>
 </plugin>

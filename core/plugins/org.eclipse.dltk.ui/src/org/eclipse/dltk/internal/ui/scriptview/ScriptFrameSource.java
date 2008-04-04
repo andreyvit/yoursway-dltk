@@ -17,7 +17,7 @@ class ScriptFrameSource extends TreeViewerFrameSource {
 	private ScriptExplorerPart fPackagesExplorer;
 	
 	ScriptFrameSource(ScriptExplorerPart explorer) {
-		super(explorer.getViewer());
+		super(explorer.getTreeViewer());
 		fPackagesExplorer= explorer;
 	}
 

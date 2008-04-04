@@ -21,7 +21,6 @@ import java.util.Locale;
 import java.util.Set;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.dltk.ast.ASTNode;
@@ -136,13 +135,8 @@ public class RubyCompletionEngine extends ScriptCompletionEngine {
 	public RubyCompletionEngine() {
 		this.inferencer = new DLTKTypeInferenceEngine();
 		this.model = RubyMixinModel.getRawInstance();
-		try {
-			this.parser = DLTKLanguageManager
-					.getSourceParser(RubyNature.NATURE_ID);
-		} catch (CoreException e) {
-			throw new RuntimeException(
-					Messages.RubyCompletionEngine_failedToInitializeRubyCompletionEngine, e);
-		}
+		this.parser = DLTKLanguageManager
+				.getSourceParser(RubyNature.NATURE_ID);
 	}
 
 	protected int getEndOfEmptyToken() {

@@ -9,16 +9,12 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui.text.folding;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.dltk.ast.ASTNode;
-import org.eclipse.dltk.ast.parser.ISourceParser;
-import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.ruby.core.RubyNature;
 import org.eclipse.dltk.ruby.internal.ui.RubyUI;
+import org.eclipse.dltk.ruby.internal.ui.text.IRubyPartitions;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitionScanner;
-import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
 import org.eclipse.dltk.ui.text.folding.AbstractASTFoldingStructureProvider;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.rules.IPartitionTokenScanner;
@@ -69,14 +65,14 @@ public class RubyFoldingStructureProvider extends
 	 * @see org.eclipse.dltk.ui.text.folding.AbstractASTFoldingStructureProvider#getCommentPartitionType()
 	 */
 	protected String getCommentPartition() {
-		return RubyPartitions.RUBY_COMMENT;
+		return IRubyPartitions.RUBY_COMMENT;
 	}
 
 	/*
 	 * @see org.eclipse.dltk.ui.text.folding.AbstractASTFoldingStructureProvider#getPartition()
 	 */
 	protected String getPartition() {
-		return RubyPartitions.RUBY_PARTITIONING;
+		return IRubyPartitions.RUBY_PARTITIONING;
 	}
 
 	/*
@@ -90,7 +86,7 @@ public class RubyFoldingStructureProvider extends
 	 * @see org.eclipse.dltk.ui.text.folding.AbstractASTFoldingStructureProvider#getPartitionTypes()
 	 */
 	protected String[] getPartitionTypes() {
-		return RubyPartitions.RUBY_PARTITION_TYPES;
+		return IRubyPartitions.RUBY_PARTITION_TYPES;
 	}
 
 	/*

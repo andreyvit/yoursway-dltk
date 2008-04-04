@@ -12,14 +12,12 @@ package org.eclipse.dltk.javascript.internal.ui.text.completion;
 import java.util.HashMap;
 
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.dltk.codeassist.ICompletionEngine;
 import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.CompletionRequestor;
-import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuffer;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
@@ -314,13 +312,7 @@ public class VirialModule extends ModelElement implements ISourceModule,
 		// TODO. Add searchable environment support.
 		SearchableEnvironment environment = (SearchableEnvironment)project.newSearchableNameEnvironment(new org.eclipse.dltk.core.ISourceModule[] { this });
 		IDLTKLanguageToolkit toolkit = null;
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(this);
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
+		toolkit = DLTKLanguageManager.getLanguageToolkit(this);
 		if (toolkit == null) {
 			toolkit = DLTKLanguageManager.findToolkit(this.getResource());
 			if (toolkit == null) {
@@ -329,12 +321,7 @@ public class VirialModule extends ModelElement implements ISourceModule,
 		}
 		// code complete
 		ICompletionEngine engine = null;
-		try {
-			engine = DLTKLanguageManager.getCompletionEngine(JavaScriptNature.NATURE_ID);
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		engine = DLTKLanguageManager.getCompletionEngine(JavaScriptNature.NATURE_ID);
 		
 		if (engine != null) {
 //			engine.setEnvironment(environment);

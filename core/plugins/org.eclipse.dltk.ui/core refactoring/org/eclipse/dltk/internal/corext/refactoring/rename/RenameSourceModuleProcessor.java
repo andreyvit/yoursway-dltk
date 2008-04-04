@@ -154,12 +154,7 @@ public class RenameSourceModuleProcessor extends ScriptRenameProcessor
 			return fCu; // ??
 		IScriptFolder pack = (IScriptFolder) parent;
 		IDLTKLanguageToolkit tk = null;
-		try {
-			tk = DLTKLanguageManager.getLanguageToolkit(pack);
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		tk = DLTKLanguageManager.getLanguageToolkit(pack);
 		if (tk != null
 				&& !DLTKContentTypeManager.isValidFileNameForContentType(tk,
 						getNewElementName())) {

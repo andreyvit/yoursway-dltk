@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.dltk.core.DLTKLanguageManager;
@@ -115,20 +114,16 @@ public abstract class AbstractScriptEditorTextHover implements
 	public String getHoverInfo(ITextViewer textViewer, IRegion hoverRegion) {
 
 		String nature = null;
-		try {
-			IModelElement inputModelElement = EditorUtility
-					.getEditorInputModelElement(this.fEditor, false);
-			if (inputModelElement == null)
-				return null;
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-					.getLanguageToolkit(inputModelElement);
-			if (toolkit == null) {
-				return null;
-			}
-			nature = toolkit.getNatureId();
-		} catch (CoreException e) {
+		IModelElement inputModelElement = EditorUtility
+				.getEditorInputModelElement(this.fEditor, false);
+		if (inputModelElement == null)
+			return null;
+		IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+				.getLanguageToolkit(inputModelElement);
+		if (toolkit == null) {
 			return null;
 		}
+		nature = toolkit.getNatureId();
 		if (nature == null) {
 			return null;
 		}

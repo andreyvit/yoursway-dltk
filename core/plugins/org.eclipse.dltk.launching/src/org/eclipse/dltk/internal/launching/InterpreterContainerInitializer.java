@@ -22,12 +22,12 @@ import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IScriptProject;
-import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.InterpreterStandin;
 import org.eclipse.dltk.launching.LaunchingMessages;
 import org.eclipse.dltk.launching.LibraryLocation;
+import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.ScriptRuntime;
 
 import com.ibm.icu.text.MessageFormat;
@@ -122,14 +122,10 @@ public class InterpreterContainerInitializer extends
 	}
 
 	private String getNatureFromProject(IScriptProject project) {
-		try {
-			IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
-					.getLanguageToolkit(project);
-			if (languageToolkit != null) {
-				return languageToolkit.getNatureId();
-			}
-		} catch (CoreException e) {
-			DLTKLaunchingPlugin.log(e);
+		IDLTKLanguageToolkit languageToolkit = DLTKLanguageManager
+				.getLanguageToolkit(project);
+		if (languageToolkit != null) {
+			return languageToolkit.getNatureId();
 		}
 		return null;
 	}
@@ -152,7 +148,7 @@ public class InterpreterContainerInitializer extends
 			throw new CoreException(status);
 		}
 		// update of the interpreter with new library locations
-		IBuildpathEntry[] entries = containerSuggestion.getBuildpathEntries();
+		IBuildpathEntry[] entries = containerSuggestion.getBuildpathEntries(project);
 		LibraryLocation[] libs = new LibraryLocation[entries.length];
 		for (int i = 0; i < entries.length; i++) {
 			IBuildpathEntry entry = entries[i];

@@ -502,13 +502,7 @@ public final class ValidatorRuntime {
 			if (el instanceof ISourceModule) {
 				ISourceModule module = (ISourceModule) el;
 				IDLTKLanguageToolkit toolkit = null;
-				try {
-					toolkit = DLTKLanguageManager.getLanguageToolkit(module);
-				} catch (CoreException e) {
-					if (DLTKCore.DEBUG) {
-						e.printStackTrace();
-					}
-				}
+				toolkit = DLTKLanguageManager.getLanguageToolkit(module);
 
 				if (toolkit != null && toolkit.getNatureId().equals(nature)
 						|| nature.equals("#")) { //$NON-NLS-1$

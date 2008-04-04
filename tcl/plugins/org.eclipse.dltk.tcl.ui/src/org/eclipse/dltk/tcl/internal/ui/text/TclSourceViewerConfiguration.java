@@ -10,6 +10,10 @@
 package org.eclipse.dltk.tcl.internal.ui.text;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.dltk.internal.ui.editor.EditorUtility;
+import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
+import org.eclipse.dltk.internal.ui.text.ScriptElementProvider;
+import org.eclipse.dltk.tcl.internal.ui.hierarchy.TclHierarchyInformationControl;
 import org.eclipse.dltk.tcl.internal.ui.text.completion.TclContentAssistPreference;
 import org.eclipse.dltk.tcl.internal.ui.text.completion.TclScriptCompletionProcessor;
 import org.eclipse.dltk.tcl.ui.text.TclPartitions;
@@ -19,8 +23,10 @@ import org.eclipse.dltk.ui.text.IColorManager;
 import org.eclipse.dltk.ui.text.ScriptPresentationReconciler;
 import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
 import org.eclipse.dltk.ui.text.SingleTokenScriptScanner;
+import org.eclipse.dltk.ui.text.completion.ContentAssistPreference;
 import org.eclipse.dltk.ui.text.completion.ContentAssistProcessor;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.text.AbstractInformationControlManager;
 import org.eclipse.jface.text.IAutoEditStrategy;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
@@ -28,10 +34,12 @@ import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
+import org.eclipse.jface.text.information.IInformationPresenter;
 import org.eclipse.jface.text.information.IInformationProvider;
 import org.eclipse.jface.text.information.InformationPresenter;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
+import org.eclipse.jface.text.quickassist.IQuickAssistAssistant;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -72,15 +80,48 @@ public class TclSourceViewerConfiguration extends
 				.getInt(CodeFormatterConstants.FORMATTER_TAB_SIZE);
 	}
 
+	private IInformationControlCreator getHierarchyPresenterControlCreator(
+			ISourceViewer sourceViewer) {
+		return new IInformationControlCreator() {
+			public IInformationControl createInformationControl(Shell parent) {
+				int shellStyle = SWT.RESIZE;
+				int treeStyle = SWT.V_SCROLL | SWT.H_SCROLL;
+				return new TclHierarchyInformationControl(parent, shellStyle,
+						treeStyle);
+			}
+		};
+	}
+	public IInformationPresenter getHierarchyPresenter(
+			ScriptSourceViewer sourceViewer, boolean doCodeResolve) {
+		// Do not create hierarchy presenter if there's no CU.
+		if (getEditor() != null
+				&& getEditor().getEditorInput() != null
+				&& EditorUtility.getEditorInputModelElement(getEditor(), true) == null)
+			return null;
+
+		InformationPresenter presenter = new InformationPresenter(
+				getHierarchyPresenterControlCreator(sourceViewer));
+		presenter
+				.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
+		presenter.setAnchor(AbstractInformationControlManager.ANCHOR_GLOBAL);
+		IInformationProvider provider = new ScriptElementProvider(getEditor(),
+				doCodeResolve);
+		presenter.setInformationProvider(provider,
+				IDocument.DEFAULT_CONTENT_TYPE);
+
+		presenter.setSizeConstraints(50, 20, true, false);
+		return presenter;
+	}
+
 	protected void initializeScanners() {
 		Assert.isTrue(isNewSetup());
-		
-		// Creating scanners 
+
+		// Creating scanners
 		fCodeScanner = new TclCodeScanner(getColorManager(), fPreferenceStore);
-		
+
 		fStringScanner = new TclStringScanner(getColorManager(),
 				fPreferenceStore);
-		
+
 		fCommentScanner = new SingleTokenScriptScanner(getColorManager(),
 				fPreferenceStore, TclColorConstants.TCL_SINGLE_LINE_COMMENT);
 	}
@@ -96,7 +137,7 @@ public class TclSourceViewerConfiguration extends
 	protected RuleBasedScanner getStringScanner() {
 		return fStringScanner;
 	}
-	
+
 	protected RuleBasedScanner getCommentScanner() {
 		return fCommentScanner;
 	}
@@ -174,50 +215,29 @@ public class TclSourceViewerConfiguration extends
 		return new TclAutoEditStrategy[] { new TclAutoEditStrategy(
 				fPreferenceStore, partitioning) };
 	}
+
+	protected void alterContentAssistant(ContentAssistant assistant) {
+		// IDocument.DEFAULT_CONTENT_TYPE
+		IContentAssistProcessor scriptProcessor = new TclScriptCompletionProcessor(
+				getEditor(), assistant, IDocument.DEFAULT_CONTENT_TYPE);
+		assistant.setContentAssistProcessor(scriptProcessor,
+				IDocument.DEFAULT_CONTENT_TYPE);
+
+		// TclPartitions.TCL_COMMENT
+		ContentAssistProcessor singleLineProcessor = new TclScriptCompletionProcessor(
+				getEditor(), assistant, TclPartitions.TCL_COMMENT);
+		assistant.setContentAssistProcessor(singleLineProcessor,
+				TclPartitions.TCL_COMMENT);
+
+		// TclPartitions.TCL_STRING
+		ContentAssistProcessor stringProcessor = new TclScriptCompletionProcessor(
+				getEditor(), assistant, TclPartitions.TCL_STRING);
+		assistant.setContentAssistProcessor(stringProcessor,
+				TclPartitions.TCL_STRING);
+	}
 	
-	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
-
-		if (getEditor() != null) {
-
-			ContentAssistant assistant = new ContentAssistant();
-			assistant
-					.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
-
-			assistant
-					.setRestoreCompletionProposalSize(getSettings("completion_proposal_size")); //$NON-NLS-1$
-
-			// IDocument.DEFAULT_CONTENT_TYPE
-			IContentAssistProcessor scriptProcessor = new TclScriptCompletionProcessor(
-					getEditor(), assistant, IDocument.DEFAULT_CONTENT_TYPE);
-			assistant.setContentAssistProcessor(scriptProcessor,
-					IDocument.DEFAULT_CONTENT_TYPE);
-
-			// TclPartitions.TCL_COMMENT
-			ContentAssistProcessor singleLineProcessor = new TclScriptCompletionProcessor(
-					getEditor(), assistant, TclPartitions.TCL_COMMENT);
-			assistant.setContentAssistProcessor(singleLineProcessor,
-					TclPartitions.TCL_COMMENT);
-
-			// TclPartitions.TCL_STRING
-			ContentAssistProcessor stringProcessor = new TclScriptCompletionProcessor(
-					getEditor(), assistant, TclPartitions.TCL_STRING);
-			assistant.setContentAssistProcessor(stringProcessor,
-					TclPartitions.TCL_STRING);
-
-			// Configuration
-			TclContentAssistPreference.getDefault().configure(assistant,
-					fPreferenceStore);
-
-			assistant
-					.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
-			
-			assistant
-					.setInformationControlCreator(getInformationControlCreator(sourceViewer));
-
-			return assistant;
-		}
-
-		return null;
+	protected ContentAssistPreference getContentAssistPreference() {
+		return TclContentAssistPreference.getDefault();
 	}
 
 	protected IInformationControlCreator getOutlinePresenterControlCreator(
@@ -231,10 +251,19 @@ public class TclSourceViewerConfiguration extends
 			}
 		};
 	}
-	protected void initializeQuickOutlineContexts(InformationPresenter presenter,
-			IInformationProvider provider) {
+
+	protected void initializeQuickOutlineContexts(
+			InformationPresenter presenter, IInformationProvider provider) {
 		presenter.setInformationProvider(provider, TclPartitions.TCL_COMMENT);
-		presenter.setInformationProvider(provider, TclPartitions.TCL_INNER_CODE);
+		presenter
+				.setInformationProvider(provider, TclPartitions.TCL_INNER_CODE);
 		presenter.setInformationProvider(provider, TclPartitions.TCL_STRING);
+	}
+
+	public IQuickAssistAssistant getQuickAssistAssistant(
+			ISourceViewer sourceViewer) {
+		if (getEditor() != null)
+			return new TclCorrectionAssistant(getEditor());
+		return null;
 	}
 }

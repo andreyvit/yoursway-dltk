@@ -10,64 +10,42 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.ui.callhierarchy;
 
-import org.eclipse.dltk.core.IMethod;
+import java.util.List;
+
+import org.eclipse.dltk.core.IMember;
+import org.eclipse.dltk.internal.corext.callhierarchy.CallHierarchy;
 import org.eclipse.dltk.internal.ui.scriptview.SelectionTransferDropAdapter;
-import org.eclipse.dltk.internal.ui.util.SelectionUtil;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.DropTargetEvent;
 
 
 class CallHierarchyTransferDropAdapter extends SelectionTransferDropAdapter {
 
-	private static final int OPERATION = DND.DROP_LINK;
 	private CallHierarchyViewPart fCallHierarchyViewPart;
 
 	public CallHierarchyTransferDropAdapter(CallHierarchyViewPart viewPart, StructuredViewer viewer) {
 		super(viewer);
-		setFullWidthMatchesItem(false);
 		fCallHierarchyViewPart= viewPart;
-	}
-
-	public void validateDrop(Object target, DropTargetEvent event, int operation) {
-		event.detail= DND.DROP_NONE;
-		initializeSelection();
-		if (target != null){
-			super.validateDrop(target, event, operation);
-			return;
-		}	
-		if (getInputElement(getSelection()) != null) 
-			event.detail= OPERATION;
-	}
-		
-	public boolean isEnabled(DropTargetEvent event) {
-		return true;
-	}
-
-	public void drop(Object target, DropTargetEvent event) {
-		if (target != null || event.detail != OPERATION){
-			super.drop(target, event);
-			return;
-		}	
-		IMethod input= getInputElement(getSelection());
-		fCallHierarchyViewPart.setMethod(input);
+	}	
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	protected void doInputView(Object inputElements) {
+		fCallHierarchyViewPart.setInputElements((IMember[]) inputElements);
 	}
 	
-	private static IMethod getInputElement(ISelection selection) {
-		Object single= SelectionUtil.getSingleElement(selection);
-		if (single == null)
-			return null;
-		return getCandidate(single);
+	/**
+	 * {@inheritDoc}
+	 */
+	protected Object getInputElement(ISelection selection) {
+		if (selection instanceof IStructuredSelection) {
+			List elements= ((IStructuredSelection) selection).toList();
+			if (CallHierarchy.arePossibleInputElements(elements)) {
+				return elements.toArray(new IMember[elements.size()]);
+			}
+		}
+		return null;
 	}
-    
-    /**
-     * Converts the input to a possible input candidates
-     */ 
-    public static IMethod getCandidate(Object input) {
-        if (!(input instanceof IMethod)) {
-            return null;
-        }
-        return (IMethod) input;
-    }
 }

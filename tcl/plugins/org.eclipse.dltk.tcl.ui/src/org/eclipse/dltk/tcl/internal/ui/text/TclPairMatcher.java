@@ -12,7 +12,6 @@ package org.eclipse.dltk.tcl.internal.ui.text;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
@@ -85,14 +84,7 @@ public final class TclPairMatcher implements ICharacterPairMatcher {
 
 	private PairBlock[] computePairRanges(final int offset, String contents) {
 		ISourceParser pp = null;
-		try {
-			pp = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
-		} catch (CoreException e1) {
-			if (DLTKCore.DEBUG) {
-				e1.printStackTrace();
-			}
-			return new PairBlock[0];
-		}
+		pp = DLTKLanguageManager.getSourceParser(TclNature.NATURE_ID);
 		ModuleDeclaration md = null;// pp.parse(null, contents.toCharArray(),
 		// null);
 		IModelElement el = this.editor.getInputModelElement();

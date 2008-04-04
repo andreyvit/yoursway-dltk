@@ -195,21 +195,17 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 		return fileText + "." + extensions[0]; //$NON-NLS-1$
 	}
 
-	// TODO: correct this
 	protected String[] getFileExtensions() {
-		try {
-			String requiredNature = getRequiredNature();
+		String requiredNature = getRequiredNature();
 
-			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
-					.getLanguageToolkit(requiredNature);
-			String contentType = toolkit.getLanguageContentType();
-			IContentTypeManager manager = Platform.getContentTypeManager();
-			IContentType type = manager.getContentType(contentType);
-			if (type != null) {
-				String[] extensions = type.getFileSpecs(IContentType.FILE_EXTENSION_SPEC);
-				return extensions;
-			}
-		} catch (CoreException e) {
+		IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+				.getLanguageToolkit(requiredNature);
+		String contentType = toolkit.getLanguageContentType();
+		IContentTypeManager manager = Platform.getContentTypeManager();
+		IContentType type = manager.getContentType(contentType);
+		if (type != null) {
+			String[] extensions = type.getFileSpecs(IContentType.FILE_EXTENSION_SPEC);
+			return extensions;
 		}
 
 		return new String[] { "" }; //$NON-NLS-1$

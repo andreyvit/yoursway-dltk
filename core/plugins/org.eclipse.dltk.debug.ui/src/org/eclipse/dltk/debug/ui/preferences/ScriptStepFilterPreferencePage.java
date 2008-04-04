@@ -392,12 +392,8 @@ public class ScriptStepFilterPreferencePage extends PreferencePage implements
 				public boolean visit(IModelElement element) {
 					if (element.getElementType() == IModelElement.SCRIPT_PROJECT ) {
 						IDLTKLanguageToolkit languageToolkit;
-						try {
-							languageToolkit = DLTKLanguageManager.getLanguageToolkit(element);
-							if( !fToolkit.getNatureId().equals(languageToolkit.getNatureId()) ) {
-								return false;
-							}
-						} catch (CoreException e) {
+						languageToolkit = DLTKLanguageManager.getLanguageToolkit(element);
+						if( !fToolkit.getNatureId().equals(languageToolkit.getNatureId()) ) {
 							return false;
 						}
 					}

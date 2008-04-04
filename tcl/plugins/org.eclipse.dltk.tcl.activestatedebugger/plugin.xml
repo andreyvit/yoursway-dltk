@@ -12,7 +12,7 @@
       <engine
         class="org.eclipse.dltk.tcl.activestatedebugger.TclActiveStateDebuggerRunnerFactory"
         description="%ActiveStateDebuggingEngine.description"
-        id="org.eclipse.dltk.tcl.avtivestatedebugger"
+        id="org.eclipse.dltk.tcl.activestatedebugger"
         name="%ActiveStateDebuggingEngine.name"
         preferencePageId="org.eclipse.dltk.tcl.preferences.debug.activestatedebugger"
         propertyPageId="org.eclipse.dltk.tcl.propertyPage.debug.engines.activestatedebugger"

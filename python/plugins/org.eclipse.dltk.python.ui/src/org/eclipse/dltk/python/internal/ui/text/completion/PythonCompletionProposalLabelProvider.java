@@ -4,4 +4,5 @@ import org.eclipse.dltk.ui.text.completion.CompletionProposalLabelProvider;
 
 public class PythonCompletionProposalLabelProvider extends
 		CompletionProposalLabelProvider {
+
 }

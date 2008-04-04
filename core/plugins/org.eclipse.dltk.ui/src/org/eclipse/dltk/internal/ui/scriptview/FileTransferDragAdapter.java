@@ -5,7 +5,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.dltk.internal.ui.scriptview;
 
@@ -16,7 +17,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -42,93 +45,108 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 
-
 /**
- * Drag support class to allow dragging of files and folder from
- * the packages view to another application.
+ * Drag support class to allow dragging of files and folder from the packages
+ * view to another application.
  */
-class FileTransferDragAdapter extends DragSourceAdapter implements TransferDragSourceListener {
-	
+public class FileTransferDragAdapter extends DragSourceAdapter implements
+		TransferDragSourceListener {
+
 	private ISelectionProvider fProvider;
-	
-	FileTransferDragAdapter(ISelectionProvider provider) {
-		fProvider= provider;
+
+	public FileTransferDragAdapter(ISelectionProvider provider) {
+		fProvider = provider;
+		Assert.isNotNull(fProvider);
 	}
 
 	public Transfer getTransfer() {
 		return FileTransfer.getInstance();
 	}
-	
+
 	public void dragStart(DragSourceEvent event) {
-		event.doit= isDragable(fProvider.getSelection());
+		event.doit = isDragable(fProvider.getSelection());
 	}
-	
+
 	private boolean isDragable(ISelection s) {
-		if (!(s instanceof IStructuredSelection))
+		if (!(s instanceof IStructuredSelection)) {
 			return false;
-		IStructuredSelection selection= (IStructuredSelection)s;
-		for (Iterator iter= selection.iterator(); iter.hasNext();) {
-			Object element= iter.next();
+		}
+		IStructuredSelection selection = (IStructuredSelection) s;
+		for (Iterator iter = selection.iterator(); iter.hasNext();) {
+			Object element = iter.next();
 			if (element instanceof IModelElement) {
-				IModelElement jElement= (IModelElement)element;
-				int type= jElement.getElementType();
-				// valid elements are: roots, units and types. Don't allow dragging
+				IModelElement jElement = (IModelElement) element;
+				int type = jElement.getElementType();
+				// valid elements are: roots, units and types. Don't allow
+				// dragging
 				// projects outside of eclipse
-				if (type != IModelElement.PROJECT_FRAGMENT &&
-					type != IModelElement.SOURCE_MODULE && type != IModelElement.TYPE)
+				if (type != IModelElement.PROJECT_FRAGMENT
+						&& type != IModelElement.SOURCE_MODULE
+						&& type != IModelElement.TYPE) {
 					return false;
-				IProjectFragment root= (IProjectFragment)jElement.getAncestor(IModelElement.PROJECT_FRAGMENT);
-				if (root != null && root.isArchive())
+				}
+				IProjectFragment root = (IProjectFragment) jElement
+						.getAncestor(IModelElement.PROJECT_FRAGMENT);
+				if (root != null && root.isArchive()) {
 					return false;
+				}
+			} else if (element instanceof IProject) {
+				return false;
 			}
 		}
-		List resources= convertIntoResources(selection);
+		List resources = convertIntoResources(selection);
 		return resources.size() == selection.size();
 	}
-	
-	public void dragSetData(DragSourceEvent event){
-		List elements= getResources();
+
+	public void dragSetData(DragSourceEvent event) {
+		List elements = getResources();
 		if (elements == null || elements.size() == 0) {
-			event.data= null;
+			event.data = null;
 			return;
 		}
-		
-		event.data= getResourceLocations(elements);
+
+		event.data = FileTransferDragAdapter.getResourceLocations(elements);
 	}
 
 	private static String[] getResourceLocations(List resources) {
-		return Resources.getLocationOSStrings((IResource[]) resources.toArray(new IResource[resources.size()]));
+		return Resources.getLocationOSStrings((IResource[]) resources
+				.toArray(new IResource[resources.size()]));
 	}
-	
+
 	public void dragFinished(DragSourceEvent event) {
-		if (!event.doit)
+		if (!event.doit) {
 			return;
-		
+		}
+
 		if (event.detail == DND.DROP_MOVE) {
 			// http://bugs.eclipse.org/bugs/show_bug.cgi?id=30543
 			// handleDropMove(event);
-		} else if (event.detail == DND.DROP_NONE || event.detail == DND.DROP_TARGET_MOVE) {
-			handleRefresh(event);
+		} else if (event.detail == DND.DROP_TARGET_MOVE) {
+			handleRefresh();
 		}
 	}
-	
-	/* package */ void handleDropMove(DragSourceEvent event) {
-		final List elements= getResources();
-		if (elements == null || elements.size() == 0)
+
+	/* package */void handleDropMove() {
+		final List elements = getResources();
+		if (elements == null || elements.size() == 0) {
 			return;
-		
-		WorkspaceModifyOperation op= new WorkspaceModifyOperation() {
+		}
+
+		WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
 			public void execute(IProgressMonitor monitor) throws CoreException {
 				try {
-					monitor.beginTask(ScriptMessages.DragAdapter_deleting, elements.size()); 
-					MultiStatus status= createMultiStatus();
-					Iterator iter= elements.iterator();
-					while(iter.hasNext()) {
-						IResource resource= (IResource)iter.next();
+					monitor.beginTask(ScriptMessages.DragAdapter_deleting,
+							elements.size());
+					MultiStatus status = createMultiStatus();
+					Iterator iter = elements.iterator();
+					while (iter.hasNext()) {
+						IResource resource = (IResource) iter.next();
 						try {
-							monitor.subTask(resource.getFullPath().toOSString());
+							monitor
+									.subTask(resource.getFullPath()
+											.toOSString());
 							resource.delete(true, null);
-							
+
 						} catch (CoreException e) {
 							status.add(e.getStatus());
 						} finally {
@@ -145,23 +163,25 @@ class FileTransferDragAdapter extends DragSourceAdapter implements TransferDragS
 		};
 		runOperation(op, true, false);
 	}
-	
-	private  void handleRefresh(DragSourceEvent event) {
-		final Set roots= collectRoots(getResources());
-		
-		WorkspaceModifyOperation op= new WorkspaceModifyOperation() {
+
+	private void handleRefresh() {
+		final Set roots = collectRoots(getResources());
+
+		WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
 			public void execute(IProgressMonitor monitor) throws CoreException {
 				try {
-					monitor.beginTask(ScriptMessages.DragAdapter_refreshing, roots.size()); 
-					MultiStatus status= createMultiStatus();
-					Iterator iter= roots.iterator();
+					monitor.beginTask(ScriptMessages.DragAdapter_refreshing,
+							roots.size());
+					MultiStatus status = createMultiStatus();
+					Iterator iter = roots.iterator();
 					while (iter.hasNext()) {
-						IResource r= (IResource)iter.next();
+						IResource r = (IResource) iter.next();
 						try {
-							r.refreshLocal(IResource.DEPTH_ONE, new SubProgressMonitor(monitor, 1));
+							r.refreshLocal(IResource.DEPTH_ONE,
+									new SubProgressMonitor(monitor, 1));
 						} catch (CoreException e) {
 							status.add(e.getStatus());
-						}	
+						}
 					}
 					if (!status.isOK()) {
 						throw new CoreException(status);
@@ -171,17 +191,17 @@ class FileTransferDragAdapter extends DragSourceAdapter implements TransferDragS
 				}
 			}
 		};
-		
+
 		runOperation(op, true, false);
 	}
 
 	protected Set collectRoots(final List elements) {
-		final Set roots= new HashSet(10);
-		
-		Iterator iter= elements.iterator();
+		final Set roots = new HashSet(10);
+
+		Iterator iter = elements.iterator();
 		while (iter.hasNext()) {
-			IResource resource= (IResource)iter.next();
-			IResource parent= resource.getParent();
+			IResource resource = (IResource) iter.next();
+			IResource parent = resource.getParent();
 			if (parent == null) {
 				roots.add(resource);
 			} else {
@@ -190,24 +210,25 @@ class FileTransferDragAdapter extends DragSourceAdapter implements TransferDragS
 		}
 		return roots;
 	}
-	
+
 	private List getResources() {
-		ISelection s= fProvider.getSelection();
-		if (!(s instanceof IStructuredSelection)) 
+		ISelection s = fProvider.getSelection();
+		if (!(s instanceof IStructuredSelection)) {
 			return null;
-		
-		return convertIntoResources((IStructuredSelection)s);
+		}
+
+		return convertIntoResources((IStructuredSelection) s);
 	}
 
 	private List convertIntoResources(IStructuredSelection selection) {
-		List result= new ArrayList(selection.size());
-		for (Iterator iter= selection.iterator(); iter.hasNext();) {
-			Object o= iter.next();
-			IResource r= null;
+		List result = new ArrayList(selection.size());
+		for (Iterator iter = selection.iterator(); iter.hasNext();) {
+			Object o = iter.next();
+			IResource r = null;
 			if (o instanceof IResource) {
-				r= (IResource)o;
+				r = (IResource) o;
 			} else if (o instanceof IAdaptable) {
-				r= (IResource)((IAdaptable)o).getAdapter(IResource.class);
+				r = (IResource) ((IAdaptable) o).getAdapter(IResource.class);
 			}
 			// Only add resource for which we have a location
 			// in the local file system.
@@ -217,19 +238,20 @@ class FileTransferDragAdapter extends DragSourceAdapter implements TransferDragS
 		}
 		return result;
 	}
-	
+
 	private MultiStatus createMultiStatus() {
-		return new MultiStatus(DLTKUIPlugin.PLUGIN_ID, 
-			IStatus.OK, ScriptMessages.DragAdapter_problem, null); 
+		return new MultiStatus(DLTKUIPlugin.getPluginId(), IStatus.OK,
+				ScriptMessages.DragAdapter_problem, null);
 	}
-	
-	private void runOperation(IRunnableWithProgress op, boolean fork, boolean cancelable) {
+
+	private void runOperation(IRunnableWithProgress op, boolean fork,
+			boolean cancelable) {
 		try {
-			Shell parent= DLTKUIPlugin.getActiveWorkbenchShell();
+			Shell parent = DLTKUIPlugin.getActiveWorkbenchShell();
 			new ProgressMonitorDialog(parent).run(fork, cancelable, op);
 		} catch (InvocationTargetException e) {
-			String message= ScriptMessages.DragAdapter_problem; 
-			String title= ScriptMessages.DragAdapter_problemTitle; 
+			String message = ScriptMessages.DragAdapter_problem;
+			String title = ScriptMessages.DragAdapter_problemTitle;
 			ExceptionHandler.handle(e, title, message);
 		} catch (InterruptedException e) {
 			// Do nothing. Operation has been canceled by user.

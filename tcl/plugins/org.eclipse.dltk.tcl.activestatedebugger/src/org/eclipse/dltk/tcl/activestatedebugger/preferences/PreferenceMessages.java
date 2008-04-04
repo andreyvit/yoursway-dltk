@@ -19,6 +19,7 @@ public class PreferenceMessages {
 		NLS.initializeMessages(BUNDLE_NAME, PreferenceMessages.class);
 	}
 
+	public static String DebuggingEnginePDXGroup;
 	public static String DebuggingEngineDescription;
 	public static String DebuggingEngineDownloadPage;
 	public static String DebuggingEngineDownloadPageLink;

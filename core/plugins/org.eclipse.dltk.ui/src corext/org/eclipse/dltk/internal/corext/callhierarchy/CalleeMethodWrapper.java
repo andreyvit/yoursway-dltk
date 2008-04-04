@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.core.DLTKCore;
@@ -89,31 +88,26 @@ class CalleeMethodWrapper extends MethodWrapper {
 	 */
 	protected Map findChildren(IProgressMonitor progressMonitor) {
 		if (getMember().exists() && getMember().getElementType() == IModelElement.METHOD) {
-			try {
-				IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(getMember());
-				if (toolkit != null) {
-					IDLTKSearchScope scope = CallHierarchy.getDefault().getSearchScope(toolkit);
-					ICalleeProcessor processor = DLTKLanguageManager.createCalleeProcessor(toolkit.getNatureId(), (IMethod) getMember(), progressMonitor, scope);
-					if (processor != null) {
-						Map result = processor.doOperation();
-						if (result != null) {
-							CallSearchResultCollector collector = new CallSearchResultCollector();
-							Set keys = result.keySet();
-							Iterator i = keys.iterator();
-							while (i.hasNext()) {
-								SimpleReference e = (SimpleReference) i.next();
-								IMethod[] calls = (IMethod[]) result.get(e);
-								for (int j = 0; j < calls.length; ++j) {
-									collector.addMember(getMember(), calls[j], e.sourceStart(), e.sourceEnd());
-								}
+			IDLTKLanguageToolkit toolkit = DLTKLanguageManager.getLanguageToolkit(getMember());
+			if (toolkit != null) {
+				IDLTKSearchScope scope = CallHierarchy.getDefault().getSearchScope(toolkit);
+				ICalleeProcessor processor = DLTKLanguageManager.createCalleeProcessor(toolkit.getNatureId(), (IMethod) getMember(), progressMonitor, scope);
+				if (processor != null) {
+					Map result = processor.doOperation();
+					if (result != null) {
+						CallSearchResultCollector collector = new CallSearchResultCollector();
+						Set keys = result.keySet();
+						Iterator i = keys.iterator();
+						while (i.hasNext()) {
+							SimpleReference e = (SimpleReference) i.next();
+							IMethod[] calls = (IMethod[]) result.get(e);
+							for (int j = 0; j < calls.length; ++j) {
+								collector.addMember(getMember(), calls[j], e.sourceStart(), e.sourceEnd());
 							}
-							return collector.getCallers();
 						}
+						return collector.getCallers();
 					}
 				}
-			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 

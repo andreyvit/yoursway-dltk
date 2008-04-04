@@ -16,14 +16,16 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.internal.ui.dialogs.StatusInfo;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.ComboDialogField;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.IDialogFieldListener;
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.StringDialogField;
-import org.eclipse.dltk.validators.ValidatorConfigurationPage;
 import org.eclipse.dltk.validators.core.IValidator;
 import org.eclipse.dltk.validators.core.IValidatorType;
+import org.eclipse.dltk.validators.ui.ValidatorConfigurationPage;
+import org.eclipse.dltk.validators.ui.ValidatorConfigurationPage.IStatusHandler;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.StatusDialog;
 import org.eclipse.swt.SWT;
@@ -34,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-public class AddValidatorDialog extends StatusDialog {
+public class AddValidatorDialog extends StatusDialog implements IStatusHandler {
 
 	private IAddValidatorDialogRequestor fRequestor;
 
@@ -64,7 +66,7 @@ public class AddValidatorDialog extends StatusDialog {
 		super(shell);
 		setShellStyle(getShellStyle() | SWT.RESIZE);
 		fRequestor = requestor;
-		fStati = new IStatus[5];
+		fStati = new IStatus[6];
 		for (int i = 0; i < fStati.length; i++) {
 			fStati[i] = new StatusInfo();
 		}
@@ -141,7 +143,7 @@ public class AddValidatorDialog extends StatusDialog {
 			recreateConfigPage(parent);
 		} else {
 			// We need to specify special parent, to be able to destroy it.
-// configPage = (Composite)super.createDialogArea(parent);
+			// configPage = (Composite)super.createDialogArea(parent);
 			configPage = new Composite(parent, SWT.FILL);
 			GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 			data.horizontalSpan = 3;
@@ -154,9 +156,9 @@ public class AddValidatorDialog extends StatusDialog {
 			layout.marginTop = -5;
 			configPage.setLayout(layout);
 			applyDialogFont(configPage);
-// recreateConfigPage(configPage);
+			// recreateConfigPage(configPage);
 		}
-// }
+		// }
 
 		initializeFields();
 		createFieldListeners();
@@ -177,8 +179,14 @@ public class AddValidatorDialog extends StatusDialog {
 			}
 			fConfigurationPage = ValidatorConfigurationPageManager
 					.getConfigurationPage(id);
+			if (fConfigurationPage != null) {
+				fConfigurationPage.setStatusHandler(this);
+			}
+
 		} catch (CoreException e) {
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 		if (fConfigurationPage != null) {
 			this.fConfigurationPage.setValidator(getCreateValidator());
@@ -210,7 +218,7 @@ public class AddValidatorDialog extends StatusDialog {
 		if (selIndex >= 0 && selIndex < fValidatorTypes.length) {
 			fSelectedValidatorType = fValidatorTypes[selIndex];
 		}
-// setValidatorLocationStatus(validateValidatorLocation());
+		// setValidatorLocationStatus(validateValidatorLocation());
 		if (configPage != null) {
 			this.fEditedValidator = null;
 			// We dispose all children and recreate config control
@@ -221,9 +229,9 @@ public class AddValidatorDialog extends StatusDialog {
 			recreateConfigPage(configPage);
 			this.configPage.redraw();
 			this.configPage.layout(true, true);
-// this.configPage.setSize(this.configPage.computeSize(SWT.DEFAULT,
-// SWT.DEFAULT));
-// this.ancestor.setSize(this.ancestor.computeSize(400, 300));
+			// this.configPage.setSize(this.configPage.computeSize(SWT.DEFAULT,
+			// SWT.DEFAULT));
+			// this.ancestor.setSize(this.ancestor.computeSize(400, 300));
 			this.ancestor.getShell().setSize(
 					this.ancestor.getShell().computeSize(SWT.DEFAULT,
 							SWT.DEFAULT));
@@ -319,12 +327,12 @@ public class AddValidatorDialog extends StatusDialog {
 			this.fConfigurationPage.applyChanges();
 		}
 		if (fEditedValidator == null) {
-// IValidator Validator = fSelectedValidatorType.createValidator(
-// createUniqueId(fSelectedValidatorType));
+			// IValidator Validator = fSelectedValidatorType.createValidator(
+			// createUniqueId(fSelectedValidatorType));
 			IValidator validator = getCreateValidator();
 			setFieldValuesToValidator(validator);
 			fRequestor.validatorAdded(validator);
-// removeValidators();
+			// removeValidators();
 		} else {
 			setFieldValuesToValidator(fEditedValidator);
 		}
@@ -369,9 +377,9 @@ public class AddValidatorDialog extends StatusDialog {
 		fStati[0] = status;
 	}
 
-// private void setValidatorLocationStatus(IStatus status) {
-// fStati[1]= status;
-// }
+	// private void setValidatorLocationStatus(IStatus status) {
+	// fStati[1]= status;
+	// }
 
 	protected IStatus getSystemLibraryStatus() {
 		return fStati[3];
@@ -379,6 +387,14 @@ public class AddValidatorDialog extends StatusDialog {
 
 	public void setSystemLibraryStatus(IStatus status) {
 		fStati[3] = status;
+	}
+
+	protected IStatus getPreferenceStatus() {
+		return fStati[5];
+	}
+
+	public void setPreferenceStatus(IStatus status) {
+		fStati[5] = status;
 	}
 
 	/**
@@ -410,18 +426,28 @@ public class AddValidatorDialog extends StatusDialog {
 		return "ADD_Validator_DIALOG_SECTION"; //$NON-NLS-1$
 	}
 
+	public void updateStatus() {
+		if (this.fConfigurationPage != null) {
+			IStatus status = this.fConfigurationPage.getStatus();
+			if (status != null) {
+				setPreferenceStatus(status);
+			}
+		}
+		updateStatusLine();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.eclipse.jface.dialogs.Dialog#getDialogBoundsSettings()
 	 */
-// protected IDialogSettings getDialogBoundsSettings() {
-// IDialogSettings settings = ValidatorsUI.getDefault().getDialogSettings();
-// IDialogSettings section =
-// settings.getSection(getDialogSettingsSectionName());
-// if (section == null) {
-// section = settings.addNewSection(getDialogSettingsSectionName());
-// }
-// return section;
-// }
+	// protected IDialogSettings getDialogBoundsSettings() {
+	// IDialogSettings settings = ValidatorsUI.getDefault().getDialogSettings();
+	// IDialogSettings section =
+	// settings.getSection(getDialogSettingsSectionName());
+	// if (section == null) {
+	// section = settings.addNewSection(getDialogSettingsSectionName());
+	// }
+	// return section;
+	// }
 }

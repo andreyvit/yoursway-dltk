@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -220,13 +219,7 @@ class AddExternalFolderToIndex extends IndexRequest {
 			Index index) {
 
 		IDLTKLanguageToolkit toolkit = null;
-		try {
-			toolkit = DLTKLanguageManager.getLanguageToolkit(project);
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		}
+		toolkit = DLTKLanguageManager.getLanguageToolkit(project);
 		File[] files = folder.listFiles();
 		if (files != null) {
 			for (int i = 0; i < files.length; ++i) {

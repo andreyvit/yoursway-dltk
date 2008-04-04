@@ -48,6 +48,7 @@ public class DLTKPluginImages {
 	public static final String IMG_OBJS_CLASSALT = NAME_PREFIX + "classfo_obj.gif"; //$NON-NLS-1$	
 	public static final String IMG_OBJS_CLASS = NAME_PREFIX + "class_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_NAMESPACE = NAME_PREFIX + "namespace_obj.gif"; //$NON-NLS-1$
+	public static final String IMG_OBJS_ERROROBJ = NAME_PREFIX + "error_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_TEST = NAME_PREFIX + "test_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_TESTCASE = NAME_PREFIX + "testcase_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_MODULE = NAME_PREFIX + "module_obj.gif"; //$NON-NLS-1$
@@ -137,7 +138,7 @@ public class DLTKPluginImages {
 	public static final ImageDescriptor DESC_SAVE_SESSION = createUnManaged(T_ELCL, "save.gif"); //$NON-NLS-1$
 	
 	public static final String IMG_OBJS_EXCEPTION= NAME_PREFIX + "jexception_obj.gif"; 	//$NON-NLS-1$
-	public static final String IMG_OBJS_ERROR= NAME_PREFIX + "jrtexception_obj.gif"; 		//$NON-NLS-1$
+	public static final String IMG_OBJS_ERROR= NAME_PREFIX + "error_obj.gif"; 		//$NON-NLS-1$
 	
 	public static final String IMG_OBJS_BREAKPOINT_INSTALLED= NAME_PREFIX + "brkpi_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_QUICK_ASSIST= NAME_PREFIX + "quickassist_obj.gif"; //$NON-NLS-1$
@@ -157,6 +158,7 @@ public class DLTKPluginImages {
 		
 	public static final ImageDescriptor DESC_OBJS_CLASS= createManagedFromKey(T_OBJ, IMG_OBJS_CLASS);
 	public static final ImageDescriptor DESC_OBJS_NAMESPACE= createManagedFromKey(T_OBJ, IMG_OBJS_NAMESPACE);
+	public static final ImageDescriptor DESC_OBJS_ERROR= createManagedFromKey(T_OBJ, IMG_OBJS_ERROROBJ);
 	public static final ImageDescriptor DESC_OBJS_TEST= createManagedFromKey(T_OBJ, IMG_OBJS_TEST);
 	public static final ImageDescriptor DESC_OBJS_TESTCASE= createManagedFromKey(T_OBJ, IMG_OBJS_TESTCASE);
 	public static final ImageDescriptor DESC_OBJS_MODULE= createManagedFromKey(T_OBJ, IMG_OBJS_MODULE);

@@ -11,6 +11,22 @@ package org.eclipse.dltk.python.internal.ui.text;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
+import org.eclipse.dltk.python.internal.ui.text.completion.PythonCompletionProcessor;
+import org.eclipse.dltk.python.internal.ui.text.completion.PythonContentAssistPreference;
+import org.eclipse.dltk.python.ui.text.IPythonPartitions;
+import org.eclipse.dltk.ui.CodeFormatterConstants;
+import org.eclipse.dltk.ui.text.AbstractScriptScanner;
+import org.eclipse.dltk.ui.text.IColorManager;
+import org.eclipse.dltk.ui.text.ScriptPresentationReconciler;
+import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
+import org.eclipse.dltk.ui.text.SingleTokenScriptScanner;
+import org.eclipse.dltk.ui.text.completion.ContentAssistPreference;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.text.IAutoEditStrategy;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.contentassist.ContentAssistant;
+import org.eclipse.jface.text.information.IInformationPresenter;
+import org.eclipse.jface.text.information.IInformationProvider;
 import org.eclipse.jface.text.information.InformationPresenter;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
@@ -24,8 +40,11 @@ public class PythonSourceViewerConfiguration extends
 		ScriptSourceViewerConfiguration {
 
 	private PythonTextTools fTextTools;
+
 	private PythonCodeScanner fCodeScanner;
+
 	private AbstractScriptScanner fStringScanner;
+
 	private AbstractScriptScanner fCommentScanner;
 
 	public PythonSourceViewerConfiguration(IColorManager colorManager,
@@ -40,10 +59,7 @@ public class PythonSourceViewerConfiguration extends
 
 	public String[] getIndentPrefixes(ISourceViewer sourceViewer,
 			String contentType) {
-		StringBuffer tab = new StringBuffer();
-		for (int i = 0; i < fPreferenceStore.getInt(CodeFormatterConstants.FORMATTER_TAB_SIZE); i++)
-			tab.append(' ');
-		return new String[] { "\t", tab.toString() };
+		return new String[] { "\t", "        " };
 	}
 
 	/*
@@ -68,7 +84,7 @@ public class PythonSourceViewerConfiguration extends
 	}
 
 	/**
-	 * @return <code>true</code> if the new setup without text tools is in
+	 * @return <code>true</code> iff the new setup without text tools is in
 	 *         use.
 	 */
 	private boolean isNewSetup() {
@@ -184,42 +200,6 @@ public class PythonSourceViewerConfiguration extends
 	}
 	public IInformationPresenter getOutlinePresenter(ScriptSourceViewer viewer,
 			boolean doCodeResolve) {
-		return null;
-	}
-	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
-		if (getEditor() != null) {
-
-			ContentAssistant assistant = new ContentAssistant();
-			assistant
-					.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
-
-			assistant
-					.setRestoreCompletionProposalSize(getSettings("completion_proposal_size")); //$NON-NLS-1$
-
-			// IDocument.DEFAULT_CONTENT_TYPE
-			IContentAssistProcessor scriptProcessor = new PythonScriptCompletionProcessor(
-					getEditor(), assistant, IDocument.DEFAULT_CONTENT_TYPE);
-			assistant.setContentAssistProcessor(scriptProcessor,
-					IDocument.DEFAULT_CONTENT_TYPE);
-
-			// IPythonPartitions.PYTHON_COMMENT
-			ContentAssistProcessor singleLineProcessor = new PythonScriptCompletionProcessor(
-					getEditor(), assistant, IPythonPartitions.PYTHON_COMMENT);
-			assistant.setContentAssistProcessor(singleLineProcessor,
-					IPythonPartitions.PYTHON_COMMENT);
-
-			// TclPartitions.PYTHON_STRING
-			ContentAssistProcessor stringProcessor = new PythonScriptCompletionProcessor(
-					getEditor(), assistant, IPythonPartitions.PYTHON_STRING);
-			assistant.setContentAssistProcessor(stringProcessor,
-					IPythonPartitions.PYTHON_STRING);
-
-			// Configuration
-			PythonContentAssistPreference.getDefault().configure(assistant, fPreferenceStore);
-			assistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
-			assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
-			return assistant;
-		}
 		return null;
 	}
 }

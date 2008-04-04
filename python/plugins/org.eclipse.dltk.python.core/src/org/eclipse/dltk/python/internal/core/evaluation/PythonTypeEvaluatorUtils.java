@@ -28,8 +28,6 @@ import org.eclipse.dltk.core.SourceParserUtil;
 import org.eclipse.dltk.python.parser.ast.expressions.Assignment;
 import org.eclipse.dltk.python.parser.ast.expressions.CallHolder;
 import org.eclipse.dltk.python.parser.ast.expressions.ExtendedVariableReference;
-import org.eclipse.dltk.python.parser.ast.expressions.ExtendedVariableReferenceInterface;
-import org.eclipse.dltk.python.parser.ast.expressions.ExtendedVariableReferences;
 import org.eclipse.dltk.python.parser.ast.statements.IfStatement;
 import org.eclipse.dltk.python.parser.ast.statements.SwitchStatement;
 import org.eclipse.dltk.python.parser.ast.statements.TryStatement;
@@ -64,14 +62,14 @@ public class PythonTypeEvaluatorUtils {
 				} else {
 					name = ((SimpleReference) nde).getName();
 				}
-			} else if (nde instanceof ExtendedVariableReferenceInterface) {
+			} else if (nde instanceof ExtendedVariableReference) {
 				if (name != null) {
-					name = ExtendedVariableReferences.getStringRepresentation(
-							((ExtendedVariableReferenceInterface) nde).getFlatNodeList())
+					name = ((ExtendedVariableReference) nde)
+							.getStringRepresentation()
 							+ "." + name;
 				} else {
-					name = ExtendedVariableReferences.getStringRepresentation(
-							((ExtendedVariableReferenceInterface) nde).getFlatNodeList());
+					name = ((ExtendedVariableReference) nde)
+							.getStringRepresentation();
 				}
 			} else if (nde instanceof MethodDeclaration) {
 				if (name != null) {
