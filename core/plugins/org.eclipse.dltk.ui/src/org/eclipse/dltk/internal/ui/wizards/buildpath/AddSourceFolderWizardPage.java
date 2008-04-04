@@ -11,6 +11,7 @@ package org.eclipse.dltk.internal.ui.wizards.buildpath;
 
 import java.io.File;
 import java.net.URI;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -465,7 +466,7 @@ public class AddSourceFolderWizardPage extends NewElementWizardPage {
 		if (!status.isOK()) {
 			//Don't know what the problem is, report to user
 			if (fCanCommitConflictingBuildpath) {
-				result.setInfo(NewWizardMessages.AddSourceFolderWizardPage_conflictWarning + status.getMessage());
+				result.setInfo(MessageFormat.format(NewWizardMessages.AddSourceFolderWizardPage_conflictWarning, new Object[] { status.getMessage() }));
 			} else {
 				result.setError(status.getMessage());
 			}

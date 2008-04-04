@@ -10,6 +10,7 @@
 package org.eclipse.dltk.internal.debug.ui.launcher;
 
 import java.io.File;
+import java.text.MessageFormat;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
@@ -354,7 +355,7 @@ public class WorkingDirectoryBlock extends CommonScriptLaunchTab {
 			}//end else
 		}//end try 
 		catch (CoreException e) {
-			setErrorMessage(ScriptLaunchMessages.ArgumentsTab_Exception_occurred_reading_configuration___15 + e.getStatus().getMessage()); 
+			setErrorMessage(MessageFormat.format(ScriptLaunchMessages.ArgumentsTab_Exception_occurred_reading_configuration___15, new Object[] { e.getStatus().getMessage() })); 
 			DLTKLaunchingPlugin.log(e);
 		}//end catch
 	}

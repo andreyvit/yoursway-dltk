@@ -10,6 +10,8 @@
 package org.eclipse.dltk.internal.debug.ui.launcher;
 
 
+import java.text.MessageFormat;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -102,7 +104,7 @@ public class InterpreterArgumentsBlock extends CommonScriptLaunchTab {
 		try {
 			fInterpreterArgumentsText.setText(configuration.getAttribute(ScriptLaunchConfigurationConstants.ATTR_INTERPRETER_ARGUMENTS, "")); //$NON-NLS-1$
 		} catch (CoreException e) {
-			setErrorMessage(ScriptLaunchMessages.InterpreterArgumentsTab_Exception_occurred_reading_configuration + e.getStatus().getMessage()); 
+			setErrorMessage(MessageFormat.format(ScriptLaunchMessages.InterpreterArgumentsTab_Exception_occurred_reading_configuration, new Object[] { e.getStatus().getMessage() })); 
 			DLTKDebugUIPlugin.log(e);			
 		}
 	}

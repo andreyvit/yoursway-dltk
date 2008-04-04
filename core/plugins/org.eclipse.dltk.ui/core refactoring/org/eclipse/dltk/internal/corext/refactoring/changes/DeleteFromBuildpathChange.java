@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.corext.refactoring.changes;
 
+import java.text.MessageFormat;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -93,7 +95,7 @@ public class DeleteFromBuildpathChange extends DLTKChange {
 	}
 	
 	public String getName() {
-		return RefactoringCoreMessages.DeleteFromClassPathChange_remove + getScriptProject().getElementName(); 
+		return MessageFormat.format(RefactoringCoreMessages.DeleteFromClassPathChange_remove, new Object[] { getScriptProject().getElementName() }); 
 	}
 
 	public Object getModifiedElement() {

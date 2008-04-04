@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.corext.refactoring.changes;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -111,7 +112,7 @@ public class AddToBuildpathChange extends DLTKChange {
 	}
 
 	public String getName() {
-		return RefactoringCoreMessages.AddToClasspathChange_add + getScriptProject().getElementName(); 
+		return MessageFormat.format(RefactoringCoreMessages.AddToClasspathChange_add, new Object[] { getScriptProject().getElementName() }); 
  
 	}
 
