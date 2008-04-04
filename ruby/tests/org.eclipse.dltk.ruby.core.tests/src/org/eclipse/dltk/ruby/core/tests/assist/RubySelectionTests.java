@@ -45,7 +45,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 
 	};
 
-	private static final String SELECTION_PROJECT = "Selection";
+	private static final String SELECTION_PROJECT = "RUBY_Selection";
 
 	private static final ThinkRubySelectionEngine thinkEngine = new ThinkRubySelectionEngine();
 
@@ -54,7 +54,7 @@ public class RubySelectionTests extends AbstractModelCompletionTests {
 	}
 
 	public void setUpSuite() throws Exception {
-		PROJECT = setUpScriptProject(SELECTION_PROJECT);
+		PROJECT = setUpScriptProjectTo(SELECTION_PROJECT, "Selection");
 
 		super.setUpSuite();
 		waitUntilIndexesReady();

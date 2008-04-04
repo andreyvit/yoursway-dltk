@@ -15,15 +15,63 @@ import org.eclipse.osgi.util.NLS;
 public class LaunchingMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.dltk.launching.LaunchingMessages";//$NON-NLS-1$
 	
+	public static String AbstractInterpreterInstallType_correctingLocations;
+
+	public static String AbstractInterpreterInstallType_errorResolvingDefaultLibraries;
+
+	public static String AbstractInterpreterInstallType_failedToReadFromDiscoverScriptOutputStream;
+
+	public static String AbstractInterpreterInstallType_failedToResolveLibraryLocationsForWith;
+
+	public static String AbstractInterpreterInstallType_fetchingInterpreterLibraryLocations;
+
+	public static String AbstractInterpreterInstallType_libraryDiscoveryScript;
+
+	public static String AbstractInterpreterInstallType_nullResultFromProcess;
+
+	public static String AbstractInterpreterInstallType_output;
+
+	public static String AbstractInterpreterInstallType_problemWhileResolvingInterpreterLibraries;
+
+	public static String AbstractInterpreterInstallType_resolvingLibraryPaths;
+
+	public static String AbstractInterpreterInstallType_unableToLookupLibraryPaths;
+
+	public static String AbstractInterpreterRunner_executionWasCancelled;
+
+	public static String AbstractInterpreterRunner_launching;
+
+	public static String AbstractInterpreterRunner_running;
+
+	public static String AbstractScriptLaunchConfigurationDelegate_debuggingEngineNotSelected;
+
+	public static String AbstractScriptLaunchConfigurationDelegate_executingRunner;
+
+	public static String AbstractScriptLaunchConfigurationDelegate_generatingInterpreterConfiguration;
+
+	public static String AbstractScriptLaunchConfigurationDelegate_gettingInterpreterRunner;
+
 	public static String AbstractScriptLaunchConfigurationDelegate_InterpreterEnvironment_home_directory_for__0__does_not_exist___1__6;
 	public static String AbstractScriptLaunchConfigurationDelegate_InterpreterEnvironment_home_directory_not_specified_for__0__5;
 	public static String AbstractScriptLaunchConfigurationDelegate_Main_type_not_specified_11;
+
+	public static String AbstractScriptLaunchConfigurationDelegate_startingLaunchConfiguration;
 	public static String AbstractScriptLaunchConfigurationDelegate_The_specified_InterpreterEnvironment_installation_does_not_exist_4;
+
+	public static String AbstractScriptLaunchConfigurationDelegate_validatingLaunchConfiguration;
 	public static String AbstractScriptLaunchConfigurationDelegate_Working_directory_does_not_exist___0__12;
 
 	public static String DefaultProjectBuildpathEntry_2;
 	public static String DefaultProjectBuildpathEntry_3;
 	public static String DefaultProjectBuildpathEntry_4;
+
+	public static String errDebuggingEngineScriptFileDoesntExist;
+
+	public static String errDebuggingEngineWorkingDirectoryDoesntExist;
+
+	public static String errNoInterpreterExecutablesFound;
+
+	public static String errNonExistentOrInvalidInstallLocation;
 
 	public static String InterpreterRunnerDoesntExist;
 

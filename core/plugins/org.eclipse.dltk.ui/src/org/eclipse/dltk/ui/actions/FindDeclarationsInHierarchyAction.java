@@ -67,7 +67,7 @@ public abstract class FindDeclarationsInHierarchyAction extends FindDeclarations
 		setImageDescriptor(DLTKPluginImages.DESC_OBJS_SEARCH_DECL);
 //		PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IJavaHelpContextIds.FIND_DECLARATIONS_IN_HIERARCHY_ACTION);
 		if (DLTKCore.DEBUG) {
-			System.out.println("TODO: Add help support here...");
+			System.out.println("TODO: Add help support here..."); //$NON-NLS-1$
 		}
 	}
 	

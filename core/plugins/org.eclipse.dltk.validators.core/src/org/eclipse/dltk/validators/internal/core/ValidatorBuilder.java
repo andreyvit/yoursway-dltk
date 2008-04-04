@@ -10,29 +10,50 @@
 package org.eclipse.dltk.validators.internal.core;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.builder.IScriptBuilder;
 import org.eclipse.dltk.validators.core.ValidatorRuntime;
 
 public class ValidatorBuilder implements IScriptBuilder {
 
-	public IStatus[] buildModelElements(IScriptProject project, List elements,
-			IProgressMonitor monitor, int buildType ) {
+	public IStatus buildModelElements(IScriptProject project, List elements,
+			IProgressMonitor monitor, int buildType) {
 		ValidatorRuntime.executeActiveValidators(null, elements, null, monitor);
 		return null;
 	}
 
-	public IStatus[] buildResources(IScriptProject project, List resources,
+	public IStatus buildResources(IScriptProject project, List resources,
 			IProgressMonitor monitor, int buildType) {
-		ValidatorRuntime.executeActiveValidators(null, null, resources, monitor);
+		ValidatorRuntime
+				.executeActiveValidators(null, null, resources, monitor);
 		return null;
 	}
 
-	public List getDependencies(IScriptProject project, List resources) {
-		//We don't provide dependencies here.
+	public int estimateElementsToBuild(List elements) {
+		if (ValidatorRuntime.getActiveValidators().length == 0)
+			return 0;
+		int estimation = 0;
+		for (int i = 0; i < elements.size(); i++) {
+			IModelElement element = (IModelElement) elements.get(i);
+			if (element.getElementType() == IModelElement.SOURCE_MODULE) {
+				IProjectFragment projectFragment = (IProjectFragment) element
+						.getAncestor(IModelElement.PROJECT_FRAGMENT);
+				if (!projectFragment.isExternal())
+					estimation++;
+			}
+		}
+		return estimation;
+	}
+
+	public Set getDependencies(IScriptProject project, Set resources,
+			Set allResources, Set oldExternalFolders, Set externalFolders) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

@@ -187,7 +187,7 @@ public class NewSourceFolderDialog extends StatusDialog {
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 		if (DLTKCore.DEBUG) {
-			System.err.println("NewSourceFolderDialog: Add help support");
+			System.err.println("NewSourceFolderDialog: Add help support"); //$NON-NLS-1$
 		}
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(newShell, IDLTKHelpContextIds.NEW_CONTAINER_DIALOG);
 	}

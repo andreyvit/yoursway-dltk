@@ -40,9 +40,9 @@ public class OldClassType implements IClassType {
 
 	public String getTypeName() {
 		if (fClass != null) {
-			return "class:" + fClass.getName();
+			return "class:" + fClass.getName(); //$NON-NLS-1$
 		}
-		return "class: !!unknown!!";
+		return "class: !!unknown!!"; //$NON-NLS-1$
 	}
 
 	public TypeDeclaration getTypeDeclaration() {

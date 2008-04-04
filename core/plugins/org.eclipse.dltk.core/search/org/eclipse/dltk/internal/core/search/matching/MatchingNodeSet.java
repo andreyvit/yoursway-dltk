@@ -183,7 +183,7 @@ public class MatchingNodeSet {
 			}
 			//node.print(0, result);
 			if (DLTKCore.DEBUG) {
-				System.err.println("TODO: Add node print...");
+				System.err.println("TODO: Add node print..."); //$NON-NLS-1$
 			}
 		}
 		result.append("\nPossible matches:"); //$NON-NLS-1$
@@ -195,7 +195,7 @@ public class MatchingNodeSet {
 			result.append("\nPOSSIBLE_MATCH: "); //$NON-NLS-1$
 			//node.print(0, result);
 			if (DLTKCore.DEBUG) {
-				System.err.println("TODO: Add node print...");
+				System.err.println("TODO: Add node print..."); //$NON-NLS-1$
 			}
 		}
 		return result.toString();

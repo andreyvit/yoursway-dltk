@@ -97,7 +97,7 @@ public class RubyIfStatement extends ASTNode {
 	}
 
 	public void printNode(CorePrinter output) {
-		output.formatPrintLn("if: ");
+		output.formatPrintLn("if: "); //$NON-NLS-1$
 		if (this.fCondition != null) {
 			this.fCondition.printNode(output);
 		}
@@ -111,7 +111,7 @@ public class RubyIfStatement extends ASTNode {
 			}
 		}
 		if (this.fElseStatement != null) {
-			output.formatPrintLn("else:");
+			output.formatPrintLn("else:"); //$NON-NLS-1$
 			if (!(this.fElseStatement instanceof Block)) {
 				output.indent();
 			}

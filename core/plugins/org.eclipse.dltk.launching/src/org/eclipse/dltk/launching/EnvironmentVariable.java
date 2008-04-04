@@ -61,9 +61,11 @@ public class EnvironmentVariable {
 		String value = getValue();
 		if (name == null && value == null) {
 			return new Status(IStatus.ERROR, DLTKCore.PLUGIN_ID, 0,
-					"Variable name and value could not be empty", null);
+					Messages.EnvironmentVariable_variableNameAndValueMustNotBeEmpty, null);
 		}
 		return Status.OK_STATUS;
 	}
-
+	public String toString() {
+		return this.name + "=" + this.value; //$NON-NLS-1$
+	}
 }

@@ -184,7 +184,7 @@ public class OpenTypeHistory extends History {
 	private static final String NODE_TIMESTAMP= "timestamp"; //$NON-NLS-1$
 	
 	private OpenTypeHistory(IDLTKUILanguageToolkit toolkit) {
-		super(FILENAME + toolkit.getCoreToolkit().getNatureId().replace('.', '_') +".xml", NODE_ROOT, NODE_TYPE_INFO);
+		super(FILENAME + toolkit.getCoreToolkit().getNatureId().replace('.', '_') +".xml", NODE_ROOT, NODE_TYPE_INFO); //$NON-NLS-1$
 		fTimestampMapping= new HashMap();
 		fNeedsConsistencyCheck= true;
 		load();

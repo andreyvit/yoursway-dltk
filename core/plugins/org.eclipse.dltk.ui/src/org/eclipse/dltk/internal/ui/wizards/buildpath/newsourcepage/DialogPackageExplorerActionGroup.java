@@ -302,7 +302,7 @@ public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
         	tbm.add(fActions[i]);
         }
         if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}		
         //tbm.add(new HelpAction());
         tbm.update(true);
@@ -615,7 +615,7 @@ public class DialogPackageExplorerActionGroup extends CompositeActionGroup {
         if (BuildpathModifier.isArchive(file, project))
             return ARCHIVE;
         if (DLTKCore.DEBUG) {
-			System.err.println("DialogPackageExplorerActionGroup:: Add some filters here");
+			System.err.println("DialogPackageExplorerActionGroup:: Add some filters here"); //$NON-NLS-1$
 		}
 //        if (!DLTKCore.isScriptLikeFileName(file.getName()))
 //            return FILE;

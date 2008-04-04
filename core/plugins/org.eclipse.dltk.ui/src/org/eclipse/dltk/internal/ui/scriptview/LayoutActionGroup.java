@@ -86,7 +86,7 @@ class LayoutAction extends Action implements IAction {
 		fIsFlatLayout= flat;
 		fPackageExplorer= packageExplorer;
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}		
 //		if (fIsFlatLayout)
 //			PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IScriptHelpContextIds.LAYOUT_FLAT_ACTION);
@@ -99,6 +99,6 @@ class LayoutAction extends Action implements IAction {
 	 */
 	public void run() {
 		if (fPackageExplorer.isFlatLayout() != fIsFlatLayout)
-			fPackageExplorer.toggleLayout();
+			fPackageExplorer.setFlatLayout(fIsFlatLayout);
 	}
 }

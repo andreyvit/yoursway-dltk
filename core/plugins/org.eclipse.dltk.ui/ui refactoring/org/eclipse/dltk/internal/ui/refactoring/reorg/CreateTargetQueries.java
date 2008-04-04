@@ -59,7 +59,7 @@ public class CreateTargetQueries implements ICreateTargetQueries {
 						return new NewPackageWizardPage() {
 							protected String getRequiredNature() {
 								if (DLTKCore.DEBUG) {
-									System.err.println("TODO: Add correct create new package for move case.");
+									System.err.println("TODO: Add correct create new package for move case."); //$NON-NLS-1$
 								}
 								return null;
 							}							

@@ -95,7 +95,7 @@ public class BuildpathContainerDefaultPage extends NewElementWizardPage implemen
 		setControl(composite);
 		Dialog.applyDialogFont(composite);
 		if(DLTKCore.DEBUG) {
-			System.err.println("BuildpathContainerDefaultPage: add help support");
+			System.err.println("BuildpathContainerDefaultPage: add help support"); //$NON-NLS-1$
 		}
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, IDLTKHelpContextIds.CLASSPATH_CONTAINER_DEFAULT_PAGE);
 	}

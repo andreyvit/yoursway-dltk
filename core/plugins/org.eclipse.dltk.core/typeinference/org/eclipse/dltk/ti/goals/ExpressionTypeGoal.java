@@ -44,10 +44,10 @@ public class ExpressionTypeGoal extends AbstractTypeGoal {
 	}
 
 	public String toString() {
-		return "ExpressionTypeGoal: "
-				+ ((expression != null) ? expression.toString() : "null")
-				+ " context: "
-				+ ((context != null) ? context.toString() : "null");
+		return "ExpressionTypeGoal: " //$NON-NLS-1$
+				+ ((expression != null) ? expression.toString() : "null") //$NON-NLS-1$
+				+ " context: " //$NON-NLS-1$
+				+ ((context != null) ? context.toString() : "null"); //$NON-NLS-1$
 	}
 
 }

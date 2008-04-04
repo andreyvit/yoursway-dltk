@@ -201,8 +201,12 @@ public class TestRunnerViewPart extends ViewPart {
 	final Image fTestOkIcon= TestRunnerViewPart.createImage("obj16/testok.gif"); //$NON-NLS-1$
 	final Image fTestErrorIcon= TestRunnerViewPart.createImage("obj16/testerr.gif"); //$NON-NLS-1$
 	final Image fTestFailIcon= TestRunnerViewPart.createImage("obj16/testfail.gif"); //$NON-NLS-1$
+	final Image fTestSkippedIcon= TestRunnerViewPart.createImage("obj16/testskipped.gif"); //$NON-NLS-1$
+	final Image fTestBlockedIcon= TestRunnerViewPart.createImage("obj16/testblocked.gif"); //$NON-NLS-1$
+	final Image fTestAbortedIcon= TestRunnerViewPart.createImage("obj16/testabort.gif"); //$NON-NLS-1$
 	final Image fTestRunningIcon= TestRunnerViewPart.createImage("obj16/testrun.gif"); //$NON-NLS-1$
 	final Image fTestIgnoredIcon= TestRunnerViewPart.createImage("obj16/testignored.gif"); //$NON-NLS-1$
+	final Image fTestUnknownIcon= TestRunnerViewPart.createImage("obj16/testunknown.gif"); //$NON-NLS-1$
 	
 	final ImageDescriptor fSuiteIconDescriptor= DLTKTestingPlugin.getImageDescriptor("obj16/tsuite.gif"); //$NON-NLS-1$
 	final ImageDescriptor fSuiteOkIconDescriptor= DLTKTestingPlugin.getImageDescriptor("obj16/tsuiteok.gif"); //$NON-NLS-1$
@@ -214,6 +218,12 @@ public class TestRunnerViewPart extends ViewPart {
 	final Image fSuiteOkIcon= fSuiteOkIconDescriptor.createImage();
 	final Image fSuiteErrorIcon= fSuiteErrorIconDescriptor.createImage();
 	final Image fSuiteFailIcon= fSuiteFailIconDescriptor.createImage();
+	
+	final Image fSuiteAbortedIcon = TestRunnerViewPart.createImage("obj16/tsuiteabort.gif"); //$NON-NLS-1$
+	final Image fSuiteSkippedIcon = TestRunnerViewPart.createImage("obj16/tsuiteskipped.gif"); //$NON-NLS-1$
+	final Image fSuiteBlockedIcon = TestRunnerViewPart.createImage("obj16/tsuiteblocked.gif"); //$NON-NLS-1$
+	final Image fSuiteUnknownIcon = TestRunnerViewPart.createImage("obj16/tsuiteunknown.gif"); //$NON-NLS-1$
+	
 	final Image fSuiteRunningIcon= fSuiteRunningIconDescriptor.createImage();
 	
 	// Persistence tags.
@@ -557,7 +567,7 @@ public class TestRunnerViewPart extends ViewPart {
 			registerInfoMessage(status); 
 		}
 
-		public void testFailed(TestElement testElement, TestElement.Status status, String trace, String expected, String actual) {
+		public void testFailed(TestElement testElement, TestElement.Status status, String trace, String expected, String actual, int code) {
 			if (isAutoScroll()) {
 				fTestViewer.registerFailedForAutoScroll(testElement);
 			}

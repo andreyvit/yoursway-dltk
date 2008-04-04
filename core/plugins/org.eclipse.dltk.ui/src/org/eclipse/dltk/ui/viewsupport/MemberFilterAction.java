@@ -19,7 +19,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class MemberFilterAction extends Action {
 
-	private ModelElementFilter fFilter;
+	private AbstractModelElementFilter fFilter;
 
 	private MemberFilterActionGroup fFilterActionGroup;
 
@@ -32,7 +32,7 @@ public class MemberFilterAction extends Action {
 	 * @param initValue initial state of filter
 	 */
 	public MemberFilterAction(MemberFilterActionGroup actionGroup,
-			String title, ModelElementFilter filter, String contextHelpId, boolean initValue) {
+			String title, AbstractModelElementFilter filter, String contextHelpId, boolean initValue) {
 		super(title);
 		fFilterActionGroup = actionGroup;
 		fFilter = filter;
@@ -45,7 +45,7 @@ public class MemberFilterAction extends Action {
 	/**
 	 * Returns this action's filter property.
 	 */
-	public ModelElementFilter getFilter() {
+	public AbstractModelElementFilter getFilter() {
 		return fFilter;
 	}
 

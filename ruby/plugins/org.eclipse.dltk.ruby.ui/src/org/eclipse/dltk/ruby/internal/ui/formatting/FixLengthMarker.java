@@ -28,7 +28,7 @@ public class FixLengthMarker extends AbstractBlockMarker {
 	private int calculatePosInLine(IndentationState state) {
 		int i = this.getPos() ;
 		// TODO: optimize
-		while (!state.getUnformattedText().substring(i,i+1).equals("\n")) {
+		while (!state.getUnformattedText().substring(i,i+1).equals("\n")) { //$NON-NLS-1$
 			i -= 1 ;
 			if (i == 0) {
 				break ;	

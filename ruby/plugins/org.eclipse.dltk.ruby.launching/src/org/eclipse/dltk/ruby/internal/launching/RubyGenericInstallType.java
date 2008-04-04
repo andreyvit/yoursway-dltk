@@ -20,9 +20,9 @@ import org.eclipse.dltk.ruby.launching.RubyLaunchingPlugin;
 
 public class RubyGenericInstallType extends AbstractInterpreterInstallType {
 
-	private static final String INSTALL_TYPE_NAME = "Generic Ruby";
+	private static final String INSTALL_TYPE_NAME = "Generic Ruby"; //$NON-NLS-1$
 
-	private static final String[] INTERPRETER_NAMES = { "ruby", "rubyw" };
+	private static final String[] INTERPRETER_NAMES = { "ruby", "rubyw" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	public String getNatureId() {
 		return RubyNature.NATURE_ID;
@@ -45,12 +45,12 @@ public class RubyGenericInstallType extends AbstractInterpreterInstallType {
 	}
 
 	protected File createPathFile() throws IOException {
-		return storeToMetadata(RubyLaunchingPlugin.getDefault(), "path.rb",
-				"scripts/path.rb");
+		return storeToMetadata(RubyLaunchingPlugin.getDefault(), "path.rb", //$NON-NLS-1$
+				"scripts/path.rb"); //$NON-NLS-1$
 	}
 
 	protected String getBuildPathDelimeter() {
-		return ";:";
+		return ";:"; //$NON-NLS-1$
 	}
 
 	protected ILog getLog() {

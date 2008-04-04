@@ -43,14 +43,14 @@ public class DLTKSearchDocument extends SearchDocument {
 
 	public DLTKSearchDocument(String path, IPath containerPath, char[] contents, SearchParticipant participant, boolean external) {
 		super(IDLTKSearchScope.FILE_ENTRY_SEPARATOR + path, participant );
-		this.charContents = new String( contents );
+		this.charContents = (contents != null) ? new String( contents ) : null;
 		this.external = external;
 	}	
 
 	public String getContents() {
 		char[] contents = getCharContents();
 		if( contents == null ) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		String ret = new String(contents);
 		return ret;

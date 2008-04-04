@@ -240,12 +240,12 @@
        point="org.eclipse.ui.bindings">
          <key
                commandId="org.eclipse.dltk.ruby.ui.navigate.open.type"
-               contextId="org.eclipse.dltk.ui.rubyEditorScope"
+               contextId="org.eclipse.ui.contexts.dialogAndWindow"
                schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
                sequence="M1+M2+T"/>        
         <key
               commandId="org.eclipse.dltk.ruby.ui.navigate.open.type.in.hierarchy"
-              contextId="org.eclipse.dltk.ui.rubyEditorScope"
+              contextId="org.eclipse.ui.contexts.dialogAndWindow"
               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
               sequence="M1+M2+H"/> 
  </extension>
@@ -308,7 +308,8 @@
            class="org.eclipse.dltk.ruby.internal.ui.documentation.RubyTypeDocumentationProvider"
            id="org.eclipse.dltk.ruby.ui.RubyTypeDocumentationProvider"
            nature="org.eclipse.dltk.ruby.core.nature"/> -->
-  </extension> 
+  </extension>
+
   	<extension
 		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
 		id="RubyTypeCompletionProposalComputer">

@@ -64,15 +64,15 @@ public class genTestimport1 extends AbstractModelTests
 	}
 	
 
-	public void testEval0() throws Exception {
+	public void REM_testEval0() throws Exception {
 		testType( "import1.py", "i1", "number" );
 	}
 
-	public void testEval1() throws Exception {
+	public void REM_testEval1() throws Exception {
 		testType( "import1.py", "i2", "string" );
 	}
 
-	public void testEval2() throws Exception {
+	public void REM_testEval2() throws Exception {
 		testType( "import1.py", "i3", "number" );
 	}
 

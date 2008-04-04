@@ -11,6 +11,7 @@ package org.eclipse.dltk.tcl.internal.ui.editor;
 
 import java.util.ArrayList;
 
+import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
 import org.eclipse.dltk.internal.ui.editor.ScriptOutlinePage;
@@ -18,6 +19,7 @@ import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.dltk.ui.actions.MemberFilterActionGroup;
 import org.eclipse.dltk.ui.viewsupport.MemberFilterAction;
 import org.eclipse.dltk.ui.viewsupport.ModelElementFilter;
+import org.eclipse.dltk.ui.viewsupport.ModelElementFlagsFilter;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ILabelDecorator;
@@ -69,6 +71,7 @@ public class TclOutlinePage extends ScriptOutlinePage {
 		title = ActionMessages.MemberFilterActionGroup_hide_namespaces_label;
 		// TODO help support
 		helpContext = "";// IDLTKHelpContextIds.FILTER_PUBLIC_ACTION;
+
 		MemberFilterAction hideNamespaces = new MemberFilterAction(
 				fMemberFilterActionGroup, title, new ModelElementFilter(
 						IModelElement.TYPE), helpContext, true);
@@ -79,7 +82,19 @@ public class TclOutlinePage extends ScriptOutlinePage {
 		DLTKPluginImages.setLocalImageDescriptors(hideNamespaces,
 				"filter_classes.gif"); //$NON-NLS-1$
 		actions.add(hideNamespaces);
-		// order corresponds to order in toolbar
+
+		MemberFilterAction hidePrivate = new MemberFilterAction(
+				fMemberFilterActionGroup, title, new ModelElementFlagsFilter(
+						Modifiers.AccPrivate), helpContext, true);
+		hidePrivate
+				.setDescription(ActionMessages.MemberFilterActionGroup_hide_private_description);
+		hidePrivate
+				.setToolTipText(ActionMessages.MemberFilterActionGroup_hide_private_tooltip);
+		DLTKPluginImages.setLocalImageDescriptors(hidePrivate,
+				"filter_private.gif"); //$NON-NLS-1$
+		actions.add(hidePrivate);
+
+		// order corresponds to ordeutilusr in toolbar
 		MemberFilterAction[] fFilterActions = (MemberFilterAction[]) actions
 				.toArray(new MemberFilterAction[actions.size()]);
 		fMemberFilterActionGroup.setActions(fFilterActions);

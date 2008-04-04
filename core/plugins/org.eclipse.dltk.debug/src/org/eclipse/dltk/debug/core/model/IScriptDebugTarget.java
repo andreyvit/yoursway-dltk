@@ -47,4 +47,22 @@ public interface IScriptDebugTarget extends IDebugTarget {
 	boolean isUseStepFilters();
 
 	IDLTKLanguageToolkit getLanguageToolkit();
+	
+	/**
+	 * Returns <code>true</code> if the thread should break on the first
+	 * executable line of code, <code>false</code> otherwise.
+	 */
+	boolean breakOnFirstLineEnabled();
+	
+	void toggleGlobalVariables(boolean enabled);
+	
+	void toggleClassVariables(boolean enabled);
+	
+	void toggleLocalVariables(boolean enabled);
+	
+	boolean retrieveGlobalVariables();
+	
+	boolean retrieveClassVariables();
+	
+	boolean retrieveLocalVariables();
 }

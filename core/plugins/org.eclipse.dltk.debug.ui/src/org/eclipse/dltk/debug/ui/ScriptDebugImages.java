@@ -111,8 +111,8 @@ public class ScriptDebugImages {
 	private static final String T_ELCL = ICONS_PATH + "etool16/"; //$NON-NLS-1$
 
 	
-	public static final String IMG_OBJS_METHOD_ENTRY_ENABLED = "IMG_OBJS_METHOD_ENTRY";
-	public static final String IMG_OBJS_METHOD_ENTRY_DIABLED = "IMG_OBJS_METHOD_ENTRY_DISABLED";
+	public static final String IMG_OBJS_METHOD_ENTRY_ENABLED = "IMG_OBJS_METHOD_ENTRY"; //$NON-NLS-1$
+	public static final String IMG_OBJS_METHOD_ENTRY_DIABLED = "IMG_OBJS_METHOD_ENTRY_DISABLED"; //$NON-NLS-1$
 	
 
 	/**

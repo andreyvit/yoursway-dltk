@@ -1170,7 +1170,7 @@ public class Util {
 			String cuName) {
 		// TODO: Add more complex check here.
 		if (DLTKCore.DEBUG) {
-			System.out.println("//TODO: Add more complex check here.");
+			System.out.println("//TODO: Add more complex check here."); //$NON-NLS-1$
 		}
 		if (elementName.startsWith(cuName)) {
 			return true;

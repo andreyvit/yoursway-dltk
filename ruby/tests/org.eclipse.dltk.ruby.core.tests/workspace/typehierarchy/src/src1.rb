@@ -8,25 +8,25 @@
 
 ###############################################################################
 
-class A
+class AA
 	def functionA
 		1
 	end
 end
 
-class B < A
+class BB < AA
 	def functionB
 		2
 	end
 end
 
-class C < B
+class CC < BB
 	def functionC
 		3
 	end
 end
 
-class D < A
+class DD < AA
 	def functionD
 		4
 	end

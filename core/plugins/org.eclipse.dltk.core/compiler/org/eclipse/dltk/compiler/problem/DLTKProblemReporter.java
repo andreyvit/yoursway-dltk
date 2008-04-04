@@ -24,7 +24,7 @@ public class DLTKProblemReporter implements IProblemReporter {
 			throws CoreException {
 		IMarker m = res.createMarker(DefaultProblem.MARKER_TYPE_PROBLEM);
 
-		m.setAttribute(IMarker.LINE_NUMBER, line);
+		m.setAttribute(IMarker.LINE_NUMBER, line + 1);
 		m.setAttribute(IMarker.MESSAGE, msg);
 		m.setAttribute(IMarker.SEVERITY, severity);
 		m.setAttribute(IMarker.PRIORITY, priority);
@@ -36,6 +36,7 @@ public class DLTKProblemReporter implements IProblemReporter {
 
 	private IResource resource;
 	private IProblemFactory factory;
+	private boolean cleaned = false;
 
 	public IMarker reportProblem(IProblem problem) throws CoreException {
 		int severity = IMarker.SEVERITY_INFO;
@@ -57,11 +58,11 @@ public class DLTKProblemReporter implements IProblemReporter {
 
 	public DLTKProblemReporter(IResource resource, IProblemFactory factory) {
 		if (resource == null) {
-			throw new NullPointerException("resource cannot be null");
+			throw new NullPointerException(Messages.DLTKProblemReporter_resourceCannotBeNull);
 		}
 
 		if (factory == null) {
-			throw new NullPointerException("factory cannot be null");
+			throw new NullPointerException(Messages.DLTKProblemReporter_factoryCannotBeNull);
 		}
 
 		this.resource = resource;
@@ -70,7 +71,7 @@ public class DLTKProblemReporter implements IProblemReporter {
 
 	// dummy method
 	public void reportTestProblem() {
-		IProblem problem = new DefaultProblem("originatingFileName", "message",
+		IProblem problem = new DefaultProblem("originatingFileName", "message", //$NON-NLS-1$ //$NON-NLS-2$
 				0, null, IMarker.SEVERITY_INFO, 0, 1, 0, 0);
 		try {
 			reportProblem(problem);
@@ -89,6 +90,11 @@ public class DLTKProblemReporter implements IProblemReporter {
 					e.printStackTrace();
 				}
 			}
+			this.cleaned  = true;
 		}
+	}
+
+	public boolean isMarkersCleaned() {
+		return this.cleaned;
 	}
 }

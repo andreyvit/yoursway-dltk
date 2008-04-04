@@ -1,5 +1,8 @@
 package org.eclipse.dltk.launching;
 
+import java.io.File;
+import java.text.MessageFormat;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -11,6 +14,7 @@ import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.PreferencesLookupDelegate;
 import org.eclipse.dltk.dbgp.DbgpSessionIdGenerator;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
+import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
 import org.eclipse.dltk.debug.core.ExtendedDebugEventDetails;
 import org.eclipse.dltk.debug.core.IDbgpService;
 import org.eclipse.dltk.debug.core.ScriptDebugManager;
@@ -21,14 +25,15 @@ import org.eclipse.dltk.internal.launching.InterpreterMessages;
 import org.eclipse.dltk.launching.debug.DbgpInterpreterConfig;
 import org.eclipse.dltk.launching.debug.DebuggingEngineManager;
 import org.eclipse.dltk.launching.debug.IDebuggingEngine;
+import org.eclipse.dltk.utils.PlatformFileUtils;
 
 public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 	// Launch attributes
-	public static final String LAUNCH_ATTR_DEBUGGING_ENGINE_ID = "debugging_engine_id";
+	public static final String LAUNCH_ATTR_DEBUGGING_ENGINE_ID = "debugging_engine_id"; //$NON-NLS-1$
 
-	private static final String LOCALHOST = "127.0.0.1";
+	private static final String LOCALHOST = "127.0.0.1"; //$NON-NLS-1$
 
-	public static final String OVERRIDE_EXE = "OVERRIDE_EXE";
+	public static final String OVERRIDE_EXE = "OVERRIDE_EXE"; //$NON-NLS-1$
 
 	protected String getSessionId(ILaunchConfiguration configuration)
 			throws CoreException {
@@ -50,8 +55,8 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 		super(install);
 	}
 
-	protected void initializeLaunch(ILaunch launch, InterpreterConfig config)
-			throws CoreException {
+	protected void initializeLaunch(ILaunch launch, InterpreterConfig config,
+			PreferencesLookupDelegate delegate) throws CoreException {
 		final IDbgpService service = DLTKDebugPlugin.getDefault()
 				.getDbgpService();
 
@@ -60,6 +65,15 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 		}
 
 		final IScriptDebugTarget target = addDebugTarget(launch, service);
+
+		String qualifier = getDebugPreferenceQualifier();
+
+		target.toggleGlobalVariables(delegate.getBoolean(qualifier,
+				showGlobalVarsPreferenceKey()));
+		target.toggleClassVariables(delegate.getBoolean(qualifier,
+				showClassVarsPreferenceKey()));
+		target.toggleLocalVariables(delegate.getBoolean(qualifier,
+				showLocalVarsPreferenceKey()));
 
 		// Disable the output of the debugging engine process
 		launch.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT, Boolean.FALSE
@@ -91,17 +105,14 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 			monitor = new NullProgressMonitor();
 		}
 
-		monitor.beginTask("Launching...", 5);
+		monitor.beginTask(InterpreterMessages.DebuggingEngineRunner_launching, 5);
 		if (monitor.isCanceled()) {
 			return;
 		}
 		try {
-			IScriptProject sProject = ScriptRuntime.getScriptProject(launch
-					.getLaunchConfiguration());
-			PreferencesLookupDelegate prefDelegate = new PreferencesLookupDelegate(sProject
-					.getProject());
+			PreferencesLookupDelegate prefDelegate = createPreferencesLookupDelegate(launch);
 
-			initializeLaunch(launch, config);
+			initializeLaunch(launch, config, prefDelegate);
 			InterpreterConfig newConfig = addEngineConfig(config, prefDelegate);
 
 			// Starting debugging engine
@@ -111,7 +122,7 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 						ExtendedDebugEventDetails.BEFORE_VM_STARTED);
 
 				// Running
-				monitor.subTask("Running");
+				monitor.subTask(InterpreterMessages.DebuggingEngineRunner_running);
 				process = rawRun(launch, newConfig);
 			} catch (CoreException e) {
 				abort(InterpreterMessages.errDebuggingEngineNotStarted, e);
@@ -200,5 +211,96 @@ public abstract class DebuggingEngineRunner extends AbstractInterpreterRunner {
 				getDebuggingEngineId());
 	}
 
+	protected String showGlobalVarsPreferenceKey() {
+		return DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL;
+	}
+
+	protected String showClassVarsPreferenceKey() {
+		return DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS;
+	}
+
+	protected String showLocalVarsPreferenceKey() {
+		return DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL;
+	}
+
 	protected abstract String getDebuggingEngineId();
+
+	protected PreferencesLookupDelegate createPreferencesLookupDelegate(
+			ILaunch launch) throws CoreException {
+		IScriptProject sProject = ScriptRuntime.getScriptProject(launch
+				.getLaunchConfiguration());
+		return new PreferencesLookupDelegate(sProject.getProject());
+	}
+
+	/**
+	 * Returns the id of the plugin whose preference store contains general
+	 * debugging preference settings.
+	 */
+	protected abstract String getDebugPreferenceQualifier();
+
+	/**
+	 * Returns the id of the plugin whose preference store contains debugging
+	 * engine preferences.
+	 */
+	protected abstract String getDebuggingEnginePreferenceQualifier();
+
+	/**
+	 * Returns the preference key used to store the enable logging setting.
+	 * 
+	 * <p>
+	 * Note: this preference controls logging for the actual debugging engine,
+	 * and not the DBGP protocol output.
+	 * </p>
+	 */
+	protected abstract String getLoggingEnabledPreferenceKey();
+
+	/**
+	 * Returns the preference key used to store the log file path
+	 */
+	protected abstract String getLogFilePathPreferenceKey();
+
+	/**
+	 * Returns the preference key usd to store the log file name
+	 */
+	protected abstract String getLogFileNamePreferenceKey();
+
+	/**
+	 * Returns true if debugging engine logging is enabled.
+	 * 
+	 * <p>
+	 * Subclasses should use this method to determine of logging is enabled for
+	 * the given debugging engine.
+	 * </p>
+	 */
+	protected boolean isLoggingEnabled(PreferencesLookupDelegate delegate) {
+		String key = getLoggingEnabledPreferenceKey();
+		String qualifier = getDebuggingEnginePreferenceQualifier();
+
+		return delegate.getBoolean(qualifier, key);
+	}
+
+	/**
+	 * Returns a fully qualifed path to a log file name.
+	 * 
+	 * <p>
+	 * If the user chose to use '{0}' in their file name, it will be replaced
+	 * with the debugging session id.
+	 * </p>
+	 */
+	protected File getLogFileName(PreferencesLookupDelegate delegate,
+			String sessionId) {
+		String qualifier = getDebuggingEnginePreferenceQualifier();
+
+		String logFilePath = delegate.getString(qualifier,
+				getLogFilePathPreferenceKey());
+		String logFileName = delegate.getString(qualifier,
+				getLogFileNamePreferenceKey());
+
+		String fileName = MessageFormat.format(logFileName,
+				new Object[] { sessionId });
+
+		File file = new File(logFilePath + File.separator + fileName);
+
+		return PlatformFileUtils.findAbsoluteOrEclipseRelativeFile(file);
+	}
 }

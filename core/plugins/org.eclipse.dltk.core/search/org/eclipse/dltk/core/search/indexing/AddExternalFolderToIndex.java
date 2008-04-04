@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.core.search.indexing;
 
@@ -46,16 +46,18 @@ class AddExternalFolderToIndex extends IndexRequest {
 	}
 
 	public int hashCode() {
-		if (this.containerPath != null)
+		if (this.containerPath != null) {
 			return this.containerPath.hashCode();
+		}
 		return -1;
 	}
 
 	public boolean equals(Object o) {
 		if (o instanceof AddExternalFolderToIndex) {
-			if (this.containerPath != null)
+			if (this.containerPath != null) {
 				return this.containerPath
 						.equals(((AddExternalFolderToIndex) o).containerPath);
+			}
 		}
 		return false;
 	}
@@ -65,13 +67,16 @@ class AddExternalFolderToIndex extends IndexRequest {
 
 	public boolean execute(IProgressMonitor progressMonitor) {
 		if (this.isCancelled || progressMonitor != null
-				&& progressMonitor.isCanceled())
+				&& progressMonitor.isCanceled()) {
 			return true;
-		if (!project.isAccessible())
+		}
+		if (!this.project.isAccessible()) {
 			return true; // nothing to do
-		File folder = new File(containerPath.toOSString());
-		if (folder == null || folder.isFile())
+		}
+		File folder = new File(this.containerPath.toOSString());
+		if (folder == null || folder.isFile()) {
 			return true; // nothing to do, source folder was removed
+		}
 		/* ensure no concurrent write access to index */
 		Index index = this.manager.getIndex(this.containerPath, true, /*
 																		 * reuse
@@ -81,9 +86,10 @@ class AddExternalFolderToIndex extends IndexRequest {
 					 * create if none
 					 */);
 		if (index != null) {
-			if (JobManager.VERBOSE)
+			if (JobManager.VERBOSE) {
 				org.eclipse.dltk.internal.core.util.Util
 						.verbose("-> no indexing required (index already exists) for " + this.containerPath); //$NON-NLS-1$
+			}
 			return true;
 		}
 		index = this.manager.getIndexForUpdate(this.containerPath, true, /*
@@ -94,16 +100,18 @@ class AddExternalFolderToIndex extends IndexRequest {
 				 * create if none
 				 */);
 		if (index == null) {
-			if (JobManager.VERBOSE)
+			if (JobManager.VERBOSE) {
 				org.eclipse.dltk.internal.core.util.Util
 						.verbose("-> index could not be created for " + this.containerPath); //$NON-NLS-1$
+			}
 			return true;
 		}
 		ReadWriteMonitor monitor = index.monitor;
 		if (monitor == null) {
-			if (JobManager.VERBOSE)
+			if (JobManager.VERBOSE) {
 				org.eclipse.dltk.internal.core.util.Util
 						.verbose("-> index for " + this.containerPath + " just got deleted"); //$NON-NLS-1$//$NON-NLS-2$
+			}
 			return true; // index got deleted since acquired
 		}
 		try {
@@ -118,12 +126,12 @@ class AddExternalFolderToIndex extends IndexRequest {
 															 */);
 			final SourceIndexerRequestor requestor = indexManager
 					.getSourceRequestor(project);
-			if (JobManager.VERBOSE)
+			if (JobManager.VERBOSE) {
 				org.eclipse.dltk.internal.core.util.Util
-						.verbose("-> indexing " + containerPath.toOSString()); //$NON-NLS-1$
+						.verbose("-> indexing " + this.containerPath.toOSString()); //$NON-NLS-1$
+			}
 			long initialTime = System.currentTimeMillis();
-			String[] paths = index.queryDocumentNames(""); // all file names
-			// //$NON-NLS-1$
+			String[] paths = index.queryDocumentNames(""); // all file names //$NON-NLS-1$
 			if (paths != null) {
 				int max = paths.length;
 				/*
@@ -134,9 +142,10 @@ class AddExternalFolderToIndex extends IndexRequest {
 				 */
 				SimpleLookupTable indexedFileNames = new SimpleLookupTable(
 						max == 0 ? 33 : max + 11);
-				for (int i = 0; i < max; i++)
+				for (int i = 0; i < max; i++) {
 					indexedFileNames.put(paths[i], DELETED);
-				visit(indexedFileNames, project, folder, parser, requestor,
+				}
+				this.visit(indexedFileNames, project, folder, parser, requestor,
 						indexManager, container, false, null, index);
 				boolean needToReindex = indexedFileNames.elementSize != max; // a
 				// new
@@ -153,13 +162,14 @@ class AddExternalFolderToIndex extends IndexRequest {
 						}
 					}
 					if (!needToReindex) {
-						if (JobManager.VERBOSE)
+						if (JobManager.VERBOSE) {
 							org.eclipse.dltk.internal.core.util.Util
 									.verbose("-> no indexing required (index is consistent with library) for " //$NON-NLS-1$
-											+ containerPath.toOSString()
+											+ this.containerPath.toOSString()
 											+ " (" //$NON-NLS-1$
 											+ (System.currentTimeMillis() - initialTime)
 											+ "ms)"); //$NON-NLS-1$
+						}
 						this.manager.saveIndex(index); // to ensure its placed
 						// into the saved state
 						return true;
@@ -172,29 +182,30 @@ class AddExternalFolderToIndex extends IndexRequest {
 			// previous entries
 			SearchParticipant participant = SearchEngine
 					.getDefaultSearchParticipant();
-			index = manager.recreateIndex(this.containerPath);
+			index = this.manager.recreateIndex(this.containerPath);
 			if (index == null) {
 				// failed to recreate index, see 73330
-				manager.removeIndex(this.containerPath);
+				this.manager.removeIndex(this.containerPath);
 				return false;
 			}
-			visit(null, project, folder, parser, requestor, indexManager,
+			this.visit(null, project, folder, parser, requestor, indexManager,
 					container, true, participant, index);
 			this.manager.saveIndex(index);
-			if (JobManager.VERBOSE)
+			if (JobManager.VERBOSE) {
 				org.eclipse.dltk.internal.core.util.Util
 						.verbose("-> done indexing of " //$NON-NLS-1$
-								+ containerPath.toOSString()
+								+ this.containerPath.toOSString()
 								+ " (" //$NON-NLS-1$
 								+ (System.currentTimeMillis() - initialTime)
-								+ "ms)"); //$NON-NLS-1$			
+								+ "ms)"); //$NON-NLS-1$
+			}
 		} catch (IOException ex) {
 			if (JobManager.VERBOSE) {
 				org.eclipse.dltk.internal.core.util.Util
 						.verbose("-> failed to index " + this.containerPath + " because of the following exception:"); //$NON-NLS-1$ //$NON-NLS-2$
 				ex.printStackTrace();
 			}
-			manager.removeIndex(this.containerPath);
+			this.manager.removeIndex(this.containerPath);
 			return false;
 		} finally {
 			monitor.exitRead(); // free read lock
@@ -220,9 +231,10 @@ class AddExternalFolderToIndex extends IndexRequest {
 		if (files != null) {
 			for (int i = 0; i < files.length; ++i) {
 				if (this.isCancelled) {
-					if (JobManager.VERBOSE)
+					if (JobManager.VERBOSE) {
 						org.eclipse.dltk.internal.core.util.Util
-								.verbose("-> indexing of " + containerPath.toOSString() + " has been cancelled"); //$NON-NLS-1$ //$NON-NLS-2$
+								.verbose("-> indexing of " + this.containerPath.toOSString() + " has been cancelled"); //$NON-NLS-1$ //$NON-NLS-2$
+					}
 					return;
 				}
 				if (files[i].isDirectory()) {
@@ -232,32 +244,35 @@ class AddExternalFolderToIndex extends IndexRequest {
 					if (!((fPath.segmentCount() == 0 || valid))) {
 						continue;
 					}
-					visit(table, project, files[i], parser, requestor,
-							indexManager, container, operation, participant,
-							index);
+					if (!Util.isExcluded(fPath, this.inclusionPatterns,
+							this.exclusionPatterns, true)) {
+						this.visit(table, project, files[i], parser, requestor,
+								indexManager, container, operation,
+								participant, index);
+					}
 				} else {
 					String path = files[i].getAbsolutePath();
 					IPath rPath = new Path(path);
 					if (org.eclipse.dltk.internal.core.util.Util
 							.isValidSourceModuleName(project, path)) {
 						if (DLTKCore.DEBUG) {
-							System.err.println("Out:" + path);
+							System.err.println("Out:" + path); //$NON-NLS-1$
 						}
 						if (this.exclusionPatterns == null
 								&& this.inclusionPatterns == null) {
 							if (!operation) {
 								table.put(rPath.toString(), EXISTS);
 							} else {
-								indexDocument(parser, requestor, participant,
+								this.indexDocument(parser, requestor, participant,
 										index, path, toolkit);
 							}
 						} else {
-							if (!Util.isExcluded(rPath, inclusionPatterns,
-									exclusionPatterns, false)) {
+							if (!Util.isExcluded(rPath, this.inclusionPatterns,
+									this.exclusionPatterns, false)) {
 								if (!operation) {
 									table.put(rPath.toString(), EXISTS);
 								} else {
-									indexDocument(parser, requestor,
+									this.indexDocument(parser, requestor,
 											participant, index, path, toolkit);
 								}
 							}
@@ -289,7 +304,7 @@ class AddExternalFolderToIndex extends IndexRequest {
 				.segmentCount());
 		dpath = dpath.setDevice(null);
 		DLTKSearchDocument entryDocument = new DLTKSearchDocument(dpath
-				.toOSString(), containerPath, contents, participant, true);
+				.toOSString(), this.containerPath, contents, participant, true);
 		entryDocument.parser = parser;
 		entryDocument.requestor = requestor;
 		entryDocument.toolkit = toolkit;

@@ -49,10 +49,15 @@ import org.jruby.parser.RubyParserResult;
  */
 public class DLTKRubyParser {
 	private boolean success;
+    private RubyParserResult result = null;
 
 	public DLTKRubyParser() {
 	}
 
+	public RubyParserResult getParserResult() {
+	  return result;
+	}
+	
 	public Node parse(String file, String content,
 			IProblemReporter problemReporter) {
 		return parse(file, new StringReader(content), problemReporter);
@@ -63,7 +68,6 @@ public class DLTKRubyParser {
 		RubyParserConfiguration configuration = new RubyParserConfiguration();
 
 		DefaultRubyParser parser = null;
-		RubyParserResult result = null;
 		success = false;
 		IDLTKRubyWarnings warnings;
 		if (problemReporter == null)

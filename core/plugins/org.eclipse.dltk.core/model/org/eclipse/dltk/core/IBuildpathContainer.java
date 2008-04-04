@@ -88,18 +88,19 @@ public interface IBuildpathContainer {
 	 * </ul>
 	 * The effects of using other script model APIs are unspecified.
 	 * </p>
+	 * @param project TODO
 	 * 
 	 * @return IBuildpathEntry[] - the buildpath entries this container represents
 	 * @see IBuildpathEntry
 	 */	
-    IBuildpathEntry[] getBuildpathEntries();
+    IBuildpathEntry[] getBuildpathEntries(IScriptProject project);
 
 	/**
 	 * Answers a readable description of this container
 	 * 
 	 * @return String - a string description of the container
 	 */	
-    String getDescription();
+    String getDescription(IScriptProject project);
 
 	/**
 	 * Answers the kind of this container. Can be either:
@@ -127,6 +128,6 @@ public interface IBuildpathContainer {
 	 */	
     IPath getPath();
     
-    IBuiltinModuleProvider getBuiltinProvider();
+    IBuiltinModuleProvider getBuiltinProvider(IScriptProject project);
 }
 

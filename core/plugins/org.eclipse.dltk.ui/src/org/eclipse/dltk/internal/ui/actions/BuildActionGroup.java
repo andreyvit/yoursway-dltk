@@ -59,7 +59,7 @@ public class BuildActionGroup extends ActionGroup {
 		
 		fBuildAction= new BuildAction(shell, IncrementalProjectBuilder.INCREMENTAL_BUILD);
 		fBuildAction.setText(ActionMessages.BuildAction_label); 
-		fBuildAction.setActionDefinitionId("org.eclipse.dltk.ui.project.buildProject"); //$NON-NLS-1$
+		fBuildAction.setActionDefinitionId("org.eclipse.ui.project.buildProject"); //$NON-NLS-1$
 		
 		fRefreshAction= new RefreshAction(fSite);
 		fRefreshAction.setActionDefinitionId("org.eclipse.ui.file.refresh"); //$NON-NLS-1$

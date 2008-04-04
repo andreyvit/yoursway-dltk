@@ -14,7 +14,7 @@ public class CustomWildcardsList {
 	
 	
 	public void addWcard(){
-		CustomWildcard r = new CustomWildcard("x", "Enter pattern...", "Enter description...");
+		CustomWildcard r = new CustomWildcard("x", Messages.CustomWildcardsList_enterPattern, Messages.CustomWildcardsList_enterDescription); //$NON-NLS-1$
 		wcards.add(r);
 		Iterator iterator = changeListeners.iterator();
 		while(iterator.hasNext()){

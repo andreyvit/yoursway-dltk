@@ -30,8 +30,8 @@ public class ExternalCheckerRulesPreferencePage extends PreferencePage
 
 	public ExternalCheckerRulesPreferencePage() {
 		super();
-		setTitle("External checker rules");
-		setDescription("External checker rules");
+		setTitle(Messages.ExternalCheckerRulesPreferencePage_externalCheckerRules);
+		setDescription(Messages.ExternalCheckerRulesPreferencePage_externalCheckerRules);
 	}
 
 	public void init(IWorkbench workbench) {

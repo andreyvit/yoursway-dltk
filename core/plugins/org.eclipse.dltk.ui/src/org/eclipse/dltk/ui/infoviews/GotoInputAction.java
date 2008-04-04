@@ -29,7 +29,7 @@ class GotoInputAction extends Action {
 		setDescription(InfoViewMessages.GotoInputAction_description);
 
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IJavaHelpContextIds.OPEN_INPUT_ACTION);
-		System.err.println("TODO: add help support here"); //TODO
+		System.err.println("TODO: add help support here"); //$NON-NLS-1$
 	}
 
 	public void run() {

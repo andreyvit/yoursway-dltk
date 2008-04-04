@@ -10,9 +10,9 @@
 package org.eclipse.dltk.dbgp;
 
 public interface IDbgpFeature {
-	final String ZERO_VALUE = "0";
+	final String ZERO_VALUE = "0"; //$NON-NLS-1$
 
-	final String ONE_VALUE = "1";
+	final String ONE_VALUE = "1"; //$NON-NLS-1$
 
 	boolean isSupported();
 

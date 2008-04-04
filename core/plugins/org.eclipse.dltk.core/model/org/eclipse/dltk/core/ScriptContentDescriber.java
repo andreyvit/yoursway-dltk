@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.content.ITextContentDescriber;
 
 public abstract class ScriptContentDescriber implements ITextContentDescriber {
 	public static final QualifiedName DLTK_VALID = new QualifiedName(
-			DLTKCore.PLUGIN_ID, "valid");
+			DLTKCore.PLUGIN_ID, "valid"); //$NON-NLS-1$
 	public static final Boolean TRUE = new Boolean(true);
 	public static final Boolean FALSE = new Boolean(true);
 
@@ -43,16 +43,15 @@ public abstract class ScriptContentDescriber implements ITextContentDescriber {
 
 			String header = new String(buf);
 
-			if (header != null) {
-				if (checkBufferForPatterns(header, headerPatterns)) {
+			if (checkBufferForPatterns(header, headerPatterns)) {
+				return true;
+			}
+			if (file.length() < BUFFER_LENGTH && footerPatterns != null) {
+				if (checkBufferForPatterns(header, footerPatterns)) {
 					return true;
 				}
-				if (file.length() < BUFFER_LENGTH && footerPatterns != null) {
-					if (checkBufferForPatterns(header, footerPatterns)) {
-						return true;
-					}
-				}
 			}
+
 			return false;
 		} finally {
 			if (reader != null) {
@@ -66,7 +65,7 @@ public abstract class ScriptContentDescriber implements ITextContentDescriber {
 
 	private static boolean checkFooter(File file, Pattern[] footerPatterns)
 			throws FileNotFoundException, IOException {
-		RandomAccessFile raFile = new RandomAccessFile(file, "r");
+		RandomAccessFile raFile = new RandomAccessFile(file, "r"); //$NON-NLS-1$
 		try {
 			long len = BUFFER_LENGTH;
 			long fileSize = raFile.length();
@@ -121,7 +120,6 @@ public abstract class ScriptContentDescriber implements ITextContentDescriber {
 		}
 		return false;
 	}
-	
 
 	public static boolean checkPatterns(Reader stream,
 			Pattern[] headerPatterns, Pattern[] footerPatterns) {
@@ -130,7 +128,7 @@ public abstract class ScriptContentDescriber implements ITextContentDescriber {
 		while (true) {
 			try {
 				String line = reader.readLine();
-				buffer.append(line).append("\n");
+				buffer.append(line).append("\n"); //$NON-NLS-1$
 				if (line == null) {
 					break;
 				}
@@ -143,12 +141,13 @@ public abstract class ScriptContentDescriber implements ITextContentDescriber {
 		}
 		String content = buffer.toString();
 		String header = content;
-		if( header.length() > HEADER_LENGTH ) {
+		if (header.length() > HEADER_LENGTH) {
 			header = header.substring(0, HEADER_LENGTH);
 		}
 		String footer = content;
-		if( footer.length() > FOOTER_LENGTH) {
-			footer = footer.substring(footer.length() - FOOTER_LENGTH, footer.length()-1);
+		if (footer.length() > FOOTER_LENGTH) {
+			footer = footer.substring(footer.length() - FOOTER_LENGTH, footer
+					.length() - 1);
 		}
 		if (checkBufferForPatterns(header, headerPatterns)) {
 			return true;

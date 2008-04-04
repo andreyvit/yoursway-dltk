@@ -16,7 +16,7 @@ import java.util.List;
 public class RubyObjectMixinClass extends RubyMixinClass {
 
 	public RubyObjectMixinClass(RubyMixinModel model, boolean meta) {
-		super(model, "Object" + (meta?"":RubyMixin.INSTANCE_SUFFIX), false);
+		super(model, "Object" + (meta?"":RubyMixin.INSTANCE_SUFFIX), false); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public RubyMixinMethod[] findMethods(String prefix, boolean includeTopLevel) {
@@ -24,7 +24,7 @@ public class RubyObjectMixinClass extends RubyMixinClass {
 		
 		
 		if (includeTopLevel && prefix.length() > 0) {
-			String[] keys = model.getRawModel().findKeys(prefix + "*");
+			String[] keys = model.getRawModel().findKeys(prefix + "*"); //$NON-NLS-1$
 			for (int i = 0; i < keys.length; i++) {
 				IRubyMixinElement createdRubyElement = model.createRubyElement(keys[i]);
 				if (createdRubyElement instanceof RubyMixinMethod)
@@ -76,7 +76,5 @@ public class RubyObjectMixinClass extends RubyMixinClass {
 			return (RubyMixinMethod) element;
 		return null;
 	}
-
-	
 
 }

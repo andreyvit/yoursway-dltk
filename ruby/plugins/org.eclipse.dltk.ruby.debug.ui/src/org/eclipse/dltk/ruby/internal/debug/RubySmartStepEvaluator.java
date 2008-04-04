@@ -21,7 +21,7 @@ public class RubySmartStepEvaluator implements ISmartStepEvaluator {
 		private int[] codeLineLengths;
 
 		public CodeModel(String code) {
-			this.codeLines = code.split("\n");
+			this.codeLines = code.split("\n"); //$NON-NLS-1$
 			int count = this.codeLines.length;
 
 			this.codeLineLengths = new int[count];
@@ -75,7 +75,7 @@ public class RubySmartStepEvaluator implements ISmartStepEvaluator {
 								.getAncestor(IModelElement.TYPE);
 						if (ancestor != null) {
 							IType type = (IType) ancestor;
-							String typeQualifiedName = type.getTypeQualifiedName(".");
+							String typeQualifiedName = type.getTypeQualifiedName("."); //$NON-NLS-1$
 							if( filter(typeQualifiedName, filters ) ) {
 								return false;
 							}

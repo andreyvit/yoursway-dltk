@@ -5,8 +5,8 @@ def foo
 	else
 		boo
 	end
-	en≤d≥
-§§
+	en#s#d#e#
+###
 def foo
 	case goo
 	when 1

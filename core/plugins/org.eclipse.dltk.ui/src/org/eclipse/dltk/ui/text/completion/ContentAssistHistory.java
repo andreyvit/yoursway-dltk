@@ -420,7 +420,7 @@ public final class ContentAssistHistory {
 	
 	private boolean isCacheableRHS(IType type) throws ModelException {
 		if (DLTKCore.DEBUG) {
-			System.err.println("isCachableRHS always return true...");
+			System.err.println("isCachableRHS always return true..."); //$NON-NLS-1$
 		}
 		return true;
 	}

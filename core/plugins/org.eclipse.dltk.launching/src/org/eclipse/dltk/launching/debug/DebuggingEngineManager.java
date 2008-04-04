@@ -9,9 +9,9 @@ import org.eclipse.dltk.launching.IInterpreterRunnerFactory;
 
 public class DebuggingEngineManager extends DLTKContributionExtensionManager {
 	private static final String DEBUGGING_ENGINE_EXT_POINT = DLTKLaunchingPlugin.PLUGIN_ID
-			+ ".debuggingEngine";
+			+ ".debuggingEngine"; //$NON-NLS-1$
 
-	private static final String ENGINE_TAG = "engine";
+	private static final String ENGINE_TAG = "engine"; //$NON-NLS-1$
 
 	private static DebuggingEngineManager instance;
 

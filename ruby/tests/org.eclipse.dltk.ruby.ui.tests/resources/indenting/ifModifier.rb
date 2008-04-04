@@ -1,10 +1,10 @@
 if test
-	gigawork if megatestπ
+	gigawork if megatest#n#
 	foo
 else
 	bar
 end
-§§
+###
 if test
 	gigawork if megatest
 	

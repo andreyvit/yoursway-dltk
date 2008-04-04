@@ -9,12 +9,6 @@ import org.eclipse.dltk.core.IDLTKContributedExtension;
 import org.eclipse.dltk.ui.dialogs.PropertyLinkArea;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;
 import org.eclipse.dltk.ui.util.SWTFactory;
-import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.layout.GridData;
@@ -30,7 +24,9 @@ public abstract class ContributedExtensionOptionsBlock extends
 		AbstractOptionsBlock {
 	private Map contribToDescMap = new HashMap();
 
-	private ComboViewer contributionViewer;
+	private ComboViewerBlock viewer;
+
+	// private ComboViewer contributionViewer;
 	private Composite descriptionPlace;
 
 	public ContributedExtensionOptionsBlock(IStatusChangeListener context,
@@ -50,12 +46,26 @@ public abstract class ContributedExtensionOptionsBlock extends
 		return composite;
 	}
 
+	/**
+	 * Returns the extension manager for the contributed extension.
+	 */
 	protected abstract DLTKContributionExtensionManager getExtensionManager();
 
+	/**
+	 * Returns the language's nature id.
+	 */
 	protected abstract String getNatureId();
 
+	/**
+	 * Returns the message that will be used to create the link to the
+	 * preference or property page.
+	 */
 	protected abstract String getPreferenceLinkMessage();
 
+	/**
+	 * Returns the preference key that will be used to store the contribution
+	 * preference.
+	 */
 	protected abstract PreferenceKey getSavedContributionKey();
 
 	protected Composite createDescription(Composite parent,
@@ -92,23 +102,33 @@ public abstract class ContributedExtensionOptionsBlock extends
 		// Name
 		SWTFactory.createLabel(group, getSelectorNameLabel(), 1);
 
-		contributionViewer = new ComboViewer(group);
-		contributionViewer.getCombo().setLayoutData(
-				new GridData(SWT.FILL, SWT.FILL, true, true));
-
-		contributionViewer.setLabelProvider(new LabelProvider() {
-			public String getText(Object element) {
+		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+		viewer = new ComboViewerBlock(group, gd) {
+			protected String getObjectName(Object element) {
 				return ((IDLTKContributedExtension) element).getName();
 			}
-		});
 
-		contributionViewer.add(getContributions());
-		contributionViewer
-				.addSelectionChangedListener(new ISelectionChangedListener() {
-					public void selectionChanged(SelectionChangedEvent event) {
-						updateSelection(getSelectedContribution());
-					}
-				});
+			protected void selectedObjectChanged(Object element) {
+				updateSelection((IDLTKContributedExtension) element);
+			}
+
+			protected String getObjectId(Object element) {
+				return ((IDLTKContributedExtension) element).getId();
+			}
+
+			protected Object getDefaultObject() {
+				return getExtensionManager().getSelectedContribution(
+						getProject(), getNatureId());
+			}
+
+			protected String getSavedObjectId() {
+				return getValue(getSavedContributionKey());
+			}
+
+			protected Object getObjectById(String id) {
+				return getExtensionManager().getContributionById(id);
+			}
+		};
 
 		// Description
 		descriptionPlace = SWTFactory.createComposite(group, group.getFont(),
@@ -121,23 +141,21 @@ public abstract class ContributedExtensionOptionsBlock extends
 		return null;
 	}
 
-	protected final IDLTKContributedExtension getSelectedContribution() {
-		IStructuredSelection selection = (IStructuredSelection) contributionViewer
-				.getSelection();
-		if (selection != null) {
-			return (IDLTKContributedExtension) selection.getFirstElement();
-		}
-
-		return null;
-	}
-
+	/**
+	 * Returns the label that will be used for the selector group.
+	 */
 	protected abstract String getSelectorGroupLabel();
 
+	/**
+	 * Returns the label that will be used for the selector name.
+	 */
 	protected abstract String getSelectorNameLabel();
 
 	protected void initialize() {
 		super.initialize();
-		IDLTKContributedExtension[] contributions = getContributions();
+
+		IDLTKContributedExtension[] contributions = getExtensionManager()
+				.getContributions(getNatureId());
 
 		for (int i = 0; i < contributions.length; i++) {
 			IDLTKContributedExtension contrib = contributions[i];
@@ -145,24 +163,7 @@ public abstract class ContributedExtensionOptionsBlock extends
 					descriptionPlace, contrib));
 		}
 
-		String contribId = getValue(getSavedContributionKey());
-
-		if (contribId == null || "".equals(contribId)) {
-			// no entry exists in the preference store for the pref key
-			IDLTKContributedExtension contrib = getDefaultContribution();
-			if (contrib != null) {
-				contribId = contrib.getId();
-			}
-		}
-
-		setSelectedContribution(getContributionById(contribId));
-	}
-
-	protected final void setSelectedContribution(
-			IDLTKContributedExtension contrib) {
-		if (contrib != null) {
-			contributionViewer.setSelection(new StructuredSelection(contrib));
-		}
+		viewer.initialize(contributions);
 	}
 
 	protected final void updateSelection(IDLTKContributedExtension contrib) {
@@ -175,19 +176,7 @@ public abstract class ContributedExtensionOptionsBlock extends
 		descriptionPlace.layout();
 	}
 
-	private IDLTKContributedExtension getContributionById(String id) {
-		return getExtensionManager().getContributionById(id);
-	}
-
-	private IDLTKContributedExtension[] getContributions() {
-		return getExtensionManager().getContributions(getNatureId());
-	}
-
-	private IDLTKContributedExtension getDefaultContribution() {
-		return getExtensionManager().getSelectedContribution(getProject(), getNatureId());
-	}
-
 	private boolean hasValidId(String id) {
-		return (id != null && !"".equals(id));
+		return (id != null && !"".equals(id)); //$NON-NLS-1$
 	}
 }

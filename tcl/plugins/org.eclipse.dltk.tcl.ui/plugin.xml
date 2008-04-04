@@ -228,7 +228,13 @@
             class="org.eclipse.dltk.tcl.internal.ui.preferences.TclLibraryPreferencePage"
             id="org.eclipse.dltk.ui.preferences.UserLibraryPreferencePage">
             <keywordReference id="org.eclipse.dltk.ui.userlibs"/>
-      </page>      
+      </page>
+     <page
+           category="org.eclipse.dltk.tcl.preferences.editor"
+           class="org.eclipse.dltk.tcl.internal.ui.preferences.TclEditorAssistancePreferencePage"
+           id="org.eclipse.dltk.tcl.ui.assistance"
+           name="%TclEditorAssistancePreferencePage.name">
+     </page>      
           
  </extension>
  <extension
@@ -394,7 +400,7 @@
     	    class="org.eclipse.dltk.tcl.internal.ui.text.completion.TclNoTypeCompletionProposalComputer"
 	        toolkitId="org.eclipse.dltk.tcl.core.nature">
 			<partition type="__dftl_partition_content_type"/>
-   <partition type="__tcl_string"/>
+		    <partition type="__tcl_string"/>
 		</scriptCompletionProposalComputer>
 	</extension> 
 	<extension
@@ -474,4 +480,40 @@
             id="org.eclipse.dltk.USER_LIBRARY">
       </buildpathContainerPath>
    </extension>
+<extension
+      point="org.eclipse.ui.ide.markerResolution">
+   <markerResolutionGenerator
+         class="org.eclipse.dltk.tcl.internal.ui.text.TclRequireMarkerResolutionGenerator"
+         markerType="org.eclipse.dltk.core.problem">
+   </markerResolutionGenerator>
+</extension>
+<extension
+         point="org.eclipse.ui.editorActions">
+          <editorContribution
+            targetID="org.eclipse.dltk.tcl.ui.editor.TclEditor"
+            id="org.eclipse.dltk.tcl.internal.ui.TclEditor.ruler.actions">
+         <action
+               label="Tcl Selection Ruler action"
+               class="org.eclipse.dltk.tcl.internal.ui.actions.TclSelectRulerAction"
+               actionID="RulerClick"
+               id="org.eclipse.dltk.tcl.internal.ui.tcleditor.TclSelectRulerAction">
+         </action>
+      </editorContribution>
+</extension>
+<extension
+      point="org.eclipse.ui.popupMenus">
+   <objectContribution
+         adaptable="false"
+         id="org.eclipse.dltk.tcl.ui.fixdeps"
+         objectClass="org.eclipse.dltk.core.IModelElement">
+      <action
+            class="org.eclipse.dltk.tcl.internal.ui.packages.FixAllDependenciesActionDelegate"
+            icon="icons/etool16/newpack_wiz.gif"
+            id="org.eclipse.dltk.tcl.ui.fixDependencies"
+            label="Fix package dependencies"
+            menubarPath="org.eclipse.dltk.ui.refactoring.menu"
+            style="push">
+      </action>
+   </objectContribution>
+</extension>
 </plugin>

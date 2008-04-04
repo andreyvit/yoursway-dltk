@@ -103,7 +103,7 @@ public class DLTKSearchPattern extends SearchPattern {
 	char[][] extractMethodArguments(IMethod method) {
 		if (method == null) return null;
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: Search: Add correct code here if needed.");
+			System.err.println("TODO: Search: Add correct code here if needed."); //$NON-NLS-1$
 		}
 		String[] argumentsSignatures = null;		
 		try {

@@ -68,6 +68,10 @@ public abstract class ScriptContentAssistInvocationContext extends
 		fEditor = null;
 	}
 
+	public IEditorPart getEditor() {
+	  return fEditor;
+	}
+
 	public String getLangaugeNatureID() {
 		return fLangaugeNatureID;
 	}
@@ -124,7 +128,7 @@ public abstract class ScriptContentAssistInvocationContext extends
 	 * @param collector
 	 *            the collector
 	 */
-	void setCollector(ScriptCompletionProposalCollector collector) {
+	public void setCollector(ScriptCompletionProposalCollector collector) {
 		fCollector = collector;
 	}
 

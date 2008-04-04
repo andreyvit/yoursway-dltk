@@ -24,7 +24,7 @@ import org.eclipse.dltk.core.WorkingCopyOwner;
 
 public abstract class AbstractModelCompletionTests extends AbstractModelTests {
 	public static List COMPLETION_SUITES = null;
-	protected static IScriptProject PROJECT;
+	protected IScriptProject PROJECT;
 	protected class CompletionResult {
 		public String proposals;
 		public String context;

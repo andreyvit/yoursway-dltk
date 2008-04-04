@@ -47,9 +47,9 @@ public class RubyHotCodeReplaceProvider implements
 	private String getResourceReplacementCode(IResource resource) throws DebugException {
 		IPath path = resource.getProjectRelativePath();
 		if (path == null) {
-			fail("Can not compute source file path");
+			fail(Messages.RubyHotCodeReplaceProvider_unableToComputeSourceFilePath);
 		}		
-		return "load '" + path.toOSString() + "'";
+		return "load '" + path.toOSString() + "'"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private void fail(String message) throws DebugException {

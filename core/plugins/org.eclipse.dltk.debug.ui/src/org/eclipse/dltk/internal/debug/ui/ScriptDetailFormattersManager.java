@@ -16,17 +16,18 @@ import org.eclipse.dltk.debug.core.eval.IScriptEvaluationResult;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
+import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
 
 public class ScriptDetailFormattersManager {
-	private static final String DEFAULT_FORMATTER_TYPE = "#DEFAULT#";
-	private static final String ATTR_SNIPPET = "snippet";
-	private static final String ATTR_TYPE = "type";
-	private static final String ATTR_NATURE = "nature";
+	private static final String DEFAULT_FORMATTER_TYPE = "#DEFAULT#"; //$NON-NLS-1$
+	private static final String ATTR_SNIPPET = "snippet"; //$NON-NLS-1$
+	private static final String ATTR_TYPE = "type"; //$NON-NLS-1$
+	private static final String ATTR_NATURE = "nature"; //$NON-NLS-1$
 	private static final String SCRIPT_DETAIL_FORMATTER_EXTENSION = DLTKDebugUIPlugin.PLUGIN_ID
-			+ ".scriptDetailFormatter";
+			+ ".scriptDetailFormatter"; //$NON-NLS-1$
 
 	private static HashMap managerInstances = new HashMap();
-	private static final String CANNOT_EVALUATE = "Can't evaluate details.";
+	private static final String CANNOT_EVALUATE = Messages.ScriptDetailFormattersManager_cantEvaluateDetails;
 	private HashMap formatters = new HashMap();
 	private DetailFormatter defaultFormatter = null;
 
@@ -73,11 +74,12 @@ public class ScriptDetailFormattersManager {
 	}
 
 	private String getValueText(IValue value) {
-		try {
-			return value.getValueString();
-		} catch (DebugException e) {
-			return e.getMessage();
+		if (value instanceof IScriptValue) {
+			ScriptDebugModelPresentation presentation = DLTKDebugUIPlugin.getDefault()
+					.getModelPresentation(value.getModelIdentifier());
+			return presentation.getDetailPaneText((IScriptValue) value);
 		}
+		return null;
 	}
 
 	public void computeValueDetail(final IScriptValue value,
@@ -105,10 +107,11 @@ public class ScriptDetailFormattersManager {
 											getValueText(resultValue));
 								} else {
 									try {
-										listener.detailComputed(value,
-												value.getValueString()/*CANNOT_EVALUATE*/);
+										listener
+												.detailComputed(value, value
+														.getValueString()/* CANNOT_EVALUATE */);
 									} catch (DebugException e) {
-										if( DLTKCore.DEBUG ) {
+										if (DLTKCore.DEBUG) {
 											e.printStackTrace();
 										}
 										listener.detailComputed(value,

@@ -34,9 +34,9 @@ public class CorePrinter extends PrintWriter {
 	}
 
 	public void indent() {
-		this.print("{");
-		this.println("");
-		this.formatPrint(" ");
+		this.print("{"); //$NON-NLS-1$
+		this.println(""); //$NON-NLS-1$
+		this.formatPrint(" "); //$NON-NLS-1$
 		fTabLevel += 1;
 	}
 
@@ -45,14 +45,14 @@ public class CorePrinter extends PrintWriter {
 			this.fTabLevel -= 1;
 		}
 		this.printTabs();
-		this.print("}");
+		this.print("}"); //$NON-NLS-1$
 		this.fAfterNewLine = true;
 	}
 
 	private void printTabs() {
-		String tabs = "";
+		String tabs = ""; //$NON-NLS-1$
 		for (int i = 0; i < this.fTabLevel; ++i) {
-			tabs += "\t";
+			tabs += "\t"; //$NON-NLS-1$
 		}
 		this.print(tabs);
 	}
@@ -62,11 +62,11 @@ public class CorePrinter extends PrintWriter {
 			fAfterNewLine = false;
 			this.printTabs();
 		}
-		this.print(text.replaceAll("\n", "/n"));
+		this.print(text.replaceAll("\n", "/n")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void formatPrint(String text) {
-		String strs[] = text.split("\n");
+		String strs[] = text.split("\n"); //$NON-NLS-1$
 		int count = 0;
 		for (int i = 0; i < strs.length; ++i) {
 			this.printTabs();

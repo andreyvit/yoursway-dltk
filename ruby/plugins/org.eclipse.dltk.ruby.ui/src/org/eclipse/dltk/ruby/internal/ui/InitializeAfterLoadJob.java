@@ -50,12 +50,12 @@ public class InitializeAfterLoadJob extends UIJob {
 	}
 	
 	public InitializeAfterLoadJob() {
-		super("Starting DLTK Ruby initialization");
+		super(Messages.InitializeAfterLoadJob_startingDltkRubyInitialization);
 		setSystem(true);
 	}
 	public IStatus runInUIThread(IProgressMonitor monitor) {
 		RubyPlugin.initialized = false;
-		Job job = new RealJob("Initializing DLTK Ruby");
+		Job job = new RealJob(Messages.InitializeAfterLoadJob_initializingDltkRuby);
 		job.setPriority(Job.SHORT);
 		job.schedule();
 		return new Status(IStatus.OK, RubyUI.PLUGIN_ID, IStatus.OK, "", null); //$NON-NLS-1$

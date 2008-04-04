@@ -12,15 +12,18 @@ package org.eclipse.dltk.internal.ui.editor;
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.internal.core.BuiltinSourceModule;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.IStorageEditorInput;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.editors.text.ILocationProvider;
 
+public class ExternalStorageEditorInput implements IEditorInput,
+		IStorageEditorInput, ILocationProvider {
+	private IStorage fStorage;
 
-public class ExternalStorageEditorInput implements IEditorInput, IStorageEditorInput {
-	private IStorage fStorage;	
 	public ExternalStorageEditorInput(IStorage storage) {
 		this.fStorage = storage;
 	}
@@ -30,7 +33,8 @@ public class ExternalStorageEditorInput implements IEditorInput, IStorageEditorI
 	}
 
 	public ImageDescriptor getImageDescriptor() {
-		return PlatformUI.getWorkbench().getEditorRegistry().getImageDescriptor(this.fStorage.getName());		
+		return PlatformUI.getWorkbench().getEditorRegistry()
+				.getImageDescriptor(this.fStorage.getName());
 	}
 
 	public String getName() {
@@ -44,17 +48,19 @@ public class ExternalStorageEditorInput implements IEditorInput, IStorageEditorI
 	public String getToolTipText() {
 		IPath path = fStorage.getFullPath();
 		if (path == null) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
-		
+
 		return path.toOSString();
 	}
 
 	public Object getAdapter(Class adapter) {
-		if( adapter == this.getClass() ) {
+
+		if (!(fStorage instanceof BuiltinSourceModule)
+				&& (adapter == this.getClass() || adapter == ILocationProvider.class)) {
 			return this;
 		}
-		if(adapter == IModelElement.class && fStorage instanceof IModelElement ) {
+		if (adapter == IModelElement.class && fStorage instanceof IModelElement) {
 			return fStorage;
 		}
 		return null;
@@ -63,20 +69,26 @@ public class ExternalStorageEditorInput implements IEditorInput, IStorageEditorI
 	public IStorage getStorage() {
 		return this.fStorage;
 	}
+
 	public boolean equals(Object obj) {
-        if (this == obj) {
+		if (this == obj) {
 			return true;
 		}
-        if (!(obj instanceof ExternalStorageEditorInput)) {
+		if (!(obj instanceof ExternalStorageEditorInput)) {
 			return false;
 		}
-        ExternalStorageEditorInput other = (ExternalStorageEditorInput) obj;
-        return fStorage.equals(other.fStorage);
-    }
-	  /* (non-Javadoc)
-     * Method declared on Object.
-     */
-    public int hashCode() {
-        return fStorage.hashCode();
-    }
+		ExternalStorageEditorInput other = (ExternalStorageEditorInput) obj;
+		return fStorage.equals(other.fStorage);
+	}
+
+	/*
+	 * (non-Javadoc) Method declared on Object.
+	 */
+	public int hashCode() {
+		return fStorage.hashCode();
+	}
+
+	public IPath getPath(Object element) {
+		return fStorage.getFullPath();
+	}
 }

@@ -51,7 +51,7 @@ public class DefaultProblemFactory implements IProblemFactory {
 		for (int i = 0; i < messageArguments.length; i++) {
 			b.append(messageArguments[i]);
 			if (i != messageArguments.length - 1) {
-				b.append(" ");
+				b.append(" "); //$NON-NLS-1$
 			}
 		}
 		return b.toString();

@@ -73,4 +73,14 @@ public class JavaScriptInterpreter implements IScriptInterpreter, ConsoleRequest
 	public void consoleConnected(IScriptConsoleIO protocol) {
 		this.protocol = protocol;
 	}
+
+	public String getInitialOuput() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void addInitialListenerOperation(Runnable runnable) {
+		// TODO Auto-generated method stub
+		
+	}
 }

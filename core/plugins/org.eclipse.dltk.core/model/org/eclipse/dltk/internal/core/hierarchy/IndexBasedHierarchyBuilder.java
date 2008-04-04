@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.internal.core.hierarchy;
 
@@ -88,8 +88,9 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 		}
 
 		public char[] retrieve() {
-			if (this.start > this.end)
+			if (this.start > this.end) {
 				return null; // none
+			}
 
 			char[] name = this.names[this.start++];
 			if (this.start > this.end) {
@@ -110,7 +111,8 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 
 	public IndexBasedHierarchyBuilder(TypeHierarchy hierarchy,
 			IDLTKSearchScope scope) throws ModelException {
-		super(hierarchy);
+		super();
+		setRequestor(hierarchy);
 		this.cuToHandle = new HashMap(5);
 		this.binariesFromIndexMatches = new HashMap(10);
 		this.scope = scope;
@@ -195,8 +197,9 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 						.getAncestor(IModelElement.PROJECT_FRAGMENT);
 				int index;
 				for (index = 0; index < rootsLength; index++) {
-					if (roots[index].equals(root))
+					if (roots[index].equals(root)) {
 						break;
+					}
 				}
 				indexes.put(openables[i], index);
 			}
@@ -204,8 +207,9 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 				public int compare(Object a, Object b) {
 					int aIndex = indexes.get(a);
 					int bIndex = indexes.get(b);
-					if (aIndex != bIndex)
+					if (aIndex != bIndex) {
 						return aIndex - bIndex;
+					}
 					return ((Openable) b).getElementName().compareTo(
 							((Openable) a).getElementName());
 				}
@@ -240,10 +244,10 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 //			Map options = project.getOptions(true);
 			// disable task tags to speed up parsing
 			// options.put(DLTKCore.COMPILER_TASK_TAGS, ""); //$NON-NLS-1$
-			//this.hierarchyResolver = new HierarchyResolver(
+			this.hierarchyResolver = new HierarchyResolver(this);
 				//	searchableEnvironment, options, this,
 					//new DefaultProblemFactory());
-			
+
 			if (focusType != null) {
 				Member declaringMember = ((Member) focusType)
 						.getOuterMostLocalContext();
@@ -267,12 +271,11 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 					openable = (Openable) declaringMember.getSourceModule();
 					localTypes = new HashSet();
 					localTypes.add(openable.getPath().toString());
-//					this.hierarchyResolver.resolve(new Openable[] { openable },
-//							localTypes, monitor);
+					this.hierarchyResolver.resolve(new Openable[] { openable }, localTypes);
 					return;
 				}
 			}
-//			this.hierarchyResolver.resolve(openables, localTypes, monitor);
+			this.hierarchyResolver.resolve(openables, localTypes);
 		}
 	}
 
@@ -334,12 +337,9 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 			// create element infos for subtypes
 			HandleFactory factory = new HandleFactory();
 			IScriptProject currentProject = null;
-			if (monitor != null)
-				monitor
-						.beginTask("", length * 2 /*
-													 * 1 for build binding, 1
-													 * for connect hierarchy
-													 */); //$NON-NLS-1$
+			if (monitor != null) {
+				monitor.beginTask("", length * 2); //$NON-NLS-1$ // 1 for build binding, 1 for connect hierarchy
+			}
 			for (int i = 0; i < length; i++) {
 				try {
 					String resourcePath = allPotentialSubTypes[i];
@@ -347,8 +347,9 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 					// skip duplicate paths (e.g. if focus path was injected
 					// when it was already a potential subtype)
 					if (i > 0
-							&& resourcePath.equals(allPotentialSubTypes[i - 1]))
+							&& resourcePath.equals(allPotentialSubTypes[i - 1])) {
 						continue;
+					}
 
 					Openable handle;
 					org.eclipse.dltk.core.ISourceModule workingCopy = (org.eclipse.dltk.core.ISourceModule) wcPaths
@@ -359,8 +360,9 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 						handle = resourcePath.equals(focusPath) ? focusCU
 								: factory.createOpenable(resourcePath,
 										this.scope);
-						if (handle == null)
+						if (handle == null) {
 							continue; // match is outside classpath
+						}
 					}
 
 					IScriptProject project = handle.getScriptProject();
@@ -402,7 +404,7 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 					currentProject = focusType.getScriptProject();
 					potentialSubtypes = new ArrayList();
 					potentialSubtypes.add(focusType.getSourceModule());
-					
+
 					this.buildForProject((ScriptProject) currentProject,
 							potentialSubtypes, workingCopies, localTypes,
 							monitor);
@@ -413,12 +415,13 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 
 			// Add focus if not already in (case of a type with no explicit
 			// super type)
-			if (!this.hierarchy.contains(focusType)) {
-				this.hierarchy.addRootClass(focusType);
-			}
+//			if (!this.hierarchy.contains(focusType)) {
+//				this.hierarchy.addRootClass(focusType);
+//			}
 		} finally {
-			if (monitor != null)
+			if (monitor != null) {
 				monitor.done();
+			}
 		}
 	}
 
@@ -434,7 +437,7 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 	 * Returns all of the possible subtypes of this type hierarchy. Returns null
 	 * if they could not be determine.
 	 */
-	private String[] determinePossibleSubTypes(final HashSet localTypes,
+	protected String[] determinePossibleSubTypes(final HashSet localTypes,
 			IProgressMonitor monitor) {
 
 		class PathCollector implements IPathRequestor {
@@ -450,14 +453,16 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 		PathCollector collector = new PathCollector();
 
 		try {
-			if (monitor != null)
+			if (monitor != null) {
 				monitor.beginTask("", MAXTICKS); //$NON-NLS-1$
+			}
 			searchAllPossibleSubTypes(this.getType(), this.scope,
 					this.binariesFromIndexMatches, collector,
 					IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, monitor);
 		} finally {
-			if (monitor != null)
+			if (monitor != null) {
 				monitor.done();
+			}
 		}
 
 		HashSet paths = collector.paths;
@@ -472,13 +477,13 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 
 	/**
 	 * Find the set of candidate subtypes of a given type.
-	 * 
+	 *
 	 * The requestor is notified of super type references (with actual path of
 	 * its occurrence) for all types which are potentially involved inside a
 	 * particular hierarchy. The match locator is not used here to narrow down
 	 * the results, the type hierarchy resolver is rather used to compute the
 	 * whole hierarchy at once.
-	 * 
+	 *
 	 * @param type
 	 * @param scope
 	 * @param binariesFromIndexMatches
@@ -540,14 +545,16 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 		queue.add(type.getElementName().toCharArray());
 		try {
 			while (queue.start <= queue.end) {
-				if (progressMonitor != null && progressMonitor.isCanceled())
+				if (progressMonitor != null && progressMonitor.isCanceled()) {
 					return;
+				}
 
 				// all subclasses of OBJECT are actually all types
 				char[] currentTypeName = queue.retrieve();
 				if (CharOperation.equals(currentTypeName,
-						IIndexConstants.OBJECT))
+						IIndexConstants.OBJECT)) {
 					currentTypeName = null;
+				}
 
 				// search all index references to a given supertype
 				pattern.superSimpleName = currentTypeName;
@@ -562,12 +569,14 @@ public class IndexBasedHierarchyBuilder extends HierarchyBuilder {
 																				// for
 																				// deep
 																				// hierarchies
-				if (progressMonitor != null && ++ticks <= MAXTICKS)
+				if (progressMonitor != null && ++ticks <= MAXTICKS) {
 					progressMonitor.worked(1);
+				}
 
 				// in case, we search all subtypes, no need to search further
-				if (currentTypeName == null)
+				if (currentTypeName == null) {
 					break;
+				}
 			}
 		} finally {
 			job.finished();

@@ -48,10 +48,14 @@ public class DLTKPluginImages {
 	public static final String IMG_OBJS_CLASSALT = NAME_PREFIX + "classfo_obj.gif"; //$NON-NLS-1$	
 	public static final String IMG_OBJS_CLASS = NAME_PREFIX + "class_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_NAMESPACE = NAME_PREFIX + "namespace_obj.gif"; //$NON-NLS-1$
+	public static final String IMG_OBJS_TEST = NAME_PREFIX + "test_obj.gif"; //$NON-NLS-1$
+	public static final String IMG_OBJS_TESTCASE = NAME_PREFIX + "testcase_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_MODULE = NAME_PREFIX + "module_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_FIELD = NAME_PREFIX + "field_default_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_LIBRARY = NAME_PREFIX + "library_obj.gif"; //$NON-NLS-1$	
 	public static final String IMG_OBJS_ACCESSRULES_ATTRIB = NAME_PREFIX + "access_restriction_attrib.gif"; //$NON-NLS-1$
+	
+	public static final String IMG_CORRECTION_CHANGE= NAME_PREFIX + "correction_change.gif"; //$NON-NLS-1$
 	
 	public static final String IMG_OBJS_ANNOTATION= NAME_PREFIX + "annotation_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_ANNOTATION_DEFAULT= NAME_PREFIX + "annotation_default_obj.gif"; //$NON-NLS-1$
@@ -104,7 +108,8 @@ public class DLTKPluginImages {
 	public static final String IMG_OBJS_ENV_VAR = NAME_PREFIX + "envvar_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_MODEL = NAME_PREFIX + "java_model_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_UNKNOWN = NAME_PREFIX + "unknown_obj.gif"; //$NON-NLS-1$
-	public static final String IMG_OBJS_LOCAL_VARIABLE = NAME_PREFIX + "localvariable_obj.gif"; //$NON-NLS-1$	
+	public static final String IMG_OBJS_LOCAL_VARIABLE = NAME_PREFIX + "localvariable_obj.gif"; //$NON-NLS-1$
+	public static final String IMG_OBJS_KEYWORD = NAME_PREFIX + "keyword_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_PROJECT_SETTINGS = NAME_PREFIX + "settings_obj.gif"; //$NON-NLS-1$
 	public static final String IMG_OBJS_TEMPLATE= NAME_PREFIX + "template_obj.gif"; 		//$NON-NLS-1$	
 	public static final String IMG_OBJS_PACKDECL= NAME_PREFIX + "packd_obj.gif"; 			//$NON-NLS-1$
@@ -152,6 +157,8 @@ public class DLTKPluginImages {
 		
 	public static final ImageDescriptor DESC_OBJS_CLASS= createManagedFromKey(T_OBJ, IMG_OBJS_CLASS);
 	public static final ImageDescriptor DESC_OBJS_NAMESPACE= createManagedFromKey(T_OBJ, IMG_OBJS_NAMESPACE);
+	public static final ImageDescriptor DESC_OBJS_TEST= createManagedFromKey(T_OBJ, IMG_OBJS_TEST);
+	public static final ImageDescriptor DESC_OBJS_TESTCASE= createManagedFromKey(T_OBJ, IMG_OBJS_TESTCASE);
 	public static final ImageDescriptor DESC_OBJS_MODULE= createManagedFromKey(T_OBJ, IMG_OBJS_MODULE);
 	public static final ImageDescriptor DESC_OBJS_TEMPLATE= createManagedFromKey(T_OBJ, IMG_OBJS_TEMPLATE);
 	public static final ImageDescriptor DESC_OVR_ABSTRACT = createUnManaged(T_OVR, "abstract_co.gif"); //$NON-NLS-1$
@@ -187,7 +194,7 @@ public class DLTKPluginImages {
 	public static final ImageDescriptor DESC_WIZBAN_ADD_LIBRARY = createUnManaged(T_WIZBAN, "addlibrary_wiz.png");//$NON-NLS-1$
 	public static final ImageDescriptor DESC_WIZBAN_CLEAN_UP = createUnManaged(T_WIZBAN, "cleanup_wiz.png"); //$NON-NLS-1$
 	
-	public static final ImageDescriptor DESC_TOOL_BUILDPATH_ORDER= createUnManaged(T_OBJ, "cp_order_obj.gif"); 		//$N
+	public static final ImageDescriptor DESC_TOOL_BUILDPATH_ORDER= createUnManaged(T_OBJ, "cp_order_obj.gif"); //$NON-NLS-1$
 	/*
 	 * Set of predefined Image Descriptors.
 	 */
@@ -291,6 +298,7 @@ public class DLTKPluginImages {
 	public static final ImageDescriptor DESC_FIELD_DEFAULT= createManagedFromKey(T_OBJ, IMG_FIELD_DEFAULT);
 	
 	public static final ImageDescriptor DESC_OBJS_LOCAL_VARIABLE= createManagedFromKey(T_OBJ, IMG_OBJS_LOCAL_VARIABLE);
+	public static final ImageDescriptor DESC_OBJS_KEYWORD= createManagedFromKey(T_OBJ, IMG_OBJS_KEYWORD);
 	
 	public static final ImageDescriptor DESC_METHOD_PUBLIC= createManagedFromKey(T_OBJ, IMG_METHOD_PUBLIC);
 	public static final ImageDescriptor DESC_METHOD_PROTECTED= createManagedFromKey(T_OBJ, IMG_METHOD_PROTECTED);
@@ -412,7 +420,7 @@ public class DLTKPluginImages {
 		if (fgImageRegistry != null) {
 			// Plugin.logErrorMessage("Image registry already defined");
 			// //$NON-NLS-1$
-			System.err.println("Image registry already defined");
+			System.err.println("Image registry already defined"); //$NON-NLS-1$
 		}		
 		return result;
 		}

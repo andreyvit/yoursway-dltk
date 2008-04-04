@@ -17,33 +17,25 @@ package org.eclipse.dltk.ast;
  * Flags for declaration modifiers
  */
 public interface Modifiers {
-	public static final int AccAbstract = 0x1;
-
-	public static final int AccConstant = 0x2;
-
 	public static final int AccDefault = 0;
+	public static final int AccAbstract = 0x1;
+	public static final int AccConstant = 2 << 1;
+	public static final int AccFinal = 2 << 2;
+	public static final int AccInterface = 2 << 3;
+	public static final int AccPrivate = 2 << 4;
+	public static final int AccProtected = 2 << 5;
+	public static final int AccPublic = 2 << 6;
+	public static final int AccStatic = 2 << 7;
+	public final static int AccReference = 2 << 8;
+	public final static int AccConst = 2 << 9;
+	public static final int AccModule = 2 << 10;
+	public static final int AccNameSpace = 2 << 11;
+	public static final int AccAnnotation = 2 << 12;
+	public static final int AccGlobal = 2 << 13;
+	public static final int AccUpVar = 2 << 14;
+	
+	public static final int AccTestCase = 2 << 15;
+	public static final int AccTest = 2 << 16;
 
-	public static final int AccFinal = 0x4;
-
-	public static final int AccInterface = 0x8;
-
-	public static final int AccPrivate = 0x10;
-
-	public static final int AccProtected = 0x20;
-
-	public static final int AccPublic = 0x40;
-
-	public static final int AccStatic = 0x80;
-
-	public final static int AccReference = 0x100;
-
-	public final static int AccConst = 0x200;
-
-	public static final int AccModule = 0x400;
-
-	public static final int AccNameSpace = 0x800;
-
-	public static final int AccAnnotation = 0x1000;
-
-	public static final int USER_MODIFIER = 0x20000;
+	public static final int USER_MODIFIER = 17;
 }

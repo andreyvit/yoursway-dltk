@@ -40,7 +40,8 @@ public class Block extends Expression {
 		if (visitor.visit(this)) {
 			Iterator it = statements.iterator();
 			while (it.hasNext()) {
-				((ASTNode) it.next()).traverse(visitor);
+				ASTNode node = (ASTNode) it.next();
+				node.traverse(visitor);
 			}
 			visitor.endvisit(this);
 		}
@@ -75,9 +76,9 @@ public class Block extends Expression {
 		Iterator it = statements.iterator();
 		while (it.hasNext()) {
 			((ASTNode) it.next()).printNode(output);
-			output.formatPrint("");
+			output.formatPrint(""); //$NON-NLS-1$
 		}
-		output.formatPrint("");
+		output.formatPrint(""); //$NON-NLS-1$
 		output.dedent();
 	}
 

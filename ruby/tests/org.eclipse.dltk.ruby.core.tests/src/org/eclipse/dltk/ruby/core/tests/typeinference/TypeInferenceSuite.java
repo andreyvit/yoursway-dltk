@@ -17,6 +17,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import junit.framework.AssertionFailedError;
@@ -29,6 +31,7 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.references.VariableReference;
 import org.eclipse.dltk.core.ISourceModule;
+import org.eclipse.dltk.evaluation.types.AmbiguousType;
 import org.eclipse.dltk.evaluation.types.SimpleType;
 import org.eclipse.dltk.evaluation.types.UnknownType;
 import org.eclipse.dltk.ruby.core.tests.Activator;
@@ -215,10 +218,27 @@ public class TypeInferenceSuite extends TestSuite {
 							if (type instanceof SimpleType) {
 								IEvaluatedType intrinsicType = getIntrinsicType(correctClassRef);
 								assertEquals(intrinsicType, type);
-							} else {
+							} else if (type instanceof RubyClassType) {
 								RubyClassType rubyType = (RubyClassType) type;
 								assertEquals(correctClassRef, rubyType
 										.getModelKey());
+							} else if (type instanceof AmbiguousType) {
+								AmbiguousType ambiType = (AmbiguousType) type;
+								Set modelKeySet = new HashSet();
+								IEvaluatedType[] possibleTypes = ambiType
+										.getPossibleTypes();
+								for (int cnt = 0, max = possibleTypes.length; cnt < max; cnt++) {
+									if (possibleTypes[cnt] instanceof RubyClassType) {
+										modelKeySet
+												.add(((RubyClassType) possibleTypes[cnt])
+														.getModelKey());
+									}
+								}
+								assertTrue(modelKeySet
+										.contains(correctClassRef));
+							} else {
+								fail("Unrecognized IEvaluatedType was inferred: "
+										+ type.getClass().getName());
 							}
 						}
 					}

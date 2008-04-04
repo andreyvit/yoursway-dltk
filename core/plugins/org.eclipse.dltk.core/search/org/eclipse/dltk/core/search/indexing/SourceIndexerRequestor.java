@@ -141,7 +141,7 @@ public class SourceIndexerRequestor implements ISourceElementRequestor,
 			}
 			// add implicit constructor reference to default constructor
 			if (DLTKCore.DEBUG) {
-				System.err.println("TODO: Add constructore references...");
+				System.err.println("TODO: Add constructore references..."); //$NON-NLS-1$
 			}
 			// this.indexer.addConstructorReference(typeInfo.superclasss, 0);
 		}
@@ -244,7 +244,7 @@ public class SourceIndexerRequestor implements ISourceElementRequestor,
 
 	public void enterMethodRemoveSame(MethodInfo info) {
 		if (DLTKCore.DEBUG) {
-			System.out.println("TODO: Add replace method code.");
+			System.out.println("TODO: Add replace method code."); //$NON-NLS-1$
 		}
 	}
 

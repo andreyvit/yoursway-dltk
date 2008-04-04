@@ -27,10 +27,10 @@ import org.eclipse.core.runtime.Platform;
  * </p>
  */
 public abstract class DLTKContributionExtensionManager {
-	private static final String NATURE_ID = "natureId";
+	private static final String NATURE_ID = "natureId"; //$NON-NLS-1$
 
-	private static final String SELECTOR_TAG = "selector";
-	public static final String CLASS_TAG = "class";
+	private static final String SELECTOR_TAG = "selector"; //$NON-NLS-1$
+	public static final String CLASS_TAG = "class"; //$NON-NLS-1$
 
 	private IDLTKContributionSelector defaultSelector;
 

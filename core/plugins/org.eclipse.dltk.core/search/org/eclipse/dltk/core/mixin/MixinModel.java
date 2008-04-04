@@ -10,6 +10,7 @@
 package org.eclipse.dltk.core.mixin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -43,7 +44,7 @@ import org.eclipse.dltk.internal.core.mixin.MixinCache;
 import org.eclipse.dltk.internal.core.mixin.MixinManager;
 
 public class MixinModel {
-	public static final String SEPARATOR = "" + IIndexConstants.SEPARATOR;
+	public static final String SEPARATOR = "" + IIndexConstants.SEPARATOR; //$NON-NLS-1$
 	private MixinCache cache = null;
 
 	/**
@@ -58,7 +59,7 @@ public class MixinModel {
 	private Set modulesToReparse = new HashSet(); // list of modules required
 	// to be reparsed.
 	public long removes = 1;
-	double ratio = 2000;
+	double ratio = 10000;
 
 	public MixinModel(IDLTKLanguageToolkit toolkit) {
 		this.toolkit = toolkit;
@@ -92,7 +93,7 @@ public class MixinModel {
 		}
 		MixinElement element = getCreateEmpty(key);
 		if (DLTKCore.VERBOSE) {
-			System.out.println("Filling ratio:" + this.cache.fillingRatio());
+			System.out.println("Filling ratio:" + this.cache.fillingRatio()); //$NON-NLS-1$
 			this.cache.printStats();
 		}
 		buildElementTree(element);
@@ -114,28 +115,32 @@ public class MixinModel {
 
 		ISourceModule[] containedModules = SearchEngine.searchMixinSources(
 				pattern, toolkit, set);
-
-		if (containedModules.length == 0) {
+		Set modules = new HashSet();
+		modules.addAll(Arrays.asList(containedModules));
+		
+		if (modules.size() == 0) {
 			return new IMixinElement[0];
 		}
 
-		long start = System.currentTimeMillis();
-		for (int i = 0; i < containedModules.length; ++i) {
-			reportModule(containedModules[i]);
-			if (delta != -1) {
-				if (System.currentTimeMillis() - start > delta) {
-//					System.out.println("Mixin timeout break:"
-//							+ Long.toString(System.currentTimeMillis() - start)
-//							+ ":"
-//							+ Integer.toString(containedModules.length - i));
-					break;
-				}
-			}
+		// long start = System.currentTimeMillis();
+		// for (int i = 0; i < containedModules.length; ++i) {
+		for (Iterator iterator = modules.iterator(); iterator.hasNext();) {
+			ISourceModule module = (ISourceModule) iterator.next();
+			reportModule(module);
+			// if (delta != -1) {
+			// // if (System.currentTimeMillis() - start > delta) {
+			// // System.out.println("Mixin timeout break:"
+			// // + Long.toString(System.currentTimeMillis() - start)
+			// // + ":"
+			// // + Integer.toString(containedModules.length - i));
+			// // break;
+			// // }
+			// }
 		}
 
 		List result = new ArrayList();
 
-//		int i = 0;
+		// int i = 0;
 		for (Iterator iterator = set.keySet().iterator(); iterator.hasNext();) {
 			ISourceModule module = (ISourceModule) iterator.next();
 			if (this.elementToMixinCache.containsKey(module)) {
@@ -144,13 +149,14 @@ public class MixinModel {
 					String key = (String) iterator2.next();
 					MixinElement element = getCreateEmpty(key);
 					markElementAsFinal(element);
-					result.add( element);
+					result.add(element);
 					existKeysCache.add(key);
 				}
 			}
 		}
 
-		return (IMixinElement[]) result.toArray(new IMixinElement[result.size()]);
+		return (IMixinElement[]) result
+				.toArray(new IMixinElement[result.size()]);
 	}
 
 	public IMixinElement[] find(String pattern) {
@@ -464,8 +470,8 @@ public class MixinModel {
 		}
 
 		public String toString() {
-			return this.getLastKeySegment() + " final[" + this.bFinal + "]"
-					+ this.children + " ";
+			return this.getLastKeySegment() + " final[" + this.bFinal + "]" //$NON-NLS-1$ //$NON-NLS-2$
+					+ this.children + " "; //$NON-NLS-1$
 		}
 
 		public MixinElement(ElementInfo info, ISourceModule module) {
@@ -569,8 +575,11 @@ public class MixinModel {
 				}
 				return objs;
 			}
-			notifyInitializeListener(this, module, o);
-			return new Object[] { o };
+			if (o != null) {
+				notifyInitializeListener(this, module, o);
+				return new Object[] { o };
+			}
+			return new Object[0];
 		}
 
 		public Object[] getAllObjects() {
@@ -646,7 +655,7 @@ public class MixinModel {
 			// System.out.println("Append mixin:" + info.key);
 			// }
 			existKeysCache.add(info.key);
-			String[] list = info.key.split("\\"
+			String[] list = info.key.split("\\" //$NON-NLS-1$
 					+ IMixinRequestor.MIXIN_NAME_SEPARATOR);
 			MixinElement element = getCreateEmpty(info.key);
 			addElementToModules(element);

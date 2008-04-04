@@ -54,6 +54,7 @@ import org.eclipse.dltk.ruby.typeinference.evaluators.VariableReferenceEvaluator
 import org.eclipse.dltk.ruby.typeinference.goals.ColonExpressionGoal;
 import org.eclipse.dltk.ruby.typeinference.goals.NonTypeConstantTypeGoal;
 import org.eclipse.dltk.ti.BasicContext;
+import org.eclipse.dltk.ti.IContext;
 import org.eclipse.dltk.ti.IGoalEvaluatorFactory;
 import org.eclipse.dltk.ti.goals.ExpressionTypeGoal;
 import org.eclipse.dltk.ti.goals.FieldPositionVerificationGoal;
@@ -64,41 +65,39 @@ import org.eclipse.dltk.ti.goals.MethodCallVerificationGoal;
 import org.eclipse.dltk.ti.goals.MethodReturnTypeGoal;
 
 public class DefaultRubyEvaluatorFactory implements IGoalEvaluatorFactory {
-	
-	
-	
 
 	private GoalEvaluator createExpressionEvaluator(ExpressionTypeGoal goal) {
 		ASTNode expr = goal.getExpression();
 
 		// literals
 		if (expr instanceof RubyRegexpExpression)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("Regexp%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("Regexp%")); //$NON-NLS-1$
 		if (expr instanceof RubyHashExpression)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("Hash%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("Hash%")); //$NON-NLS-1$
 		if (expr instanceof BigNumericLiteral)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("Bignum%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("Bignum%")); //$NON-NLS-1$
 		if (expr instanceof NumericLiteral)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("Fixnum%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("Fixnum%")); //$NON-NLS-1$
 		if (expr instanceof StringLiteral)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("String%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("String%")); //$NON-NLS-1$
 		if (expr instanceof RubyDynamicBackquoteStringExpression)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("String%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("String%")); //$NON-NLS-1$
 		if (expr instanceof RubyDynamicStringExpression)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("String%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("String%")); //$NON-NLS-1$
 		if (expr instanceof RubyBacktickStringLiteral)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("String%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("String%")); //$NON-NLS-1$
 		if (expr instanceof RubyArrayExpression)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("Array%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("Array%")); //$NON-NLS-1$
 		if (expr instanceof MethodDeclaration)
 			return new FixedAnswerEvaluator(goal,
-					new RubyClassType("NilClass%"));
+					new RubyClassType("NilClass%")); //$NON-NLS-1$
 		if (expr instanceof RubySymbolReference)
-			return new FixedAnswerEvaluator(goal, new RubyClassType("Symbol%"));
+			return new FixedAnswerEvaluator(goal, new RubyClassType("Symbol%")); //$NON-NLS-1$
 
 		if (expr instanceof BooleanLiteral)
 			return new BooleanLiteralEvaluator(goal);
-		if (expr instanceof VariableReference || expr instanceof RubyDVarExpression)
+		if (expr instanceof VariableReference
+				|| expr instanceof RubyDVarExpression)
 			return new VariableReferenceEvaluator(goal);
 
 		if (expr instanceof RubyAssignment)
@@ -129,7 +128,7 @@ public class DefaultRubyEvaluatorFactory implements IGoalEvaluatorFactory {
 	public GoalEvaluator createEvaluator(IGoal goal) {
 		if (goal instanceof FieldPositionVerificationGoal)
 			return new FieldParentKeyVerificator(goal);
-		
+
 		if (goal instanceof MethodCallVerificationGoal)
 			return new MethodCallVerificator(goal);
 
@@ -145,26 +144,27 @@ public class DefaultRubyEvaluatorFactory implements IGoalEvaluatorFactory {
 		else if (goal instanceof NonTypeConstantTypeGoal)
 			return new NonTypeConstantTypeEvaluator(goal);
 		else if (goal instanceof VariableTypeGoal) {
-			return new RubyVariableTypeEvaluator(goal);			
+			return new RubyVariableTypeEvaluator(goal);
 		}
 
-		return null;	
+		return null;
 	}
 
 	public static IGoal translateGoal(IGoal goal) {
 		if (goal instanceof ExpressionTypeGoal) {
 			ExpressionTypeGoal exprGoal = (ExpressionTypeGoal) goal;
 			ASTNode expr = exprGoal.getExpression();
+			IContext context = goal.getContext();
 			if (expr instanceof ConstantReference) {
 				ConstantReference reference = (ConstantReference) expr;
-				return new ConstantTypeGoal(goal.getContext(), reference
-						.sourceStart(), reference.getName());
+				return new ConstantTypeGoal(context, reference.sourceStart(),
+						reference.getName());
 			} else if (expr instanceof RubyConstantDeclaration) {
 				SimpleReference reference = ((RubyConstantDeclaration) expr)
 						.getName();
 				// TODO: consider the constant's path
-				return new ConstantTypeGoal(goal.getContext(), reference
-						.sourceStart(), reference.getName());
+				return new ConstantTypeGoal(context, reference.sourceStart(),
+						reference.getName());
 			} else if (expr instanceof RubyColonExpression) {
 				RubyColonExpression colonExpression = (RubyColonExpression) expr;
 				return new ColonExpressionGoal(

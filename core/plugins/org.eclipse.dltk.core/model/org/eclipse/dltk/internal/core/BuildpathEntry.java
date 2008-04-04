@@ -32,10 +32,10 @@ import org.eclipse.dltk.core.IAccessRule;
 import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.IProjectFragment;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.compiler.env.AccessRule;
 import org.eclipse.dltk.internal.compiler.env.AccessRuleSet;
@@ -588,7 +588,7 @@ public class BuildpathEntry implements IBuildpathEntry {
 			}
 			break;
 		case IBuildpathEntry.BPE_CONTAINER:
-			entry = DLTKCore.newContainerEntry(path, isExported);
+			entry = DLTKCore.newContainerEntry(path, accessRules, extraAttributes, isExported);
 			break;
 		default:
 			throw new AssertionFailedException(Messages.bind(
@@ -1253,7 +1253,7 @@ public class BuildpathEntry implements IBuildpathEntry {
 						return ModelStatus.VERIFIED_OK;
 					}
 					IBuildpathEntry[] containerEntries = container
-							.getBuildpathEntries();
+							.getBuildpathEntries(project);
 					if (containerEntries != null) {
 						for (int i = 0, length = containerEntries.length; i < length; i++) {
 							IBuildpathEntry containerEntry = containerEntries[i];
@@ -1262,10 +1262,10 @@ public class BuildpathEntry implements IBuildpathEntry {
 							if (containerEntry == null
 									|| kind == IBuildpathEntry.BPE_SOURCE
 									|| kind == IBuildpathEntry.BPE_CONTAINER) {
-								String description = container.getDescription();
-								if (description == null)
-									description = path.makeRelative()
-											.toString();
+//								String description = container.getDescription(project);
+//								if (description == null)
+//									description = path.makeRelative()
+//											.toString();
 								return new ModelStatus(
 										IModelStatusConstants.INVALID_BP_CONTAINER_ENTRY,
 										project, path);

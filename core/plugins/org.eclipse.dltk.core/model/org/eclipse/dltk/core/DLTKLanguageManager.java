@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.core;
 
@@ -29,6 +29,7 @@ import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.core.search.indexing.SourceIndexerRequestor;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
+import org.eclipse.dltk.core.search.matching.MatchLocatorParser;
 import org.eclipse.dltk.internal.core.InternalDLTKLanguageManager;
 
 public class DLTKLanguageManager {
@@ -88,7 +89,7 @@ public class DLTKLanguageManager {
 			throws CoreException {
 		IDLTKLanguageToolkit toolkit = (IDLTKLanguageToolkit) InternalDLTKLanguageManager
 				.getLanguageToolkitsManager().getObject(element);
-		if (toolkit == null
+		if (toolkit == null && element != null
 				&& element.getElementType() == IModelElement.SOURCE_MODULE) {
 			return findAppropriateToolkitByObject(element.getPath());
 		}
@@ -96,7 +97,17 @@ public class DLTKLanguageManager {
 	}
 
 	public static IDLTKLanguageToolkit findToolkit(IResource resource) {
-		return findAppropriateToolkitByObject(resource);
+		IDLTKLanguageToolkit toolkit = findAppropriateToolkitByObject(resource);
+		if (toolkit == null) {
+			IScriptProject scriptProject = DLTKCore.create(resource
+					.getProject());
+			try {
+				toolkit = getLanguageToolkit(scriptProject);
+			} catch (CoreException cxcn) {
+				cxcn.printStackTrace();
+			}
+		}
+		return toolkit;
 	}
 
 	public static IDLTKLanguageToolkit findToolkit(IPath path) {
@@ -119,7 +130,7 @@ public class DLTKLanguageManager {
 	// CoreException {
 	// return (ISourceElementParser) sourceParsersManager.getObject(nature);
 	// }
-	//	
+	//
 	// public static ISourceParser getSourceParser( IModelElement element )
 	// throws
 	// CoreException {
@@ -223,7 +234,8 @@ public class DLTKLanguageManager {
 		if (factory != null) {
 			return factory.createMatchParser(matchLocator);
 		}
-		return null;
+		return new MatchLocatorParser(matchLocator) {
+		};
 	}
 
 	public static ICalleeProcessor createCalleeProcessor(String natureID,
@@ -249,5 +261,10 @@ public class DLTKLanguageManager {
 			return factory.createCallProcessor();
 		}
 		return null;
+	}
+
+	public static IFileHierarchyResolver getFileHierarchyResolver(String natureId) {
+		return (IFileHierarchyResolver) InternalDLTKLanguageManager
+				.getFileHierarchyResolversManager().getObject(natureId);
 	}
 }

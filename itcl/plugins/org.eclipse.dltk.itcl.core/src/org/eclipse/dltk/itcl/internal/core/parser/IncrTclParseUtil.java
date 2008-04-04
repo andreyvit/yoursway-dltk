@@ -11,7 +11,7 @@ import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.internal.core.codeassist.TclASTUtil;
 
 public class IncrTclParseUtil {
-	public static FieldDeclaration findXOTclInstanceVariableDeclarationFrom(
+	public static FieldDeclaration findInstanceVariableDeclarationFrom(
 			ModuleDeclaration module, ASTNode parent, String commandNameValue) {
 		List levels = TclParseUtil.findLevelsTo(module, parent);
 		int len = levels.size();

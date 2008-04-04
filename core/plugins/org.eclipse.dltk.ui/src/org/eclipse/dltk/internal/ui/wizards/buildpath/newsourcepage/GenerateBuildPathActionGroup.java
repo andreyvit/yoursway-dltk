@@ -166,7 +166,7 @@ public class GenerateBuildPathActionGroup extends ActionGroup {
     		setToolTipText(ActionMessages.OpenNewSourceFolderWizardAction_tooltip); 
     		setImageDescriptor(DLTKPluginImages.DESC_TOOL_NEWPACKROOT);
     		if (DLTKCore.DEBUG) {
-				System.err.println("Add help support here...");
+				System.err.println("Add help support here..."); //$NON-NLS-1$
 			}
     		//PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IDLTKHelpContextIds.OPEN_SOURCEFOLDER_WIZARD_ACTION);
     	}
@@ -307,7 +307,7 @@ public class GenerateBuildPathActionGroup extends ActionGroup {
 		fActions.add(addLibrary);	
 		
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add Update Zip Action here...");
+			System.err.println("Add Update Zip Action here..."); //$NON-NLS-1$
 		}
 		
 		final ExcludeFromBuildpathAction exclude= new ExcludeFromBuildpathAction(site);

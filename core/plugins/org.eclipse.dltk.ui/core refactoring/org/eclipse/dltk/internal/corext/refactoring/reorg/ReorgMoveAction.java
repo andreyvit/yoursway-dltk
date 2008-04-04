@@ -37,7 +37,7 @@ public class ReorgMoveAction extends SelectionDispatchAction {
 		setDescription(ReorgMessages.ReorgMoveAction_4); 
 		/*PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IScriptHelpContextIds.MOVE_ACTION);*/
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
 	}
 

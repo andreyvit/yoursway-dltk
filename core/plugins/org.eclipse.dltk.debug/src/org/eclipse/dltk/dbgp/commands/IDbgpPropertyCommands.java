@@ -36,8 +36,8 @@ public interface IDbgpPropertyCommands {
 	IDbgpProperty getProperty(String name, int stackDepth, int contextId)
 			throws DbgpException;
 
-	IDbgpProperty getProperty(String name, int stackDepth, int contextId,
-			String dataType, String dataPage) throws DbgpException;
+	IDbgpProperty getProperty(int page, String name, int stackDepth)
+			throws DbgpException;
 
 	boolean setProperty(IDbgpProperty property) throws DbgpException;
 

@@ -67,7 +67,7 @@ public class DBGPSourceModule extends AbstractExternalSourceModule {
 			return new ByteArrayInputStream(contents);
 		} catch (DbgpException e) {
 			throw new CoreException(new Status(IStatus.ERROR,
-					DLTKCore.PLUGIN_ID, "dbgp source lookup", e));
+					DLTKCore.PLUGIN_ID, Messages.DBGPSourceModule_dbgpSourceLookup, e));
 		}
 	}
 
@@ -88,15 +88,18 @@ public class DBGPSourceModule extends AbstractExternalSourceModule {
 	 * @see org.eclipse.core.resources.IStorage#getFullPath()
 	 */
 	public IPath getFullPath() {
-		Path path = new Path(frame.getFileName().getPath());
-		return path;
+		return null;
 	}
 
 	/*
 	 * @see org.eclipse.core.resources.IStorage#getName()
 	 */
 	public String getName() {
-		return getFullPath().lastSegment();
+		Path path = new Path(frame.getFileName().getPath());
+		if( path.lastSegment()== null ) {
+			return frame.toString();
+		}
+		return path.lastSegment();
 	}
 
 	/*
@@ -124,15 +127,14 @@ public class DBGPSourceModule extends AbstractExternalSourceModule {
 	 * @see org.eclipse.dltk.internal.core.AbstractExternalSourceModule#getModuleType()
 	 */
 	protected String getModuleType() {
-		return "DLTK Remote Source Moule: ";
+		return "DLTK Remote Source Moule: "; //$NON-NLS-1$
 	}
 
 	/*
 	 * @see org.eclipse.dltk.internal.core.AbstractSourceModule#getNatureId()
 	 */
 	protected String getNatureId() throws CoreException {
-		IPath path = getFullPath();
-		IDLTKLanguageToolkit toolkit = lookupLanguageToolkit(path);
+		IDLTKLanguageToolkit toolkit = lookupLanguageToolkit(getParent());
 		if (toolkit == null) 
 			return null;
 		

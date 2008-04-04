@@ -21,6 +21,8 @@ public class InterpreterMessages extends NLS {
 		NLS.initializeMessages(BUNDLE_NAME, InterpreterMessages.class);
 	}
 
+	public static String DebuggingEngineRunner_launching;
+	public static String DebuggingEngineRunner_running;
 	public static String errNonExistentOrInvalidInstallLocation;
 	public static String errNoInterpreterExecutablesFound;
 	public static String statusFetchingLibs;

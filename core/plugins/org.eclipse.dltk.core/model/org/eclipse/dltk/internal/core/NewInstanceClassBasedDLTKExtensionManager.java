@@ -11,6 +11,7 @@ package org.eclipse.dltk.internal.core;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.PriorityClassDLTKExtensionManager;
 
 public class NewInstanceClassBasedDLTKExtensionManager extends
@@ -18,6 +19,14 @@ public class NewInstanceClassBasedDLTKExtensionManager extends
 
 	public NewInstanceClassBasedDLTKExtensionManager(String extensionPoint) {
 		super(extensionPoint);
+	}
+
+	public NewInstanceClassBasedDLTKExtensionManager(String extensionPoint,
+			boolean initializeAtStartup) {
+		super(extensionPoint);
+		if( initializeAtStartup ) {
+			initialize();
+		}
 	}
 
 	public Object getInitObject(ElementInfo ext) {
@@ -28,8 +37,9 @@ public class NewInstanceClassBasedDLTKExtensionManager extends
 				return object;
 			}
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}

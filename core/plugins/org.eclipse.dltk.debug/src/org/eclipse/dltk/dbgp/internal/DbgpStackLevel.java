@@ -62,8 +62,8 @@ public class DbgpStackLevel implements IDbgpStackLevel {
 	}
 
 	public String toString() {
-		return "DbgpStackLevel(level: " + level + ", line: " + lineNumber
-				+ ", begin: " + lineBegin + ", end: " + lineEnd + ")";
+		return "DbgpStackLevel(level: " + level + ", line: " + lineNumber //$NON-NLS-1$ //$NON-NLS-2$
+				+ ", begin: " + lineBegin + ", end: " + lineEnd + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	public int hashCode() {

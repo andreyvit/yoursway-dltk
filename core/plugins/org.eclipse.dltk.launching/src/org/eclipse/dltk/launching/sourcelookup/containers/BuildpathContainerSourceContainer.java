@@ -18,7 +18,7 @@ import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 
 public class BuildpathContainerSourceContainer extends AbstractSourceContainer {
 
-	public static final String TYPE_ID = "org.eclipse.dltk.launching.sourceContainer.buildpathContainer";
+	public static final String TYPE_ID = "org.eclipse.dltk.launching.sourceContainer.buildpathContainer"; //$NON-NLS-1$
 	
 	private String libraryPath;
 	

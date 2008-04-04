@@ -14,7 +14,6 @@ import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
@@ -33,16 +32,12 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 		return null;
 	}
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement statement, ITclParser parser,
 			ASTNode parent) {
-		ASTNode namespace = parser.processLocal(command, offset, parent);
-		if (!(namespace instanceof TclStatement)) {
-			return null;
-		}
-		TclStatement statement = (TclStatement) namespace;
 		Expression nameSpaceArg = statement.getAt(1);
 		if (nameSpaceArg == null || !(nameSpaceArg instanceof SimpleReference)) {
-			this.report(parser, "Syntax error: a namespace name expected.", statement, ProblemSeverities.Error);			
+			this.report(parser, "Syntax error: a namespace name expected.",
+					statement, ProblemSeverities.Error);
 			if (DLTKCore.DEBUG) {
 				System.err
 						.println("tcl: namespace argument is null or not simple reference");
@@ -50,19 +45,21 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 			// continue;
 		}
 
-		if( !(nameSpaceArg instanceof SimpleReference ) ) {
+		if (!(nameSpaceArg instanceof SimpleReference)) {
 			return null;
 		}
 		String sNameSpaceArg = ((SimpleReference) nameSpaceArg).getName();
 
 		if (sNameSpaceArg.equals("eval")) {
 			Expression nameSpaceName = statement.getAt(2);
-			if( !(nameSpaceName instanceof SimpleReference) ) {
+			if (!(nameSpaceName instanceof SimpleReference)) {
 				return null;
 			}
 			String sNameSpaceName = ((SimpleReference) nameSpaceName).getName();
-			if (nameSpaceName == null || !(nameSpaceName instanceof SimpleReference)) {
-				this.report(parser, "Syntax error: namespace name expected", statement, ProblemSeverities.Error);
+			if (nameSpaceName == null
+					|| !(nameSpaceName instanceof SimpleReference)) {
+				this.report(parser, "Syntax error: namespace name expected",
+						statement, ProblemSeverities.Error);
 				// continue;
 				// by now, just ignore
 				return null;
@@ -76,7 +73,7 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 			Block code = new Block(start, end);
 			TypeDeclaration type = new TypeDeclaration(sNameSpaceName,
 					nameSpaceName.sourceStart(), nameSpaceName.sourceEnd(),
-					namespace.sourceStart(), namespace.sourceEnd());
+					statement.sourceStart(), statement.sourceEnd());
 			type.setModifiers(Modifiers.AccNameSpace);
 			ASTNode realParent = findRealParent(parent);
 			if (realParent instanceof TypeDeclaration) {
@@ -90,8 +87,6 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 				Expression expr = statement.getAt(i);
 				if (expr == null) {
 					return null;
-// TODO: Add error reporting here??? this may be only because of a mismatch somewhere else.
-					// continue;
 				}
 				if (expr instanceof TclBlockExpression) {
 					TclBlockExpression block = (TclBlockExpression) expr;
@@ -100,15 +95,13 @@ public class TclNamespaceProcessor extends AbstractTclCommandProcessor {
 							.length() - 1);
 					parser.parse(blockContent, block.sourceStart() + 1
 							- parser.getStartPos(), code);
-//					code.getStatements().addAll(bl.getStatements());
+					// code.getStatements().addAll(bl.getStatements());
 				} else {
 					code.getStatements().add(expr);
 				}
 			}
 
 			return type;
-		} else {
-			// System.out.println("Cool");
 		}
 		return null;
 	}

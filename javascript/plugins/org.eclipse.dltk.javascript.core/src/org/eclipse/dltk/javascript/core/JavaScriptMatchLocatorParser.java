@@ -138,9 +138,4 @@ public class JavaScriptMatchLocatorParser extends MatchLocatorParser implements
 		Reference node = new VaribleDeclarationReference(0, 0, key,ref);
 		locator.match(node, getNodeSet());
 	}
-
-	private MethodDeclaration processMethod(MethodDeclaration m) {
-		return m;
-	}
-
 }

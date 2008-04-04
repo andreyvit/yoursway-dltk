@@ -12,6 +12,7 @@ package org.eclipse.dltk.ruby.internal.ui.text;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.source.DefaultCharacterPairMatcher;
 
 /**
@@ -19,15 +20,15 @@ import org.eclipse.jface.text.source.DefaultCharacterPairMatcher;
  */
 public final class RubyPairMatcher extends DefaultCharacterPairMatcher {
 
+	private int fBlockAnchor;
+
 	/**
 	 * Stores the source version state.
 	 * 
 	 * @since 3.1
 	 */
-	private boolean fHighlightAngularBrackets = false;
-
-	public RubyPairMatcher(char[] pairs) {
-		super(pairs, RubyPartitions.RUBY_PARTITIONING);
+	public RubyPairMatcher() {
+		super("{}[]()".toCharArray(), IRubyPartitions.RUBY_PARTITIONING); //$NON-NLS-1$
 	}
 
 	/* @see ICharacterPairMatcher#match(IDocument, int) */
@@ -46,19 +47,49 @@ public final class RubyPairMatcher extends DefaultCharacterPairMatcher {
 			throws BadLocationException {
 		if (offset < 0 || document == null)
 			return null;
-		final char prevChar = document.getChar(Math.max(offset - 1, 0));
-		if ((prevChar == '<' || prevChar == '>') && !fHighlightAngularBrackets)
-			return null;
-		if (prevChar == '<')
-			return null;
 		final IRegion region = super.match(document, offset);
-		if (region == null)
+		if (region != null)
 			return region;
-		if (prevChar == '>') {
-			final int peer = region.getOffset();
+		
+		RubyHeuristicScanner scanner = new RubyHeuristicScanner(document);
+		IRegion word = scanner.findWordAt(offset);
+		if (word == null)
 			return null;
+		
+		int start = word.getOffset();
+		int end = start + word.getLength();
+		if (scanner.isBlockBeginning(start, end)) {
+			start = scanner.getPosition();
+			end = scanner.findBlockEndingOffset(end);
+			if (end != RubyHeuristicScanner.NOT_FOUND) {
+				clear();
+				fBlockAnchor = LEFT;
+				return new Region(start, end - start);	
+			}
+			
+		} else if (scanner.isBlockEnding(start, end)) {
+			end = scanner.getPosition();
+			start = scanner.findBlockBeginningOffset(start);
+			if (start != RubyHeuristicScanner.NOT_FOUND) {
+				clear();
+				fBlockAnchor = RIGHT;
+				return new Region(start, end - start);	
+			}
 		}
-		return region;
+		
+		return null;
 	}
 
+	public int getAnchor() {
+		int superAnchor = super.getAnchor();
+		if (superAnchor < 0)
+			return fBlockAnchor;
+		else
+			return superAnchor;
+	}
+
+	public void clear() {
+		super.clear();
+		fBlockAnchor = -1;
+	}
 }

@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
 
@@ -23,17 +24,17 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 		IScriptWatchpoint {
 
 	private static final String FIELD_NAME = DLTKDebugPlugin.PLUGIN_ID
-			+ ".fieldName";
+			+ ".fieldName"; //$NON-NLS-1$
 
-	private static final String ACCESS = DLTKDebugPlugin.PLUGIN_ID + ".access";
+	private static final String ACCESS = DLTKDebugPlugin.PLUGIN_ID + ".access"; //$NON-NLS-1$
 
 	private static final String MODIFICATION = DLTKDebugPlugin.PLUGIN_ID
-			+ ".modification";
+			+ ".modification"; //$NON-NLS-1$
 
 	public ScriptWatchpoint(String debugModelId, IResource resource,
-			int lineNumber, int start, int end, String fieldName)
+			IPath path, int lineNumber, int start, int end, String fieldName)
 			throws CoreException {
-		super(debugModelId, resource, lineNumber, start, end, true);
+		super(debugModelId, resource, path, lineNumber, start, end, true);
 		this.setFieldName(fieldName);
 	}
 
@@ -41,7 +42,7 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 	}
 
 	public String getFieldName() throws CoreException {
-		return this.getMarker().getAttribute(FIELD_NAME, "");
+		return this.getMarker().getAttribute(FIELD_NAME, ""); //$NON-NLS-1$
 	}
 
 	public void setFieldName(String name) throws CoreException {
@@ -53,12 +54,12 @@ public class ScriptWatchpoint extends ScriptLineBreakpoint implements
 	}
 
 	public boolean isAccess() throws CoreException {
-		return (new Boolean(this.getMarker().getAttribute(ACCESS, "true")))
+		return (new Boolean(this.getMarker().getAttribute(ACCESS, "true"))) //$NON-NLS-1$
 				.booleanValue();
 	}
 
 	public boolean isModification() throws CoreException {
-		return (new Boolean(this.getMarker().getAttribute(MODIFICATION, "true")))
+		return (new Boolean(this.getMarker().getAttribute(MODIFICATION, "true"))) //$NON-NLS-1$
 				.booleanValue();
 	}
 

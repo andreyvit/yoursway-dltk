@@ -36,6 +36,7 @@ public class DLTKLaunchConfigurationsMessages extends NLS {
 	public static String remoteTab_connectionIdeKey;
 	public static String remoteError_ideKeyEmpty;
 	public static String remoteTab_remoteWorkingDir;
+	public static String ScriptLaunchConfigurationTab_debugOptions;
 	
 	
 	private DLTKLaunchConfigurationsMessages() {

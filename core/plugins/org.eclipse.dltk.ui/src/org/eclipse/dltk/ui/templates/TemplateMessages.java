@@ -20,6 +20,7 @@ public final class TemplateMessages extends NLS {
 	
 	public static String Variable_File_Description;
 	public static String Variable_Language_Description;
+	public static String Variable_Interpreter_Description;
 	
 	public static String Validation_SeveralCursorPositions;
 }

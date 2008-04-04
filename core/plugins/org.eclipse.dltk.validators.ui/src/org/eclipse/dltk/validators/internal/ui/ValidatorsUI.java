@@ -26,7 +26,7 @@ import org.osgi.framework.BundleContext;
 public class ValidatorsUI extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.dltk.validators.ui";
+	public static final String PLUGIN_ID = "org.eclipse.dltk.validators.ui"; //$NON-NLS-1$
 
 	// The shared instance
 	private static ValidatorsUI plugin;

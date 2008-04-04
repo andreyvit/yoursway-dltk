@@ -24,8 +24,8 @@ public class RubyDebuggingEnginePreferencePage extends
 			RubyDebugPlugin.PLUGIN_ID,
 			RubyDebugConstants.DEBUGGING_ENGINE_ID_KEY);
 
-	private static final String PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug.engines";
-	private static final String PROPERTY_PAGE_ID = "org.eclipse.dltk.ruby.propertyPage.debug.engines";
+	private static final String PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug.engines"; //$NON-NLS-1$
+	private static final String PROPERTY_PAGE_ID = "org.eclipse.dltk.ruby.propertyPage.debug.engines"; //$NON-NLS-1$
 
 	/*
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#createOptionsBlock(org.eclipse.dltk.ui.util.IStatusChangeListener,

@@ -14,7 +14,6 @@ import org.eclipse.dltk.tcl.core.ITclCommandDetector;
 import org.eclipse.dltk.tcl.core.ITclCommandDetectorExtension;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
 public class IncrTclCommandDetector implements ITclCommandDetector,
 		ITclCommandDetectorExtension {
@@ -48,10 +47,8 @@ public class IncrTclCommandDetector implements ITclCommandDetector,
 	 * itcl object creations 4) Detect itcl instances method access, etc.
 	 * 
 	 */
-	public CommandInfo detectCommand(TclCommand command, int offset,
+	public CommandInfo detectCommand(TclStatement statement,
 			ModuleDeclaration module, ITclParser parser, ASTNode decl) {
-		TclStatement statement = (TclStatement) parser.processLocal(command,
-				offset, decl);
 		if (statement.getCount() == 0) {
 			return null;
 		}
@@ -96,7 +93,7 @@ public class IncrTclCommandDetector implements ITclCommandDetector,
 		// Lets check possibly this is method call for existing instance
 		// variable.
 		FieldDeclaration variable = IncrTclParseUtil
-				.findXOTclInstanceVariableDeclarationFrom(module, parent,
+				.findInstanceVariableDeclarationFrom(module, parent,
 						commandNameValue);
 		if (variable != null) {
 			// Add support of procs etc.

@@ -12,9 +12,12 @@ package org.eclipse.dltk.debug.ui;
 import java.io.File;
 import java.net.URI;
 import java.text.MessageFormat;
+import java.util.HashMap;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -33,20 +36,28 @@ import org.eclipse.debug.core.model.IThread;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.ui.IDebugModelPresentation;
 import org.eclipse.debug.ui.IValueDetailListener;
+import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
+import org.eclipse.dltk.core.search.IDLTKSearchScope;
+import org.eclipse.dltk.debug.core.ScriptDebugManager;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptExceptionBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptLineBreakpoint;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
+import org.eclipse.dltk.debug.core.model.IScriptType;
 import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.core.model.IScriptVariable;
 import org.eclipse.dltk.debug.core.model.IScriptWatchpoint;
 import org.eclipse.dltk.debug.ui.breakpoints.BreakpointUtils;
+import org.eclipse.dltk.internal.core.Openable;
+import org.eclipse.dltk.internal.core.util.HandleFactory;
 import org.eclipse.dltk.internal.debug.ui.ExternalFileEditorInput;
 import org.eclipse.dltk.internal.debug.ui.ScriptDetailFormattersManager;
 import org.eclipse.dltk.internal.debug.ui.ScriptEvaluationContextManager;
 import org.eclipse.dltk.internal.ui.editor.ExternalStorageEditorInput;
+import org.eclipse.dltk.internal.ui.search.DLTKSearchScopeFactory;
 import org.eclipse.dltk.launching.DebuggingEngineRunner;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.launching.debug.DebuggingEngineManager;
@@ -65,9 +76,11 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
 public abstract class ScriptDebugModelPresentation extends LabelProvider
 		implements IDebugModelPresentation {
 
+	private HashMap fAttributes = new HashMap();
+
 	// TODO: move to properties file
-	protected static final String SUSPENDED_LABEL = "suspended";
-	protected static final String RUNNING_LABEL = "running";
+	protected static final String SUSPENDED_LABEL = "suspended"; //$NON-NLS-1$
+	protected static final String RUNNING_LABEL = "running"; //$NON-NLS-1$
 
 	public static IDebuggingEngine getDebuggingEngine(IDebugElement element) {
 		final String id = element.getLaunch().getAttribute(
@@ -129,8 +142,9 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		IDebuggingEngine engine = getDebuggingEngine(target);
 
 		if (engine != null) {
-			return MessageFormat.format("{0} [session id: {1}]", new Object[] {
-					engine.getName(), target.getSessionId() });
+			return MessageFormat.format(
+					Messages.ScriptDebugModelPresentation_debugTargetText,
+					new Object[] { engine.getName(), target.getSessionId() });
 		}
 
 		return target.toString();
@@ -139,9 +153,12 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	// Text
 	protected String getThreadText(IScriptThread thread) {
 		try {
-			return MessageFormat.format("{0} ({1})", new Object[] {
-					thread.getName(),
-					thread.isSuspended() ? SUSPENDED_LABEL : RUNNING_LABEL });
+			return MessageFormat.format(
+					Messages.ScriptDebugModelPresentation_threadText,
+					new Object[] {
+							thread.getName(),
+							thread.isSuspended() ? SUSPENDED_LABEL
+									: RUNNING_LABEL });
 
 		} catch (DebugException e) {
 			DLTKDebugUIPlugin.log(e);
@@ -160,7 +177,7 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 
 		IPath path = realPath;
 		if (projectPath.isPrefixOf(realPath)) {
-			path = new Path("");
+			path = new Path(""); //$NON-NLS-1$
 			int index = projectPath.segmentCount();
 			while (index < realPath.segmentCount()) {
 				path = path.append(realPath.segment(index));
@@ -211,7 +228,8 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			if (sourceLine == null || sourceLine.length() == 0) {
 				final int level = stackFrame.getStack().size()
 						- stackFrame.getLevel() - 1;
-				sourceLine = MessageFormat.format("Stack frame #{0}",
+				sourceLine = MessageFormat.format(
+						Messages.ScriptDebugModelPresentation_stackFrameText,
 						new Object[] { new Integer(level) });
 			}
 
@@ -219,9 +237,10 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			final IPath path = getStackFrameRelativePath(stackFrame);
 
 			// TODO: may be make external option for file:line
-			return MessageFormat.format("{0} [{1}: {2}]", new Object[] {
-					sourceLine, path.toPortableString(),
-					new Integer(stackFrame.getLineNumber()) });
+			return MessageFormat.format(
+					Messages.ScriptDebugModelPresentation_stackFrameText2,
+					new Object[] { sourceLine, path.toPortableString(),
+							new Integer(stackFrame.getLineNumber()) });
 		} catch (CoreException e) {
 			DLTKDebugUIPlugin.log(e);
 		}
@@ -234,9 +253,16 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			String name = variable.getName();
 			IScriptValue value = (IScriptValue) variable.getValue();
 			if (value != null) {
+				if (isShowVariableTypeNames()) {
+					IScriptType type = value.getType();
+					if (type != null) {
+						String typeName = getTypeNameText(type);
+						name = typeName + " " + name; //$NON-NLS-1$
+					}
+				}
 				String valueText = getValueText(value);
 				if (valueText != null && valueText.length() > 0) {
-					return name + " = " + valueText;
+					return name + " = " + valueText; //$NON-NLS-1$
 				}
 			}
 
@@ -255,6 +281,10 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			DebugPlugin.log(e);
 		}
 		return value.toString();
+	}
+
+	public String getDetailPaneText(IScriptValue value) {
+		return getValueText(value);
 	}
 
 	protected String renderUnknownValue(IScriptValue value)
@@ -279,8 +309,8 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 				final String fieldName = w.getFieldName();
 
 				sb.append(MessageFormat.format(
-						"{0}: {1} [line: {2}], watch: {3}", new Object[] {
-								language, file, new Integer(lineNumber),
+						Messages.ScriptDebugModelPresentation_breakpointText,
+						new Object[] { language, file, new Integer(lineNumber),
 								fieldName }));
 			} else if (breakpoint instanceof IScriptLineBreakpoint) { // IScriptLineBreakpoint
 				IScriptLineBreakpoint b = (IScriptLineBreakpoint) breakpoint;
@@ -288,18 +318,22 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 				final String file = b.getResourceName();
 				final int lineNumber = b.getLineNumber();
 
-				sb.append(MessageFormat
-						.format("{0}: {1}: [line: {2}]", new Object[] {
-								language, file, new Integer(lineNumber) }));
+				sb
+						.append(MessageFormat
+								.format(
+										Messages.ScriptDebugModelPresentation_breakpointText2,
+										new Object[] { language, file,
+												new Integer(lineNumber) }));
 			} else if (breakpoint instanceof IScriptExceptionBreakpoint) {
 				IScriptExceptionBreakpoint b = (IScriptExceptionBreakpoint) breakpoint;
 				String typeName = b.getTypeName();
 				if (b.isSuspendOnSubclasses()) {
-					typeName += " [Include Subclasses]";
+					typeName += Messages.ScriptDebugModelPresentation_breakpointText3;
 				}
 
-				sb.append(MessageFormat.format("{0}: {1}", new Object[] {
-						language, typeName }));
+				sb.append(MessageFormat.format(
+						Messages.ScriptDebugModelPresentation_breakpointText4,
+						new Object[] { language, typeName }));
 
 				/*
 				 * TODO: Uncomment this comment when add support for caught and
@@ -315,7 +349,9 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			}
 
 			if (hitCount != -1) {
-				sb.append(", " + hitCount + " hits");
+				sb.append(MessageFormat.format(
+						Messages.ScriptDebugModelPresentation_breakpointText5,
+						new Object[] { new Integer(hitCount) }));
 			}
 
 			return sb.toString();
@@ -327,7 +363,7 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 	}
 
 	protected String getExpressionText(IExpression expression) {
-		final String expressionText = expression.getExpressionText();
+		String expressionText = expression.getExpressionText();
 
 		if (expression instanceof IErrorReportingExpression) {
 			IErrorReportingExpression errorExpression = (IErrorReportingExpression) expression;
@@ -338,11 +374,24 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 
 		IScriptValue value = (IScriptValue) expression.getValue();
 		if (value != null) {
-			return MessageFormat.format("{0} = {1}", new Object[] {
-					expressionText, getValueText(value) });
+			if (isShowVariableTypeNames()) {
+				IScriptType type = value.getType();
+				if (type != null) {
+					String typeName = getTypeNameText(type);
+					expressionText = typeName + " " + expressionText; //$NON-NLS-1$
+				}
+			}
+
+			return MessageFormat.format(
+					Messages.ScriptDebugModelPresentation_expressionText,
+					new Object[] { expressionText, getValueText(value) });
 		}
 
 		return expressionText;
+	}
+
+	public String getTypeNameText(IScriptType type) {
+		return type.getName();
 	}
 
 	public final String getText(Object element) {
@@ -360,6 +409,8 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 			return getValueText((IScriptValue) element);
 		} else if (element instanceof IExpression) {
 			return getExpressionText((IExpression) element);
+		} else if (element instanceof IScriptType) {
+			return getTypeNameText((IScriptType) element);
 		}
 
 		return null;
@@ -378,7 +429,22 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		}
 	}
 
-	public void setAttribute(String attribute, Object value) {
+	public void setAttribute(String id, Object value) {
+		if (value == null) {
+			return;
+		}
+		synchronized (fAttributes) {
+			fAttributes.put(id, value);
+		}
+	}
+
+	protected boolean isShowVariableTypeNames() {
+		synchronized (fAttributes) {
+			Boolean show = (Boolean) fAttributes
+					.get(DISPLAY_VARIABLE_TYPE_NAMES);
+			show = show == null ? Boolean.FALSE : show;
+			return show.booleanValue();
+		}
 	}
 
 	// Images
@@ -419,10 +485,43 @@ public abstract class ScriptDebugModelPresentation extends LabelProvider
 		} else if (element instanceof IFile) {
 			return new FileEditorInput((IFile) element);
 		} else if (element instanceof ILineBreakpoint) {
-			return new FileEditorInput((IFile) ((ILineBreakpoint) element)
-					.getMarker().getResource());
+			return getLineBreakpointEditorInput(element);
 		} else if (element instanceof IStorage) {
 			return new ExternalStorageEditorInput((IStorage) element);
+		}
+		return null;
+	}
+
+	private IEditorInput getLineBreakpointEditorInput(Object element) {
+		ILineBreakpoint bp = (ILineBreakpoint) element;
+		IMarker marker = bp.getMarker();
+		IResource resource = marker.getResource();
+		if (resource instanceof IFile) {
+			return new FileEditorInput((IFile) resource);
+		}
+
+		// else
+		try {
+			IPath path = Path.fromPortableString((String) marker
+					.getAttribute(IMarker.LOCATION));
+			String debugModelId = bp.getModelIdentifier();
+			String natureId = ScriptDebugManager.getInstance()
+					.getNatureByDebugModel(debugModelId);
+			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+					.getLanguageToolkit(natureId);
+			if (toolkit != null) {
+				HandleFactory fac = new HandleFactory();
+				IDLTKSearchScope scope = DLTKSearchScopeFactory.getInstance()
+						.createWorkspaceScope(true, toolkit);
+				Openable openable = fac
+						.createOpenable(path.toOSString(), scope);
+
+				if (openable instanceof IStorage) {
+					return new ExternalStorageEditorInput((IStorage) openable);
+				}
+			}
+		} catch (CoreException e) {
+			DLTKUIPlugin.log(e);
 		}
 		return null;
 	}

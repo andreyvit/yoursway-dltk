@@ -9,19 +9,30 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.debug.ui.console;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
+import org.eclipse.dltk.internal.core.ExternalSourceModule;
+import org.eclipse.dltk.internal.core.Openable;
+import org.eclipse.dltk.internal.core.util.HandleFactory;
 import org.eclipse.dltk.internal.ui.editor.EditorUtility;
+import org.eclipse.dltk.internal.ui.search.DLTKSearchScopeFactory;
+import org.eclipse.dltk.ruby.core.RubyLanguageToolkit;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.BadLocationException;
@@ -33,6 +44,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.console.IHyperlink;
 import org.eclipse.ui.console.TextConsole;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
@@ -74,42 +86,41 @@ public class RubyFileHyperlink implements IHyperlink {
 			if (lineNumber > 0) {
 				lineNumber--;
 			}
+			IEditorInput editorInput = null;
 			Object sourceElement = getSourceModule(fileName);
 			if (sourceElement != null) {
-				IEditorInput editorInput = getEditorInput(sourceElement);
-				if (editorInput != null) {
-					String editorId = getEditorId(editorInput, sourceElement);
-					if (editorId != null) {
-						IEditorPart editorPart = DLTKDebugUIPlugin
-								.getActivePage().openEditor(editorInput,
-										editorId);
-						if (editorPart instanceof ITextEditor
-								&& lineNumber >= 0) {
-							ITextEditor textEditor = (ITextEditor) editorPart;
-							IDocumentProvider provider = textEditor
-									.getDocumentProvider();
-							provider.connect(editorInput);
-							IDocument document = provider
-									.getDocument(editorInput);
-							try {
-								IRegion line = document
-										.getLineInformation(lineNumber);
-								textEditor.selectAndReveal(line.getOffset(),
-										line.getLength());
-							} catch (BadLocationException e) {
-								MessageDialog
-										.openInformation(
-												DLTKDebugUIPlugin
-														.getActiveWorkbenchShell(),
-												ConsoleMessages.RubyFileHyperlink_0,
-												MessageFormat
-														.format(
-																"{0}{1}{2}", new String[] { (lineNumber + 1) + "", ConsoleMessages.RubyFileHyperlink_1, fileName })); //$NON-NLS-2$ //$NON-NLS-1$
-							}
-							provider.disconnect(editorInput);
+				editorInput = getEditorInput(sourceElement);
+			} else {
+				Path filePath = new Path(fileName);
+				if (filePath.toFile().isFile()) {
+					IFileStore fileStore = EFS.getLocalFileSystem().getStore(
+							filePath);
+					editorInput = new FileStoreEditorInput(fileStore);
+				}
+			}
+			if (editorInput == null) {
+				String editorId = getEditorId(editorInput, sourceElement);
+				if (editorId != null) {
+					IEditorPart editorPart = DLTKDebugUIPlugin.getActivePage()
+							.openEditor(editorInput, editorId);
+					if (editorPart instanceof ITextEditor && lineNumber >= 0) {
+						ITextEditor textEditor = (ITextEditor) editorPart;
+						IDocumentProvider provider = textEditor
+								.getDocumentProvider();
+						IEditorInput input = editorPart.getEditorInput();
+						provider.connect(input);
+						IDocument document = provider.getDocument(input);
+						try {
+							IRegion line = document
+									.getLineInformation(lineNumber);
+							textEditor.selectAndReveal(line.getOffset(), line
+									.getLength());
+						} catch (BadLocationException e) {
+
 						}
-						return;
+						provider.disconnect(input);
 					}
+					return;
 				}
 			}
 			// did not find source
@@ -120,7 +131,7 @@ public class RubyFileHyperlink implements IHyperlink {
 							MessageFormat
 									.format(
 											ConsoleMessages.RubyFileHyperlink_Source_not_found_for__0__2,
-											new String[] { fileName }));
+											new Object[] { fileName }));
 		} catch (CoreException e) {
 			DLTKDebugUIPlugin
 					.errorDialog(
@@ -151,9 +162,23 @@ public class RubyFileHyperlink implements IHyperlink {
 	}
 
 	protected Object getSourceModule(String fileName) throws CoreException {
+		IPath path = Path.fromOSString(fileName);
 		IFile f = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(
-				new Path(fileName));
-		return f;
+				path);
+		if (f != null)
+			return f;
+
+		// else
+		HandleFactory fac = new HandleFactory();
+		IDLTKSearchScope scope = DLTKSearchScopeFactory.getInstance()
+				.createWorkspaceScope(true, RubyLanguageToolkit.getDefault());
+		Openable openable = fac.createOpenable(path.toPortableString(), scope);
+
+		if (openable instanceof ExternalSourceModule) {
+			return openable;
+		}
+
+		return null;
 	}
 
 	/**
@@ -164,11 +189,11 @@ public class RubyFileHyperlink implements IHyperlink {
 	 *                if unable to parse the type name
 	 */
 	protected String getFileName(String linkText) throws CoreException {
-		Pattern p = Pattern.compile("^(.+rb):(\\d+)$");
+		Pattern p = Pattern.compile("^(.+rb):(\\d+)$"); //$NON-NLS-1$
 		Matcher m = p.matcher(linkText);
 		if (m.find()) {
-			String name = m.group(1);
-			return name;
+			String name = m.group(1);			
+			return normalizePath(name);
 		}
 		IStatus status = new Status(
 				IStatus.ERROR,
@@ -179,6 +204,15 @@ public class RubyFileHyperlink implements IHyperlink {
 		throw new CoreException(status);
 	}
 
+	private static String normalizePath(String filePath) {
+		try {
+			File file = new File(filePath);
+			return file.getCanonicalPath();
+		} catch (IOException e) {
+			return filePath;
+		}
+	}
+
 	/**
 	 * Returns the line number associated with the stack trace or -1 if none.
 	 * 
@@ -186,7 +220,7 @@ public class RubyFileHyperlink implements IHyperlink {
 	 *                if unable to parse the number
 	 */
 	protected int getLineNumber(String linkText) throws CoreException {
-		Pattern p = Pattern.compile("^(.+rb):(\\d+)$");
+		Pattern p = Pattern.compile("^(.+rb):(\\d+)$"); //$NON-NLS-1$
 		Matcher m = p.matcher(linkText);
 		if (m.find()) {
 			String lineText = m.group(2);
@@ -258,6 +292,7 @@ public class RubyFileHyperlink implements IHyperlink {
 			throw new CoreException(status);
 		}
 	}
+
 	protected String getLinkText(int offset, int length) throws CoreException {
 		try {
 			IDocument document = getConsole().getDocument();
@@ -276,7 +311,7 @@ public class RubyFileHyperlink implements IHyperlink {
 	public boolean isCorrect(int offset, int length) {
 		try {
 			String linkText = getLinkText(offset, length);
-			if( linkText != null ) {
+			if (linkText != null) {
 				String fileName = getFileName(linkText);
 				Object sourceElement = getSourceModule(fileName);
 				if (sourceElement != null) {

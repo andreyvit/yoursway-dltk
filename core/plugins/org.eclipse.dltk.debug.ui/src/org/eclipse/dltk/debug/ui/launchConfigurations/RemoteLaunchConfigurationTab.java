@@ -23,7 +23,7 @@ public abstract class RemoteLaunchConfigurationTab extends
 		ScriptLaunchConfigurationTab {
 
 	private static int DEFAULT_PORT = 10000;
-	private static String DEFAULT_IDEKEY = "idekey";
+	private static String DEFAULT_IDEKEY = "idekey"; //$NON-NLS-1$
 
 	private Text port;
 	private Text ideKey;
@@ -60,7 +60,7 @@ public abstract class RemoteLaunchConfigurationTab extends
 				.setText(getLaunchAttr(
 						config,
 						ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_REMOTE_WORKING_DIR,
-						""));
+						"")); //$NON-NLS-1$
 	}
 
 	/*
@@ -163,7 +163,6 @@ public abstract class RemoteLaunchConfigurationTab extends
 				updateLaunchConfigurationDialog();
 			}
 		});
-
 	}
 
 	private String getLaunchAttr(ILaunchConfiguration config, String key,

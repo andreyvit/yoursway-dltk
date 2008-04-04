@@ -2,23 +2,24 @@ package org.eclipse.dltk.tcl.internal.core.parser.processors.tcl;
 
 import org.eclipse.dltk.ast.ASTListNode;
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.tcl.ast.TclStatement;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.core.ast.TclUpvarVariableDeclaration;
+import org.eclipse.dltk.tcl.internal.core.codeassist.TclVisibilityUtils;
 
 public class TclUpvarProcessor extends AbstractTclCommandProcessor {
 
 	public TclUpvarProcessor() {
 	}
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset, ASTNode parent) {
-		TclStatement statement = (TclStatement) parser.processLocal(command, offset, parent);
+	public ASTNode process(TclStatement statement, ITclParser parser, 
+			ASTNode parent) {
 		int statementsCount = statement.getCount();
 		if (statementsCount < 2) {
 			this.report(parser, "Syntax error: at least one argument expected.", statement, ProblemSeverities.Error);
@@ -58,6 +59,12 @@ public class TclUpvarProcessor extends AbstractTclCommandProcessor {
 			}
 			SimpleReference variable = TclParseUtil.makeVariable(variableName);
 			TclUpvarVariableDeclaration var = new TclUpvarVariableDeclaration(variable, null, at.sourceStart(), at.sourceEnd());
+			if (TclVisibilityUtils.isPrivate(variable.getName())) {
+				var.setModifier(Modifiers.AccPrivate);
+			} else {
+				var.setModifier(Modifiers.AccPublic);
+			}
+			var.setModifier(Modifiers.AccUpVar);
 			if( ret == null ) {
 				ret = var;
 			}

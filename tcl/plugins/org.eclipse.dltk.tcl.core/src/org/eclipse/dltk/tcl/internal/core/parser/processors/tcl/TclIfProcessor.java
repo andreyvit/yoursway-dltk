@@ -11,21 +11,19 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.problem.ProblemSeverities;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
+import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.ast.IfStatement;
 import org.eclipse.dltk.tcl.core.ast.TclAdvancedExecuteExpression;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
 public class TclIfProcessor extends AbstractTclCommandProcessor {
 
 	public TclIfProcessor() {
 	}
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement statement, ITclParser parser,
 			ASTNode parent) {
-		TclStatement statement = (TclStatement) parser.processLocal(command,
-				offset, parent);
 		List exprs = statement.getExpressions();
 		int start = statement.sourceStart();
 		int end = statement.sourceEnd();
@@ -49,7 +47,7 @@ public class TclIfProcessor extends AbstractTclCommandProcessor {
 		return ifStatement;
 	}
 
-	private Statement extractElse(List exprs, ITclParser parser, int start,
+	private ASTNode extractElse(List exprs, ITclParser parser, int start,
 			int end, Block el) {
 		if (exprs.size() == 0) {
 			return null;
@@ -65,8 +63,11 @@ public class TclIfProcessor extends AbstractTclCommandProcessor {
 			} else if (node instanceof SimpleReference) {
 				el.addStatement(node);
 			}
-			if (node instanceof Statement) {
-				return (Statement) node;
+			else if (node instanceof Statement) {
+				return node;
+			}
+			else if (node instanceof TclExecuteExpression) {
+				return node;
 			}
 			return null;
 		}
@@ -170,6 +171,11 @@ public class TclIfProcessor extends AbstractTclCommandProcessor {
 			bl.setStart(node.sourceStart());
 			bl.setEnd(node.sourceEnd());
 			return i;
+		} else if (node instanceof TclExecuteExpression) {
+			bl.addStatement(node);
+			bl.setStart(node.sourceStart());
+			bl.setEnd(node.sourceEnd());
+			return i;
 		} else if (node instanceof SimpleReference) {
 			List es = new ArrayList();
 			es.add(node);
@@ -201,7 +207,8 @@ public class TclIfProcessor extends AbstractTclCommandProcessor {
 				if (st instanceof TclStatement) {
 					List expressions = ((TclStatement) st).getExpressions();
 					for (int k = 0; k < expressions.size(); k++) {
-						list.addNode((ASTNode) expressions.get(k));
+						ASTNode expr = (ASTNode) expressions.get(k);
+						list.addNode(expr);
 					}
 				}
 			}
@@ -211,8 +218,12 @@ public class TclIfProcessor extends AbstractTclCommandProcessor {
 		} else if (node instanceof TclAdvancedExecuteExpression) {
 			TclAdvancedExecuteExpression ex = (TclAdvancedExecuteExpression) node;
 			List childs = ex.getChilds();
-			report(parser, "If condition not in {}", node.sourceStart() - 1, node.sourceEnd(), ProblemSeverities.Warning);
+			// report(parser, "If condition not in {}", node.sourceStart() - 1,
+			// node.sourceEnd(), ProblemSeverities.Warning);
 			return new ASTListNode(node.sourceStart(), node.sourceEnd(), childs);
+		}
+		else if (node instanceof TclExecuteExpression) {
+			return node;
 		}
 		this.report(parser, "Incorrect if condition", node,
 				ProblemSeverities.Error);

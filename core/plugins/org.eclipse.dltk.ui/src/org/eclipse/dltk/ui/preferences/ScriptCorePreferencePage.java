@@ -10,6 +10,7 @@
 package org.eclipse.dltk.ui.preferences;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -42,9 +43,9 @@ public class ScriptCorePreferencePage extends
 						.getFont(), 2, 1, GridData.FILL);
 				if (DLTKCore.SHOW_REINDEX) {
 					Label l = new Label(composite, SWT.PUSH);
-					l.setText("Manual reindex.");
+					l.setText(Messages.ScriptCorePreferencePage_manualReindex);
 					Button reCreateIndex = new Button(composite, SWT.PUSH);
-					reCreateIndex.setText("Reindex.");
+					reCreateIndex.setText(Messages.ScriptCorePreferencePage_reindex);
 					reCreateIndex.addSelectionListener(new SelectionListener() {
 
 						public void widgetDefaultSelected(SelectionEvent e) {
@@ -91,6 +92,10 @@ public class ScriptCorePreferencePage extends
 				}
 				return composite;
 			}
+
+			protected List createOverlayKeys() {
+				return null;
+			}
 		};
 	}
 
@@ -99,7 +104,7 @@ public class ScriptCorePreferencePage extends
 	}
 
 	protected void setDescription() {
-		setDescription(""); // TODO:
+		setDescription(""); //$NON-NLS-1$
 	}
 
 	protected void setPreferenceStore() {

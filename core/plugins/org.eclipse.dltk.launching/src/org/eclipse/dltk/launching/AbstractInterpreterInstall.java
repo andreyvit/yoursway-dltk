@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
 import org.eclipse.dltk.internal.launching.DebugRunnerDelegate;
+import org.eclipse.dltk.utils.PlatformFileUtils;
 
 /**
  * Abstract implementation of a interpreter install.
@@ -83,6 +84,10 @@ public abstract class AbstractInterpreterInstall implements IInterpreterInstall 
 	}
 
 	public File getInstallLocation() {
+		return PlatformFileUtils
+				.findAbsoluteOrEclipseRelativeFile(fInstallLocation);
+	}
+	public File getRawInstallLocation() {
 		return fInstallLocation;
 	}
 

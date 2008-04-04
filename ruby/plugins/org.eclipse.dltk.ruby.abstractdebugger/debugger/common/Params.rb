@@ -24,7 +24,7 @@ module XoredDebugger
             @host   = ENV['DBGP_RUBY_HOST']
             @port   = ENV['DBGP_RUBY_PORT'].to_i
             @key    = ENV['DBGP_RUBY_KEY']
-            @script = ENV['DBGP_RUBY_SCRIPT']
+            @script = $0
             @log    = ENV['DBGP_RUBY_LOG']
         end
         

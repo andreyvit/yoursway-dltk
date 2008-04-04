@@ -3,6 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.dltk.core.tests;singleton:=true
 Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: core.jar
 Bundle-Activator: org.eclipse.dltk.core.tests.model.ModelTestsPlugin
 Bundle-Vendor: %pluginProvider
 Bundle-Localization: plugin

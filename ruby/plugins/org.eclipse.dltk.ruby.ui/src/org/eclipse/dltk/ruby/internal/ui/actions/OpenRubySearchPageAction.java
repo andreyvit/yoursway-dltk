@@ -10,7 +10,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 public class OpenRubySearchPageAction implements IWorkbenchWindowActionDelegate {
 
-	private static final String RUBY_SEARCH_PAGE_ID = "org.eclipse.dltk.ui.RubySearchPage";
+	private static final String RUBY_SEARCH_PAGE_ID = "org.eclipse.dltk.ui.RubySearchPage"; //$NON-NLS-1$
 
 	private IWorkbenchWindow window;
 

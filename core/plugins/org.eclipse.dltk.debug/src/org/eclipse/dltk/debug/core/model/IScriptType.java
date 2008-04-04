@@ -4,4 +4,5 @@ public interface IScriptType {
 	String getName();
 	boolean isAtomic();
 	boolean isCollection();
+	boolean isString();
 }

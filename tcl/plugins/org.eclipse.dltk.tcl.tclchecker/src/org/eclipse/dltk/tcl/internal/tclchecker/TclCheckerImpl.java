@@ -55,45 +55,29 @@ public class TclCheckerImpl extends AbstractValidator {
 		super.storeTo(doc, element);
 	}
 
-	public IStatus validate(IResource resource[], OutputStream console) {
+	public IStatus validate(IResource resource[], OutputStream console,
+			IProgressMonitor monitor) {
 		return Status.CANCEL_STATUS;
 	}
 
-	public IStatus validate(ISourceModule[] module, OutputStream console) {
-		try {
-			List els = new ArrayList();
-			// els.add(module);
-			for (int i = 0; i < module.length; i++) {
-				IResource res = module[i].getResource();
-				if (res != null) {
-					els.add(module[i]);
-					try {
-						TclCheckerMarker.clearMarkers(res);
-					} catch (CoreException e) {
-						if (DLTKCore.DEBUG) {
-							e.printStackTrace();
-						}
-					}
-				}
-			}
-			if (els.size() == 0) {
-				return Status.OK_STATUS;
-			}
-			if (getProgressMonitor() != null) {
-				getProgressMonitor().beginTask("Checking with tclchecker",
-						els.size()*2);
-			}
-			TclChecker checker = new TclChecker(TclCheckerPlugin.getDefault()
-					.getPreferenceStore());
-
-			IProgressMonitor progressMonitor = getProgressMonitor();
-			checker.check(els, progressMonitor, console);
-			return Status.OK_STATUS;
-		} finally {
-			if (getProgressMonitor() != null) {
-				getProgressMonitor().done();
+	public IStatus validate(ISourceModule[] module, OutputStream console,
+			IProgressMonitor monitor) {
+		List els = new ArrayList();
+		for (int i = 0; i < module.length; i++) {
+			IResource res = module[i].getResource();
+			if (res != null) {
+				els.add(module[i]);
+				clean(res);
 			}
 		}
+		if (els.size() == 0) {
+			return Status.OK_STATUS;
+		}
+		TclChecker checker = new TclChecker(TclCheckerPlugin.getDefault()
+				.getPreferenceStore());
+
+		checker.check(els, monitor, console);
+		return Status.OK_STATUS;
 	}
 
 	public boolean isValidatorValid() {
@@ -125,5 +109,14 @@ public class TclCheckerImpl extends AbstractValidator {
 				e.printStackTrace();
 			}
 		}
+	}
+ 
+	public void loadInfo(Element element) {
+		if (initialized) {
+			return;
+		}
+		initialized = true;
+		this.setActive((new Boolean(element.getAttribute("active")))
+				.booleanValue());
 	}
 }

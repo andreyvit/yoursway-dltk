@@ -25,7 +25,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * but based on signatures and {@link CompletionProposal}s.
  * 
  */
-public abstract class CompletionProposalLabelProvider {
+public class CompletionProposalLabelProvider {
 
 	/**
 	 * The completion context.
@@ -301,6 +301,8 @@ public abstract class CompletionProposalLabelProvider {
 			descriptor = DLTKPluginImages.DESC_OBJS_PACKAGE;
 			break;
 		case CompletionProposal.KEYWORD:
+		    descriptor = DLTKPluginImages.DESC_OBJS_KEYWORD;
+		    break;
 		case CompletionProposal.LABEL_REF:
 			descriptor = null;
 			break;
@@ -368,7 +370,7 @@ public abstract class CompletionProposalLabelProvider {
 	private ImageDescriptor decorateImageDescriptor(ImageDescriptor descriptor,
 			CompletionProposal proposal) {
 		int adornments = 0;
-	
+
 		return new ScriptElementImageDescriptor(descriptor, adornments,
 				ScriptElementImageProvider.SMALL_SIZE);
 	}

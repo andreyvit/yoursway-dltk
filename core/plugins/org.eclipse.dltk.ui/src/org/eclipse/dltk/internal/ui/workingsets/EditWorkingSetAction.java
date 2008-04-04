@@ -49,7 +49,7 @@ public class EditWorkingSetAction extends Action {
 		setEnabled(actionGroup.getWorkingSet() != null);
 		fActionGroup= actionGroup;
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
 		
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IScriptHelpContextIds.EDIT_WORKING_SET_ACTION);

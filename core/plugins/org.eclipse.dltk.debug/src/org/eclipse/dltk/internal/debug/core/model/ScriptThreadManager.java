@@ -122,7 +122,7 @@ public class ScriptThreadManager implements IScriptThreadManager {
 				}
 
 				if (DEBUG) {
-					System.out.println("Received (stderr): " + data);
+					System.out.println("Received (stderr): " + data); //$NON-NLS-1$
 				}
 			}
 
@@ -138,7 +138,7 @@ public class ScriptThreadManager implements IScriptThreadManager {
 					}
 				}
 				if (DEBUG) {
-					System.out.println("Received (stdout): " + data);
+					System.out.println("Received (stdout): " + data); //$NON-NLS-1$
 				}
 			}			
 		};
@@ -282,6 +282,15 @@ public class ScriptThreadManager implements IScriptThreadManager {
 			IThread[] threads = getThreads();
 			for (int i = 0; i < threads.length; ++i) {
 				threads[i].suspend();
+			}
+		}
+	}
+	
+	public void refreshThreads() {
+		synchronized(threads) {
+			IThread[] threads = getThreads();
+			for (int i = 0; i < threads.length; ++i) {
+				((IScriptThread) threads[i]).updateStackFrames();
 			}
 		}
 	}

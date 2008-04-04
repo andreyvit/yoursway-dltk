@@ -3,12 +3,12 @@
 <plugin>
 
 <!-- Extension point definitions -->
-   <extension-point id="buildpathProviders" name="%buildpathProviders" schema="schema/buildpathProviders.exsd"/>
-   <extension-point id="runtimeBuildpathEntryResolvers" name="%runtimeBuildpathEntryResolvers" schema="schema/runtimeBuildpathEntryResolvers.exsd"/>
-   <extension-point id="runtimeBuildpathEntries" name="%runtimeBuildpathEntries" schema="schema/runtimeBuildpathEntries.exsd"/>
-   <extension-point id="interpreterInstallTypes" name="%interpreterInstallTypes" schema="schema/interpreterInstallTypes.exsd"/>
-   <extension-point id="interpreterInstalls" name="%interpreterInstalls" schema="schema/interpreterInstalls.exsd"/>
-   <extension-point id="debuggingEngine" name="Debugging Engine" schema="schema/debuggingEngine.exsd"/>
+   <extension-point id="buildpathProviders" name="%extension-point.name.buildpathProviders" schema="schema/buildpathProviders.exsd"/>
+   <extension-point id="runtimeBuildpathEntryResolvers" name="%extension-point.name.runtimeBuildpathEntryResolvers" schema="schema/runtimeBuildpathEntryResolvers.exsd"/>
+   <extension-point id="runtimeBuildpathEntries" name="%extension-point.name.runtimeBuildpathEntries" schema="schema/runtimeBuildpathEntries.exsd"/>
+   <extension-point id="interpreterInstallTypes" name="%extension-point.name.interpreterInstallTypes" schema="schema/interpreterInstallTypes.exsd"/>
+   <extension-point id="interpreterInstalls" name="%extension-point.name.interpreterInstalls" schema="schema/interpreterInstalls.exsd"/>
+   <extension-point id="debuggingEngine" name="%extension-point.name.debuggingEngine" schema="schema/debuggingEngine.exsd"/>
 
   <extension
         point="org.eclipse.dltk.launching.runtimeBuildpathEntryResolvers">

@@ -232,11 +232,13 @@ public abstract class ScriptCompletionEngine extends Engine implements
 	protected void findLocalVariables(char[] token, char[][] choices,
 			boolean canCompleteEmptyToken, boolean provideDollar) {
 		int kind = CompletionProposal.LOCAL_VARIABLE_REF;
-		findElements(token, choices, canCompleteEmptyToken, provideDollar, kind, Collections.EMPTY_MAP,Collections.EMPTY_MAP);
+		findElements(token, choices, canCompleteEmptyToken, provideDollar,
+				kind, Collections.EMPTY_MAP, Collections.EMPTY_MAP);
 	}
 
 	protected void findElements(char[] token, char[][] choices,
-			boolean canCompleteEmptyToken, boolean provideDollar, int kind, Map parameterNames, Map proposalInfos) {
+			boolean canCompleteEmptyToken, boolean provideDollar, int kind,
+			Map parameterNames, Map proposalInfos) {
 		if (choices == null || choices.length == 0)
 			return;
 
@@ -269,13 +271,13 @@ public abstract class ScriptCompletionEngine extends Engine implements
 						// proposal.setTypeName(displayName);
 						proposal.setName(co);
 						proposal.setCompletion(co);
-						proposal.setParameterNames((char[][]) parameterNames.get(choices[i]));
+						proposal.setParameterNames((char[][]) parameterNames
+								.get(choices[i]));
 						Object proposalInfo = proposalInfos.get(choices[i]);
-						if (proposalInfo != null)
-						{
+						if (proposalInfo != null) {
 							proposal.extraInfo = proposalInfo;
 						}
-						
+
 						// proposal.setFlags(Flags.AccDefault);
 						proposal.setReplaceRange(this.startPosition
 								- this.offset, this.endPosition - this.offset);
@@ -300,10 +302,11 @@ public abstract class ScriptCompletionEngine extends Engine implements
 		if (canCompleteEmptyToken || length > 0) {
 			for (int i = 0; i < methods.size(); i++) {
 				IMethod method = (IMethod) methods.get(i);
-				String qname = (String) methodNames.get(i);//processMethodName(method, tok);
+				String qname = (String) methodNames.get(i);// processMethodName(method,
+				// tok);
 				char[] name = qname.toCharArray();
 				if (DLTKCore.DEBUG_COMPLETION) {
-					System.out.println("Completion:" + qname);
+					System.out.println("Completion:" + qname); //$NON-NLS-1$
 				}
 				if (length <= name.length
 						&& CharOperation.prefixEquals(token, name, false)) {
@@ -324,6 +327,15 @@ public abstract class ScriptCompletionEngine extends Engine implements
 						// proposal.setPackageName(q);
 						// proposal.setTypeName(displayName);
 						proposal.setModelElement(method);
+						if (method != null) {
+							try {
+								proposal.setFlags(method.getFlags());
+							} catch (ModelException e) {
+								if (DLTKCore.DEBUG) {
+									e.printStackTrace();
+								}
+							}
+						}
 						String[] arguments = null;
 
 						try {
@@ -436,7 +448,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 				String qname = processMethodName(method, tok);
 				char[] name = qname.toCharArray();
 				if (DLTKCore.DEBUG_COMPLETION) {
-					System.out.println("Completion:" + qname);
+					System.out.println("Completion:" + qname); //$NON-NLS-1$
 				}
 				if (length <= name.length
 						&& CharOperation.prefixEquals(token, name, false)) {
@@ -456,6 +468,13 @@ public abstract class ScriptCompletionEngine extends Engine implements
 						// proposal.setPackageName(q);
 						// proposal.setTypeName(displayName);
 						proposal.setModelElement(method);
+						try {
+							proposal.setFlags(method.getFlags());
+						} catch (ModelException e1) {
+							if (DLTKCore.DEBUG) {
+								e1.printStackTrace();
+							}
+						}
 						String[] arguments = null;
 
 						try {
@@ -502,7 +521,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 				String qname = processFieldName(field, tok);
 				char[] name = qname.toCharArray();
 				if (DLTKCore.DEBUG_COMPLETION) {
-					System.out.println("Completion:" + qname);
+					System.out.println("Completion:" + qname); //$NON-NLS-1$
 				}
 				if (length <= name.length
 						&& CharOperation.prefixEquals(token, name, false)) {
@@ -551,7 +570,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 				String qname = processTypeName(type, tok);
 				char[] name = qname.toCharArray();
 				if (DLTKCore.DEBUG_COMPLETION) {
-					System.out.println("Completion:" + qname);
+					System.out.println("Completion:" + qname); //$NON-NLS-1$
 				}
 				if (length <= name.length
 						&& CharOperation.prefixEquals(token, name, false)) {
@@ -564,7 +583,7 @@ public abstract class ScriptCompletionEngine extends Engine implements
 					ScriptCompletionEngine.this.noProposal = false;
 					if (!ScriptCompletionEngine.this.requestor
 							.isIgnored(CompletionProposal.TYPE_REF)) {
-					
+
 						CompletionProposal proposal = ScriptCompletionEngine.this
 								.createProposal(
 										CompletionProposal.TYPE_REF,

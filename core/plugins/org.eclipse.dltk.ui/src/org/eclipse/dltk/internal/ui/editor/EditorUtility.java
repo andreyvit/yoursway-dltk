@@ -243,7 +243,7 @@ public class EditorUtility {
 			return new FileEditorInput((IFile) input);
 		if (DLTKCore.DEBUG) {
 			System.err
-					.println("Add archive entry and external source folder editor input..");
+					.println("Add archive entry and external source folder editor input.."); //$NON-NLS-1$
 		}
 		if (input instanceof IStorage) {
 			return new ExternalStorageEditorInput((IStorage) input);
@@ -260,7 +260,7 @@ public class EditorUtility {
 		if (part instanceof ScriptEditor) {
 			((ScriptEditor) part).setSelection(element);
 			if (DLTKCore.DEBUG) {
-				System.err.println("Add revealInEditor set selection");
+				System.err.println("Add revealInEditor set selection"); //$NON-NLS-1$
 			}
 			return;
 		}
@@ -338,7 +338,7 @@ public class EditorUtility {
 				}
 			} else if (input instanceof ExternalStorageEditorInput) {
 				System.err
-						.println("TODO: Add external storage editor input reveal...");
+						.println("TODO: Add external storage editor input reveal..."); //$NON-NLS-1$
 			}
 			return;
 		}
@@ -400,7 +400,7 @@ public class EditorUtility {
 			// else
 			if (DLTKCore.DEBUG) {
 				System.err
-						.println("Add initializeHighlightRange support of preferences.");
+						.println("Add initializeHighlightRange support of preferences."); //$NON-NLS-1$
 			}
 			enable = enable && toggleAction.isEnabled()
 					&& toggleAction.isChecked();

@@ -1,6 +1,7 @@
 package org.eclipse.dltk.tcl.internal.core.parser.processors.tcl;
 
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
@@ -10,17 +11,15 @@ import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.core.ast.TclGlobalVariableDeclaration;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
+import org.eclipse.dltk.tcl.internal.core.codeassist.TclVisibilityUtils;
 
 public class TclGlobalVariableProcessor extends AbstractTclCommandProcessor {
 
 	public TclGlobalVariableProcessor() {
 	}
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement statement, ITclParser parser,
 			ASTNode parent) {
-		TclStatement statement = (TclStatement) parser.processLocal(command,
-				offset, parent);
 		int statementsCount = statement.getCount();
 		if (statementsCount < 2) {
 			this.report(parser,
@@ -38,6 +37,12 @@ public class TclGlobalVariableProcessor extends AbstractTclCommandProcessor {
 				if (variable != null) {
 					TclGlobalVariableDeclaration var = new TclGlobalVariableDeclaration(
 							variable, at.sourceStart(), at.sourceEnd());
+					if (TclVisibilityUtils.isPrivate(variable.getName())) {
+						var.setModifier(Modifiers.AccPrivate);
+					} else {
+						var.setModifier(Modifiers.AccPublic);
+					}
+					var.setModifier(Modifiers.AccGlobal);
 					if (ret == null) {
 						ret = var;
 					} else {

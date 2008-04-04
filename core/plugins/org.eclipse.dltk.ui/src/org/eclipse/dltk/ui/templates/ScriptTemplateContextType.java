@@ -18,18 +18,26 @@ import org.eclipse.jface.text.templates.TemplateVariable;
 
 /**
  * A very simple context type.
+ * 
+ * <p>
+ * Subclasses must provide an implementation for all constructors provided by
+ * this class.
+ * </p>
  */
 public abstract class ScriptTemplateContextType extends TemplateContextType {
 
 	public ScriptTemplateContextType() {
+		setupResolvers();
 	}
 
 	public ScriptTemplateContextType(String id) {
 		super(id);
+		setupResolvers();
 	}
 
 	public ScriptTemplateContextType(String id, String name) {
 		super(id, name);
+		setupResolvers();
 	}
 
 	public abstract ScriptTemplateContext createContext(IDocument document,
@@ -41,11 +49,42 @@ public abstract class ScriptTemplateContextType extends TemplateContextType {
 		for (int i = 0; i < variables.length; i++) {
 			TemplateVariable var = variables[i];
 			if (var.getType().equals(GlobalTemplateVariables.Cursor.NAME)) {
-				if (var.getOffsets().length > 1) {					
+				if (var.getOffsets().length > 1) {
 					throw new TemplateException(
 							TemplateMessages.Validation_SeveralCursorPositions);
 				}
 			}
 		}
+	}
+
+	/**
+	 * Adds global template variable resolvers
+	 */
+	protected void addGlobalResolvers() {
+		addResolver(new GlobalTemplateVariables.Cursor());
+		addResolver(new GlobalTemplateVariables.WordSelection());
+		addResolver(new GlobalTemplateVariables.LineSelection());
+		addResolver(new GlobalTemplateVariables.Dollar());
+		addResolver(new GlobalTemplateVariables.Date());
+		addResolver(new GlobalTemplateVariables.Year());
+		addResolver(new GlobalTemplateVariables.Time());
+		addResolver(new GlobalTemplateVariables.User());
+	}
+
+	/**
+	 * Adds script template variable resolvers
+	 * 
+	 * <p>Subclasses may override this method if they wish to add additional
+	 * resolvers.</p>
+	 */
+	protected void addScriptResolvers() {
+		addResolver(new ScriptTemplateVariables.File());
+		addResolver(new ScriptTemplateVariables.Language());
+		addResolver(new ScriptTemplateVariables.Interpreter());
+	}
+
+	private void setupResolvers() {
+		addGlobalResolvers();
+		addScriptResolvers();
 	}
 }

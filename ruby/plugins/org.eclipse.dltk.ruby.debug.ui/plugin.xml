@@ -3,10 +3,10 @@
 <plugin>
 	<extension point="org.eclipse.ui.actionSets">
 		<actionSet id="org.eclipse.dltk.ruby.debug.ui.ScriptDebugActionSet"
-			label="Ruby debugger action set" visible="true">
+			label="%actionSet.label.rubyDebug" visible="true">
 			<menu
          		id="org.eclipse.ui.run"
-         		label="&amp;Run"
+         		label="%menu.label.run"
          		path="additions">
       			<separator
         	  		 name="scriptGroup">
@@ -21,18 +21,31 @@
 			</action>
 		</actionSet>
 	</extension>
-	<extension point="org.eclipse.ui.commands">
-		<command name="%ActionDefinition.RunRubyScript.name"
-			description="%ActionDefinition.RunRubyScript.description"
-			categoryId="org.eclipse.debug.ui.category.run"
-			id="org.eclipse.dltk.ruby.debug.ui.launchShortcut.run">
-		</command>
-		<command name="%ActionDefinition.DebugRubyScript.name"
-			description="%ActionDefinition.DebugRubyScript.description"
-			categoryId="org.eclipse.debug.ui.category.run"
-			id="org.eclipse.dltk.ruby.debug.ui.launchShortcut.debug">
-		</command>
-	</extension>
+	
+  <extension point="org.eclipse.ui.commands">
+	<command name="%ActionDefinition.RunRubyScript.name"
+		description="%ActionDefinition.RunRubyScript.description"
+		categoryId="org.eclipse.debug.ui.category.run"
+		id="org.eclipse.dltk.ruby.debug.ui.launchShortcut.run">
+	</command>
+	<command name="%ActionDefinition.DebugRubyScript.name"
+		description="%ActionDefinition.DebugRubyScript.description"
+		categoryId="org.eclipse.debug.ui.category.run"
+		id="org.eclipse.dltk.ruby.debug.ui.launchShortcut.debug">
+	</command>
+    <command
+      id="org.eclipse.dltk.ruby.debug.ui.commands.toggleGlobalVariables"
+      description="%showGlobalVarsCommand.name"
+      name="%showGlobalVarsCommand.description" />
+    <command
+      id="org.eclipse.dltk.ruby.debug.ui.commands.toggleClassVariables"
+      description="%showClassVarsCommand.name"
+      name="%showClassVarsCommand.description" />
+    <command
+      id="org.eclipse.dltk.ruby.debug.ui.commands.toggleLocalVariables"
+      description="%showLocalVarsCommand.name"
+      name="%showLocalVarsCommand.description" />    		
+  </extension>
 	
 	<extension point="org.eclipse.ui.bindings">
 		<key
@@ -180,7 +193,7 @@
       </page> 
     </extension>   
 
-
+<!-- ssanders: Uncomment when matching is correct
 	<extension
 		point="org.eclipse.ui.console.consolePatternMatchListeners">
 		<consolePatternMatchListener
@@ -196,7 +209,7 @@
 			</enablement>
 		</consolePatternMatchListener>
 	</extension>
-
+-->
 	<extension point="org.eclipse.debug.ui.debugModelPresentations">
 		<debugModelPresentation
 			class="org.eclipse.dltk.ruby.internal.debug.ui.RubyDebugModelPresentation"
@@ -318,6 +331,11 @@
 	    <detailFormatter
 	          nature="org.eclipse.dltk.ruby.core.nature"
 	          snippet="(%variable%).to_s"
+	          type="BigDecimal">
+	    </detailFormatter>
+	    <detailFormatter
+	          nature="org.eclipse.dltk.ruby.core.nature"
+	          snippet="(%variable%).to_s"
 	          type="Complex">
 	    </detailFormatter>
 	    <detailFormatter
@@ -347,6 +365,16 @@
 	    </detailFormatter>
 	    <detailFormatter
 	          nature="org.eclipse.dltk.ruby.core.nature"
+	          snippet="&quot;{ &quot; + (%variable%).collect{|i| i.inspect }*&quot;, &quot; + &quot; }&quot;"
+	          type="Set">
+	    </detailFormatter>
+	    <detailFormatter
+	          nature="org.eclipse.dltk.ruby.core.nature"
+	          snippet="(%variable%).string"
+	          type="StringIO">
+	    </detailFormatter>
+	    <detailFormatter
+	          nature="org.eclipse.dltk.ruby.core.nature"
 	          snippet="(%variable%).inspect"
 	          type="#DEFAULT#">
 	    </detailFormatter>
@@ -369,4 +397,39 @@
 	        </action>
         </viewContribution>
 	</extension>
+
+  <extension point="org.eclipse.ui.menus">
+    <menuContribution locationURI="menu:org.eclipse.debug.ui.VariableView">
+      <menu
+        label="%variablesViewMenu.name"
+        id="org.eclipse.dltk.ruby.debug.ui.menu.VariableView" />
+    </menuContribution>
+    <menuContribution locationURI="menu:org.eclipse.dltk.ruby.debug.ui.menu.VariableView">
+      <command 
+        commandId="org.eclipse.dltk.ruby.debug.ui.commands.toggleGlobalVariables"
+        tooltip="%showGlobalVarsCommand.tooltip"     
+        style="toggle" />
+      <command 
+        commandId="org.eclipse.dltk.ruby.debug.ui.commands.toggleClassVariables"
+        tooltip="%showClassVarsCommand.tooltip"      
+        style="toggle" />       
+      <command 
+        commandId="org.eclipse.dltk.ruby.debug.ui.commands.toggleLocalVariables"
+        tooltip="%showLocalVarsCommand.tooltip" 
+        style="toggle" />                      
+    </menuContribution>  
+  </extension>
+
+  <extension point="org.eclipse.ui.handlers">
+    <handler 
+      commandId="org.eclipse.dltk.ruby.debug.ui.commands.toggleGlobalVariables"
+      class="org.eclipse.dltk.ruby.internal.debug.ui.handlers.ToggleGlobalVariablesHandler" />
+    <handler 
+      commandId="org.eclipse.dltk.ruby.debug.ui.commands.toggleClassVariables"
+      class="org.eclipse.dltk.ruby.internal.debug.ui.handlers.ToggleClassVariablesHandler" />
+    <handler 
+      commandId="org.eclipse.dltk.ruby.debug.ui.commands.toggleLocalVariables"
+      class="org.eclipse.dltk.ruby.internal.debug.ui.handlers.ToggleLocalVariablesHandler" />      
+  </extension>
+	
 </plugin>

@@ -19,16 +19,16 @@ public class AllTests {
 		TestSuite suite = new TestSuite(
 				"Test for org.eclipse.dltk.python.tests.eval.generated");
 		//$JUnit-BEGIN$
-		suite.addTest(genTestclass2.suite());
+//		suite.addTest(genTestclass2.suite());
 		suite.addTest(genTestclass1.suite());
-		suite.addTest(genTestimport1.suite());
-		suite.addTest(genTestmethod0.suite());
+//		suite.addTest(genTestimport1.suite());
+//		suite.addTest(genTestmethod0.suite());
 		suite.addTest(genTestbinops.suite());
-		suite.addTest(genTestclass_import0.suite());
-		suite.addTest(genTestfunc0.suite());
-		suite.addTest(genTestimport0.suite());
-		suite.addTest(genTestfromimport0.suite());
-		suite.addTest(genTestclass0.suite());
+//		suite.addTest(genTestclass_import0.suite());
+//		suite.addTest(genTestfunc0.suite());
+//		suite.addTest(genTestimport0.suite());
+//		suite.addTest(genTestfromimport0.suite());
+//		suite.addTest(genTestclass0.suite());
 		//$JUnit-END$
 		return suite;
 	}

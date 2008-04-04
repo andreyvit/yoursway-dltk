@@ -37,7 +37,7 @@ public class DbgpPacketSender {
 		}
 
 		synchronized (lock) {
-			output.write(command.getBytes("ASCII"));
+			output.write(command.getBytes("ASCII")); //$NON-NLS-1$
 			output.write(0);
 			output.flush();
 		}

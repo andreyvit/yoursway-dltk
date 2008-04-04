@@ -10,6 +10,7 @@
 package org.eclipse.dltk.internal.debug.ui.launcher;
 
 import java.io.File;
+import java.text.MessageFormat;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
@@ -284,8 +285,8 @@ public class WorkingDirectoryBlock extends CommonScriptLaunchTab {
 		try {
 			ILaunchConfiguration config = getLaunchConfiguration();
 			if (config != null) {
-				String projectName = config.getAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, "");
-				if (!projectName.equals("")) {
+				String projectName = config.getAttribute(ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME, ""); //$NON-NLS-1$
+				if (!projectName.equals("")) { //$NON-NLS-1$
 					IScriptProject project = DLTKCore.create(getWorkspaceRoot()).getScriptProject(projectName);
 					if (project != null) {
 						setDefaultWorkingDirectoryText("${workspace_loc:" + project.getPath().makeRelative().toOSString() + "}");  //$NON-NLS-1$//$NON-NLS-2$
@@ -354,7 +355,7 @@ public class WorkingDirectoryBlock extends CommonScriptLaunchTab {
 			}//end else
 		}//end try 
 		catch (CoreException e) {
-			setErrorMessage(ScriptLaunchMessages.ArgumentsTab_Exception_occurred_reading_configuration___15 + e.getStatus().getMessage()); 
+			setErrorMessage(MessageFormat.format(ScriptLaunchMessages.ArgumentsTab_Exception_occurred_reading_configuration___15, new Object[] { e.getStatus().getMessage() })); 
 			DLTKLaunchingPlugin.log(e);
 		}//end catch
 	}

@@ -285,21 +285,21 @@ public abstract class MultiOperation extends ModelOperation {
 //					throw new ModelException(new ModelStatus(IModelStatusConstants.NAME_COLLISION, element));
 //				}
 				if(DLTKCore.DEBUG) {
-					System.err.println("Need validation of script folder name");
+					System.err.println("Need validation of script folder name"); //$NON-NLS-1$
 				}
 				isValid = true;
 				break;
 			case IModelElement.SOURCE_MODULE :
 				
 				if(DLTKCore.DEBUG) {
-					System.err.println("Need validation of source module name");
+					System.err.println("Need validation of source module name"); //$NON-NLS-1$
 				}
 				isValid = true;
 				break;			
 			default :
 				
 				if(DLTKCore.DEBUG) {
-					System.err.println("Need validation of name");
+					System.err.println("Need validation of name"); //$NON-NLS-1$
 				}				
 				isValid = true;
 				break;

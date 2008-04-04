@@ -1,475 +1,533 @@
-/*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- 
- *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.ui.text;
 
-import java.util.regex.Pattern;
+import java.util.Arrays;
 
+import org.eclipse.dltk.ruby.internal.ui.RubyUI;
+import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.text.util.AutoEditUtils;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DefaultIndentLineAutoEditStrategy;
-import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.DocumentCommand;
-import org.eclipse.jface.text.DocumentRewriteSession;
-import org.eclipse.jface.text.DocumentRewriteSessionType;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.rules.FastPartitioner;
+import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.TextUtilities;
 
 public class RubyAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 
-	private String fPartitioning;
+	private static final int[] INDENT_TO_BLOCK_TOKENS = {
+			IRubySymbols.TokenELSE, IRubySymbols.TokenELSIF,
+			IRubySymbols.TokenEND, IRubySymbols.TokenENSURE,
+			IRubySymbols.TokenRESCUE, IRubySymbols.TokenWHEN,
+			IRubySymbols.TokenRBRACE };
 
-	private RubyPreferenceInterpreter prefs;
+	private static final int[] CONTINUATION_TOKENS = {
+			IRubySymbols.TokenBACKSLASH, IRubySymbols.TokenCOMMA,
+			IRubySymbols.TokenSLASH, IRubySymbols.TokenPLUS,
+			IRubySymbols.TokenMINUS, IRubySymbols.TokenSTAR };
 
-	private RubyIndenter indenter;
+	private static final int[] REMOVE_IDENTATION_TOKENS = {
+			IRubySymbols.TokenRDOCBEGIN, IRubySymbols.TokenRDOCEND };
 
-	public RubyAutoEditStrategy(IPreferenceStore store, String part) {
-		fPartitioning = part;
-		prefs = new RubyPreferenceInterpreter(store);
-		indenter = new RubyIndenter(part, prefs);
+	static {
+		Arrays.sort(INDENT_TO_BLOCK_TOKENS);
+		Arrays.sort(CONTINUATION_TOKENS);
+		Arrays.sort(REMOVE_IDENTATION_TOKENS);
+	}
+
+	private boolean fIsSmartMode;
+	private boolean fCloseBlocks = true;
+	private RubyPreferenceInterpreter fPreferences;
+
+	public RubyAutoEditStrategy(String partitioning) {
+		this(partitioning, RubyUI.getDefault().getPreferenceStore());
+	}
+
+	public RubyAutoEditStrategy(String partitioning, IPreferenceStore store) {
+		fPreferences = new RubyPreferenceInterpreter(store);
+	}
+
+	private void clearCachedValues() {
+		fCloseBlocks = fPreferences.closeBlocks();
+		fIsSmartMode = fPreferences.isSmartMode();
+	}
+
+	private void closeBlock(IDocument d, DocumentCommand c, String indent,
+			String afterCursor, RubyHeuristicScanner scanner)
+			throws BadLocationException {
+		c.caretOffset = c.offset + c.text.length();
+		c.length = afterCursor.length();
+		c.shiftsCaret = false;
+		String delimiter = TextUtilities.getDefaultLineDelimiter(d);
+		c.text += afterCursor.trim() + delimiter + indent
+				+ getApropriateBlockEnding(d, scanner, c.offset);
+	}
+
+	private String getApropriateBlockEnding(IDocument d,
+			RubyHeuristicScanner scanner, int offset)
+			throws BadLocationException {
+		int beginning = scanner.findBlockBeginningOffset(offset);
+		if (beginning == RubyHeuristicScanner.NOT_FOUND)
+			throw new BadLocationException();
+
+		IRegion line = d.getLineInformationOfOffset(beginning);
+		int ending = Math.min(line.getOffset() + line.getLength(), offset);
+		int token = scanner.previousToken(ending, beginning);
+		if (token == IRubySymbols.TokenLBRACE) {
+			return "}"; //$NON-NLS-1$
+		} else {
+			return "end"; //$NON-NLS-1$
+		}
+	}
+
+	private boolean isSmartMode() {
+		return fIsSmartMode;
 	}
 
 	public void customizeDocumentCommand(IDocument d, DocumentCommand c) {
 		if (c.doit == false)
 			return;
-		if (AutoEditUtils.isNewLineInsertionCommand(d, c))
-			if (prefs.isSmartMode())
-				handleSmartNewLine(d, c);
+
+		clearCachedValues();
+		if (!isSmartMode()) {
+			super.customizeDocumentCommand(d, c);
+			return;
+		}
+
+		try {
+			if (c.length == 0 && c.text != null && isLineDelimiter(d, c.text))
+				smartIndentAfterNewLine(d, c);
+			else if (c.text.length() == 1 && c.text.charAt(0) == '\t')
+				smartTab(d, c);
+			else if (c.text.length() == 1)
+				smartIndentOnKeypress(d, c);
+			else if (c.text.length() > 1 && fPreferences.isSmartPaste())
+				smartPaste(d, c); // no smart backspace for paste
 			else
 				super.customizeDocumentCommand(d, c);
-		else if (c.text != null && c.text.length() > 1 && prefs.isSmartPaste())
-			handleSmartPaste(d, c); // no smart backspace for paste
-		else if (AutoEditUtils.isSingleCharactedInsertionOrReplaceCommand(c))
-			handeSingleCharacterTyped(d, c);
-	}
-
-	/**
-	 * Installs a partitioner with <code>document</code>.
-	 * 
-	 * @param document
-	 *            the document
-	 */
-	private static void installStuff(Document document) {
-		String[] types = new String[] { RubyPartitions.RUBY_STRING, RubyPartitions.RUBY_COMMENT,
-				IDocument.DEFAULT_CONTENT_TYPE };
-		FastPartitioner partitioner = new FastPartitioner(new RubyPartitionScanner(), types);
-		partitioner.connect(document);
-		document.setDocumentPartitioner(RubyPartitions.RUBY_PARTITIONING, partitioner);
-	}
-
-	/**
-	 * Removes partitioner with <code>document</code>.
-	 * 
-	 * @param document
-	 *            the document
-	 */
-	private static void removeStuff(Document document) {
-		document.setDocumentPartitioner(RubyPartitions.RUBY_PARTITIONING, null);
-	}
-
-	/**
-	 * If we have pressed ":" for example, than we need to reindent line. This
-	 * function changes document and sets correct indent for current line.
-	 * 
-	 * @param d
-	 * @param c
-	 */
-	private void reindent(IDocument d, DocumentCommand c) {
-		try {
-			if (AutoEditUtils.getRegionType(d, fPartitioning, c.offset) != IDocument.DEFAULT_CONTENT_TYPE)
-				return;
-			int line = d.getLineOfOffset(c.offset);
-			String newIndent = indenter.calculateChangedLineIndent(d, line, false, c.offset, c);
-			if (newIndent == null)
-				return;
-			String curIndent = AutoEditUtils.getLineIndent(d, line);
-			if (AutoEditUtils.getIndentVisualLength(prefs, curIndent) < AutoEditUtils
-					.getIndentVisualLength(prefs, newIndent))
-				return;
-			d.replace(d.getLineOffset(line), curIndent.length(), newIndent);
-			c.offset += (newIndent.length() - curIndent.length());
 		} catch (BadLocationException e) {
+			DLTKUIPlugin.log(e);
 		}
 	}
 
-	/**
-	 * Processes command in work with brackets, strings, etc
-	 * 
-	 * @param d
-	 * @param c
-	 */
-	private void autoClose(IDocument d, DocumentCommand c) {
-		if (c.offset == -1)
-			return;
-		try {
-			if (d.getChar(c.offset - 1) == '\\')
-				return;
-		} catch (BadLocationException e1) {
-		}
-		if ('\"' == c.text.charAt(0) && !prefs.closeStrings())
-			return;
-		if ('\'' == c.text.charAt(0) && !prefs.closeStrings())
-			return;
-		if (!prefs.closeBrackets()
-				&& ('[' == c.text.charAt(0) || '(' == c.text.charAt(0) || '{' == c.text.charAt(0)))
-			return;
-		try {
-
-			switch (c.text.charAt(0)) {
-			case '\"':
-			case '\'':
-				// if we close existing quote, do nothing
-				if ('\"' == c.text.charAt(0) && c.offset > 0 && "\"".equals(d.get(c.offset - 1, 1)))
-					return;
-
-				if ('\'' == c.text.charAt(0) && c.offset > 0 && "\'".equals(d.get(c.offset - 1, 1)))
-					return;
-
-				if (c.offset != d.getLength() && c.text.charAt(0) == d.get(c.offset, 1).charAt(0))
-					c.text = "";
-				else {
-					c.text += c.text;
-					c.length = 0;
-				}
-
-				c.shiftsCaret = false;
-				c.caretOffset = c.offset + 1;
-				break;
-			case '(':
-			case '{':
-			case '[':
-				// check partition
-				if (AutoEditUtils.getRegionType(d, fPartitioning, c.offset) != IDocument.DEFAULT_CONTENT_TYPE)
-					return;
-				if (c.offset != d.getLength() && c.text.charAt(0) == d.get(c.offset, 1).charAt(0))
-					return;
-
-				try { // in class closing
-					String regex = "^\\s*class\\s+.*";
-					String regex2 = ".*\\(.*\\).*";
-					int start = d.getLineOffset(d.getLineOfOffset(c.offset));
-					String curLine = d.get(start, c.offset - start);
-					if (Pattern.matches(regex, curLine) && !Pattern.matches(regex2, curLine)) {
-						c.text = "()";
-						c.shiftsCaret = false;
-						c.caretOffset = c.offset + 1;
-						return;
-					}
-				} catch (BadLocationException e) {
-				}
-
-				// add closing peer
-				c.text = c.text + AutoEditUtils.getBracePair(c.text.charAt(0));
-				c.length = 0;
-
-				c.shiftsCaret = false;
-				c.caretOffset = c.offset + 1;
-				break;
-			case '}':
-			case ']':
-			case ')':
-				// check partition
-				if (AutoEditUtils.getRegionType(d, fPartitioning, c.offset) != IDocument.DEFAULT_CONTENT_TYPE)
-					return;
-				if (!prefs.closeBrackets())
-					return;
-				// if we already have bracket we should jump over it
-				if (c.offset != d.getLength() && c.text.charAt(0) == d.get(c.offset, 1).charAt(0)) {
-					c.text = "";
-					c.shiftsCaret = false;
-					c.caretOffset = c.offset + 1;
-					return;
-				}
-				break;
-			}
-		} catch (BadLocationException e) {
-			e.printStackTrace();
-		}
+	private boolean isLineDelimiter(IDocument document, String text) {
+		String[] delimiters = document.getLegalLineDelimiters();
+		if (delimiters != null)
+			return TextUtilities.equals(delimiters, text) > -1;
+		return false;
 	}
 
-	/**
-	 * Does the Right Thing when the users presses the Tab key.
-	 */
-	private boolean handleSmartTabulation(IDocument d, DocumentCommand c) {
-		if (c.offset == -1 || d.getLength() == 0)
-			return false;
-		try {
-			int tabOffset = c.offset;
-			int lineIndex = d.getLineOfOffset(tabOffset);
-			int lineStart = d.getLineOffset(lineIndex);
-			int lineLength = d.getLineLength(lineIndex);
-			int lineEnd = lineStart + lineLength;
-			int lineHome = AutoEditUtils.findEndOfWhiteSpace(d, lineStart, lineEnd);
-
-			if (tabOffset >= lineHome && lineHome < lineEnd) {
-				// tab pressed in the middle of the line
-				if (!prefs.getTabAlwaysIndents())
-					return false;
-
-				// add indent to the start of line
-				c.offset = lineHome;
-				c.length = tabOffset - lineHome;
-				c.text = prefs.getIndent() + d.get(lineHome, tabOffset - lineHome);
-				return true;
-			}
-
-			String line = d.get(lineStart, lineLength);
-			String resultIndent = indenter.forciblyCalculateLineIndent(d, lineIndex, lineStart,
-					line, -1);
-			int resultIndentSize = AutoEditUtils.getIndentVisualLength(prefs, resultIndent);
-
-			if (lineHome == lineEnd) {
-				int visualColumn = AutoEditUtils.calculateVisualLength(prefs, d, lineStart,
-						lineLength, lineStart, tabOffset);
-				if (visualColumn >= resultIndentSize)
-					return false;
-			} else if (tabOffset < lineHome) {
-				int currentIndentSize = AutoEditUtils.calculateVisualLength(prefs, d, lineStart,
-						lineLength, lineStart, lineHome);
-				if (currentIndentSize == resultIndentSize) {
-					// just move the cursor, but don't change the doc
-					c.offset = lineHome;
-					c.length = 0;
-					c.text = null;
-					return true;
-				}
-			}
-
-			c.offset = lineStart;
-			c.length = lineHome - lineStart;
-			c.text = resultIndent;
-			return true;
-		} catch (BadLocationException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	private void handleSmartPaste(IDocument d, DocumentCommand c) {
-		final boolean whitespaceCollapsingAtTheStartOfFirstPastedLineEnabled = true;
-		try {
-			int pasteOffset = c.offset;
-			final int firstLineIndex = d.getLineOfOffset(pasteOffset);
-			final int firstLineStart = d.getLineOffset(firstLineIndex);
-			final int firstLineLength = d.getLineLength(firstLineIndex);
-			final int firstLineHome = AutoEditUtils.findEndOfWhiteSpace(d, firstLineStart, firstLineStart + firstLineLength);
-			
-			Document temp = new Document(d.get(0, pasteOffset) + c.text);
-			DocumentRewriteSession session = temp
-					.startRewriteSession(DocumentRewriteSessionType.STRICTLY_SEQUENTIAL);
-			installStuff(temp);
-			
-			final int numberOfPastedLines = temp.getNumberOfLines() - firstLineIndex;
-			boolean insertionPointInsideIndent = pasteOffset <= firstLineHome;
-			if (insertionPointInsideIndent && (numberOfPastedLines > 1)) {
-				// pretend we're inserting to the very beginning
-				temp.replace(firstLineStart, pasteOffset - firstLineStart, "");
-				pasteOffset = c.offset = firstLineStart;
-			}
-			
-			final int firstTargetLineLength = d.getLineLength(firstLineIndex);
-			final int firstTargetLineEnd = firstLineStart + firstTargetLineLength;
-			final int firstTargetLineHome = AutoEditUtils.findEndOfWhiteSpace(d, firstLineStart,
-					firstTargetLineEnd);
-
-			final boolean reindentFirstInsertedLine = (pasteOffset <= firstTargetLineHome);
-			int firstSourceIndentedLineIndex;
-			final int targetLineIndexToCalculateCommonIndentationFor;
-			if (reindentFirstInsertedLine) {
-				targetLineIndexToCalculateCommonIndentationFor = firstLineIndex;
-				firstSourceIndentedLineIndex = firstLineIndex;
-			} else {
-				if (firstLineIndex + 1 < d.getNumberOfLines())
-					targetLineIndexToCalculateCommonIndentationFor = firstLineIndex + 1;
-				else
-					targetLineIndexToCalculateCommonIndentationFor = firstLineIndex;
-				firstSourceIndentedLineIndex = firstLineIndex + 1;
-			}
-
-			// collapse the indentation of the first line of pasted data (if
-			// several lines are being pasted)
-			if (whitespaceCollapsingAtTheStartOfFirstPastedLineEnabled)
-				if (!reindentFirstInsertedLine && numberOfPastedLines > 1)
-					collapseIndentationOfFirstPastedLine(temp, pasteOffset, firstLineIndex, firstLineStart);
-
-			// determine the amount of common indentation to remove
-			int sourceIndentSizeToRemove = determineAmountOfIndentationToRemove(temp,
-					firstSourceIndentedLineIndex);
-
-			// determine the indentation that should be applied to all (possibly
-			// except the first) pasted lines
-			final int indentSizeToApplyToPastedText = determineIndentationToApplyToPastedText(d,
-					targetLineIndexToCalculateCommonIndentationFor);
-			
-			// traverse through all the lines and fixup the indentation
-			fixupIndentation(temp, firstSourceIndentedLineIndex, numberOfPastedLines,
-					-sourceIndentSizeToRemove + indentSizeToApplyToPastedText);
-
-			temp.stopRewriteSession(session);
-			removeStuff(temp);
-			c.text = temp.get(pasteOffset, temp.getLength() - pasteOffset);
-		} catch (BadLocationException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	private void collapseIndentationOfFirstPastedLine(Document temp, final int pasteOffset,
-			final int firstLineIndex, final int firstLineStart)
+	private void smartTab(IDocument d, DocumentCommand c)
 			throws BadLocationException {
-		int firstSourceLineLength = temp.getLineLength(firstLineIndex);
-		int firstSourceLineEnd = firstLineStart + firstSourceLineLength;
-		String x = temp.get(firstLineStart, firstSourceLineLength);
-		int firstSourceLineInsertionHome = AutoEditUtils.findEndOfWhiteSpace(temp, pasteOffset,
-				firstSourceLineEnd);
-		if (AutoEditUtils.atEndOfLine(temp, firstSourceLineInsertionHome, firstSourceLineEnd))
-			// only whitespace was pasted, remove it all
-			temp.replace(pasteOffset, firstSourceLineInsertionHome - pasteOffset, "");
-		else if (firstSourceLineInsertionHome > pasteOffset)
-			// replace any kind of whitespace with a single space
-			temp.replace(pasteOffset, firstSourceLineInsertionHome - pasteOffset, " ");
-	}
+		IRegion info = d.getLineInformationOfOffset(c.offset);
+		int endOffset = info.getOffset() + info.getLength();
+		String line = d.get(info.getOffset(), info.getLength());
+		String linePrefix = line.substring(0, c.offset - info.getOffset());
+		final String linePostfix = line.substring(c.offset - info.getOffset(),
+				endOffset - info.getOffset());
+		String postfixIndent = AutoEditUtils.getLineIndent(linePostfix);
 
-	private int determineAmountOfIndentationToRemove(Document temp,
-			final int firstSourceIndentedLineIndex) throws BadLocationException {
-		int sourceIndentSizeToRemove = Integer.MAX_VALUE;
-		for (int lineIndex = firstSourceIndentedLineIndex; lineIndex < temp.getNumberOfLines(); lineIndex++) {
-			int start = temp.getLineOffset(lineIndex);
-			int length = temp.getLineLength(lineIndex);
-			// TODO: check for start of comment and other first-column things
-			int home = AutoEditUtils.findEndOfWhiteSpace(temp, start, start + length);
-			if (AutoEditUtils.atEndOfLine(temp, home, start + length))
-				continue;
-			int indent = AutoEditUtils.calculateVisualLength(prefs, temp, start, length, start,
-					home);
-			sourceIndentSizeToRemove = Math.min(sourceIndentSizeToRemove, indent);
+		RubyHeuristicScanner scanner = new RubyHeuristicScanner(d);
+		String rightIndent;
+		if (nextIsIdentToBlockToken(scanner, c.offset, endOffset)) {
+			rightIndent = getBlockIndent(d, c.offset, scanner);
+		} else {
+			rightIndent = getLineIndent(d, c.offset, scanner);
 		}
-		return sourceIndentSizeToRemove;
+
+		if (linePrefix.trim().length() != 0
+				|| (linePostfix.trim().length() != 0
+						&& postfixIndent.length() == 0 && computeVisualLength(linePrefix) >= computeVisualLength(rightIndent))) {
+			c.text = fPreferences.getIndent();
+			return;
+		}
+
+		c.text = rightIndent + linePostfix.trim();
+		c.offset = info.getOffset();
+		c.length = info.getLength();
+		c.caretOffset = info.getOffset() + rightIndent.length();
+		c.shiftsCaret = false;
 	}
 
-	private int determineIndentationToApplyToPastedText(IDocument document,
-			final int targetLineIndexToCalculateCommonIndentationFor) throws BadLocationException {
-		int lineOffset = document.getLineOffset(targetLineIndexToCalculateCommonIndentationFor);
-		// note: we pretend that the line we're inserting text before is empty
-		String indent = indenter.forciblyCalculateLineIndent(document,
-				targetLineIndexToCalculateCommonIndentationFor, lineOffset, "", -1);
-		return AutoEditUtils.getIndentVisualLength(prefs, indent);
-	}
+	private void smartIndentOnKeypress(IDocument d, DocumentCommand c)
+			throws BadLocationException {
+		RubyHeuristicScanner scanner = new RubyHeuristicScanner(d);
+		IRegion info = d.getLineInformationOfOffset(c.offset);
+		int token = scanner.previousTokenAfterInput(c.offset, c.text);
 
-	private void fixupIndentation(Document temp, final int firstSourceIndentedLineIndex,
-			final int numberOfPastedLines, int indentSizeDelta) throws BadLocationException {
-		for (int lineIndex = firstSourceIndentedLineIndex; lineIndex < temp.getNumberOfLines(); lineIndex++) {
-			final int lineStart = temp.getLineOffset(lineIndex);
-			final int lineLength = temp.getLineLength(lineIndex);
-			final int end = lineStart + lineLength;
-			final int home = AutoEditUtils.findEndOfWhiteSpace(temp, lineStart, end);
-			// TODO: check for start of comment and other first-column things
+		if (Arrays.binarySearch(INDENT_TO_BLOCK_TOKENS, token) >= 0) {
+			String indent = ""; //$NON-NLS-1$
+			indent = getBlockIndent(d, info.getOffset(), scanner);
 
-			final int existingLineIndentSize = AutoEditUtils.calculateVisualLength(prefs, temp,
-					lineStart, lineLength, lineStart, home);
-			final int correctLineIndentSize;
-			if (lineIndex == temp.getNumberOfLines() - 1 &&
-					AutoEditUtils.atEndOfLine(temp, home, end) && numberOfPastedLines > 1)
-				// remove all whitespace on the last inserted line if it
-				// consists of whitespace only
-				correctLineIndentSize = 0;
-			else
-				correctLineIndentSize = Math.max(existingLineIndentSize + indentSizeDelta, 0);
-			if (existingLineIndentSize != correctLineIndentSize) {
-				String indent = prefs.getIndentByVirtualSize(correctLineIndentSize);
-				temp.replace(lineStart, home - lineStart, indent);				
+			int pos = scanner.findNonWhitespaceForwardInAnyPartition(info
+					.getOffset(), c.offset);
+			String line = ""; //$NON-NLS-1$
+			if (pos != RubyHeuristicScanner.NOT_FOUND) {
+				line = d.get(pos, c.offset - pos);
+			}
+
+			c.text = indent + line + c.text;
+			c.length = c.offset - info.getOffset();
+			c.offset = info.getOffset();
+
+		} else if (Arrays.binarySearch(REMOVE_IDENTATION_TOKENS, token) >= 0) {
+			int start = scanner.findNonWhitespaceForward(info.getOffset(),
+					c.offset);
+			c.text = d.get(start, c.offset - start) + c.text;
+			c.length = c.offset - info.getOffset();
+			c.offset = info.getOffset();
+		} else {
+			// if previous was indented to block, restore original indentation
+			int wsPos = scanner.findNonIdentifierBackward(c.offset, info
+					.getOffset());
+			int previosToken = scanner.previousToken(c.offset, wsPos);
+			if (Arrays.binarySearch(INDENT_TO_BLOCK_TOKENS, previosToken) >= 0
+					&& Character.isJavaIdentifierPart(c.text.charAt(0))) {
+				String indent = getPreviousLineIndent(d, info.getOffset() - 1,
+						scanner);
+
+				int pos = scanner.findNonWhitespaceForwardInAnyPartition(info
+						.getOffset(), c.offset);
+				String line = ""; //$NON-NLS-1$
+				if (pos != RubyHeuristicScanner.NOT_FOUND) {
+					line = d.get(pos, c.offset - pos);
+				}
+
+				c.text = indent + line + c.text;
+				c.length = c.offset - info.getOffset();
+				c.offset = info.getOffset();
 			}
 		}
 	}
-	
-	private void replaceIndentation(Document temp, final int lineIndex, final int correctLineIndentSize) throws BadLocationException {
-		final int lineStart = temp.getLineOffset(lineIndex);
-		final int lineLength = temp.getLineLength(lineIndex);
-		final int end = lineStart + lineLength;
-		final int home = AutoEditUtils.findEndOfWhiteSpace(temp, lineStart, end);
-		final int existingLineIndentSize = AutoEditUtils.calculateVisualLength(prefs, temp,
-				lineStart, lineLength, lineStart, home);
-		if (existingLineIndentSize != correctLineIndentSize) {
-			String indent = prefs.getIndentByVirtualSize(correctLineIndentSize);
-			temp.replace(lineStart, home - lineStart, indent);
+
+	private String getLineIndent(IDocument d, int offset,
+			RubyHeuristicScanner scanner) {
+		int blockOffset = scanner.findBlockBeginningOffset(offset);
+		if (blockOffset != RubyHeuristicScanner.NOT_FOUND) {
+			try {
+				return AutoEditUtils.getLineIndent(d, d
+						.getLineOfOffset(blockOffset))
+						+ fPreferences.getIndent();
+			} catch (BadLocationException e) {
+				DLTKUIPlugin.log(e);
+			}
+		}
+		return ""; //$NON-NLS-1$
+	}
+
+	private String getBlockIndent(IDocument d, int offset,
+			RubyHeuristicScanner scanner) {
+		int blockOffset = scanner.findBlockBeginningOffset(offset);
+		if (blockOffset != RubyHeuristicScanner.NOT_FOUND) {
+			try {
+				return AutoEditUtils.getLineIndent(d, d
+						.getLineOfOffset(blockOffset));
+			} catch (BadLocationException e) {
+				DLTKUIPlugin.log(e);
+			}
+		}
+		return ""; //$NON-NLS-1$
+	}
+
+	private void smartIndentAfterNewLine(IDocument d, DocumentCommand c)
+			throws BadLocationException {
+		IRegion line = d.getLineInformationOfOffset(c.offset);
+		int lineEnd = line.getOffset() + line.getLength();
+		RubyHeuristicScanner scanner = new RubyHeuristicScanner(d);
+
+		// eat pending whitespace
+		int nonWsPos = scanner.findNonWhitespaceForwardInAnyPartition(c.offset,
+				lineEnd);
+		if (nonWsPos != RubyHeuristicScanner.NOT_FOUND) {
+			c.length = nonWsPos - c.offset;
+		}
+
+		// if pending statement is end, else etc. then indent it to block
+		// beginning
+		if (nextIsIdentToBlockToken(scanner, c.offset, lineEnd)) {
+			c.text += getBlockIndent(d, c.offset, scanner);
+			return;
+		}
+
+		// else
+		String indent = getPreviousLineIndent(d, c.offset, scanner);
+		c.text += indent;
+
+		if (previousIsBlockBeginning(d, scanner, c.offset)) {
+			// if this line was beginning of the block
+			c.text += fPreferences.getIndent();
+
+			// Auto close blocks
+			if (fCloseBlocks
+					&& scanner.isBlockBeginning(line.getOffset(), lineEnd)
+					&& !isBlockClosed(d, c.offset)) {
+				closeBlock(d, c, indent, d.get(c.offset, lineEnd - c.offset),
+						scanner);
+			}
+		} else if (previousIsFirstContinuation(d, scanner, c.offset, line
+				.getOffset())) {
+			// or if this line was the first line ending with one of
+			// continuation symbols
+			c.text += fPreferences.getIndent();
+
+		} else if (hasUnclosedParen(scanner, c.offset, line.getOffset())) {
+			// or if this line contains unclosed paren
+			c.text += fPreferences.getIndent();
 		}
 	}
 
-	private void handleSmartNewLine(IDocument document, DocumentCommand c) {
-		try {
-			int lineIndex = document.getLineOfOffset(c.offset);
-			int lineStart = document.getLineOffset(lineIndex);
-			int lineLength = document.getLineLength(lineIndex);
-			String line = document.get(c.offset, lineStart + lineLength - c.offset);
-			String indent = indenter.forciblyCalculateLineIndent(document, lineIndex + 1,
-					lineStart, line, c.offset);
-			c.length += getLeadingWhitespaceNumber(line);
-			if (line.trim().equals("}") && c.offset  >= 0 && document.getChar(c.offset -1) == '{') {
-				StringBuffer buf = new StringBuffer(c.text);
-				buf.append(indent);
-				buf.append(this.prefs.getIndent());
-				c.shiftsCaret = false;
-				c.caretOffset = c.offset + buf.length();				
-				buf.append('\n'); 
-				buf.append(indent);
-				c.text = buf.toString();				
-			} else
-				c.text = c.text + indent;
-		} catch (BadLocationException e) {
-			e.printStackTrace();		
-			super.customizeDocumentCommand(document, c);
-		}		
+	private boolean hasUnclosedParen(RubyHeuristicScanner scanner, int offset,
+			int bound) {
+		int pos = scanner.findOpeningPeer(offset, bound, '(', ')');
+		return pos != RubyHeuristicScanner.NOT_FOUND;
 	}
 
-	private int getLeadingWhitespaceNumber(String line) {
-		int i;
-		for (i=0; i<line.length(); i++) {
-			if (line.charAt(i) != ' ' && line.charAt(i) != '\t') {
-				return i;
+	private boolean previousIsFirstContinuation(IDocument d,
+			RubyHeuristicScanner scanner, int offset, int bound)
+			throws BadLocationException {
+
+		IRegion previousLine = null;
+		int line = d.getLineOfOffset(offset);
+		if (line > 0) {
+			previousLine = d.getLineInformation(line - 1);
+		}
+
+		return previousIsContinuation(scanner, offset, bound)
+				&& (previousLine == null || !previousIsContinuation(scanner,
+						previousLine.getOffset() + previousLine.getLength(),
+						previousLine.getOffset()));
+
+	}
+
+	private boolean previousIsContinuation(RubyHeuristicScanner scanner,
+			int offset, int bound) {
+		int token = scanner.previousToken(offset, bound);
+		return Arrays.binarySearch(CONTINUATION_TOKENS, token) >= 0;
+	}
+
+	private boolean previousIsBlockBeginning(IDocument d,
+			RubyHeuristicScanner scanner, int offset)
+			throws BadLocationException {
+		int previousLineOffset = scanner.findPrecedingNotEmptyLine(offset);
+		IRegion previousLine = d.getLineInformationOfOffset(previousLineOffset);
+		int previousLineEnd = Math.min(previousLine.getOffset()
+				+ previousLine.getLength(), offset);
+
+		boolean previousIsBlockBeginning = scanner.isBlockBeginning(
+				previousLine.getOffset(), previousLineEnd)
+				|| scanner.isBlockMiddle(previousLine.getOffset(),
+						previousLineEnd);
+		return previousIsBlockBeginning;
+	}
+
+	private boolean nextIsIdentToBlockToken(RubyHeuristicScanner scanner,
+			int offset, int bound) {
+		int token = scanner.nextToken(offset, bound);
+		return Arrays.binarySearch(INDENT_TO_BLOCK_TOKENS, token) >= 0;
+	}
+
+	private void smartPaste(IDocument d, DocumentCommand c)
+			throws BadLocationException {
+		// fix first line whitespace
+		IRegion info = d.getLineInformationOfOffset(c.offset);
+		String line = d.get(info.getOffset(), c.offset - info.getOffset());
+		int startFixFrom = 1;
+		if (line.trim().length() == 0) {
+			c.length += line.length();
+			c.offset -= line.length();
+			startFixFrom = 0;
+		}
+
+		RubyHeuristicScanner scanner = new RubyHeuristicScanner(d);
+		String indent = getLineIndent(d, c.offset, scanner);
+		String delimiter = TextUtilities.getDefaultLineDelimiter(d);
+		boolean addLastDelimiter = c.text.endsWith(delimiter);
+		String[] lines = c.text.split(delimiter);
+		if (lines.length > startFixFrom) {
+			String currentIndent = ""; //$NON-NLS-1$
+			for (int i = startFixFrom; i < lines.length; i++) {
+				if (lines[i].trim().length() != 0) {
+					currentIndent = AutoEditUtils.getLineIndent(lines[i]);
+					break;
+				}
+			}
+
+			int shift = computeVisualLength(indent)
+					- computeVisualLength(currentIndent);
+			StringBuffer result = new StringBuffer();
+			for (int i = 0; i < startFixFrom; i++) {
+				result.append(lines[i]).append(delimiter);
+			}
+			for (int i = startFixFrom; i < lines.length - 1; i++) {
+				result.append(shiftIdentation(lines[i], shift)).append(
+						delimiter);
+			}
+			result.append(shiftIdentation(lines[lines.length - 1], shift));
+			if (addLastDelimiter) {
+				result.append(delimiter);
+			}
+
+			c.text = result.toString();
+		}
+	}
+
+	private String shiftIdentation(String line, int shift) {
+		if (shift > 0) {
+			return fPreferences.getIndentByVirtualSize(shift) + line;
+		} else {
+			int pos = 0;
+			shift *= -1;
+			while (shift > 0 && Character.isWhitespace(line.charAt(pos))) {
+				String ws = Character.toString(line.charAt(pos));
+				shift -= computeVisualLength(ws);
+				pos++;
+			}
+			return line.substring(pos);
+		}
+	}
+
+	/**
+	 * Computes the length of a <code>CharacterSequence</code>, counting a
+	 * tab character as the size until the next tab stop and every other
+	 * character as one.
+	 * 
+	 * @param indent
+	 *            the string to measure
+	 * @return the visual length in characters
+	 */
+	private int computeVisualLength(CharSequence indent) {
+		final int tabSize = fPreferences.getTabSize();
+		int length = 0;
+		for (int i = 0; i < indent.length(); i++) {
+			char ch = indent.charAt(i);
+			switch (ch) {
+			case '\t':
+				if (tabSize > 0) {
+					int reminder = length % tabSize;
+					length += tabSize - reminder;
+				}
+				break;
+			case ' ':
+				length++;
+				break;
 			}
 		}
-		return i;
+		return length;
 	}
 
-	private void handeSingleCharacterTyped(IDocument d, DocumentCommand c) {
-		char newChar = c.text.charAt(0);
-		switch (newChar) {
-		case 'n':
-		case 'd':
-		case 'e':
-		case 'f':
-			reindent(d, c);
-			break;
-		case '}':
-//		case ']':
-//		case ')':
-			reindent(d, c);
-			autoClose(d, c);
-			break;
-//		case '\"':
-//		case '\'':
-//		case '(':
-		case '{':
-//		case '[':
-			autoClose(d, c);
-			break;
-		case '\t':
-			boolean jumped = false;
-			if (prefs.isSmartTab()) {
-				jumped = handleSmartTabulation(d, c);
-			}
-			if (!jumped) {
-				c.text = prefs.getIndent();
-			}
-			break;
+	/**
+	 * Computes the indentation at <code>offset</code>.
+	 * 
+	 * @param scanner
+	 * 
+	 * @param offset
+	 *            the offset in the document
+	 * @return a String which reflects the correct indentation for the line in
+	 *         which offset resides, or <code>null</code> if it cannot be
+	 *         determined
+	 * @throws BadLocationException
+	 */
+	private String getPreviousLineIndent(IDocument d, int offset,
+			RubyHeuristicScanner scanner) throws BadLocationException {
+		StringBuffer result = new StringBuffer();
+
+		if (offset < 0 || d.getLength() == 0)
+			return result.toString();
+
+		// find start of line
+		int start = scanner.findPrecedingNotEmptyLine(offset);
+		IRegion info = d.getLineInformationOfOffset(start);
+		int end = scanner.findNonWhitespaceForwardInAnyPartition(start, start
+				+ info.getLength());
+
+		if (end > start) {
+			// append to input
+			result.append(d.get(start, end - start));
+		}
+		return result.toString();
+	}
+
+	private boolean isBlockClosed(IDocument document, int offset)
+			throws BadLocationException {
+		// TODO: Remove this comment when Ruby parser become able to report
+		// unclosed blocks
+		//
+		// RubyHeuristicScanner scanner = new RubyHeuristicScanner(document);
+		// IRegion sourceRange = scanner.findSurroundingBlock(offset);
+		// if (sourceRange != null) {
+		// String source = document.get(sourceRange.getOffset(), sourceRange
+		// .getLength());
+		// char[] buffer = source.toCharArray();
+		//
+		// SyntaxErrorListener listener = new SyntaxErrorListener();
+		// ISourceParser parser;
+		// try {
+		// parser = DLTKLanguageManager
+		// .getSourceParser(RubyNature.NATURE_ID);
+		// parser.parse(null, buffer, listener);
+		// if (listener.errorOccured())
+		// return false;
+		// } catch (CoreException e) {
+		// DLTKUIPlugin.log(e);
+		// }
+		// }
+		return getBlockBalance(document, offset) <= 0;
+	}
+
+	/**
+	 * Returns the block balance, i.e. zero if the blocks are balanced at
+	 * <code>offset</code>, a negative number if there are more closing than
+	 * opening braces, and a positive number if there are more opening than
+	 * closing braces.
+	 * 
+	 * @param document
+	 * @param offset
+	 * @param partitioning
+	 * @return the block balance
+	 */
+	private static int getBlockBalance(IDocument document, int offset) {
+		if (offset < 1)
+			return -1;
+		if (offset >= document.getLength())
+			return 1;
+
+		int begin = offset;
+		int end = offset - 1;
+
+		RubyHeuristicScanner scanner = new RubyHeuristicScanner(document);
+
+		while (true) {
+			begin = scanner.findBlockBeginningOffset(begin);
+			end = scanner.findBlockEndingOffset(end);
+			if (begin == RubyHeuristicScanner.NOT_FOUND
+					&& end == RubyHeuristicScanner.NOT_FOUND)
+				return 0;
+			if (begin == RubyHeuristicScanner.NOT_FOUND)
+				return -1;
+			if (end == RubyHeuristicScanner.NOT_FOUND)
+				return 1;
 		}
 	}
 
+	// TODO: Remove this comment when Ruby parser become able to report
+	// unclosed blocks
+	//
+	// private static class SyntaxErrorListener implements IProblemReporter {
+	// private boolean fError = false;
+	//
+	// public void clearMarkers() {
+	// }
+	//
+	// public IMarker reportProblem(IProblem problem) throws CoreException {
+	// int id = problem.getID();
+	// if ((id & IProblem.Syntax) != 0 || id == IProblem.Unclassified) {
+	// fError = true;
+	// }
+	// return null;
+	// }
+	//
+	// public boolean errorOccured() {
+	// return fError;
+	// }
+	// }
 }

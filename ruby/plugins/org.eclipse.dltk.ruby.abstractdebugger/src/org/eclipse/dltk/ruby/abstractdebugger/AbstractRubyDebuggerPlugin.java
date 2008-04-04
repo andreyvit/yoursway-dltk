@@ -13,7 +13,7 @@ import org.osgi.framework.BundleContext;
 public class AbstractRubyDebuggerPlugin extends Plugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.abstractdebugger";
+	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.abstractdebugger"; //$NON-NLS-1$
 
 	// The shared instance
 	private static AbstractRubyDebuggerPlugin plugin;
@@ -51,7 +51,7 @@ public class AbstractRubyDebuggerPlugin extends Plugin {
 		return plugin;
 	}
 	
-	private static final String DEBUGGER_DIR = "/debugger";
+	private static final String DEBUGGER_DIR = "/debugger"; //$NON-NLS-1$
 
 	public IPath deployDebuggerSource(Plugin childDebuggerPlugin) throws IOException {
 		return DeployHelper.deploy(getBundle(), DEBUGGER_DIR, childDebuggerPlugin.getStateLocation());

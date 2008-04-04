@@ -373,7 +373,7 @@ public class RubySelectionEngine extends ScriptSelectionEngine {
 			org.eclipse.dltk.core.ISourceModule modelModule,
 			ModuleDeclaration parsedUnit, VariableReference e) {
 		String name = e.getName();
-		if (name.startsWith("@")) {
+		if (name.startsWith("@")) { //$NON-NLS-1$
 			IField[] fields = RubyModelUtils.findFields(modelModule,
 					parsedUnit, name, e.sourceStart());
 			for (int i = 0; i < fields.length; i++) {

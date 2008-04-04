@@ -76,9 +76,6 @@ public class TclMatchLocatorParser extends BasicTclMatchLocatorParser {
 		}
 	};
 
-	protected void parseBodies(MethodDeclaration method) {
-	}
-
 	protected void processStatement(ASTNode node) {
 		if (node != null) {
 			try {

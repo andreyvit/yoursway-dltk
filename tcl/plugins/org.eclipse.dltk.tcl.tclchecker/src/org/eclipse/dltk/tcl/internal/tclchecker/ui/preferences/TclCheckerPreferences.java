@@ -20,6 +20,7 @@ import org.eclipse.dltk.tcl.internal.tclchecker.TclCheckerConstants;
 import org.eclipse.dltk.tcl.internal.tclchecker.TclCheckerHelper;
 import org.eclipse.dltk.tcl.internal.tclchecker.TclCheckerPlugin;
 import org.eclipse.dltk.tcl.internal.tclchecker.TclCheckerProblemDescription;
+import org.eclipse.dltk.utils.PlatformFileUtils;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceDialog;
@@ -126,7 +127,7 @@ public class TclCheckerPreferences extends PreferencePage implements
 		}
 		
 		IPath path = Path.fromOSString(txtPath);
-		File file = path.toFile();
+		File file = PlatformFileUtils.findAbsoluteOrEclipseRelativeFile(path.toFile());
 
 		if (!path.isValidPath(path.toOSString())) {
 			setMessage(PreferencesMessages.TclChecker_path_isinvalid, ERROR);

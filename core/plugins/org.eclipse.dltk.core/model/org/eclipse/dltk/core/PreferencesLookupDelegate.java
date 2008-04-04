@@ -50,6 +50,10 @@ public class PreferencesLookupDelegate {
 		this.contexts = getLookupScopes(project);
 	}
 
+	public PreferencesLookupDelegate(IScriptProject scriptProject) {
+		this((scriptProject == null) ? null : scriptProject.getProject());
+	}
+	
 	/**
 	 * Returns a string preference value
 	 * 
@@ -62,7 +66,7 @@ public class PreferencesLookupDelegate {
 	 *         defined
 	 */
 	public String getString(String qualifier, String key) {
-		return service.getString(qualifier, key, "", contexts);
+		return service.getString(qualifier, key, "", contexts); //$NON-NLS-1$
 	}
 
 	/**

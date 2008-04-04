@@ -4,14 +4,17 @@ Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.dltk.ruby.fastdebugger;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.dltk.ruby.fastdebugger.FastDebuggerPlugin
-Bundle-Vendor: %providerName
+Bundle-Vendor: %pluginProvider
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.dltk.launching,
  org.eclipse.dltk.core,
  org.eclipse.debug.core,
  org.eclipse.ui,
  org.eclipse.dltk.ui,
- org.eclipse.dltk.ruby.abstractdebugger
+ org.eclipse.dltk.ruby.abstractdebugger,
+ org.eclipse.dltk.ruby.launching,
+ org.eclipse.dltk.ruby.debug,
+ org.eclipse.dltk.debug.ui
 Bundle-Localization: plugin
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.ruby.fastdebugger,

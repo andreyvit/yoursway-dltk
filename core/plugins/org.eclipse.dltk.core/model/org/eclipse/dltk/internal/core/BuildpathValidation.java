@@ -41,7 +41,7 @@ public class BuildpathValidation {
 					
 				// remove problems and tasks created  by the builder
 				if (DLTKCore.DEBUG) {
-					System.err.println("TODO: BuildpathValidation.java remove problems and tasks created  by the builder");
+					System.err.println("TODO: BuildpathValidation.java remove problems and tasks created  by the builder"); //$NON-NLS-1$
 				}
 				//ScriptBuilder.removeProblemsAndTasksFor(resource);
 			}

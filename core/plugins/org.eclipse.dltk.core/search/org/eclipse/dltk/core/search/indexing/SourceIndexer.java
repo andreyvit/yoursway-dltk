@@ -66,13 +66,13 @@ public class SourceIndexer extends AbstractIndexer {
 			} else {
 				parser.setRequestor(requestor);
 			}
-			String pkgName = "";
+			String pkgName = ""; //$NON-NLS-1$
 			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
-//			ISourceModule sourceModule = null;
+			// ISourceModule sourceModule = null;
 			if (file.exists()) {
 				ISourceModule module = (ISourceModule) DLTKCore.create(file);
 				if (module != null) {
-//					sourceModule = module;
+					// sourceModule = module;
 					IScriptFolder folder = (IScriptFolder) module.getParent();
 					pkgName = folder.getElementName();
 				}
@@ -99,7 +99,7 @@ public class SourceIndexer extends AbstractIndexer {
 				// requestor);
 				if (DLTKCore.DEBUG) {
 					System.err
-							.println("TODO: Add getSourceElementParser here.");
+							.println("TODO: Add getSourceElementParser here."); //$NON-NLS-1$
 				}
 				return;
 			} else {
@@ -108,7 +108,7 @@ public class SourceIndexer extends AbstractIndexer {
 			requestor.setIndexer(this);
 			String ppath = path.toString();
 			if (DLTKCore.DEBUG) {
-				System.err.println("TODO: Correct me please...");
+				System.err.println("TODO: Correct me please..."); //$NON-NLS-1$
 			}
 			String pkgName = (new Path(ppath.substring(ppath
 					.indexOf(IDLTKSearchScope.FILE_ENTRY_SEPARATOR) + 1))
@@ -133,8 +133,8 @@ public class SourceIndexer extends AbstractIndexer {
 			if (ended - started > maxWorkTime) {
 				maxWorkTime = ended - started;
 				if (DLTKCore.VERBOSE) {
-					System.err.println("Max indexDocument() work time "
-							+ maxWorkTime + " on " + document.getPath());
+					System.err.println("Max indexDocument() work time " //$NON-NLS-1$
+							+ maxWorkTime + " on " + document.getPath()); //$NON-NLS-1$
 				}
 			}
 		}

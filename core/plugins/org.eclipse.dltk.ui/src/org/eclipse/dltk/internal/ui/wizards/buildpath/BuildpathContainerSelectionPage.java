@@ -104,7 +104,7 @@ public class BuildpathContainerSelectionPage extends WizardPage {
 		Dialog.applyDialogFont(fListViewer.getList());
 		
 		if(DLTKCore.DEBUG) {
-			System.err.println("BuildpathContainerSelectionPage: add help support here");
+			System.err.println("BuildpathContainerSelectionPage: add help support here"); //$NON-NLS-1$
 		}
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, IDLTKHelpContextIds.BP_SELECT_CLASSPATH_CONTAINER);
 	}

@@ -340,7 +340,7 @@ public abstract class ScriptOutlineInformationControl extends
 			setChecked(checked);
 			// PlatformUI.getWorkbench().getHelpSystem().setHelp(this,
 			// IJavaHelpContextIds.LEXICAL_SORTING_BROWSING_ACTION);
-			System.err.println("TODO: add help support here");
+			System.err.println("TODO: add help support here"); //$NON-NLS-1$
 		}
 
 		public void run() {
@@ -386,7 +386,7 @@ public abstract class ScriptOutlineInformationControl extends
 
 			// PlatformUI.getWorkbench().getHelpSystem().setHelp(this,
 			// IJavaHelpContextIds.SORT_BY_DEFINING_TYPE_ACTION);
-			System.err.println("TODO: add help support here");
+			System.err.println("TODO: add help support here"); //$NON-NLS-1$
 
 			boolean state = getDialogSettings().getBoolean(
 					STORE_SORT_BY_DEFINING_TYPE_CHECKED);
@@ -523,10 +523,10 @@ public abstract class ScriptOutlineInformationControl extends
 		String keySequence = sequences[0].format();
 
 		if (fOutlineContentProvider.isShowingInheritedMembers())
-			return Messages.format("Press ''{0}'' to hide inherited members",
+			return Messages.format(TextMessages.ScriptOutlineInformationControl_pressToHideInheritedMembers,
 					keySequence);
 		else
-			return Messages.format("Press ''{0}'' to show inherited members",
+			return Messages.format(TextMessages.ScriptOutlineInformationControl_pressToShowInheritedMembers,
 					keySequence);
 	}
 

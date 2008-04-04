@@ -1,16 +1,11 @@
 package org.eclipse.dltk.core.tests.launching;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -43,124 +38,12 @@ import org.eclipse.dltk.debug.core.model.IScriptThread;
 import org.eclipse.dltk.internal.debug.core.model.ScriptDebugTarget;
 import org.eclipse.dltk.internal.debug.core.model.ScriptLineBreakpoint;
 import org.eclipse.dltk.internal.debug.core.model.ScriptThread;
-import org.eclipse.dltk.internal.launching.InterpreterDefinitionsContainer;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
-import org.eclipse.dltk.launching.ScriptRuntime;
 
 public abstract class ScriptLaunchingTests extends AbstractModelTests {
-
-	public static class MyInterpretersUpdater {
-
-		private InterpreterDefinitionsContainer fOriginalInterpreters;
-
-		private void saveCurrentAsOriginal() {
-			fOriginalInterpreters = new InterpreterDefinitionsContainer();
-
-			final String[] natureIds = ScriptRuntime.getInterpreterNatures();
-			for (int i = 0; i < natureIds.length; i++) {
-				final String natureId = natureIds[i];
-
-				IInterpreterInstall def = ScriptRuntime
-						.getDefaultInterpreterInstall(natureId);
-
-				if (def != null) {
-					fOriginalInterpreters
-							.setDefaultInterpreterInstallCompositeID(natureId,
-									ScriptRuntime
-											.getCompositeIdFromInterpreter(def));
-				}
-			}
-
-			final IInterpreterInstallType[] types = ScriptRuntime
-					.getInterpreterInstallTypes();
-			for (int i = 0; i < types.length; i++) {
-				IInterpreterInstall[] installs = types[i]
-						.getInterpreterInstalls();
-				if (installs != null) {
-					for (int j = 0; j < installs.length; j++) {
-						fOriginalInterpreters.addInterpreter(installs[j]);
-					}
-				}
-			}
-		}
-
-		private void saveInterpreterDefinitions(
-				final InterpreterDefinitionsContainer container) {
-			try {
-				final String xml = container.getAsXML();
-				ScriptRuntime.getPreferences().setValue(
-						ScriptRuntime.PREF_INTERPRETER_XML, xml);
-				ScriptRuntime.savePreferences();
-			} catch (ParserConfigurationException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (TransformerException e) {
-				e.printStackTrace();
-			}
-		}
-
-		public MyInterpretersUpdater() {
-			saveCurrentAsOriginal();
-		}
-
-		public boolean updateInterpreterSettings(String langNatureId,
-				IInterpreterInstall[] interpreters,
-				IInterpreterInstall defaultInterpreter) {
-			// Create a Interpreter definition container
-			InterpreterDefinitionsContainer container = new InterpreterDefinitionsContainer();
-
-			// Default interpreter id for natureId
-			if (defaultInterpreter != null) {
-				final String defaultId = ScriptRuntime
-						.getCompositeIdFromInterpreter(defaultInterpreter);
-				container.setDefaultInterpreterInstallCompositeID(langNatureId,
-						defaultId);
-			} else {
-				container.setDefaultInterpreterInstallCompositeID(langNatureId,
-						null);
-			}
-
-			// Interpreters for natureId
-			for (int i = 0; i < interpreters.length; i++) {
-				container.addInterpreter(interpreters[i]);
-			}
-
-			// Default interpreters for other languages
-			final String[] natureIds = fOriginalInterpreters
-					.getInterpreterNatures();
-			for (int i = 0; i < natureIds.length; i++) {
-				final String natureId = natureIds[i];
-				if (!langNatureId.equals(natureId)) {
-					final String defaultId = fOriginalInterpreters
-							.getDefaultInterpreterInstallCompositeID(natureId);
-					container.setDefaultInterpreterInstallCompositeID(natureId,
-							defaultId);
-				}
-			}
-
-			// Save interpreters from other languages to the container
-			final Iterator it = fOriginalInterpreters.getInterpreterList()
-					.iterator();
-			while (it.hasNext()) {
-				final IInterpreterInstall install = (IInterpreterInstall) it
-						.next();
-				if (!langNatureId.equals(install.getInterpreterInstallType()
-						.getNatureId())) {
-					container.addInterpreter(install);
-				}
-			}
-
-			saveInterpreterDefinitions(container);
-
-			saveCurrentAsOriginal();
-
-			return true;
-		}
-	}
 
 	protected IScriptProject scriptProject;
 
@@ -381,9 +264,10 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			public Object getAdapter(Class adapter) {
 				return null;
 			}
+
 			public boolean hasAttribute(String attributeName)
 					throws CoreException {
-				return true;
+				return false;
 			}
 		};
 	}
@@ -458,6 +342,7 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 	protected void internalTestRun(String name) throws Exception {
 		internalTestRun(name, 0);
 	}
+
 	protected void internalTestRun(String name, int flags) throws Exception {
 		if (interpreterInstalls.length == 0) {
 			fail("No interperters found for nature " + getNatureId());
@@ -468,12 +353,12 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			if (!isRequiredInstall(name, install.getInstallLocation())) {
 				continue;
 			}
-			System.out.println("Interpreter install location (run): "
-					+ install.getInstallLocation().toString());
+			// System.out.println("Interpreter install location (run): "
+			// + install.getInstallLocation().toString());
 
-			MyInterpretersUpdater updater = new MyInterpretersUpdater();
-			updater.updateInterpreterSettings(getNatureId(),
-					interpreterInstalls, install);
+			// InterpretersUpdater updater = new InterpretersUpdater();
+			// updater.updateInterpreterSettings(getNatureId(),
+			// interpreterInstalls, install);
 
 			final long time = System.currentTimeMillis();
 			final String stdoutTest = Long.toString(time) + "_stdout";
@@ -485,7 +370,7 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			final ILaunch launch = new Launch(configuration,
 					ILaunchManager.RUN_MODE, null);
 
-			startLaunch(launch);
+			startLaunch(launch, install);
 
 			IProcess[] processes = launch.getProcesses();
 			assertEquals(1, processes.length);
@@ -651,16 +536,16 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 			if (!isRequiredInstall(name, install.getInstallLocation())) {
 				continue;
 			}
-			
+
 			DebugEventStats stats = new DebugEventStats();
 
 			DebugPlugin.getDefault().addDebugEventListener(stats);
-			System.out.println("Interperter install location (debug): "
-					+ install.getInstallLocation());
+			// System.out.println("Interperter install location (debug): "
+			// + install.getInstallLocation());
 
-			final MyInterpretersUpdater updater = new MyInterpretersUpdater();
-			updater.updateInterpreterSettings(getNatureId(),
-					interpreterInstalls, install);
+//			final InterpretersUpdater updater = new InterpretersUpdater();
+//			updater.updateInterpreterSettings(getNatureId(),
+//					interpreterInstalls, install);
 
 			stats.reset();
 
@@ -668,12 +553,13 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 					ILaunchManager.DEBUG_MODE, null);
 
 			// Setting breakpoint
+			IFile file = launch.getLaunchConfiguration().getFile();
 			IScriptLineBreakpoint b = new ScriptLineBreakpoint(
-					getDebugModelId(), launch.getLaunchConfiguration()
-							.getFile(), 1, -1, -1, true);
+					getDebugModelId(), file, file.getLocation(), 1, -1, -1,
+					true);
 
 			try {
-				startLaunch(launch);
+				startLaunch(launch, install);
 
 				IProcess[] processes = launch.getProcesses();
 				assertEquals(1, processes.length);
@@ -688,7 +574,7 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 				assertEquals(0, exitValue);
 			} finally {
 				b.delete();
-				
+
 			}
 			DebugPlugin.getDefault().removeDebugEventListener(stats);
 			return stats;
@@ -704,7 +590,7 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 
 	protected abstract String getDebugModelId();
 
-	protected abstract void startLaunch(ILaunch launch) throws CoreException;
+	protected abstract void startLaunch(ILaunch launch, final IInterpreterInstall install) throws CoreException;
 
 	protected abstract ILaunchConfiguration createLaunchConfiguration(
 			String arguments);
@@ -712,6 +598,7 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 	protected boolean hasPredefinedInterpreters() {
 		return false;
 	}
+
 	protected IInterpreterInstall createInstall(String path, String id,
 			IInterpreterInstallType type) {
 		File file = new File(path);
@@ -729,6 +616,7 @@ public abstract class ScriptLaunchingTests extends AbstractModelTests {
 		install.setEnvironmentVariables(null);
 		return install;
 	}
+
 	protected void createAddInstall(List installs, String path, String id,
 			IInterpreterInstallType type) {
 		IInterpreterInstall install = createInstall(path, id, type);

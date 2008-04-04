@@ -388,7 +388,7 @@ public class ScriptEvaluationAction implements IWorkbenchWindowActionDelegate,
 	protected void run() {
 		final IScriptStackFrame stackFrame = getStackFrameContext();
 		if (stackFrame == null) {
-			reportError("Cannot get StackFrame");
+			reportError(Messages.ScriptEvaluationAction_cannotGetStackFrame);
 			return;
 		}
 
@@ -412,7 +412,7 @@ public class ScriptEvaluationAction implements IWorkbenchWindowActionDelegate,
 							ScriptEvaluationAction.this);
 				} else {
 					throw new InvocationTargetException(null,
-							"Thread is not suspended");
+							Messages.ScriptEvaluationAction_threadIsNotSuspended);
 				}
 			}
 		};
@@ -450,10 +450,10 @@ public class ScriptEvaluationAction implements IWorkbenchWindowActionDelegate,
 			}
 			return ce.getStatus().getMessage();
 		}
-		String message = MessageFormat.format("An exception occured: {0}",
+		String message = MessageFormat.format(Messages.ScriptEvaluationAction_anExceptionOccurred,
 				new Object[] { exception.getClass() });
 		if (exception.getMessage() != null) {
-			message = MessageFormat.format("{0} - {1}", new Object[] { message,
+			message = MessageFormat.format(Messages.ScriptEvaluationAction_anExceptionOccurred2, new Object[] { message,
 					exception.getMessage() });
 		}
 		return message;
@@ -474,7 +474,7 @@ public class ScriptEvaluationAction implements IWorkbenchWindowActionDelegate,
 			if (i == 0) {
 				message = msg;
 			} else {
-				message = MessageFormat.format("{0}{1}", new Object[] {
+				message = MessageFormat.format(Messages.ScriptEvaluationAction_errorMessage, new Object[] {
 						message, msg });
 			}
 		}
@@ -489,7 +489,7 @@ public class ScriptEvaluationAction implements IWorkbenchWindowActionDelegate,
 	protected void reportError(String message) {
 		Status status = new Status(IStatus.ERROR, DLTKDebugUIPlugin
 				.getUniqueIdentifier(), IStatus.ERROR, message, null);
-		ErrorDialog.openError(getShell(), "Error evaluating", null, status);
+		ErrorDialog.openError(getShell(), Messages.ScriptEvaluationAction_errorEvaluating, null, status);
 	}
 
 	// IScriptEvaluationListener

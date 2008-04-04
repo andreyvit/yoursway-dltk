@@ -65,29 +65,29 @@ public class DLTKCore extends Plugin {
 	public static final boolean PERFOMANCE = false;
 	
 	public static final boolean DEBUG = Boolean.valueOf(
-			Platform.getDebugOption("org.eclipse.dltk.core/debug")).booleanValue();
+			Platform.getDebugOption("org.eclipse.dltk.core/debug")).booleanValue(); //$NON-NLS-1$
 	
 	public static final boolean SHOW_REINDEX = Boolean.valueOf(
-			Platform.getDebugOption("org.eclipse.dltk.core/show_reindex")).booleanValue();
+			Platform.getDebugOption("org.eclipse.dltk.core/show_reindex")).booleanValue(); //$NON-NLS-1$
 	
 	public static final boolean DEBUG_PRINT_MODEL = Boolean.valueOf(
-			Platform.getDebugOption("org.eclipse.dltk.core/debugPrintModel")).booleanValue();
+			Platform.getDebugOption("org.eclipse.dltk.core/debugPrintModel")).booleanValue(); //$NON-NLS-1$
 	public static final boolean DEBUG_SCOPES = Boolean.valueOf(
-			Platform.getDebugOption("org.eclipse.dltk.core/debugScopes")).booleanValue();
+			Platform.getDebugOption("org.eclipse.dltk.core/debugScopes")).booleanValue(); //$NON-NLS-1$
 	public static final boolean DEBUG_SCRIPT_BUILDER = Boolean.valueOf(
-			Platform.getDebugOption("org.eclipse.dltk.core/debugScriptBuilder")).booleanValue();
+			Platform.getDebugOption("org.eclipse.dltk.core/debugScriptBuilder")).booleanValue(); //$NON-NLS-1$
 	
 	public static final boolean TRACE_SCRIPT_BUILDER = Boolean.valueOf(
-			Platform.getDebugOption("org.eclipse.dltk.core/traceScriptBuilder")).booleanValue();
+			Platform.getDebugOption("org.eclipse.dltk.core/traceScriptBuilder")).booleanValue(); //$NON-NLS-1$
 	
 	public static final boolean DEBUG_COMPLETION = Boolean.valueOf(
-			Platform.getDebugOption("org.eclipse.dltk.core/debugCompletion")).booleanValue();
+			Platform.getDebugOption("org.eclipse.dltk.core/debugCompletion")).booleanValue(); //$NON-NLS-1$
 	public static final boolean DEBUG_SELECTION = Boolean.valueOf(
-			Platform.getDebugOption("org.eclipse.dltk.core/debugSelection")).booleanValue();
+			Platform.getDebugOption("org.eclipse.dltk.core/debugSelection")).booleanValue(); //$NON-NLS-1$
 	public static final boolean DEBUG_PARSER = Boolean.valueOf(
-			Platform.getDebugOption("org.eclipse.dltk.core/debugParser")).booleanValue();
+			Platform.getDebugOption("org.eclipse.dltk.core/debugParser")).booleanValue(); //$NON-NLS-1$
 	public static final boolean DEBUG_INDEX = Boolean.valueOf(
-			Platform.getDebugOption("org.eclipse.dltk.core/debugIndex")).booleanValue();
+			Platform.getDebugOption("org.eclipse.dltk.core/debugIndex")).booleanValue(); //$NON-NLS-1$
 	
 	// Log errors into log.
 	public static final boolean DEBUG_LOG = false;
@@ -95,7 +95,7 @@ public class DLTKCore extends Plugin {
 	// The shared instance.
 	private static DLTKCore plugin;
 
-	public final static String PLUGIN_ID = "org.eclipse.dltk.core";
+	public final static String PLUGIN_ID = "org.eclipse.dltk.core"; //$NON-NLS-1$
 	
 	/**
 	 * Name of the User Library Container id.
@@ -1174,9 +1174,9 @@ public class DLTKCore extends Plugin {
 								return buffer.toString();
 							}
 							IBuildpathContainer container = (IBuildpathContainer) o;
-							buffer.append(container.getDescription());
+							buffer.append(container.getDescription(null));
 							buffer.append(" {\n"); //$NON-NLS-1$
-							IBuildpathEntry[] entries = container.getBuildpathEntries();
+							IBuildpathEntry[] entries = container.getBuildpathEntries(null);
 							if (entries != null){
 								for (int i = 0; i < entries.length; i++){
 									buffer.append(" 			"); //$NON-NLS-1$

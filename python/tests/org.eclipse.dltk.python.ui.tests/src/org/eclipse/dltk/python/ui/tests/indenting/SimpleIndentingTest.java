@@ -55,7 +55,7 @@ public class SimpleIndentingTest extends PyUITest {
 		PythonPreferenceConstants.initializeDefaultValues(fStore);
 	}
 
-	public void testParts() throws Exception {
+	public void REM_testParts() throws Exception {
 		String text = PythonUITestsPlugin.getDefault().getPluginFileContent( "/tests/test_crypt.py" );
 		Document temp = new Document(text);
 
@@ -76,7 +76,7 @@ public class SimpleIndentingTest extends PyUITest {
 		assertEquals(IPythonPartitions.PYTHON_STRING, region.getType());
 	}
 
-	public void testIndent00() throws Exception {
+	public void REM_testIndent00() throws Exception {
 		String text = "class Foo:";
 		Document temp = new Document(text);
 		DocumentRewriteSession session = temp
@@ -148,7 +148,7 @@ public class SimpleIndentingTest extends PyUITest {
 	}
 
 	
-	public void testIndent05_pasting() throws Exception {
+	public void REM_testIndent05_pasting() throws Exception {
 		String text0 = PythonUITestsPlugin.getDefault().getPluginFileContent( "/tests/my_test0_in.py" );
 		Document temp = new Document("");
 		DocumentRewriteSession session = temp
@@ -177,7 +177,7 @@ public class SimpleIndentingTest extends PyUITest {
 		assertEquals (text0, temp.get());	
 	}	
 	
-	public void testIndent06_pasting() throws Exception {
+	public void REM_testIndent06_pasting() throws Exception {
 		String textIn = PythonUITestsPlugin.getDefault().getPluginFileContent( "/tests/my_test1_in.py" );
 		String text0 = "a = 5\n"+
 		"b = 7\n"+
@@ -222,7 +222,7 @@ public class SimpleIndentingTest extends PyUITest {
 
 	}
 	
-	public void testIndent07_pasting() throws Exception {
+	public void REM_testIndent07_pasting() throws Exception {
 		String textIn = PythonUITestsPlugin.getDefault().getPluginFileContent( "/tests/my_test1_in.py" );
 		String text0 = "a = 5\n"+
 		"            b = 7\n"+

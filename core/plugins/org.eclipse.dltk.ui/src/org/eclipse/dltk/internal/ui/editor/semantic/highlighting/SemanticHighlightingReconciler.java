@@ -26,6 +26,7 @@ import org.eclipse.dltk.internal.ui.editor.ScriptEditor;
 import org.eclipse.dltk.internal.ui.editor.semantic.highlighting.PositionUpdater.UpdateResult;
 import org.eclipse.dltk.internal.ui.text.IScriptReconcilingListener;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
+import org.eclipse.dltk.ui.text.ScriptTextTools;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextInputListener;
 import org.eclipse.jface.text.TextPresentation;
@@ -107,7 +108,8 @@ public class SemanticHighlightingReconciler implements
 	 */
 	public void reconciled(ISourceModule ast, boolean forced,
 			IProgressMonitor progressMonitor) {
-		if (positionUpdated==null)return;
+		if (positionUpdated == null)
+			return;
 		// ensure at most one thread can be reconciling at any time
 		synchronized (fReconcileLock) {
 			if (fIsReconciling)
@@ -131,7 +133,7 @@ public class SemanticHighlightingReconciler implements
 				return;
 
 			startReconcilingPositions();
-			
+
 			if (!fJobPresenter.isCanceled())
 				reconcilePositions(ast, fPresenter);
 
@@ -145,8 +147,8 @@ public class SemanticHighlightingReconciler implements
 						fRemovedPositions);
 
 			stopReconcilingPositions();
-//			long t1 = System.currentTimeMillis();
-//			System.out.println(t1 - t0);
+			// long t1 = System.currentTimeMillis();
+			// System.out.println(t1 - t0);
 
 		} finally {
 			fJobPresenter = null;
@@ -180,11 +182,11 @@ public class SemanticHighlightingReconciler implements
 		// FIXME: remove positions not covered by subtrees
 		// for (int i= 0, n= subtrees.length; i < n; i++)
 		// subtrees[i].accept(fCollector);
-		
-		ArrayList list=new ArrayList();
+
+		ArrayList list = new ArrayList();
 		presenter.addAllPositions(list);
 		UpdateResult reconcile = positionUpdated.reconcile(ast, presenter,
-				fHighlightings,list);
+				fHighlightings, list);
 		fAddedPositions = reconcile.addedPositions;
 		fRemovedPositions = reconcile.removedPositions;
 	}
@@ -239,8 +241,10 @@ public class SemanticHighlightingReconciler implements
 			SemanticHighlighting[] semanticHighlightings,
 			Highlighting[] highlightings) {
 		fPresenter = presenter;
-		this.positionUpdated = editor.getTextTools()
-				.getSemanticPositionUpdater();
+		ScriptTextTools textTools = editor.getTextTools();
+		if (textTools != null) {
+			this.positionUpdated = textTools.getSemanticPositionUpdater();
+		}
 		fSemanticHighlightings = semanticHighlightings;
 		fHighlightings = highlightings;
 

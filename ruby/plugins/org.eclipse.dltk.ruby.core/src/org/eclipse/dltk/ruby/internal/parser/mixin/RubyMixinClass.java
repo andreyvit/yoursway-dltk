@@ -42,6 +42,10 @@ public class RubyMixinClass implements IRubyMixinElement {
 		return key;
 	}
 
+	public boolean isModule() {
+		return module;
+	}
+
 	public RubyMixinClass getInstanceClass() {
 		if (!isMeta())
 			return this;
@@ -86,15 +90,14 @@ public class RubyMixinClass implements IRubyMixinElement {
 				continue;
 			if (info.getKind() == RubyMixinElementInfo.K_CLASS
 					|| info.getKind() == RubyMixinElementInfo.K_MODULE) {
-				result.add(info.getObject());
+				if (info.getObject() != null)
+					result.add(info.getObject());
 			}
 		}
 		return (IType[]) result.toArray(new IType[result.size()]);
 	}
 
 	public RubyMixinClass getSuperclass() {
-		if (this.module)
-			return null; // no inheritance for modules
 		IMixinElement mixinElement = model.getRawModel().get(key);
 		if (mixinElement == null)
 			return null;
@@ -136,10 +139,22 @@ public class RubyMixinClass implements IRubyMixinElement {
 			}
 		}
 		String key;
+		Set includeSet = new HashSet();
+		RubyMixinClass[] includedClasses = model.createRubyClass(
+				new RubyClassType("Object%")).getIncluded(); //$NON-NLS-1$
+		for (int cnt = 0, max = includedClasses.length; cnt < max; cnt++) {
+			includeSet.add(includedClasses[cnt].getKey());
+		}
 		if (this.isMeta())
-			key = "Class%";
+			if (this.isModule())
+				key = "Module%"; //$NON-NLS-1$
+			else
+				key = "Class%"; //$NON-NLS-1$
+		else if (isModule()
+				&& ("Kernel%".equals(this.key) || includeSet.contains(this.getKey()))) //$NON-NLS-1$
+			return null;
 		else
-			key = "Object";
+			key = "Object"; //$NON-NLS-1$
 		if (!this.isMeta())
 			key = key + RubyMixin.INSTANCE_SUFFIX;
 		RubyMixinClass s = (RubyMixinClass) model.createRubyElement(key);
@@ -167,6 +182,35 @@ public class RubyMixinClass implements IRubyMixinElement {
 						inclKey += RubyMixin.INSTANCE_SUFFIX;
 					IRubyMixinElement element = model
 							.createRubyElement(inclKey);
+					if (element instanceof RubyMixinClass)
+						result.add(element);
+				}
+			}
+		}
+		return (RubyMixinClass[]) result.toArray(new RubyMixinClass[result
+				.size()]);
+	}
+
+	public RubyMixinClass[] getExtended() {
+		List result = new ArrayList();
+		HashSet names = new HashSet();
+		IMixinElement mixinElement = model.getRawModel().get(key);
+		if (mixinElement == null)
+			return new RubyMixinClass[0];
+		Object[] allObjects = mixinElement.getAllObjects();
+		for (int i = 0; i < allObjects.length; i++) {
+			RubyMixinElementInfo info = (RubyMixinElementInfo) allObjects[i];
+			if (info == null) {
+				continue;
+			}
+			if (info.getKind() == RubyMixinElementInfo.K_EXTEND) {
+				String extKey = (String) info.getObject();
+				if (!names.contains(extKey)) {
+					names.add(extKey);
+					if (/* !this.isMeta() && */!extKey
+							.endsWith(RubyMixin.INSTANCE_SUFFIX))
+						extKey += RubyMixin.INSTANCE_SUFFIX;
+					IRubyMixinElement element = model.createRubyElement(extKey);
 					if (element instanceof RubyMixinClass)
 						result.add(element);
 				}
@@ -204,11 +248,12 @@ public class RubyMixinClass implements IRubyMixinElement {
 
 		RubyMixinClass[] included = this.getIncluded();
 		for (int i = 0; i < included.length; i++) {
-			RubyMixinMethod[] methods = included[i].findMethods(prefix,
-					includeTopLevel);
-			for (int j = 0; j < methods.length; j++) {
-				requestor.acceptResult(methods[j]);
-			}
+			included[i].findMethods(prefix, includeTopLevel, requestor);
+		}
+
+		RubyMixinClass[] extended = this.getExtended();
+		for (int i = 0; i < extended.length; i++) {
+			extended[i].findMethods(prefix, includeTopLevel, requestor);
 		}
 
 		if (!this.key.endsWith(RubyMixin.VIRTUAL_SUFFIX)) {
@@ -281,6 +326,13 @@ public class RubyMixinClass implements IRubyMixinElement {
 			}
 		}
 
+		RubyMixinClass[] extended = this.getExtended();
+		for (int i = 0; i < extended.length; i++) {
+			RubyMixinMethod method = extended[i].getMethod(name);
+			if (method != null)
+				return method;
+		}
+
 		// search superclass
 		// if (!this.key.equals("Object") && !this.key.equals("Object%")) {
 		RubyMixinClass superclass = getSuperclass();
@@ -316,8 +368,8 @@ public class RubyMixinClass implements IRubyMixinElement {
 				result.add(element);
 		}
 		RubyMixinClass superclass = getSuperclass();
-		if (superclass != null && superclass.key != "Object"
-				&& superclass.key != "Object%") {
+		if (superclass != null && superclass.key != "Object" //$NON-NLS-1$
+				&& superclass.key != "Object%") { //$NON-NLS-1$
 			if (superclass.getKey().equals(key))
 				return null;
 			RubyMixinVariable[] superFields = superclass.getFields();

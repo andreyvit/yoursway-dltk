@@ -8,14 +8,11 @@ import org.eclipse.debug.core.DebugException;
 import org.osgi.framework.BundleContext;
 
 /**
- * The plugin class for the Tcl Debug Model plug-in.
+ * The plugin class for the Javascript Debug Model plug-in.
  */
-
 public class JavaScriptDebugPlugin extends Plugin {
 	
 	public static final String PLUGIN_ID =  "org.eclipse.dltk.javascript.debug";
-	
-	public static final String MODEL_ID =  "org.eclipse.dltk.debug.javascriptModel";
 	
 	private static JavaScriptDebugPlugin fgPlugin;
 			

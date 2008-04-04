@@ -3,7 +3,6 @@ org.eclipse.dltk.core/typeInferencing/traceTimeLimit = false
 org.eclipse.dltk.core/typeInferencing/showStatistics = false
 org.eclipse.dltk.ruby.core/dumpErrorsToConsole = false
 org.eclipse.dltk.core/debug = false
-org.eclipse.dltk.core/debug = false
 org.eclipse.dltk.core/debugIndex = false
 org.eclipse.dltk.core/debugParser = false
 org.eclipse.dltk.core/debugSelection = false

@@ -1,9 +1,13 @@
 package org.eclipse.dltk.python.activestatedebugger;
 
+import java.io.File;
+
+import org.eclipse.dltk.core.PreferencesLookupDelegate;
 import org.eclipse.dltk.launching.ExternalDebuggingEngineRunner;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.InterpreterConfig;
 import org.eclipse.dltk.launching.debug.DbgpInterpreterConfig;
+import org.eclipse.dltk.python.internal.debug.PythonDebugPlugin;
 
 /**
  * Debugging engine implementation for ActiveState's python debugging engine.
@@ -34,8 +38,9 @@ public class PythonActiveStateDebuggerRunner extends
 	 *      org.eclipse.dltk.launching.InterpreterConfig, java.lang.String)
 	 */
 	protected InterpreterConfig alterConfig(InterpreterConfig config,
-			String debugEnginePath) {
+			PreferencesLookupDelegate delegate) {
 
+		File debugEnginePath = getDebuggingEnginePath(delegate);
 		DbgpInterpreterConfig dbgpConfig = new DbgpInterpreterConfig(config);
 		final String host = dbgpConfig.getHost();
 		final int port = dbgpConfig.getPort();
@@ -43,7 +48,7 @@ public class PythonActiveStateDebuggerRunner extends
 
 		// python -S path/to/pydbgp.py -d host:port -k ide_key your-script.py
 		config.addInterpreterArg("-S");
-		config.addInterpreterArg(debugEnginePath);
+		config.addInterpreterArg(debugEnginePath.getAbsolutePath());
 		config.addInterpreterArg("-d");
 		config.addInterpreterArg(host + ":" + port);
 		config.addInterpreterArg("-k");
@@ -73,4 +78,31 @@ public class PythonActiveStateDebuggerRunner extends
 		return PythonActiveStateDebuggerPlugin.PLUGIN_ID;
 	}
 
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getDebugPreferenceQualifier()
+	 */
+	protected String getDebugPreferenceQualifier() {
+		return PythonDebugPlugin.PLUGIN_ID;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getLoggingEnabledPreferenceKey()
+	 */
+	protected String getLoggingEnabledPreferenceKey() {
+		return PythonActiveStateDebuggerConstants.ENABLE_LOGGING;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getLogFileNamePreferenceKey()
+	 */
+	protected String getLogFileNamePreferenceKey() {
+		return PythonActiveStateDebuggerConstants.LOG_FILE_NAME;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getLogFilePathPreferenceKey()
+	 */
+	protected String getLogFilePathPreferenceKey() {
+		return PythonActiveStateDebuggerConstants.LOG_FILE_PATH;
+	}
 }

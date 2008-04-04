@@ -189,7 +189,7 @@ public abstract class NewPackageWizardPage extends NewContainerWizardPage {
 		if (packName.length() > 0) {
 			if (DLTKCore.DEBUG) {
 				System.err
-						.println("TODO: Add correct package name checking here...");
+						.println("TODO: Add correct package name checking here..."); //$NON-NLS-1$
 			}
 			// IStatus val= ScriptConventions.validatePackageName(packName);
 			// if( packName.indexOf("\\") != -1 || packName.indexOf("/") != -1 )

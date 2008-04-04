@@ -14,6 +14,7 @@ import junit.framework.TestSuite;
 
 import org.eclipse.dltk.core.tests.buildpath.BuildpathTests;
 import org.eclipse.dltk.core.tests.ddp.CoreDDPTests;
+import org.eclipse.dltk.core.tests.launching.EnvironmentResolverTests;
 import org.eclipse.dltk.core.tests.launching.InterpreterConfigTests;
 import org.eclipse.dltk.core.tests.model.BufferTests;
 import org.eclipse.dltk.core.tests.model.ModelMembersTests;
@@ -34,6 +35,8 @@ public class AllTests {
 		suite.addTest(WorkingCopyTests.suite());
 
 		suite.addTest(InterpreterConfigTests.suite());
+		
+		suite.addTest(EnvironmentResolverTests.suite());
 		// $JUnit-END$
 		return suite;
 	}

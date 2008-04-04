@@ -41,6 +41,6 @@ public class CloseValidatorsConsoleAction extends Action {
 
 	public ImageDescriptor getImageDescriptor() {
 		return ValidatorsUI.getDefault().getImageDescriptor(
-				"icons/terminate.gif");
+				"icons/terminate.gif"); //$NON-NLS-1$
 	}	
 }

@@ -233,7 +233,7 @@ public abstract class NewScriptProjectPreferencePage extends PreferencePage impl
 	public void createControl(Composite parent) {
 		super.createControl(parent);
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}		
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(), IDLTKHelpContextIds.NEW_JAVA_PROJECT_PREFERENCE_PAGE);
 	}	

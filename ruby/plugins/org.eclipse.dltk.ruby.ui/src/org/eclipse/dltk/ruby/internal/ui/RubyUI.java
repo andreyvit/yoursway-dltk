@@ -22,7 +22,7 @@ import org.osgi.framework.BundleContext;
 public class RubyUI extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.ui";
+	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.ui"; //$NON-NLS-1$
 
 	// The shared instance
 	private static RubyUI plugin;
@@ -60,6 +60,6 @@ public class RubyUI extends AbstractUIPlugin {
 	}
 	
 	public static void initializeAfterLoad(IProgressMonitor monitor) throws CoreException {
-		RiHelper.getInstance().getDocFor("Object");
+		RiHelper.getInstance().getDocFor("Object"); //$NON-NLS-1$
 	}
 }

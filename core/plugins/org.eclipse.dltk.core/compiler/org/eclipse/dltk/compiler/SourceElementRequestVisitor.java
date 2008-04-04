@@ -35,7 +35,7 @@ public class SourceElementRequestVisitor extends ASTVisitor {
 	protected Stack fNodes = new Stack(); // Used to hold visited nodes in
 											// deeph
 
-	protected SourceElementRequestVisitor(ISourceElementRequestor requesor) {
+	public SourceElementRequestVisitor(ISourceElementRequestor requesor) {
 		this.fRequestor = requesor;
 	}
 
@@ -44,7 +44,7 @@ public class SourceElementRequestVisitor extends ASTVisitor {
 	}
 
 	protected String makeLanguageDependentValue(ASTNode expr) {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	/**
@@ -89,9 +89,9 @@ public class SourceElementRequestVisitor extends ASTVisitor {
 
 
 
-		String value = "";
+		String value = ""; //$NON-NLS-1$
 		if (stmt instanceof StringLiteral) {
-			value = "\"" + ((StringLiteral) stmt).getValue() + "\"";
+			value = "\"" + ((StringLiteral) stmt).getValue() + "\""; //$NON-NLS-1$ //$NON-NLS-2$
 		} else if (stmt instanceof Literal) {
 			value = ((Literal) stmt).getValue();
 		} else /*if (stmt instanceof ExtendedVariableReference) */{

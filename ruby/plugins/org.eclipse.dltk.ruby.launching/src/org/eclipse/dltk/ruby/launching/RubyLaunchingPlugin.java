@@ -19,7 +19,7 @@ import org.osgi.framework.BundleContext;
  */
 public class RubyLaunchingPlugin extends Plugin {
 
-	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.launching";
+	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.launching"; //$NON-NLS-1$
 
 	private static RubyLaunchingPlugin plugin;
 

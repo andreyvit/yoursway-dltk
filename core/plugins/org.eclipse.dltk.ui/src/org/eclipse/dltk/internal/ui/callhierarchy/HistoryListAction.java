@@ -145,7 +145,7 @@ public class HistoryListAction extends Action {
 			super.configureShell(newShell);
 //			PlatformUI.getWorkbench().getHelpSystem().setHelp(newShell, IJavaHelpContextIds.HISTORY_LIST_DIALOG);
 			if (DLTKCore.DEBUG) {
-				System.err.println("Add help support here...");
+				System.err.println("Add help support here..."); //$NON-NLS-1$
 			}
 			
 		}
@@ -167,7 +167,7 @@ public class HistoryListAction extends Action {
 		setText(CallHierarchyMessages.HistoryListAction_label); 
 //		PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IJavaHelpContextIds.HISTORY_LIST_ACTION);
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
 	
 	}

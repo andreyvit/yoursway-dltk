@@ -45,7 +45,7 @@ public class AppearanceAwareLabelProvider extends ScriptUILabelProvider implemen
 		super(textFlags, imageFlags);
 		fStore = store;
 		if (store == null) {
-			throw new AssertionError("AppearanceAwareLabelProvider store couldn't not be null.");
+			throw new AssertionError(Messages.AppearanceAwareLabelProvider_storeMustNotBeNull);
 		}
 		initMasks();		
 		fStore.addPropertyChangeListener(this);

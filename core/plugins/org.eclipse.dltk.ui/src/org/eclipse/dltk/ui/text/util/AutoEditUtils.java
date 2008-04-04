@@ -25,7 +25,7 @@ import org.eclipse.jface.text.TextUtilities;
 public class AutoEditUtils {
 
 	private AutoEditUtils() {
-		throw new AssertionError("Cannot instantiate utility class");
+		throw new AssertionError("Cannot instantiate utility class"); //$NON-NLS-1$
 	}
 
 	/**
@@ -439,7 +439,7 @@ public class AutoEditUtils {
 		int res = 0;
 		int tabSize = prefs.getTabSize();
 		Assert.isLegal(end <= (lineStart + lineLength),
-				"Cannot calculate visual length for several lines");
+				Messages.AutoEditUtils_cannotCalculateVisualLengthForSeveralLines);
 		int col = 0;
 		for (int offset = lineStart; offset < start; offset++) {
 			if (document.getChar(offset) != '\t')

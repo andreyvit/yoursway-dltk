@@ -203,7 +203,7 @@ public class ExclusionInclusionEntryDialog extends StatusDialog {
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 		if(DLTKCore.DEBUG) {
-			System.err.println("TODO: ExclusionInclusionEntryDialog: Add help support");
+			System.err.println("TODO: ExclusionInclusionEntryDialog: Add help support"); //$NON-NLS-1$
 		}
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(newShell, IDLTKHelpContextIds.EXCLUSION_PATTERN_DIALOG);
 	}

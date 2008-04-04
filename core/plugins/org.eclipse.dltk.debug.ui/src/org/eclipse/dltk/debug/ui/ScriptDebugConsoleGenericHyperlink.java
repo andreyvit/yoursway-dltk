@@ -54,7 +54,7 @@ public abstract class ScriptDebugConsoleGenericHyperlink implements IHyperlink {
 
 			return line;
 		} catch (BadLocationException e) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 
@@ -80,34 +80,26 @@ public abstract class ScriptDebugConsoleGenericHyperlink implements IHyperlink {
 			}
 			Object sourceElement = getSourceModule(fileName);
 			if (sourceElement != null) {
-				IEditorInput editorInput = getEditorInput(sourceElement);
-				if (editorInput != null) {
-					String editorId = getEditorId(editorInput, sourceElement);
-					if (editorId != null) {
-						IEditorPart editorPart = DLTKDebugUIPlugin
-								.getActivePage().openEditor(editorInput,
-										editorId);
-						if (editorPart instanceof ITextEditor
-								&& lineNumber >= 0) {
-							ITextEditor textEditor = (ITextEditor) editorPart;
-							IDocumentProvider provider = textEditor
-									.getDocumentProvider();
-							provider.connect(editorInput);
-							IDocument document = provider
-									.getDocument(editorInput);
-							try {
-								IRegion line = document
-										.getLineInformation(lineNumber);
-								textEditor.selectAndReveal(line.getOffset(),
-										line.getLength());
-							} catch (BadLocationException e) {
+				IEditorPart part = EditorUtility.openInEditor(sourceElement);
+				IEditorPart editorPart = EditorUtility
+						.openInEditor(sourceElement);
+				if (editorPart instanceof ITextEditor && lineNumber >= 0) {
+					ITextEditor textEditor = (ITextEditor) editorPart;
+					IDocumentProvider provider = textEditor
+							.getDocumentProvider();
+					IEditorInput input = part.getEditorInput();
+					provider.connect(input);
+					IDocument document = provider.getDocument(input);
+					try {
+						IRegion line = document.getLineInformation(lineNumber);
+						textEditor.selectAndReveal(line.getOffset(), line
+								.getLength());
+					} catch (BadLocationException e) {
 
-							}
-							provider.disconnect(editorInput);
-						}
-						return;
 					}
+					provider.disconnect(input);
 				}
+				return;
 			}
 			// did not find source
 		} catch (CoreException e) {

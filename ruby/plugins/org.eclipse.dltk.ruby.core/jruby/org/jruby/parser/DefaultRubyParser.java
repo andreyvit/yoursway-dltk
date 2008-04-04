@@ -781,7 +781,7 @@ public class DefaultRubyParser {
     */
   public void yyerror (String message, String[] expected, String found) {
     StringBuffer text = new StringBuffer(message);
-    text.append(", unexpected " + found + "\n");
+    text.append(", unexpected " + found);
     throw new SyntaxException(getPosition(null), text.toString());
   }
 

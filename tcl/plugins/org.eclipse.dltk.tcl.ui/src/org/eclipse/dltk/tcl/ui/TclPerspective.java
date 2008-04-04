@@ -67,8 +67,8 @@ public class TclPerspective implements IPerspectiveFactory {
 				(float) 0.75, editorArea);
 
 		folder.addView(IPageLayout.ID_OUTLINE);
-		folder
-				.addView("org.eclipse.dltk.tcl.internal.ui.navigation.PackagesView");
+//		folder
+//				.addView("org.eclipse.dltk.tcl.internal.ui.navigation.PackagesView");
 	}
 
 	protected void createFolders(IPageLayout layout) {

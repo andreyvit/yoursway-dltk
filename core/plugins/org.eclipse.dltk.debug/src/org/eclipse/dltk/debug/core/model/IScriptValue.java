@@ -16,6 +16,7 @@ public interface IScriptValue extends IValue {
 	String getInstanceId();
 	IScriptType getType();
 	String getEvalName();
+	String getRawValue();
 	
 	IScriptEvaluationCommand createEvaluationCommand(String messageTemplate,
 			IScriptThread thread);

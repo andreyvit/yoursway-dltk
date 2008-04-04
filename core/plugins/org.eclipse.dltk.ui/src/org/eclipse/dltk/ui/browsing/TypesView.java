@@ -156,7 +156,7 @@ public class TypesView extends ScriptBrowsingPart {
 	 */
 	protected String getHelpContextId() {
 //		return IJavaHelpContextIds.TYPES_VIEW;
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	protected String getLinkToEditorKey() {

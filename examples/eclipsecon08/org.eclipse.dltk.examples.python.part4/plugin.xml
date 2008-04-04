@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+<extension
+         point="org.eclipse.search.searchPages">
+      <page
+            canSearchEnclosingProjects="true"
+            class="org.eclipse.dltk.examples.python.internal.search.ExamplePythonSearchPage"
+            enabled="true"
+            extensions="py:90"
+            icon="/icons/search_obj.gif"
+            id="org.eclipse.dltk.ui.ExamplePythonSearchPage"
+            label="Example Python Search"
+            showScopeSection="true"
+            sizeHint="460,160">
+      </page>
+</extension>
+<extension
+      point="org.eclipse.dltk.core.search">
+   <seachFactory
+         class="org.eclipse.dltk.examples.python.internal.search.ExamplePythonSearchFactory"
+         nature="org.eclipse.dltk.examples.python.nature"
+         priority="0">
+   </seachFactory>
+</extension>
+<extension
+      point="org.eclipse.ui.actionSets">
+   <actionSet
+         id="org.eclipse.dltk.examples.python.actionSet"
+         label="Example Python action set">
+          <action
+                class="org.eclipse.dltk.examples.python.internal.ExamplePythonOpenTypeAction"
+                icon="icons/opentype.gif"
+                id="openType"
+                label="Example Open type"
+                menubarPath="navigate/open.ext2"
+                toolbarPath="org.eclipse.search.searchActionSet/Search"
+                tooltip="Example open type">
+         </action>
+   </actionSet>
+</extension>
+<extension
+      point="org.eclipse.dltk.core.selectionEngine">
+   <selectionEngine
+         class="org.eclipse.dltk.examples.python.internal.selection.ExamplePythonSelectionEngine"
+         nature="org.eclipse.dltk.examples.python.nature"
+         priority="0">
+   </selectionEngine>
+</extension>
+<extension
+      point="org.eclipse.dltk.ui.scriptDocumentationProviders">
+   <provider
+         class="org.eclipse.dltk.examples.python.internal.selection.ExamplePythonCommentDocumentationProvider"
+         id="org.eclipse.dltk.tcl.ui.ExamplePythonCommentDocumentationProvider"
+         nature="org.eclipse.dltk.examples.python.nature">
+   </provider>
+</extension>
+<extension
+      point="org.eclipse.dltk.core.completionEngine">
+   <completionEngine
+         class="org.eclipse.dltk.examples.python.internal.completion.ExamplePythonCompletionEngine"
+         nature="org.eclipse.dltk.examples.python.nature"
+         priority="0">
+   </completionEngine>
+</extension>
+<extension
+		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
+		id="ExamplePythonTypeCompletionProposalComputer">
+		<scriptCompletionProposalComputer 
+			class="org.eclipse.dltk.examples.python.internal.completion.ExamplePythonCompletionProposalComputer"
+			categoryId="org.eclipse.dltk.ui.scriptTypeProposalCategory"
+			toolkitId="org.eclipse.dltk.examples.python.nature">
+			<partition type="__dftl_partition_content_type"/>
+		</scriptCompletionProposalComputer>	
+</extension>
+<extension
+       point="org.eclipse.ui.preferencePages">
+         <page
+              class="org.eclipse.dltk.examples.python.internal.completion.templates.ExamplePythonCodeTemplatesPreferencePage"
+              id="org.eclipse.dltk.examples.python.ui.editor.Templates"
+              name="Examples Python Templates"/>
+</extension> 
+ <extension
+       point="org.eclipse.ui.editors.templates">
+       <contextType
+          class="org.eclipse.dltk.examples.python.internal.completion.templates.ExamplePythonUniversalTemplateContextType"
+          id="examplePythonUniversalTemplateContextType"
+          name="Python Template content">
+       </contextType> 
+       <include
+          file="templates/templates.xml"
+          translations="templates/templates.properties">
+       </include>         
+    </extension>
+</plugin>

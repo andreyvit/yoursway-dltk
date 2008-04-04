@@ -66,7 +66,7 @@ public class BlockScope extends Scope {
 	}
 
 	public String toString(int tab) {
-		String s = "";
+		String s = ""; //$NON-NLS-1$
 		for (int i = 0; i < this.subscopeCount; i++)
 			if (this.subscopes[i] instanceof BlockScope)
 				s += ((BlockScope) this.subscopes[i]).toString(tab + 1) + "\n"; //$NON-NLS-1$

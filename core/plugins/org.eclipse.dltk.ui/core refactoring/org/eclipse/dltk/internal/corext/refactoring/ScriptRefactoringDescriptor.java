@@ -209,7 +209,7 @@ public final class ScriptRefactoringDescriptor extends RefactoringDescriptor {
 				element= DLTKCore.create(identifier + handle);
 		}
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODo: ScriptRefactoringDescriptor add find Methods member in types...");
+			System.err.println("TODo: ScriptRefactoringDescriptor add find Methods member in types..."); //$NON-NLS-1$
 		}
 //		if (check && element instanceof IMethod) {
 //			final IMethod method= (IMethod) element;

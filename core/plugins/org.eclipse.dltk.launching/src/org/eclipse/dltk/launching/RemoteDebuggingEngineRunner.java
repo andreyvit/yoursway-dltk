@@ -19,7 +19,7 @@ public abstract class RemoteDebuggingEngineRunner extends DebuggingEngineRunner 
 			throws CoreException {
 		return configuration.getAttribute(
 				ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_SESSION_ID,
-				"");
+				""); //$NON-NLS-1$
 	}
 
 	/*
@@ -39,7 +39,8 @@ public abstract class RemoteDebuggingEngineRunner extends DebuggingEngineRunner 
 	public void run(InterpreterConfig config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
 		try {
-			initializeLaunch(launch, config);
+			initializeLaunch(launch, config,
+					createPreferencesLookupDelegate(launch));
 			waitDebuggerConnected(null, launch, monitor);
 		} catch (CoreException e) {
 			launch.terminate();
@@ -54,4 +55,34 @@ public abstract class RemoteDebuggingEngineRunner extends DebuggingEngineRunner 
 		return null;
 	}
 
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getDebuggingEnginePreferenceQualifier()
+	 */
+	protected String getDebuggingEnginePreferenceQualifier() {
+		return getDebugPreferenceQualifier();
+	}
+	
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getLoggingEnabledPreferenceKey()
+	 */
+	protected String getLoggingEnabledPreferenceKey() {
+		// not supported on the client side
+		return null;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getLogFileNamePreferenceKey()
+	 */
+	protected String getLogFileNamePreferenceKey() {
+		// not supported on the client side
+		return null;
+	}
+
+	/*
+	 * @see org.eclipse.dltk.launching.DebuggingEngineRunner#getLogFilePathPreferenceKey()
+	 */
+	protected String getLogFilePathPreferenceKey() {
+		// not supported on the client side
+		return null;
+	}
 }

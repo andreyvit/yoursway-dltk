@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Part3 Plug-in
+Bundle-SymbolicName: org.eclipse.dltk.examples.python.part3;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.dltk.examples.python.internal.ExamplePythonUI
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.ide,
+ org.eclipse.dltk.examples.python,
+ org.eclipse.dltk.examples.python.part2,
+ org.eclipse.dltk.ui,
+ org.eclipse.dltk.core
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.dltk.examples.python.internal,
+ org.eclipse.dltk.examples.python.internal.ui.editor,
+ org.eclipse.dltk.examples.python.internal.ui.editor.text

@@ -13,11 +13,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.internal.debug.core.model.IScriptStreamProxy;
 import org.eclipse.ui.console.IOConsole;
 
 public class ScriptStreamProxy implements IScriptStreamProxy {
-	private InputStream input; 
+	private InputStream input;
 	private OutputStream output;
 	private boolean closed = false;
 
@@ -25,7 +26,6 @@ public class ScriptStreamProxy implements IScriptStreamProxy {
 		input = console.getInputStream();
 		output = console.newOutputStream();
 	}
-
 
 	public OutputStream getStderr() {
 		return output;
@@ -46,7 +46,9 @@ public class ScriptStreamProxy implements IScriptStreamProxy {
 				input.close();
 				closed = true;
 			} catch (IOException e) {
-				e.printStackTrace();
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

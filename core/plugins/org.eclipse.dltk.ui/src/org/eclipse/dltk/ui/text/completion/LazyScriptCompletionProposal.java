@@ -357,7 +357,7 @@ public abstract class LazyScriptCompletionProposal extends
 		}
 	}
 
-	protected final void setSortString(String string) {
+	public final void setSortString(String string) {
 //		fSortStringComputed = true;
 		super.setSortString(string);
 	}

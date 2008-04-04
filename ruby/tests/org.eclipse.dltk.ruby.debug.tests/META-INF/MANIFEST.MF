@@ -1,9 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Tests Plug-in
+Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.dltk.ruby.debug.tests
 Bundle-Version: 1.0.0
 Bundle-Activator: org.eclipse.dltk.ruby.debug.tests.Activator
+Bundle-Vendor: %pluginProvider
+Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.junit,
  org.eclipse.dltk.core.tests,

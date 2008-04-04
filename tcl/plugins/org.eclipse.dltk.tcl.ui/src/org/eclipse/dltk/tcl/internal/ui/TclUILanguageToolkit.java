@@ -112,6 +112,15 @@ public class TclUILanguageToolkit implements IDLTKUILanguageToolkit {
 
 	private static final String INTERPRETERS_PREFERENCE_PAGE_ID = "org.eclipse.dltk.tcl.preferences.interpreters";
 	private static final String DEBUG_PREFERENCE_PAGE_ID = "org.eclipse.dltk.tcl.preferences.debug";
+	private static final String[] EDITOR_PREFERENCE_PAGES_IDS = {
+		"org.eclipse.dltk.tcl.preferences.editor", 
+		"org.eclipse.dltk.tcl.preferences.templates", 
+		"org.eclipse.dltk.tcl.preferences.editor.syntaxcoloring", 
+		"org.eclipse.dltk.tcl.preferences.editor.hovers", 
+		"org.eclipse.dltk.tcl.preferences.editor.smarttyping", 
+		"org.eclipse.dltk.tcl.preferences.editor.folding", 
+		"org.eclipse.dltk.tcl.ui.assistance"
+	};
 
 	public String getInterpreterPreferencePage() {
 		return INTERPRETERS_PREFERENCE_PAGE_ID;
@@ -119,5 +128,9 @@ public class TclUILanguageToolkit implements IDLTKUILanguageToolkit {
 
 	public String getDebugPreferencePage() {
 		return DEBUG_PREFERENCE_PAGE_ID;
+	}
+
+	public String[] getEditorPreferencePages() {
+		return EDITOR_PREFERENCE_PAGES_IDS;
 	}
 }

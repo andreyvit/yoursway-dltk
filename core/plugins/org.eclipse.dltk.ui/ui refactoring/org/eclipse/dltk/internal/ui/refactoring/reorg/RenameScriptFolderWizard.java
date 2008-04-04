@@ -34,14 +34,14 @@ public class RenameScriptFolderWizard extends RenameRefactoringWizard {
 			RefactoringMessages.RenamePackageWizard_defaultPageTitle, 
 			RefactoringMessages.RenamePackageWizard_inputPage_description, 
 			DLTKPluginImages.DESC_WIZBAN_REFACTOR_PACKAGE,
-			""/*IScriptHelpContextIds.RENAME_PACKAGE_WIZARD_PAGE*/);
+			""/*IScriptHelpContextIds.RENAME_PACKAGE_WIZARD_PAGE*/); //$NON-NLS-1$
 	}
 	
 	protected RenameInputWizardPage createInputPage(String message, String initialSetting) {
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: Add help support");
+			System.err.println("TODO: Add help support"); //$NON-NLS-1$
 		}
-		return new RenamePackageInputWizardPage(message, ""/*IScriptHelpContextIds.RENAME_PACKAGE_WIZARD_PAGE*/, initialSetting) {
+		return new RenamePackageInputWizardPage(message, ""/*IScriptHelpContextIds.RENAME_PACKAGE_WIZARD_PAGE*/, initialSetting) { //$NON-NLS-1$
 			protected RefactoringStatus validateTextField(String text) {
 				return validateNewName(text);
 			}	

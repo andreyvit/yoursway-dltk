@@ -153,576 +153,576 @@ public class BuiltinMethodsDatabase {
 
 	static {
 		// start generated code
-		ModuleMetaclass kernelModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass("Kernel"));
-		SingletonMetaclass kernelModuleSingletonMetaclass = new SingletonMetaclass("Kernel");
+		ModuleMetaclass kernelModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass("Kernel")); //$NON-NLS-1$
+		SingletonMetaclass kernelModuleSingletonMetaclass = new SingletonMetaclass("Kernel"); //$NON-NLS-1$
 		ModuleMetaclass fileTestModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass(
-				"FileTest"));
-		SingletonMetaclass fileTestModuleSingletonMetaclass = new SingletonMetaclass("FileTest");
+				"FileTest")); //$NON-NLS-1$
+		SingletonMetaclass fileTestModuleSingletonMetaclass = new SingletonMetaclass("FileTest"); //$NON-NLS-1$
 		ModuleMetaclass marshalModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass(
-				"Marshal"));
-		SingletonMetaclass marshalModuleSingletonMetaclass = new SingletonMetaclass("Marshal");
-		ModuleMetaclass signalModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass("Signal"));
-		SingletonMetaclass signalModuleSingletonMetaclass = new SingletonMetaclass("Signal");
+				"Marshal")); //$NON-NLS-1$
+		SingletonMetaclass marshalModuleSingletonMetaclass = new SingletonMetaclass("Marshal"); //$NON-NLS-1$
+		ModuleMetaclass signalModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass("Signal")); //$NON-NLS-1$
+		SingletonMetaclass signalModuleSingletonMetaclass = new SingletonMetaclass("Signal"); //$NON-NLS-1$
 		ModuleMetaclass process_GIDModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass(
-				"Process::GID"));
+				"Process::GID")); //$NON-NLS-1$
 		SingletonMetaclass process_GIDModuleSingletonMetaclass = new SingletonMetaclass(
-				"Process::GID");
+				"Process::GID"); //$NON-NLS-1$
 		ModuleMetaclass file_ConstantsModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass(
-				"File::Constants"));
+				"File::Constants")); //$NON-NLS-1$
 		SingletonMetaclass file_ConstantsModuleSingletonMetaclass = new SingletonMetaclass(
-				"File::Constants");
+				"File::Constants"); //$NON-NLS-1$
 		ModuleMetaclass objectSpaceModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass(
-				"ObjectSpace"));
+				"ObjectSpace")); //$NON-NLS-1$
 		SingletonMetaclass objectSpaceModuleSingletonMetaclass = new SingletonMetaclass(
-				"ObjectSpace");
+				"ObjectSpace"); //$NON-NLS-1$
 		ModuleMetaclass precisionModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass(
-				"Precision"));
-		SingletonMetaclass precisionModuleSingletonMetaclass = new SingletonMetaclass("Precision");
+				"Precision")); //$NON-NLS-1$
+		SingletonMetaclass precisionModuleSingletonMetaclass = new SingletonMetaclass("Precision"); //$NON-NLS-1$
 		ModuleMetaclass enumerableModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass(
-				"Enumerable"));
-		SingletonMetaclass enumerableModuleSingletonMetaclass = new SingletonMetaclass("Enumerable");
-		ModuleMetaclass errnoModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass("Errno"));
-		SingletonMetaclass errnoModuleSingletonMetaclass = new SingletonMetaclass("Errno");
+				"Enumerable")); //$NON-NLS-1$
+		SingletonMetaclass enumerableModuleSingletonMetaclass = new SingletonMetaclass("Enumerable"); //$NON-NLS-1$
+		ModuleMetaclass errnoModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass("Errno")); //$NON-NLS-1$
+		SingletonMetaclass errnoModuleSingletonMetaclass = new SingletonMetaclass("Errno"); //$NON-NLS-1$
 		ModuleMetaclass process_SysModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass(
-				"Process::Sys"));
+				"Process::Sys")); //$NON-NLS-1$
 		SingletonMetaclass process_SysModuleSingletonMetaclass = new SingletonMetaclass(
-				"Process::Sys");
+				"Process::Sys"); //$NON-NLS-1$
 		ModuleMetaclass process_UIDModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass(
-				"Process::UID"));
+				"Process::UID")); //$NON-NLS-1$
 		SingletonMetaclass process_UIDModuleSingletonMetaclass = new SingletonMetaclass(
-				"Process::UID");
-		ModuleMetaclass mathModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass("Math"));
-		SingletonMetaclass mathModuleSingletonMetaclass = new SingletonMetaclass("Math");
-		ModuleMetaclass gCModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass("GC"));
-		SingletonMetaclass gCModuleSingletonMetaclass = new SingletonMetaclass("GC");
+				"Process::UID"); //$NON-NLS-1$
+		ModuleMetaclass mathModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass("Math")); //$NON-NLS-1$
+		SingletonMetaclass mathModuleSingletonMetaclass = new SingletonMetaclass("Math"); //$NON-NLS-1$
+		ModuleMetaclass gCModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass("GC")); //$NON-NLS-1$
+		SingletonMetaclass gCModuleSingletonMetaclass = new SingletonMetaclass("GC"); //$NON-NLS-1$
 		ModuleMetaclass processModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass(
-				"Process"));
-		SingletonMetaclass processModuleSingletonMetaclass = new SingletonMetaclass("Process");
+				"Process")); //$NON-NLS-1$
+		SingletonMetaclass processModuleSingletonMetaclass = new SingletonMetaclass("Process"); //$NON-NLS-1$
 		ModuleMetaclass comparableModuleMetaclass = (ModuleMetaclass) add(new ModuleMetaclass(
-				"Comparable"));
-		SingletonMetaclass comparableModuleSingletonMetaclass = new SingletonMetaclass("Comparable");
+				"Comparable")); //$NON-NLS-1$
+		SingletonMetaclass comparableModuleSingletonMetaclass = new SingletonMetaclass("Comparable"); //$NON-NLS-1$
 		ClassMetaclass argumentErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"ArgumentError"));
+				"ArgumentError")); //$NON-NLS-1$
 		SingletonMetaclass argumentErrorClassSingletonMetaclass = new SingletonMetaclass(
-				"ArgumentError");
-		ClassMetaclass arrayMetaclass = (ClassMetaclass) add(new ClassMetaclass("Array"));
-		SingletonMetaclass arrayClassSingletonMetaclass = new SingletonMetaclass("Array");
-		ClassMetaclass bignumMetaclass = (ClassMetaclass) add(new ClassMetaclass("Bignum"));
-		SingletonMetaclass bignumClassSingletonMetaclass = new SingletonMetaclass("Bignum");
-		ClassMetaclass bindingMetaclass = (ClassMetaclass) add(new ClassMetaclass("Binding"));
-		SingletonMetaclass bindingClassSingletonMetaclass = new SingletonMetaclass("Binding");
-		ClassMetaclass classMetaclass = (ClassMetaclass) add(new ClassMetaclass("Class"));
-		SingletonMetaclass classClassSingletonMetaclass = new SingletonMetaclass("Class");
+				"ArgumentError"); //$NON-NLS-1$
+		ClassMetaclass arrayMetaclass = (ClassMetaclass) add(new ClassMetaclass("Array")); //$NON-NLS-1$
+		SingletonMetaclass arrayClassSingletonMetaclass = new SingletonMetaclass("Array"); //$NON-NLS-1$
+		ClassMetaclass bignumMetaclass = (ClassMetaclass) add(new ClassMetaclass("Bignum")); //$NON-NLS-1$
+		SingletonMetaclass bignumClassSingletonMetaclass = new SingletonMetaclass("Bignum"); //$NON-NLS-1$
+		ClassMetaclass bindingMetaclass = (ClassMetaclass) add(new ClassMetaclass("Binding")); //$NON-NLS-1$
+		SingletonMetaclass bindingClassSingletonMetaclass = new SingletonMetaclass("Binding"); //$NON-NLS-1$
+		ClassMetaclass classMetaclass = (ClassMetaclass) add(new ClassMetaclass("Class")); //$NON-NLS-1$
+		SingletonMetaclass classClassSingletonMetaclass = new SingletonMetaclass("Class"); //$NON-NLS-1$
 		ClassMetaclass continuationMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Continuation"));
+				"Continuation")); //$NON-NLS-1$
 		SingletonMetaclass continuationClassSingletonMetaclass = new SingletonMetaclass(
-				"Continuation");
-		ClassMetaclass dataMetaclass = (ClassMetaclass) add(new ClassMetaclass("Data"));
-		SingletonMetaclass dataClassSingletonMetaclass = new SingletonMetaclass("Data");
-		ClassMetaclass dirMetaclass = (ClassMetaclass) add(new ClassMetaclass("Dir"));
-		SingletonMetaclass dirClassSingletonMetaclass = new SingletonMetaclass("Dir");
-		ClassMetaclass eOFErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("EOFError"));
-		SingletonMetaclass eOFErrorClassSingletonMetaclass = new SingletonMetaclass("EOFError");
+				"Continuation"); //$NON-NLS-1$
+		ClassMetaclass dataMetaclass = (ClassMetaclass) add(new ClassMetaclass("Data")); //$NON-NLS-1$
+		SingletonMetaclass dataClassSingletonMetaclass = new SingletonMetaclass("Data"); //$NON-NLS-1$
+		ClassMetaclass dirMetaclass = (ClassMetaclass) add(new ClassMetaclass("Dir")); //$NON-NLS-1$
+		SingletonMetaclass dirClassSingletonMetaclass = new SingletonMetaclass("Dir"); //$NON-NLS-1$
+		ClassMetaclass eOFErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("EOFError")); //$NON-NLS-1$
+		SingletonMetaclass eOFErrorClassSingletonMetaclass = new SingletonMetaclass("EOFError"); //$NON-NLS-1$
 		ClassMetaclass errno_E2BIGMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::E2BIG"));
+				"Errno::E2BIG")); //$NON-NLS-1$
 		SingletonMetaclass errno_E2BIGClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::E2BIG");
+				"Errno::E2BIG"); //$NON-NLS-1$
 		ClassMetaclass errno_EACCESMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EACCES"));
+				"Errno::EACCES")); //$NON-NLS-1$
 		SingletonMetaclass errno_EACCESClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EACCES");
+				"Errno::EACCES"); //$NON-NLS-1$
 		ClassMetaclass errno_EADDRINUSEMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EADDRINUSE"));
+				"Errno::EADDRINUSE")); //$NON-NLS-1$
 		SingletonMetaclass errno_EADDRINUSEClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EADDRINUSE");
+				"Errno::EADDRINUSE"); //$NON-NLS-1$
 		ClassMetaclass errno_EADDRNOTAVAILMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EADDRNOTAVAIL"));
+				"Errno::EADDRNOTAVAIL")); //$NON-NLS-1$
 		SingletonMetaclass errno_EADDRNOTAVAILClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EADDRNOTAVAIL");
+				"Errno::EADDRNOTAVAIL"); //$NON-NLS-1$
 		ClassMetaclass errno_EAFNOSUPPORTMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EAFNOSUPPORT"));
+				"Errno::EAFNOSUPPORT")); //$NON-NLS-1$
 		SingletonMetaclass errno_EAFNOSUPPORTClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EAFNOSUPPORT");
+				"Errno::EAFNOSUPPORT"); //$NON-NLS-1$
 		ClassMetaclass errno_EAGAINMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EAGAIN"));
+				"Errno::EAGAIN")); //$NON-NLS-1$
 		SingletonMetaclass errno_EAGAINClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EAGAIN");
+				"Errno::EAGAIN"); //$NON-NLS-1$
 		ClassMetaclass errno_EALREADYMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EALREADY"));
+				"Errno::EALREADY")); //$NON-NLS-1$
 		SingletonMetaclass errno_EALREADYClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EALREADY");
+				"Errno::EALREADY"); //$NON-NLS-1$
 		ClassMetaclass errno_EBADFMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EBADF"));
+				"Errno::EBADF")); //$NON-NLS-1$
 		SingletonMetaclass errno_EBADFClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EBADF");
+				"Errno::EBADF"); //$NON-NLS-1$
 		ClassMetaclass errno_EBADMSGMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EBADMSG"));
+				"Errno::EBADMSG")); //$NON-NLS-1$
 		SingletonMetaclass errno_EBADMSGClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EBADMSG");
+				"Errno::EBADMSG"); //$NON-NLS-1$
 		ClassMetaclass errno_EBUSYMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EBUSY"));
+				"Errno::EBUSY")); //$NON-NLS-1$
 		SingletonMetaclass errno_EBUSYClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EBUSY");
+				"Errno::EBUSY"); //$NON-NLS-1$
 		ClassMetaclass errno_ECHILDMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ECHILD"));
+				"Errno::ECHILD")); //$NON-NLS-1$
 		SingletonMetaclass errno_ECHILDClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ECHILD");
+				"Errno::ECHILD"); //$NON-NLS-1$
 		ClassMetaclass errno_ECONNABORTEDMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ECONNABORTED"));
+				"Errno::ECONNABORTED")); //$NON-NLS-1$
 		SingletonMetaclass errno_ECONNABORTEDClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ECONNABORTED");
+				"Errno::ECONNABORTED"); //$NON-NLS-1$
 		ClassMetaclass errno_ECONNREFUSEDMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ECONNREFUSED"));
+				"Errno::ECONNREFUSED")); //$NON-NLS-1$
 		SingletonMetaclass errno_ECONNREFUSEDClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ECONNREFUSED");
+				"Errno::ECONNREFUSED"); //$NON-NLS-1$
 		ClassMetaclass errno_ECONNRESETMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ECONNRESET"));
+				"Errno::ECONNRESET")); //$NON-NLS-1$
 		SingletonMetaclass errno_ECONNRESETClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ECONNRESET");
+				"Errno::ECONNRESET"); //$NON-NLS-1$
 		ClassMetaclass errno_EDEADLKMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EDEADLK"));
+				"Errno::EDEADLK")); //$NON-NLS-1$
 		SingletonMetaclass errno_EDEADLKClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EDEADLK");
+				"Errno::EDEADLK"); //$NON-NLS-1$
 		ClassMetaclass errno_EDESTADDRREQMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EDESTADDRREQ"));
+				"Errno::EDESTADDRREQ")); //$NON-NLS-1$
 		SingletonMetaclass errno_EDESTADDRREQClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EDESTADDRREQ");
-		ClassMetaclass errno_EDOMMetaclass = (ClassMetaclass) add(new ClassMetaclass("Errno::EDOM"));
-		SingletonMetaclass errno_EDOMClassSingletonMetaclass = new SingletonMetaclass("Errno::EDOM");
+				"Errno::EDESTADDRREQ"); //$NON-NLS-1$
+		ClassMetaclass errno_EDOMMetaclass = (ClassMetaclass) add(new ClassMetaclass("Errno::EDOM")); //$NON-NLS-1$
+		SingletonMetaclass errno_EDOMClassSingletonMetaclass = new SingletonMetaclass("Errno::EDOM"); //$NON-NLS-1$
 		ClassMetaclass errno_EDQUOTMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EDQUOT"));
+				"Errno::EDQUOT")); //$NON-NLS-1$
 		SingletonMetaclass errno_EDQUOTClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EDQUOT");
+				"Errno::EDQUOT"); //$NON-NLS-1$
 		ClassMetaclass errno_EEXISTMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EEXIST"));
+				"Errno::EEXIST")); //$NON-NLS-1$
 		SingletonMetaclass errno_EEXISTClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EEXIST");
+				"Errno::EEXIST"); //$NON-NLS-1$
 		ClassMetaclass errno_EFAULTMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EFAULT"));
+				"Errno::EFAULT")); //$NON-NLS-1$
 		SingletonMetaclass errno_EFAULTClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EFAULT");
+				"Errno::EFAULT"); //$NON-NLS-1$
 		ClassMetaclass errno_EFBIGMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EFBIG"));
+				"Errno::EFBIG")); //$NON-NLS-1$
 		SingletonMetaclass errno_EFBIGClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EFBIG");
+				"Errno::EFBIG"); //$NON-NLS-1$
 		ClassMetaclass errno_EHOSTDOWNMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EHOSTDOWN"));
+				"Errno::EHOSTDOWN")); //$NON-NLS-1$
 		SingletonMetaclass errno_EHOSTDOWNClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EHOSTDOWN");
+				"Errno::EHOSTDOWN"); //$NON-NLS-1$
 		ClassMetaclass errno_EHOSTUNREACHMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EHOSTUNREACH"));
+				"Errno::EHOSTUNREACH")); //$NON-NLS-1$
 		SingletonMetaclass errno_EHOSTUNREACHClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EHOSTUNREACH");
+				"Errno::EHOSTUNREACH"); //$NON-NLS-1$
 		ClassMetaclass errno_EIDRMMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EIDRM"));
+				"Errno::EIDRM")); //$NON-NLS-1$
 		SingletonMetaclass errno_EIDRMClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EIDRM");
+				"Errno::EIDRM"); //$NON-NLS-1$
 		ClassMetaclass errno_EILSEQMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EILSEQ"));
+				"Errno::EILSEQ")); //$NON-NLS-1$
 		SingletonMetaclass errno_EILSEQClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EILSEQ");
+				"Errno::EILSEQ"); //$NON-NLS-1$
 		ClassMetaclass errno_EINPROGRESSMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EINPROGRESS"));
+				"Errno::EINPROGRESS")); //$NON-NLS-1$
 		SingletonMetaclass errno_EINPROGRESSClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EINPROGRESS");
+				"Errno::EINPROGRESS"); //$NON-NLS-1$
 		ClassMetaclass errno_EINTRMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EINTR"));
+				"Errno::EINTR")); //$NON-NLS-1$
 		SingletonMetaclass errno_EINTRClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EINTR");
+				"Errno::EINTR"); //$NON-NLS-1$
 		ClassMetaclass errno_EINVALMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EINVAL"));
+				"Errno::EINVAL")); //$NON-NLS-1$
 		SingletonMetaclass errno_EINVALClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EINVAL");
-		ClassMetaclass errno_EIOMetaclass = (ClassMetaclass) add(new ClassMetaclass("Errno::EIO"));
-		SingletonMetaclass errno_EIOClassSingletonMetaclass = new SingletonMetaclass("Errno::EIO");
+				"Errno::EINVAL"); //$NON-NLS-1$
+		ClassMetaclass errno_EIOMetaclass = (ClassMetaclass) add(new ClassMetaclass("Errno::EIO")); //$NON-NLS-1$
+		SingletonMetaclass errno_EIOClassSingletonMetaclass = new SingletonMetaclass("Errno::EIO"); //$NON-NLS-1$
 		ClassMetaclass errno_EISCONNMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EISCONN"));
+				"Errno::EISCONN")); //$NON-NLS-1$
 		SingletonMetaclass errno_EISCONNClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EISCONN");
+				"Errno::EISCONN"); //$NON-NLS-1$
 		ClassMetaclass errno_EISDIRMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EISDIR"));
+				"Errno::EISDIR")); //$NON-NLS-1$
 		SingletonMetaclass errno_EISDIRClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EISDIR");
+				"Errno::EISDIR"); //$NON-NLS-1$
 		ClassMetaclass errno_ELOOPMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ELOOP"));
+				"Errno::ELOOP")); //$NON-NLS-1$
 		SingletonMetaclass errno_ELOOPClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ELOOP");
+				"Errno::ELOOP"); //$NON-NLS-1$
 		ClassMetaclass errno_EMFILEMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EMFILE"));
+				"Errno::EMFILE")); //$NON-NLS-1$
 		SingletonMetaclass errno_EMFILEClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EMFILE");
+				"Errno::EMFILE"); //$NON-NLS-1$
 		ClassMetaclass errno_EMLINKMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EMLINK"));
+				"Errno::EMLINK")); //$NON-NLS-1$
 		SingletonMetaclass errno_EMLINKClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EMLINK");
+				"Errno::EMLINK"); //$NON-NLS-1$
 		ClassMetaclass errno_EMSGSIZEMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EMSGSIZE"));
+				"Errno::EMSGSIZE")); //$NON-NLS-1$
 		SingletonMetaclass errno_EMSGSIZEClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EMSGSIZE");
+				"Errno::EMSGSIZE"); //$NON-NLS-1$
 		ClassMetaclass errno_EMULTIHOPMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EMULTIHOP"));
+				"Errno::EMULTIHOP")); //$NON-NLS-1$
 		SingletonMetaclass errno_EMULTIHOPClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EMULTIHOP");
+				"Errno::EMULTIHOP"); //$NON-NLS-1$
 		ClassMetaclass errno_ENAMETOOLONGMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENAMETOOLONG"));
+				"Errno::ENAMETOOLONG")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENAMETOOLONGClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENAMETOOLONG");
+				"Errno::ENAMETOOLONG"); //$NON-NLS-1$
 		ClassMetaclass errno_ENETDOWNMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENETDOWN"));
+				"Errno::ENETDOWN")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENETDOWNClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENETDOWN");
+				"Errno::ENETDOWN"); //$NON-NLS-1$
 		ClassMetaclass errno_ENETRESETMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENETRESET"));
+				"Errno::ENETRESET")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENETRESETClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENETRESET");
+				"Errno::ENETRESET"); //$NON-NLS-1$
 		ClassMetaclass errno_ENETUNREACHMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENETUNREACH"));
+				"Errno::ENETUNREACH")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENETUNREACHClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENETUNREACH");
+				"Errno::ENETUNREACH"); //$NON-NLS-1$
 		ClassMetaclass errno_ENFILEMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENFILE"));
+				"Errno::ENFILE")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENFILEClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENFILE");
+				"Errno::ENFILE"); //$NON-NLS-1$
 		ClassMetaclass errno_ENOBUFSMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENOBUFS"));
+				"Errno::ENOBUFS")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENOBUFSClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENOBUFS");
+				"Errno::ENOBUFS"); //$NON-NLS-1$
 		ClassMetaclass errno_ENODATAMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENODATA"));
+				"Errno::ENODATA")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENODATAClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENODATA");
+				"Errno::ENODATA"); //$NON-NLS-1$
 		ClassMetaclass errno_ENODEVMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENODEV"));
+				"Errno::ENODEV")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENODEVClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENODEV");
+				"Errno::ENODEV"); //$NON-NLS-1$
 		ClassMetaclass errno_ENOENTMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENOENT"));
+				"Errno::ENOENT")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENOENTClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENOENT");
+				"Errno::ENOENT"); //$NON-NLS-1$
 		ClassMetaclass errno_ENOEXECMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENOEXEC"));
+				"Errno::ENOEXEC")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENOEXECClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENOEXEC");
+				"Errno::ENOEXEC"); //$NON-NLS-1$
 		ClassMetaclass errno_ENOLCKMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENOLCK"));
+				"Errno::ENOLCK")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENOLCKClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENOLCK");
+				"Errno::ENOLCK"); //$NON-NLS-1$
 		ClassMetaclass errno_ENOLINKMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENOLINK"));
+				"Errno::ENOLINK")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENOLINKClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENOLINK");
+				"Errno::ENOLINK"); //$NON-NLS-1$
 		ClassMetaclass errno_ENOMEMMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENOMEM"));
+				"Errno::ENOMEM")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENOMEMClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENOMEM");
+				"Errno::ENOMEM"); //$NON-NLS-1$
 		ClassMetaclass errno_ENOMSGMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENOMSG"));
+				"Errno::ENOMSG")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENOMSGClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENOMSG");
+				"Errno::ENOMSG"); //$NON-NLS-1$
 		ClassMetaclass errno_ENOPROTOOPTMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENOPROTOOPT"));
+				"Errno::ENOPROTOOPT")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENOPROTOOPTClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENOPROTOOPT");
+				"Errno::ENOPROTOOPT"); //$NON-NLS-1$
 		ClassMetaclass errno_ENOSPCMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENOSPC"));
+				"Errno::ENOSPC")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENOSPCClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENOSPC");
+				"Errno::ENOSPC"); //$NON-NLS-1$
 		ClassMetaclass errno_ENOSRMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENOSR"));
+				"Errno::ENOSR")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENOSRClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENOSR");
+				"Errno::ENOSR"); //$NON-NLS-1$
 		ClassMetaclass errno_ENOSTRMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENOSTR"));
+				"Errno::ENOSTR")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENOSTRClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENOSTR");
+				"Errno::ENOSTR"); //$NON-NLS-1$
 		ClassMetaclass errno_ENOSYSMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENOSYS"));
+				"Errno::ENOSYS")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENOSYSClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENOSYS");
+				"Errno::ENOSYS"); //$NON-NLS-1$
 		ClassMetaclass errno_ENOTBLKMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENOTBLK"));
+				"Errno::ENOTBLK")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENOTBLKClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENOTBLK");
+				"Errno::ENOTBLK"); //$NON-NLS-1$
 		ClassMetaclass errno_ENOTCONNMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENOTCONN"));
+				"Errno::ENOTCONN")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENOTCONNClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENOTCONN");
+				"Errno::ENOTCONN"); //$NON-NLS-1$
 		ClassMetaclass errno_ENOTDIRMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENOTDIR"));
+				"Errno::ENOTDIR")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENOTDIRClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENOTDIR");
+				"Errno::ENOTDIR"); //$NON-NLS-1$
 		ClassMetaclass errno_ENOTEMPTYMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENOTEMPTY"));
+				"Errno::ENOTEMPTY")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENOTEMPTYClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENOTEMPTY");
+				"Errno::ENOTEMPTY"); //$NON-NLS-1$
 		ClassMetaclass errno_ENOTSOCKMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENOTSOCK"));
+				"Errno::ENOTSOCK")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENOTSOCKClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENOTSOCK");
+				"Errno::ENOTSOCK"); //$NON-NLS-1$
 		ClassMetaclass errno_ENOTTYMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENOTTY"));
+				"Errno::ENOTTY")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENOTTYClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENOTTY");
+				"Errno::ENOTTY"); //$NON-NLS-1$
 		ClassMetaclass errno_ENXIOMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ENXIO"));
+				"Errno::ENXIO")); //$NON-NLS-1$
 		SingletonMetaclass errno_ENXIOClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ENXIO");
+				"Errno::ENXIO"); //$NON-NLS-1$
 		ClassMetaclass errno_EOPNOTSUPPMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EOPNOTSUPP"));
+				"Errno::EOPNOTSUPP")); //$NON-NLS-1$
 		SingletonMetaclass errno_EOPNOTSUPPClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EOPNOTSUPP");
+				"Errno::EOPNOTSUPP"); //$NON-NLS-1$
 		ClassMetaclass errno_EOVERFLOWMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EOVERFLOW"));
+				"Errno::EOVERFLOW")); //$NON-NLS-1$
 		SingletonMetaclass errno_EOVERFLOWClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EOVERFLOW");
+				"Errno::EOVERFLOW"); //$NON-NLS-1$
 		ClassMetaclass errno_EPERMMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EPERM"));
+				"Errno::EPERM")); //$NON-NLS-1$
 		SingletonMetaclass errno_EPERMClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EPERM");
+				"Errno::EPERM"); //$NON-NLS-1$
 		ClassMetaclass errno_EPFNOSUPPORTMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EPFNOSUPPORT"));
+				"Errno::EPFNOSUPPORT")); //$NON-NLS-1$
 		SingletonMetaclass errno_EPFNOSUPPORTClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EPFNOSUPPORT");
+				"Errno::EPFNOSUPPORT"); //$NON-NLS-1$
 		ClassMetaclass errno_EPIPEMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EPIPE"));
+				"Errno::EPIPE")); //$NON-NLS-1$
 		SingletonMetaclass errno_EPIPEClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EPIPE");
+				"Errno::EPIPE"); //$NON-NLS-1$
 		ClassMetaclass errno_EPROTOMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EPROTO"));
+				"Errno::EPROTO")); //$NON-NLS-1$
 		SingletonMetaclass errno_EPROTOClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EPROTO");
+				"Errno::EPROTO"); //$NON-NLS-1$
 		ClassMetaclass errno_EPROTONOSUPPORTMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EPROTONOSUPPORT"));
+				"Errno::EPROTONOSUPPORT")); //$NON-NLS-1$
 		SingletonMetaclass errno_EPROTONOSUPPORTClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EPROTONOSUPPORT");
+				"Errno::EPROTONOSUPPORT"); //$NON-NLS-1$
 		ClassMetaclass errno_EPROTOTYPEMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EPROTOTYPE"));
+				"Errno::EPROTOTYPE")); //$NON-NLS-1$
 		SingletonMetaclass errno_EPROTOTYPEClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EPROTOTYPE");
+				"Errno::EPROTOTYPE"); //$NON-NLS-1$
 		ClassMetaclass errno_ERANGEMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ERANGE"));
+				"Errno::ERANGE")); //$NON-NLS-1$
 		SingletonMetaclass errno_ERANGEClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ERANGE");
+				"Errno::ERANGE"); //$NON-NLS-1$
 		ClassMetaclass errno_EREMOTEMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EREMOTE"));
+				"Errno::EREMOTE")); //$NON-NLS-1$
 		SingletonMetaclass errno_EREMOTEClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EREMOTE");
+				"Errno::EREMOTE"); //$NON-NLS-1$
 		ClassMetaclass errno_EROFSMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EROFS"));
+				"Errno::EROFS")); //$NON-NLS-1$
 		SingletonMetaclass errno_EROFSClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EROFS");
+				"Errno::EROFS"); //$NON-NLS-1$
 		ClassMetaclass errno_ESHUTDOWNMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ESHUTDOWN"));
+				"Errno::ESHUTDOWN")); //$NON-NLS-1$
 		SingletonMetaclass errno_ESHUTDOWNClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ESHUTDOWN");
+				"Errno::ESHUTDOWN"); //$NON-NLS-1$
 		ClassMetaclass errno_ESOCKTNOSUPPORTMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ESOCKTNOSUPPORT"));
+				"Errno::ESOCKTNOSUPPORT")); //$NON-NLS-1$
 		SingletonMetaclass errno_ESOCKTNOSUPPORTClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ESOCKTNOSUPPORT");
+				"Errno::ESOCKTNOSUPPORT"); //$NON-NLS-1$
 		ClassMetaclass errno_ESPIPEMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ESPIPE"));
+				"Errno::ESPIPE")); //$NON-NLS-1$
 		SingletonMetaclass errno_ESPIPEClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ESPIPE");
+				"Errno::ESPIPE"); //$NON-NLS-1$
 		ClassMetaclass errno_ESRCHMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ESRCH"));
+				"Errno::ESRCH")); //$NON-NLS-1$
 		SingletonMetaclass errno_ESRCHClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ESRCH");
+				"Errno::ESRCH"); //$NON-NLS-1$
 		ClassMetaclass errno_ESTALEMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ESTALE"));
+				"Errno::ESTALE")); //$NON-NLS-1$
 		SingletonMetaclass errno_ESTALEClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ESTALE");
+				"Errno::ESTALE"); //$NON-NLS-1$
 		ClassMetaclass errno_ETIMEMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ETIME"));
+				"Errno::ETIME")); //$NON-NLS-1$
 		SingletonMetaclass errno_ETIMEClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ETIME");
+				"Errno::ETIME"); //$NON-NLS-1$
 		ClassMetaclass errno_ETIMEDOUTMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ETIMEDOUT"));
+				"Errno::ETIMEDOUT")); //$NON-NLS-1$
 		SingletonMetaclass errno_ETIMEDOUTClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ETIMEDOUT");
+				"Errno::ETIMEDOUT"); //$NON-NLS-1$
 		ClassMetaclass errno_ETOOMANYREFSMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ETOOMANYREFS"));
+				"Errno::ETOOMANYREFS")); //$NON-NLS-1$
 		SingletonMetaclass errno_ETOOMANYREFSClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ETOOMANYREFS");
+				"Errno::ETOOMANYREFS"); //$NON-NLS-1$
 		ClassMetaclass errno_ETXTBSYMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::ETXTBSY"));
+				"Errno::ETXTBSY")); //$NON-NLS-1$
 		SingletonMetaclass errno_ETXTBSYClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::ETXTBSY");
+				"Errno::ETXTBSY"); //$NON-NLS-1$
 		ClassMetaclass errno_EUSERSMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EUSERS"));
+				"Errno::EUSERS")); //$NON-NLS-1$
 		SingletonMetaclass errno_EUSERSClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EUSERS");
+				"Errno::EUSERS"); //$NON-NLS-1$
 		ClassMetaclass errno_EXDEVMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Errno::EXDEV"));
+				"Errno::EXDEV")); //$NON-NLS-1$
 		SingletonMetaclass errno_EXDEVClassSingletonMetaclass = new SingletonMetaclass(
-				"Errno::EXDEV");
-		ClassMetaclass exceptionMetaclass = (ClassMetaclass) add(new ClassMetaclass("Exception"));
-		SingletonMetaclass exceptionClassSingletonMetaclass = new SingletonMetaclass("Exception");
-		ClassMetaclass falseClassMetaclass = (ClassMetaclass) add(new ClassMetaclass("FalseClass"));
-		SingletonMetaclass falseClassClassSingletonMetaclass = new SingletonMetaclass("FalseClass");
-		ClassMetaclass fileMetaclass = (ClassMetaclass) add(new ClassMetaclass("File"));
-		SingletonMetaclass fileClassSingletonMetaclass = new SingletonMetaclass("File");
-		ClassMetaclass file_StatMetaclass = (ClassMetaclass) add(new ClassMetaclass("File::Stat"));
-		SingletonMetaclass file_StatClassSingletonMetaclass = new SingletonMetaclass("File::Stat");
-		ClassMetaclass fixnumMetaclass = (ClassMetaclass) add(new ClassMetaclass("Fixnum"));
-		SingletonMetaclass fixnumClassSingletonMetaclass = new SingletonMetaclass("Fixnum");
-		ClassMetaclass floatMetaclass = (ClassMetaclass) add(new ClassMetaclass("Float"));
-		SingletonMetaclass floatClassSingletonMetaclass = new SingletonMetaclass("Float");
+				"Errno::EXDEV"); //$NON-NLS-1$
+		ClassMetaclass exceptionMetaclass = (ClassMetaclass) add(new ClassMetaclass("Exception")); //$NON-NLS-1$
+		SingletonMetaclass exceptionClassSingletonMetaclass = new SingletonMetaclass("Exception"); //$NON-NLS-1$
+		ClassMetaclass falseClassMetaclass = (ClassMetaclass) add(new ClassMetaclass("FalseClass")); //$NON-NLS-1$
+		SingletonMetaclass falseClassClassSingletonMetaclass = new SingletonMetaclass("FalseClass"); //$NON-NLS-1$
+		ClassMetaclass fileMetaclass = (ClassMetaclass) add(new ClassMetaclass("File")); //$NON-NLS-1$
+		SingletonMetaclass fileClassSingletonMetaclass = new SingletonMetaclass("File"); //$NON-NLS-1$
+		ClassMetaclass file_StatMetaclass = (ClassMetaclass) add(new ClassMetaclass("File::Stat")); //$NON-NLS-1$
+		SingletonMetaclass file_StatClassSingletonMetaclass = new SingletonMetaclass("File::Stat"); //$NON-NLS-1$
+		ClassMetaclass fixnumMetaclass = (ClassMetaclass) add(new ClassMetaclass("Fixnum")); //$NON-NLS-1$
+		SingletonMetaclass fixnumClassSingletonMetaclass = new SingletonMetaclass("Fixnum"); //$NON-NLS-1$
+		ClassMetaclass floatMetaclass = (ClassMetaclass) add(new ClassMetaclass("Float")); //$NON-NLS-1$
+		SingletonMetaclass floatClassSingletonMetaclass = new SingletonMetaclass("Float"); //$NON-NLS-1$
 		ClassMetaclass floatDomainErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"FloatDomainError"));
+				"FloatDomainError")); //$NON-NLS-1$
 		SingletonMetaclass floatDomainErrorClassSingletonMetaclass = new SingletonMetaclass(
-				"FloatDomainError");
-		ClassMetaclass hashMetaclass = (ClassMetaclass) add(new ClassMetaclass("Hash"));
-		SingletonMetaclass hashClassSingletonMetaclass = new SingletonMetaclass("Hash");
-		ClassMetaclass iOMetaclass = (ClassMetaclass) add(new ClassMetaclass("IO"));
-		SingletonMetaclass iOClassSingletonMetaclass = new SingletonMetaclass("IO");
-		ClassMetaclass iOErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("IOError"));
-		SingletonMetaclass iOErrorClassSingletonMetaclass = new SingletonMetaclass("IOError");
-		ClassMetaclass indexErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("IndexError"));
-		SingletonMetaclass indexErrorClassSingletonMetaclass = new SingletonMetaclass("IndexError");
-		ClassMetaclass integerMetaclass = (ClassMetaclass) add(new ClassMetaclass("Integer"));
-		SingletonMetaclass integerClassSingletonMetaclass = new SingletonMetaclass("Integer");
-		ClassMetaclass interruptMetaclass = (ClassMetaclass) add(new ClassMetaclass("Interrupt"));
-		SingletonMetaclass interruptClassSingletonMetaclass = new SingletonMetaclass("Interrupt");
-		ClassMetaclass loadErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("LoadError"));
-		SingletonMetaclass loadErrorClassSingletonMetaclass = new SingletonMetaclass("LoadError");
+				"FloatDomainError"); //$NON-NLS-1$
+		ClassMetaclass hashMetaclass = (ClassMetaclass) add(new ClassMetaclass("Hash")); //$NON-NLS-1$
+		SingletonMetaclass hashClassSingletonMetaclass = new SingletonMetaclass("Hash"); //$NON-NLS-1$
+		ClassMetaclass iOMetaclass = (ClassMetaclass) add(new ClassMetaclass("IO")); //$NON-NLS-1$
+		SingletonMetaclass iOClassSingletonMetaclass = new SingletonMetaclass("IO"); //$NON-NLS-1$
+		ClassMetaclass iOErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("IOError")); //$NON-NLS-1$
+		SingletonMetaclass iOErrorClassSingletonMetaclass = new SingletonMetaclass("IOError"); //$NON-NLS-1$
+		ClassMetaclass indexErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("IndexError")); //$NON-NLS-1$
+		SingletonMetaclass indexErrorClassSingletonMetaclass = new SingletonMetaclass("IndexError"); //$NON-NLS-1$
+		ClassMetaclass integerMetaclass = (ClassMetaclass) add(new ClassMetaclass("Integer")); //$NON-NLS-1$
+		SingletonMetaclass integerClassSingletonMetaclass = new SingletonMetaclass("Integer"); //$NON-NLS-1$
+		ClassMetaclass interruptMetaclass = (ClassMetaclass) add(new ClassMetaclass("Interrupt")); //$NON-NLS-1$
+		SingletonMetaclass interruptClassSingletonMetaclass = new SingletonMetaclass("Interrupt"); //$NON-NLS-1$
+		ClassMetaclass loadErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("LoadError")); //$NON-NLS-1$
+		SingletonMetaclass loadErrorClassSingletonMetaclass = new SingletonMetaclass("LoadError"); //$NON-NLS-1$
 		ClassMetaclass localJumpErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"LocalJumpError"));
+				"LocalJumpError")); //$NON-NLS-1$
 		SingletonMetaclass localJumpErrorClassSingletonMetaclass = new SingletonMetaclass(
-				"LocalJumpError");
-		ClassMetaclass matchDataMetaclass = (ClassMetaclass) add(new ClassMetaclass("MatchData"));
-		SingletonMetaclass matchDataClassSingletonMetaclass = new SingletonMetaclass("MatchData");
-		ClassMetaclass methodMetaclass = (ClassMetaclass) add(new ClassMetaclass("Method"));
-		SingletonMetaclass methodClassSingletonMetaclass = new SingletonMetaclass("Method");
-		ClassMetaclass moduleMetaclass = (ClassMetaclass) add(new ClassMetaclass("Module"));
-		SingletonMetaclass moduleClassSingletonMetaclass = new SingletonMetaclass("Module");
-		ClassMetaclass nameErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("NameError"));
-		SingletonMetaclass nameErrorClassSingletonMetaclass = new SingletonMetaclass("NameError");
+				"LocalJumpError"); //$NON-NLS-1$
+		ClassMetaclass matchDataMetaclass = (ClassMetaclass) add(new ClassMetaclass("MatchData")); //$NON-NLS-1$
+		SingletonMetaclass matchDataClassSingletonMetaclass = new SingletonMetaclass("MatchData"); //$NON-NLS-1$
+		ClassMetaclass methodMetaclass = (ClassMetaclass) add(new ClassMetaclass("Method")); //$NON-NLS-1$
+		SingletonMetaclass methodClassSingletonMetaclass = new SingletonMetaclass("Method"); //$NON-NLS-1$
+		ClassMetaclass moduleMetaclass = (ClassMetaclass) add(new ClassMetaclass("Module")); //$NON-NLS-1$
+		SingletonMetaclass moduleClassSingletonMetaclass = new SingletonMetaclass("Module"); //$NON-NLS-1$
+		ClassMetaclass nameErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("NameError")); //$NON-NLS-1$
+		SingletonMetaclass nameErrorClassSingletonMetaclass = new SingletonMetaclass("NameError"); //$NON-NLS-1$
 		ClassMetaclass nameError_messageMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"NameError::message"));
+				"NameError::message")); //$NON-NLS-1$
 		SingletonMetaclass nameError_messageClassSingletonMetaclass = new SingletonMetaclass(
-				"NameError::message");
-		ClassMetaclass nilClassMetaclass = (ClassMetaclass) add(new ClassMetaclass("NilClass"));
-		SingletonMetaclass nilClassClassSingletonMetaclass = new SingletonMetaclass("NilClass");
+				"NameError::message"); //$NON-NLS-1$
+		ClassMetaclass nilClassMetaclass = (ClassMetaclass) add(new ClassMetaclass("NilClass")); //$NON-NLS-1$
+		SingletonMetaclass nilClassClassSingletonMetaclass = new SingletonMetaclass("NilClass"); //$NON-NLS-1$
 		ClassMetaclass noMemoryErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"NoMemoryError"));
+				"NoMemoryError")); //$NON-NLS-1$
 		SingletonMetaclass noMemoryErrorClassSingletonMetaclass = new SingletonMetaclass(
-				"NoMemoryError");
+				"NoMemoryError"); //$NON-NLS-1$
 		ClassMetaclass noMethodErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"NoMethodError"));
+				"NoMethodError")); //$NON-NLS-1$
 		SingletonMetaclass noMethodErrorClassSingletonMetaclass = new SingletonMetaclass(
-				"NoMethodError");
+				"NoMethodError"); //$NON-NLS-1$
 		ClassMetaclass notImplementedErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"NotImplementedError"));
+				"NotImplementedError")); //$NON-NLS-1$
 		SingletonMetaclass notImplementedErrorClassSingletonMetaclass = new SingletonMetaclass(
-				"NotImplementedError");
-		ClassMetaclass numericMetaclass = (ClassMetaclass) add(new ClassMetaclass("Numeric"));
-		SingletonMetaclass numericClassSingletonMetaclass = new SingletonMetaclass("Numeric");
-		ClassMetaclass objectMetaclass = (ClassMetaclass) add(new ClassMetaclass("Object"));
-		SingletonMetaclass objectClassSingletonMetaclass = new SingletonMetaclass("Object");
-		ClassMetaclass procMetaclass = (ClassMetaclass) add(new ClassMetaclass("Proc"));
-		SingletonMetaclass procClassSingletonMetaclass = new SingletonMetaclass("Proc");
+				"NotImplementedError"); //$NON-NLS-1$
+		ClassMetaclass numericMetaclass = (ClassMetaclass) add(new ClassMetaclass("Numeric")); //$NON-NLS-1$
+		SingletonMetaclass numericClassSingletonMetaclass = new SingletonMetaclass("Numeric"); //$NON-NLS-1$
+		ClassMetaclass objectMetaclass = (ClassMetaclass) add(new ClassMetaclass("Object")); //$NON-NLS-1$
+		SingletonMetaclass objectClassSingletonMetaclass = new SingletonMetaclass("Object"); //$NON-NLS-1$
+		ClassMetaclass procMetaclass = (ClassMetaclass) add(new ClassMetaclass("Proc")); //$NON-NLS-1$
+		SingletonMetaclass procClassSingletonMetaclass = new SingletonMetaclass("Proc"); //$NON-NLS-1$
 		ClassMetaclass process_StatusMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"Process::Status"));
+				"Process::Status")); //$NON-NLS-1$
 		SingletonMetaclass process_StatusClassSingletonMetaclass = new SingletonMetaclass(
-				"Process::Status");
-		ClassMetaclass rangeMetaclass = (ClassMetaclass) add(new ClassMetaclass("Range"));
-		SingletonMetaclass rangeClassSingletonMetaclass = new SingletonMetaclass("Range");
-		ClassMetaclass rangeErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("RangeError"));
-		SingletonMetaclass rangeErrorClassSingletonMetaclass = new SingletonMetaclass("RangeError");
-		ClassMetaclass regexpMetaclass = (ClassMetaclass) add(new ClassMetaclass("Regexp"));
-		SingletonMetaclass regexpClassSingletonMetaclass = new SingletonMetaclass("Regexp");
-		ClassMetaclass regexpErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("RegexpError"));
+				"Process::Status"); //$NON-NLS-1$
+		ClassMetaclass rangeMetaclass = (ClassMetaclass) add(new ClassMetaclass("Range")); //$NON-NLS-1$
+		SingletonMetaclass rangeClassSingletonMetaclass = new SingletonMetaclass("Range"); //$NON-NLS-1$
+		ClassMetaclass rangeErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("RangeError")); //$NON-NLS-1$
+		SingletonMetaclass rangeErrorClassSingletonMetaclass = new SingletonMetaclass("RangeError"); //$NON-NLS-1$
+		ClassMetaclass regexpMetaclass = (ClassMetaclass) add(new ClassMetaclass("Regexp")); //$NON-NLS-1$
+		SingletonMetaclass regexpClassSingletonMetaclass = new SingletonMetaclass("Regexp"); //$NON-NLS-1$
+		ClassMetaclass regexpErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("RegexpError")); //$NON-NLS-1$
 		SingletonMetaclass regexpErrorClassSingletonMetaclass = new SingletonMetaclass(
-				"RegexpError");
+				"RegexpError"); //$NON-NLS-1$
 		ClassMetaclass runtimeErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"RuntimeError"));
+				"RuntimeError")); //$NON-NLS-1$
 		SingletonMetaclass runtimeErrorClassSingletonMetaclass = new SingletonMetaclass(
-				"RuntimeError");
-		ClassMetaclass scriptErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("ScriptError"));
+				"RuntimeError"); //$NON-NLS-1$
+		ClassMetaclass scriptErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("ScriptError")); //$NON-NLS-1$
 		SingletonMetaclass scriptErrorClassSingletonMetaclass = new SingletonMetaclass(
-				"ScriptError");
+				"ScriptError"); //$NON-NLS-1$
 		ClassMetaclass securityErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"SecurityError"));
+				"SecurityError")); //$NON-NLS-1$
 		SingletonMetaclass securityErrorClassSingletonMetaclass = new SingletonMetaclass(
-				"SecurityError");
-		ClassMetaclass setMetaclass = (ClassMetaclass) add(new ClassMetaclass("Set"));
-		SingletonMetaclass setClassSingletonMetaclass = new SingletonMetaclass("Set");
+				"SecurityError"); //$NON-NLS-1$
+		ClassMetaclass setMetaclass = (ClassMetaclass) add(new ClassMetaclass("Set")); //$NON-NLS-1$
+		SingletonMetaclass setClassSingletonMetaclass = new SingletonMetaclass("Set"); //$NON-NLS-1$
 		ClassMetaclass signalExceptionMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"SignalException"));
+				"SignalException")); //$NON-NLS-1$
 		SingletonMetaclass signalExceptionClassSingletonMetaclass = new SingletonMetaclass(
-				"SignalException");
-		ClassMetaclass sortedSetMetaclass = (ClassMetaclass) add(new ClassMetaclass("SortedSet"));
-		SingletonMetaclass sortedSetClassSingletonMetaclass = new SingletonMetaclass("SortedSet");
+				"SignalException"); //$NON-NLS-1$
+		ClassMetaclass sortedSetMetaclass = (ClassMetaclass) add(new ClassMetaclass("SortedSet")); //$NON-NLS-1$
+		SingletonMetaclass sortedSetClassSingletonMetaclass = new SingletonMetaclass("SortedSet"); //$NON-NLS-1$
 		ClassMetaclass standardErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"StandardError"));
+				"StandardError")); //$NON-NLS-1$
 		SingletonMetaclass standardErrorClassSingletonMetaclass = new SingletonMetaclass(
-				"StandardError");
-		ClassMetaclass stringMetaclass = (ClassMetaclass) add(new ClassMetaclass("String"));
-		SingletonMetaclass stringClassSingletonMetaclass = new SingletonMetaclass("String");
-		ClassMetaclass structMetaclass = (ClassMetaclass) add(new ClassMetaclass("Struct"));
-		SingletonMetaclass structClassSingletonMetaclass = new SingletonMetaclass("Struct");
-		ClassMetaclass struct_TmsMetaclass = (ClassMetaclass) add(new ClassMetaclass("Struct::Tms"));
-		SingletonMetaclass struct_TmsClassSingletonMetaclass = new SingletonMetaclass("Struct::Tms");
-		ClassMetaclass symbolMetaclass = (ClassMetaclass) add(new ClassMetaclass("Symbol"));
-		SingletonMetaclass symbolClassSingletonMetaclass = new SingletonMetaclass("Symbol");
-		ClassMetaclass syntaxErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("SyntaxError"));
+				"StandardError"); //$NON-NLS-1$
+		ClassMetaclass stringMetaclass = (ClassMetaclass) add(new ClassMetaclass("String")); //$NON-NLS-1$
+		SingletonMetaclass stringClassSingletonMetaclass = new SingletonMetaclass("String"); //$NON-NLS-1$
+		ClassMetaclass structMetaclass = (ClassMetaclass) add(new ClassMetaclass("Struct")); //$NON-NLS-1$
+		SingletonMetaclass structClassSingletonMetaclass = new SingletonMetaclass("Struct"); //$NON-NLS-1$
+		ClassMetaclass struct_TmsMetaclass = (ClassMetaclass) add(new ClassMetaclass("Struct::Tms")); //$NON-NLS-1$
+		SingletonMetaclass struct_TmsClassSingletonMetaclass = new SingletonMetaclass("Struct::Tms"); //$NON-NLS-1$
+		ClassMetaclass symbolMetaclass = (ClassMetaclass) add(new ClassMetaclass("Symbol")); //$NON-NLS-1$
+		SingletonMetaclass symbolClassSingletonMetaclass = new SingletonMetaclass("Symbol"); //$NON-NLS-1$
+		ClassMetaclass syntaxErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("SyntaxError")); //$NON-NLS-1$
 		SingletonMetaclass syntaxErrorClassSingletonMetaclass = new SingletonMetaclass(
-				"SyntaxError");
+				"SyntaxError"); //$NON-NLS-1$
 		ClassMetaclass systemCallErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"SystemCallError"));
+				"SystemCallError")); //$NON-NLS-1$
 		SingletonMetaclass systemCallErrorClassSingletonMetaclass = new SingletonMetaclass(
-				"SystemCallError");
-		ClassMetaclass systemExitMetaclass = (ClassMetaclass) add(new ClassMetaclass("SystemExit"));
-		SingletonMetaclass systemExitClassSingletonMetaclass = new SingletonMetaclass("SystemExit");
+				"SystemCallError"); //$NON-NLS-1$
+		ClassMetaclass systemExitMetaclass = (ClassMetaclass) add(new ClassMetaclass("SystemExit")); //$NON-NLS-1$
+		SingletonMetaclass systemExitClassSingletonMetaclass = new SingletonMetaclass("SystemExit"); //$NON-NLS-1$
 		ClassMetaclass systemStackErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"SystemStackError"));
+				"SystemStackError")); //$NON-NLS-1$
 		SingletonMetaclass systemStackErrorClassSingletonMetaclass = new SingletonMetaclass(
-				"SystemStackError");
-		ClassMetaclass threadMetaclass = (ClassMetaclass) add(new ClassMetaclass("Thread"));
-		SingletonMetaclass threadClassSingletonMetaclass = new SingletonMetaclass("Thread");
-		ClassMetaclass threadErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("ThreadError"));
+				"SystemStackError"); //$NON-NLS-1$
+		ClassMetaclass threadMetaclass = (ClassMetaclass) add(new ClassMetaclass("Thread")); //$NON-NLS-1$
+		SingletonMetaclass threadClassSingletonMetaclass = new SingletonMetaclass("Thread"); //$NON-NLS-1$
+		ClassMetaclass threadErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("ThreadError")); //$NON-NLS-1$
 		SingletonMetaclass threadErrorClassSingletonMetaclass = new SingletonMetaclass(
-				"ThreadError");
-		ClassMetaclass threadGroupMetaclass = (ClassMetaclass) add(new ClassMetaclass("ThreadGroup"));
+				"ThreadError"); //$NON-NLS-1$
+		ClassMetaclass threadGroupMetaclass = (ClassMetaclass) add(new ClassMetaclass("ThreadGroup")); //$NON-NLS-1$
 		SingletonMetaclass threadGroupClassSingletonMetaclass = new SingletonMetaclass(
-				"ThreadGroup");
-		ClassMetaclass timeMetaclass = (ClassMetaclass) add(new ClassMetaclass("Time"));
-		SingletonMetaclass timeClassSingletonMetaclass = new SingletonMetaclass("Time");
-		ClassMetaclass trueClassMetaclass = (ClassMetaclass) add(new ClassMetaclass("TrueClass"));
-		SingletonMetaclass trueClassClassSingletonMetaclass = new SingletonMetaclass("TrueClass");
-		ClassMetaclass typeErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("TypeError"));
-		SingletonMetaclass typeErrorClassSingletonMetaclass = new SingletonMetaclass("TypeError");
+				"ThreadGroup"); //$NON-NLS-1$
+		ClassMetaclass timeMetaclass = (ClassMetaclass) add(new ClassMetaclass("Time")); //$NON-NLS-1$
+		SingletonMetaclass timeClassSingletonMetaclass = new SingletonMetaclass("Time"); //$NON-NLS-1$
+		ClassMetaclass trueClassMetaclass = (ClassMetaclass) add(new ClassMetaclass("TrueClass")); //$NON-NLS-1$
+		SingletonMetaclass trueClassClassSingletonMetaclass = new SingletonMetaclass("TrueClass"); //$NON-NLS-1$
+		ClassMetaclass typeErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass("TypeError")); //$NON-NLS-1$
+		SingletonMetaclass typeErrorClassSingletonMetaclass = new SingletonMetaclass("TypeError"); //$NON-NLS-1$
 		ClassMetaclass unboundMethodMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"UnboundMethod"));
+				"UnboundMethod")); //$NON-NLS-1$
 		SingletonMetaclass unboundMethodClassSingletonMetaclass = new SingletonMetaclass(
-				"UnboundMethod");
+				"UnboundMethod"); //$NON-NLS-1$
 		ClassMetaclass zeroDivisionErrorMetaclass = (ClassMetaclass) add(new ClassMetaclass(
-				"ZeroDivisionError"));
+				"ZeroDivisionError")); //$NON-NLS-1$
 		SingletonMetaclass zeroDivisionErrorClassSingletonMetaclass = new SingletonMetaclass(
-				"ZeroDivisionError");
-		ClassMetaclass fatalMetaclass = (ClassMetaclass) add(new ClassMetaclass("fatal"));
-		SingletonMetaclass fatalClassSingletonMetaclass = new SingletonMetaclass("fatal");
-		kernelModuleMetaclass.setMethods(new MethodInfo[] { new MethodInfo("dup", 0, 0),
-				new MethodInfo("hash", 0, 0), new MethodInfo("private_methods", -1, 0),
-				new MethodInfo("extend", -1, 0), new MethodInfo("nil?", 0, 0),
-				new MethodInfo("display", -1, 0), new MethodInfo("__send__", -1, 0),
-				new MethodInfo("instance_eval", -1, 0), new MethodInfo("tainted?", 0, 0),
-				new MethodInfo("class", 0, 0), new MethodInfo("singleton_methods", -1, 0),
-				new MethodInfo("=~", 1, 0), new MethodInfo("untaint", 0, 0),
-				new MethodInfo("kind_of?", 1, 0), new MethodInfo("object_id", 0, 0),
-				new MethodInfo("instance_variable_get", 1, 0),
-				new MethodInfo("respond_to?", -1, 0), new MethodInfo("inspect", 0, 0),
-				new MethodInfo("frozen?", 0, 0), new MethodInfo("taint", 0, 0),
-				new MethodInfo("id", 0, 0), new MethodInfo("public_methods", -1, 0),
-				new MethodInfo("to_a", 0, 0), new MethodInfo("equal?", 1, 0),
-				new MethodInfo("clone", 0, 0), new MethodInfo("protected_methods", -1, 0),
-				new MethodInfo("send", -1, 0), new MethodInfo("freeze", 0, 0),
-				new MethodInfo("instance_variable_set", 2, 0), new MethodInfo("type", 0, 0),
-				new MethodInfo("is_a?", 1, 0), new MethodInfo("methods", -1, 0),
-				new MethodInfo("==", 1, 0), new MethodInfo("instance_of?", 1, 0),
-				new MethodInfo("===", 1, 0), new MethodInfo("instance_variables", 0, 0),
-				new MethodInfo("__id__", 0, 0), new MethodInfo("eql?", 1, 0),
-				new MethodInfo("to_s", 0, 0), new MethodInfo("method", 1, 0) });
+				"ZeroDivisionError"); //$NON-NLS-1$
+		ClassMetaclass fatalMetaclass = (ClassMetaclass) add(new ClassMetaclass("fatal")); //$NON-NLS-1$
+		SingletonMetaclass fatalClassSingletonMetaclass = new SingletonMetaclass("fatal"); //$NON-NLS-1$
+		kernelModuleMetaclass.setMethods(new MethodInfo[] { new MethodInfo("dup", 0, 0), //$NON-NLS-1$
+				new MethodInfo("hash", 0, 0), new MethodInfo("private_methods", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("extend", -1, 0), new MethodInfo("nil?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("display", -1, 0), new MethodInfo("__send__", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("instance_eval", -1, 0), new MethodInfo("tainted?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("class", 0, 0), new MethodInfo("singleton_methods", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("=~", 1, 0), new MethodInfo("untaint", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("kind_of?", 1, 0), new MethodInfo("object_id", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("instance_variable_get", 1, 0), //$NON-NLS-1$
+				new MethodInfo("respond_to?", -1, 0), new MethodInfo("inspect", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("frozen?", 0, 0), new MethodInfo("taint", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("id", 0, 0), new MethodInfo("public_methods", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_a", 0, 0), new MethodInfo("equal?", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("clone", 0, 0), new MethodInfo("protected_methods", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("send", -1, 0), new MethodInfo("freeze", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("instance_variable_set", 2, 0), new MethodInfo("type", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("is_a?", 1, 0), new MethodInfo("methods", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("==", 1, 0), new MethodInfo("instance_of?", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("===", 1, 0), new MethodInfo("instance_variables", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("__id__", 0, 0), new MethodInfo("eql?", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_s", 0, 0), new MethodInfo("method", 1, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
 		fileTestModuleMetaclass.setMethods(new MethodInfo[] {
 
 		});
@@ -741,20 +741,20 @@ public class BuiltinMethodsDatabase {
 		objectSpaceModuleMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		precisionModuleMetaclass.setMethods(new MethodInfo[] { new MethodInfo("prec_f", 0, 0),
-				new MethodInfo("prec_i", 0, 0), new MethodInfo("prec", 1, 0) });
-		enumerableModuleMetaclass.setMethods(new MethodInfo[] { new MethodInfo("find_all", 0, 0),
-				new MethodInfo("sort_by", 0, 0), new MethodInfo("collect", 0, 0),
-				new MethodInfo("detect", -1, 0), new MethodInfo("max", 0, 0),
-				new MethodInfo("sort", 0, 0), new MethodInfo("partition", 0, 0),
-				new MethodInfo("any?", 0, 0), new MethodInfo("reject", 0, 0),
-				new MethodInfo("zip", -1, 0), new MethodInfo("to_set", -1, 0),
-				new MethodInfo("find", -1, 0), new MethodInfo("min", 0, 0),
-				new MethodInfo("member?", 1, 0), new MethodInfo("entries", 0, 0),
-				new MethodInfo("inject", -1, 0), new MethodInfo("all?", 0, 0),
-				new MethodInfo("select", 0, 0), new MethodInfo("each_with_index", 0, 0),
-				new MethodInfo("grep", 1, 0), new MethodInfo("to_a", 0, 0),
-				new MethodInfo("map", 0, 0), new MethodInfo("include?", 1, 0) });
+		precisionModuleMetaclass.setMethods(new MethodInfo[] { new MethodInfo("prec_f", 0, 0), //$NON-NLS-1$
+				new MethodInfo("prec_i", 0, 0), new MethodInfo("prec", 1, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
+		enumerableModuleMetaclass.setMethods(new MethodInfo[] { new MethodInfo("find_all", 0, 0), //$NON-NLS-1$
+				new MethodInfo("sort_by", 0, 0), new MethodInfo("collect", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("detect", -1, 0), new MethodInfo("max", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("sort", 0, 0), new MethodInfo("partition", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("any?", 0, 0), new MethodInfo("reject", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("zip", -1, 0), new MethodInfo("to_set", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("find", -1, 0), new MethodInfo("min", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("member?", 1, 0), new MethodInfo("entries", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("inject", -1, 0), new MethodInfo("all?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("select", 0, 0), new MethodInfo("each_with_index", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("grep", 1, 0), new MethodInfo("to_a", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("map", 0, 0), new MethodInfo("include?", 1, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
 		errnoModuleMetaclass.setMethods(new MethodInfo[] {
 
 		});
@@ -767,78 +767,78 @@ public class BuiltinMethodsDatabase {
 		mathModuleMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		gCModuleMetaclass.setMethods(new MethodInfo[] { new MethodInfo("garbage_collect", 0, 0) });
+		gCModuleMetaclass.setMethods(new MethodInfo[] { new MethodInfo("garbage_collect", 0, 0) }); //$NON-NLS-1$
 		processModuleMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		comparableModuleMetaclass.setMethods(new MethodInfo[] { new MethodInfo("==", 1, 0),
-				new MethodInfo(">=", 1, 0), new MethodInfo("<", 1, 0), new MethodInfo("<=", 1, 0),
-				new MethodInfo(">", 1, 0), new MethodInfo("between?", 2, 0) });
+		comparableModuleMetaclass.setMethods(new MethodInfo[] { new MethodInfo("==", 1, 0), //$NON-NLS-1$
+				new MethodInfo(">=", 1, 0), new MethodInfo("<", 1, 0), new MethodInfo("<=", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				new MethodInfo(">", 1, 0), new MethodInfo("between?", 2, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
 		argumentErrorMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		arrayMetaclass.setMethods(new MethodInfo[] { new MethodInfo("last", -1, 0),
-				new MethodInfo("assoc", 1, 0), new MethodInfo("&", 1, 0),
-				new MethodInfo("slice!", -1, 0), new MethodInfo("hash", 0, 0),
-				new MethodInfo("values_at", -1, 0), new MethodInfo("length", 0, 0),
-				new MethodInfo("sort!", 0, 0), new MethodInfo("reject", 0, 0),
-				new MethodInfo("each_index", 0, 0), new MethodInfo("delete", 1, 0),
-				new MethodInfo("sort", 0, 0), new MethodInfo("fetch", -1, 0),
-				new MethodInfo("each", 0, 0), new MethodInfo("clear", 0, 0),
-				new MethodInfo("*", 1, 0), new MethodInfo("join", -1, 0),
-				new MethodInfo("empty?", 0, 0), new MethodInfo("shift", 0, 0),
-				new MethodInfo("+", 1, 0), new MethodInfo("rindex", 1, 0),
-				new MethodInfo("flatten!", 0, 0), new MethodInfo("to_ary", 0, 0),
-				new MethodInfo("slice", -1, 0), new MethodInfo("reverse!", 0, 0),
-				new MethodInfo("indices", -1, 0), new MethodInfo("nitems", 0, 0),
-				new MethodInfo("inspect", 0, 0), new MethodInfo("-", 1, 0),
-				new MethodInfo("compact!", 0, 0), new MethodInfo("frozen?", 0, 0),
-				new MethodInfo("concat", 1, 0), new MethodInfo("push", -1, 0),
-				new MethodInfo("rassoc", 1, 0), new MethodInfo("[]", -1, 0),
-				new MethodInfo("size", 0, 0), new MethodInfo("[]=", -1, 0),
-				new MethodInfo("delete_at", 1, 0), new MethodInfo("flatten", 0, 0),
-				new MethodInfo("to_a", 0, 0), new MethodInfo("collect!", 0, 0),
-				new MethodInfo("<<", 1, 0), new MethodInfo("|", 1, 0),
-				new MethodInfo("collect", 0, 0), new MethodInfo("reverse_each", 0, 0),
-				new MethodInfo("include?", 1, 0), new MethodInfo("fill", -1, 0),
-				new MethodInfo("uniq!", 0, 0), new MethodInfo("reverse", 0, 0),
-				new MethodInfo("first", -1, 0), new MethodInfo("insert", -1, 0),
-				new MethodInfo("reject!", 0, 0), new MethodInfo("pack", 1, 0),
-				new MethodInfo("select", 0, 0), new MethodInfo("unshift", -1, 0),
-				new MethodInfo("compact", 0, 0), new MethodInfo("replace", 1, 0),
-				new MethodInfo("at", 1, 0), new MethodInfo("zip", -1, 0),
-				new MethodInfo("transpose", 0, 0), new MethodInfo("<=>", 1, 0),
-				new MethodInfo("uniq", 0, 0), new MethodInfo("index", 1, 0),
-				new MethodInfo("pop", 0, 0), new MethodInfo("==", 1, 0),
-				new MethodInfo("delete_if", 0, 0), new MethodInfo("map!", 0, 0),
-				new MethodInfo("eql?", 1, 0), new MethodInfo("to_s", 0, 0),
-				new MethodInfo("indexes", -1, 0), new MethodInfo("map", 0, 0) });
-		bignumMetaclass.setMethods(new MethodInfo[] { new MethodInfo("quo", 1, 0),
-				new MethodInfo("<=>", 1, 0), new MethodInfo("coerce", 1, 0),
-				new MethodInfo("-", 1, 0), new MethodInfo("[]", 1, 0), new MethodInfo("==", 1, 0),
-				new MethodInfo("modulo", 1, 0), new MethodInfo("/", 1, 0),
-				new MethodInfo("|", 1, 0), new MethodInfo("<<", 1, 0),
-				new MethodInfo("eql?", 1, 0), new MethodInfo("%", 1, 0),
-				new MethodInfo(">>", 1, 0), new MethodInfo("divmod", 1, 0),
-				new MethodInfo("&", 1, 0), new MethodInfo("~", 0, 0), new MethodInfo("hash", 0, 0),
-				new MethodInfo("^", 1, 0), new MethodInfo("to_s", -1, 0),
-				new MethodInfo("abs", 0, 0), new MethodInfo("div", 1, 0),
-				new MethodInfo("size", 0, 0), new MethodInfo("-@", 0, 0),
-				new MethodInfo("*", 1, 0), new MethodInfo("to_f", 0, 0), new MethodInfo("+", 1, 0),
-				new MethodInfo("remainder", 1, 0), new MethodInfo("**", 1, 0) });
-		bindingMetaclass.setMethods(new MethodInfo[] { new MethodInfo("clone", 0, 0) });
-		classMetaclass.setMethods(new MethodInfo[] { new MethodInfo("new", -1, 0),
-				new MethodInfo("superclass", 0, 0), new MethodInfo("allocate", 0, 0) });
-		continuationMetaclass.setMethods(new MethodInfo[] { new MethodInfo("call", -1, 0),
-				new MethodInfo("[]", -1, 0) });
+		arrayMetaclass.setMethods(new MethodInfo[] { new MethodInfo("last", -1, 0), //$NON-NLS-1$
+				new MethodInfo("assoc", 1, 0), new MethodInfo("&", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("slice!", -1, 0), new MethodInfo("hash", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("values_at", -1, 0), new MethodInfo("length", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("sort!", 0, 0), new MethodInfo("reject", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("each_index", 0, 0), new MethodInfo("delete", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("sort", 0, 0), new MethodInfo("fetch", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("each", 0, 0), new MethodInfo("clear", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("*", 1, 0), new MethodInfo("join", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("empty?", 0, 0), new MethodInfo("shift", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("+", 1, 0), new MethodInfo("rindex", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("flatten!", 0, 0), new MethodInfo("to_ary", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("slice", -1, 0), new MethodInfo("reverse!", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("indices", -1, 0), new MethodInfo("nitems", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("inspect", 0, 0), new MethodInfo("-", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("compact!", 0, 0), new MethodInfo("frozen?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("concat", 1, 0), new MethodInfo("push", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("rassoc", 1, 0), new MethodInfo("[]", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("size", 0, 0), new MethodInfo("[]=", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("delete_at", 1, 0), new MethodInfo("flatten", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_a", 0, 0), new MethodInfo("collect!", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("<<", 1, 0), new MethodInfo("|", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("collect", 0, 0), new MethodInfo("reverse_each", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("include?", 1, 0), new MethodInfo("fill", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("uniq!", 0, 0), new MethodInfo("reverse", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("first", -1, 0), new MethodInfo("insert", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("reject!", 0, 0), new MethodInfo("pack", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("select", 0, 0), new MethodInfo("unshift", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("compact", 0, 0), new MethodInfo("replace", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("at", 1, 0), new MethodInfo("zip", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("transpose", 0, 0), new MethodInfo("<=>", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("uniq", 0, 0), new MethodInfo("index", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("pop", 0, 0), new MethodInfo("==", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("delete_if", 0, 0), new MethodInfo("map!", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("eql?", 1, 0), new MethodInfo("to_s", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("indexes", -1, 0), new MethodInfo("map", 0, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
+		bignumMetaclass.setMethods(new MethodInfo[] { new MethodInfo("quo", 1, 0), //$NON-NLS-1$
+				new MethodInfo("<=>", 1, 0), new MethodInfo("coerce", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("-", 1, 0), new MethodInfo("[]", 1, 0), new MethodInfo("==", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				new MethodInfo("modulo", 1, 0), new MethodInfo("/", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("|", 1, 0), new MethodInfo("<<", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("eql?", 1, 0), new MethodInfo("%", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo(">>", 1, 0), new MethodInfo("divmod", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("&", 1, 0), new MethodInfo("~", 0, 0), new MethodInfo("hash", 0, 0), //$NON-NLS-1$  //$NON-NLS-2$ //$NON-NLS-3$
+				new MethodInfo("^", 1, 0), new MethodInfo("to_s", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("abs", 0, 0), new MethodInfo("div", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("size", 0, 0), new MethodInfo("-@", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("*", 1, 0), new MethodInfo("to_f", 0, 0), new MethodInfo("+", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				new MethodInfo("remainder", 1, 0), new MethodInfo("**", 1, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
+		bindingMetaclass.setMethods(new MethodInfo[] { new MethodInfo("clone", 0, 0) }); //$NON-NLS-1$
+		classMetaclass.setMethods(new MethodInfo[] { new MethodInfo("new", -1, 0), //$NON-NLS-1$
+				new MethodInfo("superclass", 0, 0), new MethodInfo("allocate", 0, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
+		continuationMetaclass.setMethods(new MethodInfo[] { new MethodInfo("call", -1, 0), //$NON-NLS-1$
+				new MethodInfo("[]", -1, 0) }); //$NON-NLS-1$
 		dataMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		dirMetaclass.setMethods(new MethodInfo[] { new MethodInfo("pos", 0, 0),
-				new MethodInfo("each", 0, 0), new MethodInfo("close", 0, 0),
-				new MethodInfo("rewind", 0, 0), new MethodInfo("pos=", 1, 0),
-				new MethodInfo("seek", 1, 0), new MethodInfo("tell", 0, 0),
-				new MethodInfo("read", 0, 0), new MethodInfo("path", 0, 0) });
+		dirMetaclass.setMethods(new MethodInfo[] { new MethodInfo("pos", 0, 0), //$NON-NLS-1$
+				new MethodInfo("each", 0, 0), new MethodInfo("close", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("rewind", 0, 0), new MethodInfo("pos=", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("seek", 1, 0), new MethodInfo("tell", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("read", 0, 0), new MethodInfo("path", 0, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
 		eOFErrorMetaclass.setMethods(new MethodInfo[] {
 
 		});
@@ -1094,239 +1094,239 @@ public class BuiltinMethodsDatabase {
 		errno_EXDEVMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		exceptionMetaclass.setMethods(new MethodInfo[] { new MethodInfo("message", 0, 0),
-				new MethodInfo("exception", -1, 0), new MethodInfo("inspect", 0, 0),
-				new MethodInfo("set_backtrace", 1, 0), new MethodInfo("to_s", 0, 0),
-				new MethodInfo("to_str", 0, 0), new MethodInfo("backtrace", 0, 0) });
+		exceptionMetaclass.setMethods(new MethodInfo[] { new MethodInfo("message", 0, 0), //$NON-NLS-1$
+				new MethodInfo("exception", -1, 0), new MethodInfo("inspect", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("set_backtrace", 1, 0), new MethodInfo("to_s", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_str", 0, 0), new MethodInfo("backtrace", 0, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
 		falseClassMetaclass
-				.setMethods(new MethodInfo[] { new MethodInfo("|", 1, 0),
-						new MethodInfo("&", 1, 0), new MethodInfo("^", 1, 0),
-						new MethodInfo("to_s", 0, 0) });
-		fileMetaclass.setMethods(new MethodInfo[] { new MethodInfo("chmod", 1, 0),
-				new MethodInfo("atime", 0, 0), new MethodInfo("flock", 1, 0),
-				new MethodInfo("ctime", 0, 0), new MethodInfo("lstat", 0, 0),
-				new MethodInfo("truncate", 1, 0), new MethodInfo("chown", 2, 0),
-				new MethodInfo("mtime", 0, 0), new MethodInfo("path", 0, 0) });
-		file_StatMetaclass.setMethods(new MethodInfo[] { new MethodInfo("<=>", 1, 0),
-				new MethodInfo("dev", 0, 0), new MethodInfo("blksize", 0, 0),
-				new MethodInfo("pipe?", 0, 0), new MethodInfo("gid", 0, 0),
-				new MethodInfo("file?", 0, 0), new MethodInfo("sticky?", 0, 0),
-				new MethodInfo("ino", 0, 0), new MethodInfo("atime", 0, 0),
-				new MethodInfo("writable?", 0, 0), new MethodInfo("blockdev?", 0, 0),
-				new MethodInfo("rdev_minor", 0, 0), new MethodInfo("grpowned?", 0, 0),
-				new MethodInfo("uid", 0, 0), new MethodInfo("inspect", 0, 0),
-				new MethodInfo("executable_real?", 0, 0), new MethodInfo("setgid?", 0, 0),
-				new MethodInfo("dev_minor", 0, 0), new MethodInfo("ftype", 0, 0),
-				new MethodInfo("readable_real?", 0, 0), new MethodInfo("socket?", 0, 0),
-				new MethodInfo("rdev_major", 0, 0), new MethodInfo("directory?", 0, 0),
-				new MethodInfo("owned?", 0, 0), new MethodInfo("nlink", 0, 0),
-				new MethodInfo("ctime", 0, 0), new MethodInfo("executable?", 0, 0),
-				new MethodInfo("zero?", 0, 0), new MethodInfo("setuid?", 0, 0),
-				new MethodInfo("dev_major", 0, 0), new MethodInfo("size", 0, 0),
-				new MethodInfo("blocks", 0, 0), new MethodInfo("readable?", 0, 0),
-				new MethodInfo("symlink?", 0, 0), new MethodInfo("rdev", 0, 0),
-				new MethodInfo("size?", 0, 0), new MethodInfo("mode", 0, 0),
-				new MethodInfo("mtime", 0, 0), new MethodInfo("writable_real?", 0, 0),
-				new MethodInfo("chardev?", 0, 0) });
-		fixnumMetaclass.setMethods(new MethodInfo[] { new MethodInfo("quo", 1, 0),
-				new MethodInfo("<=>", 1, 0), new MethodInfo("-", 1, 0), new MethodInfo("==", 1, 0),
-				new MethodInfo("[]", 1, 0), new MethodInfo("id2name", 0, 0),
-				new MethodInfo("modulo", 1, 0), new MethodInfo("/", 1, 0),
-				new MethodInfo("|", 1, 0), new MethodInfo("<<", 1, 0), new MethodInfo("%", 1, 0),
-				new MethodInfo(">=", 1, 0), new MethodInfo(">>", 1, 0),
-				new MethodInfo("divmod", 1, 0), new MethodInfo("<", 1, 0),
-				new MethodInfo("<=", 1, 0), new MethodInfo("~", 0, 0), new MethodInfo("&", 1, 0),
-				new MethodInfo("^", 1, 0), new MethodInfo("to_s", -1, 0),
-				new MethodInfo("abs", 0, 0), new MethodInfo(">", 1, 0),
-				new MethodInfo("zero?", 0, 0), new MethodInfo("div", 1, 0),
-				new MethodInfo("size", 0, 0), new MethodInfo("-@", 0, 0),
-				new MethodInfo("*", 1, 0), new MethodInfo("to_f", 0, 0),
-				new MethodInfo("to_sym", 0, 0), new MethodInfo("+", 1, 0),
-				new MethodInfo("**", 1, 0) });
-		floatMetaclass.setMethods(new MethodInfo[] { new MethodInfo("<=>", 1, 0),
-				new MethodInfo("round", 0, 0), new MethodInfo("coerce", 1, 0),
-				new MethodInfo("-", 1, 0), new MethodInfo("==", 1, 0),
-				new MethodInfo("to_i", 0, 0), new MethodInfo("finite?", 0, 0),
-				new MethodInfo("modulo", 1, 0), new MethodInfo("/", 1, 0),
-				new MethodInfo("eql?", 1, 0), new MethodInfo("ceil", 0, 0),
-				new MethodInfo("%", 1, 0), new MethodInfo(">=", 1, 0),
-				new MethodInfo("infinite?", 0, 0), new MethodInfo("divmod", 1, 0),
-				new MethodInfo("<", 1, 0), new MethodInfo("<=", 1, 0),
-				new MethodInfo("hash", 0, 0), new MethodInfo("to_int", 0, 0),
-				new MethodInfo("floor", 0, 0), new MethodInfo("to_s", 0, 0),
-				new MethodInfo(">", 1, 0), new MethodInfo("abs", 0, 0),
-				new MethodInfo("zero?", 0, 0), new MethodInfo("nan?", 0, 0),
-				new MethodInfo("truncate", 0, 0), new MethodInfo("-@", 0, 0),
-				new MethodInfo("*", 1, 0), new MethodInfo("to_f", 0, 0), new MethodInfo("+", 1, 0),
-				new MethodInfo("**", 1, 0) });
+				.setMethods(new MethodInfo[] { new MethodInfo("|", 1, 0), //$NON-NLS-1$
+						new MethodInfo("&", 1, 0), new MethodInfo("^", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+						new MethodInfo("to_s", 0, 0) }); //$NON-NLS-1$
+		fileMetaclass.setMethods(new MethodInfo[] { new MethodInfo("chmod", 1, 0), //$NON-NLS-1$
+				new MethodInfo("atime", 0, 0), new MethodInfo("flock", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("ctime", 0, 0), new MethodInfo("lstat", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("truncate", 1, 0), new MethodInfo("chown", 2, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("mtime", 0, 0), new MethodInfo("path", 0, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
+		file_StatMetaclass.setMethods(new MethodInfo[] { new MethodInfo("<=>", 1, 0), //$NON-NLS-1$
+				new MethodInfo("dev", 0, 0), new MethodInfo("blksize", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("pipe?", 0, 0), new MethodInfo("gid", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("file?", 0, 0), new MethodInfo("sticky?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("ino", 0, 0), new MethodInfo("atime", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("writable?", 0, 0), new MethodInfo("blockdev?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("rdev_minor", 0, 0), new MethodInfo("grpowned?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("uid", 0, 0), new MethodInfo("inspect", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("executable_real?", 0, 0), new MethodInfo("setgid?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("dev_minor", 0, 0), new MethodInfo("ftype", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("readable_real?", 0, 0), new MethodInfo("socket?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("rdev_major", 0, 0), new MethodInfo("directory?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("owned?", 0, 0), new MethodInfo("nlink", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("ctime", 0, 0), new MethodInfo("executable?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("zero?", 0, 0), new MethodInfo("setuid?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("dev_major", 0, 0), new MethodInfo("size", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("blocks", 0, 0), new MethodInfo("readable?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("symlink?", 0, 0), new MethodInfo("rdev", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("size?", 0, 0), new MethodInfo("mode", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("mtime", 0, 0), new MethodInfo("writable_real?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("chardev?", 0, 0) }); //$NON-NLS-1$
+		fixnumMetaclass.setMethods(new MethodInfo[] { new MethodInfo("quo", 1, 0), //$NON-NLS-1$
+				new MethodInfo("<=>", 1, 0), new MethodInfo("-", 1, 0), new MethodInfo("==", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				new MethodInfo("[]", 1, 0), new MethodInfo("id2name", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("modulo", 1, 0), new MethodInfo("/", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("|", 1, 0), new MethodInfo("<<", 1, 0), new MethodInfo("%", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				new MethodInfo(">=", 1, 0), new MethodInfo(">>", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("divmod", 1, 0), new MethodInfo("<", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("<=", 1, 0), new MethodInfo("~", 0, 0), new MethodInfo("&", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				new MethodInfo("^", 1, 0), new MethodInfo("to_s", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("abs", 0, 0), new MethodInfo(">", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("zero?", 0, 0), new MethodInfo("div", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("size", 0, 0), new MethodInfo("-@", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("*", 1, 0), new MethodInfo("to_f", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_sym", 0, 0), new MethodInfo("+", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("**", 1, 0) }); //$NON-NLS-1$
+		floatMetaclass.setMethods(new MethodInfo[] { new MethodInfo("<=>", 1, 0), //$NON-NLS-1$
+				new MethodInfo("round", 0, 0), new MethodInfo("coerce", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("-", 1, 0), new MethodInfo("==", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_i", 0, 0), new MethodInfo("finite?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("modulo", 1, 0), new MethodInfo("/", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("eql?", 1, 0), new MethodInfo("ceil", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("%", 1, 0), new MethodInfo(">=", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("infinite?", 0, 0), new MethodInfo("divmod", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("<", 1, 0), new MethodInfo("<=", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("hash", 0, 0), new MethodInfo("to_int", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("floor", 0, 0), new MethodInfo("to_s", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo(">", 1, 0), new MethodInfo("abs", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("zero?", 0, 0), new MethodInfo("nan?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("truncate", 0, 0), new MethodInfo("-@", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("*", 1, 0), new MethodInfo("to_f", 0, 0), new MethodInfo("+", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				new MethodInfo("**", 1, 0) }); //$NON-NLS-1$
 		floatDomainErrorMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		hashMetaclass.setMethods(new MethodInfo[] { new MethodInfo("to_hash", 0, 0),
-				new MethodInfo("length", 0, 0), new MethodInfo("empty?", 0, 0),
-				new MethodInfo("replace", 1, 0), new MethodInfo("value?", 1, 0),
-				new MethodInfo("==", 1, 0), new MethodInfo("[]", 1, 0),
-				new MethodInfo("default=", 1, 0), new MethodInfo("clear", 0, 0),
-				new MethodInfo("invert", 0, 0), new MethodInfo("merge!", 1, 0),
-				new MethodInfo("[]=", 2, 0), new MethodInfo("each", 0, 0),
-				new MethodInfo("each_value", 0, 0), new MethodInfo("reject!", 0, 0),
-				new MethodInfo("rehash", 0, 0), new MethodInfo("fetch", -1, 0),
-				new MethodInfo("merge", 1, 0), new MethodInfo("has_value?", 1, 0),
-				new MethodInfo("inspect", 0, 0), new MethodInfo("sort", 0, 0),
-				new MethodInfo("values", 0, 0), new MethodInfo("delete", 1, 0),
-				new MethodInfo("key?", 1, 0), new MethodInfo("default_proc", 0, 0),
-				new MethodInfo("values_at", -1, 0), new MethodInfo("reject", 0, 0),
-				new MethodInfo("index", 1, 0), new MethodInfo("indices", -1, 0),
-				new MethodInfo("keys", 0, 0), new MethodInfo("member?", 1, 0),
-				new MethodInfo("has_key?", 1, 0), new MethodInfo("to_s", 0, 0),
-				new MethodInfo("each_pair", 0, 0), new MethodInfo("store", 2, 0),
-				new MethodInfo("size", 0, 0), new MethodInfo("select", -1, 0),
-				new MethodInfo("default", -1, 0), new MethodInfo("indexes", -1, 0),
-				new MethodInfo("update", 1, 0), new MethodInfo("to_a", 0, 0),
-				new MethodInfo("each_key", 0, 0), new MethodInfo("shift", 0, 0),
-				new MethodInfo("delete_if", 0, 0), new MethodInfo("include?", 1, 0) });
-		iOMetaclass.setMethods(new MethodInfo[] { new MethodInfo("lineno", 0, 0),
-				new MethodInfo("readlines", -1, 0), new MethodInfo("write", 1, 0),
-				new MethodInfo("pos", 0, 0), new MethodInfo("eof?", 0, 0),
-				new MethodInfo("ioctl", -1, 0), new MethodInfo("stat", 0, 0),
-				new MethodInfo("putc", 1, 0), new MethodInfo("fileno", 0, 0),
-				new MethodInfo("to_i", 0, 0), new MethodInfo("isatty", 0, 0),
-				new MethodInfo("each", -1, 0), new MethodInfo("each_byte", 0, 0),
-				new MethodInfo("ungetc", 1, 0), new MethodInfo("close", 0, 0),
-				new MethodInfo("sync", 0, 0), new MethodInfo("lineno=", 1, 0),
-				new MethodInfo("readline", -1, 0), new MethodInfo("<<", 1, 0),
-				new MethodInfo("rewind", 0, 0), new MethodInfo("pos=", 1, 0),
-				new MethodInfo("sysseek", -1, 0), new MethodInfo("print", -1, 0),
-				new MethodInfo("sysread", -1, 0), new MethodInfo("seek", -1, 0),
-				new MethodInfo("close_write", 0, 0), new MethodInfo("tty?", 0, 0),
-				new MethodInfo("inspect", 0, 0), new MethodInfo("each_line", -1, 0),
-				new MethodInfo("getc", 0, 0), new MethodInfo("readchar", 0, 0),
-				new MethodInfo("closed?", 0, 0), new MethodInfo("pid", 0, 0),
-				new MethodInfo("fsync", 0, 0), new MethodInfo("sync=", 1, 0),
-				new MethodInfo("gets", -1, 0), new MethodInfo("binmode", 0, 0),
-				new MethodInfo("printf", -1, 0), new MethodInfo("syswrite", 1, 0),
-				new MethodInfo("tell", 0, 0), new MethodInfo("close_read", 0, 0),
-				new MethodInfo("readpartial", -1, 0), new MethodInfo("read", -1, 0),
-				new MethodInfo("eof", 0, 0), new MethodInfo("fcntl", -1, 0),
-				new MethodInfo("puts", -1, 0), new MethodInfo("to_io", 0, 0),
-				new MethodInfo("reopen", -1, 0), new MethodInfo("flush", 0, 0) });
+		hashMetaclass.setMethods(new MethodInfo[] { new MethodInfo("to_hash", 0, 0), //$NON-NLS-1$
+				new MethodInfo("length", 0, 0), new MethodInfo("empty?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("replace", 1, 0), new MethodInfo("value?", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("==", 1, 0), new MethodInfo("[]", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("default=", 1, 0), new MethodInfo("clear", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("invert", 0, 0), new MethodInfo("merge!", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("[]=", 2, 0), new MethodInfo("each", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("each_value", 0, 0), new MethodInfo("reject!", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("rehash", 0, 0), new MethodInfo("fetch", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("merge", 1, 0), new MethodInfo("has_value?", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("inspect", 0, 0), new MethodInfo("sort", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("values", 0, 0), new MethodInfo("delete", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("key?", 1, 0), new MethodInfo("default_proc", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("values_at", -1, 0), new MethodInfo("reject", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("index", 1, 0), new MethodInfo("indices", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("keys", 0, 0), new MethodInfo("member?", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("has_key?", 1, 0), new MethodInfo("to_s", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("each_pair", 0, 0), new MethodInfo("store", 2, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("size", 0, 0), new MethodInfo("select", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("default", -1, 0), new MethodInfo("indexes", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("update", 1, 0), new MethodInfo("to_a", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("each_key", 0, 0), new MethodInfo("shift", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("delete_if", 0, 0), new MethodInfo("include?", 1, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
+		iOMetaclass.setMethods(new MethodInfo[] { new MethodInfo("lineno", 0, 0), //$NON-NLS-1$
+				new MethodInfo("readlines", -1, 0), new MethodInfo("write", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("pos", 0, 0), new MethodInfo("eof?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("ioctl", -1, 0), new MethodInfo("stat", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("putc", 1, 0), new MethodInfo("fileno", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_i", 0, 0), new MethodInfo("isatty", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("each", -1, 0), new MethodInfo("each_byte", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("ungetc", 1, 0), new MethodInfo("close", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("sync", 0, 0), new MethodInfo("lineno=", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("readline", -1, 0), new MethodInfo("<<", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("rewind", 0, 0), new MethodInfo("pos=", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("sysseek", -1, 0), new MethodInfo("print", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("sysread", -1, 0), new MethodInfo("seek", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("close_write", 0, 0), new MethodInfo("tty?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("inspect", 0, 0), new MethodInfo("each_line", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("getc", 0, 0), new MethodInfo("readchar", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("closed?", 0, 0), new MethodInfo("pid", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("fsync", 0, 0), new MethodInfo("sync=", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("gets", -1, 0), new MethodInfo("binmode", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("printf", -1, 0), new MethodInfo("syswrite", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("tell", 0, 0), new MethodInfo("close_read", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("readpartial", -1, 0), new MethodInfo("read", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("eof", 0, 0), new MethodInfo("fcntl", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("puts", -1, 0), new MethodInfo("to_io", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("reopen", -1, 0), new MethodInfo("flush", 0, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
 		iOErrorMetaclass.setMethods(new MethodInfo[] {
 
 		});
 		indexErrorMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		integerMetaclass.setMethods(new MethodInfo[] { new MethodInfo("round", 0, 0),
-				new MethodInfo("to_i", 0, 0), new MethodInfo("downto", 1, 0),
-				new MethodInfo("ceil", 0, 0), new MethodInfo("next", 0, 0),
-				new MethodInfo("to_int", 0, 0), new MethodInfo("floor", 0, 0),
-				new MethodInfo("chr", 0, 0), new MethodInfo("truncate", 0, 0),
-				new MethodInfo("upto", 1, 0), new MethodInfo("integer?", 0, 0),
-				new MethodInfo("times", 0, 0), new MethodInfo("succ", 0, 0) });
+		integerMetaclass.setMethods(new MethodInfo[] { new MethodInfo("round", 0, 0), //$NON-NLS-1$
+				new MethodInfo("to_i", 0, 0), new MethodInfo("downto", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("ceil", 0, 0), new MethodInfo("next", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_int", 0, 0), new MethodInfo("floor", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("chr", 0, 0), new MethodInfo("truncate", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("upto", 1, 0), new MethodInfo("integer?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("times", 0, 0), new MethodInfo("succ", 0, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
 		interruptMetaclass.setMethods(new MethodInfo[] {
 
 		});
 		loadErrorMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		localJumpErrorMetaclass.setMethods(new MethodInfo[] { new MethodInfo("reason", 0, 0),
-				new MethodInfo("exit_value", 0, 0) });
-		matchDataMetaclass.setMethods(new MethodInfo[] { new MethodInfo("length", 0, 0),
-				new MethodInfo("captures", 0, 0), new MethodInfo("[]", -1, 0),
-				new MethodInfo("string", 0, 0), new MethodInfo("end", 1, 0),
-				new MethodInfo("inspect", 0, 0), new MethodInfo("values_at", -1, 0),
-				new MethodInfo("post_match", 0, 0), new MethodInfo("begin", 1, 0),
-				new MethodInfo("to_s", 0, 0), new MethodInfo("size", 0, 0),
-				new MethodInfo("select", -1, 0), new MethodInfo("pre_match", 0, 0),
-				new MethodInfo("offset", 1, 0), new MethodInfo("to_a", 0, 0) });
-		methodMetaclass.setMethods(new MethodInfo[] { new MethodInfo("call", -1, 0),
-				new MethodInfo("==", 1, 0), new MethodInfo("[]", -1, 0),
-				new MethodInfo("arity", 0, 0), new MethodInfo("inspect", 0, 0),
-				new MethodInfo("unbind", 0, 0), new MethodInfo("to_s", 0, 0),
-				new MethodInfo("clone", 0, 0), new MethodInfo("to_proc", 0, 0) });
-		moduleMetaclass.setMethods(new MethodInfo[] { new MethodInfo("<=>", 1, 0),
-				new MethodInfo("const_missing", 1, 0), new MethodInfo("method_defined?", 1, 0),
-				new MethodInfo("==", 1, 0), new MethodInfo("name", 0, 0),
-				new MethodInfo("const_get", 1, 0), new MethodInfo("const_defined?", 1, 0),
-				new MethodInfo("private_class_method", -1, 0), new MethodInfo("===", 1, 0),
-				new MethodInfo("public_instance_methods", -1, 0),
-				new MethodInfo("protected_method_defined?", 1, 0), new MethodInfo(">=", 1, 0),
-				new MethodInfo("constants", 0, 0), new MethodInfo("public_class_method", -1, 0),
-				new MethodInfo("instance_method", 1, 0), new MethodInfo("freeze", 0, 0),
-				new MethodInfo("<", 1, 0), new MethodInfo("<=", 1, 0),
-				new MethodInfo("instance_methods", -1, 0),
-				new MethodInfo("private_method_defined?", 1, 0),
-				new MethodInfo("class_eval", -1, 0), new MethodInfo("autoload", 2, 0),
-				new MethodInfo(">", 1, 0), new MethodInfo("to_s", 0, 0),
-				new MethodInfo("included_modules", 0, 0),
-				new MethodInfo("private_instance_methods", -1, 0),
-				new MethodInfo("class_variables", 0, 0),
-				new MethodInfo("public_method_defined?", 1, 0), new MethodInfo("ancestors", 0, 0),
-				new MethodInfo("const_set", 2, 0), new MethodInfo("module_eval", -1, 0),
-				new MethodInfo("autoload?", 1, 0), new MethodInfo("include?", 1, 0),
-				new MethodInfo("protected_instance_methods", -1, 0) });
-		nameErrorMetaclass.setMethods(new MethodInfo[] { new MethodInfo("name", 0, 0),
-				new MethodInfo("to_s", 0, 0) });
-		nameError_messageMetaclass.setMethods(new MethodInfo[] { new MethodInfo("to_str", 0, 0),
-				new MethodInfo("_dump", 1, 0) });
-		nilClassMetaclass.setMethods(new MethodInfo[] { new MethodInfo("to_i", 0, 0),
-				new MethodInfo("|", 1, 0), new MethodInfo("inspect", 0, 0),
-				new MethodInfo("&", 1, 0), new MethodInfo("^", 1, 0), new MethodInfo("to_s", 0, 0),
-				new MethodInfo("to_f", 0, 0), new MethodInfo("nil?", 0, 0),
-				new MethodInfo("to_a", 0, 0) });
+		localJumpErrorMetaclass.setMethods(new MethodInfo[] { new MethodInfo("reason", 0, 0), //$NON-NLS-1$
+				new MethodInfo("exit_value", 0, 0) }); //$NON-NLS-1$
+		matchDataMetaclass.setMethods(new MethodInfo[] { new MethodInfo("length", 0, 0), //$NON-NLS-1$
+				new MethodInfo("captures", 0, 0), new MethodInfo("[]", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("string", 0, 0), new MethodInfo("end", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("inspect", 0, 0), new MethodInfo("values_at", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("post_match", 0, 0), new MethodInfo("begin", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_s", 0, 0), new MethodInfo("size", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("select", -1, 0), new MethodInfo("pre_match", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("offset", 1, 0), new MethodInfo("to_a", 0, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
+		methodMetaclass.setMethods(new MethodInfo[] { new MethodInfo("call", -1, 0), //$NON-NLS-1$
+				new MethodInfo("==", 1, 0), new MethodInfo("[]", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("arity", 0, 0), new MethodInfo("inspect", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("unbind", 0, 0), new MethodInfo("to_s", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("clone", 0, 0), new MethodInfo("to_proc", 0, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
+		moduleMetaclass.setMethods(new MethodInfo[] { new MethodInfo("<=>", 1, 0), //$NON-NLS-1$
+				new MethodInfo("const_missing", 1, 0), new MethodInfo("method_defined?", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("==", 1, 0), new MethodInfo("name", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("const_get", 1, 0), new MethodInfo("const_defined?", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("private_class_method", -1, 0), new MethodInfo("===", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("public_instance_methods", -1, 0), //$NON-NLS-1$
+				new MethodInfo("protected_method_defined?", 1, 0), new MethodInfo(">=", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("constants", 0, 0), new MethodInfo("public_class_method", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("instance_method", 1, 0), new MethodInfo("freeze", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("<", 1, 0), new MethodInfo("<=", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("instance_methods", -1, 0), //$NON-NLS-1$
+				new MethodInfo("private_method_defined?", 1, 0), //$NON-NLS-1$
+				new MethodInfo("class_eval", -1, 0), new MethodInfo("autoload", 2, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo(">", 1, 0), new MethodInfo("to_s", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("included_modules", 0, 0), //$NON-NLS-1$
+				new MethodInfo("private_instance_methods", -1, 0), //$NON-NLS-1$
+				new MethodInfo("class_variables", 0, 0), //$NON-NLS-1$
+				new MethodInfo("public_method_defined?", 1, 0), new MethodInfo("ancestors", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("const_set", 2, 0), new MethodInfo("module_eval", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("autoload?", 1, 0), new MethodInfo("include?", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("protected_instance_methods", -1, 0) }); //$NON-NLS-1$
+		nameErrorMetaclass.setMethods(new MethodInfo[] { new MethodInfo("name", 0, 0), //$NON-NLS-1$
+				new MethodInfo("to_s", 0, 0) }); //$NON-NLS-1$
+		nameError_messageMetaclass.setMethods(new MethodInfo[] { new MethodInfo("to_str", 0, 0), //$NON-NLS-1$
+				new MethodInfo("_dump", 1, 0) }); //$NON-NLS-1$
+		nilClassMetaclass.setMethods(new MethodInfo[] { new MethodInfo("to_i", 0, 0), //$NON-NLS-1$
+				new MethodInfo("|", 1, 0), new MethodInfo("inspect", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("&", 1, 0), new MethodInfo("^", 1, 0), new MethodInfo("to_s", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				new MethodInfo("to_f", 0, 0), new MethodInfo("nil?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_a", 0, 0) }); //$NON-NLS-1$
 		noMemoryErrorMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		noMethodErrorMetaclass.setMethods(new MethodInfo[] { new MethodInfo("args", 0, 0) });
+		noMethodErrorMetaclass.setMethods(new MethodInfo[] { new MethodInfo("args", 0, 0) }); //$NON-NLS-1$
 		notImplementedErrorMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		numericMetaclass.setMethods(new MethodInfo[] { new MethodInfo("<=>", 1, 0),
-				new MethodInfo("quo", 1, 0), new MethodInfo("round", 0, 0),
-				new MethodInfo("coerce", 1, 0), new MethodInfo("modulo", 1, 0),
-				new MethodInfo("eql?", 1, 0), new MethodInfo("ceil", 0, 0),
-				new MethodInfo("nonzero?", 0, 0), new MethodInfo("divmod", 1, 0),
-				new MethodInfo("to_int", 0, 0), new MethodInfo("step", -1, 0),
-				new MethodInfo("floor", 0, 0), new MethodInfo("abs", 0, 0),
-				new MethodInfo("zero?", 0, 0), new MethodInfo("+@", 0, 0),
-				new MethodInfo("div", 1, 0), new MethodInfo("truncate", 0, 0),
-				new MethodInfo("singleton_method_added", 1, 0), new MethodInfo("-@", 0, 0),
-				new MethodInfo("remainder", 1, 0), new MethodInfo("integer?", 0, 0) });
+		numericMetaclass.setMethods(new MethodInfo[] { new MethodInfo("<=>", 1, 0), //$NON-NLS-1$
+				new MethodInfo("quo", 1, 0), new MethodInfo("round", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("coerce", 1, 0), new MethodInfo("modulo", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("eql?", 1, 0), new MethodInfo("ceil", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("nonzero?", 0, 0), new MethodInfo("divmod", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_int", 0, 0), new MethodInfo("step", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("floor", 0, 0), new MethodInfo("abs", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("zero?", 0, 0), new MethodInfo("+@", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("div", 1, 0), new MethodInfo("truncate", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("singleton_method_added", 1, 0), new MethodInfo("-@", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("remainder", 1, 0), new MethodInfo("integer?", 0, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
 		objectMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		procMetaclass.setMethods(new MethodInfo[] { new MethodInfo("call", -1, 0),
-				new MethodInfo("arity", 0, 0), new MethodInfo("[]", -1, 0),
-				new MethodInfo("==", 1, 0), new MethodInfo("dup", 0, 0),
-				new MethodInfo("binding", 0, 0), new MethodInfo("to_s", 0, 0),
-				new MethodInfo("clone", 0, 0), new MethodInfo("to_proc", 0, 0) });
-		process_StatusMetaclass.setMethods(new MethodInfo[] { new MethodInfo("stopped?", 0, 0),
-				new MethodInfo("==", 1, 0), new MethodInfo("to_i", 0, 0),
-				new MethodInfo("exitstatus", 0, 0), new MethodInfo("stopsig", 0, 0),
-				new MethodInfo("success?", 0, 0), new MethodInfo(">>", 1, 0),
-				new MethodInfo("inspect", 0, 0), new MethodInfo("coredump?", 0, 0),
-				new MethodInfo("&", 1, 0), new MethodInfo("to_int", 0, 0),
-				new MethodInfo("pid", 0, 0), new MethodInfo("signaled?", 0, 0),
-				new MethodInfo("to_s", 0, 0), new MethodInfo("termsig", 0, 0),
-				new MethodInfo("exited?", 0, 0) });
-		rangeMetaclass.setMethods(new MethodInfo[] { new MethodInfo("first", 0, 0),
-				new MethodInfo("==", 1, 0), new MethodInfo("===", 1, 0),
-				new MethodInfo("each", 0, 0), new MethodInfo("eql?", 1, 0),
-				new MethodInfo("end", 0, 0), new MethodInfo("inspect", 0, 0),
-				new MethodInfo("hash", 0, 0), new MethodInfo("step", -1, 0),
-				new MethodInfo("begin", 0, 0), new MethodInfo("member?", 1, 0),
-				new MethodInfo("to_s", 0, 0), new MethodInfo("exclude_end?", 0, 0),
-				new MethodInfo("last", 0, 0), new MethodInfo("include?", 1, 0) });
+		procMetaclass.setMethods(new MethodInfo[] { new MethodInfo("call", -1, 0), //$NON-NLS-1$
+				new MethodInfo("arity", 0, 0), new MethodInfo("[]", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("==", 1, 0), new MethodInfo("dup", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("binding", 0, 0), new MethodInfo("to_s", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("clone", 0, 0), new MethodInfo("to_proc", 0, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
+		process_StatusMetaclass.setMethods(new MethodInfo[] { new MethodInfo("stopped?", 0, 0), //$NON-NLS-1$
+				new MethodInfo("==", 1, 0), new MethodInfo("to_i", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("exitstatus", 0, 0), new MethodInfo("stopsig", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("success?", 0, 0), new MethodInfo(">>", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("inspect", 0, 0), new MethodInfo("coredump?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("&", 1, 0), new MethodInfo("to_int", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("pid", 0, 0), new MethodInfo("signaled?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_s", 0, 0), new MethodInfo("termsig", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("exited?", 0, 0) }); //$NON-NLS-1$
+		rangeMetaclass.setMethods(new MethodInfo[] { new MethodInfo("first", 0, 0), //$NON-NLS-1$
+				new MethodInfo("==", 1, 0), new MethodInfo("===", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("each", 0, 0), new MethodInfo("eql?", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("end", 0, 0), new MethodInfo("inspect", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("hash", 0, 0), new MethodInfo("step", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("begin", 0, 0), new MethodInfo("member?", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_s", 0, 0), new MethodInfo("exclude_end?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("last", 0, 0), new MethodInfo("include?", 1, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
 		rangeErrorMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		regexpMetaclass.setMethods(new MethodInfo[] { new MethodInfo("==", 1, 0),
-				new MethodInfo("===", 1, 0), new MethodInfo("match", 1, 0),
-				new MethodInfo("eql?", 1, 0), new MethodInfo("source", 0, 0),
-				new MethodInfo("inspect", 0, 0), new MethodInfo("hash", 0, 0),
-				new MethodInfo("~", 0, 0), new MethodInfo("kcode", 0, 0),
-				new MethodInfo("casefold?", 0, 0), new MethodInfo("to_s", 0, 0),
-				new MethodInfo("=~", 1, 0), new MethodInfo("options", 0, 0) });
+		regexpMetaclass.setMethods(new MethodInfo[] { new MethodInfo("==", 1, 0), //$NON-NLS-1$
+				new MethodInfo("===", 1, 0), new MethodInfo("match", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("eql?", 1, 0), new MethodInfo("source", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("inspect", 0, 0), new MethodInfo("hash", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("~", 0, 0), new MethodInfo("kcode", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("casefold?", 0, 0), new MethodInfo("to_s", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("=~", 1, 0), new MethodInfo("options", 0, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
 		regexpErrorMetaclass.setMethods(new MethodInfo[] {
 
 		});
@@ -1339,28 +1339,28 @@ public class BuiltinMethodsDatabase {
 		securityErrorMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		setMetaclass.setMethods(new MethodInfo[] { new MethodInfo("length", 0, 0),
-				new MethodInfo("empty?", 0, 0), new MethodInfo("replace", 1, 0),
-				new MethodInfo("add?", 1, 0), new MethodInfo("clear", 0, 0),
-				new MethodInfo("superset?", 1, 0), new MethodInfo("-", 1, 0),
-				new MethodInfo("intersection", 1, 0), new MethodInfo("==", 1, 0),
-				new MethodInfo("flatten!", 0, 0), new MethodInfo("each", 0, 0),
-				new MethodInfo("reject!", 0, 0), new MethodInfo("pretty_print", 1, 0),
-				new MethodInfo("proper_subset?", 1, 0), new MethodInfo("<<", 1, 0),
-				new MethodInfo("map!", 0, 0), new MethodInfo("merge", 1, 0),
-				new MethodInfo("|", 1, 0), new MethodInfo("eql?", 1, 0),
-				new MethodInfo("delete", 1, 0), new MethodInfo("difference", 1, 0),
-				new MethodInfo("inspect", 0, 0), new MethodInfo("&", 1, 0),
-				new MethodInfo("hash", 0, 0), new MethodInfo("member?", 1, 0),
-				new MethodInfo("subset?", 1, 0), new MethodInfo("collect!", 0, 0),
-				new MethodInfo("^", 1, 0), new MethodInfo("add", 1, 0),
-				new MethodInfo("subtract", 1, 0), new MethodInfo("size", 0, 0),
-				new MethodInfo("delete?", 1, 0), new MethodInfo("divide", 0, 0),
-				new MethodInfo("proper_superset?", 1, 0), new MethodInfo("union", 1, 0),
-				new MethodInfo("classify", 0, 0), new MethodInfo("pretty_print_cycle", 1, 0),
-				new MethodInfo("to_a", 0, 0), new MethodInfo("flatten_merge", -2, 0),
-				new MethodInfo("flatten", 0, 0), new MethodInfo("include?", 1, 0),
-				new MethodInfo("delete_if", 0, 0), new MethodInfo("+", 1, 0) });
+		setMetaclass.setMethods(new MethodInfo[] { new MethodInfo("length", 0, 0), //$NON-NLS-1$
+				new MethodInfo("empty?", 0, 0), new MethodInfo("replace", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("add?", 1, 0), new MethodInfo("clear", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("superset?", 1, 0), new MethodInfo("-", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("intersection", 1, 0), new MethodInfo("==", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("flatten!", 0, 0), new MethodInfo("each", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("reject!", 0, 0), new MethodInfo("pretty_print", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("proper_subset?", 1, 0), new MethodInfo("<<", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("map!", 0, 0), new MethodInfo("merge", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("|", 1, 0), new MethodInfo("eql?", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("delete", 1, 0), new MethodInfo("difference", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("inspect", 0, 0), new MethodInfo("&", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("hash", 0, 0), new MethodInfo("member?", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("subset?", 1, 0), new MethodInfo("collect!", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("^", 1, 0), new MethodInfo("add", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("subtract", 1, 0), new MethodInfo("size", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("delete?", 1, 0), new MethodInfo("divide", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("proper_superset?", 1, 0), new MethodInfo("union", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("classify", 0, 0), new MethodInfo("pretty_print_cycle", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_a", 0, 0), new MethodInfo("flatten_merge", -2, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("flatten", 0, 0), new MethodInfo("include?", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("delete_if", 0, 0), new MethodInfo("+", 1, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
 		signalExceptionMetaclass.setMethods(new MethodInfo[] {
 
 		});
@@ -1370,127 +1370,127 @@ public class BuiltinMethodsDatabase {
 		standardErrorMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		stringMetaclass.setMethods(new MethodInfo[] { new MethodInfo("slice!", -1, 0),
-				new MethodInfo("strip", 0, 0), new MethodInfo("each_line", -1, 0),
-				new MethodInfo("hash", 0, 0), new MethodInfo("to_i", -1, 0),
-				new MethodInfo("gsub!", -1, 0), new MethodInfo("length", 0, 0),
-				new MethodInfo("tr_s!", 2, 0), new MethodInfo("to_str", 0, 0),
-				new MethodInfo("unpack", 1, 0), new MethodInfo("ljust", -1, 0),
-				new MethodInfo("delete", -1, 0), new MethodInfo("to_java_string", 0, 0),
-				new MethodInfo("rstrip!", 0, 0), new MethodInfo("split", -1, 0),
-				new MethodInfo("each", -1, 0), new MethodInfo("*", 1, 0),
-				new MethodInfo("swapcase!", 0, 0), new MethodInfo("=~", 1, 0),
-				new MethodInfo("casecmp", 1, 0), new MethodInfo("swapcase", 0, 0),
-				new MethodInfo("chop", 0, 0), new MethodInfo("empty?", 0, 0),
-				new MethodInfo("tr", 2, 0), new MethodInfo("+", 1, 0),
-				new MethodInfo("javacase", 0, 0), new MethodInfo("rindex", -1, 0),
-				new MethodInfo("intern", 0, 0), new MethodInfo("slice", -1, 0),
-				new MethodInfo("next!", 0, 0), new MethodInfo("reverse!", 0, 0),
-				new MethodInfo("strip!", 0, 0), new MethodInfo("match", 1, 0),
-				new MethodInfo("hex", 0, 0), new MethodInfo("downcase", 0, 0),
-				new MethodInfo("sub", -1, 0), new MethodInfo("inspect", 0, 0),
-				new MethodInfo("downcase!", 0, 0), new MethodInfo("to_sym", 0, 0),
-				new MethodInfo("upto", 1, 0), new MethodInfo("concat", 1, 0),
-				new MethodInfo("[]", -1, 0), new MethodInfo("to_f", 0, 0),
-				new MethodInfo("chop!", 0, 0), new MethodInfo("size", 0, 0),
-				new MethodInfo("lstrip", 0, 0), new MethodInfo("each_byte", 0, 0),
-				new MethodInfo("[]=", -1, 0), new MethodInfo("succ!", 0, 0),
-				new MethodInfo("delete!", -1, 0), new MethodInfo("dump", 0, 0),
-				new MethodInfo("<<", 1, 0), new MethodInfo("rjust", -1, 0),
-				new MethodInfo("squeeze", -1, 0), new MethodInfo("include?", 1, 0),
-				new MethodInfo("next", 0, 0), new MethodInfo("reverse", 0, 0),
-				new MethodInfo("chomp", -1, 0), new MethodInfo("sub!", -1, 0),
-				new MethodInfo("insert", 2, 0), new MethodInfo("scan", 1, 0),
-				new MethodInfo("tr_s", 2, 0), new MethodInfo("tr!", 2, 0),
-				new MethodInfo("replace", 1, 0), new MethodInfo("oct", 0, 0),
-				new MethodInfo("succ", 0, 0), new MethodInfo("lstrip!", 0, 0),
-				new MethodInfo("<=>", 1, 0), new MethodInfo("capitalize!", 0, 0),
-				new MethodInfo("gsub", -1, 0), new MethodInfo("capitalize", 0, 0),
-				new MethodInfo("==", 1, 0), new MethodInfo("crypt", 1, 0),
-				new MethodInfo("index", -1, 0), new MethodInfo("rstrip", 0, 0),
-				new MethodInfo("chomp!", -1, 0), new MethodInfo("sum", -1, 0),
-				new MethodInfo("center", -1, 0), new MethodInfo("upcase", 0, 0),
-				new MethodInfo("eql?", 1, 0), new MethodInfo("%", 1, 0),
-				new MethodInfo("upcase!", 0, 0), new MethodInfo("to_s", 0, 0),
-				new MethodInfo("count", -1, 0), new MethodInfo("squeeze!", -1, 0) });
-		structMetaclass.setMethods(new MethodInfo[] { new MethodInfo("length", 0, 0),
-				new MethodInfo("==", 1, 0), new MethodInfo("[]", 1, 0),
-				new MethodInfo("each", 0, 0), new MethodInfo("[]=", 2, 0),
-				new MethodInfo("eql?", 1, 0), new MethodInfo("inspect", 0, 0),
-				new MethodInfo("values", 0, 0), new MethodInfo("hash", 0, 0),
-				new MethodInfo("values_at", -1, 0), new MethodInfo("to_s", 0, 0),
-				new MethodInfo("each_pair", 0, 0), new MethodInfo("members", 0, 0),
-				new MethodInfo("size", 0, 0), new MethodInfo("select", -1, 0),
-				new MethodInfo("to_a", 0, 0) });
-		struct_TmsMetaclass.setMethods(new MethodInfo[] { new MethodInfo("stime", 0, 0),
-				new MethodInfo("cutime=", 1, 0), new MethodInfo("utime", 0, 0),
-				new MethodInfo("stime=", 1, 0), new MethodInfo("utime=", 1, 0),
-				new MethodInfo("cstime", 0, 0), new MethodInfo("cutime", 0, 0),
-				new MethodInfo("cstime=", 1, 0) });
-		symbolMetaclass.setMethods(new MethodInfo[] { new MethodInfo("to_i", 0, 0),
-				new MethodInfo("id2name", 0, 0), new MethodInfo("===", 1, 0),
-				new MethodInfo("inspect", 0, 0), new MethodInfo("to_int", 0, 0),
-				new MethodInfo("to_s", 0, 0), new MethodInfo("to_sym", 0, 0) });
+		stringMetaclass.setMethods(new MethodInfo[] { new MethodInfo("slice!", -1, 0), //$NON-NLS-1$
+				new MethodInfo("strip", 0, 0), new MethodInfo("each_line", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("hash", 0, 0), new MethodInfo("to_i", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("gsub!", -1, 0), new MethodInfo("length", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("tr_s!", 2, 0), new MethodInfo("to_str", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("unpack", 1, 0), new MethodInfo("ljust", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("delete", -1, 0), new MethodInfo("to_java_string", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("rstrip!", 0, 0), new MethodInfo("split", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("each", -1, 0), new MethodInfo("*", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("swapcase!", 0, 0), new MethodInfo("=~", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("casecmp", 1, 0), new MethodInfo("swapcase", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("chop", 0, 0), new MethodInfo("empty?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("tr", 2, 0), new MethodInfo("+", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("javacase", 0, 0), new MethodInfo("rindex", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("intern", 0, 0), new MethodInfo("slice", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("next!", 0, 0), new MethodInfo("reverse!", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("strip!", 0, 0), new MethodInfo("match", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("hex", 0, 0), new MethodInfo("downcase", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("sub", -1, 0), new MethodInfo("inspect", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("downcase!", 0, 0), new MethodInfo("to_sym", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("upto", 1, 0), new MethodInfo("concat", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("[]", -1, 0), new MethodInfo("to_f", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("chop!", 0, 0), new MethodInfo("size", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("lstrip", 0, 0), new MethodInfo("each_byte", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("[]=", -1, 0), new MethodInfo("succ!", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("delete!", -1, 0), new MethodInfo("dump", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("<<", 1, 0), new MethodInfo("rjust", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("squeeze", -1, 0), new MethodInfo("include?", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("next", 0, 0), new MethodInfo("reverse", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("chomp", -1, 0), new MethodInfo("sub!", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("insert", 2, 0), new MethodInfo("scan", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("tr_s", 2, 0), new MethodInfo("tr!", 2, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("replace", 1, 0), new MethodInfo("oct", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("succ", 0, 0), new MethodInfo("lstrip!", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("<=>", 1, 0), new MethodInfo("capitalize!", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("gsub", -1, 0), new MethodInfo("capitalize", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("==", 1, 0), new MethodInfo("crypt", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("index", -1, 0), new MethodInfo("rstrip", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("chomp!", -1, 0), new MethodInfo("sum", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("center", -1, 0), new MethodInfo("upcase", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("eql?", 1, 0), new MethodInfo("%", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("upcase!", 0, 0), new MethodInfo("to_s", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("count", -1, 0), new MethodInfo("squeeze!", -1, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
+		structMetaclass.setMethods(new MethodInfo[] { new MethodInfo("length", 0, 0), //$NON-NLS-1$
+				new MethodInfo("==", 1, 0), new MethodInfo("[]", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("each", 0, 0), new MethodInfo("[]=", 2, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("eql?", 1, 0), new MethodInfo("inspect", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("values", 0, 0), new MethodInfo("hash", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("values_at", -1, 0), new MethodInfo("to_s", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("each_pair", 0, 0), new MethodInfo("members", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("size", 0, 0), new MethodInfo("select", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_a", 0, 0) }); //$NON-NLS-1$
+		struct_TmsMetaclass.setMethods(new MethodInfo[] { new MethodInfo("stime", 0, 0), //$NON-NLS-1$
+				new MethodInfo("cutime=", 1, 0), new MethodInfo("utime", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("stime=", 1, 0), new MethodInfo("utime=", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("cstime", 0, 0), new MethodInfo("cutime", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("cstime=", 1, 0) }); //$NON-NLS-1$
+		symbolMetaclass.setMethods(new MethodInfo[] { new MethodInfo("to_i", 0, 0), //$NON-NLS-1$
+				new MethodInfo("id2name", 0, 0), new MethodInfo("===", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("inspect", 0, 0), new MethodInfo("to_int", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_s", 0, 0), new MethodInfo("to_sym", 0, 0) }); //$NON-NLS-1$ //$NON-NLS-2$
 		syntaxErrorMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		systemCallErrorMetaclass.setMethods(new MethodInfo[] { new MethodInfo("errno", 0, 0) });
-		systemExitMetaclass.setMethods(new MethodInfo[] { new MethodInfo("success?", 0, 0),
-				new MethodInfo("status", 0, 0) });
+		systemCallErrorMetaclass.setMethods(new MethodInfo[] { new MethodInfo("errno", 0, 0) }); //$NON-NLS-1$
+		systemExitMetaclass.setMethods(new MethodInfo[] { new MethodInfo("success?", 0, 0), //$NON-NLS-1$
+				new MethodInfo("status", 0, 0) }); //$NON-NLS-1$
 		systemStackErrorMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		threadMetaclass.setMethods(new MethodInfo[] { new MethodInfo("terminate", 0, 0),
-				new MethodInfo("raise", -1, 0), new MethodInfo("abort_on_exception=", 1, 0),
-				new MethodInfo("group", 0, 0), new MethodInfo("[]", 1, 0),
-				new MethodInfo("[]=", 2, 0), new MethodInfo("wakeup", 0, 0),
-				new MethodInfo("exit", 0, 0), new MethodInfo("safe_level", 0, 0),
-				new MethodInfo("key?", 1, 0), new MethodInfo("inspect", 0, 0),
-				new MethodInfo("kill", 0, 0), new MethodInfo("join", -1, 0),
-				new MethodInfo("stop?", 0, 0), new MethodInfo("run", 0, 0),
-				new MethodInfo("keys", 0, 0), new MethodInfo("priority", 0, 0),
-				new MethodInfo("value", 0, 0), new MethodInfo("alive?", 0, 0),
-				new MethodInfo("abort_on_exception", 0, 0), new MethodInfo("status", 0, 0),
-				new MethodInfo("priority=", 1, 0) });
+		threadMetaclass.setMethods(new MethodInfo[] { new MethodInfo("terminate", 0, 0), //$NON-NLS-1$
+				new MethodInfo("raise", -1, 0), new MethodInfo("abort_on_exception=", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("group", 0, 0), new MethodInfo("[]", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("[]=", 2, 0), new MethodInfo("wakeup", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("exit", 0, 0), new MethodInfo("safe_level", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("key?", 1, 0), new MethodInfo("inspect", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("kill", 0, 0), new MethodInfo("join", -1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("stop?", 0, 0), new MethodInfo("run", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("keys", 0, 0), new MethodInfo("priority", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("value", 0, 0), new MethodInfo("alive?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("abort_on_exception", 0, 0), new MethodInfo("status", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("priority=", 1, 0) }); //$NON-NLS-1$
 		threadErrorMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		threadGroupMetaclass.setMethods(new MethodInfo[] { new MethodInfo("enclose", 0, 0),
-				new MethodInfo("list", 0, 0), new MethodInfo("enclosed?", 0, 0),
-				new MethodInfo("add", 1, 0) });
-		timeMetaclass.setMethods(new MethodInfo[] { new MethodInfo("<=>", 1, 0),
-				new MethodInfo("gmtime", 0, 0), new MethodInfo("year", 0, 0),
-				new MethodInfo("tv_sec", 0, 0), new MethodInfo("to_i", 0, 0),
-				new MethodInfo("-", 1, 0), new MethodInfo("mday", 0, 0),
-				new MethodInfo("gmt_offset", 0, 0), new MethodInfo("utc?", 0, 0),
-				new MethodInfo("getutc", 0, 0), new MethodInfo("isdst", 0, 0),
-				new MethodInfo("strftime", 1, 0), new MethodInfo("eql?", 1, 0),
-				new MethodInfo("localtime", 0, 0), new MethodInfo("month", 0, 0),
-				new MethodInfo("utc", 0, 0), new MethodInfo("inspect", 0, 0),
-				new MethodInfo("hour", 0, 0), new MethodInfo("gmtoff", 0, 0),
-				new MethodInfo("hash", 0, 0), new MethodInfo("getgm", 0, 0),
-				new MethodInfo("yday", 0, 0), new MethodInfo("dst?", 0, 0),
-				new MethodInfo("usec", 0, 0), new MethodInfo("min", 0, 0),
-				new MethodInfo("mon", 0, 0), new MethodInfo("ctime", 0, 0),
-				new MethodInfo("to_s", 0, 0), new MethodInfo("sec", 0, 0),
-				new MethodInfo("zone", 0, 0), new MethodInfo("getlocal", 0, 0),
-				new MethodInfo("wday", 0, 0), new MethodInfo("tv_usec", 0, 0),
-				new MethodInfo("to_f", 0, 0), new MethodInfo("day", 0, 0),
-				new MethodInfo("utc_offset", 0, 0), new MethodInfo("gmt?", 0, 0),
-				new MethodInfo("asctime", 0, 0), new MethodInfo("to_a", 0, 0),
-				new MethodInfo("+", 1, 0), new MethodInfo("succ", 0, 0),
-				new MethodInfo("_dump", -1, 0) });
+		threadGroupMetaclass.setMethods(new MethodInfo[] { new MethodInfo("enclose", 0, 0), //$NON-NLS-1$
+				new MethodInfo("list", 0, 0), new MethodInfo("enclosed?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("add", 1, 0) }); //$NON-NLS-1$
+		timeMetaclass.setMethods(new MethodInfo[] { new MethodInfo("<=>", 1, 0), //$NON-NLS-1$
+				new MethodInfo("gmtime", 0, 0), new MethodInfo("year", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("tv_sec", 0, 0), new MethodInfo("to_i", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("-", 1, 0), new MethodInfo("mday", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("gmt_offset", 0, 0), new MethodInfo("utc?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("getutc", 0, 0), new MethodInfo("isdst", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("strftime", 1, 0), new MethodInfo("eql?", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("localtime", 0, 0), new MethodInfo("month", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("utc", 0, 0), new MethodInfo("inspect", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("hour", 0, 0), new MethodInfo("gmtoff", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("hash", 0, 0), new MethodInfo("getgm", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("yday", 0, 0), new MethodInfo("dst?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("usec", 0, 0), new MethodInfo("min", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("mon", 0, 0), new MethodInfo("ctime", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_s", 0, 0), new MethodInfo("sec", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("zone", 0, 0), new MethodInfo("getlocal", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("wday", 0, 0), new MethodInfo("tv_usec", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_f", 0, 0), new MethodInfo("day", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("utc_offset", 0, 0), new MethodInfo("gmt?", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("asctime", 0, 0), new MethodInfo("to_a", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("+", 1, 0), new MethodInfo("succ", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("_dump", -1, 0) }); //$NON-NLS-1$
 		trueClassMetaclass
-				.setMethods(new MethodInfo[] { new MethodInfo("|", 1, 0),
-						new MethodInfo("&", 1, 0), new MethodInfo("^", 1, 0),
-						new MethodInfo("to_s", 0, 0) });
+				.setMethods(new MethodInfo[] { new MethodInfo("|", 1, 0), //$NON-NLS-1$
+						new MethodInfo("&", 1, 0), new MethodInfo("^", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+						new MethodInfo("to_s", 0, 0) }); //$NON-NLS-1$
 		typeErrorMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		unboundMethodMetaclass.setMethods(new MethodInfo[] { new MethodInfo("==", 1, 0),
-				new MethodInfo("arity", 0, 0), new MethodInfo("inspect", 0, 0),
-				new MethodInfo("to_s", 0, 0), new MethodInfo("bind", 1, 0),
-				new MethodInfo("clone", 0, 0) });
+		unboundMethodMetaclass.setMethods(new MethodInfo[] { new MethodInfo("==", 1, 0), //$NON-NLS-1$
+				new MethodInfo("arity", 0, 0), new MethodInfo("inspect", 0, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("to_s", 0, 0), new MethodInfo("bind", 1, 0), //$NON-NLS-1$ //$NON-NLS-2$
+				new MethodInfo("clone", 0, 0) }); //$NON-NLS-1$
 		zeroDivisionErrorMetaclass.setMethods(new MethodInfo[] {
 
 		});
@@ -2280,126 +2280,126 @@ public class BuiltinMethodsDatabase {
 		zeroDivisionErrorMetaclass.setMetaClass(zeroDivisionErrorClassSingletonMetaclass);
 		fatalMetaclass.setMetaClass(fatalClassSingletonMetaclass);
 		kernelModuleSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("sprintf", -1, Modifiers.AccStatic),
-				new MethodInfo("Array", 1, Modifiers.AccStatic),
-				new MethodInfo("abort", -1, Modifiers.AccStatic),
-				new MethodInfo("readlines", -1, Modifiers.AccStatic),
-				new MethodInfo("fork", 0, Modifiers.AccStatic),
-				new MethodInfo("lambda", 0, Modifiers.AccStatic),
-				new MethodInfo("raise", -1, Modifiers.AccStatic),
-				new MethodInfo("set_trace_func", 1, Modifiers.AccStatic),
-				new MethodInfo("gsub!", -1, Modifiers.AccStatic),
-				new MethodInfo("warn", 1, Modifiers.AccStatic),
-				new MethodInfo("putc", 1, Modifiers.AccStatic),
-				new MethodInfo("trap", -1, Modifiers.AccStatic),
-				new MethodInfo("load", -1, Modifiers.AccStatic),
-				new MethodInfo("throw", -1, Modifiers.AccStatic),
-				new MethodInfo("chop", 0, Modifiers.AccStatic),
-				new MethodInfo("syscall", -1, Modifiers.AccStatic),
-				new MethodInfo("String", 1, Modifiers.AccStatic),
-				new MethodInfo("exit", -1, Modifiers.AccStatic),
-				new MethodInfo("readline", -1, Modifiers.AccStatic),
-				new MethodInfo("exec", -1, Modifiers.AccStatic),
-				new MethodInfo("proc", 0, Modifiers.AccStatic),
-				new MethodInfo("untrace_var", -1, Modifiers.AccStatic),
-				new MethodInfo("sub!", -1, Modifiers.AccStatic),
-				new MethodInfo("print", -1, Modifiers.AccStatic),
-				new MethodInfo("eval", -1, Modifiers.AccStatic),
-				new MethodInfo("block_given?", 0, Modifiers.AccStatic),
-				new MethodInfo("catch", 1, Modifiers.AccStatic),
-				new MethodInfo("gsub", -1, Modifiers.AccStatic),
-				new MethodInfo("split", -1, Modifiers.AccStatic),
-				new MethodInfo("getc", 0, Modifiers.AccStatic),
-				new MethodInfo("sleep", -1, Modifiers.AccStatic),
-				new MethodInfo("Float", 1, Modifiers.AccStatic),
-				new MethodInfo("method_missing", -1, Modifiers.AccStatic),
-				new MethodInfo("caller", -1, Modifiers.AccStatic),
-				new MethodInfo("chomp!", -1, Modifiers.AccStatic),
-				new MethodInfo("gets", -1, Modifiers.AccStatic),
-				new MethodInfo("test", -1, Modifiers.AccStatic),
-				new MethodInfo("exit!", -1, Modifiers.AccStatic),
-				new MethodInfo("autoload", 2, Modifiers.AccStatic),
-				new MethodInfo("binding", 0, Modifiers.AccStatic),
-				new MethodInfo("loop", 0, Modifiers.AccStatic),
-				new MethodInfo("local_variables", 0, Modifiers.AccStatic),
-				new MethodInfo("trace_var", -1, Modifiers.AccStatic),
-				new MethodInfo("printf", -1, Modifiers.AccStatic),
-				new MethodInfo("rand", -1, Modifiers.AccStatic),
-				new MethodInfo("format", -1, Modifiers.AccStatic),
-				new MethodInfo("iterator?", 0, Modifiers.AccStatic),
-				new MethodInfo("at_exit", 0, Modifiers.AccStatic),
-				new MethodInfo("sub", -1, Modifiers.AccStatic),
-				new MethodInfo("callcc", 0, Modifiers.AccStatic),
-				new MethodInfo("select", -1, Modifiers.AccStatic),
-				new MethodInfo("`", 1, Modifiers.AccStatic),
-				new MethodInfo("p", -1, Modifiers.AccStatic),
-				new MethodInfo("system", -1, Modifiers.AccStatic),
-				new MethodInfo("Integer", 1, Modifiers.AccStatic),
-				new MethodInfo("fail", -1, Modifiers.AccStatic),
-				new MethodInfo("chop!", 0, Modifiers.AccStatic),
-				new MethodInfo("scan", 1, Modifiers.AccStatic),
-				new MethodInfo("puts", -1, Modifiers.AccStatic),
-				new MethodInfo("require", 1, Modifiers.AccStatic),
-				new MethodInfo("autoload?", 1, Modifiers.AccStatic),
-				new MethodInfo("global_variables", 0, Modifiers.AccStatic),
-				new MethodInfo("chomp", -1, Modifiers.AccStatic),
-				new MethodInfo("open", -1, Modifiers.AccStatic),
-				new MethodInfo("srand", -1, Modifiers.AccStatic) });
+				new MethodInfo("sprintf", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("Array", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("abort", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("readlines", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("fork", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("lambda", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("raise", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("set_trace_func", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("gsub!", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("warn", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("putc", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("trap", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("load", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("throw", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("chop", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("syscall", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("String", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("exit", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("readline", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("exec", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("proc", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("untrace_var", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("sub!", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("print", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("eval", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("block_given?", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("catch", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("gsub", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("split", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("getc", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("sleep", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("Float", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("method_missing", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("caller", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("chomp!", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("gets", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("test", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("exit!", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("autoload", 2, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("binding", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("loop", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("local_variables", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("trace_var", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("printf", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("rand", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("format", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("iterator?", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("at_exit", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("sub", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("callcc", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("select", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("`", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("p", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("system", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("Integer", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("fail", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("chop!", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("scan", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("puts", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("require", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("autoload?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("global_variables", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("chomp", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("open", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("srand", -1, Modifiers.AccStatic) }); //$NON-NLS-1$
 		fileTestModuleSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("exists?", 1, Modifiers.AccStatic),
-				new MethodInfo("pipe?", 1, Modifiers.AccStatic),
-				new MethodInfo("file?", 1, Modifiers.AccStatic),
-				new MethodInfo("sticky?", 1, Modifiers.AccStatic),
-				new MethodInfo("writable?", 1, Modifiers.AccStatic),
-				new MethodInfo("blockdev?", 1, Modifiers.AccStatic),
-				new MethodInfo("exist?", 1, Modifiers.AccStatic),
-				new MethodInfo("grpowned?", 1, Modifiers.AccStatic),
-				new MethodInfo("executable_real?", 1, Modifiers.AccStatic),
-				new MethodInfo("setgid?", 1, Modifiers.AccStatic),
-				new MethodInfo("readable_real?", 1, Modifiers.AccStatic),
-				new MethodInfo("socket?", 1, Modifiers.AccStatic),
-				new MethodInfo("directory?", 1, Modifiers.AccStatic),
-				new MethodInfo("owned?", 1, Modifiers.AccStatic),
-				new MethodInfo("executable?", 1, Modifiers.AccStatic),
-				new MethodInfo("zero?", 1, Modifiers.AccStatic),
-				new MethodInfo("setuid?", 1, Modifiers.AccStatic),
-				new MethodInfo("readable?", 1, Modifiers.AccStatic),
-				new MethodInfo("size", 1, Modifiers.AccStatic),
-				new MethodInfo("symlink?", 1, Modifiers.AccStatic),
-				new MethodInfo("size?", 1, Modifiers.AccStatic),
-				new MethodInfo("identical?", 2, Modifiers.AccStatic),
-				new MethodInfo("writable_real?", 1, Modifiers.AccStatic),
-				new MethodInfo("chardev?", 1, Modifiers.AccStatic) });
+				new MethodInfo("exists?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("pipe?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("file?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("sticky?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("writable?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("blockdev?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("exist?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("grpowned?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("executable_real?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("setgid?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("readable_real?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("socket?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("directory?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("owned?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("executable?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("zero?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("setuid?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("readable?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("size", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("symlink?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("size?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("identical?", 2, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("writable_real?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("chardev?", 1, Modifiers.AccStatic) }); //$NON-NLS-1$
 		marshalModuleSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("load", -1, Modifiers.AccStatic),
-				new MethodInfo("dump", -1, Modifiers.AccStatic),
-				new MethodInfo("restore", -1, Modifiers.AccStatic) });
+				new MethodInfo("load", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("dump", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("restore", -1, Modifiers.AccStatic) }); //$NON-NLS-1$
 		signalModuleSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("trap", -1, Modifiers.AccStatic),
-				new MethodInfo("list", 0, Modifiers.AccStatic) });
+				new MethodInfo("trap", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("list", 0, Modifiers.AccStatic) }); //$NON-NLS-1$
 		process_GIDModuleSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("rid", 0, Modifiers.AccStatic),
-				new MethodInfo("switch", 0, Modifiers.AccStatic),
-				new MethodInfo("grant_privilege", 1, Modifiers.AccStatic),
-				new MethodInfo("re_exchangeable?", 0, Modifiers.AccStatic),
-				new MethodInfo("change_privilege", 1, Modifiers.AccStatic),
-				new MethodInfo("eid", 0, Modifiers.AccStatic),
-				new MethodInfo("re_exchange", 0, Modifiers.AccStatic),
-				new MethodInfo("sid_available?", 0, Modifiers.AccStatic) });
+				new MethodInfo("rid", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("switch", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("grant_privilege", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("re_exchangeable?", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("change_privilege", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("eid", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("re_exchange", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("sid_available?", 0, Modifiers.AccStatic) }); //$NON-NLS-1$
 		file_ConstantsModuleSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
 		objectSpaceModuleSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("undefine_finalizer", 1, Modifiers.AccStatic),
-				new MethodInfo("remove_finalizer", 1, Modifiers.AccStatic),
-				new MethodInfo("garbage_collect", 0, Modifiers.AccStatic),
-				new MethodInfo("define_finalizer", -1, Modifiers.AccStatic),
-				new MethodInfo("add_finalizer", 1, Modifiers.AccStatic),
-				new MethodInfo("call_finalizer", 1, Modifiers.AccStatic),
-				new MethodInfo("each_object", -1, Modifiers.AccStatic),
-				new MethodInfo("_id2ref", 1, Modifiers.AccStatic),
-				new MethodInfo("finalizers", 0, Modifiers.AccStatic) });
-		precisionModuleSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("included",
+				new MethodInfo("undefine_finalizer", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("remove_finalizer", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("garbage_collect", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("define_finalizer", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("add_finalizer", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("call_finalizer", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("each_object", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("_id2ref", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("finalizers", 0, Modifiers.AccStatic) }); //$NON-NLS-1$
+		precisionModuleSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("included", //$NON-NLS-1$
 				1, Modifiers.AccStatic) });
 		enumerableModuleSingletonMetaclass.setMethods(new MethodInfo[] {
 
@@ -2408,99 +2408,99 @@ public class BuiltinMethodsDatabase {
 
 		});
 		process_SysModuleSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("getgid", 0, Modifiers.AccStatic),
-				new MethodInfo("setresgid", 3, Modifiers.AccStatic),
-				new MethodInfo("setegid", 1, Modifiers.AccStatic),
-				new MethodInfo("setgid", 1, Modifiers.AccStatic),
-				new MethodInfo("geteuid", 0, Modifiers.AccStatic),
-				new MethodInfo("setresuid", 3, Modifiers.AccStatic),
-				new MethodInfo("seteuid", 1, Modifiers.AccStatic),
-				new MethodInfo("setuid", 1, Modifiers.AccStatic),
-				new MethodInfo("getuid", 0, Modifiers.AccStatic),
-				new MethodInfo("setregid", 2, Modifiers.AccStatic),
-				new MethodInfo("setrgid", 1, Modifiers.AccStatic),
-				new MethodInfo("getegid", 0, Modifiers.AccStatic),
-				new MethodInfo("issetugid", 0, Modifiers.AccStatic),
-				new MethodInfo("setreuid", 2, Modifiers.AccStatic),
-				new MethodInfo("setruid", 1, Modifiers.AccStatic) });
+				new MethodInfo("getgid", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("setresgid", 3, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("setegid", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("setgid", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("geteuid", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("setresuid", 3, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("seteuid", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("setuid", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("getuid", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("setregid", 2, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("setrgid", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("getegid", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("issetugid", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("setreuid", 2, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("setruid", 1, Modifiers.AccStatic) }); //$NON-NLS-1$
 		process_UIDModuleSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("rid", 0, Modifiers.AccStatic),
-				new MethodInfo("switch", 0, Modifiers.AccStatic),
-				new MethodInfo("grant_privilege", 1, Modifiers.AccStatic),
-				new MethodInfo("re_exchangeable?", 0, Modifiers.AccStatic),
-				new MethodInfo("change_privilege", 1, Modifiers.AccStatic),
-				new MethodInfo("eid", 0, Modifiers.AccStatic),
-				new MethodInfo("re_exchange", 0, Modifiers.AccStatic),
-				new MethodInfo("sid_available?", 0, Modifiers.AccStatic) });
+				new MethodInfo("rid", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("switch", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("grant_privilege", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("re_exchangeable?", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("change_privilege", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("eid", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("re_exchange", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("sid_available?", 0, Modifiers.AccStatic) }); //$NON-NLS-1$
 		mathModuleSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("atan2", 2, Modifiers.AccStatic),
-				new MethodInfo("asinh", 1, Modifiers.AccStatic),
-				new MethodInfo("cosh", 1, Modifiers.AccStatic),
-				new MethodInfo("ldexp", 2, Modifiers.AccStatic),
-				new MethodInfo("tan", 1, Modifiers.AccStatic),
-				new MethodInfo("log", 1, Modifiers.AccStatic),
-				new MethodInfo("acosh", 1, Modifiers.AccStatic),
-				new MethodInfo("erfc", 1, Modifiers.AccStatic),
-				new MethodInfo("atan", 1, Modifiers.AccStatic),
-				new MethodInfo("frexp", 1, Modifiers.AccStatic),
-				new MethodInfo("sin", 1, Modifiers.AccStatic),
-				new MethodInfo("exp", 1, Modifiers.AccStatic),
-				new MethodInfo("tanh", 1, Modifiers.AccStatic),
-				new MethodInfo("erf", 1, Modifiers.AccStatic),
-				new MethodInfo("asin", 1, Modifiers.AccStatic),
-				new MethodInfo("sqrt", 1, Modifiers.AccStatic),
-				new MethodInfo("cos", 1, Modifiers.AccStatic),
-				new MethodInfo("atanh", 1, Modifiers.AccStatic),
-				new MethodInfo("sinh", 1, Modifiers.AccStatic),
-				new MethodInfo("hypot", 2, Modifiers.AccStatic),
-				new MethodInfo("acos", 1, Modifiers.AccStatic),
-				new MethodInfo("log10", 1, Modifiers.AccStatic) });
+				new MethodInfo("atan2", 2, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("asinh", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("cosh", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("ldexp", 2, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("tan", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("log", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("acosh", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("erfc", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("atan", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("frexp", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("sin", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("exp", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("tanh", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("erf", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("asin", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("sqrt", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("cos", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("atanh", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("sinh", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("hypot", 2, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("acos", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("log10", 1, Modifiers.AccStatic) }); //$NON-NLS-1$
 		gCModuleSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("start", 0, Modifiers.AccStatic),
-				new MethodInfo("disable", 0, Modifiers.AccStatic),
-				new MethodInfo("enable", 0, Modifiers.AccStatic) });
+				new MethodInfo("start", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("disable", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("enable", 0, Modifiers.AccStatic) }); //$NON-NLS-1$
 		processModuleSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("fork", 0, Modifiers.AccStatic),
-				new MethodInfo("abort", -1, Modifiers.AccStatic),
-				new MethodInfo("detach", 1, Modifiers.AccStatic),
-				new MethodInfo("setpgrp", 0, Modifiers.AccStatic),
-				new MethodInfo("initgroups", 2, Modifiers.AccStatic),
-				new MethodInfo("groups=", 1, Modifiers.AccStatic),
-				new MethodInfo("wait2", -1, Modifiers.AccStatic),
-				new MethodInfo("gid", 0, Modifiers.AccStatic),
-				new MethodInfo("setsid", 0, Modifiers.AccStatic),
-				new MethodInfo("exit", -1, Modifiers.AccStatic),
-				new MethodInfo("waitall", 0, Modifiers.AccStatic),
-				new MethodInfo("getpgrp", 0, Modifiers.AccStatic),
-				new MethodInfo("egid", 0, Modifiers.AccStatic),
-				new MethodInfo("wait", -1, Modifiers.AccStatic),
-				new MethodInfo("uid", 0, Modifiers.AccStatic),
-				new MethodInfo("gid=", 1, Modifiers.AccStatic),
-				new MethodInfo("kill", -1, Modifiers.AccStatic),
-				new MethodInfo("pid", 0, Modifiers.AccStatic),
-				new MethodInfo("setpgid", 2, Modifiers.AccStatic),
-				new MethodInfo("maxgroups", 0, Modifiers.AccStatic),
-				new MethodInfo("exit!", -1, Modifiers.AccStatic),
-				new MethodInfo("waitpid2", -1, Modifiers.AccStatic),
-				new MethodInfo("ppid", 0, Modifiers.AccStatic),
-				new MethodInfo("euid", 0, Modifiers.AccStatic),
-				new MethodInfo("egid=", 1, Modifiers.AccStatic),
-				new MethodInfo("setpriority", 3, Modifiers.AccStatic),
-				new MethodInfo("uid=", 1, Modifiers.AccStatic),
-				new MethodInfo("getpgid", 1, Modifiers.AccStatic),
-				new MethodInfo("groups", 0, Modifiers.AccStatic),
-				new MethodInfo("maxgroups=", 1, Modifiers.AccStatic),
-				new MethodInfo("waitpid", -1, Modifiers.AccStatic),
-				new MethodInfo("euid=", 1, Modifiers.AccStatic),
-				new MethodInfo("getpriority", 2, Modifiers.AccStatic),
-				new MethodInfo("times", 0, Modifiers.AccStatic) });
+				new MethodInfo("fork", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("abort", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("detach", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("setpgrp", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("initgroups", 2, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("groups=", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("wait2", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("gid", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("setsid", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("exit", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("waitall", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("getpgrp", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("egid", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("wait", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("uid", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("gid=", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("kill", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("pid", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("setpgid", 2, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("maxgroups", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("exit!", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("waitpid2", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("ppid", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("euid", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("egid=", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("setpriority", 3, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("uid=", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("getpgid", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("groups", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("maxgroups=", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("waitpid", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("euid=", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("getpriority", 2, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("times", 0, Modifiers.AccStatic) }); //$NON-NLS-1$
 		comparableModuleSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
 		argumentErrorClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		arrayClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("[]", -1,
+		arrayClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("[]", -1, //$NON-NLS-1$
 				Modifiers.AccStatic) });
 		bignumClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
@@ -2518,19 +2518,19 @@ public class BuiltinMethodsDatabase {
 
 		});
 		dirClassSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("foreach", 1, Modifiers.AccStatic),
-				new MethodInfo("rmdir", 1, Modifiers.AccStatic),
-				new MethodInfo("[]", 1, Modifiers.AccStatic),
-				new MethodInfo("getwd", 0, Modifiers.AccStatic),
-				new MethodInfo("unlink", 1, Modifiers.AccStatic),
-				new MethodInfo("mkdir", -1, Modifiers.AccStatic),
-				new MethodInfo("delete", 1, Modifiers.AccStatic),
-				new MethodInfo("chdir", -1, Modifiers.AccStatic),
-				new MethodInfo("entries", 1, Modifiers.AccStatic),
-				new MethodInfo("chroot", 1, Modifiers.AccStatic),
-				new MethodInfo("glob", -1, Modifiers.AccStatic),
-				new MethodInfo("open", 1, Modifiers.AccStatic),
-				new MethodInfo("pwd", 0, Modifiers.AccStatic) });
+				new MethodInfo("foreach", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("rmdir", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("[]", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("getwd", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("unlink", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("mkdir", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("delete", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("chdir", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("entries", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("chroot", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("glob", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("open", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("pwd", 0, Modifiers.AccStatic) }); //$NON-NLS-1$
 		eOFErrorClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
@@ -2786,93 +2786,93 @@ public class BuiltinMethodsDatabase {
 		errno_EXDEVClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		exceptionClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("exception",
+		exceptionClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("exception", //$NON-NLS-1$
 				-1, Modifiers.AccStatic) });
 		falseClassClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
 		fileClassSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("exists?", 1, Modifiers.AccStatic),
-				new MethodInfo("pipe?", 1, Modifiers.AccStatic),
-				new MethodInfo("stat", 1, Modifiers.AccStatic),
-				new MethodInfo("link", 2, Modifiers.AccStatic),
-				new MethodInfo("file?", 1, Modifiers.AccStatic),
-				new MethodInfo("sticky?", 1, Modifiers.AccStatic),
-				new MethodInfo("chmod", -1, Modifiers.AccStatic),
-				new MethodInfo("basename", -1, Modifiers.AccStatic),
-				new MethodInfo("writable?", 1, Modifiers.AccStatic),
-				new MethodInfo("blockdev?", 1, Modifiers.AccStatic),
-				new MethodInfo("atime", 1, Modifiers.AccStatic),
-				new MethodInfo("unlink", -1, Modifiers.AccStatic),
-				new MethodInfo("exist?", 1, Modifiers.AccStatic),
-				new MethodInfo("grpowned?", 1, Modifiers.AccStatic),
-				new MethodInfo("lchown", -1, Modifiers.AccStatic),
-				new MethodInfo("executable_real?", 1, Modifiers.AccStatic),
-				new MethodInfo("setgid?", 1, Modifiers.AccStatic),
-				new MethodInfo("utime", -1, Modifiers.AccStatic),
-				new MethodInfo("delete", -1, Modifiers.AccStatic),
-				new MethodInfo("expand_path", -1, Modifiers.AccStatic),
-				new MethodInfo("readable_real?", 1, Modifiers.AccStatic),
-				new MethodInfo("socket?", 1, Modifiers.AccStatic),
-				new MethodInfo("ftype", 1, Modifiers.AccStatic),
-				new MethodInfo("readlink", 1, Modifiers.AccStatic),
-				new MethodInfo("split", 1, Modifiers.AccStatic),
-				new MethodInfo("join", -1, Modifiers.AccStatic),
-				new MethodInfo("directory?", 1, Modifiers.AccStatic),
-				new MethodInfo("owned?", 1, Modifiers.AccStatic),
-				new MethodInfo("lchmod", -1, Modifiers.AccStatic),
-				new MethodInfo("extname", 1, Modifiers.AccStatic),
-				new MethodInfo("fnmatch", -1, Modifiers.AccStatic),
-				new MethodInfo("executable?", 1, Modifiers.AccStatic),
-				new MethodInfo("zero?", 1, Modifiers.AccStatic),
-				new MethodInfo("setuid?", 1, Modifiers.AccStatic),
-				new MethodInfo("ctime", 1, Modifiers.AccStatic),
-				new MethodInfo("umask", -1, Modifiers.AccStatic),
-				new MethodInfo("readable?", 1, Modifiers.AccStatic),
-				new MethodInfo("size", 1, Modifiers.AccStatic),
-				new MethodInfo("symlink?", 1, Modifiers.AccStatic),
-				new MethodInfo("lstat", 1, Modifiers.AccStatic),
-				new MethodInfo("symlink", 2, Modifiers.AccStatic),
-				new MethodInfo("truncate", 2, Modifiers.AccStatic),
-				new MethodInfo("size?", 1, Modifiers.AccStatic),
-				new MethodInfo("identical?", 2, Modifiers.AccStatic),
-				new MethodInfo("chown", -1, Modifiers.AccStatic),
-				new MethodInfo("dirname", 1, Modifiers.AccStatic),
-				new MethodInfo("fnmatch?", -1, Modifiers.AccStatic),
-				new MethodInfo("writable_real?", 1, Modifiers.AccStatic),
-				new MethodInfo("chardev?", 1, Modifiers.AccStatic),
-				new MethodInfo("mtime", 1, Modifiers.AccStatic),
-				new MethodInfo("rename", 2, Modifiers.AccStatic) });
+				new MethodInfo("exists?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("pipe?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("stat", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("link", 2, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("file?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("sticky?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("chmod", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("basename", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("writable?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("blockdev?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("atime", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("unlink", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("exist?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("grpowned?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("lchown", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("executable_real?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("setgid?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("utime", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("delete", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("expand_path", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("readable_real?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("socket?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("ftype", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("readlink", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("split", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("join", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("directory?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("owned?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("lchmod", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("extname", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("fnmatch", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("executable?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("zero?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("setuid?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("ctime", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("umask", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("readable?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("size", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("symlink?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("lstat", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("symlink", 2, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("truncate", 2, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("size?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("identical?", 2, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("chown", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("dirname", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("fnmatch?", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("writable_real?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("chardev?", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("mtime", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("rename", 2, Modifiers.AccStatic) }); //$NON-NLS-1$
 		file_StatClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		fixnumClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("induced_from",
+		fixnumClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("induced_from", //$NON-NLS-1$
 				1, Modifiers.AccStatic) });
-		floatClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("induced_from",
+		floatClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("induced_from", //$NON-NLS-1$
 				1, Modifiers.AccStatic) });
 		floatDomainErrorClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		hashClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("[]", -1,
+		hashClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("[]", -1, //$NON-NLS-1$
 				Modifiers.AccStatic) });
 		iOClassSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("readlines", -1, Modifiers.AccStatic),
-				new MethodInfo("foreach", -1, Modifiers.AccStatic),
-				new MethodInfo("popen", -1, Modifiers.AccStatic),
-				new MethodInfo("new", -1, Modifiers.AccStatic),
-				new MethodInfo("for_fd", -1, Modifiers.AccStatic),
-				new MethodInfo("read", -1, Modifiers.AccStatic),
-				new MethodInfo("select", -1, Modifiers.AccStatic),
-				new MethodInfo("pipe", 0, Modifiers.AccStatic),
-				new MethodInfo("open", -1, Modifiers.AccStatic),
-				new MethodInfo("sysopen", -1, Modifiers.AccStatic) });
+				new MethodInfo("readlines", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("foreach", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("popen", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("new", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("for_fd", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("read", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("select", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("pipe", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("open", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("sysopen", -1, Modifiers.AccStatic) }); //$NON-NLS-1$
 		iOErrorClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
 		indexErrorClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		integerClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("induced_from",
+		integerClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("induced_from", //$NON-NLS-1$
 				1, Modifiers.AccStatic) });
 		interruptClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
@@ -2890,14 +2890,14 @@ public class BuiltinMethodsDatabase {
 
 		});
 		moduleClassSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("nesting", 0, Modifiers.AccStatic),
-				new MethodInfo("constants", 0, Modifiers.AccStatic) });
+				new MethodInfo("nesting", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("constants", 0, Modifiers.AccStatic) }); //$NON-NLS-1$
 		nameErrorClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
 		nameError_messageClassSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("!", 3, Modifiers.AccStatic),
-				new MethodInfo("_load", 1, Modifiers.AccStatic) });
+				new MethodInfo("!", 3, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("_load", 1, Modifiers.AccStatic) }); //$NON-NLS-1$
 		nilClassClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
@@ -2916,7 +2916,7 @@ public class BuiltinMethodsDatabase {
 		objectClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		procClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("new", -1,
+		procClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("new", -1, //$NON-NLS-1$
 				Modifiers.AccStatic) });
 		process_StatusClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
@@ -2928,11 +2928,11 @@ public class BuiltinMethodsDatabase {
 
 		});
 		regexpClassSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("escape", -1, Modifiers.AccStatic),
-				new MethodInfo("quote", -1, Modifiers.AccStatic),
-				new MethodInfo("last_match", -1, Modifiers.AccStatic),
-				new MethodInfo("compile", -1, Modifiers.AccStatic),
-				new MethodInfo("union", -1, Modifiers.AccStatic) });
+				new MethodInfo("escape", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("quote", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("last_match", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("compile", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("union", -1, Modifiers.AccStatic) }); //$NON-NLS-1$
 		regexpErrorClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
@@ -2945,32 +2945,32 @@ public class BuiltinMethodsDatabase {
 		securityErrorClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		setClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("[]", -1,
+		setClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("[]", -1, //$NON-NLS-1$
 				Modifiers.AccStatic) });
 		signalExceptionClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
 		sortedSetClassSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("setup", 0, Modifiers.AccStatic),
-				new MethodInfo("[]", -1, Modifiers.AccStatic) });
+				new MethodInfo("setup", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("[]", -1, Modifiers.AccStatic) }); //$NON-NLS-1$
 		standardErrorClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
 		stringClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		structClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("new", -1,
+		structClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("new", -1, //$NON-NLS-1$
 				Modifiers.AccStatic) });
 		struct_TmsClassSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("[]", -1, Modifiers.AccStatic),
-				new MethodInfo("new", -1, Modifiers.AccStatic),
-				new MethodInfo("members", 0, Modifiers.AccStatic) });
-		symbolClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("all_symbols",
+				new MethodInfo("[]", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("new", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("members", 0, Modifiers.AccStatic) }); //$NON-NLS-1$
+		symbolClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("all_symbols", //$NON-NLS-1$
 				0, Modifiers.AccStatic) });
 		syntaxErrorClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
-		systemCallErrorClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("===",
+		systemCallErrorClassSingletonMetaclass.setMethods(new MethodInfo[] { new MethodInfo("===", //$NON-NLS-1$
 				1, Modifiers.AccStatic) });
 		systemExitClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
@@ -2979,20 +2979,20 @@ public class BuiltinMethodsDatabase {
 
 		});
 		threadClassSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("fork", -1, Modifiers.AccStatic),
-				new MethodInfo("critical", 0, Modifiers.AccStatic),
-				new MethodInfo("abort_on_exception=", 1, Modifiers.AccStatic),
-				new MethodInfo("pass", 0, Modifiers.AccStatic),
-				new MethodInfo("start", -1, Modifiers.AccStatic),
-				new MethodInfo("exit", 0, Modifiers.AccStatic),
-				new MethodInfo("list", 0, Modifiers.AccStatic),
-				new MethodInfo("critical=", 1, Modifiers.AccStatic),
-				new MethodInfo("kill", 1, Modifiers.AccStatic),
-				new MethodInfo("new", -1, Modifiers.AccStatic),
-				new MethodInfo("main", 0, Modifiers.AccStatic),
-				new MethodInfo("stop", 0, Modifiers.AccStatic),
-				new MethodInfo("abort_on_exception", 0, Modifiers.AccStatic),
-				new MethodInfo("current", 0, Modifiers.AccStatic) });
+				new MethodInfo("fork", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("critical", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("abort_on_exception=", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("pass", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("start", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("exit", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("list", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("critical=", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("kill", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("new", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("main", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("stop", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("abort_on_exception", 0, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("current", 0, Modifiers.AccStatic) }); //$NON-NLS-1$
 		threadErrorClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
@@ -3000,14 +3000,14 @@ public class BuiltinMethodsDatabase {
 
 		});
 		timeClassSingletonMetaclass.setMethods(new MethodInfo[] {
-				new MethodInfo("gm", -1, Modifiers.AccStatic),
-				new MethodInfo("utc", -1, Modifiers.AccStatic),
-				new MethodInfo("at", -1, Modifiers.AccStatic),
-				new MethodInfo("mktime", -1, Modifiers.AccStatic),
-				new MethodInfo("now", -1, Modifiers.AccStatic),
-				new MethodInfo("_load", 1, Modifiers.AccStatic),
-				new MethodInfo("local", -1, Modifiers.AccStatic),
-				new MethodInfo("times", 0, Modifiers.AccStatic) });
+				new MethodInfo("gm", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("utc", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("at", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("mktime", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("now", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("_load", 1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("local", -1, Modifiers.AccStatic), //$NON-NLS-1$
+				new MethodInfo("times", 0, Modifiers.AccStatic) }); //$NON-NLS-1$
 		trueClassClassSingletonMetaclass.setMethods(new MethodInfo[] {
 
 		});
@@ -3687,31 +3687,31 @@ public class BuiltinMethodsDatabase {
 		// end generated code
 	}
 
-	public static String[] objectMethods = { "methods", "instance_eval", "dup",
-			"instance_variables", "include?", "private_instance_methods", "instance_of?",
-			"protected_method_defined?", "ext	end", "const_defined?", "eql?", "name",
-			"public_class_method", "autoload", "method_dump", "new", "hash", "id",
-			"singleton_methods", "instance_method", "taint", "constants", "frozen?",
-			"instance_variable_get", "kind_of?", "ancestors", "to_a", "private_class_method",
-			"const_missing", "type", "instance_methods", "protected_methods", "superclass",
-			"method_defined?", "instance_variable_set", "const_get", "is_a?", "autoload?",
-			"respond_to?", "to_s", "module_eval", "class_variables", "allocate", "class", "<=>",
-			"<", "method", "tainted?", "private_methods", "==", "public_instance_methods",
-			"__id__", "===", "public_method_defined?", ">", "included_modules", "nil?", "untaint",
-			"const_set", ">=", "<=", "send", "display", "inspect", "class_eval", "clone", "=~",
-			"protected_instance_methods", "public_methods", "private_method_defined?", "__send__",
-			"equal?", "freeze", "object_id" };
+	public static String[] objectMethods = { "methods", "instance_eval", "dup", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			"instance_variables", "include?", "private_instance_methods", "instance_of?", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			"protected_method_defined?", "ext	end", "const_defined?", "eql?", "name", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			"public_class_method", "autoload", "method_dump", "new", "hash", "id", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+			"singleton_methods", "instance_method", "taint", "constants", "frozen?", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			"instance_variable_get", "kind_of?", "ancestors", "to_a", "private_class_method", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			"const_missing", "type", "instance_methods", "protected_methods", "superclass", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			"method_defined?", "instance_variable_set", "const_get", "is_a?", "autoload?", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			"respond_to?", "to_s", "module_eval", "class_variables", "allocate", "class", "<=>", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+			"<", "method", "tainted?", "private_methods", "==", "public_instance_methods", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+			"__id__", "===", "public_method_defined?", ">", "included_modules", "nil?", "untaint", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+			"const_set", ">=", "<=", "send", "display", "inspect", "class_eval", "clone", "=~", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
+			"protected_instance_methods", "public_methods", "private_method_defined?", "__send__", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			"equal?", "freeze", "object_id" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	public static String[] stringMethods = {
 
 	};
 
-	public static String[] regexpMethods = { "quote", "escape", "union", "last_match", "compile" };
+	public static String[] regexpMethods = { "quote", "escape", "union", "last_match", "compile" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
-	public static String[] fixnumMethods = { "induced_from" };
+	public static String[] fixnumMethods = { "induced_from" }; //$NON-NLS-1$
 
-	public static String[] floatMethods = { "induced_from" };
+	public static String[] floatMethods = { "induced_from" }; //$NON-NLS-1$
 
-	public static String[] arrayMethods = { "[]" };
+	public static String[] arrayMethods = { "[]" }; //$NON-NLS-1$
 
 }

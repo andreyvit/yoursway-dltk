@@ -94,7 +94,7 @@ public class CopyElementsOperation extends MultiOperation {
 		if ((isRename() || getNewNameFor(element) != null) && dest.getElementType() == IModelElement.SOURCE_MODULE) {
 			String typeName = dest.getElementName();
 			if (DLTKCore.DEBUG) {
-				System.err.println("TODO:Add extension remove code here...");
+				System.err.println("TODO:Add extension remove code here..."); //$NON-NLS-1$
 			}
 			// typeName =
 			// /*org.eclipse.dltk.internal.core.util.Util.getNameWithoutScriptLikeExtension((*/typeName;//);
@@ -117,7 +117,7 @@ public class CopyElementsOperation extends MultiOperation {
 			return;
 		}
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: Add CreateElementInCUOperation");
+			System.err.println("TODO: Add CreateElementInCUOperation"); //$NON-NLS-1$
 		}
 //		if (createElementInCUOperation) {
 //			IModelElement sibling = (IModelElement) this.insertBeforeElements.get(element);

@@ -19,7 +19,7 @@ import org.osgi.framework.BundleContext;
 public class RubyActiveStateDebuggerPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.activestatedebugger";
+	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.activestatedebugger"; //$NON-NLS-1$
 
 	// The shared instance
 	private static RubyActiveStateDebuggerPlugin plugin;

@@ -24,6 +24,10 @@ public final class PreferencesMessages extends NLS {
 		// Do not instantiate
 	}
 	
+	public static String AbstractConfigurationBlock_emptyPath;
+	public static String AbstractConfigurationBlock_fileDoesntExist;
+	public static String AbstractConfigurationBlock_pathIsntAFile;
+	public static String AbstractConfigurationBlock_valuesItemsAndLabelMustNotBeNull;
 	public static String BuildPathsPropertyPage_no_script_project_message;
 	//public static String BuildPathDialog_error_title;
 	//public static String BuildPathDialog_error_message;
@@ -75,17 +79,17 @@ public final class PreferencesMessages extends NLS {
 //	public static String DLTKEditorPreferencePage_showPrintMargin;
 //	public static String DLTKEditorPreferencePage_printMarginColumn;
 	public static String DLTKEditorPreferencePage_insertSingleProposalsAutomatically;
-	//public static String DLTKEditorPreferencePage_showOnlyProposalsVisibleInTheInvocationContext;
-	//public static String DLTKEditorPreferencePage_presentProposalsInAlphabeticalOrder;
+	public static String DLTKEditorPreferencePage_showOnlyProposalsVisibleInTheInvocationContext;
+	public static String DLTKEditorPreferencePage_presentProposalsInAlphabeticalOrder;
 	public static String DLTKEditorPreferencePage_coloring_element;
-	//public static String DLTKEditorPreferencePage_enableAutoActivation;
+	public static String DLTKEditorPreferencePage_enableAutoActivation;
 //	public static String DLTKEditorPreferencePage_automaticallyAddImportInsteadOfQualifiedName;
-//	public static String DLTKEditorPreferencePage_completionInserts;
-//	public static String DLTKEditorPreferencePage_completionOverwrites;
-//	public static String DLTKEditorPreferencePage_completionToggleHint;
+	public static String DLTKEditorPreferencePage_completionInserts;
+	public static String DLTKEditorPreferencePage_completionOverwrites;
+	public static String DLTKEditorPreferencePage_completionToggleHint;
 //	public static String DLTKEditorPreferencePage_fillArgumentNamesOnMethodCompletion;
 //	public static String DLTKEditorPreferencePage_guessArgumentNamesOnMethodCompletion;
-//	public static String DLTKEditorPreferencePage_autoActivationDelay;
+	public static String DLTKEditorPreferencePage_autoActivationDelay;
 //	public static String DLTKEditorPreferencePage_autoActivationTriggersForDLTK;
 //	public static String DLTKEditorPreferencePage_autoActivationTriggersForDLTKDoc;
 //	public static String DLTKEditorPreferencePage_completePrefixes;
@@ -146,6 +150,7 @@ public final class PreferencesMessages extends NLS {
 	public static String DLTKEditorHoverConfigurationBlock_insertModifierAndDelimiter;
 	public static String DLTKEditorHoverConfigurationBlock_insertDelimiterAndModifier;
 	public static String DLTKEditorHoverConfigurationBlock_showAffordance;
+	public static String FoldingConfigurationBlock_noFoldingPreferenceBlock;
 	
 //	public static String MarkOccurrencesConfigurationBlock_title;
 //	public static String MarkOccurrencesConfigurationBlock_markOccurrences;
@@ -624,9 +629,9 @@ public final class PreferencesMessages extends NLS {
 	public static String SmartTypingConfigurationBlock_tabs_message_tabs;
 	public static String SmartTypingConfigurationBlock_tabs_message_tabsAndSpaces;
 	public static String SmartTypingConfigurationBlock_pasting_title;
-//	public static String SmartTypingConfigurationBlock_strings_title;
-	//public static String CodeAssistConfigurationBlock_sortingSection_title;
-	//public static String CodeAssistConfigurationBlock_autoactivationSection_title;
+	public static String SmartTypingConfigurationBlock_strings_title;
+	public static String CodeAssistConfigurationBlock_sortingSection_title;
+	public static String CodeAssistConfigurationBlock_autoactivationSection_title;
 	public static String CodeAssistConfigurationBlock_insertionSection_title;
 	public static String DLTKEditorPreferencePage_coloring_category_DLTK;
 	public static String DLTKEditorPreferencePage_coloring_category_DLTKdoc;

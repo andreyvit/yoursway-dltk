@@ -80,7 +80,9 @@ public class JavaScriptMixinParser implements IMixinParser,
 			Map ms = interferencer.getFunctionMap();
 			moduleDeclaration.setFunctionMap(ms);
 		} catch (Exception e) {
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -124,7 +126,8 @@ public class JavaScriptMixinParser implements IMixinParser,
 				IMixinRequestor.ElementInfo elementInfo = new IMixinRequestor.ElementInfo();
 				String key = parent + MixinModel.SEPARATOR + functionName;
 				elementInfo.key = key;
-				SourceMethod ms = new SourceMethod((ModelElement)parentElement, functionName);
+				SourceMethod ms = new SourceMethod(
+						(ModelElement) parentElement, functionName);
 				elementInfo.object = ms;
 				requestor.reportElement(elementInfo);
 				processNode(key, functionNode, signature, ms);
@@ -150,7 +153,8 @@ public class JavaScriptMixinParser implements IMixinParser,
 				IMixinRequestor.ElementInfo elementInfo = new IMixinRequestor.ElementInfo();
 				String key = parent + MixinModel.SEPARATOR + var;
 				elementInfo.key = key;
-				elementInfo.object = new SourceField((ModelElement)parentElement, var);
+				elementInfo.object = new SourceField(
+						(ModelElement) parentElement, var);
 				requestor.reportElement(elementInfo);
 			}
 	}
@@ -163,8 +167,7 @@ public class JavaScriptMixinParser implements IMixinParser,
 			String propertyName, Object data) throws CoreException {
 	}
 
-	public void parserSourceModule(boolean signature,
-			ISourceModule module) {
+	public void parserSourceModule(boolean signature, ISourceModule module) {
 		reportRefs(signature, module);
 	}
 }

@@ -125,7 +125,7 @@ public class Index {
 	public void addIndexEntry(char[] category, char[] key,
 			String containerRelativePath) {
 		if( DLTKCore.DEBUG_INDEX ) {
-			System.out.println("DEBUG INDEX: Add Index Entry:" + new String( category ) + " " + new String( key ) + " path:" + containerRelativePath );
+			System.out.println("DEBUG INDEX: Add Index Entry:" + new String( category ) + " " + new String( key ) + " path:" + containerRelativePath ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		this.memoryIndex.addIndexEntry(category, key, containerRelativePath);
 	}
@@ -229,7 +229,7 @@ public class Index {
 			return;
 
 		if (DLTKCore.DEBUG_INDEX) {
-			System.out.println("Index for " + this.containerPath + " (" + new Path(diskIndex.fileName).lastSegment() + ") saved");		
+			System.out.println("Index for " + this.containerPath + " (" + new Path(diskIndex.fileName).lastSegment() + ") saved"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$		
 		}
 		int numberOfChanges = this.memoryIndex.docsToReferences.elementSize;
 		this.diskIndex = this.diskIndex.mergeWith(this.memoryIndex);

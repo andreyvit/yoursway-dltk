@@ -24,19 +24,21 @@ public class RubyMixinElementInfo {
 	public static final int K_VARIABLE = 3;
 
 	public static final int K_INCLUDE = 4;
-	
+
 	public static final int K_VIRTUAL = 5;
-	
+
 	public static final int K_SUPER = 6;
-	
+
 	public static final int K_ALIAS = 7;
+
+	public static final int K_EXTEND = 8;
 
 	private int kind = 0;
 	private Object object = null;
-	
-	
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
@@ -47,7 +49,9 @@ public class RubyMixinElementInfo {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	public boolean equals(Object obj) {
@@ -89,32 +93,36 @@ public class RubyMixinElementInfo {
 	public void setObject(Object object) {
 		this.object = object;
 	}
-	
-	public  static RubyMixinElementInfo createClass (IType type) {
+
+	public static RubyMixinElementInfo createClass(IType type) {
 		return new RubyMixinElementInfo(K_CLASS, type);
 	}
-	
-	public  static RubyMixinElementInfo createModule (IType type) {
+
+	public static RubyMixinElementInfo createModule(IType type) {
 		return new RubyMixinElementInfo(K_MODULE, type);
 	}
-	
-	public  static RubyMixinElementInfo createMethod (IMethod m) {
+
+	public static RubyMixinElementInfo createMethod(IMethod m) {
 		return new RubyMixinElementInfo(K_METHOD, m);
 	}
-	
-	public  static RubyMixinElementInfo createInclude (String  key) {
+
+	public static RubyMixinElementInfo createInclude(String key) {
 		return new RubyMixinElementInfo(K_INCLUDE, key);
 	}
-	
-	public  static RubyMixinElementInfo createSuperClass (String  key) {
+
+	public static RubyMixinElementInfo createExtend(String key) {
+		return new RubyMixinElementInfo(K_EXTEND, key);
+	}
+
+	public static RubyMixinElementInfo createSuperClass(String key) {
 		return new RubyMixinElementInfo(K_SUPER, key);
 	}
-	
-	public  static RubyMixinElementInfo createVariable (IField type) {
+
+	public static RubyMixinElementInfo createVariable(IField type) {
 		return new RubyMixinElementInfo(K_VARIABLE, type);
 	}
-	
-	public  static RubyMixinElementInfo createVirtualClass () {
+
+	public static RubyMixinElementInfo createVirtualClass() {
 		return new RubyMixinElementInfo(K_VIRTUAL, null);
 	}
 

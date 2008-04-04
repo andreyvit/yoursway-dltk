@@ -20,14 +20,14 @@ import org.eclipse.text.edits.TextEdit;
 
 public class OldCodeFormatter extends CodeFormatter {
 
-	private final static String BLOCK_BEGIN_RE = "(class|module|def|if|unless|case|while|until|for|begin|do)";
-	private final static String BLOCK_MID_RE = "(else|elsif|when|rescue|ensure)";
-	private final static String BLOCK_END_RE = "(end)";
-	private final static String DELIMITER_RE = "[?$/(){}#\\`.:\\]\\[]";
-	private final static String[] LITERAL_BEGIN_LITERALS = { "\"", "'",
-			"=begin", "%[Qqrxw]?.", "/", "<<[\\-]?[']?[a-zA-Z_]+[']?" };
-	private final static String[] LITERAL_END_RES = { "[^\\\\](\\\\\\\\)*\"",
-			"[^\\\\](\\\\\\\\)*'", "=end", "", "", "" };
+	private final static String BLOCK_BEGIN_RE = "(class|module|def|if|unless|case|while|until|for|begin|do)"; //$NON-NLS-1$
+	private final static String BLOCK_MID_RE = "(else|elsif|when|rescue|ensure)"; //$NON-NLS-1$
+	private final static String BLOCK_END_RE = "(end)"; //$NON-NLS-1$
+	private final static String DELIMITER_RE = "[?$/(){}#\\`.:\\]\\[]"; //$NON-NLS-1$
+	private final static String[] LITERAL_BEGIN_LITERALS = { "\"", "'", //$NON-NLS-1$ //$NON-NLS-2$
+			"=begin", "%[Qqrxw]?.", "/", "<<[\\-]?[']?[a-zA-Z_]+[']?" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	private final static String[] LITERAL_END_RES = { "[^\\\\](\\\\\\\\)*\"", //$NON-NLS-1$
+			"[^\\\\](\\\\\\\\)*'", "=end", "", "", "" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	private final int BLOCK_BEGIN_PAREN = 2;
 	private final int BLOCK_MID_PAREN = 5;
 	private final int BLOCK_END_PAREN = 8;
@@ -53,20 +53,20 @@ public class OldCodeFormatter extends CodeFormatter {
 			}
 		}
 		StringBuffer sb = new StringBuffer();
-		sb.append("(");
+		sb.append("("); //$NON-NLS-1$
 		for (int i = 0; i < LITERAL_BEGIN_LITERALS.length; i++) {
 			sb.append(LITERAL_BEGIN_LITERALS[i]);
 			if (i < LITERAL_BEGIN_LITERALS.length - 1) {
-				sb.append("|");
+				sb.append("|"); //$NON-NLS-1$
 			}
 		}
-		sb.append(")");
+		sb.append(")"); //$NON-NLS-1$
 		LITERAL_BEGIN_RE = sb.toString();
 		try {
-			MODIFIER_RE = Pattern.compile("if|unless|while|until|rescue");
-			OPERATOR_RE = Pattern.compile("[\\-,.+*/%&|\\^~=<>:]");
+			MODIFIER_RE = Pattern.compile("if|unless|while|until|rescue"); //$NON-NLS-1$
+			OPERATOR_RE = Pattern.compile("[\\-,.+*/%&|\\^~=<>:]"); //$NON-NLS-1$
 			NON_BLOCK_DO_RE = Pattern
-					.compile("(^|[\\s])(while|until|for|rescue)[\\s]");
+					.compile("(^|[\\s])(while|until|for|rescue)[\\s]"); //$NON-NLS-1$
 		} catch (PatternSyntaxException e) {
 			if (DLTKCore.DEBUG) {
 				System.out.println(e);
@@ -146,11 +146,11 @@ public class OldCodeFormatter extends CodeFormatter {
 	protected String formatString(String unformatted,
 			AbstractBlockMarker abstractBlockMarker, int initialIndentLevel)
 			throws PatternSyntaxException {
-		Pattern pat = Pattern.compile("\n");
+		Pattern pat = Pattern.compile("\n"); //$NON-NLS-1$
 		String[] lines = pat.split(unformatted);
 		IndentationState state = null;
 		StringBuffer formatted = new StringBuffer();
-		Pattern whitespacePattern = Pattern.compile("^[\t ]*");
+		Pattern whitespacePattern = Pattern.compile("^[\t ]*"); //$NON-NLS-1$
 		for (int i = 0; i < lines.length; i++) {
 			Matcher whitespaceMatcher = whitespacePattern.matcher(lines[i]);
 			whitespaceMatcher.find();
@@ -176,13 +176,13 @@ public class OldCodeFormatter extends CodeFormatter {
 						lines[i], strippedLine, options);
 			}
 			if (i != lines.length - 1) {
-				formatted.append("\n");
+				formatted.append("\n"); //$NON-NLS-1$
 			}
 			state.incPos(strippedLine.length() + 1);
 		}
 
-		if (unformatted.lastIndexOf("\n") == unformatted.length() - 1) {
-			formatted.append("\n");
+		if (unformatted.lastIndexOf("\n") == unformatted.length() - 1) { //$NON-NLS-1$
+			formatted.append("\n"); //$NON-NLS-1$
 		}
 
 		return formatted.toString();
@@ -208,12 +208,12 @@ public class OldCodeFormatter extends CodeFormatter {
 		Pattern pat = null;
 
 		try {
-			String expr = "(^|[\\s]|;)" + BLOCK_BEGIN_RE + "($|[\\s]|"
-					+ DELIMITER_RE + ")|(^|[\\s])" + BLOCK_MID_RE + "($|[\\s]|"
-					+ DELIMITER_RE + ")|(^|[\\s]|;)" + BLOCK_END_RE
-					+ "($|[\\s]|;)|" + LITERAL_BEGIN_RE + "|" + DELIMITER_RE;
+			String expr = "(^|[\\s]|;)" + BLOCK_BEGIN_RE + "($|[\\s]|" //$NON-NLS-1$ //$NON-NLS-2$
+					+ DELIMITER_RE + ")|(^|[\\s])" + BLOCK_MID_RE + "($|[\\s]|" //$NON-NLS-1$ //$NON-NLS-2$
+					+ DELIMITER_RE + ")|(^|[\\s]|;)" + BLOCK_END_RE //$NON-NLS-1$
+					+ "($|[\\s]|;)|" + LITERAL_BEGIN_RE + "|" + DELIMITER_RE; //$NON-NLS-1$ //$NON-NLS-2$
 			if (DLTKCore.DEBUG) {
-				System.out.println("Expression: " + expr);
+				System.out.println("Expression: " + expr); //$NON-NLS-1$
 			}
 			pat = Pattern.compile(expr);
 		} catch (PatternSyntaxException e) {
@@ -222,7 +222,7 @@ public class OldCodeFormatter extends CodeFormatter {
 			}
 		}
 		int pos = 0;
-		AbstractBlockMarker lastBlockMarker = new NeutralMarker("start", 0);
+		AbstractBlockMarker lastBlockMarker = new NeutralMarker("start", 0); //$NON-NLS-1$
 		AbstractBlockMarker firstBlockMarker = lastBlockMarker;
 		Matcher re = pat.matcher(unformatted);
 		while (pos != -1 && re.find(pos)) {
@@ -232,10 +232,10 @@ public class OldCodeFormatter extends CodeFormatter {
 				String blockBeginStr = re.group(BLOCK_BEGIN_PAREN);
 				if (MODIFIER_RE.matcher(blockBeginStr).matches()
 						&& !this.isRubyExprBegin(unformatted, re
-								.start(BLOCK_BEGIN_PAREN), "modifier")) {
+								.start(BLOCK_BEGIN_PAREN), "modifier")) { //$NON-NLS-1$
 					continue;
 				}
-				if (blockBeginStr.equals("do")
+				if (blockBeginStr.equals("do") //$NON-NLS-1$
 						&& this.isNonBlockDo(unformatted, re
 								.start(BLOCK_BEGIN_PAREN))) {
 					continue;
@@ -253,7 +253,7 @@ public class OldCodeFormatter extends CodeFormatter {
 			} else if (re.group(LITERAL_BEGIN_PAREN) != null) {
 				pos = re.end(LITERAL_BEGIN_PAREN);
 				String matchedLiteralBegin = re.group(LITERAL_BEGIN_PAREN);
-				if (matchedLiteralBegin.startsWith("%")) {
+				if (matchedLiteralBegin.startsWith("%")) { //$NON-NLS-1$
 					int delimitChar = matchedLiteralBegin
 							.charAt(matchedLiteralBegin.length() - 1);
 					boolean expand = matchedLiteralBegin.charAt(1) != 'q';
@@ -272,7 +272,7 @@ public class OldCodeFormatter extends CodeFormatter {
 					} else {
 						pos = unformatted.indexOf(delimitChar, pos);
 					}
-				} else if (matchedLiteralBegin.startsWith("/")) {
+				} else if (matchedLiteralBegin.startsWith("/")) { //$NON-NLS-1$
 					// we do not consider reg exp over multiple lines. Therefore
 					// a reg exp over
 					// mutliple lines might get formatted. On the other hand
@@ -283,21 +283,21 @@ public class OldCodeFormatter extends CodeFormatter {
 					// slashes for division and
 					// slashes for regular expressions.
 					int posClosingSlash = this.forwardString(unformatted, pos,
-							' ', "/", true);
+							' ', "/", true); //$NON-NLS-1$
 					if (posClosingSlash == pos) {
 						continue;
 					}
-					int posNextLine = unformatted.indexOf("\n", pos);
+					int posNextLine = unformatted.indexOf("\n", pos); //$NON-NLS-1$
 					if (posNextLine != -1 && posClosingSlash > posNextLine) {
 						continue;
 					}
 					pos = posClosingSlash;
-				} else if (matchedLiteralBegin.startsWith("'")) {
+				} else if (matchedLiteralBegin.startsWith("'")) { //$NON-NLS-1$
 					if (pos > 1 && unformatted.charAt(pos - 2) == '$') {
 						continue;
 					}
-					pos = this.forwardString(unformatted, pos, ' ', "'", true);
-				} else if (matchedLiteralBegin.startsWith("<<")) {
+					pos = this.forwardString(unformatted, pos, ' ', "'", true); //$NON-NLS-1$
+				} else if (matchedLiteralBegin.startsWith("<<")) { //$NON-NLS-1$
 					int startId = 2;
 					int endId = matchedLiteralBegin.length();
 					boolean isMinus = (matchedLiteralBegin.charAt(startId) == '-');
@@ -309,7 +309,7 @@ public class OldCodeFormatter extends CodeFormatter {
 						startId += 1;
 						endId -= 1;
 					}
-					String reStr = (isMinus ? "" : "\n")
+					String reStr = (isMinus ? "" : "\n") //$NON-NLS-1$ //$NON-NLS-2$
 							+ matchedLiteralBegin.substring(startId, endId);
 					try {
 						Pattern idSearch = Pattern.compile(reStr);
@@ -341,22 +341,22 @@ public class OldCodeFormatter extends CodeFormatter {
 				if (pos != -1) {
 					lastBlockMarker.setNext(newBlockMarker);
 					lastBlockMarker = newBlockMarker;
-					newBlockMarker = new NeutralMarker("", pos);
+					newBlockMarker = new NeutralMarker("", pos); //$NON-NLS-1$
 				}
 
 			} else {
 				String delimiter = re.group(0);
-				if (delimiter.equals("#")) {
-					pos = unformatted.indexOf("\n", re.end(0));
+				if (delimiter.equals("#")) { //$NON-NLS-1$
+					pos = unformatted.indexOf("\n", re.end(0)); //$NON-NLS-1$
 					continue;
-				} else if (delimiter.equals("{")) {
-					newBlockMarker = new BeginBlockMarker("{", re.start(0));
-				} else if (delimiter.equals("}")) {
-					newBlockMarker = new EndBlockMarker("}", re.start(0));
-				} else if (delimiter.equals("(")) {
-					newBlockMarker = new FixLengthMarker("(", re.start(0));
-				} else if (delimiter.equals(")")) {
-					newBlockMarker = new NeutralMarker(")", re.start(0));
+				} else if (delimiter.equals("{")) { //$NON-NLS-1$
+					newBlockMarker = new BeginBlockMarker("{", re.start(0)); //$NON-NLS-1$
+				} else if (delimiter.equals("}")) { //$NON-NLS-1$
+					newBlockMarker = new EndBlockMarker("}", re.start(0)); //$NON-NLS-1$
+				} else if (delimiter.equals("(")) { //$NON-NLS-1$
+					newBlockMarker = new FixLengthMarker("(", re.start(0)); //$NON-NLS-1$
+				} else if (delimiter.equals(")")) { //$NON-NLS-1$
+					newBlockMarker = new NeutralMarker(")", re.start(0)); //$NON-NLS-1$
 				}
 				pos = re.end(0);
 			}
@@ -386,21 +386,21 @@ public class OldCodeFormatter extends CodeFormatter {
 
 	protected int forwardString(String unformatted, int pos, char opening,
 			char closing, boolean expand) {
-		return this.forwardString(unformatted, pos, opening, "\\" + opening
-				+ "\\" + closing, expand);
+		return this.forwardString(unformatted, pos, opening, "\\" + opening //$NON-NLS-1$
+				+ "\\" + closing, expand); //$NON-NLS-1$
 	}
 
 	protected int forwardString(String unformatted, int pos, char opening,
 			String term, boolean expand) {
 		int n = 1;
 		try {
-			Pattern pat = Pattern.compile(expand ? "[" + term + "]|(#\\{)"
-					: "[" + term + "]");
+			Pattern pat = Pattern.compile(expand ? "[" + term + "]|(#\\{)" //$NON-NLS-1$ //$NON-NLS-2$
+					: "[" + term + "]"); //$NON-NLS-1$ //$NON-NLS-2$
 			Matcher re = pat.matcher(unformatted);
 			while (re.find(pos) && n > 0) {
 				if (re.group(1) != null) {
 					pos = this.forwardString(unformatted, re.end(1), '{',
-							"\\{\\}", expand);
+							"\\{\\}", expand); //$NON-NLS-1$
 				} else {
 					pos = re.end(0);
 					if (pos > 2 && unformatted.charAt(pos - 2) == '\\'
@@ -509,7 +509,7 @@ public class OldCodeFormatter extends CodeFormatter {
 		if (c == ';') {
 			return true;
 		}
-		String c_str = "" + c;
+		String c_str = "" + c; //$NON-NLS-1$
 		if (OPERATOR_RE.matcher(c_str).matches()) {
 			return true;
 		}

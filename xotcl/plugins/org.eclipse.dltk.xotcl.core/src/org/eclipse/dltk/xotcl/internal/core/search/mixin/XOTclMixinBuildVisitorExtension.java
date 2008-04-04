@@ -70,6 +70,9 @@ public class XOTclMixinBuildVisitorExtension implements
 			ElementInfo info = new ElementInfo();
 
 			info.key = original.getNamespacePrefix() + original.tclNameToKey(s.getName());
+			if (info.key.startsWith("{")) {
+				info.key = info.key.substring(1);
+			}
 			// System.out.println("Report Tcl namespace:" + info.key);
 			original.pushNamespaceName(s);
 			if (original.getSignature()) {

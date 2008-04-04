@@ -8,7 +8,7 @@ public class IncrTclInstProc extends TclMixinElement implements IIncrTclMixinCon
 		return ELEMENT_INCRTCL_INSTPROC;
 	}
 	public String toString() {
-		return "xotclinstproc";
+		return "incrtclinstproc";
 	}
 	protected boolean isValidModelElement(IModelElement element) {
 		return element.getElementType() == IModelElement.METHOD;

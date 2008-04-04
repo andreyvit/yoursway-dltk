@@ -29,15 +29,15 @@ public class RubySelfReference extends Reference {
 	}
 
 	public String getStringRepresentation() {
-		return "self";
+		return "self"; //$NON-NLS-1$
 	}
 
 	public void printNode(CorePrinter output) {
-		output.formatPrintLn("SelfReference" + this.getSourceRange().toString());
+		output.formatPrintLn("SelfReference" + this.getSourceRange().toString()); //$NON-NLS-1$
 	}
 
 	public String toString() {
-		return "self";
+		return "self"; //$NON-NLS-1$
 	}
 
 	public boolean equals(Object obj) {

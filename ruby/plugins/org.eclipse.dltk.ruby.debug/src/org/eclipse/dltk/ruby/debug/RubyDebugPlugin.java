@@ -18,7 +18,7 @@ import org.osgi.framework.BundleContext;
 public class RubyDebugPlugin extends Plugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.debug";
+	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.debug"; //$NON-NLS-1$
 
 	// The shared instance
 	private static RubyDebugPlugin plugin;
@@ -35,8 +35,12 @@ public class RubyDebugPlugin extends Plugin {
 	}
 
 	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
+		try {			
+			savePluginPreferences();
+		} finally {
+			plugin = null;
+			super.stop(context);
+		}
 	}
 
 	/**

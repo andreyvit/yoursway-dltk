@@ -12,7 +12,6 @@ import org.eclipse.dltk.tcl.core.ITclCommandDetector;
 import org.eclipse.dltk.tcl.core.ITclCommandDetectorExtension;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 import org.eclipse.dltk.xotcl.core.IXOTclModifiers;
 import org.eclipse.dltk.xotcl.core.XOTclParseUtil;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclObjectDeclaration;
@@ -49,10 +48,8 @@ public class XOTclCommandDetector implements ITclCommandDetector,
 	public XOTclCommandDetector() {
 	}
 
-	public CommandInfo detectCommand(TclCommand command, int offset,
+	public CommandInfo detectCommand(TclStatement statement, 
 			ModuleDeclaration module, ITclParser parser, ASTNode parent) {
-		TclStatement statement = (TclStatement) parser.processLocal(command,
-				offset, parent);
 		if (statement.getCount() == 0) {
 			return null;
 		}

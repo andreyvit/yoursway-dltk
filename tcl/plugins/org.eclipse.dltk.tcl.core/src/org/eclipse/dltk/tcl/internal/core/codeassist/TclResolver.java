@@ -178,6 +178,9 @@ public class TclResolver {
 	public static IModelElement findChildrenByName(String childName,
 			IParent element) {
 		try {
+			if( element == null) {
+				return null;
+			}
 			String nextName = null;
 			int pos;
 			if ((pos = childName.indexOf("::")) != -1) {

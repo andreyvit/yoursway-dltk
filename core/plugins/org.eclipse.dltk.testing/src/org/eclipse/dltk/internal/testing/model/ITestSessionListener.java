@@ -73,7 +73,7 @@ public interface ITestSessionListener {
 	 * @param expected expected value
 	 * @param actual actual value
 	 */
-	public void testFailed(TestElement testElement, Status status, String trace, String expected, String actual);
+	public void testFailed(TestElement testElement, Status status, String trace, String expected, String actual, int code);
 	/**
  	 * An individual test has been rerun.
 	 * 

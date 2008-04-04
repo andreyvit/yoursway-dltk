@@ -44,8 +44,8 @@ public class ExternalCheckerRulesBlock  {
 
 	Table fTable;
 	TableViewer tViewer;
-	private String[] columnNames = new String[] { "CHARACTER", "PATTERN",
-			"DESCRIPTION" };
+	private String[] columnNames = new String[] { "CHARACTER", "PATTERN", //$NON-NLS-1$ //$NON-NLS-2$
+			"DESCRIPTION" }; //$NON-NLS-1$
 	private CustomWildcardsList wlist = new CustomWildcardsList();
 	private Button addWCard;
 	private Button removeWCard;
@@ -105,15 +105,15 @@ public class ExternalCheckerRulesBlock  {
 
 		TableColumn col1 = new TableColumn(fTable, SWT.LEFT, 0);
 		col1.setWidth(70);
-		col1.setText("Char");
+		col1.setText(Messages.ExternalCheckerRulesBlock_char);
 
 		TableColumn col2 = new TableColumn(fTable, SWT.LEFT, 1);
 		col2.setWidth(130);
-		col2.setText("Pattern");
+		col2.setText(Messages.ExternalCheckerRulesBlock_pattern);
 
 		TableColumn col3 = new TableColumn(fTable, SWT.LEFT, 2);
 		col3.setWidth(100);
-		col3.setText("Description");
+		col3.setText(Messages.ExternalCheckerRulesBlock_description);
 
 		tViewer = new TableViewer(fTable);
 		tViewer.setColumnProperties(columnNames);
@@ -144,14 +144,14 @@ public class ExternalCheckerRulesBlock  {
 		buttons.setLayout(layout);
 		buttons.setFont(font);
 
-		addWCard = SWTUtil.createPushButton(buttons, "Add", null);
+		addWCard = SWTUtil.createPushButton(buttons, Messages.ExternalCheckerRulesBlock_add, null);
 		addWCard.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent ev) {
 				getWlist().addWcard();
 			}
 		});
 
-		removeWCard = SWTUtil.createPushButton(buttons, "Remove", null);
+		removeWCard = SWTUtil.createPushButton(buttons, Messages.ExternalCheckerRulesBlock_remove, null);
 		removeWCard.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent ev) {
 				CustomWildcard rule = (CustomWildcard) ((IStructuredSelection) tViewer
@@ -189,11 +189,11 @@ public class ExternalCheckerRulesBlock  {
 
 		TableColumn col1 = new TableColumn(fTable, SWT.LEFT, 0);
 		col1.setWidth(200);
-		col1.setText("Char");
+		col1.setText(Messages.ExternalCheckerRulesBlock_char);
 
 		TableColumn col2 = new TableColumn(fTable, SWT.LEFT, 1);
 		col2.setWidth(100);
-		col2.setText("Pattern");
+		col2.setText(Messages.ExternalCheckerRulesBlock_pattern);
 
 		tViewer = new TableViewer(fTable);
 		tViewer.setColumnProperties(columnNames);
@@ -214,7 +214,7 @@ public class ExternalCheckerRulesBlock  {
 		tViewer.setInput(getWlist());
 
 		addWCard = new Button(ancestor, SWT.PUSH);
-		addWCard.setText("Add Rule");
+		addWCard.setText(Messages.ExternalCheckerRulesBlock_addRule);
 		addWCard.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent ev) {
 				getWlist().addWcard();

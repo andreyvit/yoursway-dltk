@@ -4,12 +4,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.dltk.internal.launching.EnvironmentResolver;
 
 public class InterpreterConfig implements Cloneable {
 	/**
@@ -44,27 +47,27 @@ public class InterpreterConfig implements Cloneable {
 
 	protected void checkScriptFile(File file) {
 		if (file == null) {
-			throw new IllegalArgumentException("Script file cannot be null");
+			throw new IllegalArgumentException(Messages.InterpreterConfig_scriptFileCannotBeNull);
 		}
 	}
 
 	protected void checkScriptFile(IPath file) {
 		if (file == null) {
-			throw new IllegalArgumentException("Script file cannot be null");
+			throw new IllegalArgumentException(Messages.InterpreterConfig_scriptFileCannotBeNull);
 		}
 	}
 
 	protected void checkWorkingDirectory(File directory) {
 		if (directory == null) {
 			throw new IllegalArgumentException(
-					"Working directory cannot be null");
+					Messages.InterpreterConfig_workingDirectoryCannotBeNull);
 		}
 	}
 
 	protected void checkWorkingDirectory(IPath directory) {
 		if (directory == null) {
 			throw new IllegalArgumentException(
-					"Working directory cannot be null");
+					Messages.InterpreterConfig_workingDirectoryCannotBeNull);
 		}
 	}
 
@@ -165,7 +168,7 @@ public class InterpreterConfig implements Cloneable {
 	public boolean addInterpreterArg(String arg) {
 		if (arg == null) {
 			throw new IllegalArgumentException(
-					"Interpreter argument cannot be null");
+					Messages.InterpreterConfig_interpreterArgumentCannotBeNull);
 		}
 
 		return interpreterArgs.add(arg);
@@ -207,7 +210,7 @@ public class InterpreterConfig implements Cloneable {
 	// Script section
 	public boolean addScriptArg(String arg) {
 		if (arg == null) {
-			throw new IllegalArgumentException("Script argument cannot be null");
+			throw new IllegalArgumentException(Messages.InterpreterConfig_scriptArgumentCannotBeNull);
 		}
 
 		return scriptArgs.add(arg);
@@ -216,7 +219,7 @@ public class InterpreterConfig implements Cloneable {
 	// Script section
 	public void addScriptArg(String arg, int pos) {
 		if (arg == null) {
-			throw new IllegalArgumentException("Script argument cannot be null");
+			throw new IllegalArgumentException(Messages.InterpreterConfig_scriptArgumentCannotBeNull);
 		}
 
 		scriptArgs.add(pos, arg);
@@ -291,28 +294,33 @@ public class InterpreterConfig implements Cloneable {
 		while (it.hasNext()) {
 			String key = (String) it.next();
 			String value = (String) environment.get(key);
-			list.add(key + "=" + value);
+			list.add(key + "=" + value); //$NON-NLS-1$
 		}
 
 		return (String[]) list.toArray(new String[list.size()]);
 	}
 
-	public String[] getEnvironmentAsStringsIncluding(
-			EnvironmentVariable[] variables) {
+	public String[] getEnvironmentAsStringsIncluding(EnvironmentVariable[] vars) {
+
+		EnvironmentVariable[] variables = EnvironmentResolver.resolve(
+				getEnvVars(), vars);
+		Set pressentVars = new HashSet();
 		ArrayList list = new ArrayList();
 		if (variables != null) {
 			for (int i = 0; i < variables.length; i++) {
-				list
-						.add(variables[i].getName() + "="
-								+ variables[i].getValue());
+				String name = variables[i].getName();
+				list.add(name + "=" + variables[i].getValue()); //$NON-NLS-1$
+				pressentVars.add(name);
 			}
 		}
 
 		Iterator it = environment.keySet().iterator();
 		while (it.hasNext()) {
 			String key = (String) it.next();
-			String value = (String) environment.get(key);
-			list.add(key + "=" + value);
+			if (!pressentVars.contains(key)) {
+				String value = (String) environment.get(key);
+				list.add(key + "=" + value); //$NON-NLS-1$
+			}
 		}
 
 		return (String[]) list.toArray(new String[list.size()]);
@@ -384,7 +392,7 @@ public class InterpreterConfig implements Cloneable {
 	// TODO: make more real implementation
 	public String toString() {
 		final List items = new ArrayList();
-		items.add("<interpreter>");
+		items.add("<interpreter>"); //$NON-NLS-1$
 		items.addAll(interpreterArgs);
 		items.add(scriptFile.toPortableString());
 		items.addAll(scriptArgs);

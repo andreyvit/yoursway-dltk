@@ -61,7 +61,7 @@ public class ToggleWatchPointAction extends Action implements IUpdate {
 	 */
 	public ToggleWatchPointAction(IWorkbenchPart part, IDocument document,
 			IVerticalRulerInfo rulerInfo) {
-		super("Toggle Watchpoint");
+		super(Messages.ToggleWatchPointAction_toggleWatchpoint);
 		fPart = part;
 		fDocument = document;
 		fRulerInfo = rulerInfo;
@@ -127,7 +127,7 @@ public class ToggleWatchPointAction extends Action implements IUpdate {
 	 *            underlying exception
 	 */
 	private void reportException(Exception e) {
-		DebugUIPlugin.errorDialog(fPart.getSite().getShell(), "Error", "Error",
+		DebugUIPlugin.errorDialog(fPart.getSite().getShell(), Messages.ToggleWatchPointAction_error, Messages.ToggleWatchPointAction_error,
 				e); // 
 	}
 

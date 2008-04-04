@@ -9,24 +9,25 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.ui.launchConfigurations;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.debug.ui.messages.DLTKLaunchConfigurationsMessages;
-import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
+import org.eclipse.dltk.internal.launching.LaunchConfigurationUtils;
 import org.eclipse.dltk.launching.ScriptLaunchConfigurationConstants;
 import org.eclipse.dltk.ui.DLTKPluginImages;
 import org.eclipse.dltk.ui.preferences.FieldValidators;
 import org.eclipse.dltk.ui.preferences.IFieldValidator;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -44,7 +45,7 @@ public abstract class MainLaunchConfigurationTab extends
 		ScriptLaunchConfigurationTab {
 
 	private Text fScriptText;
-	
+
 	protected void doInitializeForm(ILaunchConfiguration config) {
 		updateMainModuleFromConfig(config);
 	}
@@ -69,19 +70,16 @@ public abstract class MainLaunchConfigurationTab extends
 		mainGroup.setFont(font);
 		fScriptText = new Text(mainGroup, SWT.SINGLE | SWT.BORDER);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
+
+		WidgetListener listener = getWidgetListener();
+
 		fScriptText.setLayoutData(gd);
 		fScriptText.setFont(font);
-		fScriptText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				updateLaunchConfigurationDialog();
-			}
-		});
+		fScriptText.addModifyListener(listener);
+
 		fSearchButton = createPushButton(mainGroup,
 				DLTKLaunchConfigurationsMessages.mainTab_searchButton, null);
-		fSearchButton.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
-
+		fSearchButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				handleSearchButtonSelected();
 			}
@@ -119,27 +117,7 @@ public abstract class MainLaunchConfigurationTab extends
 	 *            the config to load the main type from
 	 */
 	protected void updateMainModuleFromConfig(ILaunchConfiguration config) {
-		String mainModuleName = EMPTY_STRING;
-		try {
-			mainModuleName = config.getAttribute(
-					ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
-					EMPTY_STRING);
-		}
-		catch (CoreException ce) {
-			DLTKLaunchingPlugin.log(ce);			
-		}
-		
-		if (EMPTY_STRING.equals(mainModuleName))
-		{
-			String[] guesses = getProjectAndScriptNames();
-			if (guesses != null)
-			{
-				super.setProjectName(guesses[0]);
-				mainModuleName = guesses[1];
-			}
-		}
-		
-		fScriptText.setText(mainModuleName);
+		fScriptText.setText(getMainModuleName(config));
 	}
 
 	/*
@@ -177,19 +155,28 @@ public abstract class MainLaunchConfigurationTab extends
 	 */
 	protected boolean validateScript() {
 		IFieldValidator validator = new FieldValidators.FilePathValidator();
-		
+
 		String projectName = getProjectName();
 		IScriptProject proj = getScriptModel().getScriptProject(projectName);
-		
-		String script = proj.getProject().getLocation().toPortableString() + '/' + getScriptName();
-		IStatus result = validator.validate(script);
 
-		if (!result.isOK())
-		{
+		IPath location = proj.getProject().getLocation();
+		if (location == null) {
+			setErrorMessage(DLTKLaunchConfigurationsMessages.error_notAValidProject);
+			return false;
+		}
+		IPath script = location.append(new Path( getScriptName()));
+		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(script);
+		if( file.exists() && file.getLocation() != null ) {
+			script = file.getLocation();
+		}
+
+		IStatus result = validator.validate(script.toPortableString());
+
+		if (!result.isOK()) {
 			setErrorMessage(DLTKLaunchConfigurationsMessages.error_scriptNotFound);
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -200,11 +187,25 @@ public abstract class MainLaunchConfigurationTab extends
 		return validateScript();
 	}
 
-	
 	/*
 	 * @see org.eclipse.debug.ui.AbstractLaunchConfigurationTab#getImage()
 	 */
 	public Image getImage() {
 		return DLTKPluginImages.get(DLTKPluginImages.IMG_OBJS_CLASS);
+	}
+
+	private String getMainModuleName(ILaunchConfiguration config) {
+		String mainModuleName = LaunchConfigurationUtils.getString(config,
+				ScriptLaunchConfigurationConstants.ATTR_MAIN_SCRIPT_NAME,
+				EMPTY_STRING);
+		if (EMPTY_STRING.equals(mainModuleName)) {
+			String[] guesses = getProjectAndScriptNames();
+			if (guesses != null) {
+				super.setProjectName(guesses[0]);
+				mainModuleName = guesses[1];
+			}
+		}
+
+		return mainModuleName;
 	}
 }

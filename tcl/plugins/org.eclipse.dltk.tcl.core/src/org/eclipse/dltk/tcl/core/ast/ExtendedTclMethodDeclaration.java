@@ -33,7 +33,7 @@ public class ExtendedTclMethodDeclaration extends MethodDeclaration {
 		return declaringXOTclType;
 	}
 
-	public void setDeclaringXOTclType(ASTNode declaringXOTclType) {
+	public void setDeclaringType(ASTNode declaringXOTclType) {
 		this.declaringXOTclType = declaringXOTclType;
 	}
 

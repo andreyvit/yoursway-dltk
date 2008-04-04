@@ -679,7 +679,12 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 		if (location == null) {
 			return null;
 		}
-		return location.append(mainScriptName).toPortableString();
+		IPath workspaceLocation = location.append(mainScriptName);
+		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(workspaceLocation);
+		if( file.exists() && file.getLocation() != null ) {
+			return file.getLocation().toPortableString();
+		}
+		return workspaceLocation.toPortableString();
 	}
 
 	// Should be overriden in for any language
@@ -740,7 +745,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			if (!DebuggingEngineManager.getInstance()
 					.hasSelectedDebuggingEngine(project, getNatureId(configuration))) {
 				abort(
-						"Debugging engine not selected.",
+						LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_debuggingEngineNotSelected,
 						null,
 						ScriptLaunchConfigurationConstants.ERR_NO_DEFAULT_DEBUGGING_ENGINE);
 			}
@@ -758,14 +763,14 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			}
 
 			monitor.beginTask(MessageFormat.format(
-					"Starting launch configuration {0}...",
+					LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_startingLaunchConfiguration,
 					new Object[] { configuration.getName() }), 10);
 			if (monitor.isCanceled()) {
 				return;
 			}
 
 			monitor.subTask(MessageFormat.format(
-					"Validating launch configuration {0}...",
+					LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_validatingLaunchConfiguration,
 					new Object[] { configuration.getName() }));
 			validateLaunchConfiguration(configuration, mode, project);
 			monitor.worked(1);
@@ -774,7 +779,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			}
 
 			// Getting InterpreterConfig
-			monitor.subTask("Generating interpreter config...");
+			monitor.subTask(LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_generatingInterpreterConfiguration);
 			final InterpreterConfig config = createInterpreterConfig(
 					configuration, launch);
 			if (config == null) {
@@ -787,7 +792,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			monitor.worked(1);
 
 			// Getting IInterpreterRunner
-			monitor.subTask("Getting interpreter runner...");
+			monitor.subTask(LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_gettingInterpreterRunner);
 			final IInterpreterRunner runner = getInterpreterRunner(
 					configuration, mode);
 			if (monitor.isCanceled()) {
@@ -796,7 +801,7 @@ public abstract class AbstractScriptLaunchConfigurationDelegate extends
 			monitor.worked(1);
 
 			// Real run
-			monitor.subTask("Executing runner...");
+			monitor.subTask(LaunchingMessages.AbstractScriptLaunchConfigurationDelegate_executingRunner);
 			runRunner(configuration, runner, config, launch,
 					new SubProgressMonitor(monitor, 7));
 

@@ -100,7 +100,7 @@ public class MembersView extends ScriptBrowsingPart implements
 	 */
 	protected String getHelpContextId() {
 		// return IJavaHelpContextIds.MEMBERS_VIEW;
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	protected String getLinkToEditorKey() {

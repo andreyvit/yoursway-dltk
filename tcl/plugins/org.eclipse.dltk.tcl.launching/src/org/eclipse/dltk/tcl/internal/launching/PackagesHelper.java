@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,8 +22,6 @@ import org.eclipse.dltk.launching.LibraryLocation;
 import org.eclipse.dltk.launching.ScriptLaunchUtil;
 import org.eclipse.dltk.tcl.launching.TclLaunchingPlugin;
 import org.eclipse.dltk.utils.DeployHelper;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 
 public class PackagesHelper {
 	private static final String DLTK_BEGIN = "DLTK-BEGIN:";
@@ -187,7 +184,7 @@ public class PackagesHelper {
 
 	public static PackageLocation[] getLocations(IPath installLocation,
 			EnvironmentVariable[] environmentVariables,
-			LibraryLocation[] libraryLocations) {
+			LibraryLocation[] libraryLocations, final IProgressMonitor monitor) {
 		File script;
 		try {
 			script = DeployHelper.deploy(TclLaunchingPlugin.getDefault(),
@@ -215,17 +212,15 @@ public class PackagesHelper {
 					new InputStreamReader(process.getInputStream()));
 			// BufferedReader error = new BufferedReader(new InputStreamReader(
 			// process.getErrorStream()));
-			ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
-
+			
 			final List locations = new ArrayList();
-			dialog.run(true, true, new IRunnableWithProgress() {
+			Runnable runnable = new Runnable() {
 				private String packageName;
 				private Set paths = new HashSet();
 
 				// private String mainPath;
 
-				public void run(IProgressMonitor monitor)
-						throws InvocationTargetException, InterruptedException {
+				public void run() {
 					boolean add = false;
 					try {
 						while (true) {
@@ -331,7 +326,9 @@ public class PackagesHelper {
 					}
 					return null;
 				}
-			});
+
+			};
+			runnable.run();
 			Collections.sort(locations, new Comparator() {
 				public int compare(Object arg0, Object arg1) {
 					if (arg0 instanceof PackageLocation
@@ -350,14 +347,6 @@ public class PackagesHelper {
 				e.printStackTrace();
 			}
 		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		} catch (InvocationTargetException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
-		} catch (InterruptedException e) {
 			if (DLTKCore.DEBUG) {
 				e.printStackTrace();
 			}

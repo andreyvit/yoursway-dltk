@@ -28,9 +28,9 @@ public class ModelModuleType implements IEvaluatedType {
 	public String getTypeName() {
 
 		if (this.fModule != null) {
-			return "model module:" + this.fModule.getElementName();
+			return "model module:" + this.fModule.getElementName(); //$NON-NLS-1$
 		} else {
-			return "model module: unknown";
+			return "model module: unknown"; //$NON-NLS-1$
 		}
 	}
 

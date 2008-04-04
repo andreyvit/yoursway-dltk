@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
@@ -60,7 +61,7 @@ public class OpenCallHierarchyAction extends SelectionDispatchAction {
         setDescription(CallHierarchyMessages.OpenCallHierarchyAction_description); 
 //        PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IJavaHelpContextIds.CALL_HIERARCHY_OPEN_ACTION);
         if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}		
 
     }
@@ -111,6 +112,8 @@ public class OpenCallHierarchyAction extends SelectionDispatchAction {
         if (selection.size() != 1)
             return false;
         Object input= selection.getFirstElement();
+        if (!(input instanceof IModelElement) && (input instanceof IAdaptable))
+           input = ((IAdaptable)input).getAdapter(IModelElement.class);
         if (!(input instanceof IModelElement))
             return false;
         switch (((IModelElement)input).getElementType()) {
@@ -187,7 +190,8 @@ public class OpenCallHierarchyAction extends SelectionDispatchAction {
         if (selection.size() != 1)
             return;
         Object input= selection.getFirstElement();
-
+        if (!(input instanceof IModelElement))
+          input = (IModelElement)((IAdaptable)input).getAdapter(IModelElement.class);
         if (!(input instanceof IModelElement)) {
             IStatus status= createStatus(CallHierarchyMessages.OpenCallHierarchyAction_messages_no_java_element); 
             openErrorDialog(status);
@@ -238,6 +242,6 @@ public class OpenCallHierarchyAction extends SelectionDispatchAction {
         return new Status(IStatus.INFO, DLTKUIPlugin.getPluginId(), IDLTKStatusConstants.INTERNAL_ERROR, message, null);
     }         
     public String getCallHierarchyID() {
-    	return "org.eclipse.dltk.callhierarchy.view";
+    	return "org.eclipse.dltk.callhierarchy.view"; //$NON-NLS-1$
     }
 }

@@ -70,7 +70,7 @@ public abstract class FindReferencesInProjectAction extends FindReferencesAction
 		setImageDescriptor(DLTKPluginImages.DESC_OBJS_SEARCH_REF);
 //		PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IJavaHelpContextIds.FIND_REFERENCES_IN_PROJECT_ACTION);
 		if (DLTKCore.DEBUG) {
-			System.out.println("TODO: Add help support here...");
+			System.out.println("TODO: Add help support here..."); //$NON-NLS-1$
 		}
 	}
 

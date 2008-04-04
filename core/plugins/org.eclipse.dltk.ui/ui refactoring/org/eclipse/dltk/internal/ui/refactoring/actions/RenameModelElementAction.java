@@ -163,7 +163,7 @@ public class RenameModelElementAction extends SelectionDispatchAction {
 
 	private static boolean isRenameAvailable(IModelElement element) throws CoreException {
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: Add other kind of rename refactoring support...");
+			System.err.println("TODO: Add other kind of rename refactoring support..."); //$NON-NLS-1$
 		}
 		switch (element.getElementType()) {
 			case IModelElement.SCRIPT_PROJECT:

@@ -19,8 +19,8 @@ public interface ISourceElementParser {
 	 * Parses selected contens with ast creation. Also it is recommended to use
 	 * SourceParserUtils to put delcaration into cache, and retrive it from it.
 	 */
-	void parseSourceModule(char[] contents,
-			ISourceModuleInfo astCache, char[] filename);
+	void parseSourceModule(char[] contents, ISourceModuleInfo astCache,
+			char[] filename);
 
 	void setRequestor(ISourceElementRequestor requestor);
 

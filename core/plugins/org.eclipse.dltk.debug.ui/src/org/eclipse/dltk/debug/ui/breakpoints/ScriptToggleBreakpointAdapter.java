@@ -9,26 +9,29 @@
  *******************************************************************************/
 package org.eclipse.dltk.debug.ui.breakpoints;
 
-import org.eclipse.core.resources.IResource;
+import java.text.MessageFormat;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.model.IBreakpoint;
-import org.eclipse.debug.core.model.ILineBreakpoint;
 import org.eclipse.debug.ui.actions.IToggleBreakpointsTargetExtension;
 import org.eclipse.dltk.core.IMember;
+import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
+import org.eclipse.dltk.ui.IWorkingCopyManager;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.texteditor.IDocumentProvider;
@@ -55,16 +58,6 @@ public abstract class ScriptToggleBreakpointAdapter implements
 			return adapter != null;
 		}
 		return false;
-	}
-
-	protected IBreakpoint[] getBreakpoints(String debugModelId) {
-		if (debugModelId == null) {
-			return DebugPlugin.getDefault().getBreakpointManager()
-					.getBreakpoints();
-		} else {
-			return DebugPlugin.getDefault().getBreakpointManager()
-					.getBreakpoints(debugModelId);
-		}
 	}
 
 	protected String getSelectedFirstLine(ITextEditor editor,
@@ -121,38 +114,6 @@ public abstract class ScriptToggleBreakpointAdapter implements
 		return (ITextEditor) part.getAdapter(ITextEditor.class);
 	}
 
-	protected IResource getPartResource(IWorkbenchPart part) {
-		ITextEditor textEditor = getTextEditor(part);
-		if (textEditor != null) {
-			IResource resource = (IResource) textEditor.getEditorInput()
-					.getAdapter(IResource.class);
-			return resource;
-		}
-
-		return null;
-	}
-
-	protected ILineBreakpoint findLineBreakpoint(IBreakpoint[] breakpoints,
-			IResource resource, int lineNumber) {
-		for (int i = 0; i < breakpoints.length; i++) {
-			IBreakpoint breakpoint = breakpoints[i];
-			if (breakpoint instanceof IBreakpoint) {
-				if (resource.equals(breakpoint.getMarker().getResource())) {
-					ILineBreakpoint lineBreakpoint = (ILineBreakpoint) breakpoint;
-					try {
-						if (lineBreakpoint.getLineNumber() == lineNumber) {
-							return lineBreakpoint;
-						}
-					} catch (CoreException e) {
-						DLTKDebugUIPlugin.log(e);
-					}
-				}
-			}
-		}
-
-		return null;
-	}
-
 	protected static final int BREAKPOINT_LINE_NOT_FOUND = -1;
 
 	protected static int findBreakpointLine(IDocument document, int startLine,
@@ -196,6 +157,65 @@ public abstract class ScriptToggleBreakpointAdapter implements
 		return selection instanceof ITextSelection;
 	}
 
+	/**
+	 * Returns a selection of the member in the given text selection, or the
+	 * original selection if none.
+	 * 
+	 * @param part
+	 * @param selection
+	 * @return a structured selection of the member in the given text selection,
+	 *         or the original selection if none
+	 * @exception CoreException
+	 *                if an exception occurs
+	 */
+	protected ISelection translateToMembers(IWorkbenchPart part,
+			ISelection selection) throws CoreException {
+		ITextEditor textEditor = getTextEditor(part);
+		if (textEditor != null && selection instanceof ITextSelection) {
+			ITextSelection textSelection = (ITextSelection) selection;
+			IEditorInput editorInput = textEditor.getEditorInput();
+			IDocumentProvider documentProvider = textEditor
+					.getDocumentProvider();
+			if (documentProvider == null) {
+				throw new CoreException(Status.CANCEL_STATUS);
+			}
+			IDocument document = documentProvider.getDocument(editorInput);
+			int offset = textSelection.getOffset();
+			if (document != null) {
+				try {
+					IRegion region = document
+							.getLineInformationOfOffset(offset);
+					int end = region.getOffset() + region.getLength();
+					while (Character.isWhitespace(document.getChar(offset))
+							&& offset < end) {
+						offset++;
+					}
+				} catch (BadLocationException e) {
+				}
+			}
+			IMember m = null;
+
+			IWorkingCopyManager manager = DLTKUIPlugin.getDefault()
+					.getWorkingCopyManager();
+			ISourceModule unit = manager.getWorkingCopy(editorInput);
+			if (unit != null) {
+				synchronized (unit) {
+					unit.reconcile(false, null, null);
+				}
+			}
+
+			IModelElement e = unit.getElementAt(offset);
+			if (e instanceof IMember) {
+				m = (IMember) e;
+			}
+
+			if (m != null) {
+				return new StructuredSelection(m);
+			}
+		}
+		return selection;
+	}
+
 	public void toggleLineBreakpoints(final IWorkbenchPart part,
 			final ISelection selection) throws CoreException {
 
@@ -211,18 +231,13 @@ public abstract class ScriptToggleBreakpointAdapter implements
 						report(null, part);
 
 						int lineNumber = ((ITextSelection) selection)
-								.getStartLine();
+								.getStartLine() + 1;
 
-						final IResource resource = getPartResource(part);
-						if (resource == null) {
-							return Status.CANCEL_STATUS;
-						}
-
-						final IBreakpoint[] scriptBreakpoints = getBreakpoints(getDebugModelId());
-						final IBreakpoint breakpoint = findLineBreakpoint(
-								scriptBreakpoints, resource, lineNumber + 1);
+						final IBreakpoint breakpoint = BreakpointUtils
+								.findLineBreakpoint(editor, lineNumber);
 
 						if (breakpoint != null) {
+							// if breakpoint already exists, delete it
 							breakpoint.delete();
 						} else {
 							final IDocumentProvider documentProvider = editor
@@ -235,21 +250,21 @@ public abstract class ScriptToggleBreakpointAdapter implements
 									.getDocument(editor.getEditorInput());
 
 							lineNumber = findBreakpointLine(document,
-									lineNumber, getValidator());
+									lineNumber - 1, getValidator()) + 1;
 
 							if (lineNumber != BREAKPOINT_LINE_NOT_FOUND) {
 								// Check if already breakpoint set to the same
 								// location
-								if (findLineBreakpoint(scriptBreakpoints,
-										resource, lineNumber + 1) == null) {
+								if (BreakpointUtils.findLineBreakpoint(editor,
+										lineNumber) == null) {
 									BreakpointUtils.addLineBreakpoint(editor,
-											lineNumber + 1);
+											lineNumber);
 								} else {
-									report("Breakpoint already set at line "
-											+ (lineNumber + 1), part);
+									report(MessageFormat.format(Messages.ScriptToggleBreakpointAdapter_breakpointAlreadySetAtLine,
+											new Object[] { new Integer( lineNumber ) }), part);
 								}
 							} else {
-								report("Invalid breakpoint position.", part);
+								report(Messages.ScriptToggleBreakpointAdapter_invalidBreakpointPosition, part);
 							}
 						}
 					} catch (CoreException e) {

@@ -11,17 +11,16 @@ package org.eclipse.dltk.ui.viewsupport;
 
 import org.eclipse.dltk.core.IMember;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerFilter;
 
-public class ModelElementFilter extends ViewerFilter {
+public class ModelElementFilter extends AbstractModelElementFilter {
 	private int fElementType;
 
 	public ModelElementFilter(int type) {
 		fElementType = type;
 	}
 
-	public int getFilteringType() {
-		return fElementType;
+	public String getFilteringType() {
+		return "ModelElementFilter:" + Integer.toString(fElementType); //$NON-NLS-1$
 	}
 
 	public boolean isFilterProperty(Object element, Object property) {

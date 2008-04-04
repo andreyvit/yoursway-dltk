@@ -299,7 +299,7 @@ public class DLTKSearchScope extends AbstractSearchScope {
 			projectPath = root.getScriptProject().getPath().toString();
 			if (root.isArchive()) {
 				if (DLTKCore.DEBUG) {
-					System.err.println("TODO: Check. Bug possible...");
+					System.err.println("TODO: Check. Bug possible..."); //$NON-NLS-1$
 				}
 				String relativePath = ((ScriptFolder) element).getPath()
 						.toString() + '/';

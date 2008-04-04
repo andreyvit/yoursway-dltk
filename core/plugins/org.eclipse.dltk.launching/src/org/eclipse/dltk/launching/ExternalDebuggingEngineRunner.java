@@ -5,6 +5,7 @@ import java.io.File;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.core.PreferencesLookupDelegate;
 import org.eclipse.dltk.internal.launching.InterpreterMessages;
+import org.eclipse.dltk.utils.PlatformFileUtils;
 
 public abstract class ExternalDebuggingEngineRunner extends
 		DebuggingEngineRunner {
@@ -16,7 +17,8 @@ public abstract class ExternalDebuggingEngineRunner extends
 	protected final InterpreterConfig addEngineConfig(InterpreterConfig config,
 			PreferencesLookupDelegate delegate) throws CoreException {
 
-		final File file = getDebuggingEnginePath(delegate);
+		final File file = PlatformFileUtils
+				.findAbsoluteOrEclipseRelativeFile(getDebuggingEnginePath(delegate));
 
 		// Checking debugging engine path
 		if (file == null || file.toString().length() == 0) {
@@ -31,7 +33,7 @@ public abstract class ExternalDebuggingEngineRunner extends
 					ScriptLaunchConfigurationConstants.ERR_DEBUGGING_ENGINE_NOT_CONFIGURED);
 		}
 
-		return alterConfig(config, file.toString());
+		return alterConfig(config, delegate);
 	}
 
 	/**
@@ -40,24 +42,31 @@ public abstract class ExternalDebuggingEngineRunner extends
 	 */
 	protected abstract String getDebuggingEnginePreferenceKey();
 
-	/**
-	 * Returns the id of the plugin whose preference store that contains the
-	 * debugging engine path.
-	 */
-	protected abstract String getDebuggingEnginePreferenceQualifier();
+//	/**
+//	 * Returns the id of the plugin whose preference store that contains the
+//	 * debugging engine path.
+//	 */
+//	protected abstract String getDebuggingEnginePreferenceQualifier();
 
+	
 	protected File getDebuggingEnginePath(PreferencesLookupDelegate delegate) {
 		String key = getDebuggingEnginePreferenceKey();
 		String qualifier = getDebuggingEnginePreferenceQualifier();
-		
+
 		String path = delegate.getString(qualifier, key);
-		if (path != null) {
-			return new File(path);
+		if (!(path == null && "".equals(path))) { //$NON-NLS-1$
+			return PlatformFileUtils
+					.findAbsoluteOrEclipseRelativeFile(new File(path));
 		}
 
 		return null;
 	}
+	
+	protected String getDebuggingPreference(PreferencesLookupDelegate delegate, String key) {
+		String qualifier = getDebuggingEnginePreferenceQualifier();
+		return delegate.getString(qualifier, key);
+	}
 
 	protected abstract InterpreterConfig alterConfig(InterpreterConfig config,
-			String debuggingEnginePath) throws CoreException;
+			PreferencesLookupDelegate delegate) throws CoreException;
 }

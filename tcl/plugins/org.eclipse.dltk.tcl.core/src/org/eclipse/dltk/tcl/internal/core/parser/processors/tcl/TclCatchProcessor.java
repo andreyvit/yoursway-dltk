@@ -14,60 +14,67 @@ import org.eclipse.dltk.tcl.core.TclParseUtil;
 import org.eclipse.dltk.tcl.core.ast.TclAdvancedExecuteExpression;
 import org.eclipse.dltk.tcl.core.ast.TclCatchStatement;
 import org.eclipse.dltk.tcl.core.ast.TclVariableDeclaration;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
 public class TclCatchProcessor extends AbstractTclCommandProcessor {
 
 	public TclCatchProcessor() {
 	}
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset, ASTNode parent ) {
-		TclStatement statement = (TclStatement) parser.processLocal(command, offset, parent);
+	public ASTNode process(TclStatement statement, ITclParser parser, ASTNode parent) {
 		if (statement.getCount() >= 2) {
 			Expression e = statement.getAt(1);
-			TclVariableDeclaration variable = null; 
-			if (statement.getCount() > 2) 
-			{
+			TclVariableDeclaration variable = null;
+			if (statement.getCount() > 2) {
 				Expression variableName = statement.getAt(2);
-				variable = new TclVariableDeclaration(TclParseUtil.makeVariable(variableName), null, variableName.sourceStart(), variableName.sourceEnd());
+				variable = new TclVariableDeclaration(TclParseUtil
+						.makeVariable(variableName), null, variableName
+						.sourceStart(), variableName.sourceEnd());
 			}
 			if (e instanceof TclBlockExpression) {
 				TclBlockExpression block = (TclBlockExpression) e;
 				String blockContent = block.getBlock();
-				blockContent = blockContent.substring(1, blockContent.length() - 1);
+				blockContent = blockContent.substring(1,
+						blockContent.length() - 1);
 				Block bl = new Block(e.sourceStart(), e.sourceEnd());
-				TclCatchStatement catchStatement = new TclCatchStatement(bl, variable, command.getStart() + offset, command.getEnd() + 1 + offset);
+				TclCatchStatement catchStatement = new TclCatchStatement(bl,
+						variable, statement.sourceStart(), statement
+								.sourceEnd());
 				addToParent(parent, catchStatement);
-				parser.parse(blockContent, block.sourceStart() + 1 - parser.getStartPos(), bl );
+				parser.parse(blockContent, block.sourceStart() + 1
+						- parser.getStartPos(), bl);
 				return catchStatement;
-			}
-			else if (e instanceof SimpleReference) {
+			} else if (e instanceof SimpleReference) {
 				Block bl = new Block(e.sourceStart(), e.sourceEnd());
-				TclCatchStatement catchStatement = new TclCatchStatement(bl, variable, command.getStart() + offset, command.getEnd() + 1 + offset);
-				addToParent(parent, catchStatement);
-				bl.addStatement(e);
-				return catchStatement;
-			}
-			else if (e instanceof StringLiteral) {
-				Block bl = new Block(e.sourceStart(), e.sourceEnd());
-				TclCatchStatement catchStatement = new TclCatchStatement(bl, variable, command.getStart() + offset, command.getEnd() + 1 + offset);
+				TclCatchStatement catchStatement = new TclCatchStatement(bl,
+						variable, statement.sourceStart(), statement
+								.sourceEnd());
 				addToParent(parent, catchStatement);
 				bl.addStatement(e);
 				return catchStatement;
-			}
-			else if( e instanceof TclAdvancedExecuteExpression ) {
+			} else if (e instanceof StringLiteral) {
+				Block bl = new Block(e.sourceStart(), e.sourceEnd());
+				TclCatchStatement catchStatement = new TclCatchStatement(bl,
+						variable, statement.sourceStart(), statement
+								.sourceEnd());
+				addToParent(parent, catchStatement);
+				bl.addStatement(e);
+				return catchStatement;
+			} else if (e instanceof TclAdvancedExecuteExpression) {
 				TclAdvancedExecuteExpression block = (TclAdvancedExecuteExpression) e;
 				Block bl = new Block(e.sourceStart(), e.sourceEnd());
-				TclCatchStatement catchStatement = new TclCatchStatement(bl, variable, command.getStart() + offset, command.getEnd() + 1 + offset);
+				TclCatchStatement catchStatement = new TclCatchStatement(bl,
+						variable, block.sourceStart(), block.sourceEnd());
 				addToParent(parent, catchStatement);
 				bl.getStatements().addAll(block.getChilds());
 				return catchStatement;
 			}
+		} else {
+			this.report(parser,
+					Messages.TclProcProcessor_Wrong_Number_of_Arguments,
+					statement, ProblemSeverities.Error);
 		}
-		else {
-			this.report(parser, Messages.TclProcProcessor_Wrong_Number_of_Arguments, statement, ProblemSeverities.Error);
-		}
-		this.report(parser, "Parsing error.", statement, ProblemSeverities.Error);	//TODO appropriate message 
+		this.report(parser, "Parsing error.", statement,
+				ProblemSeverities.Error); // TODO appropriate message
 		return null;
 	}
 }

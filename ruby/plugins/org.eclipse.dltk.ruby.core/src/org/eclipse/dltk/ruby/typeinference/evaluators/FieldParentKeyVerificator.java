@@ -63,14 +63,14 @@ public class FieldParentKeyVerificator extends GoalEvaluator {
 						.determineSelfClass(sourceModule, module, node
 								.sourceStart());
 				
-//				if (selfClass == null)
-//					return null;
+				if (selfClass == null)
+					return null;
 				
 				node = translateNode(node, module);
 				
 				boolean approve = false;
 				
-				if (name.startsWith("$"))
+				if (name.startsWith("$")) //$NON-NLS-1$
 					approve = true;
 				else if (goal.getGoal().getParentModelKey().equals(
 								selfClass.getModelKey())) {

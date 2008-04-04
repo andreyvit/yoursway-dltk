@@ -51,14 +51,14 @@ public class AddExceptionTypeDialogExtension extends TypeSelectionExtension {
 	 */
 	public Control createContentArea(Composite parent) {
 		Composite comp = SWTFactory.createComposite(parent, parent.getFont(), 1, 1, GridData.FILL_HORIZONTAL);
-		fCaughtButton = SWTFactory.createCheckButton(comp, "Suspend on caught", null, fCaught, 1);
+		fCaughtButton = SWTFactory.createCheckButton(comp, Messages.AddExceptionTypeDialogExtension_suspendOnCaught, null, fCaught, 1);
 		fCaughtButton.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 			public void widgetSelected(SelectionEvent e) {
 				fCaught = fCaughtButton.getSelection();
 			}
 		});
-		fUncaughtButton = SWTFactory.createCheckButton(comp, "Suspend on uncaught", null, fUncaught, 1);
+		fUncaughtButton = SWTFactory.createCheckButton(comp, Messages.AddExceptionTypeDialogExtension_SuspendOnUncaught, null, fUncaught, 1);
 		fUncaughtButton.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 			public void widgetSelected(SelectionEvent e) {
@@ -105,7 +105,7 @@ public class AddExceptionTypeDialogExtension extends TypeSelectionExtension {
 			        	return Status.CANCEL_STATUS;
 			        }
 				}
-				return new Status(IStatus.ERROR, DLTKDebugUIPlugin.getUniqueIdentifier(), "Selected item is not an exception");
+				return new Status(IStatus.ERROR, DLTKDebugUIPlugin.getUniqueIdentifier(), Messages.AddExceptionTypeDialogExtension_selectedItemIsNotAnException);
 			}
 			
 		};

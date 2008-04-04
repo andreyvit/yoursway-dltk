@@ -40,11 +40,11 @@ public class RubyConsoleTracker implements IPatternMatchListenerDelegate {
 			int length = event.getLength();
 			IDocument document = getConsole().getDocument();
 			String text = document.get(offset, length);
-			if (text.indexOf("from -e") != -1) {
+			if (text.indexOf("from -e") != -1) { //$NON-NLS-1$
 				return;
 			}
 			String trim = text.trim();
-			String from_ = "from ";
+			String from_ = "from "; //$NON-NLS-1$
 			if (trim.startsWith(from_)) {
 				int shift = text.indexOf(from_) + from_.length();
 				offset += shift;

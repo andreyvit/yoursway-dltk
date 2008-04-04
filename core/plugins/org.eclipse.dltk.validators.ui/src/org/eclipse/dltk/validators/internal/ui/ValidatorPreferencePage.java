@@ -33,7 +33,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  */
 public class ValidatorPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 							
-	private static final String VALIDATOR_PREFERENCE_PAGE = ValidatorsUI.PLUGIN_ID + ".ValidatorPreferencePage";
+	private static final String VALIDATOR_PREFERENCE_PAGE = ValidatorsUI.PLUGIN_ID + ".ValidatorPreferencePage"; //$NON-NLS-1$
 	// InterpreterEnvironment Block
 	private ValidatorBlock fInterpretersBlock;
 	

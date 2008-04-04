@@ -10,6 +10,7 @@
 package org.eclipse.dltk.internal.core.mixin;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -45,21 +46,17 @@ import org.eclipse.dltk.internal.core.SourceModule;
 import org.eclipse.dltk.internal.core.search.DLTKSearchDocument;
 
 public class MixinBuilder implements IScriptBuilder {
-	public IStatus[] buildResources(IScriptProject project, List resources,
+	public IStatus buildResources(IScriptProject project, List resources,
 			IProgressMonitor monitor, int status) {
 		return null;
 	}
 
-	public List getDependencies(IScriptProject project, List resources) {
-		return null;
-	}
-
-	public IStatus[] buildModelElements(IScriptProject project, List elements,
+	public IStatus buildModelElements(IScriptProject project, List elements,
 			IProgressMonitor monitor, int status) {
 		return this.buildModelElements(project, elements, monitor, true);
 	}
 
-	public IStatus[] buildModelElements(IScriptProject project, List elements,
+	public IStatus buildModelElements(IScriptProject project, List elements,
 			final IProgressMonitor monitor, boolean saveIndex) {
 		if (elements.size() == 0) {
 			return null;
@@ -89,13 +86,16 @@ public class MixinBuilder implements IScriptBuilder {
 		try {
 			// waitUntilIndexReady(toolkit);
 			IPath fullPath = project.getProject().getFullPath();
+			String fullContainerPath = ((fullPath.getDevice() == null) ?
+					fullPath.toString() : fullPath.toOSString());
 
-			mixinIndex = manager.getSpecialIndex("mixin", /* project.getProject() */
-			fullPath.toString(), fullPath.toOSString());
+			mixinIndex = manager.getSpecialIndex("mixin", //$NON-NLS-1$
+					/* project.getProject() */fullPath.toString(), fullContainerPath);
 			imon = mixinIndex.monitor;
 			imon.enterWrite();
-			String name = "Building runtime model for "
-					+ project.getElementName();
+			String name = MessageFormat.format(
+					Messages.MixinBuilder_buildingRuntimeModelFor,
+					new Object[] { project.getElementName() });
 			if (monitor != null) {
 				monitor.beginTask(name, elementsSize);
 			}
@@ -111,10 +111,11 @@ public class MixinBuilder implements IScriptBuilder {
 					}
 				}
 
-				String taskTitle = "Building runtime model for "
-						+ project.getElementName() + " ("
-						+ (elements.size() - fileIndex) + "):"
-						+ element.getElementName();
+				String taskTitle = MessageFormat.format(
+						Messages.MixinBuilder_buildingRuntimeModelFor2,
+						new Object[] { project.getElementName(),
+								new Integer(elements.size() - fileIndex),
+								element.getElementName() });
 				++fileIndex;
 				if (monitor != null) {
 					monitor.subTask(taskTitle);
@@ -131,8 +132,11 @@ public class MixinBuilder implements IScriptBuilder {
 						currentIndex = (Index) indexes.get(path);
 						containerPath = path;
 					} else {
-						Index index = manager.getSpecialIndex("mixin", path
-								.toString(), path.toOSString());
+						String contPath = ((path.getDevice() == null) ?
+								path.toString() : path.toOSString());
+
+						Index index = manager.getSpecialIndex("mixin", //$NON-NLS-1$
+								path.toString(), contPath);
 						if (index != null) {
 							currentIndex = index;
 							if (!indexes.values().contains(index)) {
@@ -144,13 +148,12 @@ public class MixinBuilder implements IScriptBuilder {
 					}
 				}
 
-				char[] source = element.getSourceAsCharArray();
 				SearchParticipant participant = SearchEngine
 						.getDefaultSearchParticipant();
 
 				DLTKSearchDocument document;
 				document = new DLTKSearchDocument(element.getPath()
-						.toOSString(), containerPath, source, participant,
+						.toOSString(), containerPath, null, participant,
 						element instanceof ExternalSourceModule);
 				// System.out.println("mixin indexing:" + document.getPath());
 				((InternalSearchDocument) document).toolkit = toolkit;
@@ -179,10 +182,6 @@ public class MixinBuilder implements IScriptBuilder {
 					monitor.worked(1);
 				}
 			}
-		} catch (CoreException e) {
-			if (DLTKCore.DEBUG) {
-				e.printStackTrace();
-			}
 		} finally {
 			final Set saveIndexesSet = new HashSet();
 
@@ -203,13 +202,18 @@ public class MixinBuilder implements IScriptBuilder {
 				}
 			}
 			if (saveIndex) {
-				if (monitor != null) {
-				}
 				for (Iterator ind = saveIndexesSet.iterator(); ind.hasNext();) {
 					Index index = (Index) ind.next();
 					if (monitor != null) {
-						monitor.subTask("Saving index for:"
-								+ index.containerPath);
+						String containerPath = index.containerPath;
+						if (containerPath.startsWith("#special#")) { //$NON-NLS-1$
+							containerPath = containerPath.substring(
+									containerPath.lastIndexOf("#"), //$NON-NLS-1$
+									containerPath.length());
+						}
+						monitor.subTask(MessageFormat.format(
+								Messages.MixinBuilder_savingIndexFor,
+								new Object[] { containerPath }));
 					}
 					try {
 						index.save();
@@ -234,5 +238,14 @@ public class MixinBuilder implements IScriptBuilder {
 
 	public static MixinBuilder getDefault() {
 		return builder;
+	}
+
+	public int estimateElementsToBuild(List elements) {
+		return elements.size();
+	}
+
+	public Set getDependencies(IScriptProject project, Set resources,
+			Set allResources, Set oldExternalFolders, Set externalFolders) {
+		return null;
 	}
 }

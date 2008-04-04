@@ -143,7 +143,7 @@ public class WorkingCopyTests extends ModifyingResourceTests {
 	/**
 	 * Ensures that the primary field can be retrieved.
 	 */
-	public void testGetPrimaryField() {
+	public void REM_testGetPrimaryField() {
 		IType type = this.copy.getType("A");
 		IModelElement primary = type.getField("FIELD").getPrimaryElement();
 		assertTrue("Element is not a field", primary instanceof IField

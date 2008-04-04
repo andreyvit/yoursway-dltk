@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.internal.testing.model;
 
+import org.eclipse.dltk.testing.MessageIds;
+
 public interface ITestRunListener2 {
 
 	/**
@@ -98,7 +100,7 @@ public interface ITestRunListener2 {
 	 * @param expected the expected value
 	 * @param actual the actual value
 	 */
-	public void testFailed(int status, String testId, String testName, String trace, String expected, String actual);
+	public void testFailed(int status, String testId, String testName, String trace, String expected, String actual, int failedCode);
 
 	/**
 	 * An individual test has been rerun.

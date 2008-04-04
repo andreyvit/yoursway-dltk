@@ -749,7 +749,7 @@ public class LibrariesWorkbookPage extends BuildPathBasePage {
 			IBuildpathEntry created = BuildpathDialogAccess.configureContainerEntry(getShell(), existing.getBuildpathEntry(),
 					fCurrJProject, getRawBuildpath());
 			if (created != null) {
-				BPListElement elem = new BPListElement(fCurrJProject, IBuildpathEntry.BPE_CONTAINER, created.getPath(), null, false);
+				BPListElement elem = BPListElement.createFromExisting(created, fCurrJProject);
 				return new BPListElement[] {
 					elem
 				};

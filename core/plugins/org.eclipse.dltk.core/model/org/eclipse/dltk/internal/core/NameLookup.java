@@ -315,7 +315,7 @@ public class NameLookup {
 	}
 	
 	private IPath toPath(String pkgName[]) {
-		IPath path = new Path("");
+		IPath path = new Path(""); //$NON-NLS-1$
 		for( int i = 0; i < pkgName.length;++i ) {
 			path = path.append(pkgName[i]);
 		}

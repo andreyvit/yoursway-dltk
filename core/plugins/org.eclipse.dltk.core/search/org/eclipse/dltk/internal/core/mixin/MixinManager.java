@@ -17,7 +17,7 @@ import org.eclipse.dltk.core.mixin.IMixinParser;
 
 public class MixinManager {
 
-	private final static String MIXIN_EXTPOINT = DLTKCore.PLUGIN_ID + ".mixin";
+	private final static String MIXIN_EXTPOINT = DLTKCore.PLUGIN_ID + ".mixin"; //$NON-NLS-1$
 	
 	private static PriorityClassDLTKExtensionManager mixinInstance = new PriorityClassDLTKExtensionManager(
 			MIXIN_EXTPOINT);

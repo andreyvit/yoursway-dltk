@@ -32,20 +32,20 @@ import org.eclipse.dltk.utils.DeployHelper;
 public class RubyGenericInstall extends AbstractInterpreterInstall {
 
 	public class BuiltinsHelper {
-		private static final String PREFIX = "#### DLTK RUBY BUILTINS ####";
+		private static final String PREFIX = "#### DLTK RUBY BUILTINS ####"; //$NON-NLS-1$
 
 		private Map sources;
 
 		private String[] generateLines() throws IOException, CoreException {
 			final IPath builder = DeployHelper.deploy(RubyLaunchingPlugin
-					.getDefault(), "scripts/builtin.rb");
+					.getDefault(), "scripts/builtin.rb"); //$NON-NLS-1$
 
 			final List lines = new ArrayList();
 
 			InterpreterConfig config = ScriptLaunchUtil
 					.createInterpreterConfig(builder.toFile(), builder
-							.removeLastSegments(1).toFile());
-			// config.addInterpreterArg("-KU");
+							.removeLastSegments(1).toFile(), null);
+			// config.addInterpreterArg("-KU"); //$NON-NLS-1$
 			Process process = ScriptLaunchUtil.runScriptWithInterpreter(
 					RubyGenericInstall.this.getInstallLocation()
 							.getAbsolutePath(), config);
@@ -81,7 +81,7 @@ public class RubyGenericInstall extends AbstractInterpreterInstall {
 						if (old == null)
 							sources.put(fileName, sb.toString());
 						else
-							sources.put(fileName, old + "\n\n" + sb.toString());
+							sources.put(fileName, old + "\n\n" + sb.toString()); //$NON-NLS-1$
 						sb.setLength(0);
 					}
 
@@ -89,7 +89,7 @@ public class RubyGenericInstall extends AbstractInterpreterInstall {
 
 				} else {
 					sb.append(line);
-					sb.append("\n");
+					sb.append("\n"); //$NON-NLS-1$
 				}
 			}
 		}

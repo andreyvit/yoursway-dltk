@@ -23,7 +23,7 @@ import org.eclipse.dltk.core.IScriptProject;
 
 public class ScriptProjectSourceContainer extends CompositeSourceContainer {
 
-	public static final String TYPE_ID = "org.eclipse.dltk.launching.sourceContainer.scriptProject";
+	public static final String TYPE_ID = "org.eclipse.dltk.launching.sourceContainer.scriptProject"; //$NON-NLS-1$
 
 	private IScriptProject project;
 

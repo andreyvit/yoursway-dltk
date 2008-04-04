@@ -43,7 +43,7 @@ public class ScriptVariableWrapper extends ScriptDebugElement implements
 	}
 
 	public String getValueString() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	public boolean hasChildren() {
@@ -62,7 +62,7 @@ public class ScriptVariableWrapper extends ScriptDebugElement implements
 	}
 
 	public String getReferenceTypeName() throws DebugException {
-		return "getReferenceTypeName";
+		return "getReferenceTypeName"; //$NON-NLS-1$
 	}
 
 	public boolean hasValueChanged() throws DebugException {
@@ -94,7 +94,7 @@ public class ScriptVariableWrapper extends ScriptDebugElement implements
 	}
 
 	public IScriptType getType() {
-		return new AtomicScriptType("getType");
+		return new AtomicScriptType("getType"); //$NON-NLS-1$
 	}
 
 	public IScriptStackFrame getStackFrame() {
@@ -104,11 +104,15 @@ public class ScriptVariableWrapper extends ScriptDebugElement implements
 	public IValue getValue() throws DebugException {
 		return new IScriptValue() {
 			public String getReferenceTypeName() throws DebugException {
-				return "";
+				return ""; //$NON-NLS-1$
+			}
+
+			public String getRawValue() {
+			  return ""; //$NON-NLS-1$
 			}
 
 			public String getValueString() throws DebugException {
-				return "";
+				return ""; //$NON-NLS-1$
 			}
 
 			public IVariable[] getVariables() throws DebugException {

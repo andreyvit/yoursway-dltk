@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.dltk.internal.ui.wizards.dialogfields.StringDialogField;
-import org.eclipse.dltk.validators.ValidatorConfigurationPage;
 import org.eclipse.dltk.validators.internal.core.externalchecker.ExternalChecker;
 import org.eclipse.dltk.validators.internal.core.externalchecker.Rule;
+import org.eclipse.dltk.validators.ui.ValidatorConfigurationPage;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -41,13 +41,13 @@ public class ExternalCheckerConfigurationPage extends
 	private Button delRule;
 	private RulesList rulesList = new RulesList();
 
-	private final String TYPES = "TYPES";
+	private final String TYPES = "TYPES"; //$NON-NLS-1$
 
 	public RulesList getRulesList() {
 		return rulesList;
 	}
 
-	private String[] columnNames = new String[] { "RULES", "TYPES" };
+	private String[] columnNames = new String[] { "RULES", "TYPES" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	public ExternalCheckerConfigurationPage() {
 	}
@@ -70,7 +70,7 @@ public class ExternalCheckerConfigurationPage extends
 		path.setLayoutData(gd);
 		// Browse
 		Button browse = new Button(parent, SWT.PUSH);
-		browse.setText("Browse...");
+		browse.setText(Messages.ExternalCheckerConfigurationPage_browse);
 		gd = new GridData(GridData.END);
 		gd.horizontalSpan = 1;
 		browse.setLayoutData(gd);
@@ -93,7 +93,7 @@ public class ExternalCheckerConfigurationPage extends
 		this.fArguments.doFillIntoGrid(ancestor, columns);
 		this.fExtensions.doFillIntoGrid(ancestor, columns);
 		Label label = new Label(ancestor, SWT.WRAP);
-		label.setText("Comma separated list of extensions");
+		label.setText(Messages.ExternalCheckerConfigurationPage_commaSeparatedListOfExtensions);
 		GridData data = new GridData(SWT.FILL, SWT.FILL, false, false);
 		data.horizontalSpan = columns;
 		data.minimumWidth = 100;
@@ -104,7 +104,7 @@ public class ExternalCheckerConfigurationPage extends
 // GridLayout layout = (GridLayout)ancestor.getLayout();
 
 		Group group = new Group(ancestor, SWT.NONE);
-		group.setText("Pattern rules");
+		group.setText(Messages.ExternalCheckerConfigurationPage_patternRules);
 		data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		data.horizontalSpan = columns;
 		group.setLayoutData(data);
@@ -113,7 +113,7 @@ public class ExternalCheckerConfigurationPage extends
 
 		label = new Label(ancestor, SWT.WRAP);
 		label
-				.setText("Pattern is regular expression.\nYou must specify %f for filename, %n for line number and %m for message.\n");
+				.setText(Messages.ExternalCheckerConfigurationPage_patternIsARegularExpression);
 		data = new GridData(SWT.FILL, SWT.FILL, false, false);
 		data.horizontalSpan = columns;
 		data.minimumWidth = 100;
@@ -136,11 +136,11 @@ public class ExternalCheckerConfigurationPage extends
 
 		TableColumn col1 = new TableColumn(fTable, SWT.LEFT, 0);
 		col1.setWidth(200);
-		col1.setText("Output rule");
+		col1.setText(Messages.ExternalCheckerConfigurationPage_outputRule);
 
 		TableColumn col2 = new TableColumn(fTable, SWT.LEFT, 1);
 		col2.setWidth(100);
-		col2.setText("Type");
+		col2.setText(Messages.ExternalCheckerConfigurationPage_type);
 
 		tableViewer = new TableViewer(fTable);
 		tableViewer.setColumnProperties(columnNames);
@@ -172,7 +172,7 @@ public class ExternalCheckerConfigurationPage extends
 		data.verticalAlignment = SWT.TOP;
 		addRule = new Button(buttons, SWT.PUSH);
 		addRule.setLayoutData(data);
-		addRule.setText("Add Rule");
+		addRule.setText(Messages.ExternalCheckerConfigurationPage_addRule);
 		addRule.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent ev) {
 				rulesList.addRule();
@@ -181,7 +181,7 @@ public class ExternalCheckerConfigurationPage extends
 
 		delRule = new Button(buttons, SWT.PUSH);
 		delRule.setLayoutData(data);
-		delRule.setText("Delete Rule");
+		delRule.setText(Messages.ExternalCheckerConfigurationPage_deleteRule);
 		delRule.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent ev) {
 				Rule rule = (Rule) ((IStructuredSelection) tableViewer
@@ -215,11 +215,11 @@ public class ExternalCheckerConfigurationPage extends
 
 	private void createFields() {
 		this.fPath = new StringDialogField();
-		this.fPath.setLabelText("Command to run checker:");
+		this.fPath.setLabelText(Messages.ExternalCheckerConfigurationPage_commandToRunChecker);
 		this.fArguments = new StringDialogField();
-		this.fArguments.setLabelText("Checker arguments:");
+		this.fArguments.setLabelText(Messages.ExternalCheckerConfigurationPage_CheckerArguments);
 		this.fExtensions = new StringDialogField();
-		this.fExtensions.setLabelText("Filename extensions:");
+		this.fExtensions.setLabelText(Messages.ExternalCheckerConfigurationPage_filenameExtensions);
 	}
 
 	public class RulesContentProvider implements IStructuredContentProvider,

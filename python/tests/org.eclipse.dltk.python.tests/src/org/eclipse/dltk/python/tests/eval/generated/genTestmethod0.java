@@ -64,11 +64,11 @@ public class genTestmethod0 extends AbstractModelTests
 	}
 	
 
-	public void testEval0() throws Exception {
+	public void REM_testEval0() throws Exception {
 		testType( "method0.py", "c1", "number" );
 	}
 
-	public void testEval1() throws Exception {
+	public void REM_testEval1() throws Exception {
 		testType( "method0.py", "c2", "string" );
 	}
 

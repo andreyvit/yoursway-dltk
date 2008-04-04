@@ -207,7 +207,7 @@ public abstract class LazyScriptTypeCompletionProposal extends
 //		IScriptProject project = fSourceModule.getScriptProject();
 //		boolean processJavadoc;
 		if (DLTKCore.DEBUG) {
-			System.out.println("TODO: Add documentation support.");
+			System.out.println("TODO: Add documentation support."); //$NON-NLS-1$
 		}
 		// if (project == null)
 		// processJavadoc=

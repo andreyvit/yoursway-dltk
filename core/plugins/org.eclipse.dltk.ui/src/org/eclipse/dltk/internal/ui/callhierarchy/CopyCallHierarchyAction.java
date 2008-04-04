@@ -42,7 +42,7 @@ class CopyCallHierarchyAction extends Action {
 		super(CallHierarchyMessages.CopyCallHierarchyAction_label);  
 //		PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IJavaHelpContextIds.CALL_HIERARCHY_COPY_ACTION);
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}		
 		fView= view;
 		fClipboard= clipboard;

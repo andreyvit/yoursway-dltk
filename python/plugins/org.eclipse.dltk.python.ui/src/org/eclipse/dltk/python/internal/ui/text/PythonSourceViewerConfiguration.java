@@ -11,25 +11,6 @@ package org.eclipse.dltk.python.internal.ui.text;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
-import org.eclipse.dltk.python.internal.ui.text.completion.PythonContentAssistPreference;
-import org.eclipse.dltk.python.internal.ui.text.completion.PythonScriptCompletionProcessor;
-import org.eclipse.dltk.python.ui.text.IPythonPartitions;
-import org.eclipse.dltk.ui.CodeFormatterConstants;
-import org.eclipse.dltk.ui.text.AbstractScriptScanner;
-import org.eclipse.dltk.ui.text.IColorManager;
-import org.eclipse.dltk.ui.text.ScriptPresentationReconciler;
-import org.eclipse.dltk.ui.text.ScriptSourceViewerConfiguration;
-import org.eclipse.dltk.ui.text.SingleTokenScriptScanner;
-import org.eclipse.dltk.ui.text.completion.ContentAssistProcessor;
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.text.IAutoEditStrategy;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IInformationControlCreator;
-import org.eclipse.jface.text.contentassist.ContentAssistant;
-import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
-import org.eclipse.jface.text.contentassist.IContentAssistant;
-import org.eclipse.jface.text.information.IInformationPresenter;
-import org.eclipse.jface.text.information.IInformationProvider;
 import org.eclipse.jface.text.information.InformationPresenter;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
@@ -38,7 +19,6 @@ import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.ui.texteditor.ITextEditor;
-
 
 public class PythonSourceViewerConfiguration extends
 		ScriptSourceViewerConfiguration {
@@ -72,7 +52,8 @@ public class PythonSourceViewerConfiguration extends
 	public int getTabWidth(ISourceViewer sourceViewer) {
 		if (fPreferenceStore == null)
 			return super.getTabWidth(sourceViewer);
-		return fPreferenceStore.getInt(CodeFormatterConstants.FORMATTER_TAB_SIZE);
+		return fPreferenceStore
+				.getInt(CodeFormatterConstants.FORMATTER_TAB_SIZE);
 	}
 
 	protected void initializeScanners() {
@@ -95,16 +76,22 @@ public class PythonSourceViewerConfiguration extends
 	}
 
 	/**
-	 * @return the Python string scannerfor this configuration.
+	 * Returns the Python string scanner for this configuration.
+	 * 
+	 * @return the Python string scanner
 	 */
 	protected RuleBasedScanner getStringScanner() {
 		return fStringScanner;
 	}
 
 	/**
-	 * @return the Python comment scanner for this configuration.
+	 * Returns the Python comment scanner for this configuration.
+	 * 
+	 * @return the Python comment scanner
 	 */
-	protected RuleBasedScanner getCommentScanner() { return fCommentScanner; }
+	protected RuleBasedScanner getCommentScanner() {
+		return fCommentScanner;
+	}
 
 	public IPresentationReconciler getPresentationReconciler(
 			ISourceViewer sourceViewer) {
@@ -121,11 +108,9 @@ public class PythonSourceViewerConfiguration extends
 		reconciler.setDamager(dr, IPythonPartitions.PYTHON_STRING);
 		reconciler.setRepairer(dr, IPythonPartitions.PYTHON_STRING);
 
-
 		dr = new DefaultDamagerRepairer(getCommentScanner());
 		reconciler.setDamager(dr, IPythonPartitions.PYTHON_COMMENT);
 		reconciler.setRepairer(dr, IPythonPartitions.PYTHON_COMMENT);
-
 
 		return reconciler;
 	}
@@ -137,7 +122,7 @@ public class PythonSourceViewerConfiguration extends
 	 * Clients are not allowed to call this method if the old setup with text
 	 * tools is in use.
 	 * </p>
-	 *
+	 * 
 	 * @param event
 	 *            the event to which to adapt
 	 * @see PythonSourceViewerConfiguration#ScriptSourceViewerConfiguration(IColorManager,
@@ -154,32 +139,20 @@ public class PythonSourceViewerConfiguration extends
 	/**
 	 * Determines whether the preference change encoded by the given event
 	 * changes the behavior of one of its contained components.
-	 *
+	 * 
 	 * @param event
 	 *            the event to be investigated
 	 * @return <code>true</code> if event causes a behavioral change
-	 *
+	 * 
 	 */
 	public boolean affectsTextPresentation(PropertyChangeEvent event) {
 		return fCodeScanner.affectsBehavior(event)
 				|| fStringScanner.affectsBehavior(event);
 	}
 
-	public IInformationPresenter getHierarchyPresenter(
-			ScriptSourceViewer viewer, boolean b) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public IInformationPresenter getOutlinePresenter(ScriptSourceViewer viewer,
-			boolean b) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getAutoEditStrategies(org.eclipse.jface.text.source.ISourceViewer,
 	 *      java.lang.String)
 	 */
@@ -191,14 +164,27 @@ public class PythonSourceViewerConfiguration extends
 				fPreferenceStore, partitioning) };
 	}
 
-	protected IInformationControlCreator getOutlinePresenterControlCreator(ISourceViewer sourceViewer, String commandId) {
-		// TODO getOutlinePresenterControlCreator
-		return null;
+	protected void initializeQuickOutlineContexts(
+			InformationPresenter presenter, IInformationProvider provider) {
+		presenter.setInformationProvider(provider,
+				IPythonPartitions.PYTHON_COMMENT);
+		presenter.setInformationProvider(provider,
+				IPythonPartitions.PYTHON_STRING);
 	}
-	protected void initializeQuickOutlineContexts(InformationPresenter presenter,
-			IInformationProvider provider) {
-		presenter.setInformationProvider(provider, IPythonPartitions.PYTHON_COMMENT);
-		presenter.setInformationProvider(provider, IPythonPartitions.PYTHON_STRING);
+
+	protected ContentAssistPreference getContentAssistPreference() {
+		return PythonContentAssistPreference.getDefault();
+	}
+
+	protected void alterContentAssistant(ContentAssistant assistant) {
+		PythonCompletionProcessor processor = new PythonCompletionProcessor(
+				getEditor(), assistant, IDocument.DEFAULT_CONTENT_TYPE);
+		assistant.setContentAssistProcessor(processor,
+				IDocument.DEFAULT_CONTENT_TYPE);
+	}
+	public IInformationPresenter getOutlinePresenter(ScriptSourceViewer viewer,
+			boolean doCodeResolve) {
+		return null;
 	}
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
 		if (getEditor() != null) {

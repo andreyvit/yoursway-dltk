@@ -10,20 +10,23 @@
 package org.eclipse.dltk.ui.actions;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IStorage;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatusConstants;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ISourceReference;
 import org.eclipse.dltk.core.ModelException;
+import org.eclipse.dltk.core.ScriptModelUtil;
 import org.eclipse.dltk.internal.corext.util.Messages;
 import org.eclipse.dltk.internal.ui.actions.ActionMessages;
 import org.eclipse.dltk.internal.ui.actions.ActionUtil;
@@ -42,109 +45,130 @@ import org.eclipse.ui.IWorkbenchSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.texteditor.IEditorStatusLine;
 
-
 /**
  * This action opens a Script editor on a Script element or file.
  * <p>
- * The action is applicable to selections containing elements of
- * type <code>ISourceModule</code>, <code>IMember</code>
- * or <code>IFile</code>.
+ * The action is applicable to selections containing elements of type
+ * <code>ISourceModule</code>, <code>IMember</code> or <code>IFile</code>.
  * 
  * <p>
  * This class may be instantiated; it is not intended to be subclassed.
- * </p> 
+ * </p>
  * 
-	 *
+ * 
  */
 public class OpenAction extends SelectionDispatchAction {
-	
+
 	private ScriptEditor fEditor;
-	
+
 	/**
-	 * Creates a new <code>OpenAction</code>. The action requires
-	 * that the selection provided by the site's selection provider is of type <code>
+	 * Creates a new <code>OpenAction</code>. The action requires that the
+	 * selection provided by the site's selection provider is of type <code>
 	 * org.eclipse.jface.viewers.IStructuredSelection</code>.
 	 * 
-	 * @param site the site providing context information for this action
+	 * @param site
+	 *            the site providing context information for this action
 	 */
 	public OpenAction(IWorkbenchSite site) {
 		super(site);
-		setText(ActionMessages.OpenAction_label); 
-		setToolTipText(ActionMessages.OpenAction_tooltip); 
+		setText(ActionMessages.OpenAction_label);
+		setToolTipText(ActionMessages.OpenAction_tooltip);
 		setDescription(ActionMessages.OpenAction_description);
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
-		
-		//PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IScriptHelpContextIds.OPEN_ACTION);
+
+		// PlatformUI.getWorkbench().getHelpSystem().setHelp(this,
+		// IScriptHelpContextIds.OPEN_ACTION);
 	}
-	
+
 	/**
-	 * Note: This constructor is for internal use only. Clients should not call this constructor.
-	 * @param editor the Script editor
+	 * Note: This constructor is for internal use only. Clients should not call
+	 * this constructor.
+	 * 
+	 * @param editor
+	 *            the Script editor
 	 */
 	public OpenAction(ScriptEditor editor) {
 		this(editor.getEditorSite());
-		fEditor= editor;
-		setText(ActionMessages.OpenAction_declaration_label); 
+		fEditor = editor;
+		setText(ActionMessages.OpenAction_declaration_label);
 		setEnabled(EditorUtility.getEditorInputModelElement(fEditor, false) != null);
 	}
-	
-	/* (non-Javadoc)
-	 * Method declared on SelectionDispatchAction.
+
+	/*
+	 * (non-Javadoc) Method declared on SelectionDispatchAction.
 	 */
 	public void selectionChanged(ITextSelection selection) {
 	}
 
-	/* (non-Javadoc)
-	 * Method declared on SelectionDispatchAction.
+	/*
+	 * (non-Javadoc) Method declared on SelectionDispatchAction.
 	 */
 	public void selectionChanged(IStructuredSelection selection) {
 		setEnabled(checkEnabled(selection));
 	}
-	
+
 	private boolean checkEnabled(IStructuredSelection selection) {
 		if (selection.isEmpty())
 			return false;
-		for (Iterator iter= selection.iterator(); iter.hasNext();) {
-			Object element= iter.next();
-			if (element instanceof ISourceReference)
+		for (Iterator iter = selection.iterator(); iter.hasNext();) {
+			Object element = iter.next();
+			if ((element instanceof ISourceReference)
+					|| ((element instanceof IAdaptable) && (((IAdaptable) element)
+							.getAdapter(ISourceReference.class) != null)))
 				continue;
-			if (element instanceof IFile)
+			if ((element instanceof IFile)
+					|| ((element instanceof IAdaptable) && (((IAdaptable) element)
+							.getAdapter(IFile.class) != null)))
 				continue;
-			if (element instanceof IStorage)
+			if ((element instanceof IStorage)
+					|| ((element instanceof IAdaptable) && (((IAdaptable) element)
+							.getAdapter(IStorage.class) != null)))
 				continue;
 			return false;
 		}
 		return true;
 	}
-	
-	/* (non-Javadoc)
-	 * Method declared on SelectionDispatchAction.
+
+	/*
+	 * (non-Javadoc) Method declared on SelectionDispatchAction.
 	 */
 	public void run(ITextSelection selection) {
 		if (!isProcessable())
 			return;
 		try {
-			IModelElement[] elements= SelectionConverter.codeResolveForked(fEditor, false);
+			IModelElement[] elements = SelectionConverter.codeResolveForked(
+					fEditor, false);
+			elements = filterElements(elements);
 			if (elements == null || elements.length == 0) {
-				IEditorStatusLine statusLine= (IEditorStatusLine) fEditor.getAdapter(IEditorStatusLine.class);
+				IEditorStatusLine statusLine = (IEditorStatusLine) fEditor
+						.getAdapter(IEditorStatusLine.class);
 				if (statusLine != null)
-					statusLine.setMessage(true, ActionMessages.OpenAction_error_messageBadSelection, null); 
+					statusLine
+							.setMessage(
+									true,
+									ActionMessages.OpenAction_error_messageBadSelection,
+									null);
 				getShell().getDisplay().beep();
 				return;
 			}
-			IModelElement element= elements[0];
+			IModelElement element = elements[0];
 			if (elements.length > 1) {
-				element= OpenActionUtil.selectModelElement(elements, getShell(), getDialogTitle(), ActionMessages.OpenAction_select_element);
+				element = OpenActionUtil.selectModelElement(elements,
+						getShell(), getDialogTitle(),
+						ActionMessages.OpenAction_select_element);
 				if (element == null)
 					return;
 			}
 
-			int type= element.getElementType();
-			if (type == IModelElement.SCRIPT_PROJECT || type == IModelElement.PROJECT_FRAGMENT || type == IModelElement.SCRIPT_FOLDER)
-				element= EditorUtility.getEditorInputModelElement(fEditor, false);
-			run(new Object[] {element} );
+			int type = element.getElementType();
+			if (type == IModelElement.SCRIPT_PROJECT
+					|| type == IModelElement.PROJECT_FRAGMENT
+					|| type == IModelElement.SCRIPT_FOLDER)
+				element = EditorUtility.getEditorInputModelElement(fEditor,
+						false);
+			run(new Object[] { element });
 		} catch (InvocationTargetException e) {
 			showError(e);
 		} catch (InterruptedException e) {
@@ -152,85 +176,143 @@ public class OpenAction extends SelectionDispatchAction {
 		}
 	}
 
+	private IModelElement[] filterElements(IModelElement[] elements) {
+		if (elements == null)
+			return null;
+		
+		Map uniqueElements = new HashMap();
+		for (int i = 0; i < elements.length; i++) {
+			IModelElement element = elements[i];
+			IModelElement module = element
+					.getAncestor(IModelElement.SOURCE_MODULE);
+			if (module != null) {
+				if (!uniqueElements.containsKey(module)) {
+					uniqueElements.put(module, element);
+				}
+			}
+		}
+		return (IModelElement[]) uniqueElements.values().toArray(
+				new IModelElement[uniqueElements.size()]);
+	}
+
 	private boolean isProcessable() {
 		if (fEditor != null) {
-			IModelElement je= EditorUtility.getEditorInputModelElement(fEditor, false);
-			if (je instanceof ISourceModule && !ScriptModelUtil.isPrimary((ISourceModule)je))
+			IModelElement je = EditorUtility.getEditorInputModelElement(
+					fEditor, false);
+			if (je instanceof ISourceModule
+					&& !ScriptModelUtil.isPrimary((ISourceModule) je))
 				return true; // can process non-primary working copies
 		}
 		return ActionUtil.isProcessable(getShell(), fEditor);
 	}
-	
-	/* (non-Javadoc)
-	 * Method declared on SelectionDispatchAction.
+
+	/*
+	 * (non-Javadoc) Method declared on SelectionDispatchAction.
 	 */
 	public void run(IStructuredSelection selection) {
 		if (!checkEnabled(selection))
 			return;
 		run(selection.toArray());
 	}
-	
+
 	/**
-	 * Note: this method is for internal use only. Clients should not call this method.
+	 * Note: this method is for internal use only. Clients should not call this
+	 * method.
 	 * 
-	 * @param elements the elements to process
+	 * @param elements
+	 *            the elements to process
 	 */
 	public void run(Object[] elements) {
 		if (elements == null)
 			return;
-		for (int i= 0; i < elements.length; i++) {
-			Object element= elements[i];
+		for (int i = 0; i < elements.length; i++) {
+			Object element = elements[i];
 			try {
-				element= getElementToOpen(element);
-				boolean activateOnOpen= fEditor != null ? true : OpenStrategy.activateOnOpen();
+				element = getElementToOpen(element);
+				boolean activateOnOpen = fEditor != null ? true : OpenStrategy
+						.activateOnOpen();
 				OpenActionUtil.open(element, activateOnOpen);
 			} catch (ModelException e) {
-				DLTKUIPlugin.log(new Status(IStatus.ERROR, DLTKUIPlugin.PLUGIN_ID,
-					IModelStatusConstants.INTERNAL_ERROR, ActionMessages.OpenAction_error_message, e)); 
-				
-				ErrorDialog.openError(getShell(), 
-					getDialogTitle(),
-					ActionMessages.OpenAction_error_messageProblems,  
-					e.getStatus());
-			
+				DLTKUIPlugin.log(new Status(IStatus.ERROR,
+						DLTKUIPlugin.PLUGIN_ID,
+						IModelStatusConstants.INTERNAL_ERROR,
+						ActionMessages.OpenAction_error_message, e));
+
+				ErrorDialog.openError(getShell(), getDialogTitle(),
+						ActionMessages.OpenAction_error_messageProblems, e
+								.getStatus());
+
 			} catch (PartInitException x) {
-								
-				String name= null;
-				
+
+				String name = null;
+
 				if (element instanceof IModelElement) {
-					name= ((IModelElement) element).getElementName();
+					name = ((IModelElement) element).getElementName();
 				} else if (element instanceof IStorage) {
-					name= ((IStorage) element).getName();
+					name = ((IStorage) element).getName();
 				} else if (element instanceof IResource) {
-					name= ((IResource) element).getName();
+					name = ((IResource) element).getName();
 				}
-				
+
 				if (name != null) {
-					MessageDialog.openError(getShell(),
-						ActionMessages.OpenAction_error_messageProblems,  
-						Messages.format(ActionMessages.OpenAction_error_messageArgs,  
-							new String[] { name, x.getMessage() } ));			
+					MessageDialog
+							.openError(
+									getShell(),
+									ActionMessages.OpenAction_error_messageProblems,
+									Messages
+											.format(
+													ActionMessages.OpenAction_error_messageArgs,
+													new String[] { name,
+															x.getMessage() }));
 				}
-			}		
+			}
 		}
 	}
-	
+
 	/**
-	 * Note: this method is for internal use only. Clients should not call this method.
+	 * Note: this method is for internal use only. Clients should not call this
+	 * method.
 	 * 
-	 * @param object the element to open
+	 * @param object
+	 *            the element to open
 	 * @return the real element to open
-	 * @throws ModelException if an error occurs while accessing the Script model
+	 * @throws ModelException
+	 *             if an error occurs while accessing the Script model
 	 */
 	public Object getElementToOpen(Object object) throws ModelException {
-		return object;
-	}	
-	
-	private String getDialogTitle() {
-		return ActionMessages.OpenAction_error_title; 
+		Object target = null;
+
+		if (((object instanceof ISourceReference) != true)
+				&& ((object instanceof ISourceReference) != true)
+				&& ((object instanceof ISourceReference) != true)
+				&& (object instanceof IAdaptable)) {
+			IAdaptable adaptable = (IAdaptable) object;
+
+			target = adaptable.getAdapter(ISourceReference.class);
+			if (target == null) {
+				target = adaptable.getAdapter(IModelElement.class);
+				if (target == null) {
+					target = adaptable.getAdapter(IFile.class);
+					if (target == null) {
+						target = adaptable.getAdapter(IStorage.class);
+					}
+				}
+			}
+		}
+
+		if (target == null) {
+			target = object;
+		}
+
+		return target;
 	}
-	
+
+	private String getDialogTitle() {
+		return ActionMessages.OpenAction_error_title;
+	}
+
 	private void showError(InvocationTargetException e) {
-		ExceptionHandler.handle(e, getShell(), getDialogTitle(), ActionMessages.OpenAction_error_message); 
+		ExceptionHandler.handle(e, getShell(), getDialogTitle(),
+				ActionMessages.OpenAction_error_message);
 	}
 }

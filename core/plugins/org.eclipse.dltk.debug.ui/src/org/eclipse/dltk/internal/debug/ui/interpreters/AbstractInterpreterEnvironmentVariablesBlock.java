@@ -57,9 +57,9 @@ import org.eclipse.ui.dialogs.ListSelectionDialog;
 public abstract class AbstractInterpreterEnvironmentVariablesBlock implements
 		SelectionListener, ISelectionChangedListener {
 
-	private static final String VALUE_LABEL = "&Value";
+	private static final String VALUE_LABEL = InterpretersMessages.AbstractInterpreterEnvironmentVariablesBlock_value;
 
-	private static final String NAME_LABEL = "&Name";
+	private static final String NAME_LABEL = InterpretersMessages.AbstractInterpreterEnvironmentVariablesBlock_name;
 
 	/**
 	 * Attribute name for the last path used to open a file/directory chooser
@@ -131,13 +131,13 @@ public abstract class AbstractInterpreterEnvironmentVariablesBlock implements
 		pathButtonComp.setLayoutData(gd);
 		pathButtonComp.setFont(font);
 
-		fAddButton = createPushButton(pathButtonComp, "Add...");
+		fAddButton = createPushButton(pathButtonComp, InterpretersMessages.AbstractInterpreterEnvironmentVariablesBlock_add);
 		fAddButton.addSelectionListener(this);
 
 		fAddExistedButton = createPushButton(pathButtonComp,
-				"Add from Environment...");
+				InterpretersMessages.AbstractInterpreterEnvironmentVariablesBlock_addFromEnvironment);
 		fAddExistedButton.addSelectionListener(this);
-		fEditButton = createPushButton(pathButtonComp, "Edit...");
+		fEditButton = createPushButton(pathButtonComp, InterpretersMessages.AbstractInterpreterEnvironmentVariablesBlock_edit);
 		fEditButton.addSelectionListener(this);
 
 		fRemoveButton = createPushButton(pathButtonComp,
@@ -319,7 +319,7 @@ public abstract class AbstractInterpreterEnvironmentVariablesBlock implements
 		String originalName = var.getName();
 		String value = var.getValue();
 		MultipleInputDialog dialog = new MultipleInputDialog(
-				fDialog.getShell(), "Edit variable");
+				fDialog.getShell(), InterpretersMessages.AbstractInterpreterEnvironmentVariablesBlock_editVariable);
 		dialog.addTextField(NAME_LABEL, originalName, false);
 		dialog.addVariablesField(VALUE_LABEL, value, true);
 
@@ -360,7 +360,7 @@ public abstract class AbstractInterpreterEnvironmentVariablesBlock implements
 
 	private EnvironmentVariable[] add() {
 		MultipleInputDialog dialog = new MultipleInputDialog(
-				fDialog.getShell(), "Add variable");
+				fDialog.getShell(), InterpretersMessages.AbstractInterpreterEnvironmentVariablesBlock_addVariable);
 		dialog.addTextField(NAME_LABEL, null, false);
 		dialog.addVariablesField(VALUE_LABEL, null, true);
 

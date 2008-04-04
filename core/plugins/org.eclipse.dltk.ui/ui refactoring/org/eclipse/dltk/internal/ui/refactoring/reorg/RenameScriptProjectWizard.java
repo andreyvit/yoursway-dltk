@@ -21,6 +21,6 @@ public class RenameScriptProjectWizard extends RenameRefactoringWizard {
 			RefactoringMessages.RenameScriptProject_defaultPageTitle, 
 			RefactoringMessages.RenameScriptProject_inputPage_description, 
 			DLTKPluginImages.DESC_WIZBAN_REFACTOR,
-			""/*IScriptHelpContextIds.RENAME_SCRIPT_PROJECT_WIZARD_PAGE*/);
+			""/*IScriptHelpContextIds.RENAME_SCRIPT_PROJECT_WIZARD_PAGE*/); //$NON-NLS-1$
 	}
 }

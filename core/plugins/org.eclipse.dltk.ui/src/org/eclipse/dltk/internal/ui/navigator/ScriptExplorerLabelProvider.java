@@ -39,9 +39,7 @@ public class ScriptExplorerLabelProvider extends AppearanceAwareLabelProvider {
 		fContentProvider= cp;
 	}		
 
-
 	public String getText(Object element) {
-		
 		if (fIsFlatLayout || !(element instanceof IScriptFolder))
 			return super.getText(element);			
 

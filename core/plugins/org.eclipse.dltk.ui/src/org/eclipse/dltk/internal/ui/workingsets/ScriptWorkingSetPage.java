@@ -143,7 +143,7 @@ public class ScriptWorkingSetPage extends WizardPage implements IWorkingSetPage 
 		fTree.setLabelProvider(new DecoratingModelLabelProvider(fScriptElementLabelProvider));
 		fTree.setSorter(new ModelElementSorter());
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add empty inner package filter support here...");
+			System.err.println("Add empty inner package filter support here..."); //$NON-NLS-1$
 		}
 		//fTree.addFilter(new EmptyInnerPackageFilter());
 		fTree.setUseHashlookup(true);
@@ -209,7 +209,7 @@ public class ScriptWorkingSetPage extends WizardPage implements IWorkingSetPage 
 		Dialog.applyDialogFont(composite);
 		// Set help for the page
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}		
 		//ScriptUIHelp.setHelp(fTree, IScriptHelpContextIds.Script_WORKING_SET_PAGE);
 	}

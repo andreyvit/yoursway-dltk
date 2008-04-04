@@ -67,8 +67,8 @@ public abstract class AddExceptionAction implements IViewActionDelegate, IWorkbe
 				SearchEngine.createWorkspaceScope(fToolkit.getCoreToolkit()),
 				IDLTKSearchConstants.TYPE, ext, fToolkit);
 		
-		dialog.setMessage("Search");
-		dialog.setTitle("Add exception breakpoint");
+		dialog.setMessage(Messages.AddExceptionAction_search);
+		dialog.setTitle(Messages.AddExceptionAction_addExceptionBreakpoint);
 		if (dialog.open() == IDialogConstants.OK_ID) {
 			Object[] types = dialog.getResult();
 			if (types != null && types.length > 0) {
@@ -82,7 +82,7 @@ public abstract class AddExceptionAction implements IViewActionDelegate, IWorkbe
 						settings.put(UNCAUGHT_CHECKED, uncaught);
 					}
 					catch (CoreException e) {
-						DLTKDebugUIPlugin.errorDialog("Unable to create breakpoint", e.getStatus());
+						DLTKDebugUIPlugin.errorDialog(Messages.AddExceptionAction_unableToCreateBreakpoint, e.getStatus());
 					}
 				}
 
@@ -131,7 +131,7 @@ public abstract class AddExceptionAction implements IViewActionDelegate, IWorkbe
 			}
 		}
 		if (!exists) {
-			new Job("Script Toggle Exception Breakpoint") {
+			new Job(Messages.AddExceptionAction_scriptToggleExceptionBreakpoint) {
 				protected IStatus run(IProgressMonitor monitor) {
 					try {
 						BreakpointUtils.addExceptionBreakpoint(getDebugModelId(), caught, uncaught, type);

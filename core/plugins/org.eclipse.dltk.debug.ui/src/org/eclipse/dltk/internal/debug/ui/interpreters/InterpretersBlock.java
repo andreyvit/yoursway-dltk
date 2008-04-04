@@ -27,6 +27,7 @@ import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.InterpreterSearcher;
 import org.eclipse.dltk.launching.InterpreterStandin;
 import org.eclipse.dltk.launching.ScriptRuntime;
+import org.eclipse.dltk.ui.dialogs.TimeTriggeredProgressMonitorDialog;
 import org.eclipse.dltk.ui.util.PixelConverter;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -150,7 +151,7 @@ public abstract class InterpretersBlock implements
 				case 1:
 					return interp.getInterpreterInstallType().getName();
 				case 2:
-					return interp.getInstallLocation().toString();
+					return interp.getRawInstallLocation().toString();
 				}
 			}
 			return element.toString();
@@ -645,8 +646,8 @@ public abstract class InterpretersBlock implements
 		};
 
 		try {
-			ProgressMonitorDialog progress = new ProgressMonitorDialog(
-					getShell()) {
+			ProgressMonitorDialog progress = new TimeTriggeredProgressMonitorDialog(
+					getShell(), 500) {
 
 				protected void createCancelButton(Composite parent) {
 					super.createCancelButton(parent);

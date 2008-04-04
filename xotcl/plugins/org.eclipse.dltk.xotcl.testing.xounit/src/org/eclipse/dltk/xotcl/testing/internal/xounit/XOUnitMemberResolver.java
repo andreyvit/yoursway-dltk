@@ -10,12 +10,13 @@ import org.eclipse.dltk.testing.AbstractTestingElementResolver;
 import org.eclipse.dltk.testing.ITestingElementResolver;
 import org.eclipse.dltk.xotcl.core.ast.xotcl.XOTclMethodDeclaration;
 
-public class XOUnitMemberResolver extends AbstractTestingElementResolver implements ITestingElementResolver {
-	
+public class XOUnitMemberResolver extends AbstractTestingElementResolver
+		implements ITestingElementResolver {
+
 	protected ASTNode findNode(final String testName,
 			final ModuleDeclaration decl, String method) {
 		final ASTNode result[] = new ASTNode[1];
-		final String tname = testName + "::" + method;
+		final String tname = testName.replaceAll("\\.", "::");
 		try {
 			decl.traverse(new ASTVisitor() {
 				public boolean visit(MethodDeclaration s) throws Exception {

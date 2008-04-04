@@ -17,7 +17,6 @@ import org.eclipse.dltk.core.AbstractLanguageToolkit;
 import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 
 public class PythonLanguageToolkit extends AbstractLanguageToolkit {
-	private static final String[] langaugeExtensions = new String[] { "py" };
 	private static PythonLanguageToolkit sInstance = new PythonLanguageToolkit();
 
 	public PythonLanguageToolkit() {
@@ -29,19 +28,16 @@ public class PythonLanguageToolkit extends AbstractLanguageToolkit {
 
 	public boolean validateSourcePackage(IPath path) {
 		File file = new File(path.toOSString());
-		if (file != null) {
-			String members[] = file.list(new FilenameFilter() {
-
-				public boolean accept(File dir, String name) {
-					if (name.toLowerCase().equals("__init__.py")) {
-						return true;
-					}
-					return false;
+		String members[] = file.list(new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				if (name.toLowerCase().equals("__init__.py")) {
+					return true;
 				}
-			});
-			if (members.length > 0) {
-				return true;
+				return false;
 			}
+		});
+		if (members.length > 0) {
+			return true;
 		}
 		return false;
 	}
@@ -54,20 +50,8 @@ public class PythonLanguageToolkit extends AbstractLanguageToolkit {
 		return sInstance;
 	}
 
-	public String getDelimeterReplacerString() {
-		return ".";
-	}
-
-	public String[] getLanguageFileExtensions() {
-		return langaugeExtensions;
-	}
-
 	public String getLanguageName() {
 		return "Python";
-	}
-
-	protected String getCorePluginID() {
-		return PythonPlugin.PLUGIN_ID;
 	}
 
 	public String getLanguageContentType() {

@@ -1434,7 +1434,7 @@ public abstract class ScriptBrowsingPart extends ViewPart implements
 			nature = (String) data;
 
 		} else if (data instanceof Map) {
-			nature = (String) ((Map) data).get("nature");
+			nature = (String) ((Map) data).get("nature"); //$NON-NLS-1$
 		}
 		if (nature != null) {
 			try {
@@ -1444,11 +1444,11 @@ public abstract class ScriptBrowsingPart extends ViewPart implements
 					e.printStackTrace();
 				}
 				throw new RuntimeException(
-						"Nature attribute should be specified and correct", e);
+						ScriptBrowsingMessages.ScriptBrowsingPart_natureAttributeMustBeSpecifiedAndCorrect, e);
 			}
 		} else {
 			throw new RuntimeException(
-					"Nature attribute should be specified and correct");
+					ScriptBrowsingMessages.ScriptBrowsingPart_natureAttributeMustBeSpecifiedAndCorrect);
 		}
 	}
 }

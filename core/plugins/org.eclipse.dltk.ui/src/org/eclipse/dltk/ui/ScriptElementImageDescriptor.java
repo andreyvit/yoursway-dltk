@@ -99,13 +99,13 @@ public class ScriptElementImageDescriptor extends CompositeImageDescriptor
 			ImageData data = descriptor.getImageData( ); // see bug 51965: getImageData can return null
 			if( data == null ) {
 				data = DEFAULT_IMAGE_DATA;
-				System.err.println( "Image data not available: " + descriptor.toString( ) );
+				System.err.println( "Image data not available: " + descriptor.toString( ) ); //$NON-NLS-1$
 				// DLTKUIPlugin.logErrorMessage("Image data not available: " + descriptor.toString()); //$NON-NLS-1$
 			}
 			return data;
 		}
 		else {			
-			System.err.println( "Image data not available: " + descriptor.toString( ) );
+			System.err.println( "Image data not available: " + descriptor.toString( ) ); //$NON-NLS-1$
 			return DEFAULT_IMAGE_DATA;
 		}
 	}
@@ -126,7 +126,7 @@ public class ScriptElementImageDescriptor extends CompositeImageDescriptor
 		if ((fFlags & ERROR) != 0) {
 			ImageData data= getImageData(DLTKPluginImages.DESC_OVR_ERROR);
 			drawImage(data, x, size.y - data.height);
-			x+= data.width;
+			x += data.width;
 		}
 		if ((fFlags & WARNING) != 0) {
 			ImageData data= getImageData(DLTKPluginImages.DESC_OVR_WARNING);

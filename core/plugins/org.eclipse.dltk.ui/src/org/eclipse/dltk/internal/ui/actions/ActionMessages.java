@@ -18,6 +18,8 @@ public final class ActionMessages extends NLS {
 	public static String DefaultEditorDescription_name;
 
 	public static String OpenWithMenu_label;
+
+	public static String RefactorActionGroup_noRefactoringAvailable;
 	public static String RefactorMenu_label;
 	public static String BuildPath_label;
 	public static String BuildAction_label;

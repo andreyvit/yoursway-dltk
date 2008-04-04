@@ -109,7 +109,7 @@ public class DefaultProblem extends CategorizedProblem {
 
 		StringBuffer errorBuffer = new StringBuffer();
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: Add correct code here. DefaultProblem");
+			System.err.println("TODO: Add correct code here. DefaultProblem"); //$NON-NLS-1$
 		}
 		// if ((tagBits & Main.Logger.EMACS) == 0) {
 		// errorBuffer.append(' ').append(Messages.bind(Messages.problem_atLine,
@@ -176,7 +176,7 @@ public class DefaultProblem extends CategorizedProblem {
 		// return ProblemReporter.getProblemCategory(this.severity, this.id);
 		if (DLTKCore.DEBUG) {
 			System.err
-					.println("TODO: DefaultProblem getCategoryID always return 0. Fix it.");
+					.println("TODO: DefaultProblem getCategoryID always return 0. Fix it."); //$NON-NLS-1$
 		}
 		return 0;
 	}

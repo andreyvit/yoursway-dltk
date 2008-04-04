@@ -185,6 +185,15 @@ public class NewScriptThreadManager implements IScriptThreadManager {
 		}
 	}
 
+	public void refreshThreads() {
+		synchronized(lock) {
+			for (int i = 0; i < threads.length; ++i) {
+				ScriptThread thread = threads[i];
+				thread.updateStackFrames();
+			}
+		}
+	}
+	
 	// =========================================================================
 	// ============================ ITerminate =================================
 	// =========================================================================

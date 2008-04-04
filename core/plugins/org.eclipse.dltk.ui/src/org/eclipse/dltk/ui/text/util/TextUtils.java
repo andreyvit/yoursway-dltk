@@ -12,7 +12,7 @@ package org.eclipse.dltk.ui.text.util;
 public abstract class TextUtils {
 	
 	private TextUtils() {
-		throw new AssertionError("Cannot instantiate utility class");
+		throw new AssertionError("Cannot instantiate utility class"); //$NON-NLS-1$
 	}
 
 	/**
@@ -33,21 +33,21 @@ public abstract class TextUtils {
 	 * @since JRE 1.5
 	 */
 	public static String Pattern_quote(String s) {
-		int slashEIndex = s.indexOf("\\E");
+		int slashEIndex = s.indexOf("\\E"); //$NON-NLS-1$
 		if (slashEIndex == -1)
-			return "\\Q" + s + "\\E";
+			return "\\Q" + s + "\\E"; //$NON-NLS-1$ //$NON-NLS-2$
 	
 		StringBuffer sb = new StringBuffer(s.length() * 2);
-		sb.append("\\Q");
+		sb.append("\\Q"); //$NON-NLS-1$
 		slashEIndex = 0;
 		int current = 0;
-		while ((slashEIndex = s.indexOf("\\E", current)) != -1) {
+		while ((slashEIndex = s.indexOf("\\E", current)) != -1) { //$NON-NLS-1$
 			sb.append(s.substring(current, slashEIndex));
 			current = slashEIndex + 2;
-			sb.append("\\E\\\\E\\Q");
+			sb.append("\\E\\\\E\\Q"); //$NON-NLS-1$
 		}
 		sb.append(s.substring(current, s.length()));
-		sb.append("\\E");
+		sb.append("\\E"); //$NON-NLS-1$
 		return sb.toString();
 	}
 

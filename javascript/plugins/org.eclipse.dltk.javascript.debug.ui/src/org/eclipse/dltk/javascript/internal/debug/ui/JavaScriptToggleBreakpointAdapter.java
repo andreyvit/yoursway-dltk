@@ -30,68 +30,53 @@ public class JavaScriptToggleBreakpointAdapter extends
 	public boolean canToggleLineBreakpoints(IWorkbenchPart part,
 			ISelection selection) {
 
-		return getPartResource(part) != null;
+		return true;
 	}
 
 	public void toggleLineBreakpoints(IWorkbenchPart part, ISelection selection)
 			throws CoreException {
 		if (selection instanceof ITextSelection) {
+			ITextEditor textEditor = getTextEditor(part);
 			ITextSelection textSelection = (ITextSelection) selection;
 			int lineNumber = textSelection.getStartLine() + 1; // one based
 
-			IResource resource = getPartResource(part);
+			ILineBreakpoint breakpoint = BreakpointUtils.findLineBreakpoint(
+					textEditor, lineNumber);
+			if (breakpoint != null) {
+				breakpoint.delete();
+				return;
+			}
 
-			if (resource != null) {
-				// TODO: optimize
-				IBreakpoint[] breakpoints = DebugPlugin.getDefault()
-						.getBreakpointManager().getBreakpoints();
+			if (textEditor instanceof ScriptEditor) {
+				ScriptEditor scriptEditor = (ScriptEditor) textEditor;
+				try {
+					IDocument doc = scriptEditor.getScriptSourceViewer()
+							.getDocument();
 
-				for (int i = 0; i < breakpoints.length; i++) {
-					IBreakpoint breakpoint = breakpoints[i];
-					if (resource.equals(breakpoint.getMarker().getResource())) {
-						if (((ILineBreakpoint) breakpoint).getLineNumber() == lineNumber) {
-							// delete existing breakpoint
-							breakpoint.delete();
-							return;
+					IRegion region = doc.getLineInformation(lineNumber - 1);
+					String string = doc.get(region.getOffset(), region
+							.getLength());
+					int index = string.indexOf("function");
+					if (index != -1) {
+						string = string.substring(index + "function".length())
+								.trim();
+						int apos = string.indexOf('(');
+						if (apos >= 0) {
+							string = string.substring(0, apos).trim();
 						}
-					}
-				}
 
-				ITextEditor textEditor = getTextEditor(part);
-				if (textEditor instanceof ScriptEditor) {
-					ScriptEditor scriptEditor = (ScriptEditor) textEditor;
-					try {
-						IDocument doc = scriptEditor.getScriptSourceViewer()
-								.getDocument();
+						BreakpointUtils.addMethodEntryBreakpoint(textEditor,
+								lineNumber, string);
 
-						IRegion region = doc.getLineInformation(lineNumber - 1);
-						String string = doc.get(region.getOffset(), region
-								.getLength());
-						int index = string.indexOf("function");
-						if (index != -1) {
-							string = string.substring(
-									index + "function".length()).trim();
-							int apos = string.indexOf('(');
-							if (apos >= 0) {
-								string = string.substring(0, apos).trim();
-							}
-
-							BreakpointUtils.addMethodEntryBreakpoint(
-									textEditor, lineNumber, string);
-
-							return;
-						} else {
-							BreakpointUtils.addLineBreakpoint(textEditor,
-									lineNumber);
-						}
-					} catch (BadLocationException e) {
-						DLTKDebugPlugin.log(e);
 						return;
 					}
-				} else {
-					BreakpointUtils.addLineBreakpoint(textEditor, lineNumber);
+				} catch (BadLocationException e) {
+					DLTKDebugPlugin.log(e);
+					return;
 				}
 			}
+			//else
+			BreakpointUtils.addLineBreakpoint(textEditor, lineNumber);
 		}
 	}
 
@@ -122,7 +107,8 @@ public class JavaScriptToggleBreakpointAdapter extends
 					String string = doc.get(region.getOffset(), region
 							.getLength());
 
-					return string.indexOf('=') != -1 || string.trim().startsWith("var ");
+					return string.indexOf('=') != -1
+							|| string.trim().startsWith("var ");
 				} catch (BadLocationException e) {
 					DLTKUIPlugin.log(e);
 				}
@@ -136,62 +122,56 @@ public class JavaScriptToggleBreakpointAdapter extends
 	public void toggleWatchpoints(IWorkbenchPart part, ISelection selection)
 			throws CoreException {
 		if (selection instanceof ITextSelection) {
-
+			ITextEditor editor = getTextEditor(part);
 			ITextSelection textSelection = (ITextSelection) selection;
 			int lineNumber = textSelection.getStartLine() + 1; // one based
 
-			IResource resource = getPartResource(part);
+			IResource resource = BreakpointUtils.getBreakpointResource(editor);
+			IBreakpoint[] breakpoints = DebugPlugin.getDefault()
+					.getBreakpointManager().getBreakpoints();
 
-			if (resource != null) {
-				IBreakpoint[] breakpoints = DebugPlugin.getDefault()
-						.getBreakpointManager().getBreakpoints();
-
-				for (int i = 0; i < breakpoints.length; i++) {
-					IBreakpoint breakpoint = breakpoints[i];
-					if (resource.equals(breakpoint.getMarker().getResource())) {
-						if (((ILineBreakpoint) breakpoint).getLineNumber() == lineNumber) {
-							breakpoint.delete(); // delete existing
-							// breakpoint
-							return;
-						}
+			for (int i = 0; i < breakpoints.length; i++) {
+				IBreakpoint breakpoint = breakpoints[i];
+				if (resource.equals(breakpoint.getMarker().getResource())) {
+					if (((ILineBreakpoint) breakpoint).getLineNumber() == lineNumber) {
+						breakpoint.delete(); // delete existing
+						// breakpoint
+						return;
 					}
 				}
+			}
 
-				ITextEditor textEditor = getTextEditor(part);
-				if (textEditor instanceof ScriptEditor) {
+			if (editor instanceof ScriptEditor) {
 
-					try {
-						ScriptEditor scriptEditor = (ScriptEditor) textEditor;
-						IDocument doc = scriptEditor.getScriptSourceViewer()
-								.getDocument();
-						IRegion region = doc.getLineInformation(lineNumber - 1);
-						String string = doc.get(region.getOffset(), region
-								.getLength());
+				try {
+					ScriptEditor scriptEditor = (ScriptEditor) editor;
+					IDocument doc = scriptEditor.getScriptSourceViewer()
+							.getDocument();
+					IRegion region = doc.getLineInformation(lineNumber - 1);
+					String string = doc.get(region.getOffset(), region
+							.getLength());
 
-						int index = string.indexOf('=');
-						if (index != -1) {
-							string = string.substring(0, index);
-						}
-						index = string.lastIndexOf('.');
-						if (index != -1) {
-							string = string.substring(index + 1);
-						}
-						string = string.trim();
-						index = string.lastIndexOf(' ');
-						if (index != -1) {
-							string = string.substring(index + 1).trim();
-						}
-						
-						if (string.endsWith(";"))
-						{
-							string = string.substring(0,string.length()-1);
-						}
-
-						BreakpointUtils.addWatchPoint(textEditor, lineNumber,
-								string);
-					} catch (BadLocationException e) {
-						DLTKUIPlugin.log(e);
+					int index = string.indexOf('=');
+					if (index != -1) {
+						string = string.substring(0, index);
 					}
+					index = string.lastIndexOf('.');
+					if (index != -1) {
+						string = string.substring(index + 1);
+					}
+					string = string.trim();
+					index = string.lastIndexOf(' ');
+					if (index != -1) {
+						string = string.substring(index + 1).trim();
+					}
+
+					if (string.endsWith(";")) {
+						string = string.substring(0, string.length() - 1);
+					}
+
+					BreakpointUtils.addWatchPoint(editor, lineNumber, string);
+				} catch (BadLocationException e) {
+					DLTKUIPlugin.log(e);
 				}
 			}
 		}

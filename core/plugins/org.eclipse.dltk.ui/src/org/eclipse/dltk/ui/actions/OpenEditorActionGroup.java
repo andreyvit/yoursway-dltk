@@ -145,10 +145,10 @@ public class OpenEditorActionGroup extends ActionGroup {
 			submenu.add(new OpenStorageWithMenu(fSite.getPage(), element));
 			// Add the submenu.
 			menu.appendToGroup(IContextMenuConstants.GROUP_OPEN, submenu);
-		} else if ((element instanceof IModelElement)) {
+		} else if ((element instanceof IModelElement) || (element.getAdapter(IModelElement.class) != null)) {
 			// Create a menu.
 			IMenuManager submenu = new MenuManager(ActionMessages.OpenWithMenu_label);
-			submenu.add(new OpenModelElementWithMenu(fSite.getPage(), element));
+			submenu.add(new OpenModelElementWithMenu(fSite.getPage(), (IModelElement)element.getAdapter(IModelElement.class)));
 			// Add the submenu.
 			menu.appendToGroup(IContextMenuConstants.GROUP_OPEN, submenu);
 		} else if ((resource instanceof IFile)) {

@@ -34,7 +34,11 @@ public class GenericDLTKProjectWizard extends NewElementWizard implements
 	
 	public GenericDLTKProjectWizard() {
 		setDialogSettings(DLTKUIPlugin.getDefault().getDialogSettings());
-		setWindowTitle("New DLTK Project");
+		setWindowTitle(Messages.GenericDLTKProjectWizard_newDltkProject);
+	}
+	
+	public String getNature() {
+		return nature;
 	}
 	
 	protected IPreferenceStore getPreferenceStoreFromNature() {
@@ -118,9 +122,9 @@ public class GenericDLTKProjectWizard extends NewElementWizard implements
 		};
 
 		// First page
-		fFirstPage.setTitle("New DLTK Project");
+		fFirstPage.setTitle(Messages.GenericDLTKProjectWizard_newDltkProject);
 		fFirstPage
-				.setDescription("Create new DLTK PRoject");
+				.setDescription(Messages.GenericDLTKProjectWizard_createNewDltkProject);
 		addPage(fFirstPage);
 
 		// Second page
@@ -168,10 +172,10 @@ public class GenericDLTKProjectWizard extends NewElementWizard implements
 			this.nature = (String)data;
 		}
 		else if( data instanceof Map ) {
-			this.nature = (String) ((Map)data).get("nature");
+			this.nature = (String) ((Map)data).get("nature"); //$NON-NLS-1$
 		}
 		if( this.nature == null || this.nature.length() == 0 ) {
-			throw new RuntimeException("GenericDLTKProjectWizard: Nature should be specified...");
+			throw new RuntimeException(Messages.GenericDLTKProjectWizard_natureMustBeSpecified);
 		}
 	}
 

@@ -49,10 +49,11 @@ public class ScriptTemplateContext extends DocumentTemplateContext {
 			StringBuffer sb = new StringBuffer();
 			for (int i = 0; i < indent.length(); ++i) {
 				char ch = indent.charAt(i);
-				if (ch != ' ' && ch != '\t') {
+				if (ch == ' ' || ch == '\t') {
 					sb.append(' ');
-				} else {
-					sb.append(ch);
+				}
+				else {
+				  break;
 				}
 			}
 
@@ -63,7 +64,7 @@ public class ScriptTemplateContext extends DocumentTemplateContext {
 			}
 		}
 
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	public TemplateBuffer evaluate(Template template)
@@ -75,7 +76,7 @@ public class ScriptTemplateContext extends DocumentTemplateContext {
 		final String indentTo = calculateIndent(getDocument(), getStart());
 
 		String delimeter = TextUtilities.getDefaultLineDelimiter(getDocument());
-		String[] lines = template.getPattern().split("\n");
+		String[] lines = template.getPattern().split("\n"); //$NON-NLS-1$
 
 		if (lines.length > 1 && indentTo != null && indentTo.length() > 0) {
 			StringBuffer buffer = new StringBuffer(lines[0]);

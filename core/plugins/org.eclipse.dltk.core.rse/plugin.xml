@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.dltk.core.environment">
+      <environment
+            class="org.eclipse.dltk.core.internal.rse.RSEEnvironmentProvider"
+            id="org.eclipse.dltk.rse.RSEEnvironmentProvider"
+            priority="0">
+      </environment>
+   </extension>
+  <extension
+        point="org.eclipse.core.runtime.adapters">
+     <factory
+           adaptableType="org.eclipse.dltk.core.internal.rse.RSEEnvironment"
+           class="org.eclipse.dltk.core.internal.rse.RSEExecEnvironmentAdapter">
+        <adapter
+              type="org.eclipse.dltk.core.environment.IExecutionEnvironment">
+        </adapter>
+     </factory>
+  </extension>
+</plugin>

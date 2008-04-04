@@ -94,7 +94,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 		MethodDeclaration decl = null;
 		List methods = new ArrayList ();
 		if (instanceType == null) {
-			instanceType = new RubyClassType("Object");			
+			instanceType = new RubyClassType("Object"); //$NON-NLS-1$			
 		}
 		if (instanceType instanceof RubyClassType) {
 			RubyClassType rubyClassType = (RubyClassType) instanceType;
@@ -105,7 +105,7 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 				if (mixinMethods != null)
 					methods.addAll(Arrays.asList(mixinMethods.getSourceMethods()));
 			}
-			if (rubyClassType.getModelKey().equals("Object")) {
+			if (rubyClassType.getModelKey().equals("Object")) { //$NON-NLS-1$
 				IRubyMixinElement element = RubyMixinModel.getInstance().createRubyElement(methodName);
 				if (element instanceof RubyMixinMethod) {
 					RubyMixinMethod rubyMixinMethod = (RubyMixinMethod) element;
@@ -158,9 +158,9 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 					RubyReturnStatement statement = (RubyReturnStatement) node;
 					CallArgumentsList list = statement.getValue();
 					if (list.getChilds().size() == 0) {
-						MethodReturnTypeEvaluator.this.evaluated.add(new RubyClassType("NilClass"));
+						MethodReturnTypeEvaluator.this.evaluated.add(new RubyClassType("NilClass")); //$NON-NLS-1$
 					} else if (list.getChilds().size() > 1) {
-						MethodReturnTypeEvaluator.this.evaluated.add(new RubyClassType("Array"));
+						MethodReturnTypeEvaluator.this.evaluated.add(new RubyClassType("Array")); //$NON-NLS-1$
 					} else {
 						possibilities.add(list.getChilds().get(0));				
 					}
@@ -191,12 +191,12 @@ public class MethodReturnTypeEvaluator extends GoalEvaluator {
 
 	private IEvaluatedType checkSpecialMethodReturnType(ClassType instanceType,
 			String methodName, IEvaluatedType[] arguments) {
-		if (methodName.equals("clone") &&  instanceType.getModelKey().endsWith(RubyMixin.INSTANCE_SUFFIX))
+		if (methodName.equals("clone") &&  instanceType.getModelKey().endsWith(RubyMixin.INSTANCE_SUFFIX)) //$NON-NLS-1$
 			return instanceType;
 		if (instanceType == null || instanceType.getModelKey().endsWith(RubyMixin.INSTANCE_SUFFIX) || 
 				instanceType.getModelKey().endsWith(RubyMixin.VIRTUAL_SUFFIX) )
 			return null;
-		if (methodName.equals("new")) 
+		if (methodName.equals("new")) //$NON-NLS-1$ 
 			return new RubyClassType (instanceType.getModelKey() + RubyMixin.INSTANCE_SUFFIX);
 		return null;
 	}

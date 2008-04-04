@@ -202,8 +202,8 @@ public abstract class AbstractInfoView extends ViewPart implements ISelectionLis
 		inititalizeColors();
 		getSite().getWorkbenchWindow().getPartService().addPartListener(
 				fPartListener);
-		createContextMenu();
 		createActions();
+		createContextMenu();
 		fillActionBars(getViewSite().getActionBars());
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(),
 				getHelpContextId());

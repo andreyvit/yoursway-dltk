@@ -26,13 +26,13 @@ public class SimpleValidator extends AbstractValidator {
 	private String value = "";
 	boolean valid = true;
 	protected SimpleValidator(String id, IValidatorType type) {
-		super(id, null, type);
+		super(id, "", type);
 	}
 	protected SimpleValidator(String id, String name, IValidatorType type) {
 		super(id, name, type);
 	}
 	protected SimpleValidator(String id, Element element, IValidatorType type) throws IOException {
-		super(id, null, type);
+		super(id, "", type);
 		this.loadFrom(element);
 	}
 	protected void loadFrom(Element element ) {
@@ -46,11 +46,11 @@ public class SimpleValidator extends AbstractValidator {
 		element.setAttribute("simple_valid", Boolean.toString(this.valid));
 	}
 
-	public IStatus validate(ISourceModule[] module, OutputStream console) {
+	public IStatus validate(ISourceModule[] module, OutputStream console, IProgressMonitor monitor) {
 		return Status.OK_STATUS;
 	}
 
-	public IStatus validate(IResource[] resource, OutputStream console) {
+	public IStatus validate(IResource[] resource, OutputStream console, IProgressMonitor monitor) {
 		return Status.OK_STATUS;
 	}
 	public void setValid(boolean b) {

@@ -88,7 +88,7 @@ public abstract class FindReferencesInWorkingSetAction extends FindReferencesAct
 		setImageDescriptor(DLTKPluginImages.DESC_OBJS_SEARCH_REF);
 //		PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IJavaHelpContextIds.FIND_REFERENCES_IN_WORKING_SET_ACTION);
 		if (DLTKCore.DEBUG) {
-			System.out.println("TODO: Add help supprot here...");
+			System.out.println("TODO: Add help supprot here..."); //$NON-NLS-1$
 		}
 	}
 

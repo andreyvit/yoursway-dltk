@@ -68,7 +68,7 @@ public class WorkingSetFindAction extends FindAction {
 		setToolTipText(action.getToolTipText());
 //		PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IJavaHelpContextIds.WORKING_SET_FIND_ACTION);		
 		if (DLTKCore.DEBUG) {
-			System.out.println("TODO: Add help support here...");
+			System.out.println("TODO: Add help support here..."); //$NON-NLS-1$
 		}
 	}
 	

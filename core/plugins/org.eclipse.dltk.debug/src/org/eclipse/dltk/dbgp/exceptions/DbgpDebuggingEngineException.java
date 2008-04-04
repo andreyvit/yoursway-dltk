@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.dbgp.exceptions;
 
+import java.text.MessageFormat;
+
 public class DbgpDebuggingEngineException extends DbgpException {
 	private static final long serialVersionUID = 1L;
 
@@ -102,7 +104,11 @@ public class DbgpDebuggingEngineException extends DbgpException {
 	}
 
 	public DbgpDebuggingEngineException(int code, String message) {
-		super("Execution error:" + code +"\n" + message);
+		super(
+				MessageFormat
+						.format(
+								Messages.DbgpDebuggingEngineException_dbgpDebuggingEngineException,
+								new Object[] { new Integer(code), message }));
 		this.code = code;
 	}
 
@@ -113,7 +119,12 @@ public class DbgpDebuggingEngineException extends DbgpException {
 
 	public DbgpDebuggingEngineException(int code, String message,
 			Throwable cause) {
-		super(message + ", code = " + code, cause);
+		super(
+				MessageFormat
+						.format(
+								Messages.DbgpDebuggingEngineException_dbgpDebuggingEngineException2,
+								new Object[] { message, new Integer(code) }),
+				cause);
 		this.code = code;
 	}
 

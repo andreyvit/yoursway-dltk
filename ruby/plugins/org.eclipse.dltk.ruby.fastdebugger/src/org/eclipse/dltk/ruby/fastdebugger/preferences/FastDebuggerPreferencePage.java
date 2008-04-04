@@ -10,8 +10,8 @@ import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 public class FastDebuggerPreferencePage extends
 		AbstractConfigurationBlockPropertyAndPreferencePage {
 
-	private static final String PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug.engines.railsdebugger";
-	private static final String PROPERTY_PAGE_ID = "org.eclipse.dltk.ruby.propertyPage.debug.engines.railsdebugger";
+	private static final String PREFERENCE_PAGE_ID = "org.eclipse.dltk.ruby.preferences.debug.engines.railsdebugger"; //$NON-NLS-1$
+	private static final String PROPERTY_PAGE_ID = "org.eclipse.dltk.ruby.propertyPage.debug.engines.railsdebugger"; //$NON-NLS-1$
 
 	/*
 	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#createOptionsBlock(org.eclipse.dltk.ui.util.IStatusChangeListener,

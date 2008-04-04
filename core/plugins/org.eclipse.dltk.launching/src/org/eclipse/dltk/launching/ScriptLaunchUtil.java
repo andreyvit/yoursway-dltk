@@ -12,6 +12,7 @@ package org.eclipse.dltk.launching;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -22,12 +23,13 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.Launch;
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.launching.DLTKLaunchingPlugin;
+import org.eclipse.dltk.internal.launching.EnvironmentResolver;
 
 public class ScriptLaunchUtil {
 	// Create file with script content
 	public static File createScriptFileWithContent(String scriptContent)
 			throws IOException {
-		File file = File.createTempFile("script", null);
+		File file = File.createTempFile("script", null); //$NON-NLS-1$
 
 		FileWriter writer = null;
 		try {
@@ -45,11 +47,24 @@ public class ScriptLaunchUtil {
 	// Creating of InterpreterConfig
 	public static InterpreterConfig createInterpreterConfig(File scriptFile,
 			File workingDirectory) {
+		return createInterpreterConfig(scriptFile, workingDirectory, null);
+	}
+
+	public static InterpreterConfig createInterpreterConfig(File scriptFile,
+			File workingDirectory, EnvironmentVariable[] env) {
 		InterpreterConfig config = new InterpreterConfig(scriptFile,
 				workingDirectory);
 
-		config.addEnvVars(DebugPlugin.getDefault().getLaunchManager()
-				.getNativeEnvironmentCasePreserved());
+		Map envVars = DebugPlugin.getDefault().getLaunchManager()
+				.getNativeEnvironmentCasePreserved();
+		config.addEnvVars(envVars);
+		EnvironmentVariable[] resVars = EnvironmentResolver.resolve(envVars,
+				env);
+		if (resVars != null) {
+			for (int i = 0; i < resVars.length; i++) {
+				config.addEnvVar(resVars[i].getName(), resVars[i].getValue());
+			}
+		}
 
 		return config;
 	}
@@ -66,7 +81,7 @@ public class ScriptLaunchUtil {
 			file = workingDirectoryPath.toFile();
 		}
 		if (DLTKLaunchingPlugin.TRACE_EXECUTION) {
-			traceExecution("runScript with interpreter", cmdLine,
+			traceExecution("runScript with interpreter", cmdLine, //$NON-NLS-1$
 					environmentAsStrings);
 		}
 		return DebugPlugin.exec(cmdLine, file, environmentAsStrings);
@@ -75,27 +90,28 @@ public class ScriptLaunchUtil {
 	private static void traceExecution(String processLabel,
 			String[] cmdLineLabel, String[] environment) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("-----------------------------------------------\n");
-		sb.append("Running ").append(processLabel).append('\n');
+		sb.append("-----------------------------------------------\n"); //$NON-NLS-1$
+		sb.append("Running ").append(processLabel).append('\n'); //$NON-NLS-1$
 		// sb.append("Command line: ").append(cmdLineLabel).append('\n');
-		sb.append("Command line: ");
+		sb.append("Command line: "); //$NON-NLS-1$
 		for (int i = 0; i < cmdLineLabel.length; i++) {
-			sb.append(" " + cmdLineLabel[i]);
+			sb.append(" " + cmdLineLabel[i]); //$NON-NLS-1$
 		}
-		sb.append("\n");
-		sb.append("Environment:\n");
+		sb.append("\n"); //$NON-NLS-1$
+		sb.append("Environment:\n"); //$NON-NLS-1$
 		for (int i = 0; i < environment.length; i++) {
 			sb.append('\t').append(environment[i]).append('\n');
 		}
-		sb.append("-----------------------------------------------\n");
+		sb.append("-----------------------------------------------\n"); //$NON-NLS-1$
 		System.out.println(sb);
 	}
 
 	public static Process runScriptWithInterpreter(String interpreter,
 			File scriptFile, File workingDirectory, String[] interpreterArgs,
-			String[] scriptArgs) throws CoreException {
+			String[] scriptArgs, EnvironmentVariable[] environment)
+			throws CoreException {
 		InterpreterConfig config = createInterpreterConfig(scriptFile,
-				workingDirectory);
+				workingDirectory, environment);
 
 		if (scriptArgs != null) {
 			config.addScriptArgs(scriptArgs);
@@ -110,11 +126,12 @@ public class ScriptLaunchUtil {
 
 	public static Process runScriptWithInterpreter(String interpreter,
 			String scriptContent, File workingDirectory,
-			String[] interpreterArgs, String[] scriptArgs)
-			throws CoreException, IOException {
+			String[] interpreterArgs, String[] scriptArgs,
+			EnvironmentVariable[] environment) throws CoreException,
+			IOException {
 		return runScriptWithInterpreter(interpreter,
 				createScriptFileWithContent(scriptContent), workingDirectory,
-				interpreterArgs, scriptArgs);
+				interpreterArgs, scriptArgs, environment);
 	}
 
 	// 
@@ -158,8 +175,16 @@ public class ScriptLaunchUtil {
 	// Run by default interpreter
 	public static ILaunch runScript(String natureId, InterpreterConfig config,
 			IProgressMonitor monitor) throws CoreException {
-		return runScript(getDefaultInterpreterInstall(natureId), config,
-				monitor);
+		IInterpreterInstall install = getDefaultInterpreterInstall(natureId);
+		EnvironmentVariable[] variables = EnvironmentResolver.resolve(config
+				.getEnvVars(), install.getEnvironmentVariables());
+		if (variables != null) {
+			for (int i = 0; i < variables.length; i++) {
+				config.addEnvVar(variables[i].getName(), variables[i]
+						.getValue());
+			}
+		}
+		return runScript(install, config, monitor);
 	}
 
 	// Script file
@@ -167,7 +192,7 @@ public class ScriptLaunchUtil {
 			File workingDirectory, String[] interpreterArgs,
 			String[] scriptArgs, IProgressMonitor monitor) throws CoreException {
 		InterpreterConfig config = createInterpreterConfig(scriptFile,
-				workingDirectory);
+				workingDirectory, null);
 
 		if (interpreterArgs != null) {
 			config.addInterpreterArgs(interpreterArgs);

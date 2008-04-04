@@ -10,6 +10,8 @@
 package org.eclipse.dltk.tcl.console;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.dltk.console.ConsoleRequest;
@@ -18,13 +20,12 @@ import org.eclipse.dltk.console.IScriptInterpreter;
 import org.eclipse.dltk.console.InterpreterResponse;
 import org.eclipse.dltk.console.ShellResponse;
 
-
 public class TclInterpreter implements IScriptInterpreter, ConsoleRequest {
 
 	private static final String COMPLETE_COMMAND = "complete";
 
 	private static final String DESCRIBE_COMMAND = "describe";
-	
+
 	private static final String CLOSE_COMMAND = "close";
 
 	private IScriptConsoleIO protocol;
@@ -32,6 +33,10 @@ public class TclInterpreter implements IScriptInterpreter, ConsoleRequest {
 	private String content;
 
 	private int state;
+
+	private List closeRunnables = new ArrayList();
+
+	private List initialListeners = new ArrayList();
 
 	// IScriptInterpreter
 	public void exec(String command) throws IOException {
@@ -75,12 +80,40 @@ public class TclInterpreter implements IScriptInterpreter, ConsoleRequest {
 	}
 
 	public void close() throws IOException {
-		protocol.execShell(CLOSE_COMMAND, new String[] {});
-		protocol.close();
+		if (protocol != null) {
+			protocol.execShell(CLOSE_COMMAND, new String[] {});
+			protocol.close();
+		}
+		// run all close runnables.
+		for (Iterator iterator = this.closeRunnables.iterator(); iterator
+				.hasNext();) {
+			Runnable op = (Runnable) iterator.next();
+			op.run();
+		}
 	}
 
 	// IScriptConsoleProtocol
 	public void consoleConnected(IScriptConsoleIO protocol) {
 		this.protocol = protocol;
+		for (Iterator iterator = this.initialListeners.iterator(); iterator
+				.hasNext();) {
+			Runnable op = (Runnable) iterator.next();
+			op.run();
+		}
+	}
+
+	public void addCloseOperation(Runnable runnable) {
+		this.closeRunnables.add(runnable);
+	}
+
+	public void addInitialListenerOperation(Runnable runnable) {
+		this.initialListeners.add(runnable);
+	}
+
+	public String getInitialOuput() {
+		if (this.protocol == null) {
+			return null;
+		}
+		return this.protocol.getInitialResponse();
 	}
 }

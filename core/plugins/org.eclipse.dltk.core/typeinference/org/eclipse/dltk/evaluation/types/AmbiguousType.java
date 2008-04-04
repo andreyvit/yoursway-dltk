@@ -21,15 +21,15 @@ public class AmbiguousType implements IEvaluatedType {
 
 	public String getTypeName() {
 		StringBuffer result = new StringBuffer();
-		result.append("Ambigous <");
+		result.append("Ambigous <"); //$NON-NLS-1$
 		for (int i = 0; i < possibleTypes.length; i++) {
 			IEvaluatedType type = possibleTypes[i];
 			if (i > 0) {
-				result.append(", ");
+				result.append(", "); //$NON-NLS-1$
 			}
 			result.append(type.getTypeName());
 		}
-		result.append(">");
+		result.append(">"); //$NON-NLS-1$
 		return result.toString();
 	}
 

@@ -44,7 +44,7 @@ public class RubyConstantDeclaration extends ASTNode {
 	}
 
 	public void printNode(CorePrinter output) {
-		output.formatPrint("ConstantDeclaration" + this.getSourceRange().toString() + ":(" + this.getName() + ")");
+		output.formatPrint("ConstantDeclaration" + this.getSourceRange().toString() + ":(" + this.getName() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	public void traverse(ASTVisitor pVisitor) throws Exception {

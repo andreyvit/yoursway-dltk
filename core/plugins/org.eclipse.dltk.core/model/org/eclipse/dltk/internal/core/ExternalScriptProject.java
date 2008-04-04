@@ -44,7 +44,7 @@ public class ExternalScriptProject extends ScriptProject {
 	
 	public String getOption(String optionName, boolean inheritDLTKCoreOptions) {
 		if(DLTKCore.DEBUG) {
-			System.err.println("ExternalScriptProject getOption should be corrected...");
+			System.err.println("ExternalScriptProject getOption should be corrected..."); //$NON-NLS-1$
 		}
 //		if (DLTKCore.COMPILER_PB_FORBIDDEN_REFERENCE.equals(optionName)
 //				|| DLTKCore.COMPILER_PB_DISCOURAGED_REFERENCE.equals(optionName))

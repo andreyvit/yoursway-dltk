@@ -51,14 +51,14 @@ public class DbgpRawPacket {
 		}
 
 		if (offset != size) {
-			throw new IOException("Can't read packet body");
+			throw new IOException(Messages.DbgpRawPacket_cantReadPacketBody);
 		}
 
 		if (input.read() != 0) {
-			throw new IOException("No termination '0' byte");
+			throw new IOException(Messages.DbgpRawPacket_noTerminationByte);
 		}
 
-		return new String(bytes, "ASCII");
+		return new String(bytes, "ASCII"); //$NON-NLS-1$
 	}
 
 	public static DbgpRawPacket readPacket(InputStream input)
@@ -90,6 +90,6 @@ public class DbgpRawPacket {
 	}
 
 	public String toString() {
-		return "DbgpPacket (" + size + " bytes) " + xml;
+		return "DbgpPacket (" + size + " bytes) " + xml; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

@@ -23,4 +23,8 @@ public class ValidateSelectionWithConsoleAction extends AbstractValidateSelectio
 		ValidatorRuntime.executeAllValidators(out,
 				elements, resources, monitor);
 	}
+
+	protected String getJobName() {
+		return Messages.ValidateSelectionWithConsoleAction_validation;
+	}
 }

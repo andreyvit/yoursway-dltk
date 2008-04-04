@@ -15,14 +15,14 @@ import java.util.Map;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.dltk.validators.ValidatorConfigurationPage;
+import org.eclipse.dltk.validators.ui.ValidatorConfigurationPage;
 
 public class ValidatorConfigurationPageManager {
 
 	private final static String LANGUAGE_EXTPOINT = ValidatorsUI.PLUGIN_ID
-			+ ".validatorConfigPage";
+			+ ".validatorConfigPage"; //$NON-NLS-1$
 
-	private final static String ID_ATTR = "id";
+	private final static String ID_ATTR = "id"; //$NON-NLS-1$
 
 	private static Map toolkits;
 
@@ -38,7 +38,7 @@ public class ValidatorConfigurationPageManager {
 		for (int i = 0; i < cfg.length; i++) {
 			String id = cfg[i].getAttribute(ID_ATTR);
 			if (toolkits.get(id) != null)
-				System.err.println("TODO log redeclaration");
+				System.err.println("TODO log redeclaration"); //$NON-NLS-1$
 			toolkits.put(id, cfg[i]);
 		}
 	}
@@ -55,7 +55,7 @@ public class ValidatorConfigurationPageManager {
 
 			IConfigurationElement cfg = (IConfigurationElement) ext;
 			ValidatorConfigurationPage toolkit = (ValidatorConfigurationPage) cfg
-					.createExecutableExtension("class");
+					.createExecutableExtension("class"); //$NON-NLS-1$
 			toolkits.put(Id, toolkit);
 			return toolkit;
 		}

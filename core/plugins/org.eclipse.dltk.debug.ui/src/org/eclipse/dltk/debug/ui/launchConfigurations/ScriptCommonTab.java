@@ -39,7 +39,7 @@ public class ScriptCommonTab extends CommonTab {
 	private Button myButtom;
 	
 	private void createUseScriptConsoleComponent(Composite parent){
-		myButtom = createCheckButton(parent, "Use specific DLTK Script console"); 
+		myButtom = createCheckButton(parent, Messages.ScriptCommonTab_useSpecificDltkScriptConsole); 
 		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		data.horizontalSpan = 2;
 		myButtom.setLayoutData(data);
@@ -56,7 +56,7 @@ public class ScriptCommonTab extends CommonTab {
 		
 		if (myButtom.getSelection()){
 			configuration.setAttribute(DebugPlugin.ATTR_CAPTURE_OUTPUT, false);
-			configuration.setAttribute("script_console_output", true);
+			configuration.setAttribute("script_console_output", true); //$NON-NLS-1$
 		}
 	}	
 }

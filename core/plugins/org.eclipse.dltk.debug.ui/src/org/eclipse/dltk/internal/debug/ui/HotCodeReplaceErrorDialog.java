@@ -45,17 +45,17 @@ public class HotCodeReplaceErrorDialog extends ErrorDialogWithToggle {
 	 */
 	protected void createButtonsForButtonBar(Composite parent) {
 		super.createButtonsForButtonBar(parent);
-		getButton(IDialogConstants.OK_ID).setText("&Continue"); 
+		getButton(IDialogConstants.OK_ID).setText(Messages.HotCodeReplaceErrorDialog_continue); 
 		boolean canTerminate= target.canTerminate();
 		boolean canDisconnect= target.canDisconnect();
 		if (canTerminate) {
-			createButton(parent, TERMINATE_ID, "&Terminate", false); 
+			createButton(parent, TERMINATE_ID, Messages.HotCodeReplaceErrorDialog_terminate, false); 
 		} 
 		if (canDisconnect) {
-			createButton(parent, DISCONNECT_ID, "&Disconnect", false); 
+			createButton(parent, DISCONNECT_ID, Messages.HotCodeReplaceErrorDialog_disconnect, false); 
 		}
 		if (canTerminate && !canDisconnect) {
-			createButton(parent, RESTART_ID, "&Restart", false); 
+			createButton(parent, RESTART_ID, Messages.HotCodeReplaceErrorDialog_restart, false); 
 		}
 	}
 
@@ -71,13 +71,13 @@ public class HotCodeReplaceErrorDialog extends ErrorDialogWithToggle {
 				public void run() {
 					try {
 						if (id == TERMINATE_ID) {
-							operation[0]= "Terminate"; 
+							operation[0]= Messages.HotCodeReplaceErrorDialog_terminate2; 
 							target.terminate();
 						} else if (id == DISCONNECT_ID){
-							operation[0]= "Disconnect"; 
+							operation[0]= Messages.HotCodeReplaceErrorDialog_disconnect2; 
 							target.disconnect();
 						} else {
-							operation[0]= "Restart"; 
+							operation[0]= Messages.HotCodeReplaceErrorDialog_restart2; 
 							ILaunch launch = target.getLaunch();
 							launch.terminate();
 							ILaunchConfiguration config = launch.getLaunchConfiguration();
@@ -92,7 +92,7 @@ public class HotCodeReplaceErrorDialog extends ErrorDialogWithToggle {
 			};
 			BusyIndicator.showWhile(getShell().getDisplay(), r);
 			if (ex[0] != null) {
-				DLTKDebugUIPlugin.errorDialog(MessageFormat.format("{0} Failed", operation), ex[0].getStatus()); 
+				DLTKDebugUIPlugin.errorDialog(MessageFormat.format(Messages.HotCodeReplaceErrorDialog_failed, operation), ex[0].getStatus()); 
 			}
 			okPressed();
 		} else {

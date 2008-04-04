@@ -9,19 +9,13 @@ import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.ast.TclForeachStatement;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
 
 public class TclForeachCommandProcessor extends AbstractTclCommandProcessor {
 
 	private static final int MIN_ARG_NUMBER = 3;
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement statement, ITclParser parser,
 			ASTNode parent) {
-		ASTNode node = parser.processLocal(command, offset, parent);
-		if (!(node instanceof TclStatement)) {
-			return null;
-		}
-		TclStatement statement = (TclStatement) node;
 		TclForeachStatement foreach = new TclForeachStatement(statement
 				.sourceStart(), statement.sourceEnd());
 		this.addToParent(parent, foreach);
@@ -29,7 +23,7 @@ public class TclForeachCommandProcessor extends AbstractTclCommandProcessor {
 		if (statement.getCount() % 2 != 0
 				|| statement.getCount() < MIN_ARG_NUMBER + 1) {
 			this.report(parser, "Syntax error: wrong number of arguments",
-					node, ProblemSeverities.Error);
+					statement, ProblemSeverities.Error);
 		} else {
 			// foreach.setArguments(null);
 			Expression procCode = statement.getAt(statement.getCount() - 1);

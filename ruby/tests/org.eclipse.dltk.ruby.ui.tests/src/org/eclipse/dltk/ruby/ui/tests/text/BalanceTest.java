@@ -124,7 +124,7 @@ public class BalanceTest extends RubyUITests {
     	doTest("module Boz\nif foo\nclass bar\ndef zzz\nend\nend", TestUtils.ALL_RUBY_BLOCKS, "module if");
     }
     
-    public void testCombining1() throws Exception {
+    public void REM_testCombining1() throws Exception {
     	doBackwardMultilineTest(TestUtils.getData("resources/balance1.rb"), TestUtils.ALL_RUBY_BLOCKS);
     }
     

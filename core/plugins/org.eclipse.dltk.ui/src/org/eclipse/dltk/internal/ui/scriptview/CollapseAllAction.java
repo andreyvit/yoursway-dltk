@@ -29,7 +29,7 @@ class CollapseAllAction extends Action {
 		
 		fPackageExplorer= part;
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
 		
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IScriptHelpContextIds.COLLAPSE_ALL_ACTION);

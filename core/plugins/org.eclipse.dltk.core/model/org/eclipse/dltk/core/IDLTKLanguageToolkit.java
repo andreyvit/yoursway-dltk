@@ -5,15 +5,13 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
  *******************************************************************************/
 package org.eclipse.dltk.core;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 
-/**
- * 
- */
 public interface IDLTKLanguageToolkit {
 
 	/**
@@ -23,18 +21,11 @@ public interface IDLTKLanguageToolkit {
 	String getLanguageContentType();
 
 	boolean validateSourcePackage(IPath path);
-
-	/*
-	 * Different stuff
-	 */
+	IStatus validateSourceModule(IResource resource);
 
 	boolean languageSupportZIPBuildpath();
 
 	String getNatureId();
-
-	String getDelimeterReplacerString();
-
-	String[] getLanguageFileExtensions();
 
 	String getLanguageName();
 }

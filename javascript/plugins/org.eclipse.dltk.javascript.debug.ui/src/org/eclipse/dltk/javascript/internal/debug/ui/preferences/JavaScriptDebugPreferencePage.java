@@ -1,132 +1,89 @@
 package org.eclipse.dltk.javascript.internal.debug.ui.preferences;
 
-import java.io.File;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
+import org.eclipse.dltk.debug.ui.preferences.AbstractDebuggingOptionsBlock;
+import org.eclipse.dltk.javascript.internal.debug.JavaScriptDebugPlugin;
+import org.eclipse.dltk.ui.PreferencesAdapter;
+import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage;
+import org.eclipse.dltk.ui.preferences.AbstractOptionsBlock;
+import org.eclipse.dltk.ui.preferences.PreferenceKey;
+import org.eclipse.dltk.ui.util.IStatusChangeListener;
+import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.dltk.javascript.internal.debug.JavaScriptDebugPreferences;
-import org.eclipse.jface.preference.PreferencePage;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPreferencePage;
+public class JavaScriptDebugPreferencePage extends AbstractConfigurationBlockPropertyAndPreferencePage {
 
-public class JavaScriptDebugPreferencePage extends PreferencePage implements
-		IWorkbenchPreferencePage {
+    private static PreferenceKey BREAK_ON_FIRST_LINE =
+        new PreferenceKey(JavaScriptDebugPlugin.PLUGIN_ID,
+            DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
 
-	private Text debuggingEnginePath;
+    private static PreferenceKey ENABLE_DBGP_LOGGING =
+        new PreferenceKey(JavaScriptDebugPlugin.PLUGIN_ID,
+            DLTKDebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING);
+	
+	private static String PREFERENCE_PAGE_ID = "org.eclipse.dltk.javascript.preferences.debug";
+	private static String PROPERTY_PAGE_ID = "org.eclipse.dltk.javascript.propertyPage.debug";
+    
+	protected AbstractOptionsBlock createOptionsBlock(
+			IStatusChangeListener newStatusChangedListener, IProject project,
+			IWorkbenchPreferenceContainer container) {
+		return new AbstractDebuggingOptionsBlock(newStatusChangedListener,
+				project, getKeys(), container) {
 
-	protected void createDebuggingEnginePath(Composite parent, Object data) {
-		Group group = new Group(parent, SWT.NONE);
-		group.setFont(parent.getFont());
-		group.setText("Path to debugging engine");
-		group.setLayoutData(data);
-
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
-		group.setLayout(layout);
-
-		// Path
-		debuggingEnginePath = new Text(group, SWT.BORDER);
-
-		debuggingEnginePath.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				validteDebuggingEnginePath();
+			protected PreferenceKey getBreakOnFirstLineKey() {
+				return BREAK_ON_FIRST_LINE;
 			}
-		});
 
-		GridData pathData = new GridData();
-		pathData.grabExcessHorizontalSpace = true;
-		pathData.horizontalAlignment = GridData.FILL;
-		debuggingEnginePath.setLayoutData(data);
-
-		// Browse
-		Button button = new Button(group, SWT.PUSH);
-		button.setText("Browse...");
-
-		button.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				FileDialog dialog = new FileDialog(getShell(), SWT.OPEN);
-				String file = dialog.open();
-				if (file != null) {
-					debuggingEnginePath.setText(file);
-				}
+			protected PreferenceKey getDbgpLoggingEnabledKey() {
+				return ENABLE_DBGP_LOGGING;
 			}
-		});
+		};
+	}
+	
+	/*
+	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getHelpId()
+	 */
+	protected String getHelpId() {
+		return null;
 	}
 
-	protected GridData makeGridData() {
-		GridData data = new GridData();
-		data.grabExcessHorizontalSpace = true;
-		data.horizontalAlignment = GridData.FILL;
-		return data;
+	/*
+	 * @see org.eclipse.dltk.internal.ui.preferences.PropertyAndPreferencePage#getPreferencePageId()
+	 */
+	protected String getPreferencePageId() {
+		return PREFERENCE_PAGE_ID;
 	}
 
-	protected Control createContents(Composite parent) {
-		Composite top = new Composite(parent, SWT.NONE);
-
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 1;
-		top.setLayout(layout);
-
-		createDebuggingEnginePath(top, makeGridData());
-
-		initializeValues();
-		validateValues();
-
-		return top;
+	/*
+	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#getProjectHelpId()
+	 */
+	protected String getProjectHelpId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	protected void initializeValues() {
-		debuggingEnginePath.setText(JavaScriptDebugPreferences
-				.getDebuggingEnginePath());
+	/*
+	 * @see org.eclipse.dltk.internal.ui.preferences.PropertyAndPreferencePage#getPropertyPageId()
+	 */
+	protected String getPropertyPageId() {
+		return PROPERTY_PAGE_ID;
+	}
+	
+	/*
+	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setDescription()
+	 */
+	protected void setDescription() {
+		setDescription(JavaScriptDebugPreferenceMessages.JavaScriptDebugPreferencePage_description);
 	}
 
-	protected void validteDebuggingEnginePath() {
-		String txtPath = debuggingEnginePath.getText().trim();
-
-		IPath path = Path.fromOSString(txtPath);
-		File file = path.toFile();
-		
-		if ("".equals(txtPath)) {
-			setMessage("Empty path", WARNING);
-			setValid(true);
-		} else if (!file.exists()) {
-			setMessage("File not exists", ERROR);
-			setValid(false);
-		} else if (!file.isFile()) {
-			setMessage("Not a file", ERROR);
-			setValid(false);
-		} else {
-			setMessage(null);
-			setValid(true);
-		}
+	/*
+	 * @see org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage#setPreferenceStore()
+	 */
+	protected void setPreferenceStore() {
+		setPreferenceStore(new PreferencesAdapter(JavaScriptDebugPlugin.getDefault().getPluginPreferences()));
 	}
-
-	protected void validateValues() {
-		validteDebuggingEnginePath();
-	}
-
-	public void init(IWorkbench workbench) {
-
-	}
-
-	public boolean performOk() {
-		JavaScriptDebugPreferences.setDebuggingEnginePath(debuggingEnginePath
-				.getText());
-
-		JavaScriptDebugPreferences.save();
-		return true;
+	
+	private PreferenceKey[] getKeys() {
+		return new PreferenceKey[] { BREAK_ON_FIRST_LINE, ENABLE_DBGP_LOGGING };
 	}
 }

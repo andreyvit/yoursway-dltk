@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.dltk.console.ui.internal;
 
+import org.eclipse.core.commands.IHandler;
 import org.eclipse.dltk.console.ScriptConsoleConstants;
 import org.eclipse.dltk.console.ui.IConsoleStyleProvider;
 import org.eclipse.dltk.console.ui.ScriptConsole;
@@ -17,6 +18,7 @@ import org.eclipse.dltk.console.ui.internal.actions.SaveConsoleSessionAction;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
@@ -27,7 +29,8 @@ import org.eclipse.ui.console.IConsoleView;
 import org.eclipse.ui.console.TextConsolePage;
 import org.eclipse.ui.console.TextConsoleViewer;
 import org.eclipse.ui.console.actions.TextViewerAction;
-
+import org.eclipse.ui.handlers.IHandlerService;
+import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 
 public class ScriptConsolePage extends TextConsolePage implements
 		IScriptConsoleContentHandler {
@@ -50,6 +53,7 @@ public class ScriptConsolePage extends TextConsolePage implements
 	private ScriptConsoleViewer viewer;
 
 	private TextViewerAction proposalsAction;
+	private IHandler proposalsHandler;
 
 	private IConsoleStyleProvider styleProvider;
 
@@ -57,7 +61,14 @@ public class ScriptConsolePage extends TextConsolePage implements
 		super.createActions();
 
 		proposalsAction = new ContentAssistProposalsAction(getViewer());
-		proposalsAction = new ContentAssistProposalsAction(getViewer());
+		proposalsAction
+				.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS);
+		IHandlerService handlerService = (IHandlerService) getSite()
+				.getService(IHandlerService.class);
+		proposalsHandler = new ActionHandler(proposalsAction);
+		handlerService.activateHandler(
+				ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS,
+				proposalsHandler);
 
 		SaveConsoleSessionAction saveSessionAction = new SaveConsoleSessionAction(
 				(ScriptConsole) getConsole(),
@@ -80,7 +91,7 @@ public class ScriptConsolePage extends TextConsolePage implements
 
 		toolbarManager.appendToGroup(ScriptConsoleConstants.SCRIPT_GROUP,
 				closeConsoleAction);
-		
+
 		toolbarManager.appendToGroup(ScriptConsoleConstants.SCRIPT_GROUP,
 				saveSessionAction);
 
@@ -90,7 +101,7 @@ public class ScriptConsolePage extends TextConsolePage implements
 	protected TextConsoleViewer createViewer(Composite parent) {
 		viewer = new ScriptConsoleViewer(parent, (ScriptConsole) getConsole(),
 				this, styleProvider);
-		viewer.configure(cfg);		
+		viewer.configure(cfg);
 		return viewer;
 	}
 
@@ -116,4 +127,11 @@ public class ScriptConsolePage extends TextConsolePage implements
 	public void setStyleProviser(IConsoleStyleProvider provider) {
 		this.styleProvider = provider;
 	}
+
+	public void dispose() {
+		proposalsHandler.dispose();
+
+		super.dispose();
+	}
+
 }

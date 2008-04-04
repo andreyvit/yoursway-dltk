@@ -16,7 +16,6 @@
             class="org.eclipse.dltk.python.core.PythonLanguageToolkit"
             nature="org.eclipse.dltk.python.core.nature"
             priority="0">
-         <problemReporting></problemReporting>
       </language>
    </extension>
    <extension
@@ -49,6 +48,15 @@
            name="%pythonContentType"
            priority="high">       
      </content-type>
+  </extension>
+
+  <extension
+    point="org.eclipse.dltk.core.search">
+    <seachFactory
+      class="org.eclipse.dltk.python.internal.core.search.PythonSearchFactory"
+      nature="org.eclipse.dltk.python.core.nature"
+      priority="0">
+    </seachFactory>
   </extension>
 
 </plugin>

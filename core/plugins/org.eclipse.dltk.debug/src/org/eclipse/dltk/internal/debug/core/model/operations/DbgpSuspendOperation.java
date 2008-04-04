@@ -13,7 +13,7 @@ import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 
 public class DbgpSuspendOperation extends DbgpOperation {
-	private static final String JOB_NAME = "Suspend operation";
+	private static final String JOB_NAME = Messages.DbgpSuspendOperation_suspendOperation;
 
 	public DbgpSuspendOperation(IScriptThread thread, IResultHandler finish)
 			throws DbgpException {

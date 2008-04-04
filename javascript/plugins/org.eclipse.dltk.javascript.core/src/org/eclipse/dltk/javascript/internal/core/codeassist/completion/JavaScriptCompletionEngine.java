@@ -91,7 +91,9 @@ public class JavaScriptCompletionEngine extends ScriptCompletionEngine {
 		this.actualCompletionPosition = position;
 		this.requestor.beginReporting();
 		String content = cu.getSourceContents();
-
+		if( position < 0 || position > content.length() ) {
+			return;
+		}
 		if (position > 0) {
 			if (content.charAt(position - 1) == '.') {
 				// special case;

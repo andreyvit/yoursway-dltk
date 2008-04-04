@@ -13,6 +13,7 @@ import org.eclipse.osgi.util.NLS;
 
 public class ValidatorMessages extends NLS {
 	private static final String BUNDLE_NAME = ValidatorMessages.class.getName();//$NON-NLS-1$
+	public static String ValidatorDefinitionsContainer_failedToLoadValidatorFromXml;
 	public static String ValidatorRuntime_badFormat;
 	
 

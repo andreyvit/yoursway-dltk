@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.Argument;
@@ -20,21 +19,19 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
-import org.eclipse.dltk.compiler.problem.DefaultProblem;
 import org.eclipse.dltk.compiler.problem.IProblemReporter;
-import org.eclipse.dltk.compiler.problem.ProblemSeverities;
-import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.tcl.ast.TclConstants;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclBlockExpression;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.core.TclKeywordsManager;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
-import org.eclipse.dltk.tcl.core.ast.TclGlobalVariableDeclaration;
+import org.eclipse.dltk.tcl.core.TclParseUtil.CodeModel;
 import org.eclipse.dltk.tcl.core.ast.TclPackageDeclaration;
-import org.eclipse.dltk.tcl.core.ast.TclUpvarVariableDeclaration;
 import org.eclipse.dltk.tcl.core.extensions.ISourceElementRequestVisitorExtension;
 import org.eclipse.dltk.tcl.internal.core.TclExtensionManager;
+import org.eclipse.dltk.tcl.internal.core.packages.TclCheckBuilder;
 
 public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor {
 
@@ -44,6 +41,8 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 
 	protected ISourceElementRequestVisitorExtension[] extensions = TclExtensionManager
 			.getDefault().getSourceElementRequestoVisitorExtensions();
+	private IScriptProject scriptProject;
+	private CodeModel codeModel;
 
 	public TclSourceElementRequestVisitor(ISourceElementRequestor requestor,
 			IProblemReporter reporter) {
@@ -192,7 +191,12 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 				needEnterLeave++;
 				if (!this.fRequestor.enterTypeAppend(split[i], "::")) {
 					ISourceElementRequestor.TypeInfo ti = new ISourceElementRequestor.TypeInfo();
-					ti.modifiers = this.getModifiers(decl);
+					if (decl instanceof TypeDeclaration) {
+						ti.modifiers = getModifiers(decl);
+					}
+					else {
+						ti.modifiers = Modifiers.AccNameSpace;
+					}
 
 					ti.name = split[i];
 					ti.nameSourceStart = decl.getNameStart();
@@ -229,6 +233,7 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 		info.nameSourceEnd = s.getNameEnd();
 		info.declarationStart = s.sourceStart();
 		info.superclasses = this.processSuperClasses(s);
+		info.modifiers = this.getModifiers(s);
 
 		ExitFromType exit = this.resolveType(s, fullName + "::dummy", true);
 
@@ -241,13 +246,7 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 	protected int getModifiers(Declaration s) {
 		int flags = 0;
 
-		if ((s.getModifiers() & Modifiers.AccAbstract) != 0) {
-			flags |= Modifiers.AccAbstract;
-		}
-		if ((s.getModifiers() & Modifiers.AccNameSpace) != 0
-				&& s instanceof TypeDeclaration) {
-			flags |= Modifiers.AccNameSpace;
-		}
+		flags = s.getModifiers();
 		for (int i = 0; i < this.extensions.length; i++) {
 			flags |= this.extensions[i].getModifiers(s);
 		}
@@ -322,6 +321,8 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 				for (int i = 0; i < exprs.size(); ++i) {
 					if (exprs.get(i) instanceof TclStatement) {
 						this.processReferences((TclStatement) exprs.get(i));
+					} else if (exprs.get(i) instanceof TclPackageDeclaration) {
+						processPackage((Statement) exprs.get(i));
 					}
 				}
 			} else if (st instanceof StringLiteral) {
@@ -374,6 +375,11 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 						.getNameEnd(), (pack.getName() + "*").toCharArray());
 			}
 		}
+		if (this.scriptProject != null) {
+			TclPackageDeclaration pkg = (TclPackageDeclaration) statement;
+			TclCheckBuilder.checkPackage(pkg, this.fReporter,
+					this.scriptProject, this.codeModel, null);
+		}
 	}
 
 	protected boolean processField(Statement statement) {
@@ -382,14 +388,7 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 		fi.nameSourceStart = decl.getNameStart();
 		fi.nameSourceEnd = decl.getNameEnd() - 1;
 		fi.declarationStart = decl.sourceStart();
-		fi.modifiers = 0;
-		if (statement instanceof TclGlobalVariableDeclaration) {
-			fi.modifiers = org.eclipse.dltk.tcl.ast.TclConstants.TCL_FIELD_TYPE_GLOBAL
-					| this.getModifiers(decl);
-		} else if (statement instanceof TclUpvarVariableDeclaration) {
-			fi.modifiers = org.eclipse.dltk.tcl.ast.TclConstants.TCL_FIELD_TYPE_UPVAR
-					| this.getModifiers(decl);
-		}
+		fi.modifiers = this.getModifiers(decl);
 
 		boolean needExit = false;
 
@@ -408,7 +407,7 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 		ExitFromType exit = null;// this.resolveType(decl, fullName, false);
 
 		for (int i = 0; i < extensions.length; i++) {
-			if ((exit = extensions[i].processField(decl,this)) != null) {
+			if ((exit = extensions[i].processField(decl, this)) != null) {
 				continue;
 			}
 		}
@@ -525,20 +524,20 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 		} else {
 			exit = this.resolveType(method, fullName, false);
 		}
-		if (exit.created) {
-			if (this.fReporter != null) {
-				try {
-					this.fReporter.reportProblem(new DefaultProblem("",
-							"Namespace not found.", 0, null,
-							ProblemSeverities.Warning, method.getNameStart(),
-							method.getNameEnd(), -1));
-				} catch (CoreException e1) {
-					if (DLTKCore.DEBUG) {
-						e1.printStackTrace();
-					}
-				}
-			}
-		}
+		// if (exit.created) {
+		// if (this.fReporter != null) {
+		// try {
+		// this.fReporter.reportProblem(new DefaultProblem("",
+		// "Namespace not found.", 0, null,
+		// ProblemSeverities.Warning, method.getNameStart(),
+		// method.getNameEnd(), -1));
+		// } catch (CoreException e1) {
+		// if (DLTKCore.DEBUG) {
+		// e1.printStackTrace();
+		// }
+		// }
+		// }
+		// }
 		this.fRequestor.enterMethodRemoveSame(mi);
 		this.exitStack.push(exit);
 		return true;
@@ -553,5 +552,13 @@ public class TclSourceElementRequestVisitor extends SourceElementRequestVisitor 
 
 	public ISourceElementRequestor getRequestor() {
 		return this.fRequestor;
+	}
+
+	public void setScriptProject(IScriptProject scriptProject) {
+		this.scriptProject = scriptProject;
+	}
+
+	public void setCodeModel(CodeModel model) {
+		this.codeModel = model;
 	}
 }

@@ -14,16 +14,16 @@ import org.eclipse.dltk.internal.core.SourceRange;
 
 public class RubySyntaxUtils {
 	
-	public static final String ARRAY_GET_METHOD = "[]".intern();
+	public static final String ARRAY_GET_METHOD = "[]".intern(); //$NON-NLS-1$
 	
-	public static final String ARRAY_PUT_METHOD = "[]=".intern();
+	public static final String ARRAY_PUT_METHOD = "[]=".intern(); //$NON-NLS-1$
 	
 	// FIXME Kalugin-WTF get the actual list from Andrey Tarantsov
 	private static final String[] operatorMethods = 
-		{"[]", "[]=", "**", "!", "~", "+", "-", "*", 
-		"/", "%", "<<", ">>", "&", "^", "|", "<=", 
-		">", "<", ">=", "<=>", "==", "===", "!=", "=~",
-		"+@", "-@"};
+		{"[]", "[]=", "**", "!", "~", "+", "-", "*",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+		"/", "%", "<<", ">>", "&", "^", "|", "<=",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+		">", "<", ">=", "<=>", "==", "===", "!=", "=~", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+		"+@", "-@"}; //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * If position is located inside a operator method, returns full
@@ -125,7 +125,7 @@ public class RubySyntaxUtils {
 			if (operatorMethods[i].equals(str))
 				return true;
 		}				
-		return str.matches("^(@{0,2}|\\$)[_a-zA-Z0-9]+[\\?!=]?$");
+		return str.matches("^(@{0,2}|\\$)[_a-zA-Z0-9]+[\\?!=]?$"); //$NON-NLS-1$
 	}
 
 	public static boolean isLessStrictIdentifierCharacter(char ch) {
@@ -133,11 +133,11 @@ public class RubySyntaxUtils {
 	}
 	
 	public static boolean isStrictIdentifierCharacter(char ch) {
-		return (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9') || ch == '_' || ch == '@' || ch == '$';
+		return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_' || ch == '@' || ch == '$';
 	}
 	
 	public static boolean isIdentifierCharacter(char ch) {
-		return (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9') || ch == '_' || ch == '?' || ch == '!'
+		return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_' || ch == '?' || ch == '!'
 			|| ch == '@' || ch == '$';
 	}
 
@@ -269,5 +269,30 @@ public class RubySyntaxUtils {
 		}
 		return false;
 	}
-	
+
+	public static boolean isValidConstant(String input) {
+		boolean result = input.matches("[A-Z][a-zA-Z0-9_]*"); //$NON-NLS-1$
+
+		return result;
+	}
+
+	public static boolean isValidClass(String input) {
+		boolean result = false;
+
+		if (input.indexOf("::") != -1) { //$NON-NLS-1$
+			String[] tokens = input.split("::"); //$NON-NLS-1$
+			for (int cnt = 0, max = tokens.length; cnt < max; cnt++) {
+				result = isValidConstant(tokens[cnt]);
+
+				if (result != true) {
+					break;
+				}
+			}
+		} else {
+			result = isValidConstant(input);
+		}
+
+		return result;
+	}
+
 }

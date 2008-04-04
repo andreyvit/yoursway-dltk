@@ -226,6 +226,8 @@ public class RemoteTestRunnerClient implements ITestingClient {
 	 * The Id of the failed test
 	 */
 	private String fFailedTestId;
+	
+	private int fFailedCode;
 	/**
 	 * The kind of failure of the test that is currently reported as failed
 	 */
@@ -314,6 +316,13 @@ public class RemoteTestRunnerClient implements ITestingClient {
 		String s[]= extractTestId(arg);
 		fFailedTestId= s[0];
 		fFailedTest= s[1];
+		fFailureKind= status;
+	}
+	private void extractFailure(String arg, int code, int status) {
+		String s[]= extractTestId(arg);
+		fFailedTestId= s[0];
+		fFailedTest= s[1];
+		fFailedCode = code;
 		fFailureKind= status;
 	}
 
@@ -454,7 +463,7 @@ public class RemoteTestRunnerClient implements ITestingClient {
 			final ITestRunListener2 listener= fListeners[i];
 			RRunner.run(new ListenerSafeRunnable() {
 				public void run() {
-					listener.testFailed(fFailureKind, fFailedTestId, fFailedTest, fFailedTrace.toString(), fExpectedResult.toString(), fActualResult.toString());
+					listener.testFailed(fFailureKind, fFailedTestId, fFailedTest, fFailedTrace.toString(), fExpectedResult.toString(), fActualResult.toString(), fFailedCode);
 				}
 			});
 		}
@@ -591,7 +600,22 @@ public class RemoteTestRunnerClient implements ITestingClient {
 				public void run() {
 					fCurrentState= fDefaultState;
 //					notifyTestFailed();(Integer.toString(id) + "," + name);
-					extractFailure(Integer.toString(id) + "," + name, ITestRunListener2.STATUS_FAILURE);
+					extractFailure(Integer.toString(id) + "," + name, ITestRunListener2.STATUS_FAILURE, -1);
+				}
+			});
+			operations.notify();
+		}
+	}
+	public void testFailed(final int code,final int id, final String name) {
+		if(isTerminated) {
+			return;
+		}
+		synchronized (operations) {
+			operations.add(new Runnable() {
+				public void run() {
+					fCurrentState= fDefaultState;
+//					notifyTestFailed();(Integer.toString(id) + "," + name);
+					extractFailure(Integer.toString(id) + "," + name, code, ITestRunListener2.STATUS_FAILURE);
 				}
 			});
 			operations.notify();

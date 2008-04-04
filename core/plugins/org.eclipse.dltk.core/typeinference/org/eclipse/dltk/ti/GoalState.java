@@ -13,25 +13,25 @@ public interface GoalState {
 
 	final static GoalState DONE = new GoalState() {
 		public String toString() {
-			return "DONE";
+			return "DONE"; //$NON-NLS-1$
 		}
 	};
 
 	final static GoalState WAITING = new GoalState() {
 		public String toString() {
-			return "WAITING";
+			return "WAITING"; //$NON-NLS-1$
 		}
 	};
 
 	final static GoalState PRUNED = new GoalState() {
 		public String toString() {
-			return "PRUNED";
+			return "PRUNED"; //$NON-NLS-1$
 		}
 	};
 
 	final static GoalState RECURSIVE = new GoalState() {
 		public String toString() {
-			return "RECURSIVE";
+			return "RECURSIVE"; //$NON-NLS-1$
 		}
 	};
 }

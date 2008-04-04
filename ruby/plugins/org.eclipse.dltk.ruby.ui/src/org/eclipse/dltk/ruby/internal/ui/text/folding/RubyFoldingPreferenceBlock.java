@@ -110,7 +110,7 @@ public class RubyFoldingPreferenceBlock extends AbstractConfigurationBlock imple
 							return RubyFoldingMessages.RubyFoldingPreferenceBlock_2;
 						}
 					};
-					InputDialog dlg = new InputDialog(null, RubyFoldingMessages.RubyFoldingPreferenceBlock_3, RubyFoldingMessages.RubyFoldingPreferenceBlock_4, "", validator); //$NON-NLS-3$
+					InputDialog dlg = new InputDialog(null, RubyFoldingMessages.RubyFoldingPreferenceBlock_3, RubyFoldingMessages.RubyFoldingPreferenceBlock_4, "", validator); //$NON-NLS-1$
 					if (dlg.open() == InputDialog.OK) {
 						fList.add(dlg.getValue());
 						save();
@@ -219,9 +219,9 @@ public class RubyFoldingPreferenceBlock extends AbstractConfigurationBlock imple
 					try {
 						int value= Integer.parseInt(number);
 						if (value < 2)
-							return "You may input numbers >= 2."; 
+							return RubyFoldingMessages.RubyFoldingPreferenceBlock_youMayInputNumbers; 
 					} catch (NumberFormatException e) {
-						return "Input is not a number"; 
+						return RubyFoldingMessages.RubyFoldingPreferenceBlock_inputIsNotANumber; 
 					}
 				}
 				return null;
@@ -229,7 +229,7 @@ public class RubyFoldingPreferenceBlock extends AbstractConfigurationBlock imple
 			
 		};
 		
-		addLabelledTextField(blockFolding, "Minimal amount of lines to be folded(>=2):", 
+		addLabelledTextField(blockFolding, RubyFoldingMessages.RubyFoldingPreferenceBlock_minimalAmountOfLinesToBeFolded, 
 				PreferenceConstants.EDITOR_FOLDING_LINES_LIMIT, 3, 1, true, val);
 		
 		Composite commentFolding = createSubsection(inner, null, RubyFoldingMessages.RubyFoldingPreferenceBlock_14);

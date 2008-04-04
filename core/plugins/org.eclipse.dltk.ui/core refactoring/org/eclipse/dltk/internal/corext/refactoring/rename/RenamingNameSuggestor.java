@@ -552,7 +552,7 @@ public class RenamingNameSuggestor {
 
 	private void initializePrefixesAndSuffixes(IScriptProject project) {
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add code assist code here...");
+			System.err.println("Add code assist code here..."); //$NON-NLS-1$
 		}
 //		fFieldPrefixes= readCommaSeparatedPreference(project, DLTKCore.CODEASSIST_FIELD_PREFIXES);
 //		fFieldSuffixes= readCommaSeparatedPreference(project, DLTKCore.CODEASSIST_FIELD_SUFFIXES);

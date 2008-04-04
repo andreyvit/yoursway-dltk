@@ -25,17 +25,17 @@ import org.w3c.dom.NodeList;
 
 public class DbgpContextCommands extends DbgpBaseCommands implements
 		IDbgpContextCommands {
-	private static final String CONTEXT_NAMES_COMMAND = "context_names";
+	private static final String CONTEXT_NAMES_COMMAND = "context_names"; //$NON-NLS-1$
 
-	private static final String CONTEXT_GET = "context_get";
+	private static final String CONTEXT_GET = "context_get"; //$NON-NLS-1$
 
-	private static final String TAG_CONTEXT = "context";
+	private static final String TAG_CONTEXT = "context"; //$NON-NLS-1$
 
-	private static final String TAG_PROPERTY = "property";
+	private static final String TAG_PROPERTY = "property"; //$NON-NLS-1$
 
-	private static final String ATTR_NAME = "name";
+	private static final String ATTR_NAME = "name"; //$NON-NLS-1$
 
-	private static final String ATTR_ID = "id";
+	private static final String ATTR_ID = "id"; //$NON-NLS-1$
 
 	public DbgpContextCommands(IDbgpCommunicator communicator) {
 		super(communicator);
@@ -76,22 +76,22 @@ public class DbgpContextCommands extends DbgpBaseCommands implements
 
 	public Map getContextNames(int stackDepth) throws DbgpException {
 		DbgpRequest request = createRequest(CONTEXT_NAMES_COMMAND);
-		request.addOption("-d", stackDepth);
+		request.addOption("-d", stackDepth); //$NON-NLS-1$
 		return parseContextNamesResponse(communicate(request));
 	}
 
 	public IDbgpProperty[] getContextProperties(int stackDepth)
 			throws DbgpException {
 		DbgpRequest request = createRequest(CONTEXT_GET);
-		request.addOption("-d", stackDepth);
+		request.addOption("-d", stackDepth); //$NON-NLS-1$
 		return parseContextPropertiesResponse(communicate(request));
 	}
 
 	public IDbgpProperty[] getContextProperties(int stackDepth, int contextId)
 			throws DbgpException {
 		DbgpRequest request = createRequest(CONTEXT_GET);
-		request.addOption("-d", stackDepth);
-		request.addOption("-c", contextId);
+		request.addOption("-d", stackDepth); //$NON-NLS-1$
+		request.addOption("-c", contextId); //$NON-NLS-1$
 		return parseContextPropertiesResponse(communicate(request));
 	}
 }

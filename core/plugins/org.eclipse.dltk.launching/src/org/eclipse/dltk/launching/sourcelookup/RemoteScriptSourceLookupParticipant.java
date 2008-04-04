@@ -31,7 +31,7 @@ public class RemoteScriptSourceLookupParticipant extends
 				.getLaunchConfiguration()
 				.getAttribute(
 						ScriptLaunchConfigurationConstants.ATTR_DLTK_DBGP_REMOTE_WORKING_DIR,
-						"");
+						""); //$NON-NLS-1$
 
 		if (path.indexOf(remoteDir) != -1) {
 			return path.substring(remoteDir.length() + 1);

@@ -39,7 +39,7 @@ class SourceMethodElementInfo extends MemberElementInfo implements ISourceMethod
 
 	public boolean isConstructor() {
 		if( DLTKCore.DEBUG) {
-			System.err.println("Implement is Constructor");
+			System.err.println("Implement is Constructor"); //$NON-NLS-1$
 		}
 		return false;
 	}

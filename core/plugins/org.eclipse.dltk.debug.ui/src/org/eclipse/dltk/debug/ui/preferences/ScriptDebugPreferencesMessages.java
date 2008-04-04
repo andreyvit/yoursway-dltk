@@ -53,10 +53,16 @@ public class ScriptDebugPreferencesMessages {
 	public static String NameLabel;
 	public static String DescriptionLabel;
 	public static String PathLabel;
-	public static String BrowseEnginePath;
-	public static String ExternalEngineGroup;
 	
-	public static String ServerSettingsLabel;
+	public static String ExternalEngineGroup;
+	public static String LoggingGroupLabel;
+	public static String EnableLoggingLabel;
+	public static String LogNameLabel;
+	public static String LogNameFormatLabel;
+	public static String LogFolderLabel;
+	public static String BrowseButton;
+	
+	public static String CommunicationLabel;
 	public static String PortLabel;
 	public static String AutoSelectLabel;
 	public static String CustomLabel;

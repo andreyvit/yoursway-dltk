@@ -71,7 +71,7 @@ public class ExpressionList extends Expression {
 			}
 			else {
 				if( DLTKCore.DEBUG ) {
-					System.err.println("TODO: Add expression to statemenet conversion or change expressin list to statement list...");
+					System.err.println("TODO: Add expression to statemenet conversion or change expressin list to statement list..."); //$NON-NLS-1$
 				}
 			}
 		}
@@ -107,7 +107,7 @@ public class ExpressionList extends Expression {
 				expr.printNode(output);
 
 				if (index != this.fExpressions.size() - 1) {
-					output.formatPrintLn(", ");
+					output.formatPrintLn(", "); //$NON-NLS-1$
 				}
 				index += 1;
 			}

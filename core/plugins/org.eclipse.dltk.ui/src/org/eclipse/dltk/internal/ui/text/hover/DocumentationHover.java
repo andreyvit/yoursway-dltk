@@ -122,7 +122,7 @@ public class DocumentationHover extends AbstractScriptEditorTextHover implements
 		boolean hasContents = false;
 		if (nResults > 1) {
 			HTMLPrinter.addSmallHeader(buffer, getInfoText(result[0]));
-			HTMLPrinter.addParagraph(buffer, "<hr>");
+			HTMLPrinter.addParagraph(buffer, "<hr>"); //$NON-NLS-1$
 			for (int i = 0; i < result.length; i++) {
 // HTMLPrinter.startBulletList(buffer);
 				IModelElement curr = result[i];
@@ -150,7 +150,7 @@ public class DocumentationHover extends AbstractScriptEditorTextHover implements
 // HTMLPrinter.addBullet(buffer, getInfoText(curr));
 // HTMLPrinter.addParagraph(buffer, "<br>");
 						if (hasContents) {
-							HTMLPrinter.addParagraph(buffer, "<hr>");
+							HTMLPrinter.addParagraph(buffer, "<hr>"); //$NON-NLS-1$
 						}
 						HTMLPrinter.addParagraph(buffer, reader);
 					}

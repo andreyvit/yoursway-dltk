@@ -50,7 +50,7 @@ public class InterpreterSearcher {
 		}
 
 		// Folder list
-		final String separator = Platform.getOS().equals(Platform.OS_WIN32) ? ";" : ":"; //$NON-NLS-1$ $NON-NLS-1$
+		final String separator = Platform.getOS().equals(Platform.OS_WIN32) ? ";" : ":"; //$NON-NLS-1$ //$NON-NLS-2$
 
 		final List folders = new ArrayList();
 		String[] res = path.split(separator);
@@ -111,7 +111,7 @@ public class InterpreterSearcher {
 
 			try {
 				monitor.subTask(MessageFormat.format(
-						"Found {0} - Searching {1}", new String[] {
+						Messages.InterpreterSearcher_foundSearching, new String[] {
 								Integer.toString(found.size()),
 								file.getCanonicalPath() }));
 

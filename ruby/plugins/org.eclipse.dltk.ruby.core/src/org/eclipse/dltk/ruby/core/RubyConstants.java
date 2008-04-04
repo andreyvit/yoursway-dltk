@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.ruby.core;
 
@@ -16,9 +16,9 @@ public class RubyConstants {
 
 	}
 
-	public final static String RUBY_PARTITIONING = "__ruby_partitioning";
+	public final static String RUBY_PARTITIONING = "__ruby_partitioning"; //$NON-NLS-1$
 
-	public static final int RubyAttributeModifier = Modifiers.USER_MODIFIER * 2;
-	
-	public static final int RubyAliasModifier = Modifiers.USER_MODIFIER * 4;
+	public static final int RubyAttributeModifier = 2 << ( Modifiers.USER_MODIFIER + 1);
+
+	public static final int RubyAliasModifier = 2 << (Modifiers.USER_MODIFIER + 2);
 }

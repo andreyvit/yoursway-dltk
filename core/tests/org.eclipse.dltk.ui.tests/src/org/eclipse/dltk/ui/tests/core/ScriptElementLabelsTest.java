@@ -81,7 +81,7 @@ public class ScriptElementLabelsTest extends AbstractModelTests {
 		
 		
 		lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_FULLY_QUALIFIED | ScriptElementLabels.PREPEND_ROOT_PATH);
-		assertEqualString(lab, "TestSetupProject/src/Outer.txt - Outer");
+		assertEqualString(lab, "TestSetupProject/src - src Outer");
 	}
 	
 	public void testTypeLabelInner() throws Exception {
@@ -118,19 +118,19 @@ public class ScriptElementLabelsTest extends AbstractModelTests {
 		IModelElement elem= cu.getElementAt(content.indexOf("Inner"));
 		
 		String lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_FULLY_QUALIFIED);
-		assertEqualString(lab, "Outer.Inner");
+		assertEqualString(lab, "src Outer.Inner");
 
 		lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_CONTAINER_QUALIFIED);
 		assertEqualString(lab, "Outer.Inner");
 		
 		lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_POST_QUALIFIED);
-		assertEqualString(lab, "Inner - Outer");
+		assertEqualString(lab, "Inner - src Outer");
 		
 		lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_FULLY_QUALIFIED | ScriptElementLabels.APPEND_ROOT_PATH);
-		assertEqualString(lab, "Outer.Inner - TestSetupProject/src/Outer2.txt");
+		assertEqualString(lab, "src Outer.Inner - TestSetupProject/src");
 		
 		lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_FULLY_QUALIFIED | ScriptElementLabels.PREPEND_ROOT_PATH);
-		assertEqualString(lab, "TestSetupProject/src/Outer2.txt - Outer.Inner");
+		assertEqualString(lab, "TestSetupProject/src - src Outer.Inner");
 	}
 	
 	public void testTypeLabelLocal() throws Exception {
@@ -163,19 +163,19 @@ public class ScriptElementLabelsTest extends AbstractModelTests {
 		IModelElement elem= cu.getElementAt(content.indexOf("Local"));
 		
 		String lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_FULLY_QUALIFIED);
-		assertEqualString(lab, "Outer.foo(...).Local");
+		assertEqualString(lab, "src src Outer.foo().Local");
 
 		lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_CONTAINER_QUALIFIED);
-		assertEqualString(lab, "Outer.foo(...).Local");
+		assertEqualString(lab, "src Outer.foo().Local");
 		
 		lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_POST_QUALIFIED);
-		assertEqualString(lab, "Local - Outer.foo(...)");
+		assertEqualString(lab, "Local - src Outer.foo()");
 		
 		lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_FULLY_QUALIFIED | ScriptElementLabels.APPEND_ROOT_PATH);
-		assertEqualString(lab, "Outer.foo(...).Local - TestSetupProject/src/Outer3.txt");
+		assertEqualString(lab, "src src Outer.foo().Local - TestSetupProject/src");
 		
 		lab= ScriptElementLabels.getDefault().getTextLabel(elem, ScriptElementLabels.T_FULLY_QUALIFIED | ScriptElementLabels.PREPEND_ROOT_PATH);
-		assertEqualString(lab, "TestSetupProject/src/Outer3.txt - Outer.foo(...).Local");
+		assertEqualString(lab, "TestSetupProject/src - src src Outer.foo().Local");
 	}
 		
 	

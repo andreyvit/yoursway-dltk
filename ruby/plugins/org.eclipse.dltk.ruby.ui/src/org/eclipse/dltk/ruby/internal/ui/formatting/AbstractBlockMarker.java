@@ -51,7 +51,7 @@ public abstract class AbstractBlockMarker {
 	}
 
 	public void print() {
-		System.out.println("Pos: " + pos + ", type: " + this.getClass().getName() + ", keyword: " + this.getKeyword()) ;
+		System.out.println("Pos: " + pos + ", type: " + this.getClass().getName() + ", keyword: " + this.getKeyword()) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		if (next != null) {
 			next.print();	
 		}	

@@ -14,7 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
+import org.eclipse.dltk.ui.text.folding.IFoldingStructureProviderExtension;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -26,6 +28,7 @@ import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
+import org.eclipse.jface.text.source.projection.ProjectionViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Display;
@@ -78,6 +81,11 @@ public final class ToggleCommentAction extends TextEditorAction {
 
 		if (!validateEditorInputState())
 			return;
+
+        ITextOperationTarget target = (ITextOperationTarget)editor.getAdapter(ITextOperationTarget.class);
+        if (target.canDoOperation(ProjectionViewer.EXPAND)) {
+          target.doOperation(ProjectionViewer.EXPAND);
+        }
 
 		final int operationCode;
 		if (isSelectionCommented(editor.getSelectionProvider().getSelection()))

@@ -26,7 +26,7 @@ public class ClearWorkingSetAction extends Action {
 		setToolTipText(WorkingSetMessages.ClearWorkingSetAction_toolTip); 
 		setEnabled(actionGroup.getWorkingSet() != null);
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
 		
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IScriptHelpContextIds.CLEAR_WORKING_SET_ACTION);

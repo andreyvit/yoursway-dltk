@@ -12,6 +12,7 @@ package org.eclipse.dltk.validators.core;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -25,6 +26,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
@@ -45,7 +47,7 @@ public final class ValidatorRuntime {
 			+ ".PREF_VALIDATOR_XML"; //$NON-NLS-1$
 
 	public static final String MARKER_VALIDATOR = ValidatorsCore.PLUGIN_ID
-			+ ".marker_validator_id";
+			+ ".marker_validator_id"; //$NON-NLS-1$
 
 	// lock for interpreter initialization
 	private static Object fgValidatorLock = new Object();
@@ -130,14 +132,14 @@ public final class ValidatorRuntime {
 			getPreferences().setValue(PREF_VALIDATOR_XML, xml);
 			savePreferences();
 		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, "Error",
-					IStatus.ERROR, "Exception occured", e));
+			throw new CoreException(new Status(IStatus.ERROR, Messages.ValidatorRuntime_error,
+					IStatus.ERROR, Messages.ValidatorRuntime_exceptionOccurred, e));
 		} catch (ParserConfigurationException e) {
-			throw new CoreException(new Status(IStatus.ERROR, "Error",
-					IStatus.ERROR, "Exception occured", e));
+			throw new CoreException(new Status(IStatus.ERROR, Messages.ValidatorRuntime_error,
+					IStatus.ERROR, Messages.ValidatorRuntime_exceptionOccurred, e));
 		} catch (TransformerException e) {
-			throw new CoreException(new Status(IStatus.ERROR, "Error",
-					IStatus.ERROR, "Exception occured", e));
+			throw new CoreException(new Status(IStatus.ERROR, Messages.ValidatorRuntime_error,
+					IStatus.ERROR, Messages.ValidatorRuntime_exceptionOccurred, e));
 		}
 	}
 
@@ -165,7 +167,7 @@ public final class ValidatorRuntime {
 		if (validatorXMLString.length() > 0) {
 			try {
 				ByteArrayInputStream inputStream = new ByteArrayInputStream(
-						validatorXMLString.getBytes("UTF-8"));
+						validatorXMLString.getBytes("UTF-8")); //$NON-NLS-1$
 				ValidatorDefinitionsContainer.parseXMLIntoContainer(
 						inputStream, interpreterDefs);
 				return false;
@@ -384,12 +386,12 @@ public final class ValidatorRuntime {
 			if (stream != null) {
 				try {
 					IValidatorType type = getValidatorType(id);
-					String sub = "...";
+					String sub = "..."; //$NON-NLS-1$
 					if (type != null) {
-						sub = "for " + type.getName() + "...";
+						sub = MessageFormat.format(Messages.ValidatorRuntime_for, new Object[] { type.getName() });
 					}
 					stream
-							.write(("Validation could not be performed...\nPlease check validator preferences " + sub)
+							.write((MessageFormat.format(Messages.ValidatorRuntime_validationCouldNotBePerformed, new Object[] { sub }))
 									.getBytes());
 				} catch (IOException e) {
 					if (DLTKCore.DEBUG) {
@@ -399,7 +401,7 @@ public final class ValidatorRuntime {
 			}
 			return;
 		}
-		process(stream, elements, resources, activeValidators, processValidate,
+		process(stream, elements, resources, (IValidator[])required.toArray(new IValidator[required.size()]), processValidate,
 				monitor);
 	}
 
@@ -410,31 +412,31 @@ public final class ValidatorRuntime {
 
 	private interface IProcessAction {
 		IStatus execute(IValidator validator, ISourceModule[] o,
-				OutputStream out);
+				OutputStream out, IProgressMonitor monitor);
 
-		IStatus execute(IValidator validator, IResource[] o, OutputStream out);
+		IStatus execute(IValidator validator, IResource[] o, OutputStream out, IProgressMonitor monitor);
 	}
 
 	public static IProcessAction processValidate = new IProcessAction() {
 		public IStatus execute(IValidator validator, ISourceModule[] o,
-				OutputStream out) {
-			return validator.validate(o, out);
+				OutputStream out, IProgressMonitor monitor) {
+			return validator.validate(o, out, monitor);
 		}
 
 		public IStatus execute(IValidator validator, IResource[] o,
-				OutputStream out) {
-			return validator.validate(o, out);
+				OutputStream out, IProgressMonitor monitor) {
+			return validator.validate(o, out, monitor);
 		}
 	};
 	public static IProcessAction processClean = new IProcessAction() {
 		public IStatus execute(IValidator validator, ISourceModule[] o,
-				OutputStream out) {
+				OutputStream out, IProgressMonitor monitor) {
 			validator.clean(o);
 			return null;
 		}
 
 		public IStatus execute(IValidator validator, IResource[] o,
-				OutputStream out) {
+				OutputStream out, IProgressMonitor monitor) {
 			validator.clean(o);
 			return null;
 		}
@@ -443,31 +445,23 @@ public final class ValidatorRuntime {
 	private static void process(OutputStream stream, List elements,
 			List resources, IValidator[] activeValidators,
 			IProcessAction action, IProgressMonitor monitor) {
-		if (monitor != null) {
-
-			monitor.beginTask("Validating", activeValidators.length);
-		}
-		int len = 0;
-		if (elements != null) {
-			len += (elements.size()) * activeValidators.length;
-		}
-		if (resources != null) {
-			len += (resources.size()) * activeValidators.length;
-		}
-		if (elements != null) {
-			for (int i = 0; i < activeValidators.length; i++) {
-				ISourceModule[] modules = filterModulesForValidator(elements,
-						activeValidators[i], monitor);
-				SubProgressMonitor subMonitor = null;
-				if (monitor != null) {
-					subMonitor = new SubProgressMonitor(monitor, 1);
-					activeValidators[i].setProgressMonitor(subMonitor);
-				}
-				action.execute(activeValidators[i], modules, stream);
-				if (subMonitor != null) {
-					subMonitor.done();
+		if (monitor == null)
+			monitor = new NullProgressMonitor();
+		monitor.beginTask(Messages.ValidatorRuntime_runningValidators, activeValidators.length*100);
+		try {
+			if (elements != null) {
+				for (int i = 0; i < activeValidators.length; i++) {
+					ISourceModule[] modules = filterModulesForValidator(
+							elements, activeValidators[i], monitor);
+					if (monitor.isCanceled())
+						return;
+					IProgressMonitor subMonitor = new SubProgressMonitor(
+							monitor, 100);
+					action.execute(activeValidators[i], modules, stream, subMonitor);
 				}
 			}
+		} finally {
+			monitor.done();
 		}
 		// if (resources != null) {
 		// for (Iterator iterator = resources.iterator(); iterator.hasNext();) {
@@ -492,9 +486,6 @@ public final class ValidatorRuntime {
 		// }
 		// }
 		// }
-		if (monitor != null) {
-			monitor.done();
-		}
 	}
 
 	private static ISourceModule[] filterModulesForValidator(List elements,
@@ -520,7 +511,7 @@ public final class ValidatorRuntime {
 				}
 
 				if (toolkit != null && toolkit.getNatureId().equals(nature)
-						|| nature.equals("#")) {
+						|| nature.equals("#")) { //$NON-NLS-1$
 					result.add(module);
 				}
 			}

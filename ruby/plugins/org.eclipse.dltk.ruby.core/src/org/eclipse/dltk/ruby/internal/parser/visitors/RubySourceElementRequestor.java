@@ -31,20 +31,16 @@ import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.compiler.ISourceElementRequestor;
 import org.eclipse.dltk.compiler.SourceElementRequestVisitor;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.ruby.ast.RubyASTUtil;
 import org.eclipse.dltk.ruby.ast.RubyAliasExpression;
 import org.eclipse.dltk.ruby.ast.RubyAssignment;
-import org.eclipse.dltk.ruby.ast.RubyColonExpression;
 import org.eclipse.dltk.ruby.ast.RubyConstantDeclaration;
 import org.eclipse.dltk.ruby.core.RubyConstants;
 
 public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
-	private static final String NEW_CALL = "new";
-	private static final String ATTR = "attr";
-	private static final String VALUE = "value";
-	private static final String ATTR_ACCESSOR = "attr_accessor";
-	private static final String ATTR_WRITER = "attr_writer";
-	private static final String ATTR_READER = "attr_reader";
+	private static final String NEW_CALL = "new"; //$NON-NLS-1$
+	private static final String VALUE = "value"; //$NON-NLS-1$
 
 	private static class TypeField {
 		private String fName;
@@ -133,7 +129,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 
 		if (left == null) {
 			throw new IllegalArgumentException(
-					"addVariable expression can't be null");
+					Messages.RubySourceElementRequestor_addVariableExpressionCantBeNull);
 		}
 
 		if (left instanceof VariableReference) {
@@ -172,26 +168,8 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 		List expressions = list.getChilds();
 		List names = new ArrayList();
 		for (Iterator iter = expressions.iterator(); iter.hasNext();) {
-			ASTNode expr = (ASTNode) iter.next();
-			if (expr instanceof SimpleReference) {
-				names.add(((SimpleReference) expr).getName());
-			} else if (expr instanceof RubyColonExpression) { // FIXME
-				String name = "";
-
-				while (expr instanceof RubyColonExpression) {
-					RubyColonExpression colonExpression = (RubyColonExpression) expr;
-					name = "::" + colonExpression.getName();
-					ASTNode left = colonExpression.getLeft();
-					if (!colonExpression.isFull() && left == null) {
-						name = name.substring(2);
-					}
-					expr = left;
-				}
-
-				if (expr instanceof ConstantReference) {
-					ConstantReference constant = (ConstantReference) expr;
-					name = constant.getName() + name;
-				}
+			String name = RubyASTUtil.resolveClassName((ASTNode) iter.next());
+			if (name != null && name.length() > 0) {
 				names.add(name);
 			}
 		}
@@ -200,7 +178,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 	}
 
 	protected String makeLanguageDependentValue(ASTNode value) {
-		String outValue = "";
+		String outValue = ""; //$NON-NLS-1$
 		/*
 		 * if (value instanceof ExtendedVariableReference) { StringWriter
 		 * stringWriter = new StringWriter(); CorePrinter printer = new
@@ -217,7 +195,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 	// Visiting methods
 	protected void onEndVisitMethod(MethodDeclaration method) {
 		if (DLTKCore.DEBUG) {
-			System.out.println("==> Method: " + method.getName());
+			System.out.println("==> Method: " + method.getName()); //$NON-NLS-1$
 		}
 
 		Iterator it = fNotAddedFields.iterator();
@@ -243,15 +221,10 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 		fNotAddedFields.clear();
 	}
 
-	protected static boolean isAttrLike(String name) {
-		return name.equals(ATTR_READER) || name.equals(ATTR_WRITER)
-				|| name.equals(ATTR_ACCESSOR) || name.equals(ATTR);
-	}
-
 	// Visiting expressions
 	public boolean visit(ASTNode expression) throws Exception {
 		if (DLTKCore.DEBUG) {
-			System.out.println("==> Expression: " + expression.toString());
+			System.out.println("==> Expression: " + expression.toString()); //$NON-NLS-1$
 		}
 
 		if (expression instanceof RubyAssignment) {
@@ -292,7 +265,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 					String attr = RubyAttributeHandler.getText(n);
 					ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
 					mi.parameterNames = new String[] { VALUE };
-					mi.name = attr + "=";
+					mi.name = attr + "="; //$NON-NLS-1$
 					mi.modifiers = RubyConstants.RubyAttributeModifier;
 					mi.nameSourceStart = n.sourceStart();
 					mi.nameSourceEnd = n.sourceEnd() - 1;
@@ -303,7 +276,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 				}
 			}
 
-			if (name.equals("require")) {
+			if (name.equals("require")) { //$NON-NLS-1$
 				// TODO
 			}
 
@@ -363,7 +336,7 @@ public class RubySourceElementRequestor extends SourceElementRequestVisitor {
 		} else if (expression instanceof RubyAliasExpression) {
 			RubyAliasExpression alias = (RubyAliasExpression) expression;
 			String oldValue = alias.getOldValue();
-			if (!oldValue.startsWith("$")) {
+			if (!oldValue.startsWith("$")) { //$NON-NLS-1$
 				String newValue = alias.getNewValue();
 				ISourceElementRequestor.MethodInfo mi = new ISourceElementRequestor.MethodInfo();
 

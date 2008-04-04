@@ -338,7 +338,7 @@ public class AccessRulesDialog extends StatusDialog {
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 		if(DLTKCore.DEBUG) {
-			System.err.println("TODO: AccessRulesDialog add help context");
+			System.err.println("TODO: AccessRulesDialog add help context"); //$NON-NLS-1$
 		}
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(newShell, IDLTKHelpContextIds.ACCESS_RULES_DIALOG);
 	}
@@ -347,7 +347,7 @@ public class AccessRulesDialog extends StatusDialog {
 	public void performPageSwitch(IWorkbenchPreferenceContainer pageContainer) {
 		//HashMap data= new HashMap();
 		if(DLTKCore.DEBUG) {
-			System.err.println("TODO:AccessRulesDialog:");
+			System.err.println("TODO:AccessRulesDialog:"); //$NON-NLS-1$
 		}
 		//data.put(ProblemSeveritiesPreferencePage.DATA_SELECT_OPTION_KEY, DLTKCore.COMPILER_PB_FORBIDDEN_REFERENCE);
 		//data.put(ProblemSeveritiesPreferencePage.DATA_SELECT_OPTION_QUALIFIER, DLTKCore.PLUGIN_ID);

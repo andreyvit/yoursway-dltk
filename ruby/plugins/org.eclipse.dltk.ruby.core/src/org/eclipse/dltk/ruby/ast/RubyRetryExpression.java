@@ -15,7 +15,7 @@ import org.eclipse.dltk.ast.expressions.CallExpression;
 public class RubyRetryExpression extends CallExpression {
 
 	public RubyRetryExpression(int start, int end) {
-		super(start, end, null, "retry", CallArgumentsList.EMPTY);
+		super(start, end, null, "retry", CallArgumentsList.EMPTY); //$NON-NLS-1$
 	}
 
 }

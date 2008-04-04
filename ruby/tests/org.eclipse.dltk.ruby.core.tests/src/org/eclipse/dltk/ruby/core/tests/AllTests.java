@@ -4,6 +4,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.eclipse.dltk.ruby.core.tests.assist.RubySelectionTests;
+import org.eclipse.dltk.ruby.core.tests.parser.RubyParserRecoveryTests;
 import org.eclipse.dltk.ruby.core.tests.parser.RubyParserTests;
 import org.eclipse.dltk.ruby.core.tests.search.mixin.AutoMixinTests;
 import org.eclipse.dltk.ruby.core.tests.search.mixin.MixinModelManipulationTests;
@@ -24,6 +25,7 @@ public class AllTests {
 		suite.addTest(RubyCompletionTests.suite());
 
 		suite.addTestSuite(RubyParserTests.class);
+		suite.addTestSuite(RubyParserRecoveryTests.class);
 
 		// FIXME: fix running of this tests under mac os x
 		// suite.addTest(StdlibRubyParserTests.suite());

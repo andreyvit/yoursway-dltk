@@ -87,7 +87,7 @@ public class PluginImagesHelper {
 			}
 			avoidSWTErrorMap.put(key, result);
 			if (imageRegistry != null) {
-				throw new Error("Image registry already defined");
+				throw new Error(Messages.PluginImagesHelper_imageRegistryAlreadyDefined);
 			}
 			return result;
 		} catch (Throwable e) {

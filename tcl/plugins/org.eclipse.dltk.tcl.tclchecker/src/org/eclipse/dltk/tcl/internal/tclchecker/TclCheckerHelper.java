@@ -19,12 +19,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.dltk.utils.PlatformFileUtils;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 public final class TclCheckerHelper {
@@ -37,6 +39,9 @@ public final class TclCheckerHelper {
 	private static final String W2_OPTION = "-W2";
 
 	private static final String W3_OPTION = "-W3";
+
+	private static final Object PCX_OPTION = "-pcx";
+	private static final Object NO_PCX_OPTION = "-nopcx";
 
 	private static final String SUPPRESS_OPTION = "-suppress";
 
@@ -70,9 +75,12 @@ public final class TclCheckerHelper {
 
 	public static void passOriginalArguments(IPreferenceStore store,
 			List cmdLine) {
-		cmdLine.add(store.getString(TclCheckerConstants.PREF_PATH));
+		File validatorFile = PlatformFileUtils
+				.findAbsoluteOrEclipseRelativeFile(new File(store
+						.getString(TclCheckerConstants.PREF_PATH)));
+		cmdLine.add(validatorFile.getAbsoluteFile().toString());
 
-//		cmdLine.add(QUIET_OPTION);
+		// cmdLine.add(QUIET_OPTION);
 
 		int mode = store.getInt(TclCheckerConstants.PREF_MODE);
 
@@ -84,7 +92,7 @@ public final class TclCheckerHelper {
 			cmdLine.add(W3_OPTION);
 		}
 
-		// Suppres
+		// Suppress
 		List problems = TclCheckerProblemDescription.getProblemIdentifiers();
 		Iterator it = problems.iterator();
 		while (it.hasNext()) {
@@ -94,10 +102,25 @@ public final class TclCheckerHelper {
 				cmdLine.add(warningName);
 			}
 		}
+
+		boolean noPcx = store.getBoolean(TclCheckerConstants.PREF_NO_PCX);
+		if (noPcx) {
+			cmdLine.add(NO_PCX_OPTION);
+		} else {
+			// pcx paths
+			List paths = getPcxPaths(store);
+			for (Iterator iterator = paths.iterator(); iterator.hasNext();) {
+				String path = (String) iterator.next();
+				cmdLine.add(PCX_OPTION);
+				cmdLine.add(path);
+			}
+		}
 	}
 
 	public static boolean canExecuteTclChecker(IPreferenceStore store) {
-		File file = new File(store.getString(TclCheckerConstants.PREF_PATH));
+		File file = PlatformFileUtils
+				.findAbsoluteOrEclipseRelativeFile(new File(store
+						.getString(TclCheckerConstants.PREF_PATH)));
 
 		if (!file.exists()) {
 			return false;
@@ -195,5 +218,54 @@ public final class TclCheckerHelper {
 		}
 
 		return (String[]) lines.toArray(new String[lines.size()]);
+	}
+
+	public static void passEnvironment(Map map, IPreferenceStore store) {
+		// File file = new
+		// File(store.getString(TclCheckerConstants.PREF_PCX_PATH));
+		// file = PlatformFileUtils.findAbsoluteOrEclipseRelativeFile(file);
+		// if (file.exists() && file.isDirectory()) {
+		// map.put(TclCheckerConstants.TCL_DEVKIT_LOCAL_VARIABLE, file
+		// .getAbsolutePath());
+		// }
+	}
+
+	public static List getPcxPaths(IPreferenceStore store) {
+		String pcxPathsValue = store
+				.getString(TclCheckerConstants.PREF_PCX_PATH);
+		List values = new ArrayList();
+		int start = 0;
+		for (int i = 0; i < pcxPathsValue.length(); i++) {
+			if (pcxPathsValue.charAt(i) == File.pathSeparatorChar && start < i) {
+				String path = pcxPathsValue.substring(start, i);
+				if (path.length() > 0) {
+					values.add(path);
+				}
+				start = i + 1;
+			}
+		}
+		if (start < pcxPathsValue.length()) {
+			String path = pcxPathsValue
+					.substring(start, pcxPathsValue.length());
+			if (path.length() > 0) {
+				values.add(path);
+			}
+		}
+		return values;
+	}
+
+	public static void setPcxPaths(IPreferenceStore store, List paths) {
+		StringBuffer buffer = new StringBuffer();
+		boolean first = true;
+		for (Iterator iterator = paths.iterator(); iterator.hasNext();) {
+			String path = (String) iterator.next();
+			if (!first) {
+				buffer.append(File.pathSeparator);
+			} else {
+				first = false;
+			}
+			buffer.append(path);
+		}
+		store.setValue(TclCheckerConstants.PREF_PCX_PATH, buffer.toString());
 	}
 }

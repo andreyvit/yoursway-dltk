@@ -48,25 +48,25 @@ public class SimpleType extends ClassType implements IClassType {
 	public static String getTypeString(int type) {
 		switch (type) {
 		case TYPE_STRING:
-			return "string";
+			return "string"; //$NON-NLS-1$
 		case TYPE_NUMBER:
-			return "number";
+			return "number"; //$NON-NLS-1$
 		case TYPE_ARRAY:
-			return "array";
+			return "array"; //$NON-NLS-1$
 		case TYPE_LIST:
-			return "list";
+			return "list"; //$NON-NLS-1$
 		case TYPE_DICT:
-			return "dict";
+			return "dict"; //$NON-NLS-1$
 		case TYPE_BOOLEAN:
-			return "boolean";
+			return "boolean"; //$NON-NLS-1$
 		case TYPE_TUPLE:
-			return "tuple";
+			return "tuple"; //$NON-NLS-1$
 		case TYPE_NONE:
-			return "void";
+			return "void"; //$NON-NLS-1$
 		case TYPE_NULL:
-			return "NULL";
+			return "NULL"; //$NON-NLS-1$
 		}
-		return "unknown";
+		return "unknown"; //$NON-NLS-1$
 	}
 
 	public int hashCode() {

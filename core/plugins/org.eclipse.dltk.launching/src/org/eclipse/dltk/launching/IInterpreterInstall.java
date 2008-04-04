@@ -16,7 +16,7 @@ import org.eclipse.dltk.core.IBuiltinModuleProvider;
 public interface IInterpreterInstall extends IBuiltinModuleProvider {
 	// Runner
 	IInterpreterRunner getInterpreterRunner(String mode);
-	
+
 	String getNatureId();
 
 	// Id
@@ -27,8 +27,10 @@ public interface IInterpreterInstall extends IBuiltinModuleProvider {
 
 	void setName(String name);
 
-	// Install location
-	File getInstallLocation();	
+	// Also search for Platform location relative locations.
+	File getInstallLocation();
+	//
+	File getRawInstallLocation();
 
 	void setInstallLocation(File installLocation);
 
@@ -37,8 +39,9 @@ public interface IInterpreterInstall extends IBuiltinModuleProvider {
 
 	// Library locations
 	LibraryLocation[] getLibraryLocations();
-	
+
 	EnvironmentVariable[] getEnvironmentVariables();
+
 	void setEnvironmentVariables(EnvironmentVariable[] variables);
 
 	void setLibraryLocations(LibraryLocation[] locations);

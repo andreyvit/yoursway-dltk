@@ -68,7 +68,9 @@ public abstract class ScriptTextTools {
 			IPreferenceStore preferenceStore, ITextEditor editor,
 			String partitioning);
 
-	public abstract IPartitionTokenScanner getPartitionScanner();
+	public IPartitionTokenScanner getPartitionScanner() {
+		return null;
+	}
 
 	/**
 	 * Factory method for creating a script-specific document partitioner using
@@ -77,7 +79,11 @@ public abstract class ScriptTextTools {
 	 * @return a newly created script document partitioner
 	 */
 	public IDocumentPartitioner createDocumentPartitioner() {
-		return new FastPartitioner(getPartitionScanner(), fLegalContentTypes);
+		IPartitionTokenScanner scaner = getPartitionScanner();
+		if (scaner == null) {
+			return null;
+		}
+		return new FastPartitioner(scaner, fLegalContentTypes);
 	}
 
 	/**
@@ -103,16 +109,22 @@ public abstract class ScriptTextTools {
 	 */
 	public void setupDocumentPartitioner(IDocument document, String partitioning) {
 		IDocumentPartitioner partitioner = createDocumentPartitioner();
-		partitioner.connect(document);
-		if (document instanceof IDocumentExtension3) {
-			IDocumentExtension3 extension3 = (IDocumentExtension3) document;
-			extension3.setDocumentPartitioner(partitioning, partitioner);
-		} else {
-			document.setDocumentPartitioner(partitioner);
+		if (partitioner != null) {
+			partitioner.connect(document);
+			if (document instanceof IDocumentExtension3) {
+				IDocumentExtension3 extension3 = (IDocumentExtension3) document;
+				extension3.setDocumentPartitioner(partitioning, partitioner);
+			} else {
+				document.setDocumentPartitioner(partitioner);
+			}
 		}
 	}
 
-	public abstract SemanticHighlighting[] getSemanticHighlightings();
+	public SemanticHighlighting[] getSemanticHighlightings() {
+		return new SemanticHighlighting[0];
+	}
 
-	public abstract PositionUpdater getSemanticPositionUpdater();
+	public PositionUpdater getSemanticPositionUpdater() {
+		return null;
+	}
 }

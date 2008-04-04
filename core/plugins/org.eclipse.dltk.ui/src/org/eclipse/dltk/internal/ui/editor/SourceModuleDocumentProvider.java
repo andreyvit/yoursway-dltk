@@ -13,17 +13,24 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFileState;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IStorage;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -85,8 +92,10 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IStorageEditorInput;
+import org.eclipse.ui.IURIEditorInput;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
+import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.eclipse.ui.texteditor.AbstractMarkerAnnotationModel;
 import org.eclipse.ui.texteditor.AnnotationPreference;
 import org.eclipse.ui.texteditor.AnnotationPreferenceLookup;
@@ -111,6 +120,18 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 	private IPropertyChangeListener fPropertyListener;
 	/** Annotation model listener added to all created CU annotation models */
 	private GlobalAnnotationModelListener fGlobalAnnotationModelListener;
+
+	public boolean isModifiable(Object element) {
+		if (element instanceof FileStoreEditorInput) {
+			ISourceModule module = DLTKUIPlugin
+					.resolveSourceModule((FileStoreEditorInput) element);
+			if (module != null) {
+				return !module.isReadOnly();
+			}
+		}
+
+		return super.isModifiable(element);
+	}
 
 	/**
 	 * Annotation representing an <code>IProblem</code>.
@@ -208,7 +229,7 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 		private void initializeImages() {
 			// http://bugs.eclipse.org/bugs/show_bug.cgi?id=18936
 			if (DLTKCore.DEBUG) {
-				System.err.println("TODO: Add quick fixes here.");
+				System.err.println("TODO: Add quick fixes here."); //$NON-NLS-1$
 			}
 			if (!fQuickFixImagesInitialized) {
 				// if (!isQuickFixableStateSet())
@@ -822,6 +843,76 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 		}
 	}
 
+	/**
+	 * Annotation model dealing with java marker annotations and temporary
+	 * problems. Also acts as problem requester for its compilation unit.
+	 * Initially inactive. Must explicitly be activated.
+	 */
+	protected static class ExternalSourceModuleAnnotationModel extends
+			SourceModuleAnnotationModel {
+		private IPath location;
+
+		public ExternalSourceModuleAnnotationModel(IPath location) {
+			super(ResourcesPlugin.getWorkspace().getRoot());
+			this.location = location;
+		}
+
+		/*
+		 * @see AbstractMarkerAnnotationModel#retrieveMarkers()
+		 */
+		protected IMarker[] retrieveMarkers() throws CoreException {
+			String moduleLocation = location.toPortableString();
+			IMarker[] markers = super.retrieveMarkers();
+			List locationMarkers = new LinkedList();
+			for (int i = 0; i < markers.length; i++) {
+				IMarker marker = markers[i];
+				String markerLocation = (String) marker
+						.getAttribute(IMarker.LOCATION);
+				if (moduleLocation.equals(markerLocation)) {
+					locationMarkers.add(marker);
+				}
+			}
+			return (IMarker[]) locationMarkers
+					.toArray(new IMarker[locationMarkers.size()]);
+		}
+
+		/**
+		 * Updates this model to the given marker deltas.
+		 * 
+		 * @param markerDeltas
+		 *            the array of marker deltas
+		 */
+		protected void update(IMarkerDelta[] markerDeltas) {
+
+			if (markerDeltas.length == 0)
+				return;
+
+			String moduleLocation = location.toPortableString();
+
+			for (int i = 0; i < markerDeltas.length; i++) {
+				IMarkerDelta delta = markerDeltas[i];
+				IMarker marker = delta.getMarker();
+
+				if (moduleLocation.equals(marker.getAttribute(IMarker.LOCATION,
+						moduleLocation))) {
+					switch (delta.getKind()) {
+					case IResourceDelta.ADDED:
+						addMarkerAnnotation(marker);
+						break;
+					case IResourceDelta.REMOVED:
+						removeMarkerAnnotation(marker);
+						break;
+					case IResourceDelta.CHANGED:
+						modifyMarkerAnnotation(marker);
+						break;
+					}
+				}
+			}
+
+			fireModelChanged();
+		}
+	}
+
 	protected static class GlobalAnnotationModelListener implements
 			IAnnotationModelListener, IAnnotationModelListenerExtension {
 
@@ -876,10 +967,6 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 
 		IDocumentProvider provider = new TextFileDocumentProvider();
 		provider = new SourceForwardingDocumentProvider(provider);
-		if (DLTKCore.DEBUG) {
-			System.out
-					.println("Don't know how to put stuff like this into language depend core");
-		}
 		setParentDocumentProvider(provider);
 
 		fGlobalAnnotationModelListener = new GlobalAnnotationModelListener();
@@ -924,21 +1011,11 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 			return cuInfo.fCopy;
 
 		return null;
-		// if( element instanceof IScriptFileEditorInput ) {
-		// FileInfo fileInfo = getFileInfo( element );
-		// if( fileInfo instanceof SourceModuleInfo ) {
-		// SourceModuleInfo info = ( SourceModuleInfo )fileInfo;
-		// return info.fCopy;
-		// }
-		// }
-		// return null;
 	}
 
 	public void saveDocumentContent(IProgressMonitor monitor, Object element,
 			IDocument document, boolean overwrite) throws CoreException {
 
-		System.out
-				.println("Todo: Add save document operation here. to correct commit of model changes.");
 		if (!fIsAboutToSave) {
 			return;
 		}
@@ -1067,6 +1144,14 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 		if (original == null)
 			return null;
 
+		if (info.fModel == null) {
+			// There is no resource for this ISourceModule, so markers are set
+			// to workspace root
+
+			IPath location = original.getPath();
+			info.fModel = new ExternalSourceModuleAnnotationModel(location);
+		}
+
 		SourceModuleInfo cuInfo = (SourceModuleInfo) info;
 		setUpSynchronization(cuInfo);
 
@@ -1160,10 +1245,13 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 				// in another editor
 				// see https://bugs.eclipse.org/bugs/show_bug.cgi?id=85519
 				System.out
-						.println("SourceModuleDocumentProvider: need to replace with messages api");
-				Status status = new Status(IStatus.WARNING,
-						EditorsUI.PLUGIN_ID, IStatus.ERROR,
-						"Save as Target open in editor", null);
+						.println("SourceModuleDocumentProvider: need to replace with messages api"); //$NON-NLS-1$
+				Status status = new Status(
+						IStatus.WARNING,
+						EditorsUI.PLUGIN_ID,
+						IStatus.ERROR,
+						Messages.SourceModuleDocumentProvider_saveAsTargetOpenInEditor,
+						null);
 				throw new CoreException(status);
 			}
 
@@ -1398,24 +1486,66 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 	 */
 	private ISourceModule createFakeSourceModule(Object element,
 			boolean setContents) {
-		if (!(element instanceof IStorageEditorInput))
+		if (element instanceof IStorageEditorInput)
+			return createFakeSourceModule((IStorageEditorInput) element,
+					setContents);
+		else if (element instanceof IURIEditorInput)
+			return createFakeSourceModule((IURIEditorInput) element);
+		return null;
+	}
+
+	private ISourceModule createFakeSourceModule(final IURIEditorInput editorInput) {
+		try {
+			final URI uri= editorInput.getURI();
+			final IFileStore fileStore= EFS.getStore(uri);
+			final IPath path= URIUtil.toPath(uri);
+			if (fileStore.getName() == null || path == null)
+				return null;
+			
+			WorkingCopyOwner woc= new WorkingCopyOwner() {
+				/*
+				 * @see org.eclipse.jdt.core.WorkingCopyOwner#createBuffer(org.eclipse.jdt.core.ICompilationUnit)
+				 * @since 3.2
+				 */
+				public IBuffer createBuffer(ISourceModule workingCopy) {
+					return new DocumentAdapter(workingCopy, path);
+				}
+			};
+			
+			IBuildpathEntry[] cpEntries= null;
+			IScriptProject jp= findScriptProject(path);
+			if (jp != null)
+				cpEntries= jp.getResolvedBuildpath(true);
+			
+			if (cpEntries == null || cpEntries.length == 0)
+				cpEntries= new IBuildpathEntry[] { ScriptRuntime.getDefaultInterpreterContainerEntry() };
+			
+			final ISourceModule cu= woc.newWorkingCopy(fileStore.getName(), cpEntries, null, getProgressMonitor());
+			
+			if (!isModifiable(editorInput))
+				ScriptModelUtil.reconcile(cu);
+
+			return cu;
+		} catch (CoreException ex) {
 			return null;
+		}
+	}
 
-		final IStorageEditorInput sei = (IStorageEditorInput) element;
-
+	private ISourceModule createFakeSourceModule(final IStorageEditorInput sei,
+			boolean setContents) {
 		try {
 			final IStorage storage = sei.getStorage();
 			final IPath storagePath = storage.getFullPath();
 			if (storage.getName() == null || storagePath == null)
 				return null;
 
-			final IPath documentPath;
-			if (storage instanceof IFileState)
-				documentPath = storagePath
-						.append(Long.toString(((IFileState) storage)
-								.getModificationTime()));
-			else
-				documentPath = storagePath;
+			// final IPath documentPath;
+			// if (storage instanceof IFileState)
+			// documentPath = storagePath
+			// .append(Long.toString(((IFileState) storage)
+			// .getModificationTime()));
+			// else
+			// documentPath = storagePath;
 
 			WorkingCopyOwner woc = new WorkingCopyOwner() {
 				public IBuffer createBuffer(ISourceModule workingCopy) {
@@ -1456,7 +1586,7 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 				cu.getBuffer().setContents(buffer.toString());
 			}
 
-			if (!isModifiable(element))
+			if (!isModifiable(sei))
 				ScriptModelUtil.reconcile(cu);
 
 			return cu;
@@ -1496,4 +1626,19 @@ public class SourceModuleDocumentProvider extends TextFileDocumentProvider
 		}
 		return null;
 	}
+
+	public boolean isReadOnly(Object element) {
+		if (element instanceof ExternalStorageEditorInput) {
+			return true;
+		}
+		if (element instanceof FileStoreEditorInput) {
+			ISourceModule module = DLTKUIPlugin
+					.resolveSourceModule((FileStoreEditorInput) element);
+			if (module != null) {
+				return module.isReadOnly();
+			}
+		}
+		return super.isReadOnly(element);
+	}
+
 }

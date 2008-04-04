@@ -13,7 +13,7 @@ import org.eclipse.osgi.util.NLS;
 
 public final class DLTKUIMessages extends NLS {
 
-	private static final String BUNDLE_NAME = "org.eclipse.dltk.internal.ui.DLTKUIMessages";
+	private static final String BUNDLE_NAME = "org.eclipse.dltk.internal.ui.DLTKUIMessages"; //$NON-NLS-1$
 
 	public static String FilteredTypesSelectionDialog_library_name_format;
 	public static String FilteredTypeSelectionDialog_showContainerForDuplicatesAction;

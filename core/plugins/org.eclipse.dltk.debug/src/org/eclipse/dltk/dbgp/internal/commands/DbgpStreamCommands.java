@@ -16,14 +16,14 @@ import org.eclipse.dltk.dbgp.internal.utils.DbgpXmlParser;
 
 public class DbgpStreamCommands extends DbgpBaseCommands implements
 		IDbgpStreamCommands {
-	private static final String STDERR_COMMAND = "stderr";
+	private static final String STDERR_COMMAND = "stderr"; //$NON-NLS-1$
 
-	private static final String STDOUT_COMMAND = "stdout";
+	private static final String STDOUT_COMMAND = "stdout"; //$NON-NLS-1$
 
 	protected boolean execCommand(String command, int value)
 			throws DbgpException {
 		DbgpRequest request = createRequest(command);
-		request.addOption("-c", value);
+		request.addOption("-c", value); //$NON-NLS-1$
 		return DbgpXmlParser.parseSuccess(communicate(request));
 	}
 

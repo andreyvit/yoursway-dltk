@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-   <extension-point id="dltkElementFilters" name="Dltk Element Filters" schema="schema/dltkElementFilters.exsd"/>  
-   <extension-point id="buildpathContainerPage" name="%buildpathContainerPageExtensionPoint" schema="schema/buildpathContainerPage.exsd"/>
-   <extension-point id="scriptCompletionProposalComputer" name="%scriptCompletionProposalComputer" schema="schema/scriptCompletionProposalComputer.exsd"/>
-   <extension-point id="scriptCompletionProposalSorters" name="%scriptCompletionProposalSorters" schema="schema/scriptCompletionProposalSorters.exsd"/>
-   <extension-point id="editorTextHovers" name="%editorTextHovers" schema="schema/editorTextHovers.exsd"/>
-   <extension-point id="scriptDocumentationProviders" name="Script documentation providers" schema="schema/scriptDocumentationProviders.exsd"/>
-   <extension-point id="language" name="DLTK UI Language Toolkit" schema="schema/language.exsd"/>
-   <extension-point id="actionFilterTester" name="actionFilterTester" schema="schema/actionFilterTester.exsd"/>  
+   <extension-point id="dltkElementFilters" name="%extension-point.name.dltkElementFilters" schema="schema/dltkElementFilters.exsd"/>  
+   <extension-point id="buildpathContainerPage" name="%extension-point.name.buildpathContainerPage" schema="schema/buildpathContainerPage.exsd"/>
+   <extension-point id="scriptCompletionProposalComputer" name="%extension-point.name.scriptCompletionProposalComputer" schema="schema/scriptCompletionProposalComputer.exsd"/>
+   <extension-point id="scriptCompletionProposalSorters" name="%extension-point.name.scriptCompletionProposalSorters" schema="schema/scriptCompletionProposalSorters.exsd"/>
+   <extension-point id="editorTextHovers" name="%extension-point.name.editorTextHovers" schema="schema/editorTextHovers.exsd"/>
+   <extension-point id="scriptDocumentationProviders" name="%extension-point.name.scriptDocumentationProviders" schema="schema/scriptDocumentationProviders.exsd"/>
+   <extension-point id="language" name="%extension-point.name.language" schema="schema/language.exsd"/>
+   <extension-point id="actionFilterTester" name="%extension-point.name.actionFilterTester" schema="schema/actionFilterTester.exsd"/>  
    <extension
     	id="DLTKSearchResultPage"
         point="org.eclipse.search.searchResultViewPages">
@@ -26,13 +26,16 @@
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer class="org.eclipse.dltk.internal.ui.preferences.PreferenceInitializer"/>      
+   </extension>
+   <!--extension
+         point="org.eclipse.ui.propertyPages">
       <page name="%buildPathPrefName"
 			category="org.eclipse.dltk.preferences.DLTKBasePreferencePage"
-			class="org.eclipse.dltk.internal.ui.preferences.NewScriptProjectPreferencePage"
+			class="org.eclipse.dltk.ui.preferences.NewScriptProjectPreferencePage"
 			id="org.eclipse.dltk.ui.preferences.BuildPathPreferencePage">
 		<keywordReference id="org.eclipse.dltk.ui.buildpathoptions"/>
-      </page>  
-   </extension>
+      </page>
+   </extension-->
    <extension
          point="org.eclipse.core.runtime.adapters">
       <factory
@@ -76,7 +79,7 @@
    </extension>
  <extension
          id="modelProvider"
-         name="DLTK Model provider"
+         name="%extension.name.dltkModelProvider"
          point="org.eclipse.core.resources.modelProviders">
       <modelProvider
             class="org.eclipse.dltk.internal.ui.model.ScriptModelProvider"/>
@@ -615,6 +618,13 @@
             categoryId="org.eclipse.ui.category.navigate"
             id="org.eclipse.dltk.ui.navigate.gototype">
       </command>
+
+      <command
+            name="%ActionDefinition.ReferencesInProject.name"
+            description="%ActionDefinition.ReferencesInProject.description"
+            categoryId="org.eclipse.search.ui.category.search"
+            id="org.eclipse.dltk.ui.edit.text.script.search.references.in.project">
+      </command>
  </extension>
 	<extension
 		point="org.eclipse.ui.commands">
@@ -885,11 +895,20 @@
          point="org.eclipse.dltk.ui.dltkElementFilters">
 <!-- Script Explorer -->
       <filter
-            targetId="org.eclipse.dltk.ui.ScriptExplorer"
-            name="%HideSystemFiles.label"
-            enabled="true"
             description="%HideSystemFiles.description"
-            pattern=".*">
+            enabled="true"
+            id="org.eclipse.dltk.internal.ui.PackageExplorer.DotFilesFilter"
+            name="%HideSystemFiles.label"
+            class="org.eclipse.dltk.internal.ui.filters.DotFileFilter"
+            targetId="org.eclipse.dltk.ui.ScriptExplorer">
+      </filter>
+      <filter
+            description="%ContainMembers.description"
+            enabled="false"
+            id="org.eclipse.dltk.internal.ui.PackageExplorer.ContainMembersFilter"
+            name="%ContainMembers.label"
+            class="org.eclipse.dltk.internal.ui.filters.ContainMembersFilter"
+            targetId="org.eclipse.dltk.ui.ScriptExplorer">
       </filter>
       <filter
             targetId="org.eclipse.dltk.ui.ScriptExplorer"
@@ -1055,13 +1074,13 @@
 
 <!-- Code completion -->
 <!-- content assist processors - do not change their order -->
-	<!--extension
+	<extension
 		point="org.eclipse.dltk.ui.scriptCompletionProposalComputer"
 		id="templateProposalCategory"
 		name="%TemplateProposalCategory">
 		<proposalCategory
 			icon="/icons/full/elcl16/templateprop_co.gif"/>
-	</extension-->
+	</extension>
 
 	<!-- the parameterized content assist action and keybindings for our contributed computers -->
  
@@ -1122,23 +1141,23 @@
 	         	<separator name="extraSearchGroup"/> <!-- to be used by clients -->
          </menu>
 <!-- dialog group  -->
-         <action
+         <!--action
                label="%openScriptSearchPageAction.label"
                icon="$nl$/icons/full/obj16/jsearch_obj.gif"
                helpContextId="java_search_action_context"
                class="org.eclipse.dltk.internal.ui.search.OpenScriptSearchPageAction"
                menubarPath="org.eclipse.search.menu/dialogGroup"
                id="org.eclipse.dltk.ui.actions.OpenScriptSearchPage">
-         </action>
+         </action-->
 <!-- context menu group  -->
-         <action
+         <!--action
                definitionId="org.eclipse.dltk.ui.edit.text.script.search.occurrences.in.file.quickMenu"
                label="%occurrencesSubMenu.label"
                style="pulldown"
                class="org.eclipse.dltk.internal.ui.actions.OccurrencesSearchMenuAction"
                menubarPath="org.eclipse.search.menu/occurencesActionsGroup"
                id="org.eclipse.dltk.internal.ui.actions.OccurrencesSearchMenuAction">
-         </action>
+         </action-->
          <menu
                label="%writeAccessSubMenu.label"
                path="org.eclipse.search.menu/contextMenuActionsGroup"

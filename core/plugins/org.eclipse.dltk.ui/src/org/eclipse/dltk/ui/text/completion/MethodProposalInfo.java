@@ -37,6 +37,6 @@ public final class MethodProposalInfo extends MemberProposalInfo {
 	}
 
 	protected IMember resolveMember() throws ModelException {
-		throw new Error("Unimplemented method");		
+		throw new Error("Unimplemented method"); //$NON-NLS-1$
 	}
 }

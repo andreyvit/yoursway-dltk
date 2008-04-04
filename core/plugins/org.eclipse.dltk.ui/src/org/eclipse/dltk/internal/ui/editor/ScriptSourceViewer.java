@@ -435,7 +435,7 @@ public class ScriptSourceViewer extends ProjectionViewer implements
 		super.resetVisibleRegion();
 		// re-enable folding if ProjectionViewer failed to due so
 		//TODO: Add editor folding option here.
-		System.err.println("ScriptSourceViwer: Add editor folding option check here");
+		System.err.println("ScriptSourceViwer: Add editor folding option check here"); //$NON-NLS-1$
 		if (fPreferenceStore != null
 				/*&& fPreferenceStore
 						.getBoolean(PreferenceConstants.EDITOR_FOLDING_ENABLED)*/

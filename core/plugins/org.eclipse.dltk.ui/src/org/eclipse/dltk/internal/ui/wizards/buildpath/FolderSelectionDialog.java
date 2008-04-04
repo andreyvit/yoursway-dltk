@@ -64,7 +64,7 @@ public class FolderSelectionDialog extends ElementTreeSelectionDialog implements
 		
 		applyDialogFont(result);
 		if (DLTKCore.DEBUG) {
-			System.err.println("FolderSelectionDialog: Add help support");
+			System.err.println("FolderSelectionDialog: Add help support"); //$NON-NLS-1$
 		}
 //		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, IDLTKHelpContextIds.BP_SELECT_DEFAULT_OUTPUT_FOLDER_DIALOG);
 		
@@ -88,7 +88,7 @@ public class FolderSelectionDialog extends ElementTreeSelectionDialog implements
 			protected Control createContents(Composite parent) {
 				//PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, IDLTKHelpContextIds.BP_CREATE_NEW_FOLDER);				
 				if (DLTKCore.DEBUG) {
-					System.err.println("FolderSelectionDialog: Add help support");
+					System.err.println("FolderSelectionDialog: Add help support"); //$NON-NLS-1$
 				}
 				return super.createContents(parent);
 			}

@@ -574,7 +574,7 @@ public class MatchLocator implements ITypeRequestor {
 		if (tk == null) {
 			throw new ModelException(new ModelStatus(
 					IModelStatusConstants.INVALID_PROJECT, project,
-					"Language Toolkit not found on project"));
+					Messages.MatchLocator_languageToolkitNotFoundForProject));
 		}
 		this.parser = DLTKLanguageManager.createMatchParser(tk.getNatureId(),
 				this);
@@ -1460,7 +1460,7 @@ public class MatchLocator implements ITypeRequestor {
 							.removeKey(node);
 					if (DLTKCore.DEBUG) {
 						System.out
-								.println("TODO: Searching. Add scope support.");
+								.println("TODO: Searching. Add scope support."); //$NON-NLS-1$
 					}
 					this.patternLocator.matchReportReference(node,
 							enclosingElement, (Scope) null, level.intValue(),
@@ -1511,7 +1511,7 @@ public class MatchLocator implements ITypeRequestor {
 		// filter out element not in hierarchy scope
 		if (DLTKCore.DEBUG) {
 			System.out
-					.println("TODO: Searching. add variable handling here...");
+					.println("TODO: Searching. add variable handling here..."); //$NON-NLS-1$
 		}
 
 		boolean typeInHierarchy = true;// type.binding == null ||
@@ -1575,7 +1575,7 @@ public class MatchLocator implements ITypeRequestor {
 									.removeKey(node);
 							if (DLTKCore.DEBUG) {
 								System.out
-										.println("TODO: Searching. Add scope support.");
+										.println("TODO: Searching. Add scope support."); //$NON-NLS-1$
 							}
 							this.patternLocator.matchReportReference(node,
 									enclosingElement, (Scope) null, level
@@ -1617,7 +1617,7 @@ public class MatchLocator implements ITypeRequestor {
 					SearchMatch match = null;
 					if (DLTKCore.DEBUG) {
 						System.out
-								.println("TODO: AST Add constructor support.");
+								.println("TODO: AST Add constructor support."); //$NON-NLS-1$
 					}
 					// if (method.isConstructor()) {
 					// // Use type for match associated element as default
@@ -1677,7 +1677,7 @@ public class MatchLocator implements ITypeRequestor {
 									.removeKey(node);
 							if (DLTKCore.DEBUG) {
 								System.out
-										.println("TODO: Searching. Add scope support.");
+										.println("TODO: Searching. Add scope support."); //$NON-NLS-1$
 							}
 							this.patternLocator.matchReportReference(node,
 									enclosingElement, (Scope) null, level
@@ -1718,7 +1718,7 @@ public class MatchLocator implements ITypeRequestor {
 					SearchMatch match = null;
 					if (DLTKCore.DEBUG) {
 						System.out
-								.println("TODO: AST Add constructor support.");
+								.println("TODO: AST Add constructor support."); //$NON-NLS-1$
 					}
 					// if (method.isConstructor()) {
 					// // Use type for match associated element as default
@@ -1778,7 +1778,7 @@ public class MatchLocator implements ITypeRequestor {
 									.removeKey(node);
 							if (DLTKCore.DEBUG) {
 								System.out
-										.println("TODO: Searching. Add scope support.");
+										.println("TODO: Searching. Add scope support."); //$NON-NLS-1$
 							}
 							this.patternLocator.matchReportReference(node,
 									enclosingElement, (Scope) null, level
@@ -1825,7 +1825,7 @@ public class MatchLocator implements ITypeRequestor {
 					SearchMatch match = null;
 					if (DLTKCore.DEBUG) {
 						System.out
-								.println("TODO: AST Add constructor support.");
+								.println("TODO: AST Add constructor support."); //$NON-NLS-1$
 					}
 					// if (method.isConstructor()) {
 					// // Use type for match associated element as default
@@ -1886,7 +1886,7 @@ public class MatchLocator implements ITypeRequestor {
 								.removeKey(node);
 						if (DLTKCore.DEBUG) {
 							System.out
-									.println("TODO: Searching. Add scope support.");
+									.println("TODO: Searching. Add scope support."); //$NON-NLS-1$
 						}
 						this.patternLocator.matchReportReference(node,
 								enclosingElement, (Scope) null, level
@@ -1927,7 +1927,7 @@ public class MatchLocator implements ITypeRequestor {
 					SearchMatch match = null;
 					if (DLTKCore.DEBUG) {
 						System.out
-								.println("TODO: AST Add constructor support.");
+								.println("TODO: AST Add constructor support."); //$NON-NLS-1$
 					}
 					// if (method.isConstructor()) {
 					// // Use type for match associated element as default
@@ -1988,7 +1988,7 @@ public class MatchLocator implements ITypeRequestor {
 								.removeKey(node);
 						if (DLTKCore.DEBUG) {
 							System.out
-									.println("TODO: Searching. Add scope support.");
+									.println("TODO: Searching. Add scope support."); //$NON-NLS-1$
 						}
 						this.patternLocator.matchReportReference(node,
 								enclosingElement, (Scope) null, level

@@ -11,11 +11,11 @@ public class RulesList {
 	
 	private Vector rules = new Vector();
 	private Set changeListeners = new HashSet();
-	private String[] types = {"Error", "Warning"};
+	private String[] types = {Messages.RulesList_error, Messages.RulesList_warning};
 	
 	
 	public void addRule(){
-		Rule r = new Rule("%f:%n:%m", "Error");
+		Rule r = new Rule("%f:%n:%m", Messages.RulesList_error); //$NON-NLS-1$
 		rules.add(r);
 		Iterator iterator = changeListeners.iterator();
 		while(iterator.hasNext()){

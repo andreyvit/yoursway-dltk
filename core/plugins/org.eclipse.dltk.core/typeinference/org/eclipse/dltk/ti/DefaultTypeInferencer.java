@@ -143,9 +143,9 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 				// + goalClass.getName() + " : " + goal);
 				String className = goalClass.getName();
 				if (DLTKCore.DEBUG) {
-					System.err.println("No evaluator registered for "
+					System.err.println("No evaluator registered for " //$NON-NLS-1$
 							+ className.substring(className.lastIndexOf('.'))
-							+ ": " + goal + " - using NullGoalEvaluator");
+							+ ": " + goal + " - using NullGoalEvaluator"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				return new NullGoalEvaluator(goal);
 			}

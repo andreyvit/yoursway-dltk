@@ -62,7 +62,7 @@ public class ArchiveProjectFragment extends ProjectFragment {
 		final int NON_SCRIPT = 1;
 		ZipFile archive = null;
 		try {
-			archive = getZip();
+			archive = ModelManager.getModelManager().getZipFile(getPath());
 			HashtableOfArrayToObject packageFragToTypes = new HashtableOfArrayToObject();
 			// always create the default package
 			packageFragToTypes.put(CharOperation.NO_STRINGS, new ArrayList[] {
@@ -81,7 +81,7 @@ public class ArchiveProjectFragment extends ProjectFragment {
 				if (pkgName == null)
 					continue;
 				ArrayList[] entries = (ArrayList[]) packageFragToTypes.get(pkgName);
-				String path = "";
+				String path = ""; //$NON-NLS-1$
 				if (pkgName.length >= 1) {
 					path = pkgName[0];
 					for (int e = 1; e < pkgName.length; ++e) {
@@ -115,16 +115,6 @@ public class ArchiveProjectFragment extends ProjectFragment {
 		return true;
 	}
 
-	/**
-	 * Returns the underlying ZipFile for this archive package fragment root.
-	 * 
-	 * @exception CoreException
-	 *                if an error occurs accessing the archive
-	 */
-	public ZipFile getZip() throws CoreException {
-		return ModelManager.getModelManager().getZipFile(getPath());
-	}
-	
 	public IScriptFolder getScriptFolder(IPath path) {
 		return new ArchiveFolder(this, path);
 	}

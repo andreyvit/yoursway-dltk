@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension-point id="goalEvaluatorFactories" name="Ruby Evaluator Factories" schema="schema/org.eclipse.dltk.ruby.core.goalEvaluatorFactories.exsd"/>
+   <extension-point id="goalEvaluatorFactories" name="%extension-point.name.goalEvaluatorFactories" schema="schema/org.eclipse.dltk.ruby.core.goalEvaluatorFactories.exsd"/>
  <extension
          id="nature"
          point="org.eclipse.core.resources.natures"

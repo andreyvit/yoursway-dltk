@@ -54,6 +54,6 @@ public class BasicContext implements IContext, ISourceModuleContext {
 	}
 
 	public String toString() {
-		return "BasicContext, module " + sourceModule.getElementName();
+		return "BasicContext, module " + sourceModule.getElementName(); //$NON-NLS-1$
 	}
 }

@@ -63,7 +63,7 @@ public class ConfigureBuildPathAction extends Action implements ISelectionChange
 				Iterator i = elements.iterator();
 				while(i.hasNext()) {
 					IPreferenceNode node =  (IPreferenceNode)i.next();
-					if( node.getId().endsWith("BuildpathProperties")) {
+					if( node.getId().endsWith("BuildpathProperties")) { //$NON-NLS-1$
 						id = node.getId();
 						break;
 					}

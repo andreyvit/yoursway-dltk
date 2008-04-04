@@ -85,7 +85,7 @@ public class ModuleDeclaration extends ASTNode {
 	}
 
 	public void printNode(CorePrinter output) {
-		output.formatPrintLn("Module" + this.getSourceRange().toString() + ":");
+		output.formatPrintLn("Module" + this.getSourceRange().toString() + ":"); //$NON-NLS-1$ //$NON-NLS-2$
 		this.body.printNode(output);
 	}
 

@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.internal.core;
 
@@ -44,6 +44,13 @@ public class SourceType extends NamedMember implements IType {
 		return TYPE;
 	}
 
+	public boolean equals(Object o) {
+		if (!(o instanceof SourceType)) {
+			return false;
+		}
+		return super.equals(o);
+	}
+
 	public String[] getSuperClasses() throws ModelException {
 		SourceTypeElementInfo info = (SourceTypeElementInfo) this
 				.getElementInfo();
@@ -51,7 +58,7 @@ public class SourceType extends NamedMember implements IType {
 	}
 
 	public void printNode(CorePrinter output) {
-		output.formatPrint("DLTK Source Type:" + getElementName());
+		output.formatPrint("DLTK Source Type:" + getElementName()); //$NON-NLS-1$
 		output.indent();
 		try {
 			IModelElement modelElements[] = this.getChildren();
@@ -60,7 +67,7 @@ public class SourceType extends NamedMember implements IType {
 				if (element instanceof ModelElement) {
 					((ModelElement) element).printNode(output);
 				} else {
-					output.print("Unknown element:" + element);
+					output.print("Unknown element:" + element); //$NON-NLS-1$
 				}
 			}
 		} catch (ModelException ex) {
@@ -101,14 +108,16 @@ public class SourceType extends NamedMember implements IType {
 		list.toArray(array);
 		return array;
 	}
-	
-	
+
+
 	public IModelElement getHandleFromMemento(String token, MementoTokenizer memento, WorkingCopyOwner workingCopyOwner) {
 		switch (token.charAt(0)) {
 			case JEM_COUNT:
 				return getHandleUpdatingCountFromMemento(memento, workingCopyOwner);
 			case JEM_FIELD:
-				if (!memento.hasMoreTokens()) return this;
+				if (!memento.hasMoreTokens()) {
+					return this;
+				}
 				String fieldName = memento.nextToken();
 				ModelElement field = (ModelElement)getField(fieldName);
 				return field.getHandleFromMemento(memento, workingCopyOwner);
@@ -118,10 +127,10 @@ public class SourceType extends NamedMember implements IType {
 //				JavaElement initializer = (JavaElement)getInitializer(Integer.parseInt(count));
 //				return initializer.getHandleFromMemento(memento, workingCopyOwner);
 			case JEM_METHOD:
-				if (!memento.hasMoreTokens()){ 
+				if (!memento.hasMoreTokens()){
 					return this;
 				}
-				
+
 				String selector = memento.nextToken();
 				ArrayList params = new ArrayList();
 				nextParam: while (memento.hasMoreTokens()) {
@@ -131,20 +140,20 @@ public class SourceType extends NamedMember implements IType {
 						case JEM_TYPE_PARAMETER:
 							break nextParam;
 						case JEM_METHOD:
-							if (!memento.hasMoreTokens()){ 
+							if (!memento.hasMoreTokens()){
 								return this;
 							}
-							
+
 							String param = memento.nextToken();
 							StringBuffer buffer = new StringBuffer();
-							
+
 							// backward compatible with 3.0 mementos
-							/*while (param.length() == 1 && Signature.C_ARRAY == param.charAt(0)) { 
+							/*while (param.length() == 1 && Signature.C_ARRAY == param.charAt(0)) {
 								buffer.append(Signature.C_ARRAY);
 								if (!memento.hasMoreTokens()) return this;
 								param = memento.nextToken();
 							}*/
-							
+
 							params.add(buffer.toString() + param);
 							break;
 						default:
@@ -188,10 +197,10 @@ public class SourceType extends NamedMember implements IType {
 //				String typeParameterName = memento.nextToken();
 //				ModelElement typeParameter = new TypeParameter(this, typeParameterName);
 //				return typeParameter.getHandleFromMemento(memento, workingCopyOwner);
-				
+
 		}
 		return null;
-	}	
+	}
 
 	protected char getHandleMementoDelimiter() {
 
@@ -212,7 +221,7 @@ public class SourceType extends NamedMember implements IType {
 	}
 
 	public String getFullyQualifiedName() {
-		return getFullyQualifiedName("$");
+		return getFullyQualifiedName("$"); //$NON-NLS-1$
 	}
 
 	public void codeComplete(char[] snippet, int insertion, int position,
@@ -248,7 +257,7 @@ public class SourceType extends NamedMember implements IType {
 	 * @see IType#getTypeQualifiedName()
 	 */
 	public String getTypeQualifiedName() {
-		return this.getTypeQualifiedName("$");
+		return this.getTypeQualifiedName("$"); //$NON-NLS-1$
 	}
 	/**
 	 * @see IType#getTypeQualifiedName(char)
@@ -272,12 +281,12 @@ public class SourceType extends NamedMember implements IType {
 			return null;
 		}
 	}
-	
-	
+
+
 	/*
-	 * Type hierarchies section 
+	 * Type hierarchies section
 	 */
-	
+
 	/**
 	 * @see IType
 	 */
@@ -286,15 +295,15 @@ public class SourceType extends NamedMember implements IType {
 	}
 	/**
 	 * NOTE: This method is not part of the API has it is not clear clients would easily use it: they would need to
-	 * first make sure all working copies for the given owner exist before calling it. This is especially har at startup 
+	 * first make sure all working copies for the given owner exist before calling it. This is especially har at startup
 	 * time.
 	 * In case clients want this API, here is how it should be specified:
 	 * <p>
 	 * Loads a previously saved ITypeHierarchy from an input stream. A type hierarchy can
 	 * be stored using ITypeHierachy#store(OutputStream). A compilation unit of a
-	 * loaded type has the given owner if such a working copy exists, otherwise the type's 
+	 * loaded type has the given owner if such a working copy exists, otherwise the type's
 	 * compilation unit is a primary compilation unit.
-	 * 
+	 *
 	 * Only hierarchies originally created by the following methods can be loaded:
 	 * <ul>
 	 * <li>IType#newSupertypeHierarchy(IProgressMonitor)</li>
@@ -304,12 +313,12 @@ public class SourceType extends NamedMember implements IType {
 	 * <li>IType#newTypeHierarchy(IProgressMonitor)</li>
 	 * <li>IType#newTypeHierarchy(WorkingCopyOwner, IProgressMonitor)</li>
 	 * </u>
-	 * 
+	 *
 	 * @param input stream where hierarchy will be read
 	 * @param monitor the given progress monitor
 	 * @return the stored hierarchy
 	 * @exception JavaModelException if the hierarchy could not be restored, reasons include:
-	 *      - type is not the focus of the hierarchy or 
+	 *      - type is not the focus of the hierarchy or
 	 *		- unable to read the input stream (wrong format, IOException during reading, ...)
 	 * @see ITypeHierarchy#store(java.io.OutputStream, IProgressMonitor)
 	 * @since 3.0
@@ -371,7 +380,7 @@ public class SourceType extends NamedMember implements IType {
 	 */
 	public ITypeHierarchy newTypeHierarchy(IScriptProject project, WorkingCopyOwner owner, IProgressMonitor monitor) throws ModelException {
 		if (project == null) {
-			throw new IllegalArgumentException(Messages.hierarchy_nullProject); 
+			throw new IllegalArgumentException(Messages.hierarchy_nullProject);
 		}
 		ISourceModule[] workingCopies = ModelManager.getModelManager().getWorkingCopies(owner, true/*add primary working copies*/);
 		ISourceModule[] projectWCs = null;
@@ -390,9 +399,9 @@ public class SourceType extends NamedMember implements IType {
 			}
 		}
 		CreateTypeHierarchyOperation op= new CreateTypeHierarchyOperation(
-			this, 
+			this,
 			projectWCs,
-			project, 
+			project,
 			true);
 		op.runOperation(monitor);
 		return op.getResult();
@@ -417,7 +426,7 @@ public class SourceType extends NamedMember implements IType {
 		ISourceModule[] workingCopies,
 		IProgressMonitor monitor)
 		throws ModelException {
-			
+
 		CreateTypeHierarchyOperation op;
 		try {
 			op = new CreateTypeHierarchyOperation(this, workingCopies, SearchEngine.createWorkspaceScope(DLTKLanguageManager.getLanguageToolkit(this)), true);
@@ -434,7 +443,7 @@ public class SourceType extends NamedMember implements IType {
 		WorkingCopyOwner owner,
 		IProgressMonitor monitor)
 		throws ModelException {
-			
+
 		ISourceModule[] workingCopies = ModelManager.getModelManager().getWorkingCopies(owner, true/*add primary working copies*/);
 		CreateTypeHierarchyOperation op;
 		try {
@@ -443,6 +452,6 @@ public class SourceType extends NamedMember implements IType {
 			throw new ModelException(e);
 		}
 		op.runOperation(monitor);
-		return op.getResult();	
+		return op.getResult();
 	}
 }

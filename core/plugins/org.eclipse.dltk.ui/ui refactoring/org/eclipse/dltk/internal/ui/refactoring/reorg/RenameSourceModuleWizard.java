@@ -21,7 +21,7 @@ public class RenameSourceModuleWizard extends RenameRefactoringWizard {
 			RefactoringMessages.RenameCuWizard_defaultPageTitle, 
 			RefactoringMessages.RenameCuWizard_inputPage_description, 
 			DLTKPluginImages.DESC_WIZBAN_REFACTOR_CU,
-			""/*IScriptHelpContextIds.RENAME_CU_WIZARD_PAGE*/);
+			""/*IScriptHelpContextIds.RENAME_CU_WIZARD_PAGE*/); //$NON-NLS-1$
 	}
 	
 //	protected RefactoringStatus validateNewName(String newName) {

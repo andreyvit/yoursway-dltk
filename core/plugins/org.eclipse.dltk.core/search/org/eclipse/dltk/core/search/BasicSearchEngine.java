@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.core.search;
 
@@ -39,13 +39,14 @@ import org.eclipse.dltk.core.search.indexing.IndexManager;
 import org.eclipse.dltk.core.search.matching.MatchLocator;
 import org.eclipse.dltk.internal.compiler.env.AccessRestriction;
 import org.eclipse.dltk.internal.compiler.env.AccessRuleSet;
-import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.DefaultWorkingCopyOwner;
 import org.eclipse.dltk.internal.core.ModelManager;
+import org.eclipse.dltk.internal.core.ScriptProject;
 import org.eclipse.dltk.internal.core.SourceModule;
 import org.eclipse.dltk.internal.core.search.DLTKSearchDocument;
 import org.eclipse.dltk.internal.core.search.DLTKSearchScope;
 import org.eclipse.dltk.internal.core.search.DLTKSearchTypeNameMatch;
+import org.eclipse.dltk.internal.core.search.HierarchyScope;
 import org.eclipse.dltk.internal.core.search.IRestrictedAccessTypeRequestor;
 import org.eclipse.dltk.internal.core.search.IndexQueryRequestor;
 import org.eclipse.dltk.internal.core.search.PathCollector;
@@ -128,9 +129,16 @@ public class BasicSearchEngine {
 	 */
 	public static IDLTKSearchScope createHierarchyScope(IType type,
 			WorkingCopyOwner owner) throws ModelException {
-		// return new HierarchyScope(type, owner);
-		// TODO: Add HierarchyScope
-		return null;
+		IDLTKLanguageToolkit toolkit;
+		try {
+			toolkit = DLTKLanguageManager.getLanguageToolkit(type);
+		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+		return new HierarchyScope(toolkit, type, owner);
 	}
 
 	/**
@@ -178,7 +186,7 @@ public class BasicSearchEngine {
 		}
 		DLTKSearchScope scope = new DLTKSearchScope(toolkit);
 		HashSet visitedProjects = new HashSet(2);
-		for (int i = 0, length = elements.length; i < length; i++) {
+		for (int i = 0; i < elements.length; i++) {
 			IModelElement element = elements[i];
 			if (element != null) {
 				try {
@@ -216,7 +224,7 @@ public class BasicSearchEngine {
 	 * using helper methods (from a String pattern or a Script element) and
 	 * encapsulate the description of what is being searched (for example,
 	 * search method declarations in a case sensitive way).
-	 * 
+	 *
 	 * @param scope
 	 *            the search result has to be limited to the given scope
 	 * @param requestor
@@ -225,56 +233,49 @@ public class BasicSearchEngine {
 	void findMatches(SearchPattern pattern, SearchParticipant[] participants,
 			IDLTKSearchScope scope, SearchRequestor requestor,
 			IProgressMonitor monitor) throws CoreException {
-		if (monitor != null && monitor.isCanceled())
+		if (monitor != null && monitor.isCanceled()) {
 			throw new OperationCanceledException();
+		}
 
-		/* initialize progress monitor */
-		if (monitor != null)
-			monitor.beginTask(Messages.engine_searching, 100);
+	
 		if (VERBOSE) {
 			Util.verbose("Searching for pattern: " + pattern.toString()); //$NON-NLS-1$
 			Util.verbose(scope.toString());
 		}
 		if (participants == null) {
-			if (VERBOSE)
+			if (VERBOSE) {
 				Util.verbose("No participants => do nothing!"); //$NON-NLS-1$
+			}
 			return;
 		}
+		int length = participants.length;
+		if (monitor != null)
+			monitor.beginTask(Messages.engine_searching, 100 * length); 
 
 		IndexManager indexManager = ModelManager.getModelManager()
 				.getIndexManager();
 		try {
 			requestor.beginReporting();
-			for (int i = 0, l = participants.length; i < l; i++) {
-				if (monitor != null && monitor.isCanceled())
-					throw new OperationCanceledException();
-
+			for (int i = 0; i < participants.length; i++) {
 				SearchParticipant participant = participants[i];
-				SubProgressMonitor subMonitor = monitor == null ? null
-						: new SubProgressMonitor(monitor, 1000);
-				if (subMonitor != null)
-					subMonitor.beginTask("", 1000); //$NON-NLS-1$
+				if (monitor != null && monitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
+
 				try {
-					if (subMonitor != null)
-						subMonitor.subTask(Messages.bind(
-								Messages.engine_searching_indexing,
-								new String[] { participant.getDescription() }));
+					if (monitor != null) monitor.subTask(Messages.bind(Messages.engine_searching_indexing, new String[] {participant.getDescription()})); 
 					participant.beginSearching();
 					requestor.enterParticipant(participant);
 					PathCollector pathCollector = new PathCollector();
 					indexManager.performConcurrentJob(new PatternSearchJob(
 							pattern, participant, scope, pathCollector),
 							IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
-							subMonitor);
-					if (monitor != null && monitor.isCanceled())
-						throw new OperationCanceledException();
+							monitor==null ? null : new SubProgressMonitor(monitor, 50));
+					if (monitor != null && monitor.isCanceled()) throw new OperationCanceledException();
 
 					// locate index matches if any (note that all search matches
 					// could have been issued during index querying)
-					if (subMonitor != null)
-						subMonitor.subTask(Messages.bind(
-								Messages.engine_searching_matching,
-								new String[] { participant.getDescription() }));
+					if (monitor != null) monitor.subTask(Messages.bind(Messages.engine_searching_matching, new String[] {participant.getDescription()})); 
 					String[] indexMatchPaths = pathCollector.getPaths();
 					if (indexMatchPaths != null) {
 						pathCollector = null; // release
@@ -291,7 +292,7 @@ public class BasicSearchEngine {
 						// libraris, should be handled not here...
 						if (DLTKCore.DEBUG) {
 							System.err
-									.println("This is Quick fix... Dublicates of Interpreter libraris, should be handled not here...");
+									.println("This is Quick fix... Dublicates of Interpreter libraris, should be handled not here..."); //$NON-NLS-1$
 						}
 						List paths = new ArrayList();
 						List filteredMatches = new ArrayList();
@@ -306,7 +307,7 @@ public class BasicSearchEngine {
 								.toArray(new SearchDocument[filteredMatches
 										.size()]);
 						participant.locateMatches(fmatches, pattern, scope,
-								requestor, subMonitor);
+								requestor, monitor==null ? null : new SubProgressMonitor(monitor, 50));
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -319,27 +320,31 @@ public class BasicSearchEngine {
 			e.printStackTrace();
 		} finally {
 			requestor.endReporting();
-			if (monitor != null)
+			if (monitor != null) {
 				monitor.done();
+			}
 		}
 	}
 
 	List findMatchesSourceOnly(SearchPattern pattern,
 			SearchParticipant[] participants, IDLTKSearchScope scope,
 			IProgressMonitor monitor) throws CoreException {
-		if (monitor != null && monitor.isCanceled())
+		if (monitor != null && monitor.isCanceled()) {
 			throw new OperationCanceledException();
+		}
 
 		/* initialize progress monitor */
-		if (monitor != null)
+		if (monitor != null) {
 			monitor.beginTask(Messages.engine_searching, 100);
+		}
 		if (VERBOSE) {
 			Util.verbose("Searching for pattern: " + pattern.toString()); //$NON-NLS-1$
 			Util.verbose(scope.toString());
 		}
 		if (participants == null) {
-			if (VERBOSE)
+			if (VERBOSE) {
 				Util.verbose("No participants => do nothing!"); //$NON-NLS-1$
+			}
 			return null;
 		}
 
@@ -347,35 +352,40 @@ public class BasicSearchEngine {
 				.getIndexManager();
 		try {
 			List documents = new ArrayList();
-			for (int i = 0, l = participants.length; i < l; i++) {
-				if (monitor != null && monitor.isCanceled())
-					throw new OperationCanceledException();
-
+			for (int i = 0; i < participants.length; i++) {
 				SearchParticipant participant = participants[i];
+				if (monitor != null && monitor.isCanceled()) {
+					throw new OperationCanceledException();
+				}
+
 				SubProgressMonitor subMonitor = monitor == null ? null
 						: new SubProgressMonitor(monitor, 1000);
-				if (subMonitor != null)
+				if (subMonitor != null) {
 					subMonitor.beginTask("", 1000); //$NON-NLS-1$
+				}
 				try {
-					if (subMonitor != null)
+					if (subMonitor != null) {
 						subMonitor.subTask(Messages.bind(
 								Messages.engine_searching_indexing,
 								new String[] { participant.getDescription() }));
+					}
 					participant.beginSearching();
 					PathCollector pathCollector = new PathCollector();
 					indexManager.performConcurrentJob(new PatternSearchJob(
 							pattern, participant, scope, pathCollector),
 							IDLTKSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
 							subMonitor);
-					if (monitor != null && monitor.isCanceled())
+					if (monitor != null && monitor.isCanceled()) {
 						throw new OperationCanceledException();
+					}
 
 					// locate index matches if any (note that all search matches
 					// could have been issued during index querying)
-					if (subMonitor != null)
+					if (subMonitor != null) {
 						subMonitor.subTask(Messages.bind(
 								Messages.engine_searching_matching,
 								new String[] { participant.getDescription() }));
+					}
 					String[] indexMatchPaths = pathCollector.getPaths();
 					if (indexMatchPaths != null) {
 						pathCollector = null; // release
@@ -409,17 +419,18 @@ public class BasicSearchEngine {
 				e.printStackTrace();
 			}
 		} finally {
-			if (monitor != null)
+			if (monitor != null) {
 				monitor.done();
+			}
 		}
 		return null;
 	}
 
 	/**
 	 * Returns a new default Script search participant.
-	 * 
+	 *
 	 * @return a new default Script search participant
-	 * 
+	 *
 	 */
 	public static SearchParticipant getDefaultSearchParticipant() {
 		return new DLTKSearchParticipant();
@@ -435,8 +446,9 @@ public class BasicSearchEngine {
 		StringBuffer buffer = new StringBuffer();
 		for (int i = 1; i <= 8; i++) {
 			int bit = matchRule & (1 << (i - 1));
-			if (bit != 0 && buffer.length() > 0)
+			if (bit != 0 && buffer.length() > 0) {
 				buffer.append(" | "); //$NON-NLS-1$
+			}
 			switch (bit) {
 			case SearchPattern.R_PREFIX_MATCH:
 				buffer.append("R_PREFIX_MATCH"); //$NON-NLS-1$
@@ -469,7 +481,7 @@ public class BasicSearchEngine {
 
 	/**
 	 * Return kind of search corresponding to given value.
-	 * 
+	 *
 	 * @param searchFor
 	 */
 	public static String getSearchForString(final int searchFor) {
@@ -483,9 +495,9 @@ public class BasicSearchEngine {
 			// case IDLTKSearchConstants.CONSTRUCTOR:
 			// return ("CONSTRUCTOR"); //$NON-NLS-1$
 		case IDLTKSearchConstants.FIELD:
-			return ("FIELD"); //$NON-NLS-1$		
+			return ("FIELD"); //$NON-NLS-1$
 		case IDLTKSearchConstants.ANNOTATION_TYPE:
-			return ("ANNOTATION_TYPE"); //$NON-NLS-1$			
+			return ("ANNOTATION_TYPE"); //$NON-NLS-1$
 		}
 		return "UNKNOWN"; //$NON-NLS-1$
 	}
@@ -518,11 +530,12 @@ public class BasicSearchEngine {
 					copies = this.workingCopies;
 				} else {
 					HashMap pathToCUs = new HashMap();
-					for (int i = 0, length = copies.length; i < length; i++) {
-						ISourceModule unit = copies[i];
+					for (int i = 0; i < copies.length; i++) {
+						ISourceModule unit = (ISourceModule) copies[i];
 						pathToCUs.put(unit.getPath(), unit);
+						
 					}
-					for (int i = 0, length = this.workingCopies.length; i < length; i++) {
+					for (int i = 0; i < this.workingCopies.length; i++) {
 						ISourceModule unit = this.workingCopies[i];
 						pathToCUs.put(unit.getPath(), unit);
 					}
@@ -549,8 +562,9 @@ public class BasicSearchEngine {
 																			 * time
 																			 */);
 		}
-		if (copies == null)
+		if (copies == null) {
 			return null;
+		}
 
 		// filter out primary working copies that are saved
 		ISourceModule[] result = null;
@@ -659,7 +673,7 @@ public class BasicSearchEngine {
 	 * created using helper methods (from a String pattern or a Script element)
 	 * and encapsulate the description of what is being searched (for example,
 	 * search method declarations in a case sensitive way).
-	 * 
+	 *
 	 * @see SearchEngine#search(SearchPattern, SearchParticipant[],
 	 *      IJavaSearchScope, SearchRequestor, IProgressMonitor) for detailed
 	 *      comment
@@ -679,7 +693,7 @@ public class BasicSearchEngine {
 	 * created using helper methods (from a String pattern or a Script element)
 	 * and encapsulate the description of what is being searched (for example,
 	 * search method declarations in a case sensitive way).
-	 * 
+	 *
 	 * @see SearchEngine#search(SearchPattern, SearchParticipant[],
 	 *      IJavaSearchScope, SearchRequestor, IProgressMonitor) for detailed
 	 *      comment
@@ -832,7 +846,7 @@ public class BasicSearchEngine {
 	 * Searches for all top-level types and member types in the given scope. The
 	 * search can be selecting specific types (given a package or a type name
 	 * prefix and match modes).
-	 * 
+	 *
 	 * @see SearchEngine#searchAllTypeNames(char[], char[], int, int,
 	 *      IJavaSearchScope, TypeNameRequestor, int, IProgressMonitor) for
 	 *      detailed comment
@@ -989,8 +1003,9 @@ public class BasicSearchEngine {
 			if (copies != null) {
 				for (int i = 0; i < copiesLength; i++) {
 					ISourceModule workingCopy = copies[i];
-					if (!scope.encloses(workingCopy))
+					if (!scope.encloses(workingCopy)) {
 						continue;
+					}
 					final String path = workingCopy.getPath().toString();
 					// if (workingCopy.isConsistent()) {
 					// IPackageDeclaration[] packageDeclarations =
@@ -999,8 +1014,8 @@ public class BasicSearchEngine {
 					// 0 ? CharOperation.NO_CHAR :
 					// packageDeclarations[0].getElementName().toCharArray();
 					IType[] allTypes = workingCopy.getTypes();
-					for (int j = 0, allTypesLength = allTypes.length; j < allTypesLength; j++) {
-						IType type = allTypes[j];
+					for (int j = 0; j < allTypes.length; j++) {
+						IType type = allTypes[i];
 						IModelElement parent = type.getParent();
 						char[][] enclosingTypeNames;
 						if (parent instanceof IType) {
@@ -1035,7 +1050,7 @@ public class BasicSearchEngine {
 	 * Searches for all top-level types and member types in the given scope
 	 * using a case sensitive exact match with the given qualified names and
 	 * type names.
-	 * 
+	 *
 	 * @see SearchEngine#searchAllTypeNames(char[][], char[][],
 	 *      IJavaSearchScope, TypeNameRequestor, int, IProgressMonitor) for
 	 *      detailed comment
@@ -1162,7 +1177,7 @@ public class BasicSearchEngine {
 		// return true;
 		// }
 		// };
-		//	
+		//
 		// try {
 		// if (progressMonitor != null) {
 		// progressMonitor.beginTask(Messages.engine_searching, 100);
@@ -1177,7 +1192,7 @@ public class BasicSearchEngine {
 		// waitingPolicy,
 		// progressMonitor == null ? null : new
 		// SubProgressMonitor(progressMonitor, 100));
-		//				
+		//
 		// // add type names from working copies
 		// if (copies != null) {
 		// for (int i = 0, length = copies.length; i < length; i++) {
@@ -1430,8 +1445,9 @@ public class BasicSearchEngine {
 						scope, requestor, monitor);
 			}
 		} catch (CoreException e) {
-			if (e instanceof ModelException)
+			if (e instanceof ModelException) {
 				throw (ModelException) e;
+			}
 			throw new ModelException(e);
 		}
 	}
@@ -1440,7 +1456,7 @@ public class BasicSearchEngine {
 	 * Searches for all declarations of the fields accessed in the given
 	 * element. The element can be a compilation unit, a source type, or a
 	 * source method. Reports the field declarations using the given requestor.
-	 * 
+	 *
 	 * @see SearchEngine#searchDeclarationsOfAccessedFields(IModelElement,
 	 *      SearchRequestor, IProgressMonitor) for detailed comment
 	 */
@@ -1460,7 +1476,7 @@ public class BasicSearchEngine {
 	 * Searches for all declarations of the types referenced in the given
 	 * element. The element can be a compilation unit, a source type, or a
 	 * source method. Reports the type declarations using the given requestor.
-	 * 
+	 *
 	 * @see SearchEngine#searchDeclarationsOfReferencedTypes(IModelElement,
 	 *      SearchRequestor, IProgressMonitor) for detailed comment
 	 */
@@ -1480,7 +1496,7 @@ public class BasicSearchEngine {
 	 * Searches for all declarations of the methods invoked in the given
 	 * element. The element can be a compilation unit, a source type, or a
 	 * source method. Reports the method declarations using the given requestor.
-	 * 
+	 *
 	 * @see SearchEngine#searchDeclarationsOfSentMessages(IModelElement,
 	 *      SearchRequestor, IProgressMonitor) for detailed comment
 	 */

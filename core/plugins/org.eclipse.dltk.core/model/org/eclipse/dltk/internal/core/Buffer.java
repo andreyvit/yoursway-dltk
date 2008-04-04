@@ -47,7 +47,7 @@ public class Buffer implements IBuffer {
 	/**
 	 * Creates a new buffer on an underlying resource.
 	 */
-	protected Buffer(IFile file, IOpenable owner, boolean readOnly) {
+	public Buffer(IFile file, IOpenable owner, boolean readOnly) {
 		this.file = file;
 		this.owner = owner;
 		if (file == null) {

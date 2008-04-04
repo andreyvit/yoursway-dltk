@@ -48,7 +48,7 @@ public class DbgpDebuggingEngineCommunicator implements IDbgpCommunicator {
 			sendRequest(request.toString());
 
 			DbgpResponsePacket packet = receiveResponse(Integer
-					.parseInt(request.getOption("-i")));
+					.parseInt(request.getOption("-i"))); //$NON-NLS-1$
 
 			if (packet == null) {
 				throw new DbgpTimeoutException();

@@ -189,16 +189,16 @@ public class ScriptFolder extends Openable implements IScriptFolder {
 	protected void toStringName(StringBuffer buffer) {
 		String elementName = getElementName();
 		if(elementName.length() == 0){
-			buffer.append("<default>");
+			buffer.append("<default>"); //$NON-NLS-1$
 		}else{
 			buffer.append(elementName);
 		}
 	}
 	
 	public String getElementName() {
-		String name = "";
+		String name = ""; //$NON-NLS-1$
 		if( this.path.segmentCount() == 0 ) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		name = this.path.segment(0);
 		for( int i = 1; i < this.path.segmentCount(); ++i) {
@@ -211,7 +211,7 @@ public class ScriptFolder extends Openable implements IScriptFolder {
 		return path.segmentCount() == 0;
 	}
 	public void printNode(CorePrinter output) {		
-		output.formatPrint("DLTK Script folder:" + getElementName());
+		output.formatPrint("DLTK Script folder:" + getElementName()); //$NON-NLS-1$
 		output.indent();
 		try {
 			IModelElement modelElements[] = this.getChildren();
@@ -221,7 +221,7 @@ public class ScriptFolder extends Openable implements IScriptFolder {
 					((ModelElement)element).printNode(output);
 				}
 				else {
-					output.print("Unknown element:" + element );
+					output.print("Unknown element:" + element ); //$NON-NLS-1$
 				}
 			}
 		}

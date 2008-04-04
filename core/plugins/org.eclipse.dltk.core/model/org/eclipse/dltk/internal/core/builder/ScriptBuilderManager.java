@@ -24,9 +24,9 @@ import org.eclipse.dltk.core.builder.IScriptBuilder;
 public class ScriptBuilderManager {
 
 	private final static String LANGUAGE_EXTPOINT = DLTKCore.PLUGIN_ID
-			+ ".builder";
+			+ ".builder"; //$NON-NLS-1$
 
-	private final static String NATURE_ATTR = "nature";
+	private final static String NATURE_ATTR = "nature"; //$NON-NLS-1$
 
 	// Contains list of builders for selected nature.
 	private static Map builders;
@@ -66,7 +66,7 @@ public class ScriptBuilderManager {
 		List results = new ArrayList();
 		processNature(natureId, results);
 		// Add from # nature.
-		processNature( "#", results );
+		processNature( "#", results ); //$NON-NLS-1$
 		return (IScriptBuilder[])results.toArray(new IScriptBuilder[results.size()]);
 	}
 	private static void processNature(String natureId, List results)
@@ -93,7 +93,7 @@ public class ScriptBuilderManager {
 					else {
 						IConfigurationElement cfg = (IConfigurationElement) e;
 						IScriptBuilder builder = (IScriptBuilder) cfg
-								.createExecutableExtension("class");
+								.createExecutableExtension("class"); //$NON-NLS-1$
 						result[i] = builder;
 					}
 				}

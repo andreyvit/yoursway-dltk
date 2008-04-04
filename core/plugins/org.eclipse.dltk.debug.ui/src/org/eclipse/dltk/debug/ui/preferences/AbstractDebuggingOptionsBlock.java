@@ -18,7 +18,7 @@ import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 public abstract class AbstractDebuggingOptionsBlock extends
 		AbstractOptionsBlock {
 
-	private static String DLTK_DEBUG_PREF_PAGE_ID = "org.eclipse.dltk.preferences.debug";
+	private static String DLTK_DEBUG_PREF_PAGE_ID = "org.eclipse.dltk.preferences.debug"; //$NON-NLS-1$
 
 	public AbstractDebuggingOptionsBlock(IStatusChangeListener context,
 			IProject project, PreferenceKey[] allKeys,
@@ -34,7 +34,7 @@ public abstract class AbstractDebuggingOptionsBlock extends
 				.getFont(), 1, 1, GridData.FILL_HORIZONTAL);
 
 		createSettingsGroup(composite);
-		createVariablesGroup(composite);
+		//createVariablesGroup(composite);
 
 		if (isProjectPreferencePage()) {
 			createPropToPrefLink(composite,
@@ -59,20 +59,20 @@ public abstract class AbstractDebuggingOptionsBlock extends
 	 */
 	protected abstract PreferenceKey getDbgpLoggingEnabledKey();
 
-	/**
-	 * Returns the 'show global variables' preference key
-	 */
-	protected abstract PreferenceKey getShowGlobalVarsKey();
-
-	/**
-	 * Returns the 'show class variables' preference key
-	 */
-	protected abstract PreferenceKey getShowClassVarsKey();
-
-	/**
-	 * Returns the 'show local variables' preference key
-	 */
-	protected abstract PreferenceKey getShowLocalVarsKey();
+//	/**
+//	 * Returns the 'show global variables' preference key
+//	 */
+//	protected abstract PreferenceKey getShowGlobalVarsKey();
+//
+//	/**
+//	 * Returns the 'show class variables' preference key
+//	 */
+//	protected abstract PreferenceKey getShowClassVarsKey();
+//
+//	/**
+//	 * Returns the 'show local variables' preference key
+//	 */
+//	protected abstract PreferenceKey getShowLocalVarsKey();
 
 	private void createSettingsGroup(Composite parent) {
 		final Group group = SWTFactory.createGroup(parent,
@@ -93,27 +93,27 @@ public abstract class AbstractDebuggingOptionsBlock extends
 		bindControl(b, getDbgpLoggingEnabledKey(), null);
 	}
 
-	private void createVariablesGroup(Composite parent) {
-		final Group group = SWTFactory.createGroup(parent,
-				ScriptDebugPreferencesMessages.VariableSettingsLabel, 1, 1,
-				GridData.FILL_HORIZONTAL);
-
-		// global variables
-		Button b = SWTFactory.createCheckButton(group,
-				ScriptDebugPreferencesMessages.ShowGlobalVarsLabel, null,
-				false, 1);
-		bindControl(b, getShowGlobalVarsKey(), null);
-
-		// class variables
-		b = SWTFactory.createCheckButton(group,
-				ScriptDebugPreferencesMessages.ShowClassVarsLabel, null, false,
-				1);
-		bindControl(b, getShowClassVarsKey(), null);
-
-		// local variables
-		b = SWTFactory.createCheckButton(group,
-				ScriptDebugPreferencesMessages.ShowLocalVarsLabel, null, false,
-				1);
-		bindControl(b, getShowLocalVarsKey(), null);
-	}
+//	private void createVariablesGroup(Composite parent) {
+//		final Group group = SWTFactory.createGroup(parent,
+//				ScriptDebugPreferencesMessages.VariableSettingsLabel, 1, 1,
+//				GridData.FILL_HORIZONTAL);
+//
+//		// global variables
+//		Button b = SWTFactory.createCheckButton(group,
+//				ScriptDebugPreferencesMessages.ShowGlobalVarsLabel, null,
+//				false, 1);
+//		bindControl(b, getShowGlobalVarsKey(), null);
+//
+//		// class variables
+//		b = SWTFactory.createCheckButton(group,
+//				ScriptDebugPreferencesMessages.ShowClassVarsLabel, null, false,
+//				1);
+//		bindControl(b, getShowClassVarsKey(), null);
+//
+//		// local variables
+//		b = SWTFactory.createCheckButton(group,
+//				ScriptDebugPreferencesMessages.ShowLocalVarsLabel, null, false,
+//				1);
+//		bindControl(b, getShowLocalVarsKey(), null);
+//	}
 }

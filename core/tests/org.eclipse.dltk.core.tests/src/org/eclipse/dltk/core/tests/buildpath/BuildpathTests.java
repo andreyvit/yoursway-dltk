@@ -31,13 +31,13 @@ import org.eclipse.dltk.core.IBuildpathAttribute;
 import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IBuiltinModuleProvider;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelElementDelta;
 import org.eclipse.dltk.core.IModelMarker;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.tests.model.ModelTestsPlugin;
@@ -72,11 +72,11 @@ public class BuildpathTests extends ModifyingResourceTests {
 			return this.path;
 		}
 
-		public IBuildpathEntry[] getBuildpathEntries() {
+		public IBuildpathEntry[] getBuildpathEntries(IScriptProject project) {
 			return this.entries;
 		}
 
-		public String getDescription() {
+		public String getDescription(IScriptProject project) {
 			return this.path.toString();
 		}
 
@@ -84,7 +84,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 			return 0;
 		}
 
-		public IBuiltinModuleProvider getBuiltinProvider() {
+		public IBuiltinModuleProvider getBuiltinProvider(IScriptProject project) {
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -120,8 +120,8 @@ public class BuildpathTests extends ModifyingResourceTests {
 	protected void assertStatus(String expected, IStatus status) {
 		String actual = status.getMessage();
 		if (!expected.equals(actual)) {
-			System.out.print(Util.displayString(actual, 2));
-			System.out.println(",");
+//			System.out.print(Util.displayString(actual, 2));
+//			System.out.println(",");
 		}
 		assertEquals(expected, actual);
 	}
@@ -129,8 +129,8 @@ public class BuildpathTests extends ModifyingResourceTests {
 	protected void assertStatus(String message, String expected, IStatus status) {
 		String actual = status.getMessage();
 		if (!expected.equals(actual)) {
-			System.out.print(Util.displayString(actual, 2));
-			System.out.println(",");
+//			System.out.print(Util.displayString(actual, 2));
+//			System.out.println(",");
 		}
 		assertEquals(message, expected, actual);
 	}
@@ -263,7 +263,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 		IProjectFragment fragment = fragments[0];
 		IModelElement[] elements = fragment.getChildren();
 		
-		System.out.println("Model:");
+//		System.out.println("Model:");
 		CorePrinter printer = new CorePrinter(System.out);
 		((ScriptProject)project).printNode(printer);
 		printer.flush();
@@ -295,7 +295,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 			
 			IProjectFragment[] fragments = proj.getProjectFragments();			
 			
-			System.out.println("Model:");
+//			System.out.println("Model:");
 			CorePrinter printer = new CorePrinter(System.out, true);
 			((ScriptProject)proj).printNode(printer);
 			printer.flush();
@@ -309,12 +309,13 @@ public class BuildpathTests extends ModifyingResourceTests {
 			URL url = ModelTestsPlugin.getDefault().getBundle().getEntry("/workspace/Buildpath3");
 			URL res = FileLocator.resolve(url);			
 			String filePath = res.getFile();			
+			IPath contPath = new Path(filePath.substring(1)).setDevice(null);
 			IScriptProject proj = this.createScriptProject("P", TEST_NATURE, new String[] { "src" });
 			IBuildpathEntry[] originalCP = proj.getRawBuildpath();
 
 			IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length + 1];
 			System.arraycopy(originalCP, 0, newCP, 0, originalCP.length);
-			newCP[originalCP.length] = DLTKCore.newContainerEntry(new Path("Testie" + filePath));
+			newCP[originalCP.length] = DLTKCore.newContainerEntry(new Path("Testie").append(contPath));
 
 			IModelStatus status = BuildpathEntry.validateBuildpath(proj, newCP);
 
@@ -325,7 +326,7 @@ public class BuildpathTests extends ModifyingResourceTests {
 			IProjectFragment[] fragments = proj.getProjectFragments();
 			assertEquals(2, fragments.length);
 			
-			System.out.println("Model:");
+//			System.out.println("Model:");
 			CorePrinter printer = new CorePrinter(System.out, true);
 			((ScriptProject)proj).printNode(printer);
 			printer.flush();
@@ -442,12 +443,13 @@ public class BuildpathTests extends ModifyingResourceTests {
 
 			IBuildpathEntry[] newCP = new IBuildpathEntry[originalCP.length + 1];
 			System.arraycopy(originalCP, 0, newCP, 0, originalCP.length);
-			newCP[originalCP.length] = DLTKCore.newExtLibraryEntry(new Path("/opt2"));
+			IPath libPath = new Path("/opt2");
+			newCP[originalCP.length] = DLTKCore.newExtLibraryEntry(libPath);
 
 			IModelStatus status = BuildpathEntry.validateBuildpathEntry(proj, newCP[originalCP.length], false);
 
 			assertStatus("should detect not pressent folders",
-					"Required library cannot denote external folder or archive: \'/opt2\' for project Pv0", status);
+					"Required library cannot denote external folder or archive: \'" + libPath.toOSString() + "\' for project Pv0", status);
 		} finally {
 			this.deleteProject("Pv0");
 		}

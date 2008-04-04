@@ -224,7 +224,7 @@ public class ModelCache {
 
 	protected void resetZIPTypeCache() {
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add reset ZIP Type cache...");
+			System.err.println("Add reset ZIP Type cache..."); //$NON-NLS-1$
 		}
 	}
 }

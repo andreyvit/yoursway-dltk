@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         id="nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run class="org.eclipse.dltk.examples.internal.python.core.ExamplePythonNature"> </run>
+      </runtime>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.language">
+      <language
+            class="org.eclipse.dltk.examples.internal.python.core.ExamplePythonLanguageToolkit"
+            nature="org.eclipse.dltk.examples.python.nature"
+            priority="0">
+      </language>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.ui.language">
+      <language
+            class="org.eclipse.dltk.examples.internal.python.ui.ExamplePythonUILanguageToolkit"
+            nature="org.eclipse.dltk.examples.python.nature"
+            priority="0">
+      </language>
+   </extension>
+   <extension
+         point="org.eclipse.dltk.core.sourceElementParsers">
+      <parser
+            class="org.eclipse.dltk.examples.internal.python.core.parser.ExamplePythonSourceElementParser"
+            nature="org.eclipse.dltk.examples.python.nature"
+            priority="0">
+      </parser>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="org.eclipse.dltk.examples.python.category"
+            class="org.eclipse.dltk.ui.wizards.GenericDLTKProjectWizard:org.eclipse.dltk.examples.python.nature"
+            icon="icons/etool16/newprj_wiz.gif"
+            id="org.eclipse.dltk.examples.python.wizard1"
+            name="Example Python ProjectWizard"
+            project="true">
+      </wizard>
+      <category
+            id="org.eclipse.dltk.examples.python.category"
+            name="DLTK Examples">
+      </category>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            describer="org.eclipse.dltk.examples.internal.python.core.ExamplePythonContentDescriber"
+            file-extensions="py"
+            id="org.eclipse.dltk.examples.python.content-type"
+            name="Example Python content type"
+            priority="high">
+      </content-type>
+   </extension>
+   <!-- Interpreters support-->
+   <extension
+         point="org.eclipse.dltk.launching.interpreterInstallTypes">
+          <interpreterInstallType
+            class="org.eclipse.dltk.examples.internal.python.interpreter.ExamplePythonInstallType"
+            id="org.eclipse.dltk.internal.debug.ui.launcher.ExamplePythonInstallType">
+      </interpreterInstallType>   
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.eclipse.dltk.examples.internal.python.interpreter.ui.ExamplePythonInterpreterPreferencePage"
+            id="org.eclipse.dltk.python.examples.preferences.interpreters"
+            name="Example Python Interpreters"/>
+   </extension>
+</plugin>

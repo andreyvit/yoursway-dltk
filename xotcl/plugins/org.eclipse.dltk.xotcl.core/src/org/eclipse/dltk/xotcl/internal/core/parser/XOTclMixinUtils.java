@@ -9,7 +9,7 @@ public class XOTclMixinUtils {
 	public static XOTclClass findMixinElement(String commandNameValue) {
 		IMixinElement[] find = TclMixinModel.getInstance().find(
 				commandNameValue.replaceAll("::",
-						IMixinRequestor.MIXIN_NAME_SEPARATOR), 100);
+						IMixinRequestor.MIXIN_NAME_SEPARATOR), 1000);
 		if (find.length > 0) {
 			for (int i = 0; i < find.length; i++) {
 				Object[] allObjects = find[i].getAllObjects();

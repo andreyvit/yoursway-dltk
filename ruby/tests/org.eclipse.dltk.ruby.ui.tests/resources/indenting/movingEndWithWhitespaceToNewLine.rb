@@ -1,7 +1,7 @@
 def foo
-	if foo then bar; π  end
+	if foo then bar; #n#  end
 end
-§§
+###
 def foo
 	if foo then bar; 
 	end

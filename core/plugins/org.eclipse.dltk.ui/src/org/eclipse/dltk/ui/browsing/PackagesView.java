@@ -270,7 +270,7 @@ public class PackagesView extends ScriptBrowsingPart {
 	 */
 	protected String getHelpContextId() {
 		// return IJavaHelpContextIds.PACKAGES_BROWSING_VIEW;
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	protected String getLinkToEditorKey() {

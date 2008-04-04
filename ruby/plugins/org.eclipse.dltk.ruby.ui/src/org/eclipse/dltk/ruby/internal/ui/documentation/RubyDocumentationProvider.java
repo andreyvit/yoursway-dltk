@@ -27,8 +27,8 @@ import org.eclipse.dltk.internal.core.BuiltinProjectFragment;
 import org.eclipse.dltk.ruby.core.PredefinedVariables;
 import org.eclipse.dltk.ruby.core.model.FakeField;
 import org.eclipse.dltk.ruby.internal.ui.docs.RiHelper;
+import org.eclipse.dltk.ruby.internal.ui.text.IRubyPartitions;
 import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitionScanner;
-import org.eclipse.dltk.ruby.internal.ui.text.RubyPartitions;
 import org.eclipse.dltk.ui.documentation.IScriptDocumentationProvider;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
@@ -51,12 +51,14 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 	 *            the document
 	 */
 	private static void installStuff(Document document) {
-		String[] types = new String[] { RubyPartitions.RUBY_STRING,
-				RubyPartitions.RUBY_COMMENT, IDocument.DEFAULT_CONTENT_TYPE };
+		String[] types = new String[] { IRubyPartitions.RUBY_STRING,
+				IRubyPartitions.RUBY_SINGLE_QUOTE_STRING,
+				IRubyPartitions.RUBY_COMMENT, IRubyPartitions.RUBY_DOC,
+				IDocument.DEFAULT_CONTENT_TYPE };
 		FastPartitioner partitioner = new FastPartitioner(
 				new RubyPartitionScanner(), types);
 		partitioner.connect(document);
-		document.setDocumentPartitioner(RubyPartitions.RUBY_PARTITIONING,
+		document.setDocumentPartitioner(IRubyPartitions.RUBY_PARTITIONING,
 				partitioner);
 	}
 
@@ -67,14 +69,15 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 	 *            the document
 	 */
 	private static void removeStuff(Document document) {
-		document.setDocumentPartitioner(RubyPartitions.RUBY_PARTITIONING, null);
+		document
+				.setDocumentPartitioner(IRubyPartitions.RUBY_PARTITIONING, null);
 	}
 
 	public static String getHeaderComment(String contents, int offset) {
 		int start = offset;
 		int end = start;
 
-		String result = "";
+		String result = ""; //$NON-NLS-1$
 
 		Document doc = new Document(contents);
 		installStuff(doc);
@@ -96,9 +99,10 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 		try {
 			while (pos >= 0 && pos <= doc.getLength()) {
 				ITypedRegion region = TextUtilities.getPartition(doc,
-						RubyPartitions.RUBY_PARTITIONING, pos, true);
-				if (region.getType().equals(RubyPartitions.RUBY_DOC)
-						|| region.getType().equals(RubyPartitions.RUBY_COMMENT)) {
+						IRubyPartitions.RUBY_PARTITIONING, pos, true);
+				if (region.getType().equals(IRubyPartitions.RUBY_DOC)
+						|| region.getType()
+								.equals(IRubyPartitions.RUBY_COMMENT)) {
 					start = region.getOffset();
 				}
 				if (region.getType().equals(IDocument.DEFAULT_CONTENT_TYPE)) {
@@ -114,9 +118,10 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 
 			while (pos <= doc.getLength()) {
 				ITypedRegion region = TextUtilities.getPartition(doc,
-						RubyPartitions.RUBY_PARTITIONING, pos, true);
-				if (region.getType().equals(RubyPartitions.RUBY_DOC)
-						|| region.getType().equals(RubyPartitions.RUBY_COMMENT)) {
+						IRubyPartitions.RUBY_PARTITIONING, pos, true);
+				if (region.getType().equals(IRubyPartitions.RUBY_DOC)
+						|| region.getType()
+								.equals(IRubyPartitions.RUBY_COMMENT)) {
 					end = region.getOffset() + region.getLength();
 				}
 				if (region.getType().equals(IDocument.DEFAULT_CONTENT_TYPE)) {
@@ -173,40 +178,46 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 		String doc = helper.getDocFor(keyword);
 		if (doc != null)
 			return new StringReader(doc);
-		return new StringReader("Built-in method");
+		return null;
 	}
 
 	private Reader proccessBuiltinMethod(IMethod method) {
-		final String divider = "#";
+		final String divider = "#"; //$NON-NLS-1$
 		IModelElement pp = method.getAncestor(IModelElement.TYPE);
-		if (pp.getElementName().startsWith("<<"))
+		if (pp.getElementName().startsWith("<<")) //$NON-NLS-1$
 			pp = pp.getAncestor(IModelElement.TYPE);
 		String keyword = pp.getElementName() + divider
 				+ method.getElementName();
 		RiHelper helper = RiHelper.getInstance();
 		String doc = helper.getDocFor(keyword);
-		if (doc != null && (doc.indexOf("Nothing known about") != -1)
+		if (doc != null && (doc.indexOf("Nothing known about") != -1) //$NON-NLS-1$
 				|| doc.trim().length() == 0) {
 			// XXX megafix: some Kernel methods are documented in Object
-			if (pp.getElementName().equals("Kernel")) {
-				keyword = "Object" + divider + method.getElementName();
+			if (pp.getElementName().equals("Kernel")) { //$NON-NLS-1$
+				keyword = "Object" + divider + method.getElementName(); //$NON-NLS-1$
 				doc = helper.getDocFor(keyword);
+				if (doc == null || doc.indexOf("Nothing known about") >= 0) { //$NON-NLS-1$
+					doc = null;
+				}
+			} else {
+				doc = null;
 			}
+
 		}
 		if (doc != null)
 			return new StringReader(doc);
-		return new StringReader("Built-in method");
+		return null;
 	}
 
 	public Reader getInfo(IMember member, boolean lookIntoParents,
 			boolean lookIntoExternal) {
 		boolean isBuiltin = member.getAncestor(IModelElement.PROJECT_FRAGMENT) instanceof BuiltinProjectFragment;
 		if (isBuiltin && member instanceof IMethod) {
-				IMethod method = (IMethod) member;
-				return proccessBuiltinMethod(method);
+			IMethod method = (IMethod) member;
+			return proccessBuiltinMethod(method);
 		} else if (isBuiltin && member instanceof IType) {
-				IType type = (IType) member;
-				return proccessBuiltinType(type);				
+			IType type = (IType) member;
+			return proccessBuiltinType(type);
 		} else if (member instanceof FakeField) {
 			FakeField field = (FakeField) member;
 			String doc = PredefinedVariables.getDocOf(field.getElementName());
@@ -221,17 +232,17 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 
 	private static String replaceSpecTag(String original, String sc, String tag) {
 		String filtered = original;
-		if (sc.equals("*") || sc.equals("+"))
-			sc = "\\" + sc;
-		Pattern bold = Pattern.compile(sc + "[_a-zA-Z0-9]+" + sc);
+		if (sc.equals("*") || sc.equals("+")) //$NON-NLS-1$ //$NON-NLS-2$
+			sc = "\\" + sc; //$NON-NLS-1$
+		Pattern bold = Pattern.compile(sc + "[_a-zA-Z0-9]+" + sc); //$NON-NLS-1$
 		while (true) {
 			Matcher matcher = bold.matcher(filtered);
 			if (matcher.find()) {
 				String startStr = filtered.substring(0, matcher.start());
 				String endStr = filtered.substring(matcher.end());
 				String grp = matcher.group();
-				filtered = startStr + "<" + tag + ">"
-						+ grp.substring(1, grp.length() - 1) + "</" + tag + ">"
+				filtered = startStr + "<" + tag + ">" //$NON-NLS-1$ //$NON-NLS-2$
+						+ grp.substring(1, grp.length() - 1) + "</" + tag + ">" //$NON-NLS-1$ //$NON-NLS-2$
 						+ endStr;
 			} else
 				break;
@@ -242,7 +253,7 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 
 	protected String convertToHTML(String header) {
 		if (header == null)
-			return "";
+			return ""; //$NON-NLS-1$
 		StringBuffer result = new StringBuffer();
 		Document d = new Document(header);
 		boolean enabled = true;
@@ -251,45 +262,45 @@ public class RubyDocumentationProvider implements IScriptDocumentationProvider {
 				String str = getLine(d, line).trim();
 				if (str == null)
 					break;
-				if (str.startsWith("#--")) {
+				if (str.startsWith("#--")) { //$NON-NLS-1$
 					enabled = false;
-				} else if (str.startsWith("#++")) {
+				} else if (str.startsWith("#++")) { //$NON-NLS-1$
 					enabled = true;
 					continue;
 				}
 				if (!enabled)
 					continue;
 
-				if (str.startsWith("=begin"))
+				if (str.startsWith("=begin")) //$NON-NLS-1$
 					continue;
 
-				if (str.startsWith("=end"))
+				if (str.startsWith("=end")) //$NON-NLS-1$
 					continue;
 
-				while (str.length() > 0 && str.startsWith("#"))
+				while (str.length() > 0 && str.startsWith("#")) //$NON-NLS-1$
 					str = str.substring(1);
 
-				str = replaceSpecTag(str, "*", "b");
-				str = replaceSpecTag(str, "+", "tt");
-				str = replaceSpecTag(str, "_", "em");
+				str = replaceSpecTag(str, "*", "b"); //$NON-NLS-1$ //$NON-NLS-2$
+				str = replaceSpecTag(str, "+", "tt"); //$NON-NLS-1$ //$NON-NLS-2$
+				str = replaceSpecTag(str, "_", "em"); //$NON-NLS-1$ //$NON-NLS-2$
 
-				str.replaceAll("\\*[_a-zA-Z0-9]+\\*", "");
+				str.replaceAll("\\*[_a-zA-Z0-9]+\\*", ""); //$NON-NLS-1$ //$NON-NLS-2$
 
 				if (str.length() == 0)
-					result.append("<p>");
+					result.append("<p>"); //$NON-NLS-1$
 				else {
-					if (str.trim().startsWith("== ")) {
-						result.append("<h2>");
+					if (str.trim().startsWith("== ")) { //$NON-NLS-1$
+						result.append("<h2>"); //$NON-NLS-1$
 						result.append(str.substring(3));
-						result.append("</h2>");
-					} else if (str.trim().startsWith("= ")) {
-						result.append("<h1>");
+						result.append("</h2>"); //$NON-NLS-1$
+					} else if (str.trim().startsWith("= ")) { //$NON-NLS-1$
+						result.append("<h1>"); //$NON-NLS-1$
 						result.append(str.substring(2));
-						result.append("</h1>");
-					} else if (str.trim().startsWith("---")) {
-						result.append("<hr>");
+						result.append("</h1>"); //$NON-NLS-1$
+					} else if (str.trim().startsWith("---")) { //$NON-NLS-1$
+						result.append("<hr>"); //$NON-NLS-1$
 					} else {
-						result.append(str + "<br>");
+						result.append(str + "<br>"); //$NON-NLS-1$
 					}
 				}
 			} catch (BadLocationException e) {

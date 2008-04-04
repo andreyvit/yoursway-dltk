@@ -94,9 +94,6 @@
  <extension
          name="tcl commands"
          point="org.eclipse.dltk.tcl.core.tclCommandProcessor">
-      <!--processor
-            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclSwitchCommandProcessor"
-            id="switch"></processor-->
       <processor
             class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclNamespaceProcessor"
             id="namespace"></processor>
@@ -132,10 +129,10 @@
             class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclNamespaceVariableProcessor"
             id="variable">
       </processor>
-      <!--processor
+      <processor
             class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclSwitchCommandProcessor"
             id="switch">
-      </processor-->
+      </processor>
       <processor
             class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclForCommandProcessor"
             id="for">
@@ -143,6 +140,10 @@
       <processor
             class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclForeachCommandProcessor"
             id="foreach">
+      </processor>
+      <processor
+            class="org.eclipse.dltk.tcl.internal.core.parser.processors.tcl.TclWhileCommandProcessor"
+            id="while">
       </processor>
    </extension>
  <extension
@@ -152,5 +153,19 @@
             nature="org.eclipse.dltk.tcl.core.nature"
             priority="0">
       </mixin>
+   </extension>
+   <extension
+       point="org.eclipse.dltk.core.builder">
+    <builder
+          class="org.eclipse.dltk.tcl.internal.core.packages.TclCheckBuilder"
+          nature="org.eclipse.dltk.tcl.core.nature">
+    </builder>
+ </extension>
+   <extension
+         point="org.eclipse.dltk.core.buildpathContainerInitializer">
+      <buildpathContainerInitializer
+            class="org.eclipse.dltk.tcl.internal.core.packages.TclPackagesBuildpathContainerInitializer"
+            id="org.eclipse.dltk.tcl.core.PACKAGES">
+      </buildpathContainerInitializer>
    </extension>
 </plugin>

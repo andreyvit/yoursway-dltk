@@ -29,7 +29,7 @@
          <launchConfigurationType
                delegate="org.eclipse.dltk.python.launching.PythonRemoteLaunchConfigurationDelegate"
                id="org.eclipse.dltk.python.launching.PythonRemoteLaunchConfigurationType"
-               modes="run,debug"
+               modes="debug"
                name="%PythonRemoteLaunchConfigurationType.name"
                public="true"
                sourceLocatorId="pythonSourceLocator" />               

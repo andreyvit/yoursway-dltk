@@ -32,7 +32,7 @@ public abstract class SemanticHighlighting {
 	/**
 	 * @return the display name
 	 */
-	public  String getDisplayName(){return "";};
+	public  String getDisplayName(){return "";}; //$NON-NLS-1$
 
 	
 

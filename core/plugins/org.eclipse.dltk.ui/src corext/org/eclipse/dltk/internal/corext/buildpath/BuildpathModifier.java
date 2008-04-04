@@ -35,11 +35,11 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
 import org.eclipse.dltk.core.IBuildpathEntry;
-import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatus;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
+import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.internal.core.BuildpathEntry;
 import org.eclipse.dltk.internal.corext.util.Messages;
@@ -778,8 +778,11 @@ public class BuildpathModifier {
 			if (container == null)
 				return null;
 		} while (scriptElem == null || !(scriptElem instanceof IProjectFragment));
-		if (scriptElem instanceof IScriptProject)
+		if (scriptElem instanceof IScriptProject) {
+			if (!isSourceFolder((IScriptProject)scriptElem))
+				return null;
 			scriptElem= project.getProjectFragment(project.getResource());
+		}
 		return (IProjectFragment) scriptElem;
 	}
 
@@ -1569,7 +1572,7 @@ public class BuildpathModifier {
 	 */
 	private static String completeName(String name) {
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add Buildpath name completion here");
+			System.err.println("Add Buildpath name completion here"); //$NON-NLS-1$
 		}
 //		if (!DLTKCore.isScriptLikeFileName(name)) {
 //			name= name + "/"; //$NON-NLS-1$

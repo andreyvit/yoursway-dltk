@@ -31,10 +31,10 @@ import org.osgi.framework.BundleContext;
  */
 public class RubyPlugin extends Plugin {
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.core";
+	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.core"; //$NON-NLS-1$
 	
 	public static final boolean DUMP_EXCEPTIONS_TO_CONSOLE = Boolean.valueOf(
-			Platform.getDebugOption("org.eclipse.dltk.ruby.core/dumpErrorsToConsole"))
+			Platform.getDebugOption("org.eclipse.dltk.ruby.core/dumpErrorsToConsole")) //$NON-NLS-1$
 			.booleanValue();
 
 	// The shared instance
@@ -83,7 +83,7 @@ public class RubyPlugin extends Plugin {
 			ex.printStackTrace();
 		String message = ex.getMessage();
 		if (message == null)
-			message = "(no message)";
+			message = "(no message)"; //$NON-NLS-1$
 		getDefault().getLog().log(new Status(Status.ERROR,
 				PLUGIN_ID, 0, message, ex));
 	}
@@ -124,14 +124,14 @@ public class RubyPlugin extends Plugin {
 	 */
 	public static void initializeAfterLoad(IProgressMonitor monitor) throws CoreException {
 		try {
-			if (monitor != null) 	monitor.beginTask("Initializing DLTK Ruby", 100);			
+			if (monitor != null) 	monitor.beginTask(Messages.RubyPlugin_initializingDltkRuby, 100);			
 
 			// dummy query for waiting until the indexes are ready
 			SearchEngine engine = new SearchEngine();
 			IDLTKSearchScope scope = SearchEngine.createWorkspaceScope(RubyLanguageToolkit.getDefault());
 			try {
 				if (monitor != null)
-					monitor.subTask("Initializing search engine");
+					monitor.subTask(Messages.RubyPlugin_initializingSearchEngine);
 				engine.searchAllTypeNames(
 					null,
 					SearchPattern.R_EXACT_MATCH,
@@ -155,13 +155,13 @@ public class RubyPlugin extends Plugin {
 					monitor == null ? null : new SubProgressMonitor(monitor, 49) // 49% of the time is spent in the dummy search
 				);
 				
-				String[] mainClasses = new String[] {"Object", "String", "Fixnum", "Array", "Regexp", "Class", "Kernel"};
+				String[] mainClasses = new String[] {"Object", "String", "Fixnum", "Array", "Regexp", "Class", "Kernel"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 				for (int i = 0; i < mainClasses.length; i++) {
 					RubyMixinModel.getInstance().createRubyElement(mainClasses[i]);
-					RubyMixinModel.getInstance().createRubyElement(mainClasses[i] + "%");
+					RubyMixinModel.getInstance().createRubyElement(mainClasses[i] + "%"); //$NON-NLS-1$
 					monitor.worked(10);				
 				}				
-				RubyMixinModel.getRawInstance().find("$*");
+				RubyMixinModel.getRawInstance().find("$*"); //$NON-NLS-1$
 				monitor.worked(10);								
 			} catch (ModelException e) {
 				// /search failed: ignore

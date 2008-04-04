@@ -118,7 +118,7 @@ class CalleeMethodWrapper extends MethodWrapper {
 		}
 
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO:CalleeMethodWrap findChildren not implemented...");
+			System.err.println("TODO:CalleeMethodWrap findChildren not implemented..."); //$NON-NLS-1$
 		}
 		return new HashMap(0);
 	}

@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension-point id="language" name="%language" schema="schema/language.exsd"/>
-   <extension-point id="buildpathContainerInitializer" name="buildpathContainerInitializer" schema="schema/buildpathContainerInitializer.exsd"/>
-   <extension-point id="mixin" name="mixin" schema="schema/mixin.exsd"/>
-   <extension-point id="builder" name="builder" schema="schema/builder.exsd"/>
-   <extension-point id="typeEvaluators" name="Type Evaluators" schema="schema/goalEvaluators.exsd"/>
-   <extension-point id="sourceParsers" name="Source Parsers" schema="schema/sourceParsers.exsd"/>
-   <extension-point id="sourceElementParsers" name="Source Element Parsers" schema="schema/sourceElementParsers.exsd"/>
-   <extension-point id="search" name="search" schema="schema/search.exsd"/>
-   <extension-point id="selectionEngine" name="selectionEngine" schema="schema/selectionEngine.exsd"/>
-   <extension-point id="completionEngine" name="completionEngine" schema="schema/completionEngine.exsd"/>
-   <extension-point id="callHierarchy" name="callHierarchy" schema="schema/callHierarchy.exsd"/>
-   <extension-point id="problemFactory" name="problemFactory" schema="schema/problemFactory.exsd"/>
+   <extension-point id="language" name="%extension-point.name.language" schema="schema/language.exsd"/>
+   <extension-point id="buildpathContainerInitializer" name="%extension-point.name.buildpathContainerInitializer" schema="schema/buildpathContainerInitializer.exsd"/>
+   <extension-point id="mixin" name="%extension-point.name.mixin" schema="schema/mixin.exsd"/>
+   <extension-point id="builder" name="%extension-point.name.builder" schema="schema/builder.exsd"/>
+   <extension-point id="typeEvaluators" name="%extension-point.name.typeEvaluators" schema="schema/goalEvaluators.exsd"/>
+   <extension-point id="sourceParsers" name="%extension-point.name.sourceParsers" schema="schema/sourceParsers.exsd"/>
+   <extension-point id="sourceElementParsers" name="%extension-point.name.sourceElementParsers" schema="schema/sourceElementParsers.exsd"/>
+   <extension-point id="search" name="%extension-point.name.search" schema="schema/search.exsd"/>
+   <extension-point id="selectionEngine" name="%extension-point.name.selectionEngine" schema="schema/selectionEngine.exsd"/>
+   <extension-point id="completionEngine" name="%extension-point.name.completionEngine" schema="schema/completionEngine.exsd"/>
+   <extension-point id="callHierarchy" name="%extension-point.name.callHierarchy" schema="schema/callHierarchy.exsd"/>
+   <extension-point id="problemFactory" name="%extension-point.name.problemFactory" schema="schema/problemFactory.exsd"/>
+   <extension-point id="fileHierarchyResolvers" name="%extension-point.name.fileHierarchyResolvers" schema="schema/fileHierarchyResolvers.exsd"/>
+   <extension-point id="interpreterContainerExtension" name="%extension-point.name.interpreterContainerExtension" schema="schema/interpreterContainerExtension.exsd"/>
 
 <!-- =================================================================================== -->
 <!-- Extension: DLTK Problem                                                             -->
@@ -29,7 +31,7 @@
 
 <extension
         id="runtime_problem"
-        name="%runtimeproblem"
+        name="%runtimeProblemName"
         point="org.eclipse.core.resources.markers">
      <super type="org.eclipse.core.resources.problemmarker"/>
      <super type="org.eclipse.core.resources.textmarker"/>

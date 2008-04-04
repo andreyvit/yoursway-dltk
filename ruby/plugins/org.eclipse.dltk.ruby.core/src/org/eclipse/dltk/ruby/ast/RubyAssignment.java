@@ -45,10 +45,10 @@ public class RubyAssignment extends RubyBinaryExpression
 	}
 
 	/**
-	 * Convert to string in pettern: "left = right"
+	 * Convert to string in pattern: "left = right"
 	 */
 	public String toString( ) {
-		return getLeft().toString( ) + '=' + getRight().toString( );
+		return String.valueOf(getLeft()) + '=' + String.valueOf(getRight());
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class RubyAssignment extends RubyBinaryExpression
 		if( getLeft() != null ) {
 			getLeft().printNode( output );
 		}
-		output.formatPrintLn( " = " );
+		output.formatPrintLn( " = " ); //$NON-NLS-1$
 		if( getRight() != null ) {
 			getRight().printNode( output );
 		}

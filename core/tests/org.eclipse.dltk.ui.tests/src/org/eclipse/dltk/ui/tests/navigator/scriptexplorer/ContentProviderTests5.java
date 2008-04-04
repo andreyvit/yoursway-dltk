@@ -79,7 +79,7 @@ public class ContentProviderTests5 extends TestCase{
 			ScriptProjectHelper.setAutoBuilding(false);
 		
 		//create project
-		fJProject= ScriptProjectHelper.createScriptProject("TestProject");
+		fJProject= ScriptProjectHelper.createScriptProject("ContentProviderProject");
 		assertNotNull(fJProject);
 
 		Object[] resource = fJProject.getForeignResources();
@@ -133,7 +133,7 @@ public class ContentProviderTests5 extends TestCase{
 		return new ByteArrayInputStream(string.getBytes(ResourcesPlugin.getEncoding()));
 	}
 
-	public void testProjectSource1() throws Exception { //bug 35851, 66694
+	public void REM_testProjectSource1() throws Exception { //bug 35851, 66694
 		IPath[] inclusionFilters= {new Path("**"), new Path("excl/incl/")};
 		IPath[] exclusionFilters= {new Path("excl/*"), new Path("x/*.txt"), new Path("y/")};
 		IProjectFragment root= ScriptProjectHelper.addSourceContainer(fJProject, "", inclusionFilters, exclusionFilters); 
@@ -183,7 +183,7 @@ public class ContentProviderTests5 extends TestCase{
 		assertEqualElements(new Object[] {yX, yhidden},	fProvider.getChildren(y));
 	}
 	
-	public void testNestedSource1() throws Exception { //bug 35851, 66694
+	public void REM_testNestedSource1() throws Exception { //bug 35851, 66694
 //		<BuildpathEntry excluding="a-b/a/b/" kind="src" path="src"/>
 //		<BuildpathEntry kind="src" path="src/a-b/a/b"/>
 		IPath[] inclusionFilters= {};

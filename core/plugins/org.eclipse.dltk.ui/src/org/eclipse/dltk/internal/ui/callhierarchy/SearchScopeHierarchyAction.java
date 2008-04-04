@@ -30,7 +30,7 @@ class SearchScopeHierarchyAction extends SearchScopeAction {
 		setToolTipText(CallHierarchyMessages.SearchScopeActionGroup_hierarchy_tooltip); 
 //		PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IJavaHelpContextIds.CALL_HIERARCHY_SEARCH_SCOPE_ACTION);
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}
 		
 	}

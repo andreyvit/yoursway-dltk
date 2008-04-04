@@ -19,9 +19,9 @@ import org.eclipse.dltk.dbgp.internal.utils.DbgpXmlParser;
 public class DbgpFeatureCommands extends DbgpBaseCommands implements
 		IDbgpFeatureCommands {
 
-	private static final String FEATURE_SET_COMMAND = "feature_set";
+	private static final String FEATURE_SET_COMMAND = "feature_set"; //$NON-NLS-1$
 
-	private static final String FEATURE_GET_COMMAND = "feature_get";
+	private static final String FEATURE_GET_COMMAND = "feature_get"; //$NON-NLS-1$
 
 	public DbgpFeatureCommands(IDbgpCommunicator communicator) {
 		super(communicator);
@@ -29,15 +29,15 @@ public class DbgpFeatureCommands extends DbgpBaseCommands implements
 
 	public IDbgpFeature getFeature(String featureName) throws DbgpException {
 		DbgpRequest request = createRequest(FEATURE_GET_COMMAND);
-		request.addOption("-n", featureName);
+		request.addOption("-n", featureName); //$NON-NLS-1$
 		return DbgpXmlEntityParser.parseFeature(communicate(request));
 	}
 
 	public boolean setFeature(String featureName, String featureValue)
 			throws DbgpException {
 		DbgpRequest request = createRequest(FEATURE_SET_COMMAND);
-		request.addOption("-n", featureName);
-		request.addOption("-v", featureValue);
+		request.addOption("-n", featureName); //$NON-NLS-1$
+		request.addOption("-v", featureValue); //$NON-NLS-1$
 		return DbgpXmlParser.parseSuccess(communicate(request));
 	}
 }

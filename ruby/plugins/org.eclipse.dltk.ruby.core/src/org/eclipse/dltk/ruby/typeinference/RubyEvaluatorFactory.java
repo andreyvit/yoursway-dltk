@@ -13,7 +13,7 @@ import org.eclipse.dltk.ti.goals.IGoal;
 
 public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 
-	private static final String GOAL_EVALUATOR_FACTORIES_EXT = "org.eclipse.dltk.ruby.core.goalEvaluatorFactories";
+	private static final String GOAL_EVALUATOR_FACTORIES_EXT = "org.eclipse.dltk.ruby.core.goalEvaluatorFactories"; //$NON-NLS-1$
 	private final static FactoryInfo[] f;
 
 	private static class FactoryInfo {
@@ -28,7 +28,7 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 	}
 
 	private static int getPriority(IConfigurationElement element) {
-		String priority = element.getAttribute("priority");
+		String priority = element.getAttribute("priority"); //$NON-NLS-1$
 		if (priority == null) {
 			return 0;
 		}
@@ -49,7 +49,7 @@ public class RubyEvaluatorFactory implements IGoalEvaluatorFactory {
 			try {
 				int priority = getPriority(element);
 				IGoalEvaluatorFactory factory = (IGoalEvaluatorFactory) element
-						.createExecutableExtension("class");
+						.createExecutableExtension("class"); //$NON-NLS-1$
 				if (factory != null)
 					factories.add(new FactoryInfo(priority, factory));
 			} catch (Exception e) {

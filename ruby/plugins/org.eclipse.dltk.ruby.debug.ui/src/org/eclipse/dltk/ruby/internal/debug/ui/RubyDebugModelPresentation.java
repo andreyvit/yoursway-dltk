@@ -9,13 +9,23 @@
  *******************************************************************************/
 package org.eclipse.dltk.ruby.internal.debug.ui;
 
+import org.eclipse.dltk.debug.core.model.IScriptValue;
 import org.eclipse.dltk.debug.ui.ScriptDebugModelPresentation;
+import org.eclipse.dltk.internal.ui.editor.EditorUtility;
+import org.eclipse.dltk.ruby.internal.ui.editor.RubyEditor;
 import org.eclipse.ui.IEditorInput;
 
 public class RubyDebugModelPresentation extends ScriptDebugModelPresentation {
-	private static final String RUBY_EDITOR_ID = "org.eclipse.dltk.ruby.ui.editor.RubyEditor";
 
 	public String getEditorId(IEditorInput input, Object element) {
-		return RUBY_EDITOR_ID;
+		String editorId = EditorUtility.getEditorID(input, element);
+		if (editorId == null)
+			editorId = RubyEditor.EDITOR_ID;
+
+		return editorId;
+	}
+
+	public String getDetailPaneText(IScriptValue value) {
+		return value.getRawValue();
 	}
 }

@@ -26,17 +26,17 @@ public class DbgpBreakpoint implements IDbgpBreakpoint {
 	private final int hitCondition;
 
 	protected int convertHitCondition(String s) {
-		if (">=".equals(s)) {
+		if (">=".equals(s)) { //$NON-NLS-1$
 			return HIT_CONDITION_GREATER_OR_EQUAL;
-		} else if ("==".equals(s)) {
+		} else if ("==".equals(s)) { //$NON-NLS-1$
 			return HIT_CONDITION_EQUAL;
-		} else if ("%".equals(s)) {
+		} else if ("%".equals(s)) { //$NON-NLS-1$
 			return HIT_CONDITION_MULTIPLE;
-		} else if ("".equals(s)) {
+		} else if ("".equals(s)) { //$NON-NLS-1$
 			return HIT_NOT_SET;
 		}
 
-		throw new IllegalArgumentException("Invalud hitCondition value");
+		throw new IllegalArgumentException(Messages.DbgpBreakpoint_invalidHitConditionValue);
 	}
 
 	public DbgpBreakpoint(String id, boolean enabled, int hitValue,

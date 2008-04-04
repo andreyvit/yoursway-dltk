@@ -9,20 +9,15 @@
  *******************************************************************************/
 package org.eclipse.dltk.core;
 
-import java.text.MessageFormat;
-
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.dltk.internal.core.util.Messages;
 
 public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 	public AbstractLanguageToolkit() {
 	}
-
-	protected abstract String getCorePluginID();
-
-
+	
 	public boolean languageSupportZIPBuildpath() {
 		return false;
 	}
@@ -31,19 +26,10 @@ public abstract class AbstractLanguageToolkit implements IDLTKLanguageToolkit {
 		return true;
 	}
 
-	public String getDelimeterReplacerString() {
-		return ".";
-	}
-
 	public IType[] getParentTypes(IType type) {
 		return null;
 	}
-
-
-	protected Status createNotScriptFileStatus() {
-		return new Status(IStatus.ERROR, getCorePluginID(), -1, MessageFormat
-				.format(Messages.convention_unit_notScriptName, new String[] {
-						getLanguageFileExtensions()[0].toString(), "Tcl" }),
-				null);
+	public IStatus validateSourceModule(IResource resource) {
+		return Status.OK_STATUS; 
 	}
 }

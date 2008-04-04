@@ -52,7 +52,7 @@
          point="org.eclipse.core.runtime.contentTypes">
       <file-association
             content-type="org.eclipse.dltk.tclContentType"
-            file-extensions="itcl">
+            file-extensions="itcl,itk">
       </file-association>
    </extension>
 </plugin>

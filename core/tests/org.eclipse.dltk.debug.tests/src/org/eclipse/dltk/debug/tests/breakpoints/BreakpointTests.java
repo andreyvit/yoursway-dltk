@@ -25,7 +25,7 @@ public class BreakpointTests extends AbstractDebugTests {
 		IResource resource = scriptProject.getProject().findMember(
 				"src/test.rb");
 
-		breakpoint = new ScriptLineBreakpoint("test_debug_model", resource, 1,
+		breakpoint = new ScriptLineBreakpoint("test_debug_model", resource, resource.getLocation(), 1,
 				-1, -1, true);
 	}
 

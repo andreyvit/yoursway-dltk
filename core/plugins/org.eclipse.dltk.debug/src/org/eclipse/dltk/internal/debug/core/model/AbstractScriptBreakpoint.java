@@ -14,52 +14,60 @@ import java.net.URISyntaxException;
 import java.util.Map;
 
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.model.Breakpoint;
 import org.eclipse.debug.core.model.IBreakpoint;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
 import org.eclipse.dltk.debug.core.model.IScriptBreakpoint;
 
 public abstract class AbstractScriptBreakpoint extends Breakpoint implements
 		IScriptBreakpoint {
-	
+
 	/**
-	 * Debugging engine breakpoint identifier (available only during debug session)
+	 * Debugging engine breakpoint identifier (available only during debug
+	 * session)
 	 */
-	public static final String ENGINE_IDENTIFIER = DLTKDebugPlugin.PLUGIN_ID + ".id";
-	
+	public static final String ENGINE_IDENTIFIER = DLTKDebugPlugin.PLUGIN_ID
+			+ ".id"; //$NON-NLS-1$
+
 	/**
-	 * The number of breakpoint hits during debug session (available only during debug session)
+	 * The number of breakpoint hits during debug session (available only during
+	 * debug session)
 	 */
-	public static final String HIT_COUNT = DLTKDebugPlugin.PLUGIN_ID + ".hit_count";
-		
+	public static final String HIT_COUNT = DLTKDebugPlugin.PLUGIN_ID
+			+ ".hit_count"; //$NON-NLS-1$
+
 	/**
-	 * Condition expression that should be valid for suspend on this breakpoint 
+	 * Condition expression that should be valid for suspend on this breakpoint
 	 */
-	public static final String EXPRESSION = DLTKDebugPlugin.PLUGIN_ID + ".expression";
+	public static final String EXPRESSION = DLTKDebugPlugin.PLUGIN_ID
+			+ ".expression"; //$NON-NLS-1$
 
 	/**
 	 * State of condition expression (enabled or disabled)
 	 */
-	public static final String EXPRESSION_STATE = EXPRESSION + ".state";
-	
+	public static final String EXPRESSION_STATE = EXPRESSION + ".state"; //$NON-NLS-1$
+
 	/**
 	 * The number of hits for suspend on this breakpoint
 	 */
-	public static final String HIT_VALUE = DLTKDebugPlugin.PLUGIN_ID + ".hit_value";
+	public static final String HIT_VALUE = DLTKDebugPlugin.PLUGIN_ID
+			+ ".hit_value"; //$NON-NLS-1$
 
 	/**
 	 * The hit condition related to hit value
 	 */
-	public static final String HIT_CONDITION = DLTKDebugPlugin.PLUGIN_ID + ".hit_condition";
-	
-	public static URI makeUri(IResource resource) {
+	public static final String HIT_CONDITION = DLTKDebugPlugin.PLUGIN_ID
+			+ ".hit_condition"; //$NON-NLS-1$
+
+	public static URI makeUri(IPath location) {
 		try {
-			return new URI("file", "///"
-					+ resource.getLocation().toPortableString(), null);
+			return new URI("file", "///" //$NON-NLS-1$ //$NON-NLS-2$
+					+ location.toPortableString(), null);
 		} catch (URISyntaxException e) {
 			// TODO: log exception
 			e.printStackTrace();
@@ -81,8 +89,9 @@ public abstract class AbstractScriptBreakpoint extends Breakpoint implements
 		try {
 			return ensureMarker().getAttribute(IBreakpoint.ID, null);
 		} catch (DebugException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
 			return null;
 		}
 	}
@@ -100,7 +109,7 @@ public abstract class AbstractScriptBreakpoint extends Breakpoint implements
 	public String getMessage() throws CoreException {
 		return ensureMarker().getAttribute(IMarker.MESSAGE, null);
 	}
-	
+
 	public void setMessage(String message) throws CoreException {
 		setAttribute(IMarker.MESSAGE, message);
 	}

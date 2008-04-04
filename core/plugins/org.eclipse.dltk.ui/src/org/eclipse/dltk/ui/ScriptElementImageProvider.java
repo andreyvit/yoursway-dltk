@@ -128,11 +128,11 @@ public class ScriptElementImageProvider {
 		return null;
 	}
 
-	private static final String LABELPROVIDERS_EXTENSION_POINT = "org.eclipse.dltk.ui.scriptElementLabelProviders";
+	private static final String LABELPROVIDERS_EXTENSION_POINT = "org.eclipse.dltk.ui.scriptElementLabelProviders"; //$NON-NLS-1$
 
-	private static final String ATTR_CLASS = "class";
+	private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 
-	private static final String ATTR_NATURE = "nature";
+	private static final String ATTR_NATURE = "nature"; //$NON-NLS-1$
 
 	private static Map labelProviders = null;
 
@@ -345,6 +345,12 @@ public class ScriptElementImageProvider {
 	}
 
 	private static ImageDescriptor getClassImageDescriptor(int flags) {
+		if ((flags & Modifiers.AccTest) != 0) {
+			return DLTKPluginImages.DESC_OBJS_TEST;
+		}
+		if ((flags & Modifiers.AccTestCase) != 0) {
+			return DLTKPluginImages.DESC_OBJS_TESTCASE;
+		}
 		if ((flags & Modifiers.AccNameSpace) != 0) {
 			return DLTKPluginImages.DESC_OBJS_NAMESPACE;
 		}

@@ -199,7 +199,7 @@ public abstract class FoldingConfigurationBlock implements IPreferenceConfigurat
 		
 		prefs= getPreferenceBlock ();
 		if (prefs == null) {
-			prefs= new ErrorPreferences("No folding preference block!");			
+			prefs= new ErrorPreferences(PreferencesMessages.FoldingConfigurationBlock_noFoldingPreferenceBlock);			
 		}
 		
 		Control control= fProviderControl;

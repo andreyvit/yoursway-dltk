@@ -30,10 +30,11 @@ public class ScriptVariable extends ScriptDebugElement implements
 
 	private IValue value;
 
-	public ScriptVariable(IScriptStackFrame frame, IDbgpProperty property) {
+	public ScriptVariable(IScriptStackFrame frame, IDbgpProperty property,
+			String name) {
 		this.target = frame.getDebugTarget();
 		this.session = ((IScriptThread) frame.getThread()).getDbgpSession();
-		this.name = property.getName();
+		this.name = name;
 		this.property = property;
 		this.frame = frame;
 	}
@@ -42,15 +43,8 @@ public class ScriptVariable extends ScriptDebugElement implements
 		return target;
 	}
 
-	public IValue getValue() throws DebugException {
+	public synchronized IValue getValue() throws DebugException {
 		if (value == null) {
-			try {
-				if (!childrenLoaded())
-					update();
-			} catch (DbgpException e) {
-				// TODO: localize
-				throw wrapDbgpException("Can't assign variable", e);
-			}
 			value = ScriptValue.createValue(frame, property);
 		}
 		return value;
@@ -68,8 +62,12 @@ public class ScriptVariable extends ScriptDebugElement implements
 		return false;
 	}
 
-	public void setValue(String expression) throws DebugException {
+	public synchronized void setValue(String expression) throws DebugException {
 		try {
+			if (("String".equals(property.getType())) && //$NON-NLS-1$
+					(!expression.startsWith("'") || !expression.endsWith("'")) && //$NON-NLS-1$ //$NON-NLS-2$
+					(!expression.startsWith("\"") || !expression.endsWith("\""))) //$NON-NLS-1$ //$NON-NLS-2$
+				expression = "\"" + expression.replaceAll("\\\"", "\\\\\"") + "\""; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			if (session.getCoreCommands().setProperty(property.getEvalName(),
 					frame.getLevel(), expression)) {
 				clearEvaluationManagerCache();
@@ -77,28 +75,24 @@ public class ScriptVariable extends ScriptDebugElement implements
 			}
 		} catch (DbgpException e) {
 			// TODO: localize
-			throw wrapDbgpException("Can't assign variable", e);
+			throw wrapDbgpException(Messages.ScriptVariable_cantAssignVariable,
+					e);
 		}
 	}
 
 	private void clearEvaluationManagerCache() {
 		ScriptThread thread = (ScriptThread) frame.getThread();
 		thread.notifyModified();
-		
-	}
 
-	private boolean childrenLoaded() {
-		return !property.hasChildren()
-				|| property.getAvailableChildren().length > 0;
 	}
 
 	private void update() throws DbgpException {
 		this.value = null;
 
 		IDbgpCoreCommands core = session.getCoreCommands();
-		String key = property.getKey();
+		// String key = property.getKey();
 		String name = property.getEvalName();
-		
+
 		// TODO: Use key if provided
 		this.property = core.getProperty(name, frame.getLevel());
 

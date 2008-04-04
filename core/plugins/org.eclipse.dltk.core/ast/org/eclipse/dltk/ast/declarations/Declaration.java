@@ -70,7 +70,7 @@ public abstract class Declaration extends Statement implements Modifiers {
 		return new SourceRange(this.getNameStart(), this.getNameEnd() - this.getNameStart() + 1);
 	}
 
-	public final String getName() {
+	public String getName() {
 		return this.ref.getName();
 	}
 
@@ -138,13 +138,13 @@ public abstract class Declaration extends Statement implements Modifiers {
 	}
 
 	public String toString() {
-		String buf = "";
+		String buf = ""; //$NON-NLS-1$
 
 		if (this.isStatic()) {
-			buf += "static ";
+			buf += "static "; //$NON-NLS-1$
 		}
 		if (this.ref.getName() != null) {
-			buf += " " + this.ref.getName();
+			buf += " " + this.ref.getName(); //$NON-NLS-1$
 		}
 		return buf;
 	}

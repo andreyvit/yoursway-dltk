@@ -38,6 +38,7 @@ import org.eclipse.dltk.core.search.IDLTKSearchScope;
 import org.eclipse.dltk.core.search.SearchPattern;
 import org.eclipse.dltk.core.search.SearchRequestor;
 import org.eclipse.dltk.internal.codeassist.select.SelectionNodeFound;
+import org.eclipse.dltk.tcl.ast.ITclStatementLookLike;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.ast.expressions.TclExecuteExpression;
 import org.eclipse.dltk.tcl.core.TclLanguageToolkit;
@@ -143,6 +144,25 @@ public class TclSelectionEngine extends ScriptSelectionEngine {
 
 		return (IModelElement[]) selectionElements
 				.toArray(new IModelElement[selectionElements.size()]);
+	}
+	
+
+	protected ASTNode parseBlockStatements(TypeDeclaration type,
+			ModuleDeclaration unit, int position) {
+		ASTNode result = super.parseBlockStatements(type, unit, position);
+		if( result != null ) {
+			return result;
+		}
+		if (type instanceof ITclStatementLookLike) {
+			TclStatement statement = ((ITclStatementLookLike) type)
+					.getStatement();
+			ASTNode inNode = TclParseUtil.getScopeParent(parser.getModule(), type);
+			this.getParser().parseBlockStatements(statement, inNode, position);
+			SelectionOnNode nde = new SelectionOnNode(type);
+			nde.setPosition(position);
+			throw new SelectionNodeFound(nde);
+		}
+		return null;
 	}
 
 	protected void select(ASTNode astNode, ASTNode astNodeParent) {

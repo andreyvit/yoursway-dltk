@@ -19,7 +19,7 @@ import org.eclipse.ui.part.IPageBookViewPage;
 
 public class ValidatorsConsolePageParticipant implements
 		IConsolePageParticipant {
-	public static final String DLTK_VALIDATORS_CONSOLE = "DLTK Validators output";
+	public static final String DLTK_VALIDATORS_CONSOLE = Messages.ValidatorsConsolePageParticipant_dltkValidatorOutput;
 	public void activated() {
 	}
 
@@ -36,8 +36,8 @@ public class ValidatorsConsolePageParticipant implements
 			
 			CloseValidatorsConsoleAction closeConsoleAction = new CloseValidatorsConsoleAction(
 					(IOConsole) console,
-					"Close",
-					"Close console");
+					Messages.ValidatorsConsolePageParticipant_close,
+					Messages.ValidatorsConsolePageParticipant_closeConsole);
 
 			toolbarManager.appendToGroup(IConsoleConstants.LAUNCH_GROUP, closeConsoleAction );
 		}

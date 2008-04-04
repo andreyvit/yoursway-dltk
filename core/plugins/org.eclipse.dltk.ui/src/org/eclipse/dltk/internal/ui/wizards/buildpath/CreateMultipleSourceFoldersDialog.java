@@ -133,7 +133,7 @@ public class CreateMultipleSourceFoldersDialog extends TrayDialog {
 			protected Control createDialogArea(Composite parent) {
 				Control result= super.createDialogArea(parent);
 				if (DLTKCore.DEBUG) {
-					System.err.println("CreateMultipleSourceFoldersDialog: Add help support");
+					System.err.println("CreateMultipleSourceFoldersDialog: Add help support"); //$NON-NLS-1$
 				}
 				//PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, IDLTKHelpContextIds.BP_CHOOSE_EXISTING_FOLDER_TO_MAKE_SOURCE_FOLDER);
 				return result;

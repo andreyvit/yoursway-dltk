@@ -13,10 +13,17 @@ import org.eclipse.dltk.ruby.ast.RubyCallArgument;
 import org.eclipse.dltk.ruby.ast.RubySymbolReference;
 
 public class RubyAttributeHandler {
-	private static final String ATTR = "attr";
-	private static final String ATTR_ACCESSOR = "attr_accessor";
-	private static final String ATTR_WRITER = "attr_writer";
-	private static final String ATTR_READER = "attr_reader";
+	private static final String ATTR = "attr"; //$NON-NLS-1$
+	private static final String ATTR_ACCESSOR = "attr_accessor"; //$NON-NLS-1$
+	private static final String ATTR_WRITER = "attr_writer"; //$NON-NLS-1$
+	private static final String ATTR_READER = "attr_reader"; //$NON-NLS-1$
+    private static final String ATTR_INTERNAL = "attr_internal"; //$NON-NLS-1$
+    private static final String ATTR_INTERNAL_ACCESSOR = "attr_internal_accessor"; //$NON-NLS-1$
+    private static final String ATTR_INTERNAL_READER = "attr_internal_reader"; //$NON-NLS-1$
+    private static final String ATTR_INTERNAL_WRITER = "attr_internal_writer"; //$NON-NLS-1$
+    private static final String CATTR_ACCESSOR = "cattr_accessor"; //$NON-NLS-1$
+    private static final String CATTR_WRITER = "cattr_writer"; //$NON-NLS-1$
+    private static final String CATTR_READER = "cattr_reader"; //$NON-NLS-1$
 
 	private final CallExpression call;
 	private List readers;
@@ -40,11 +47,11 @@ public class RubyAttributeHandler {
 		Iterator it = expr.iterator();
 		boolean create_reader = false;
 		boolean create_writer = false;
-		if (name.equals(ATTR_READER)) {
+		if (name.equals(ATTR_READER) || name.equals(ATTR_INTERNAL_READER) || name.equals(CATTR_READER)) {
 			create_reader = true;
-		} else if (name.equals(ATTR_WRITER)) {
+		} else if (name.equals(ATTR_WRITER) || name.equals(ATTR_INTERNAL_WRITER) || name.equals(CATTR_WRITER)) {
 			create_writer = true;
-		} else if (name.equals(ATTR_ACCESSOR)) {
+		} else if (name.equals(ATTR_ACCESSOR) || name.equals(ATTR_INTERNAL) || name.equals(ATTR_INTERNAL_ACCESSOR) || name.equals(CATTR_ACCESSOR)) {
 			create_reader = true;
 			create_writer = true;
 		} else if (name.equals(ATTR)) {
@@ -93,7 +100,10 @@ public class RubyAttributeHandler {
 			return false;
 		String name = c.getName();
 		return name.equals(ATTR_READER) || name.equals(ATTR_WRITER)
-				|| name.equals(ATTR_ACCESSOR) || name.equals(ATTR);
+				|| name.equals(ATTR_ACCESSOR) || name.equals(ATTR) ||
+				name.equals(ATTR_INTERNAL) || name.equals(ATTR_INTERNAL_ACCESSOR) ||
+				name.equals(ATTR_INTERNAL_READER) || name.equals(ATTR_INTERNAL_WRITER) ||
+				name.equals(CATTR_ACCESSOR) || name.equals(CATTR_READER) || name.equals(CATTR_WRITER);
 	}
 
 	public static String getText(ASTNode sr) {

@@ -47,11 +47,11 @@ public class ModelPythonTests extends AbstractModelTests {
 		IScriptProject project = setUpScriptProject(prj);
 
 		CorePrinter cPrinter = new CorePrinter(System.out);
-		System.out.println("Project TREE:##########################################");
+//		System.out.println("Project TREE:##########################################");
 		((ScriptProject) project).printNode(cPrinter);
-		System.out.println("Project TREE:##########################################");
+//		System.out.println("Project TREE:##########################################");
 		cPrinter.flush();
-		System.out.println("Project TREE:##########################################");
+//		System.out.println("Project TREE:##########################################");
 
 		ISourceModule module = this.getSourceModule(prj, "src", new Path("X.py"));
 
@@ -74,7 +74,7 @@ public class ModelPythonTests extends AbstractModelTests {
 		deleteProject(prj);
 	}
 
-	public void testModel00() throws Exception {
+	public void REM_testModel00() throws Exception {
 
 		String prj = "prj0";
 		IScriptProject project = setUpScriptProject(prj);

@@ -22,13 +22,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.dltk.debug.ui.DLTKDebugUIPlugin;
-import org.eclipse.dltk.debug.ui.IDLTKDebugUIConstants;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.LibraryLocation;
 import org.eclipse.dltk.launching.ScriptRuntime;
+import org.eclipse.dltk.ui.dialogs.TimeTriggeredProgressMonitorDialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -128,7 +128,7 @@ public abstract class AbstractInterpreterLibraryBlock implements
 
 		if (isEnableButtonSupported()) {
 			fEnabledButton = new Button(comp2, SWT.CHECK);
-			fEnabledButton.setText("Set path visible to DLTK");
+			fEnabledButton.setText(InterpretersMessages.AbstractInterpreterLibraryBlock_setPathVisibleToDltk);
 			fEnabledButton.addSelectionListener(this);
 			this.fLibraryViewer
 					.addDoubleClickListener(new IDoubleClickListener() {
@@ -173,7 +173,7 @@ public abstract class AbstractInterpreterLibraryBlock implements
 				InterpretersMessages.InterpreterLibraryBlock_9);
 		fDefaultButton.addSelectionListener(this);
 		if (this.fDialog.isRediscoverSupported()) {
-			fRediscoverButton = createPushButton(pathButtonComp, "Rediscover");
+			fRediscoverButton = createPushButton(pathButtonComp, InterpretersMessages.AbstractInterpreterLibraryBlock_rediscover);
 			fRediscoverButton.addSelectionListener(this);
 		}
 
@@ -213,7 +213,8 @@ public abstract class AbstractInterpreterLibraryBlock implements
 		if (installLocation == null) {
 			libs[0] = new LibraryLocation[0];
 		} else {
-			ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
+			ProgressMonitorDialog dialog = new TimeTriggeredProgressMonitorDialog(
+					null, 1000);
 			try {
 				dialog.run(true, true, new IRunnableWithProgress() {
 
@@ -285,12 +286,12 @@ public abstract class AbstractInterpreterLibraryBlock implements
 		if (fLibraryContentProvider.getLibraries().length == 0) { // &&
 			// !isDefaultSystemLibrary())
 			// {
-			status = new Status(
-					IStatus.ERROR,
-					DLTKDebugUIPlugin.getUniqueIdentifier(),
-					IDLTKDebugUIConstants.INTERNAL_ERROR,
-					InterpretersMessages.InterpreterLibraryBlock_Libraries_cannot_be_empty__1,
-					null);
+			// status = new Status(
+			// IStatus.ERROR,
+			// DLTKDebugUIPlugin.getUniqueIdentifier(),
+			// IDLTKDebugUIConstants.INTERNAL_ERROR,
+			// InterpretersMessages.InterpreterLibraryBlock_Libraries_cannot_be_empty__1,
+			// null);
 		}
 		LibraryStandin[] standins = fLibraryContentProvider.getStandins();
 		for (int i = 0; i < standins.length; i++) {
@@ -486,7 +487,8 @@ public abstract class AbstractInterpreterLibraryBlock implements
 			// fLibraryContentProvider.setLibraries(ScriptRuntime
 			// .getLibraryLocations(getInterpreterInstall(), null));
 			final LibraryLocation[][] libs = new LibraryLocation[][] { null };
-			ProgressMonitorDialog dialog = new ProgressMonitorDialog(null);
+			ProgressMonitorDialog dialog = new TimeTriggeredProgressMonitorDialog(
+					null, 3000);
 			try {
 				dialog.run(true, true, new IRunnableWithProgress() {
 
@@ -499,9 +501,13 @@ public abstract class AbstractInterpreterLibraryBlock implements
 
 				});
 			} catch (InvocationTargetException e) {
-				e.printStackTrace();
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
 			}
 			fLibraryContentProvider.setLibraries(libs[0]);
 
@@ -562,53 +568,55 @@ public abstract class AbstractInterpreterLibraryBlock implements
 	 */
 	public void reDiscover(EnvironmentVariable[] environmentVariables,
 			EnvironmentVariable[] oldVars) {
-//		if (oldVars == null) {
-//			if (this.fInterpreterInstall != null) {
-//				oldVars = this.fInterpreterInstall.getEnvironmentVariables();
-//			}
-//			// if( oldVars != null && oldVars.length == 0 ) {
-//			// restoreDefaultLibraries();
-//			// return;
-//			// }
-//		}
-//		if (oldVars == null) {
-//			if (this.fInterpreterInstall == null) {
-//				restoreDefaultLibraries();
-//			}
-//			return;
-//		}
-//		// Skip re discover if variables are same.
-//		if (equals(environmentVariables, oldVars)) {
-//			return;
-//		}
-//		LibraryLocation[] currentLibraries = this.fLibraryContentProvider
-//				.getLibraries();
-//
-//		LibraryLocation[] oldLibs = getLibrariesWithEnvironment(oldVars);
-//		LibraryLocation[] newLibs = getLibrariesWithEnvironment(environmentVariables);
-//		// If current are equal to old, we could easy set new libs.
-//		if (equals(currentLibraries, oldLibs)) {
-//			if (newLibs != null)
-//				fLibraryContentProvider.setLibraries(newLibs);
-//		} else { // We need to build delta.
-//			Set delta = new HashSet();
-//			delta.addAll(Arrays.asList(currentLibraries));
-//			delta.removeAll(Arrays.asList(oldLibs));
-//
-//			List newList = new ArrayList();
-//			newList.addAll(Arrays.asList(newLibs));
-//			for (Iterator iterator = delta.iterator(); iterator.hasNext();) {
-//				LibraryLocation lib = (LibraryLocation) iterator.next();
-//				if (!newList.contains(lib)) {
-//					newList.add(lib);
-//				}
-//			}
-//
-//			LibraryLocation[] aNew = (LibraryLocation[]) newList
-//					.toArray(new LibraryLocation[delta.size()]);
-//			fLibraryContentProvider.setLibraries(aNew);
-//		}
-		fLibraryContentProvider.initialize(getHomeDirectory(), fDialog.getEnvironmentVariables(), false);
+		// if (oldVars == null) {
+		// if (this.fInterpreterInstall != null) {
+		// oldVars = this.fInterpreterInstall.getEnvironmentVariables();
+		// }
+		// // if( oldVars != null && oldVars.length == 0 ) {
+		// // restoreDefaultLibraries();
+		// // return;
+		// // }
+		// }
+		// if (oldVars == null) {
+		// if (this.fInterpreterInstall == null) {
+		// restoreDefaultLibraries();
+		// }
+		// return;
+		// }
+		// // Skip re discover if variables are same.
+		// if (equals(environmentVariables, oldVars)) {
+		// return;
+		// }
+		// LibraryLocation[] currentLibraries = this.fLibraryContentProvider
+		// .getLibraries();
+		//
+		// LibraryLocation[] oldLibs = getLibrariesWithEnvironment(oldVars);
+		// LibraryLocation[] newLibs =
+		// getLibrariesWithEnvironment(environmentVariables);
+		// // If current are equal to old, we could easy set new libs.
+		// if (equals(currentLibraries, oldLibs)) {
+		// if (newLibs != null)
+		// fLibraryContentProvider.setLibraries(newLibs);
+		// } else { // We need to build delta.
+		// Set delta = new HashSet();
+		// delta.addAll(Arrays.asList(currentLibraries));
+		// delta.removeAll(Arrays.asList(oldLibs));
+		//
+		// List newList = new ArrayList();
+		// newList.addAll(Arrays.asList(newLibs));
+		// for (Iterator iterator = delta.iterator(); iterator.hasNext();) {
+		// LibraryLocation lib = (LibraryLocation) iterator.next();
+		// if (!newList.contains(lib)) {
+		// newList.add(lib);
+		// }
+		// }
+		//
+		// LibraryLocation[] aNew = (LibraryLocation[]) newList
+		// .toArray(new LibraryLocation[delta.size()]);
+		// fLibraryContentProvider.setLibraries(aNew);
+		// }
+		fLibraryContentProvider.initialize(getHomeDirectory(), fDialog
+				.getEnvironmentVariables(), false);
 		update();
 	}
 

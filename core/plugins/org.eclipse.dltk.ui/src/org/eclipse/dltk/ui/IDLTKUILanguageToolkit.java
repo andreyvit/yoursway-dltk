@@ -41,4 +41,6 @@ public interface IDLTKUILanguageToolkit {
 	String getInterpreterPreferencePage();
 	
 	String getDebugPreferencePage();
+	
+	String[] getEditorPreferencePages();
 }

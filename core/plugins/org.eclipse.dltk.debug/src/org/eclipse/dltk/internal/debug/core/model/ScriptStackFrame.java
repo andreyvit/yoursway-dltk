@@ -12,10 +12,14 @@ package org.eclipse.dltk.internal.debug.core.model;
 import java.net.URI;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import org.eclipse.core.runtime.Preferences;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IRegisterGroup;
@@ -28,7 +32,6 @@ import org.eclipse.dltk.dbgp.commands.IDbgpContextCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpDebuggingEngineException;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
-import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
 import org.eclipse.dltk.debug.core.model.IScriptStack;
 import org.eclipse.dltk.debug.core.model.IScriptStackFrame;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
@@ -37,7 +40,7 @@ import org.eclipse.dltk.debug.core.model.IScriptVariable;
 public class ScriptStackFrame extends ScriptDebugElement implements
 		IScriptStackFrame {
 
-	private static final String STACK_FRAME_LABEL = "Stack frame #{0}";
+	private static final String STACK_FRAME_LABEL = Messages.ScriptStackFrame_stackFrame;
 
 	private IScriptStack stack;
 
@@ -57,9 +60,30 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 
 			IScriptVariable[] variables = new IScriptVariable[properties.length];
 
+			// Workaround for bug 215215 https://bugs.eclipse.org/bugs/show_bug.cgi?id=215215
+			// Remove this code when Tcl active state debugger fixed
+			Set useFullName = new HashSet();
+			Set alreadyExsisting = new HashSet();
 			for (int i = 0; i < properties.length; ++i) {
-				variables[i] = new ScriptVariable(parentFrame, properties[i]);
+				IDbgpProperty property = properties[i];
+				String name = property.getName();
+				if (alreadyExsisting.contains(name)) {
+					useFullName.add(name);
+				} else {
+					alreadyExsisting.add(name);
+				}
 			}
+
+			for (int i = 0; i < properties.length; ++i) {
+				IDbgpProperty property = properties[i];
+				String name = property.getName();
+				if (useFullName.contains(name)) {
+					name = property.getEvalName();
+				}
+				variables[i] = new ScriptVariable(parentFrame, property, name);
+			}
+
+	        Arrays.sort(variables, new VariableNameComparator());
 
 			return variables;
 		} catch (DbgpDebuggingEngineException e) {
@@ -83,14 +107,10 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 		final Integer classId = new Integer(
 				IDbgpContextCommands.CLASS_CONTEXT_ID);
 
-		Preferences prefs = DLTKDebugPlugin.getDefault().getPluginPreferences();
-		boolean showLocal = prefs
-				.getBoolean(DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_LOCAL);
-		boolean showGlobal = prefs
-				.getBoolean(DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL);
-		boolean showClass = prefs
-				.getBoolean(DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS);
-
+		boolean showGlobal = thread.retrieveGlobalVariables();
+		boolean showClass = thread.retrieveClassVariables();
+		boolean showLocal = thread.retrieveLocalVariables();
+		
 		ScriptVariableContainer all = new ScriptVariableContainer();
 
 		if (showLocal && names.containsKey(localId)) {
@@ -98,12 +118,15 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 		}
 
 		if (showGlobal && names.containsKey(globalId)) {
-			all.add(readVariables(this, globalId.intValue(), commands));
+			all.add(new ScriptVariableWrapper(getDebugTarget(),
+					Messages.ScriptStackFrame_globalVariables, readVariables(this,
+							globalId.intValue(), commands)));
 		}
 
 		if (showClass && names.containsKey(classId)) {
-			all.add(new ScriptVariableWrapper(getDebugTarget(), "SELF",
-					readVariables(this, classId.intValue(), commands)));
+			all.add(new ScriptVariableWrapper(getDebugTarget(),
+					Messages.ScriptStackFrame_classVariables, readVariables(this, classId.intValue(),
+							commands)));
 		}
 
 		return all.get();
@@ -128,16 +151,15 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 		}
 	}
 
-	public ScriptStackFrame(IScriptStack stack, IDbgpStackLevel stackLevel)
-			throws DbgpException {
+	public ScriptStackFrame(IScriptStack stack, IDbgpStackLevel stackLevel) {
 		this.stack = stack;
 		this.thread = stack.getThread();
 		this.level = stackLevel;
 		updateVariables();
 	}
 
-	public void updateVariables() throws DbgpException {
-		this.variables = readAllVariables();
+	public void updateVariables() {
+		this.variables = null;
 	}
 
 	public IScriptStack getStack() {
@@ -167,7 +189,7 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 			name = toString();
 		}
 
-		name += " (" + level.getFileURI().getPath() + ")";
+		name += " (" + level.getFileURI().getPath() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 
 		return name;
 	}
@@ -185,14 +207,26 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	}
 
 	public boolean hasVariables() throws DebugException {
-		if (variables == null) {
-			return false;
-		}
-
+		checkVariablesAvailable();
 		return variables.length > 0;
 	}
 
+	private synchronized void checkVariablesAvailable() throws DebugException {
+		if (variables == null) {
+			try {
+				variables = readAllVariables();
+			} catch (DbgpException e) {
+				variables = new IScriptVariable[0];
+				Status status = new Status(IStatus.ERROR,
+						DLTKDebugPlugin.PLUGIN_ID, Messages.ScriptStackFrame_unableToLoadVariables,
+						e);
+				throw new DebugException(status);
+			}
+		}
+	}
+
 	public IVariable[] getVariables() throws DebugException {
+		checkVariablesAvailable();
 		return (IVariable[]) variables.clone();
 	}
 
@@ -265,6 +299,7 @@ public class ScriptStackFrame extends ScriptDebugElement implements
 	}
 
 	public IScriptVariable findVariable(String varName) throws DebugException {
+		checkVariablesAvailable();
 		for (int i = 0; i < variables.length; i++) {
 			if (variables[i].getName().equals(varName)) {
 				return variables[i];

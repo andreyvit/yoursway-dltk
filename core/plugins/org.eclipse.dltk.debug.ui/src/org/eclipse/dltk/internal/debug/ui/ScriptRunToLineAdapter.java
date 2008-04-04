@@ -60,7 +60,7 @@ public class ScriptRunToLineAdapter implements IRunToLineTarget {
 		if (selection instanceof ITextSelection) {
 			final ITextSelection textSelection = (ITextSelection) selection;
 			final IResource resource = getPartResource(part);
-			final URI uri = ScriptLineBreakpoint.makeUri(resource);
+			final URI uri = ScriptLineBreakpoint.makeUri(resource.getLocation());
 			int humanLineNumber = textSelection.getStartLine() + 1; // one based
 
 			if (target instanceof IDebugElement) {

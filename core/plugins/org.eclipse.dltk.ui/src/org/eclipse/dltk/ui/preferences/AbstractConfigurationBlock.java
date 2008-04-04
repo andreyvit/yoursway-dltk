@@ -67,12 +67,12 @@ public abstract class AbstractConfigurationBlock implements
 			File file = path.toFile();
 
 			String error = null;
-			if ("".equals(newText)) {
-				error = "Empty path"; //ScriptDebugPreferencesMessages.EmptyPath;
+			if ("".equals(newText)) { //$NON-NLS-1$
+				error = PreferencesMessages.AbstractConfigurationBlock_emptyPath;
 			} else if (!file.exists()) {
-				error = "File not exists"; //ScriptDebugPreferencesMessages.FileDoesNotExist;
+				error = PreferencesMessages.AbstractConfigurationBlock_fileDoesntExist;
 			} else if (!file.isFile()) {
-				error = "Not a file"; //  ScriptDebugPreferencesMessages.InvalidFileType;
+				error = PreferencesMessages.AbstractConfigurationBlock_pathIsntAFile;
 			}
 			return error;
 		}
@@ -419,7 +419,7 @@ public abstract class AbstractConfigurationBlock implements
 		if (values == null || items == null || label == null
 				|| items.length != values.length)
 			throw new IllegalArgumentException(
-					"values == null || items == null || label == null");
+					PreferencesMessages.AbstractConfigurationBlock_valuesItemsAndLabelMustNotBeNull);
 
 		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 
@@ -551,7 +551,7 @@ public abstract class AbstractConfigurationBlock implements
 		initializeFields();
 	}
 
-	private void initializeFields() {
+	protected void initializeFields() {
 
 		Iterator iter = fCheckBoxes.keySet().iterator();
 		while (iter.hasNext()) {

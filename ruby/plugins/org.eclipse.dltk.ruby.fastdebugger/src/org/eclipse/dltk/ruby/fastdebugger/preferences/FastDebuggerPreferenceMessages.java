@@ -8,15 +8,8 @@ public class FastDebuggerPreferenceMessages {
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, FastDebuggerPreferenceMessages.class);
 	}
-	
+
 	public static String PreferencesDescription;
-	
-	public static String LoggingGroupLabel;
-	public static String EnableLoggingLabel;
-	public static String LogNameLabel;
-	public static String LogNameFormatLabel;
-	public static String LogFolderLabel;
-	public static String BrowseButton;
-	
 	public static String LinkToRubyDebugPreferences;
+	public static String FastDebuggerConfigurationBlock_rubyDebugGemMustBeInstalled;
 }

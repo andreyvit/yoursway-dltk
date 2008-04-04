@@ -1,7 +1,7 @@
 def foo
-	puts "Ruby is cool"π
+	puts "Ruby is cool"#n#
 	puts "Java is cool too"
-§§
+###
 def foo
 	puts "Ruby is cool"
 	

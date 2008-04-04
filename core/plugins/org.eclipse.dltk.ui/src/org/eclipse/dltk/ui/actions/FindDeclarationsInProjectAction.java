@@ -60,7 +60,7 @@ public abstract class FindDeclarationsInProjectAction extends FindDeclarationsAc
 		setImageDescriptor(DLTKPluginImages.DESC_OBJS_SEARCH_DECL);
 //		PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IJavaHelpContextIds.FIND_DECLARATIONS_IN_PROJECT_ACTION);
 		if (DLTKCore.DEBUG) {
-			System.out.println("TODO: Add help support here...");
+			System.out.println("TODO: Add help support here..."); //$NON-NLS-1$
 		}
 	}
 	

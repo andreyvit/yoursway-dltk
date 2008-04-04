@@ -14,6 +14,8 @@ import org.eclipse.osgi.util.NLS;
 public class ValidatorMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.dltk.validators.internal.ui.ValidatorMessages";//$NON-NLS-1$
 	public static String addValidatorDialog_ValidatorEnvironmentName;
+	public static String ValidatorBlock_all;
+	public static String ValidatorBlock_unknown;
 	public static String ValidatorPreferencePage_1;
 	public static String ValidatorPreferencePage_2;
 	public static String InstalledValidatorBlock_15;

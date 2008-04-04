@@ -1,7 +1,7 @@
-class Fooπ
+class Foo#n#
 def xxx
 end
-§§
+###
 class Foo
 	
 def xxx

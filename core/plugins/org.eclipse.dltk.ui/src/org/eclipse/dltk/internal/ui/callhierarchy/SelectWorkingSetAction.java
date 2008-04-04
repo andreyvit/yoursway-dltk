@@ -28,7 +28,7 @@ class SelectWorkingSetAction extends Action {
 		setToolTipText(CallHierarchyMessages.SearchScopeActionGroup_workingset_select_tooltip); 
 //		PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IJavaHelpContextIds.CALL_HIERARCHY_SEARCH_SCOPE_ACTION);
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support here...");
+			System.err.println("Add help support here..."); //$NON-NLS-1$
 		}		
 	}
 	/*

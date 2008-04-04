@@ -10,12 +10,11 @@
 package org.eclipse.dltk.internal.debug.core.model.operations;
 
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
-import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
-import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
+import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
 import org.eclipse.dltk.debug.core.model.IScriptThread;
 
 public class DbgpResumeOperation extends DbgpOperation {
-	private static final String JOB_NAME = "Resume operation";
+	private static final String JOB_NAME = Messages.DbgpResumeOperation_resumeOperation;
 
 	private boolean first = true;
 	boolean breakOnFirstLine = false;
@@ -23,9 +22,8 @@ public class DbgpResumeOperation extends DbgpOperation {
 	public DbgpResumeOperation(IScriptThread thread, IResultHandler finish) {
 		super(thread, JOB_NAME, finish);
 
-		breakOnFirstLine = DLTKDebugPlugin.getDefault().getPluginPreferences()
-				.getBoolean(
-						DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
+		breakOnFirstLine = ((IScriptDebugTarget) thread.getDebugTarget())
+				.breakOnFirstLineEnabled();
 	}
 
 	protected void process() throws DbgpException {
@@ -35,6 +33,6 @@ public class DbgpResumeOperation extends DbgpOperation {
 			callFinish(getCore().run());
 		}
 
-		first = false;	
+		first = false;
 	}
 }

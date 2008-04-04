@@ -23,8 +23,6 @@ public class DbgpProperty implements IDbgpProperty {
 
 	private final boolean constant;
 
-	private final int size;
-
 	private final int childrenCount;
 
 	private final IDbgpProperty[] availableChildren;
@@ -33,19 +31,25 @@ public class DbgpProperty implements IDbgpProperty {
 
 	private final String key;
 
+	private int page;
+
+	private int pageSize;
+
 	public DbgpProperty(String name, String fullName, String type,
-			String value, int size, int childrenCount, boolean hasChildren,
-			boolean constant, String key, IDbgpProperty[] availableChildren) {
+			String value, int childrenCount, boolean hasChildren,
+			boolean constant, String key, IDbgpProperty[] availableChildren,
+			int page, int pageSize) {
 		this.name = name;
 		this.fullName = fullName;
 		this.type = type;
 		this.value = value;
-		this.size = size;
 		this.childrenCount = childrenCount;
 		this.availableChildren = availableChildren;
 		this.hasChildren = hasChildren;
 		this.constant = constant;
 		this.key = key;
+		this.page = page;
+		this.pageSize = pageSize;
 	}
 
 	public String getEvalName() {
@@ -62,10 +66,6 @@ public class DbgpProperty implements IDbgpProperty {
 
 	public String getValue() {
 		return value;
-	}
-
-	public int getSize() {
-		return size;
 	}
 
 	public boolean hasChildren() {
@@ -85,11 +85,19 @@ public class DbgpProperty implements IDbgpProperty {
 	}
 
 	public String toString() {
-		return "DbgpProperty (Name: " + name + "; Full name: " + fullName
-				+ "; Type: " + type + "; Value: " + value + ")";
+		return "DbgpProperty (Name: " + name + "; Full name: " + fullName //$NON-NLS-1$ //$NON-NLS-2$
+				+ "; Type: " + type + "; Value: " + value + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	public String getKey() {
 		return key;
+	}
+
+	public int getPage() {
+		return page;
+	}
+
+	public int getPageSize() {
+		return pageSize;
 	}
 }

@@ -357,7 +357,7 @@ public class ScannerHelper {
 			return (ScannerHelper.OBVIOUS_IDENT_CHAR_NATURES[c] & ScannerHelper.C_DIGIT) != 0;
 		}
 		if (Character.isDigit(c)) {
-			throw new InvalidInputException("Invalid_Digit");
+			throw new InvalidInputException("Invalid_Digit"); //$NON-NLS-1$
 		}
 		return false;
 	}

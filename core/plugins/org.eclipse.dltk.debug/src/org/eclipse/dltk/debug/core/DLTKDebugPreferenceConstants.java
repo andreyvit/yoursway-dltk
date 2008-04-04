@@ -13,30 +13,30 @@ public class DLTKDebugPreferenceConstants {
 	public static final int DBGP_DEFAULT_PORT = 9000;
 	public static final int DBGP_AVAILABLE_PORT = -1;
 
-	public static final String PREF_DBGP_BREAK_ON_FIRST_LINE = "dbgp_break_on_first_line";
+	public static final String PREF_DBGP_BREAK_ON_FIRST_LINE = "dbgp_break_on_first_line"; //$NON-NLS-1$
 
-	public static final String PREF_DBGP_ENABLE_LOGGING = "dbgp_enable_logging";
+	public static final String PREF_DBGP_ENABLE_LOGGING = "dbgp_enable_logging"; //$NON-NLS-1$
 
 	// Communication
-	public static final String PREF_DBGP_PORT = "dbgp_port";
+	public static final String PREF_DBGP_PORT = "dbgp_port"; //$NON-NLS-1$
 
 	// Time to wait of connection debugging engine to the IDE
-	public static final String PREF_DBGP_CONNECTION_TIMEOUT = "dbgp_connection_timeout";
+	public static final String PREF_DBGP_CONNECTION_TIMEOUT = "dbgp_connection_timeout"; //$NON-NLS-1$
 
 	// Time to wait after sending dbgp request to the debugging engine
-	public static final String PREF_DBGP_RESPONSE_TIMEOUT = "dbgp_response_timeout";
+	public static final String PREF_DBGP_RESPONSE_TIMEOUT = "dbgp_response_timeout"; //$NON-NLS-1$
 	
 	
 	
 	
-	public static final String PREF_DBGP_SHOW_SCOPE_PREFIX = "dbgp_show_scope_";
+	public static final String PREF_DBGP_SHOW_SCOPE_PREFIX = "dbgp_show_scope_"; //$NON-NLS-1$
 
 	public static final String PREF_DBGP_SHOW_SCOPE_LOCAL = PREF_DBGP_SHOW_SCOPE_PREFIX
-			+ "local";
+			+ "local"; //$NON-NLS-1$
 
 	public static final String PREF_DBGP_SHOW_SCOPE_GLOBAL = PREF_DBGP_SHOW_SCOPE_PREFIX
-			+ "global";
+			+ "global"; //$NON-NLS-1$
 
 	public static final String PREF_DBGP_SHOW_SCOPE_CLASS = PREF_DBGP_SHOW_SCOPE_PREFIX
-			+ "class";
+			+ "class"; //$NON-NLS-1$
 }

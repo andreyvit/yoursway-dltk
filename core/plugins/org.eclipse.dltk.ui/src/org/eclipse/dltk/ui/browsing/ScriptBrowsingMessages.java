@@ -31,6 +31,7 @@ public final class ScriptBrowsingMessages extends NLS {
 	public static String PackagesView_flatLayoutAction_label;
 	public static String PackagesView_HierarchicalLayoutAction_label;
 	public static String PackagesView_LayoutActionGroup_layout_label;
+	public static String ScriptBrowsingPart_natureAttributeMustBeSpecifiedAndCorrect;
 	public static String StatusBar_concat;
 
 	static {

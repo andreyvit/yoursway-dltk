@@ -16,7 +16,6 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
-import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.model.IBreakpoint;
@@ -30,8 +29,8 @@ import org.eclipse.dltk.dbgp.commands.IDbgpExtendedCommands;
 import org.eclipse.dltk.dbgp.exceptions.DbgpException;
 import org.eclipse.dltk.dbgp.internal.IDbgpTerminationListener;
 import org.eclipse.dltk.debug.core.DLTKDebugPlugin;
-import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
 import org.eclipse.dltk.debug.core.ExtendedDebugEventDetails;
+import org.eclipse.dltk.debug.core.IHotCodeReplaceListener;
 import org.eclipse.dltk.debug.core.ISmartStepEvaluator;
 import org.eclipse.dltk.debug.core.eval.IScriptEvaluationEngine;
 import org.eclipse.dltk.debug.core.model.IScriptDebugTarget;
@@ -42,7 +41,7 @@ import org.eclipse.dltk.internal.debug.core.model.operations.DbgpDebugger;
 
 public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		IThreadManagement, IDbgpTerminationListener,
-		ScriptThreadStateManager.IStateChangeHandler {
+		ScriptThreadStateManager.IStateChangeHandler, IHotCodeReplaceListener {
 
 	private ScriptThreadStateManager stateManager;
 
@@ -64,6 +63,8 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 	private boolean terminated = false;
 
+	private int propertyPageSize = 32;
+
 	// ScriptThreadStateManager.IStateChangeHandler
 	public void handleSuspend(int detail) {
 		DebugEventHelper.fireExtendedEvent(this,
@@ -75,6 +76,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 			return;
 		}
 
+		DebugEventHelper.fireChangeEvent(this);
 		DebugEventHelper.fireSuspendEvent(this, detail);
 	}
 
@@ -123,16 +125,16 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 			if (proxy != null) {
 				OutputStream stdout = proxy.getStderr();
 				try {
-					String message = "\n" + e.getMessage() + "\n";
+					String message = "\n" + e.getMessage() + "\n"; //$NON-NLS-1$ //$NON-NLS-2$
 					stdout.write(message.getBytes());
 					stack.update();
 					IStackFrame[] frames = stack.getFrames();
-					stdout.write("\nStack trace:\n".getBytes());
+					stdout.write("\nStack trace:\n".getBytes()); //$NON-NLS-1$
 					for (int i = 0; i < frames.length; i++) {
 						IScriptStackFrame frame = (IScriptStackFrame) frames[i];
-						String line = "\t#" + frame.getLevel() + " file:"
-								+ frame.getSourceURI().getPath() + " line:"
-								+ frame.getLineNumber() + "\n";
+						String line = "\t#" + frame.getLevel() + " file:" //$NON-NLS-1$ //$NON-NLS-2$
+								+ frame.getSourceURI().getPath() + " [" //$NON-NLS-1$
+								+ frame.getLineNumber() + "]\n"; //$NON-NLS-1$
 						stdout.write(line.getBytes());
 					}
 				} catch (IOException e1) {
@@ -170,32 +172,13 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 
 		this.stack = new ScriptStack(this);
 
-		this.propertyListener = new IPropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent event) {
-				if (event
-						.getProperty()
-						.equals(
-								DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_GLOBAL)
-						|| event
-								.getProperty()
-								.equals(
-										DLTKDebugPreferenceConstants.PREF_DBGP_SHOW_SCOPE_CLASS)) {
-					stack.updateFrames();
-					DebugEventHelper.fireChangeEvent(ScriptThread.this
-							.getDebugTarget());
-				}
-			}
-		};
-		Preferences prefs = DLTKDebugPlugin.getDefault().getPluginPreferences();
-		prefs.addPropertyChangeListener(propertyListener);
-
 		final DbgpDebugger engine = this.stateManager.getEngine();
 
 		if (DLTKCore.DEBUG) {
 			DbgpDebugger.printEngineInfo(engine);
 		}
 
-		engine.setMaxChildren(256);
+		engine.setMaxChildren(propertyPageSize);
 		engine.setMaxDepth(2);
 		engine.setMaxData(8192);
 
@@ -208,6 +191,7 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 		engine.redirectStdout();
 		engine.redirectStderr();
 
+		HotCodeReplaceManager.getDefault().addHotCodeReplaceListener(this);
 		// final IDbgpExtendedCommands extended = session.getExtendedCommands();
 		// session.getNotificationManager().addNotificationListener(
 		// new IDbgpNotificationListener() {
@@ -372,17 +356,53 @@ public class ScriptThread extends ScriptDebugElement implements IScriptThread,
 	public void objectTerminated(Object object, Exception e) {
 		terminated = true;
 		Assert.isTrue(object == session);
+		HotCodeReplaceManager.getDefault().removeHotCodeReplaceListener(this);
 		manager.terminateThread(this);
-		Preferences prefs = DLTKDebugPlugin.getDefault().getPluginPreferences();
-		prefs.removePropertyChangeListener(propertyListener);
 	}
 
 	// Object
 	public String toString() {
-		return "Thread (" + session.getInfo().getThreadId() + ")";
+		return "Thread (" + session.getInfo().getThreadId() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void notifyModified() {
 		stateManager.notifyModified();
 	}
+
+	public void hotCodeReplaceFailed(IScriptDebugTarget target,
+			DebugException exception) {
+		if (isSuspended()) {
+			stack.updateFrames();
+			DebugEventHelper.fireChangeEvent(this);
+		}
+	}
+
+	public void hotCodeReplaceSucceeded(IScriptDebugTarget target) {
+		if (isSuspended()) {
+			stack.updateFrames();
+			DebugEventHelper.fireChangeEvent(this);
+		}
+	}
+
+	public int getPropertyPageSize() {
+		return propertyPageSize;
+	}
+
+	public boolean retrieveGlobalVariables() {
+		return target.retrieveGlobalVariables();
+	}
+
+	public boolean retrieveClassVariables() {
+		return target.retrieveClassVariables();
+	}
+
+	public boolean retrieveLocalVariables() {
+		return target.retrieveLocalVariables();
+	}
+
+	public void updateStackFrames() {
+		stack.updateFrames();
+		DebugEventHelper.fireChangeEvent(ScriptThread.this.getDebugTarget());
+	}
+
 }

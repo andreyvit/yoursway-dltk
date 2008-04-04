@@ -33,7 +33,7 @@ public class IfStatement extends Statement {
 	/**
 	 * Else statement of if. Can be null, or possible EmptyStatement..
 	 */
-	private Statement fElseStatement;
+	private ASTNode fElseStatement;
 
 	public IfStatement(int start, int end ) {
 		super(start, end);
@@ -85,7 +85,7 @@ public class IfStatement extends Statement {
 	 *
 	 * @param elseStatement
 	 */
-	public void acceptElse(Statement elseStatement) {
+	public void acceptElse(ASTNode elseStatement) {
 		this.fElseStatement = elseStatement;
 		if (this.fElseStatement != null) {
 			this.setEnd(this.fElseStatement.sourceEnd());
@@ -104,7 +104,7 @@ public class IfStatement extends Statement {
 	 *
 	 * @return - else statement. Be aware can be null.
 	 */
-	public Statement getElse() {
+	public ASTNode getElse() {
 		return this.fElseStatement;
 	}
 

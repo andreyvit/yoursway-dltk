@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- 
+
  *******************************************************************************/
 package org.eclipse.dltk.internal.core;
 
@@ -21,8 +21,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.dltk.core.DLTKCore;
-import org.eclipse.dltk.core.IBuildpathContainer;
 import org.eclipse.dltk.core.IBuildpathEntry;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IModelStatusConstants;
@@ -67,39 +65,41 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 	}
 
 	public IResource getResource() {
-		return (IResource) resource;
+		return (IResource) this.resource;
 	}
 
 	public IPath getPath() {
-		return getResource().getFullPath();
+		return this.getResource().getFullPath();
 	}
 
 	public int getKind() throws ModelException {
-		Object elementInfo = getElementInfo();
+		Object elementInfo = this.getElementInfo();
 		return ((ProjectFragmentInfo) elementInfo).getRootKind();
 	}
 
 	/**
 	 * Compares two objects for equality; for <code>ProjectFragments</code>s,
 	 * equality is having the same parent, same resources, and occurrence count.
-	 * 
+	 *
 	 */
 	public boolean equals(Object o) {
-		if (this == o)
+		if (this == o) {
 			return true;
-		if (!(o instanceof ProjectFragment))
+		}
+		if (!(o instanceof ProjectFragment)) {
 			return false;
+		}
 		ProjectFragment other = (ProjectFragment) o;
 		if (this.resource == null && other.resource != null) {
 			return false;
-		} 
+		}
 		if (this.resource != null && other.resource == null) {
 			return false;
 		}
 		if( this.resource != null && other.resource != null && !this.resource.equals(other.resource) ) {
 			return false;
 		}
-		
+
 		return this.parent.equals(other.parent);
 	}
 
@@ -110,13 +110,15 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 	protected boolean buildStructure(OpenableElementInfo info, IProgressMonitor pm, Map newElements, IResource underlyingResource)
 			throws ModelException {
 		// check whether this project fragment can be opened
-		IStatus status = validateOnBuildpath();
-		if (!status.isOK())
-			throw newModelException(status);
-		if (!resourceExists())
-			throw newNotPresentException();
+		IStatus status = this.validateOnBuildpath();
+		if (!status.isOK()) {
+			throw this.newModelException(status);
+		}
+		if (!this.resourceExists()) {
+			throw this.newNotPresentException();
+		}
 		// TODO determine fragment kind
-		return computeChildren(info, newElements);
+		return this.computeChildren(info, newElements);
 	}
 
 	/*
@@ -127,7 +129,7 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 		IPath path = this.getPath();
 		try {
 			// check project fragment on buildpath of its project
-			ScriptProject project = (ScriptProject) getScriptProject();
+			ScriptProject project = (ScriptProject) this.getScriptProject();
 			IBuildpathEntry[] buildpath = project.getResolvedBuildpath();
 			for (int i = 0, length = buildpath.length; i < length; i++) {
 				IBuildpathEntry entry = buildpath[i];
@@ -144,7 +146,7 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 
 	/**
 	 * Compute the project fragment children of this project fragment.
-	 * 
+	 *
 	 * @exception ModelException
 	 *                The resource associated with this project fragment does
 	 *                not exist
@@ -157,13 +159,13 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 			// the underlying resource may be a folder or a project (in the case
 			// that the project folder
 			// is actually the package fragment root)
-			IResource underlyingResource = getResource();
+			IResource underlyingResource = this.getResource();
 			if (underlyingResource.getType() == IResource.FOLDER || underlyingResource.getType() == IResource.PROJECT) {
 				ArrayList vChildren = new ArrayList(5);
 				IContainer rootFolder = (IContainer) underlyingResource;
-				char[][] inclusionPatterns = fullInclusionPatternChars();
-				char[][] exclusionPatterns = fullExclusionPatternChars();
-				computeFolderChildren(rootFolder, !Util.isExcluded(rootFolder, inclusionPatterns, exclusionPatterns), Path.EMPTY,
+				char[][] inclusionPatterns = this.fullInclusionPatternChars();
+				char[][] exclusionPatterns = this.fullExclusionPatternChars();
+				this.computeFolderChildren(rootFolder, !Util.isExcluded(rootFolder, inclusionPatterns, exclusionPatterns), Path.EMPTY,
 						vChildren, inclusionPatterns, exclusionPatterns);
 				IModelElement[] children = new IModelElement[vChildren.size()];
 				vChildren.toArray(children);
@@ -180,7 +182,7 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 	/**
 	 * Starting at this folder, create folders and add them to the collection of
 	 * children.
-	 * 
+	 *
 	 * @exception ModelException
 	 *                The resource associated with this project fragment does
 	 *                not exist
@@ -188,11 +190,11 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 	protected void computeFolderChildren(IContainer folder, boolean isIncluded, IPath path, ArrayList vChildren,
 			char[][] inclusionPatterns, char[][] exclusionPatterns) throws ModelException {
 		if (isIncluded) {
-			IScriptFolder pkg = getScriptFolder(path);
+			IScriptFolder pkg = this.getScriptFolder(path);
 			vChildren.add(pkg);
 		}
 		try {
-			ScriptProject scriptProject = (ScriptProject) getScriptProject();
+			ScriptProject scriptProject = (ScriptProject) this.getScriptProject();
 			ModelManager manager = ModelManager.getModelManager();
 			IResource[] members = folder.members();
 			boolean hasIncluded = isIncluded;
@@ -206,7 +208,7 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 							if (scriptProject.contains(member)) {
 								IPath newPath = path.append(manager.intern(memberName));
 								boolean isMemberIncluded = !Util.isExcluded(member, inclusionPatterns, exclusionPatterns);
-								computeFolderChildren((IFolder) member, isMemberIncluded, newPath, vChildren, inclusionPatterns,
+								this.computeFolderChildren((IFolder) member, isMemberIncluded, newPath, vChildren, inclusionPatterns,
 										exclusionPatterns);
 							}
 						}
@@ -218,7 +220,7 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 						if (!hasIncluded && Util.isValidSourceModule(this, member)
 								&& !Util.isExcluded(member, inclusionPatterns, exclusionPatterns)) {
 							hasIncluded = true;
-							IScriptFolder pkg = getScriptFolder(path);
+							IScriptFolder pkg = this.getScriptFolder(path);
 							vChildren.add(pkg);
 						}
 						break;
@@ -245,13 +247,14 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 	}
 
 	public String getElementName() {
-		if (this.resource instanceof IFolder)
+		if (this.resource instanceof IFolder) {
 			return ((IFolder) this.resource).getName();
+		}
 		return super.getElementName();
 	}
 
 	public boolean exists() {
-		return super.exists() && validateOnBuildpath().isOK();
+		return super.exists() && this.validateOnBuildpath().isOK();
 	}
 
 	public boolean isExternal() {
@@ -259,9 +262,10 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 	}
 
 	public IResource getUnderlyingResource() throws ModelException {
-		if (!exists())
-			throw newNotPresentException();
-		return getResource();
+		if (!this.exists()) {
+			throw this.newNotPresentException();
+		}
+		return this.getResource();
 	}
 
 	/**
@@ -269,15 +273,15 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 	 */
 	protected void toStringInfo(int tab, StringBuffer buffer, Object info, boolean showResolvedInfo) {
 		buffer.append(this.tabString(tab));
-		IPath path = getPath();
-		if (getScriptProject().getElementName().equals(path.segment(0))) {
+		IPath path = this.getPath();
+		if (this.getScriptProject().getElementName().equals(path.segment(0))) {
 			if (path.segmentCount() == 1) {
 				buffer.append("<project root>"); //$NON-NLS-1$
 			} else {
 				buffer.append(path.removeFirstSegments(1).makeRelative());
 			}
 		} else {
-			if (isExternal()) {
+			if (this.isExternal()) {
 				buffer.append(path.toOSString());
 			} else {
 				buffer.append(path);
@@ -289,7 +293,7 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 	}
 
 	public void printNode(CorePrinter output) {
-		output.formatPrint("ScriptProject fragment:" + getPath().toOSString());
+		output.formatPrint("ScriptProject fragment:" + this.getPath().toOSString()); //$NON-NLS-1$
 		output.indent();
 		try {
 			IModelElement modelElements[] = this.getChildren();
@@ -298,7 +302,7 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 				if (element instanceof ModelElement) {
 					((ModelElement) element).printNode(output);
 				} else {
-					output.print("Unknown element:" + element);
+					output.print("Unknown element:" + element); //$NON-NLS-1$
 				}
 			}
 		} catch (ModelException ex) {
@@ -310,11 +314,11 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 	public IScriptFolder getScriptFolder(String path) {
 		// tolerate package names with spaces (e.g. 'x . y')
 		// (http://bugs.eclipse.org/bugs/show_bug.cgi?id=21957)
-		return getScriptFolder(new Path(path));
+		return this.getScriptFolder(new Path(path));
 	}
 
 	public Object[] getForeignResources() throws ModelException {
-		return ((ProjectFragmentInfo) getElementInfo()).getForeignResources(getScriptProject(), getResource(), this);
+		return ((ProjectFragmentInfo) this.getElementInfo()).getForeignResources(this.getScriptProject(), this.getResource(), this);
 	}
 
 	/*
@@ -323,9 +327,10 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 	 */
 	public char[][] fullExclusionPatternChars() {
 		try {
-			if (this.isOpen() && this.getKind() != IProjectFragment.K_SOURCE)
+			if (this.isOpen() && this.getKind() != IProjectFragment.K_SOURCE) {
 				return null;
-			BuildpathEntry entry = (BuildpathEntry) getRawBuildpathEntry();
+			}
+			BuildpathEntry entry = (BuildpathEntry) this.getBuildpathEntry();
 			if (entry == null) {
 				return null;
 			} else {
@@ -340,11 +345,13 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 	 * Returns the inclusion patterns from the buildpath entry associated with
 	 * this root.
 	 */
+
 	public char[][] fullInclusionPatternChars() {
 		try {
-			if (this.isOpen() && this.getKind() != IProjectFragment.K_SOURCE)
+			if (this.isOpen() && this.getKind() != IProjectFragment.K_SOURCE) {
 				return null;
-			BuildpathEntry entry = (BuildpathEntry) getRawBuildpathEntry();
+			}
+			BuildpathEntry entry = (BuildpathEntry) this.getBuildpathEntry();
 			if (entry == null) {
 				return null;
 			} else {
@@ -360,24 +367,19 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 	 */
 	public IBuildpathEntry getRawBuildpathEntry() throws ModelException {
 		IBuildpathEntry rawEntry = null;
-		ScriptProject project = (ScriptProject) this.getScriptProject();
-		project.getResolvedBuildpath(true/*ignoreUnresolvedEntry*/, false/*don't generateMarkerOnError*/, false/*don't returnResolutionInProgress*/); // force the reverse rawEntry cache to be populated
-										// be populated
-		Map resolvedPathToRawEntries = project.getPerProjectInfo().resolvedPathToRawEntries;
-		if (resolvedPathToRawEntries != null) {
-			rawEntry = (IBuildpathEntry) resolvedPathToRawEntries.get(this.getPath());
-			//try to guest map from internal element.
-			if( rawEntry != null && rawEntry.getEntryKind() == IBuildpathEntry.BPE_CONTAINER ) {
-				IBuildpathContainer container = DLTKCore.getBuildpathContainer(rawEntry.getPath(), project);
-				IBuildpathEntry entrys[] = container.getBuildpathEntries();
-				for( int i = 0; i < entrys.length; ++i ) {
-					if( entrys[i].getPath().equals(this.getPath())) {
-						return entrys[i];
-					}
-				}
-			}
+		ScriptProject project = (ScriptProject)this.getScriptProject();
+		project.getResolvedBuildpath(); // force the reverse rawEntry cache to be populated
+		Map rootPathToRawEntries = project.getPerProjectInfo().resolvedPathToRawEntries;
+		if (rootPathToRawEntries != null) {
+			rawEntry = (IBuildpathEntry) rootPathToRawEntries.get(this.getPath());
+		}
+		if (rawEntry == null) {
+			throw new ModelException(new ModelStatus(IModelStatusConstants.ELEMENT_NOT_ON_BUILDPATH, this));
 		}
 		return rawEntry;
+	}
+	public IBuildpathEntry getBuildpathEntry() throws ModelException {
+		return this.getRawBuildpathEntry();
 	}
 
 	public IModelElement getHandleFromMemento(String token, MementoTokenizer memento, WorkingCopyOwner owner) {
@@ -397,7 +399,7 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 					pkgName = IScriptFolder.DEFAULT_FOLDER_NAME;
 					token = null;
 				}
-				ModelElement pkg = (ModelElement) getScriptFolder(pkgName);
+				ModelElement pkg = (ModelElement) this.getScriptFolder(pkgName);
 				if (token == null) {
 					return pkg.getHandleFromMemento(memento, owner);
 				} else {
@@ -417,7 +419,7 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 	public IScriptFolder createScriptFolder(String pkgName, boolean force, IProgressMonitor monitor) throws ModelException {
 		CreateScriptFolderOperation op = new CreateScriptFolderOperation(this, pkgName, force);
 		op.runOperation(monitor);
-		return getScriptFolder(op.pkgName);
+		return this.getScriptFolder(op.pkgName);
 	}
 
 	public void delete(int updateResourceFlags, int updateModelFlags, IProgressMonitor monitor) throws ModelException {
@@ -445,6 +447,6 @@ public class ProjectFragment extends Openable implements IProjectFragment {
 		for( int i = 1; i < pkgName.length; ++i ) {
 			path = path.append(pkgName[i]);
 		}
-		return getScriptFolder(path);
+		return this.getScriptFolder(path);
 	}
 }

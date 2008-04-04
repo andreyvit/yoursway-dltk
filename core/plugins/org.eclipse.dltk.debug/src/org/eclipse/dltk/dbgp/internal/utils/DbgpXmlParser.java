@@ -81,7 +81,7 @@ public class DbgpXmlParser {
 			}
 		}
 
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	public static String parseBase64Content(Element element) {
@@ -90,20 +90,20 @@ public class DbgpXmlParser {
 		} catch (DbgpIOException e) {
 
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	public static DbgpDebuggingEngineException checkError(Element element) {
-		final String TAG_ERROR = "error";
-		final String TAG_MESSAGE = "message";
-		final String ATTR_CODE = "code";
+		final String TAG_ERROR = "error"; //$NON-NLS-1$
+		final String TAG_MESSAGE = "message"; //$NON-NLS-1$
+		final String ATTR_CODE = "code"; //$NON-NLS-1$
 
 		NodeList errors = element.getElementsByTagName(TAG_ERROR);
 		if (errors.getLength() > 0) {
 			Element error = (Element) errors.item(0);
 			int errorCode = Integer.parseInt(error.getAttribute(ATTR_CODE));
 
-			String errorText = "No message";
+			String errorText = "No message"; //$NON-NLS-1$
 			NodeList messages = error.getElementsByTagName(TAG_MESSAGE);
 
 			if (messages.getLength() > 0) {
@@ -117,7 +117,7 @@ public class DbgpXmlParser {
 	}
 
 	public static boolean parseSuccess(Element response) {
-		final String ATTR_SUCCESS = "success";
+		final String ATTR_SUCCESS = "success"; //$NON-NLS-1$
 
 		// Strange assumption but it's required for compatibility
 		if (!response.hasAttribute(ATTR_SUCCESS)) {
@@ -129,7 +129,7 @@ public class DbgpXmlParser {
 
 	protected static String getStringAttribute(Element element, String name) {
 
-		String value = "";
+		String value = ""; //$NON-NLS-1$
 		if (element.hasAttribute(name)) {
 			value = element.getAttribute(name);
 		}

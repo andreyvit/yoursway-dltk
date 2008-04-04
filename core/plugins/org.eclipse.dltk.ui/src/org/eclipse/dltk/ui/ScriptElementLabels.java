@@ -299,17 +299,17 @@ public class ScriptElementLabels {
 	/**
 	 * User-readable string for separating post qualified names (e.g. " - ").
 	 */
-	public final static String CONCAT_STRING = " - ";
+	public final static String CONCAT_STRING = " - "; //$NON-NLS-1$
 
 	/**
 	 * User-readable string for separating list items (e.g. ", ").
 	 */
-	public final static String COMMA_STRING = ", ";
+	public final static String COMMA_STRING = ", "; //$NON-NLS-1$
 
 	/**
 	 * User-readable string for separating the return type (e.g. " : ").
 	 */
-	public final static String DECL_STRING = " : ";
+	public final static String DECL_STRING = " : "; //$NON-NLS-1$
 
 	/**
 	 * User-readable string for ellipsis ("...").
@@ -320,9 +320,9 @@ public class ScriptElementLabels {
 	 * User-readable string for the default package name (e.g. "(default
 	 * package)").
 	 */
-	public final static String DEFAULT_PACKAGE = "(default package)";
+	public final static String DEFAULT_PACKAGE = "(default package)"; //$NON-NLS-1$
 
-	public final static String BUILTINS_FRAGMENT = "(builtins)";
+	public final static String BUILTINS_FRAGMENT = "(builtins)"; //$NON-NLS-1$
 
 	private final static long QUALIFIER_FLAGS = P_COMPRESSED | USE_RESOLVED;
 
@@ -546,6 +546,13 @@ public class ScriptElementLabels {
 		return (IProjectFragment) element;
 	}
 
+	protected void getScriptFolderLabel(IScriptFolder folder, StringBuffer buf) {
+		buf.append(folder.getElementName()/*
+											 * .replace(IScriptFolder.PACKAGE_DELIMITER,
+											 * '.')
+											 */);
+	}
+
 	private void getScriptFolderLabel(IScriptFolder folder, long flags,
 			StringBuffer buf) {
 		if (getFlag(flags, P_QUALIFIED)) {
@@ -574,10 +581,7 @@ public class ScriptElementLabels {
 			}
 			buf.append(name.substring(start));
 		} else {
-			buf.append(folder.getElementName()/*
-												 * .replace(IScriptFolder.PACKAGE_DELIMITER,
-												 * '.')
-												 */);
+			getScriptFolderLabel(folder, buf);
 		}
 		if (getFlag(flags, P_POST_QUALIFIED)) {
 			buf.append(CONCAT_STRING);
@@ -655,7 +659,7 @@ public class ScriptElementLabels {
 						for (int i = 0; i < superNames.length; ++i) {
 
 							if (count > 0) {
-								typeName += COMMA_STRING + " ";
+								typeName += COMMA_STRING + " "; //$NON-NLS-1$
 							}
 							typeName += superNames[i];
 							count++;
@@ -664,7 +668,7 @@ public class ScriptElementLabels {
 				}
 			} catch (ModelException e) {
 				// ignore
-				typeName = "";
+				typeName = ""; //$NON-NLS-1$
 			}
 		}
 
@@ -750,7 +754,7 @@ public class ScriptElementLabels {
 						// initializers[i].length()
 						// > 0
 						// ) {
-						buf.append("=\"" + initializers[i] + "\"");
+						buf.append("=\"" + initializers[i] + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			} else {
@@ -934,35 +938,38 @@ public class ScriptElementLabels {
 		}
 		// refreshPackageNamePattern();
 
-// if (getFlag(flags, P_COMPRESSED) && fgPkgNameLength >= 0) {
-// String name = pack.getElementName();
-// int start = 0;
-// int dot = name.indexOf(getTypeDelimiter(), start);
-// while (dot > 0) {
-// if (dot - start > fgPkgNameLength - 1) {
-// buf.append(fgPkgNamePrefix);
-// if (fgPkgNameChars > 0)
-// buf.append(name.substring(start, Math.min(start + fgPkgNameChars, dot)));
-// buf.append(fgPkgNamePostfix);
-// } else
-// buf.append(name.substring(start, dot + 1));
-// start = dot + 1;
-// dot = name.indexOf(getTypeDelimiter(), start);
-// }
-// buf.append(name.substring(start));
-// } else {
+		// if (getFlag(flags, P_COMPRESSED) && fgPkgNameLength >= 0) {
+		// String name = pack.getElementName();
+		// int start = 0;
+		// int dot = name.indexOf(getTypeDelimiter(), start);
+		// while (dot > 0) {
+		// if (dot - start > fgPkgNameLength - 1) {
+		// buf.append(fgPkgNamePrefix);
+		// if (fgPkgNameChars > 0)
+		// buf.append(name.substring(start, Math.min(start + fgPkgNameChars,
+		// dot)));
+		// buf.append(fgPkgNamePostfix);
+		// } else
+		// buf.append(name.substring(start, dot + 1));
+		// start = dot + 1;
+		// dot = name.indexOf(getTypeDelimiter(), start);
+		// }
+		// buf.append(name.substring(start));
+		// } else {
 		if (pack instanceof ExternalProjectFragment) {
 			buf.append(pack.getElementName().replace(
 					ExternalProjectFragment.JEM_SKIP_DELIMETER, Path.SEPARATOR)
-					+ " ");
+					+ " "); //$NON-NLS-1$
 		} else {
 			if (pack instanceof BuiltinProjectFragment) {
-				buf.append(BUILTINS_FRAGMENT + " ");
+				buf.append(BUILTINS_FRAGMENT + " "); //$NON-NLS-1$
 			} else {
-				buf.append(pack.getElementName() + " ");
+				if (pack != null) {
+					buf.append(pack.getElementName() + " "); //$NON-NLS-1$
+				}
 			}
 		}
-// }
+		// }
 		if (getFlag(flags, P_POST_QUALIFIED)) {
 			buf.append(CONCAT_STRING);
 			getProjectFragmentLabel((IProjectFragment) pack.getParent(),
@@ -986,7 +993,7 @@ public class ScriptElementLabels {
 		IBuildpathContainer container = DLTKCore.getBuildpathContainer(
 				containerPath, project);
 		if (container != null) {
-			return container.getDescription();
+			return container.getDescription(project);
 		}
 		BuildpathContainerInitializer initializer = DLTKCore
 				.getBuildpathContainerInitializer(containerPath.segment(0));

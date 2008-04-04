@@ -22,5 +22,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jface
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.javascript.console,
- org.eclipse.dltk.javascript.launching
-
+ org.eclipse.dltk.javascript.launching,
+ org.eclipse.dltk.javascript.internal.launching
+ 

@@ -2126,7 +2126,7 @@ public class ScriptProject extends Openable implements IScriptProject {
 	}
 
 	public void printNode(CorePrinter output) {
-		output.formatPrint("ScriptProject:" + getElementName());
+		output.formatPrint("ScriptProject:" + getElementName()); //$NON-NLS-1$
 		output.indent();
 		try {
 			IModelElement modelElements[] = this.getChildren();
@@ -2135,7 +2135,7 @@ public class ScriptProject extends Openable implements IScriptProject {
 				if (element instanceof ModelElement) {
 					((ModelElement) element).printNode(output);
 				} else {
-					output.print("Unknown element:" + element);
+					output.print("Unknown element:" + element); //$NON-NLS-1$
 				}
 			}
 		} catch (ModelException ex) {
@@ -2391,7 +2391,7 @@ public class ScriptProject extends Openable implements IScriptProject {
 	 */
 	private IScriptFolder findScriptFolder0(IPath path) throws ModelException {
 		if (DLTKCore.DEBUG) {
-			System.err.println("Search Need to be implemented");
+			System.err.println("Search Need to be implemented"); //$NON-NLS-1$
 		}
 		return null;
 	}
@@ -2470,7 +2470,7 @@ public class ScriptProject extends Openable implements IScriptProject {
 			boolean considerSecondaryTypes, IProgressMonitor progressMonitor)
 			throws ModelException {
 		if (DLTKCore.DEBUG) {
-			System.err.println("Search Need to be implemented");
+			System.err.println("Search Need to be implemented"); //$NON-NLS-1$
 		}
 		return null;
 	}
@@ -2500,7 +2500,7 @@ public class ScriptProject extends Openable implements IScriptProject {
 			boolean considerSecondaryTypes, IProgressMonitor progressMonitor)
 			throws ModelException {
 		if (DLTKCore.DEBUG) {
-			System.err.println("Search Need to be implemented");
+			System.err.println("Search Need to be implemented"); //$NON-NLS-1$
 		}
 		return null;
 	}
@@ -2511,7 +2511,7 @@ public class ScriptProject extends Openable implements IScriptProject {
 	public IType findType(String packageName, String typeQualifiedName,
 			WorkingCopyOwner owner) throws ModelException {
 		if (DLTKCore.DEBUG) {
-			System.err.println("Search Need to be implemented");
+			System.err.println("Search Need to be implemented"); //$NON-NLS-1$
 		}
 		return null;
 	}
@@ -2524,7 +2524,7 @@ public class ScriptProject extends Openable implements IScriptProject {
 			WorkingCopyOwner owner, IProgressMonitor progressMonitor)
 			throws ModelException {
 		if (DLTKCore.DEBUG) {
-			System.err.println("Search Need to be implemented");
+			System.err.println("Search Need to be implemented"); //$NON-NLS-1$
 		}
 		return null;
 	}
@@ -2532,7 +2532,7 @@ public class ScriptProject extends Openable implements IScriptProject {
 	public IType findType(String fullyQualifiedName, WorkingCopyOwner owner)
 			throws ModelException {
 		if (DLTKCore.DEBUG) {
-			System.err.println("Search Need to be implemented");
+			System.err.println("Search Need to be implemented"); //$NON-NLS-1$
 		}
 		return null;
 	}
@@ -2540,7 +2540,7 @@ public class ScriptProject extends Openable implements IScriptProject {
 	public IType findType(String fullyQualifiedName, WorkingCopyOwner owner,
 			IProgressMonitor progressMonitor) throws ModelException {
 		if (DLTKCore.DEBUG) {
-			System.err.println("Search Need to be implemented");
+			System.err.println("Search Need to be implemented"); //$NON-NLS-1$
 		}
 		return null;
 	}

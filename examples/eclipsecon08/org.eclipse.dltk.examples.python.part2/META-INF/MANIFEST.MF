@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Part2 Fragment
+Bundle-SymbolicName: org.eclipse.dltk.examples.python.part2;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.dltk.core,
+ org.eclipse.dltk.examples.python,
+ org.eclipse.dltk.python.antlr,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources
+Eclipse-LazyStart: true
+Bundle-Activator: org.eclipse.dltk.python.internal.core.parser.PythonParserPlugin
+Export-Package: org.eclipse.dltk.python.internal.core.parser,
+ org.eclipse.dltk.python.internal.core.parser.visitors,
+ org.eclipse.dltk.python.internal.core.parsers,
+ org.eclipse.dltk.python.parser.ast,
+ org.eclipse.dltk.python.parser.ast.expressions,
+ org.eclipse.dltk.python.parser.ast.statements

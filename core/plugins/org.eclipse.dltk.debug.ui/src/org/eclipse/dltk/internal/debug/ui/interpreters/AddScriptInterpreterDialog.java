@@ -28,6 +28,7 @@ import org.eclipse.dltk.launching.EnvironmentVariable;
 import org.eclipse.dltk.launching.IInterpreterInstall;
 import org.eclipse.dltk.launching.IInterpreterInstallType;
 import org.eclipse.dltk.launching.InterpreterStandin;
+import org.eclipse.dltk.utils.PlatformFileUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.StatusDialog;
@@ -199,7 +200,7 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 		block.setLayoutData(gd);
 
 		l = new Label(parent, SWT.NONE);
-		l.setText("Interpreter environment variables");
+		l.setText(InterpretersMessages.AddScriptInterpreterDialog_interpreterEnvironmentVariables);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = 3;
 		l.setLayoutData(gd);
@@ -282,7 +283,7 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 		} else {
 			fInterpreterTypeCombo.setEnabled(false);
 			fInterpreterName.setText(fEditedInterpreter.getName());
-			fInterpreterPath.setText(fEditedInterpreter.getInstallLocation()
+			fInterpreterPath.setText(fEditedInterpreter.getRawInstallLocation()
 					.toString());
 			if (fEnvironmentVariablesBlock != null) {
 				fEnvironmentVariablesBlock.initializeFrom(fEditedInterpreter,
@@ -311,7 +312,8 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 			s = new StatusInfo(IStatus.INFO,
 					InterpretersMessages.addInterpreterDialog_enterLocation);
 		} else {
-			file = new File(locationName);
+			file = PlatformFileUtils
+					.findAbsoluteOrEclipseRelativeFile(new File(locationName));
 			if (!file.exists()) {
 				s = new StatusInfo(
 						IStatus.ERROR,
@@ -400,11 +402,11 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 		FileDialog dialog = new FileDialog(getShell());
 		dialog.setFilterPath(fInterpreterPath.getText());
 		if (Platform.getOS().equals(Platform.OS_WIN32)) {
-			dialog.setFilterExtensions(new String[] { "*.exe;*.bat;*.exe" });
+			dialog.setFilterExtensions(new String[] { "*.exe;*.bat;*.exe" }); //$NON-NLS-1$
 		} else {
-			dialog.setFilterExtensions(new String[] { "*" });
+			dialog.setFilterExtensions(new String[] { "*" }); //$NON-NLS-1$
 		}
-		dialog.setFilterNames(new String[] { "Executables" });
+		dialog.setFilterNames(new String[] { InterpretersMessages.AddScriptInterpreterDialog_executables });
 		String newPath = dialog.open();
 		if (newPath != null) {
 			fInterpreterPath.setText(newPath);
@@ -416,6 +418,8 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 		super.okPressed();
 	}
 
+	private IInterpreterInstall lastInstall = null;
+
 	private void doOkPressed() {
 		if (fEditedInterpreter == null) {
 			IInterpreterInstall install = new InterpreterStandin(
@@ -423,8 +427,10 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 					createUniqueId(fSelectedInterpreterType));
 			setFieldValuesToInterpreter(install);
 			fRequestor.interpreterAdded(install);
+			lastInstall = install;
 		} else {
 			setFieldValuesToInterpreter(fEditedInterpreter);
+			lastInstall = fEditedInterpreter;
 		}
 	}
 
@@ -558,4 +564,10 @@ public abstract class AddScriptInterpreterDialog extends StatusDialog {
 		return false;
 	}
 
+	/**
+	 * This method could be used only after okPressed.
+	 */
+	protected IInterpreterInstall getLastInterpreterInstall() {
+		return this.lastInstall;
+	}
 }

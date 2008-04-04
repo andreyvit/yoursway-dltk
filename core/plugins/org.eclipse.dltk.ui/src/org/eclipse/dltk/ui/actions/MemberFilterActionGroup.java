@@ -9,8 +9,8 @@
  *******************************************************************************/
 package org.eclipse.dltk.ui.actions;
 
+import org.eclipse.dltk.ui.viewsupport.AbstractModelElementFilter;
 import org.eclipse.dltk.ui.viewsupport.MemberFilterAction;
-import org.eclipse.dltk.ui.viewsupport.ModelElementFilter;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -83,7 +83,7 @@ public class MemberFilterActionGroup extends ActionGroup {
 		int i;
 		for (i = 0; i < actions.length; i++) {
 			MemberFilterAction action = actions[i];
-			ModelElementFilter filter = action.getFilter();
+			AbstractModelElementFilter filter = action.getFilter();
 			
 			boolean filterEnabled = false;
 			if (fStore != null)
@@ -99,13 +99,13 @@ public class MemberFilterActionGroup extends ActionGroup {
 		}
 	}
 	
-	private String getPreferenceKey(int filterProperty) {
-		return "MemberFilterActionGroup." + String.valueOf(filterProperty); //$NON-NLS-1$
+	private String getPreferenceKey(String filterProperty) {
+		return "MemberFilterActionGroup." + filterProperty; //$NON-NLS-1$
 	}
 	
 	public void processMemberFilterAction (MemberFilterAction action) {
 		boolean set = action.isChecked();
-		ModelElementFilter filter = action.getFilter();
+		AbstractModelElementFilter filter = action.getFilter();
 		if (fStore != null)
 			fStore.setValue(getPreferenceKey(filter.getFilteringType()), set);
 		if (set) {

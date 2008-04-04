@@ -15,21 +15,21 @@ import org.eclipse.jface.resource.ImageDescriptor;
 
 public class RubyImages {
 	private static final PluginImagesHelper helper = new PluginImagesHelper(
-			RubyUI.getDefault().getBundle(), new Path("/icons"));
+			RubyUI.getDefault().getBundle(), new Path("/icons")); //$NON-NLS-1$
 	
 	public static final ImageDescriptor PROJECT_DECARATOR = helper
-			.createUnManaged(PluginImagesHelper.T_OVR, "ruby_ovr.gif");
+			.createUnManaged(PluginImagesHelper.T_OVR, "ruby_ovr.gif"); //$NON-NLS-1$
 
 	public static final ImageDescriptor DESC_WIZBAN_PROJECT_CREATION = helper
 			.createUnManaged(PluginImagesHelper.T_WIZBAN,
-					"projectcreate_wiz.png");
+					"projectcreate_wiz.png"); //$NON-NLS-1$
 
 	public static final ImageDescriptor DESC_WIZBAN_FILE_CREATION = helper
-			.createUnManaged(PluginImagesHelper.T_WIZBAN, "filecreate_wiz.png");
+			.createUnManaged(PluginImagesHelper.T_WIZBAN, "filecreate_wiz.png"); //$NON-NLS-1$
 
 	public static final ImageDescriptor DESC_OVR_STATIC_FIELD = helper
-			.createUnManaged(PluginImagesHelper.T_OVR, "static.png");
+			.createUnManaged(PluginImagesHelper.T_OVR, "static.png"); //$NON-NLS-1$
 
 	public static final ImageDescriptor DESC_OVR_CONST_FIELD = helper
-			.createUnManaged(PluginImagesHelper.T_OVR, "const.png");
+			.createUnManaged(PluginImagesHelper.T_OVR, "const.png"); //$NON-NLS-1$
 }

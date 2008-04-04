@@ -22,14 +22,12 @@ import java.util.List;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ListenerList;
-
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchesListener2;
-
 import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.internal.testing.Messages;
 import org.eclipse.dltk.internal.testing.launcher.DLTKTestingLaunchConfigurationConstants;
@@ -711,25 +709,25 @@ public class TestRunSession implements ITestRunSession, ITestSession {
 		
 		
 		public void testFailed(int status, String testId, String testName, String trace) {
-			testFailed(status, testId, testName, trace, null, null);
+			testFailed(status, testId, testName, trace, null, null, -1);
 		}
 		
 		/* (non-Javadoc)
 		 * @see org.eclipse.jdt.internal.junit.model.ITestRunListener2#testFailed(int, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 		 */
-		public void testFailed(int statusCode, String testId, String testName, String trace, String expected, String actual) {
+		public void testFailed(int statusCode, String testId, String testName, String trace, String expected, String actual, int code) {
 			TestElement testElement= getTestElement(testId);
 			if (testElement == null) {
 				testElement= createUnrootedTestElement(testId, testName);
 				return;
 			}
 
-			Status status= Status.convert(statusCode);
+			Status status= Status.convert(statusCode, code);
 			registerTestFailureStatus(testElement, status, trace, nullifyEmpty(expected), nullifyEmpty(actual));
 			
 			Object[] listeners= fSessionListeners.getListeners();
 			for (int i= 0; i < listeners.length; ++i) {
-				((ITestSessionListener) listeners[i]).testFailed(testElement, status, trace, expected, actual);
+				((ITestSessionListener) listeners[i]).testFailed(testElement, status, trace, expected, actual, code);
 			}
 		}
 
@@ -760,7 +758,7 @@ public class TestRunSession implements ITestRunSession, ITestSession {
 			}
 			TestCaseElement testCaseElement= (TestCaseElement) testElement;
 			
-			Status status= Status.convert(statusCode);
+			Status status= Status.convert(statusCode, ITestingClient.PASSED);
 			registerTestFailureStatus(testElement, status, trace, nullifyEmpty(expectedResult), nullifyEmpty(actualResult));
 			
 			Object[] listeners= fSessionListeners.getListeners();

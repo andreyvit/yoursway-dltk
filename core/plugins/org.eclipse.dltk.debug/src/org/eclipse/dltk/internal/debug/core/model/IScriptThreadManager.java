@@ -24,4 +24,6 @@ public interface IScriptThreadManager extends IDbgpThreadAcceptor, ITerminate,
 	boolean isWaitingForThreads();
 
 	void sendTerminationRequest() throws DebugException;
+
+	public void refreshThreads();
 }

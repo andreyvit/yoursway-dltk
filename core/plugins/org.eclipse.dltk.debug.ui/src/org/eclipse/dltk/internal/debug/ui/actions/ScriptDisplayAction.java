@@ -58,7 +58,7 @@ public abstract class ScriptDisplayAction extends ScriptEvaluationAction {
 				.getThread().getModelIdentifier());
 		presentation.computeDetail(resultValue, new IValueDetailListener() {
 			public void detailComputed(IValue value, String result) {
-				displayStringResult(snippet, MessageFormat.format("({0}) {1}",
+				displayStringResult(snippet, MessageFormat.format(Messages.ScriptDisplayAction_displayResult,
 						new Object[] { typeName, trimDisplayResult(result) }));
 			}
 		});

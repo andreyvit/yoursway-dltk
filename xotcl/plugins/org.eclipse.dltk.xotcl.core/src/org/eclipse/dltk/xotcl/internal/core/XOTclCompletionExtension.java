@@ -1,6 +1,7 @@
 package org.eclipse.dltk.xotcl.internal.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -15,8 +16,12 @@ import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Statement;
 import org.eclipse.dltk.codeassist.complete.CompletionNodeFound;
 import org.eclipse.dltk.core.CompletionProposal;
+import org.eclipse.dltk.core.CompletionRequestor;
 import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.IMethod;
+import org.eclipse.dltk.core.IModelElement;
+import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.core.ModelException;
 import org.eclipse.dltk.core.mixin.IMixinRequestor;
 import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
@@ -39,6 +44,7 @@ import org.eclipse.dltk.xotcl.internal.core.search.mixin.model.XOTclProc;
 
 public class XOTclCompletionExtension implements ICompletionExtension {
 
+	private CompletionRequestor requestor;
 	public boolean visit(Expression s, TclCompletionParser parser, int position) {
 		List exprs = new ArrayList();
 		if (s instanceof XOTclMethodCallStatement) {
@@ -261,9 +267,26 @@ public class XOTclCompletionExtension implements ICompletionExtension {
 					IMixinRequestor.MIXIN_NAME_SEPARATOR);
 		}
 		Set methods = new HashSet();
-		findInstProcsFromMixin(methods, keyPrefix
-				+ IMixinRequestor.MIXIN_NAME_SEPARATOR + "*", engine);
-		findMethodsShortName(token, methods, methodNames, engine);
+		findClassesFromMixin(methods, keyPrefix, engine);
+		Set result = new HashSet();
+		// replace class name with methods.
+		for (Iterator iterator = methods.iterator(); iterator.hasNext();) {
+			IModelElement e = (IModelElement) iterator.next();
+			if (e instanceof IType) {
+				try {
+					IMethod[] ms = ((IType) e).getMethods();
+					result.addAll(Arrays.asList(ms));
+				} catch (ModelException e1) {
+					if (DLTKCore.DEBUG) {
+						e1.printStackTrace();
+					}
+				}
+			} else if (e instanceof IMethod) {
+				result.add(e);
+			}
+
+		}
+		findMethodsShortName(token, result, methodNames, engine);
 		// We need to handle supers
 
 		addKeywords(token, XOTclKeywords.XOTclCommandClassArgs, methodNames,
@@ -380,9 +403,12 @@ public class XOTclCompletionExtension implements ICompletionExtension {
 			String tok, TclCompletionEngine engine) {
 		engine.findMixinTclElement(completions, tok, XOTclClassInstance.class);
 	}
-	private FieldDeclaration searchFieldFromMixin(String name, TclCompletionEngine engine) {
+
+	private FieldDeclaration searchFieldFromMixin(String name,
+			TclCompletionEngine engine) {
 		return null;
 	}
+
 	public void completeOnKeywordArgumentsOne(String name,
 			CompletionOnKeywordArgumentOrFunctionArgument compl,
 			Set methodNames, TclStatement st, TclCompletionEngine engine) {
@@ -401,5 +427,8 @@ public class XOTclCompletionExtension implements ICompletionExtension {
 			completionForInstanceVariableMethods(var, compl.getToken(),
 					methodNames, engine);
 		}
+	}
+	public void setRequestor(CompletionRequestor requestor) {
+		this.requestor = requestor;
 	}
 }

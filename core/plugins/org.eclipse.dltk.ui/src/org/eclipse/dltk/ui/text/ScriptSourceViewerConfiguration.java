@@ -12,7 +12,6 @@ package org.eclipse.dltk.ui.text;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.dltk.internal.ui.editor.ModelElementHyperlinkDetector;
 import org.eclipse.dltk.internal.ui.editor.ScriptSourceViewer;
-import org.eclipse.dltk.internal.ui.text.HTMLAnnotationHover;
 import org.eclipse.dltk.internal.ui.text.HTMLTextPresenter;
 import org.eclipse.dltk.internal.ui.text.ScriptCompositeReconcilingStrategy;
 import org.eclipse.dltk.internal.ui.text.ScriptElementProvider;
@@ -22,6 +21,7 @@ import org.eclipse.dltk.internal.ui.text.hover.EditorTextHoverProxy;
 import org.eclipse.dltk.internal.ui.text.hover.ScriptInformationProvider;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.dltk.ui.actions.IScriptEditorActionDefinitionIds;
+import org.eclipse.dltk.ui.text.completion.ContentAssistPreference;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.AbstractInformationControlManager;
@@ -31,13 +31,13 @@ import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextViewerExtension2;
+import org.eclipse.jface.text.contentassist.ContentAssistant;
+import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.eclipse.jface.text.information.IInformationPresenter;
 import org.eclipse.jface.text.information.IInformationProvider;
 import org.eclipse.jface.text.information.InformationPresenter;
 import org.eclipse.jface.text.reconciler.IReconciler;
-import org.eclipse.jface.text.source.Annotation;
-import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
@@ -65,7 +65,9 @@ public abstract class ScriptSourceViewerConfiguration extends
 		initializeScanners();
 	}
 
-	abstract protected void initializeScanners();
+	protected void initializeScanners() {
+		
+	}
 
 	public String getConfiguredDocumentPartitioning(ISourceViewer sourceViewer) {
 		if (fDocumentPartitioning != null)
@@ -98,9 +100,13 @@ public abstract class ScriptSourceViewerConfiguration extends
 		// return null;
 	}
 
-	public abstract boolean affectsTextPresentation(PropertyChangeEvent event);
+	public  boolean affectsTextPresentation(PropertyChangeEvent event) {
+		return false;
+	}
 
-	public abstract void handlePropertyChangeEvent(PropertyChangeEvent event);
+	public void handlePropertyChangeEvent(PropertyChangeEvent event) {
+		
+	}
 
 	/*
 	 * @see org.eclipse.jface.text.source.SourceViewerConfiguration#getDefaultPrefixes(org.eclipse.jface.text.source.ISourceViewer,
@@ -108,7 +114,7 @@ public abstract class ScriptSourceViewerConfiguration extends
 	 */
 	public String[] getDefaultPrefixes(ISourceViewer sourceViewer,
 			String contentType) {
-		return new String[] { getCommentPrefix(), "" };
+		return new String[] { getCommentPrefix(), "" }; //$NON-NLS-1$
 	}
 
 	/**
@@ -120,7 +126,7 @@ public abstract class ScriptSourceViewerConfiguration extends
 	 * </p>
 	 */
 	protected String getCommentPrefix() {
-		return "#";
+		return "#"; //$NON-NLS-1$
 	}
 
 	/**
@@ -136,8 +142,10 @@ public abstract class ScriptSourceViewerConfiguration extends
 	 * @return an information control creator
 	 * 
 	 */
-	protected abstract IInformationControlCreator getOutlinePresenterControlCreator(
-			ISourceViewer sourceViewer, final String commandId);
+	protected IInformationControlCreator getOutlinePresenterControlCreator(
+			ISourceViewer sourceViewer, final String commandId) {
+		return null;
+	}
 
 	public IInformationPresenter getOutlinePresenter(
 			ScriptSourceViewer sourceViewer, boolean doCodeResolve) {
@@ -197,9 +205,12 @@ public abstract class ScriptSourceViewerConfiguration extends
 		int inheritedDetectorsLength = inheritedDetectors != null ? inheritedDetectors.length
 				: 0;
 		IHyperlinkDetector[] detectors = new IHyperlinkDetector[inheritedDetectorsLength + 1];
-		detectors[0] = new ModelElementHyperlinkDetector(fTextEditor);
-		for (int i = 0; i < inheritedDetectorsLength; i++)
-			detectors[i + 1] = inheritedDetectors[i];
+
+		//TODO(mhowe) I reverse these so I can get a shot at finding the hyperlink before DLTK does.
+		//DLTK shouldn't create an action if it does nothing.
+        for (int i = 0; i < inheritedDetectorsLength; i++)
+            detectors[i] = inheritedDetectors[i];
+        detectors[inheritedDetectorsLength] = new ModelElementHyperlinkDetector(fTextEditor);
 
 		return detectors;
 	}
@@ -299,5 +310,35 @@ public abstract class ScriptSourceViewerConfiguration extends
 
 		presenter.setSizeConstraints(60, 10, true, true);
 		return presenter;
+	}
+	
+	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
+		if (getEditor() != null) {
+			ContentAssistant assistant = new ContentAssistant();
+
+			assistant
+					.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
+			assistant
+					.setRestoreCompletionProposalSize(getSettings("completion_proposal_size")); //$NON-NLS-1$
+			assistant
+					.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
+			assistant
+					.setInformationControlCreator(getInformationControlCreator(sourceViewer));
+			
+			alterContentAssistant(assistant);
+			
+			getContentAssistPreference().configure(assistant, fPreferenceStore);
+			
+			
+			return assistant;
+		}
+
+		return null;
+	}
+	
+	protected abstract ContentAssistPreference getContentAssistPreference();
+	
+	protected void alterContentAssistant(ContentAssistant assistant) {
+		// empty implementation
 	}
 }

@@ -41,7 +41,7 @@ public class ScriptReconcilingStrategy implements IReconcilingStrategy,
 
 	private IProgressMonitor fProgressMonitor;
 	
-	private IScriptReconcilingListener fJavaReconcilingListener;
+	private IScriptReconcilingListener fScriptReconcilingListener;
 	private boolean fIsScriptReconcilingListener;
 	
 	private boolean fNotify= true;
@@ -54,7 +54,7 @@ public class ScriptReconcilingStrategy implements IReconcilingStrategy,
 		
 		fIsScriptReconcilingListener= fEditor instanceof IScriptReconcilingListener;
 		if (fIsScriptReconcilingListener){
-			fJavaReconcilingListener=(IScriptReconcilingListener) fEditor;	
+			fScriptReconcilingListener=(IScriptReconcilingListener) fEditor;	
 		}
 	}
 	
@@ -123,7 +123,7 @@ public class ScriptReconcilingStrategy implements IReconcilingStrategy,
 					IProgressMonitor pm= fProgressMonitor;
 					if (pm == null)
 						pm= new NullProgressMonitor();
-					fJavaReconcilingListener.reconciled(unit, !fNotify, pm);
+					fScriptReconcilingListener.reconciled(unit, !fNotify, pm);
 				}
 			} finally {
 				fNotify= true;
@@ -133,7 +133,7 @@ public class ScriptReconcilingStrategy implements IReconcilingStrategy,
 
 	public void aboutToBeReconciled() {
 		if (fIsScriptReconcilingListener) {
-			fJavaReconcilingListener.aboutToBeReconciled();
+			fScriptReconcilingListener.aboutToBeReconciled();
 		}
 	}
 

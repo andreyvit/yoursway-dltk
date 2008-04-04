@@ -47,7 +47,8 @@ import org.eclipse.dltk.debug.core.model.IScriptVariable;
 public class ScriptDebugTarget extends ScriptDebugElement implements
 		IScriptDebugTarget, IScriptThreadManagerListener {
 
-	private static final String LAUNCH_CONFIGURATION_ATTR_PROJECT = "project";
+	private static final String LAUNCH_CONFIGURATION_ATTR_PROJECT = "project"; //$NON-NLS-1$
+	private static final String LAUNCH_CONFIGURATION_ATTR_BREAK_ON_FIRST_LINE = "enableBreakOnFirstLine"; //$NON-NLS-1$
 
 	private static final int THREAD_TERMINATION_TIMEOUT = 5000; // 5 seconds
 
@@ -76,12 +77,15 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	private String[] stepFilters;
 
 	private boolean useStepFilters;
-	
+
 	private final Object terminatedLock = new Object();
 	private boolean terminated = false;
 
 	private boolean initialized = false;
-	
+	private boolean retrieveGlobalVariables;
+	private boolean retrieveClassVariables;
+	private boolean retrieveLocalVariables;
+
 	public static List getAllTargets() {
 		return new ArrayList(targets.keySet());
 	}
@@ -107,9 +111,9 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 		this.breakpointManager = new ScriptBreakpointManager(this);
 
 		this.threadManager.addListener(this);
-		
+
 		DebugEventHelper.fireCreateEvent(this);
-		targets.put(this, "");
+		targets.put(this, ""); //$NON-NLS-1$
 	}
 
 	public void shutdown() {
@@ -142,9 +146,9 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	public void setProcess(IProcess process) {
-		this.process = process; 
+		this.process = process;
 	}
-	
+
 	public boolean hasThreads() throws DebugException {
 		return threadManager.hasThreads();
 	}
@@ -190,16 +194,16 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 				return;
 			terminated = true;
 		}
-		
+
 		dbgpService.unregisterAcceptor(sessionId);
-		
-		threadManager.sendTerminationRequest();		
+
+		threadManager.sendTerminationRequest();
 		if (!waitTermianted()) {
 			// Debugging process is not answering, so terminating it
 			if (process != null && process.canTerminate())
 				process.terminate();
 		}
-		
+
 		threadManager.removeListener(this);
 
 		IBreakpointManager manager = DebugPlugin.getDefault()
@@ -207,7 +211,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 
 		manager.removeBreakpointListener(this);
 		manager.removeBreakpointManagerListener(breakpointManager);
-		
+
 		DebugEventHelper.fireTerminateEvent(this);
 	}
 
@@ -310,7 +314,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 			manager.addBreakpointManagerListener(breakpointManager);
 
 			// DebugEventHelper.fireCreateEvent(this);
-			initialized  = true;
+			initialized = true;
 			fireTargetInitialized();
 		}
 	}
@@ -328,7 +332,7 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 	}
 
 	public String toString() {
-		return "Debugging engine (id = " + this.sessionId + ")";
+		return "Debugging engine (id = " + this.sessionId + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	// IScriptDebugTarget
@@ -403,5 +407,44 @@ public class ScriptDebugTarget extends ScriptDebugElement implements
 			}
 		}
 		return null;
+	}
+
+	public boolean breakOnFirstLineEnabled() {
+		try {
+			return launch.getLaunchConfiguration().getAttribute(
+					LAUNCH_CONFIGURATION_ATTR_BREAK_ON_FIRST_LINE, false);
+		} catch (CoreException e) {
+			if (DLTKCore.DEBUG) {
+				e.printStackTrace();
+			}
+			return false;
+		}
+	}
+
+	public void toggleGlobalVariables(boolean enabled) {
+		retrieveGlobalVariables = enabled;
+		threadManager.refreshThreads();
+	}
+
+	public void toggleClassVariables(boolean enabled) {
+		retrieveClassVariables = enabled;
+		threadManager.refreshThreads();
+	}
+
+	public void toggleLocalVariables(boolean enabled) {
+		retrieveLocalVariables = enabled;
+		threadManager.refreshThreads();
+	}
+
+	public boolean retrieveClassVariables() {
+		return retrieveClassVariables;
+	}
+
+	public boolean retrieveGlobalVariables() {
+		return retrieveGlobalVariables;
+	}
+
+	public boolean retrieveLocalVariables() {
+		return retrieveLocalVariables;
 	}
 }

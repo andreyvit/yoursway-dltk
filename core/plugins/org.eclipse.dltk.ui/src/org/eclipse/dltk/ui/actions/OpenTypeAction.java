@@ -10,7 +10,7 @@
 package org.eclipse.dltk.ui.actions;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.dltk.core.IType;
+import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.search.IDLTKSearchConstants;
 import org.eclipse.dltk.internal.ui.DLTKUIMessages;
 import org.eclipse.dltk.internal.ui.dialogs.OpenTypeSelectionDialog2;
@@ -56,9 +56,9 @@ public abstract class OpenTypeAction extends Action implements
 
 		Object[] types = dialog.getResult();
 		if (types != null && types.length > 0) {
-			IType type = null;
+			IModelElement type = null;
 			for (int i = 0; i < types.length; i++) {
-				type = (IType) types[i];
+				type = (IModelElement) types[i];
 				try {
 					DLTKUIPlugin.openInEditor(type, true, true);
 				} catch (CoreException x) {

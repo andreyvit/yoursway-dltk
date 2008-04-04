@@ -67,17 +67,17 @@ import com.ibm.icu.text.MessageFormat;
 public class DLTKLaunchingPlugin extends Plugin implements
 		Preferences.IPropertyChangeListener, IInterpreterInstallChangedListener {
 
-	public static final String PLUGIN_ID = "org.eclipse.dltk.launching";
+	public static final String PLUGIN_ID = "org.eclipse.dltk.launching"; //$NON-NLS-1$
 
 	public static final String ID_EXTENSION_POINT_RUNTIME_BUILDPATH_ENTRIES = "runtimeBuildpathEntries"; //$NON-NLS-1$
 
 	public static final String LAUNCH_COMMAND_LINE = PLUGIN_ID
-			+ ".LAUNCH_COMMAND_LINE";
+			+ ".LAUNCH_COMMAND_LINE"; //$NON-NLS-1$
 
 	public static final boolean TRACE_EXECUTION = Boolean
 			.valueOf(
 					Platform
-							.getDebugOption("org.eclipse.dltk.launching/traceExecution"))
+							.getDebugOption("org.eclipse.dltk.launching/traceExecution")) //$NON-NLS-1$
 			.booleanValue();
 
 	/**

@@ -26,7 +26,7 @@ public class EnvironmentVariablesLabelProvider extends LabelProvider {
 	public String getText(Object element) {
 		if (element instanceof EnvironmentVariable ) {
 			EnvironmentVariable var = (EnvironmentVariable) element;
-			return var.getName() + "=" + var.getValue();
+			return var.getName() + "=" + var.getValue(); //$NON-NLS-1$
 		} 
 		return null;
 	}

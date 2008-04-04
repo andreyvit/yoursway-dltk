@@ -45,7 +45,7 @@ public abstract class DbgpOperation {
 
 	protected void callFinish(IDbgpStatus status) {
 		if (DEBUG) {
-			System.out.println("Status: " + status);
+			System.out.println("Status: " + status); //$NON-NLS-1$
 		}
 
 		resultHandler.finish(status, null);
@@ -65,11 +65,11 @@ public abstract class DbgpOperation {
 				} catch (DbgpOpertionCanceledException e) {
 					// Operation was canceled cause debugger is shutting down
 				} catch (DbgpTimeoutException e) {
-					System.err.println("Timeout exception!!!");
+					System.err.println("Timeout exception!!!"); //$NON-NLS-1$
 					e.printStackTrace();
 				} catch (DbgpException e) {
 					if (DLTKCore.DEBUG) {
-						System.out.println("Exception: " + e.getMessage());
+						System.out.println("Exception: " + e.getMessage()); //$NON-NLS-1$
 						System.out.println(e.getClass());
 						e.printStackTrace();
 					}
@@ -85,7 +85,7 @@ public abstract class DbgpOperation {
 
 	public void schedule() {
 		if (DEBUG) {
-			System.out.println("Starting operation: " + job.getName());
+			System.out.println("Starting operation: " + job.getName()); //$NON-NLS-1$
 		}
 
 		job.schedule();

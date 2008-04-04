@@ -16,17 +16,17 @@ import org.eclipse.dltk.dbgp.internal.utils.DbgpXmlEntityParser;
 
 public class DbgpContinuationCommands extends DbgpBaseCommands implements
 		IDbgpContinuationCommands {
-	private static final String RUN_COMMAND = "run";
+	private static final String RUN_COMMAND = "run"; //$NON-NLS-1$
 
-	private static final String STEP_INTO_COMMAND = "step_into";
+	private static final String STEP_INTO_COMMAND = "step_into"; //$NON-NLS-1$
 
-	private static final String STEP_OVER_COMMAND = "step_over";
+	private static final String STEP_OVER_COMMAND = "step_over"; //$NON-NLS-1$
 
-	private static final String STEP_OUT_COMMAND = "step_out";
+	private static final String STEP_OUT_COMMAND = "step_out"; //$NON-NLS-1$
 
-	private static final String STOP_COMMAND = "stop";
+	private static final String STOP_COMMAND = "stop"; //$NON-NLS-1$
 
-	private static final String DETACH_COMMAND = "detach";
+	private static final String DETACH_COMMAND = "detach"; //$NON-NLS-1$
 
 	protected IDbgpStatus execCommand(String command) throws DbgpException {
 		return DbgpXmlEntityParser

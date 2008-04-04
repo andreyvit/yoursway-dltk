@@ -11,6 +11,7 @@ package org.eclipse.dltk.internal.ui.wizards.buildpath;
 
 import java.io.File;
 import java.net.URI;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -328,7 +329,7 @@ public class AddSourceFolderWizardPage extends NewElementWizardPage {
 		setControl(composite);
 		Dialog.applyDialogFont(composite);
 		if (DLTKCore.DEBUG) {
-			System.err.println("Add help support");
+			System.err.println("Add help support"); //$NON-NLS-1$
 		}
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, IDLTKHelpContextIds.NEW_PACKAGEROOT_WIZARD_PAGE);		
 	}
@@ -465,7 +466,7 @@ public class AddSourceFolderWizardPage extends NewElementWizardPage {
 		if (!status.isOK()) {
 			//Don't know what the problem is, report to user
 			if (fCanCommitConflictingBuildpath) {
-				result.setInfo(NewWizardMessages.AddSourceFolderWizardPage_conflictWarning + status.getMessage());
+				result.setInfo(MessageFormat.format(NewWizardMessages.AddSourceFolderWizardPage_conflictWarning, new Object[] { status.getMessage() }));
 			} else {
 				result.setError(status.getMessage());
 			}
@@ -686,7 +687,7 @@ public class AddSourceFolderWizardPage extends NewElementWizardPage {
 			protected Control createDialogArea(Composite parent) {
 				Control result= super.createDialogArea(parent);
 				if (DLTKCore.DEBUG) {
-					System.err.println("TODO: Add help support here");
+					System.err.println("TODO: Add help support here"); //$NON-NLS-1$
 				}
 				//PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, IDLTKHelpContextIds.BP_CHOOSE_EXISTING_FOLDER_TO_MAKE_SOURCE_FOLDER);
 				return result;

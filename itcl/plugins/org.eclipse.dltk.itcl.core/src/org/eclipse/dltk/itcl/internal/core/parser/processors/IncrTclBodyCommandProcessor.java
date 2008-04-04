@@ -3,6 +3,7 @@ package org.eclipse.dltk.itcl.internal.core.parser.processors;
 import java.util.List;
 
 import org.eclipse.dltk.ast.ASTNode;
+import org.eclipse.dltk.ast.Modifiers;
 import org.eclipse.dltk.ast.declarations.MethodDeclaration;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.declarations.TypeDeclaration;
@@ -13,16 +14,15 @@ import org.eclipse.dltk.tcl.ast.TclStatement;
 import org.eclipse.dltk.tcl.core.AbstractTclCommandProcessor;
 import org.eclipse.dltk.tcl.core.ITclParser;
 import org.eclipse.dltk.tcl.core.TclParseUtil;
-import org.eclipse.dltk.tcl.internal.parsers.raw.TclCommand;
+import org.eclipse.dltk.tcl.internal.core.codeassist.TclVisibilityUtils;
 
 public class IncrTclBodyCommandProcessor extends AbstractTclCommandProcessor {
 
 	public IncrTclBodyCommandProcessor() {
 	}
 
-	public ASTNode process(TclCommand command, ITclParser parser, int offset,
+	public ASTNode process(TclStatement statement, ITclParser parser, 
 			ASTNode parent) {
-		TclStatement statement = parser.processLocal(command, offset, parent);
 		if (statement == null
 				|| (statement != null && statement.getCount() == 0)) {
 			return null;
@@ -58,10 +58,16 @@ public class IncrTclBodyCommandProcessor extends AbstractTclCommandProcessor {
 		method.setNameStart(procName.sourceStart());
 		method.setNameEnd(procName.sourceEnd());
 		method.acceptArguments(arguments);
+
 		// For correct modifiers we need to add
 		IncrTclUtils.parseBlockAdd(parser, procCode, method);
 
-		method.setModifier(IIncrTclModifiers.AccIncrTcl);
+//		method.setModifier(IIncrTclModifiers.AccIncrTcl | IIncrTclModifiers.AccPublic);
+		if (TclVisibilityUtils.isPrivate(sName)) {
+			method.setModifier(IIncrTclModifiers.AccIncrTcl | Modifiers.AccPrivate);
+		} else {
+			method.setModifier(IIncrTclModifiers.AccIncrTcl | Modifiers.AccPublic);
+		}
 		ModuleDeclaration module = this.getModuleDeclaration();
 		TypeDeclaration possiblyType = TclParseUtil.findTclTypeDeclarationFrom(
 				module, parent, className, false);

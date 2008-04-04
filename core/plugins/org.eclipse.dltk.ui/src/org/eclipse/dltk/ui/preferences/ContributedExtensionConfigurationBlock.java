@@ -140,7 +140,7 @@ public abstract class ContributedExtensionConfigurationBlock extends
 		
 		String contribId = getPreferenceStore().getString(getContributionPrefKey());
 
-		if ("".equals(contribId)) {
+		if ("".equals(contribId)) { //$NON-NLS-1$
 			// no entry exists in the preference store for the pref key
 			IDLTKContributedExtension contrib = getDefaultContribution();
 			if (contrib != null) {
@@ -160,7 +160,7 @@ public abstract class ContributedExtensionConfigurationBlock extends
 		SWTFactory.createLabel(composite, desc, 1);
 		
 		String prefPageId = contrib.getPreferencePageId();
-		if (prefPageId != null && !"".equals(prefPageId)) {
+		if (prefPageId != null && !"".equals(prefPageId)) { //$NON-NLS-1$
 			addDescriptionPreferenceLink(composite, prefPageId, (IWorkbenchPreferenceContainer) preferencePage
 					.getContainer());
 		}

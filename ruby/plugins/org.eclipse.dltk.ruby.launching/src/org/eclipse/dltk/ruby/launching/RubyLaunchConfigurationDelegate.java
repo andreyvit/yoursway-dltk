@@ -59,20 +59,20 @@ public class RubyLaunchConfigurationDelegate extends
 	}
 
 	protected String getCharsetInterpreterFlag(String charset) {
-		if (charset.equals("UTF-8")) {
-			return "-KU";
-		} else if (charset.equals("EUC")) {
-			return "-KE";
-		} else if (charset.equals("SJIS")) {
-			return "-KS";
+		if (charset.equals("UTF-8")) { //$NON-NLS-1$
+			return "-KU"; //$NON-NLS-1$
+		} else if (charset.equals("EUC")) { //$NON-NLS-1$
+			return "-KE"; //$NON-NLS-1$
+		} else if (charset.equals("SJIS")) { //$NON-NLS-1$
+			return "-KS"; //$NON-NLS-1$
 		}
 
-		return "-KA";
+		return "-KA"; //$NON-NLS-1$
 	}
 
 	protected void addEncodingInterpreterArg(InterpreterConfig config,
 			ILaunchConfiguration configuration) throws CoreException {
-		if (!config.hasMatchedInterpreterArg("-K.*")) {
+		if (!config.hasMatchedInterpreterArg("-K.*")) { //$NON-NLS-1$
 			String charset = getCharset(configuration);
 			if (charset != null) {
 				config.addInterpreterArg(getCharsetInterpreterFlag(charset));
@@ -86,7 +86,7 @@ public class RubyLaunchConfigurationDelegate extends
 
 		char separator = Platform.getOS().equals(Platform.OS_WIN32) ? ';' : ':';
 
-		final StringBuffer sb = new StringBuffer("-I");
+		final StringBuffer sb = new StringBuffer("-I"); //$NON-NLS-1$
 		if (paths.length > 0) {
 			sb.append(paths[0]);
 			for (int i = 1; i < paths.length; ++i) {
@@ -102,8 +102,8 @@ public class RubyLaunchConfigurationDelegate extends
 			ILaunchConfiguration configuration) {
 		try {
 			final IPath path = DeployHelper.deploy(RubyLaunchingPlugin
-					.getDefault(), "scripts/sync.rb");
-			config.addInterpreterArg("-r");
+					.getDefault(), "scripts/sync.rb"); //$NON-NLS-1$
+			config.addInterpreterArg("-r"); //$NON-NLS-1$
 			config.addInterpreterArg(path.toPortableString());
 		} catch (IOException e) {
 			RubyLaunchingPlugin.log(e);

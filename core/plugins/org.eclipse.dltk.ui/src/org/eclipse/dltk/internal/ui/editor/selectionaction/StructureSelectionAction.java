@@ -83,7 +83,7 @@ public abstract class StructureSelectionAction extends Action {
 
 	public final ISourceRange getNewSelectionRange(ISourceRange oldSourceRange, ISourceReference sr) {
 		if (DLTKCore.DEBUG) {
-			System.out.println("TODO: Add correction here...");
+			System.out.println("TODO: Add correction here..."); //$NON-NLS-1$
 		}
 		return new SourceRange(oldSourceRange.getOffset(), oldSourceRange.getLength());	 	
 	}

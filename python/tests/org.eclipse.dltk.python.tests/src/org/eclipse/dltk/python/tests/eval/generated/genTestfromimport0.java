@@ -64,23 +64,23 @@ public class genTestfromimport0 extends AbstractModelTests
 	}
 	
 
-	public void testEval0() throws Exception {
+	public void REM_testEval0() throws Exception {
 		testType( "fromimport0.py", "i1", "number" );
 	}
 
-	public void testEval1() throws Exception {
+	public void REM_testEval1() throws Exception {
 		testType( "fromimport0.py", "i2", "string" );
 	}
 
-	public void testEval2() throws Exception {
+	public void REM_testEval2() throws Exception {
 		testType( "fromimport0.py", "i3", "number" );
 	}
 
-	public void testEval3() throws Exception {
+	public void REM_testEval3() throws Exception {
 		testType( "fromimport0.py", "i4", "number" );
 	}
 
-	public void testEval4() throws Exception {
+	public void REM_testEval4() throws Exception {
 		testType( "fromimport0.py", "i5", "number" );
 	}
 
@@ -88,11 +88,11 @@ public class genTestfromimport0 extends AbstractModelTests
 		testType( "fromimport0.py", "i5a", "class:A instance" );
 	}
 
-	public void testEval6() throws Exception {
+	public void REM_testEval6() throws Exception {
 		testType( "fromimport0.py", "i6", "number" );
 	}
 
-	public void testEval7() throws Exception {
+	public void REM_testEval7() throws Exception {
 		testType( "fromimport0.py", "i7", "string" );
 	}
 
@@ -100,7 +100,7 @@ public class genTestfromimport0 extends AbstractModelTests
 		testType( "fromimport0.py", "i8", "unknown" );
 	}
 
-	public void testEval9() throws Exception {
+	public void REM_testEval9() throws Exception {
 		testType( "fromimport0.py", "i9", "number" );
 	}
 
@@ -108,11 +108,11 @@ public class genTestfromimport0 extends AbstractModelTests
 		testType( "fromimport0.py", "i10", "unknown" );
 	}
 
-	public void testEval11() throws Exception {
+	public void REM_testEval11() throws Exception {
 		testType( "fromimport0.py", "i11", "number" );
 	}
 
-	public void testEval12() throws Exception {
+	public void REM_testEval12() throws Exception {
 		testType( "fromimport0.py", "i12", "string" );
 	}
 
@@ -124,11 +124,11 @@ public class genTestfromimport0 extends AbstractModelTests
 		testType( "fromimport0.py", "i14", "unknown" );
 	}
 
-	public void testEval15() throws Exception {
+	public void REM_testEval15() throws Exception {
 		testType( "fromimport0.py", "i15", "number" );
 	}
 
-	public void testEval16() throws Exception {
+	public void REM_testEval16() throws Exception {
 		testType( "fromimport0.py", "i16", "number" );
 	}
 

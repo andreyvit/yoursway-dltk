@@ -123,7 +123,7 @@ public class TestRunListenerAdapter implements ITestSessionListener {
 	/* (non-Javadoc)
 	 * @see org.eclipse.jdt.internal.junit.model.ITestSessionListener#testFailed(org.eclipse.jdt.internal.junit.model.TestElement, org.eclipse.jdt.internal.junit.model.TestElement.Status, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public void testFailed(TestElement testElement, Status status, String trace, String expected, String actual) {
+	public void testFailed(TestElement testElement, Status status, String trace, String expected, String actual, int code) {
 		// ignore
 	}
 

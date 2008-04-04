@@ -13,6 +13,30 @@ public final class LaunchConfigurationUtils {
 	 */
 
 	/**
+	 * Retrieve a boolean value from a launch configuration
+	 * 
+	 * @param configuration
+	 *            launch configuration
+	 * @param name
+	 *            launch attribute name
+	 * @param defaultValue
+	 *            default value to use if attribute does not exist
+	 * 
+	 * @return boolean value
+	 */
+	public static boolean getBoolean(ILaunchConfiguration configuration,
+			String name, boolean defaultValue) {
+		boolean value = defaultValue;
+		try {
+			value = configuration.getAttribute(name, defaultValue);
+		} catch (CoreException e) {
+			DLTKLaunchingPlugin.log(e);
+		}
+
+		return value;
+	}
+
+	/**
 	 * Returns the project associated with the launch configuration
 	 * 
 	 * @param configuration
@@ -21,19 +45,94 @@ public final class LaunchConfigurationUtils {
 	 * @return project instance associated with the configuration, or
 	 *         <code>null</code> if the project can not be found
 	 */
-	public static IProject getProject(ILaunchConfiguration configuration)
-			throws CoreException {
-		String projectName = configuration.getAttribute(
-				ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
-				(String) null);
+	public static IProject getProject(ILaunchConfiguration configuration) {
+		String projectName = getProjectName(configuration);
 
 		IProject project = null;
 		if (projectName != null) {
 			project = ResourcesPlugin.getWorkspace().getRoot().getProject(
-				projectName);
+					projectName);
 		}
 
 		return project;
 	}
 
+	/**
+	 * Returns the project name associated with the launch configuration
+	 * 
+	 * @param configuration
+	 *            launch configuration
+	 * 
+	 * @return project name or <code>null</code> if no project has been
+	 *         associated
+	 */
+	public static String getProjectName(ILaunchConfiguration configuration) {
+		String projectName = null;
+		try {
+			projectName = configuration.getAttribute(
+					ScriptLaunchConfigurationConstants.ATTR_PROJECT_NAME,
+					(String) null);
+		} catch (CoreException e) {
+			DLTKLaunchingPlugin.log(e);
+		}
+
+		return projectName;
+	}
+
+	/**
+	 * Returns the 'break on first line' setting for the specified launch
+	 * configuration
+	 * 
+	 * @param configuration
+	 *            launch configuration
+	 * 
+	 * @return <code>true</code> if the option is enabled, <code>false</code>
+	 *         otherwise
+	 */
+	public static boolean isBreakOnFirstLineEnabled(
+			ILaunchConfiguration configuration) {
+		return getBoolean(configuration,
+				ScriptLaunchConfigurationConstants.ENABLE_BREAK_ON_FIRST_LINE,
+				false);
+	}
+
+	/**
+	 * Returns the 'Dbgp logging enabled' setting for the specified launch
+	 * configuration
+	 * 
+	 * @param configuration
+	 *            launch configuration
+	 * 
+	 * @return <code>true</code> if the option is enabled, <code>false</code>
+	 *         otherwise
+	 */
+	public static boolean isDbgpLoggingEnabled(
+			ILaunchConfiguration configuration) {
+		return getBoolean(configuration,
+				ScriptLaunchConfigurationConstants.ENABLE_DBGP_LOGGING, false);
+	}
+
+	/**
+	 * Retrieve a string value from a launch configuration
+	 * 
+	 * @param configuration
+	 *            launch configuration
+	 * @param name
+	 *            launch attribute name
+	 * @param defaultValue
+	 *            default value to use if attribute does not exist
+	 * 
+	 * @return String
+	 */
+	public static String getString(ILaunchConfiguration configuration,
+			String name, String defaultValue) {
+		String value = defaultValue;
+		try {
+			value = configuration.getAttribute(name, defaultValue);
+		} catch (CoreException e) {
+			DLTKLaunchingPlugin.log(e);
+		}
+
+		return value;
+	}
 }

@@ -85,6 +85,6 @@ public abstract class Literal extends Expression {
 	 * Testing purposes only. Print literal.
 	 */
 	public void printNode(CorePrinter output) {
-		output.formatPrintLn("Literal" + this.getSourceRange().toString() + ":" + this.getValue());
+		output.formatPrintLn("Literal" + this.getSourceRange().toString() + ":" + this.getValue()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

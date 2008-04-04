@@ -22,7 +22,7 @@ import org.osgi.framework.BundleContext;
 public class RubyDebugUIPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.debug.ui";
+	public static final String PLUGIN_ID = "org.eclipse.dltk.ruby.debug.ui"; //$NON-NLS-1$
 
 	// The shared instance
 	private static RubyDebugUIPlugin plugin;

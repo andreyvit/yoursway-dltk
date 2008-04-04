@@ -464,7 +464,7 @@ public abstract class ScriptSearchPage extends DialogPage implements ISearchPage
 		Dialog.applyDialogFont(result);
 //		PlatformUI.getWorkbench().getHelpSystem().setHelp(result, IJavaHelpContextIds.JAVA_SEARCH_PAGE);
 		if (DLTKCore.DEBUG) {
-			System.out.println("TODO: Add help support here...");
+			System.out.println("TODO: Add help support here..."); //$NON-NLS-1$
 		}
 	}
 	
@@ -746,7 +746,7 @@ public abstract class ScriptSearchPage extends DialogPage implements ISearchPage
 				return new SearchPatternData(TYPE, REFERENCES, true, PatternStrings.getTypeSignature((IType) element), element, isInsideInterpreterEnvironment);
 			case IModelElement.SOURCE_MODULE: {
 				if (DLTKCore.DEBUG) {
-					System.out.println("TODO: DLTKSearchPage: Add init values for source module support.");
+					System.out.println("TODO: DLTKSearchPage: Add init values for source module support."); //$NON-NLS-1$
 				}
 //					IType mainType= ((ISourceModule) element).
 //					if (mainType != null) {

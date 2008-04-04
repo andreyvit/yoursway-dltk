@@ -567,7 +567,7 @@ public abstract class SearchPattern extends InternalSearchPattern {
 
 		if (DLTKCore.DEBUG) {
 			System.err
-					.println("TODO: Add correct support of method, fuction patters search...");
+					.println("TODO: Add correct support of method, fuction patters search..."); //$NON-NLS-1$
 		}
 
 		// Signatures
@@ -1072,7 +1072,7 @@ public abstract class SearchPattern extends InternalSearchPattern {
 	private static SearchPattern createTypePattern(String patternString,
 			int limitTo, int matchRule, char indexSuffix) {
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: Search. Add correct code here.");
+			System.err.println("TODO: Search. Add correct code here."); //$NON-NLS-1$
 		}
 
 		String type = patternString;

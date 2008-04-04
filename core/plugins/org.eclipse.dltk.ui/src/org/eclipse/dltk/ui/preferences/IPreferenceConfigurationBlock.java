@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Control;
 /**
  * Interface for preference configuration blocks which can either be wrapped by
  * a
- * {@link org.eclipse.dltk.internal.ui.preferences.AbstractConfigurationBlockPreferencePage}
+ * {@link org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPreferencePage}
  * or be included some preference page.
  * <p>
  * Clients may implement this interface.

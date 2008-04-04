@@ -13,7 +13,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.core.runtime.content.IContentTypeManager;
+import org.eclipse.dltk.core.DLTKCore;
 import org.eclipse.dltk.core.DLTKLanguageManager;
+import org.eclipse.dltk.core.IDLTKLanguageToolkit;
 import org.eclipse.dltk.core.IModelElement;
 import org.eclipse.dltk.core.IProjectFragment;
 import org.eclipse.dltk.core.IScriptFolder;
@@ -40,7 +45,7 @@ import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 
 public abstract class NewSourceModulePage extends NewContainerWizardPage {
 
-	private static final String FILE = "NewSourceModulePage.file";
+	private static final String FILE = "NewSourceModulePage.file"; //$NON-NLS-1$
 
 	private IStatus sourceMoudleStatus;
 
@@ -52,13 +57,13 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 		StatusInfo status = new StatusInfo();
 
 		if (getFileText().length() == 0) {
-			status.setError("Cannot be empty");
+			status.setError(Messages.NewSourceModulePage_pathCannotBeEmpty);
 		} else {
 			if (currentScriptFolder != null) {
 				ISourceModule module = currentScriptFolder
 						.getSourceModule(getFileName());
 				if (module.exists()) {
-					status.setError("File already exists");
+					status.setError(Messages.NewSourceModulePage_fileAlreadyExists);
 				}
 			}
 		}
@@ -91,7 +96,7 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 	}
 
 	public NewSourceModulePage() {
-		super("wizardPage");
+		super("wizardPage"); //$NON-NLS-1$
 		setTitle(getPageTitle());
 		setDescription(getPageDescription());
 
@@ -99,7 +104,7 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 
 		// fileDialogField
 		fileDialogField = new StringDialogField();
-		fileDialogField.setLabelText("File: ");
+		fileDialogField.setLabelText(Messages.NewSourceModulePage_file);
 		fileDialogField.setDialogFieldListener(new IDialogFieldListener() {
 			public void dialogFieldChanged(DialogField field) {
 				sourceMoudleStatus = fileChanged();
@@ -113,7 +118,7 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 		if (fieldName == CONTAINER) {
 			IProjectFragment fragment = getProjectFragment();
 			if (fragment != null)
-				currentScriptFolder = fragment.getScriptFolder("");
+				currentScriptFolder = fragment.getScriptFolder(""); //$NON-NLS-1$
 			else
 				currentScriptFolder = null;
 			sourceMoudleStatus = fileChanged();
@@ -123,15 +128,15 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 	}
 
 	public ISourceModule createFile(IProgressMonitor monitor)
-			throws CoreException, InterruptedException {
+			throws CoreException {
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
 		}
 
 		String fileName = getFileName();
 
-		final ISourceModule module = currentScriptFolder.createSourceModule(fileName,
-				getFileContent(), true, monitor);
+		final ISourceModule module = currentScriptFolder.createSourceModule(
+				fileName, getFileContent(), true, monitor);
 
 		if (module != null) {
 			Display.getDefault().asyncExec(new Runnable() {
@@ -182,23 +187,32 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 		String[] extensions = getFileExtensions();
 		for (int i = 0; i < extensions.length; ++i) {
 			String extension = extensions[i];
-			if (extension.length() > 0 && fileText.endsWith("." + extension)) {
+			if (extension.length() > 0 && fileText.endsWith("." + extension)) { //$NON-NLS-1$
 				return fileText;
 			}
 		}
 
-		return fileText + "." + extensions[0];
+		return fileText + "." + extensions[0]; //$NON-NLS-1$
 	}
 
 	// TODO: correct this
 	protected String[] getFileExtensions() {
 		try {
-			return DLTKLanguageManager.getLanguageToolkit(getRequiredNature())
-					.getLanguageFileExtensions();
+			String requiredNature = getRequiredNature();
+
+			IDLTKLanguageToolkit toolkit = DLTKLanguageManager
+					.getLanguageToolkit(requiredNature);
+			String contentType = toolkit.getLanguageContentType();
+			IContentTypeManager manager = Platform.getContentTypeManager();
+			IContentType type = manager.getContentType(contentType);
+			if (type != null) {
+				String[] extensions = type.getFileSpecs(IContentType.FILE_EXTENSION_SPEC);
+				return extensions;
+			}
 		} catch (CoreException e) {
 		}
 
-		return new String[] { "" };
+		return new String[] { "" }; //$NON-NLS-1$
 	}
 
 	protected IScriptFolder chooseScriptFolder() {
@@ -209,17 +223,18 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 				getShell(), labelProvider);
 
 		dialog.setIgnoreCase(false);
-		dialog.setTitle("Select Script Folder title");
-		dialog.setMessage("Select Script Folder message");
-		dialog.setEmptyListMessage("Empty List message");
+		dialog.setTitle(Messages.NewSourceModulePage_selectScriptFolder);
+		dialog.setMessage(Messages.NewSourceModulePage_selectScriptFolder);
+		dialog.setEmptyListMessage(Messages.NewSourceModulePage_noFoldersAvailable);
 
 		IProjectFragment projectFragment = getProjectFragment();
 		if (projectFragment != null) {
 			try {
 				dialog.setElements(projectFragment.getChildren());
 			} catch (ModelException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if (DLTKCore.DEBUG) {
+					e.printStackTrace();
+				}
 			}
 		}
 
@@ -255,6 +270,6 @@ public abstract class NewSourceModulePage extends NewContainerWizardPage {
 	protected abstract String getPageDescription();
 
 	protected String getFileContent() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 }

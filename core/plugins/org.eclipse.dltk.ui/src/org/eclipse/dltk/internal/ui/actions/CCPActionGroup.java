@@ -90,6 +90,7 @@ public class CCPActionGroup extends ActionGroup {
 //		fCutAction.setActionDefinitionId(IWorkbenchActionDefinitionIds.CUT);
 		
 		fDeleteAction= new DeleteAction(fSite);
+		fDeleteAction.setId(IWorkbenchActionDefinitionIds.DELETE);
 		fDeleteAction.setActionDefinitionId(IWorkbenchActionDefinitionIds.DELETE);
 		
 		fActions= new SelectionDispatchAction[] { 

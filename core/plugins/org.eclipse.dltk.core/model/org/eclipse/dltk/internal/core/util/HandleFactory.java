@@ -154,7 +154,7 @@ public class HandleFactory {
 	}
 
 	private IPath toPath(String[] pkgName) {
-		IPath path = new Path("");
+		IPath path = new Path(""); //$NON-NLS-1$
 		for (int i = 0; i < pkgName.length; ++i) {
 			path = path.append(pkgName[i]);
 		}
@@ -177,7 +177,7 @@ public class HandleFactory {
 	private IModelElement createElement(Scope scope, int elementPosition,
 			ISourceModule unit, HashSet existingElements, HashMap knownScopes) {
 		if (DLTKCore.DEBUG) {
-			System.err.println("TODO: HandleFactory: Add implementation...");
+			System.err.println("TODO: HandleFactory: Add implementation..."); //$NON-NLS-1$
 		}
 		return null;
 	}

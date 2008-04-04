@@ -78,7 +78,7 @@ public class DbgpRequest {
 		}
 
 		if (data != null) {
-			sb.append(" -- ");
+			sb.append(" -- "); //$NON-NLS-1$
 			sb.append(Base64Helper.encodeString(data));
 		}
 

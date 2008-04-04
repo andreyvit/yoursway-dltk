@@ -18,7 +18,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.dltk.python.core,
  org.eclipse.dltk.launching,
  org.eclipse.dltk.debug.ui,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ org.eclipse.search
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.dltk.python.internal.ui,
  org.eclipse.dltk.python.internal.ui.text,

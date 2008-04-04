@@ -9,14 +9,21 @@
  *******************************************************************************/
 package org.eclipse.dltk.ti.types;
 
+import org.eclipse.dltk.core.search.indexing.IIndexConstants;
+
 /**
- * Represents type as some user class
- * Each such class should be presented inside a DLTK MixinModel.
+ * Represents type as some user class Each such class should be presented inside
+ * a DLTK MixinModel.
  */
 public abstract class ClassType implements IEvaluatedType {
 
 	public String getTypeName() {
-		return null;
+		String typeName = getModelKey().replaceAll(
+				"\\" + String.valueOf(IIndexConstants.SEPARATOR), "::"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (typeName.endsWith("%") == true) { //$NON-NLS-1$
+			typeName = typeName.substring(0, (typeName.length() - 1));
+		}
+		return typeName;
 	}
 
 	public abstract String getModelKey();

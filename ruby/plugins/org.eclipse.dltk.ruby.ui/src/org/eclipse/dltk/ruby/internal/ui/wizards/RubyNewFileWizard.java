@@ -16,7 +16,7 @@ import org.eclipse.dltk.ui.wizards.NewSourceModuleWizard;
 
 public class RubyNewFileWizard extends NewSourceModuleWizard {
 	
-	public static final String WIZARD_ID = "org.eclipse.dltk.ruby.wizards.newfile";
+	public static final String WIZARD_ID = "org.eclipse.dltk.ruby.wizards.newfile"; //$NON-NLS-1$
 
 	public RubyNewFileWizard() {
 		setDefaultPageImageDescriptor(RubyImages.DESC_WIZBAN_FILE_CREATION);

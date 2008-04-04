@@ -10,8 +10,6 @@ public interface ITclLanguageExtension {
 		
 	ISourceElementRequestVisitorExtension createSourceElementRequestVisitorExtension();
 	
-	String[] getFileExtensions();
-
 	IMixinBuildVisitorExtension createMixinBuildVisitorExtension();
 	
 	IMatchLocatorExtension createMatchLocatorExtension();

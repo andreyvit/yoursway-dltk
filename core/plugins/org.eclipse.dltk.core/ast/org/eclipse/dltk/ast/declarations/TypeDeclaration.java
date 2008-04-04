@@ -21,7 +21,6 @@ import org.eclipse.dltk.ast.ASTNode;
 import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.DLTKToken;
 import org.eclipse.dltk.ast.Modifiers;
-import org.eclipse.dltk.ast.references.Reference;
 import org.eclipse.dltk.ast.references.SimpleReference;
 import org.eclipse.dltk.ast.statements.Block;
 import org.eclipse.dltk.ast.utils.ASTUtil;
@@ -93,7 +92,7 @@ public class TypeDeclaration extends Declaration {
 		setName(name);
 		setNameStart(nameStart);
 		setNameEnd(nameEnd);
-		this.enclosingTypeName = "";
+		this.enclosingTypeName = ""; //$NON-NLS-1$
 	}
 	public List getMethodList() {
 		if( this.fMethods == null ) {
@@ -115,7 +114,7 @@ public class TypeDeclaration extends Declaration {
 	}
 
 	public void setEnclosingTypeName(String name) {
-		if (name.startsWith("$")) {
+		if (name.startsWith("$")) { //$NON-NLS-1$
 			name = name.substring(1);
 		}
 		if (name != null && name.length() > 0) {
@@ -378,10 +377,9 @@ public class TypeDeclaration extends Declaration {
 			Iterator i = superClasseExpressions.iterator();
 			while (i.hasNext()) {
 				ASTNode expr = (ASTNode) i.next();
-				if (expr instanceof Reference) {
+				if (expr instanceof SimpleReference) {
 					names.add(((SimpleReference) expr).getName());
 				}
-
 			}
 		}
 		return names;
@@ -392,16 +390,16 @@ public class TypeDeclaration extends Declaration {
 	 */
 	public void printNode(CorePrinter output) {
 
-		output.formatPrintLn("Type" + this.getSourceRange().toString()
-				+ this.getNameSourceRange().toString() + ":");
+		output.formatPrintLn("Type" + this.getSourceRange().toString() //$NON-NLS-1$
+				+ this.getNameSourceRange().toString() + ":"); //$NON-NLS-1$
 		String name = this.getName();
 		if (name != null) {
 			output.formatPrintLn(name);
 		}
 		if (this.fSuperClasses != null) {
-			output.formatPrintLn("(");
+			output.formatPrintLn("("); //$NON-NLS-1$
 			this.fSuperClasses.printNode(output);
-			output.formatPrintLn(")");
+			output.formatPrintLn(")"); //$NON-NLS-1$
 		}
 		if (this.fBody != null) {
 			this.fBody.printNode(output);
@@ -462,7 +460,7 @@ public class TypeDeclaration extends Declaration {
 	public String debugString() {
 		String prev = super.debugString();
 		if ((this.getModifiers() & Modifiers.AccModule) != 0)
-			prev += "(module)";
+			prev += "(module)"; //$NON-NLS-1$
 		return prev;
 	}
 

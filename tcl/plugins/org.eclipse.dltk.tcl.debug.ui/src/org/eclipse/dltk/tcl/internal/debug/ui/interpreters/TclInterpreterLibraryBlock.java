@@ -46,4 +46,7 @@ public class TclInterpreterLibraryBlock extends AbstractInterpreterLibraryBlock 
 	protected boolean isEnableButtonSupported() {
 		return true;
 	}
+	protected boolean isDefaultLocations() {
+		return false;
+	}
 }

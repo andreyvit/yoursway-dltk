@@ -1,17 +1,14 @@
 package org.eclipse.dltk.tcl.internal.debug.ui.preferences;
 
 import org.eclipse.core.resources.IProject;
-
+import org.eclipse.dltk.debug.core.DLTKDebugPreferenceConstants;
+import org.eclipse.dltk.debug.ui.preferences.AbstractDebuggingOptionsBlock;
 import org.eclipse.dltk.tcl.internal.debug.TclDebugPlugin;
 import org.eclipse.dltk.ui.PreferencesAdapter;
 import org.eclipse.dltk.ui.preferences.AbstractConfigurationBlockPropertyAndPreferencePage;
 import org.eclipse.dltk.ui.preferences.AbstractOptionsBlock;
 import org.eclipse.dltk.ui.preferences.PreferenceKey;
 import org.eclipse.dltk.ui.util.IStatusChangeListener;
-
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 
 /**
@@ -19,7 +16,15 @@ import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
  */
 public class TclDebugPreferencePage extends
 		AbstractConfigurationBlockPropertyAndPreferencePage {
-	
+
+	private static PreferenceKey BREAK_ON_FIRST_LINE = new PreferenceKey(
+			TclDebugPlugin.PLUGIN_ID,
+			DLTKDebugPreferenceConstants.PREF_DBGP_BREAK_ON_FIRST_LINE);
+
+	private static PreferenceKey ENABLE_DBGP_LOGGING = new PreferenceKey(
+			TclDebugPlugin.PLUGIN_ID,
+			DLTKDebugPreferenceConstants.PREF_DBGP_ENABLE_LOGGING);
+
 	private static final String PREFERENCE_PAGE_ID = "org.eclipse.dltk.tcl.preferences.debug";
 	private static final String PROPERTY_PAGE_ID = "org.eclipse.dltk.tcl.propertyPage.debug";
 
@@ -31,13 +36,21 @@ public class TclDebugPreferencePage extends
 	protected AbstractOptionsBlock createOptionsBlock(
 			IStatusChangeListener newStatusChangedListener, IProject project,
 			IWorkbenchPreferenceContainer container) {
-		return new AbstractOptionsBlock(newStatusChangedListener, project,
-				new PreferenceKey[0], container) {
+		return new AbstractDebuggingOptionsBlock(newStatusChangedListener,
+				project, getKeys(), container) {
 
-			protected Control createOptionsBlock(Composite parent) {
-				return parent;
+			protected PreferenceKey getBreakOnFirstLineKey() {
+				return BREAK_ON_FIRST_LINE;
+			}
+
+			protected PreferenceKey getDbgpLoggingEnabledKey() {
+				return ENABLE_DBGP_LOGGING;
 			}
 		};
+	}
+
+	protected PreferenceKey[] getKeys() {
+		return new PreferenceKey[] { BREAK_ON_FIRST_LINE, ENABLE_DBGP_LOGGING };
 	}
 
 	/*

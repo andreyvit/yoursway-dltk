@@ -12,6 +12,7 @@ package org.eclipse.dltk.javascript.internal.launching;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -33,7 +34,6 @@ import org.eclipse.dltk.core.IScriptProject;
 import org.eclipse.dltk.javascript.launching.IConfigurableRunner;
 import org.eclipse.dltk.javascript.launching.IJavaScriptInterpreterRunnerConfig;
 import org.eclipse.dltk.javascript.launching.JavaScriptLaunchConfigurationConstants;
-import org.eclipse.dltk.javascript.launching.JavaScriptLaunchingPlugin;
 import org.eclipse.dltk.launching.AbstractInterpreterRunner;
 import org.eclipse.dltk.launching.AbstractScriptLaunchConfigurationDelegate;
 import org.eclipse.dltk.launching.IInterpreterInstall;
@@ -102,8 +102,10 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner
 
 		IScriptProject proj = AbstractScriptLaunchConfigurationDelegate
 				.getScriptProject(launch.getLaunchConfiguration());
-		IJavaProject myJavaProject = JavaCore.create(proj.getProject());		
-		IVMInstall vmInstall = myJavaProject.exists()?JavaRuntime.getVMInstall(myJavaProject):JavaRuntime.getDefaultVMInstall();		
+		IJavaProject myJavaProject = JavaCore.create(proj.getProject());
+		IVMInstall vmInstall = myJavaProject.exists() ? JavaRuntime
+				.getVMInstall(myJavaProject) : JavaRuntime
+				.getDefaultVMInstall();
 		if (vmInstall != null) {
 			IVMRunner vmRunner = vmInstall
 					.getVMRunner(ILaunchManager.DEBUG_MODE);
@@ -119,7 +121,8 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner
 									iconfig.getRunnerClassName(config, launch,
 											myJavaProject), newClassPath);
 							String[] strings = new String[] {
-									config.getScriptFilePath().toPortableString(), host,
+									config.getScriptFilePath()
+											.toPortableString(), host,
 									"" + port, sessionId };
 							String[] newStrings = iconfig.getProgramArguments(
 									config, launch, myJavaProject);
@@ -166,10 +169,12 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner
 				.getBundle(GenericJavaScriptInstallType.DBGP_FOR_RHINO_BUNDLE_ID);
 		URL resolve = FileLocator.toFileURL(bundle1
 				.getResource("RhinoRunner.class"));
-		File fl = new File(new URI(resolve.toString())).getParentFile();
+		String externalForm = resolve.toExternalForm();
+		File fl = new File(toURI(externalForm)).getParentFile();
 		URL fileURL = FileLocator.toFileURL(bundle
 				.getResource("org/mozilla/classfile/ByteCode.class"));
-		File fl1 = new File(new URI(fileURL.toString())).getParentFile()
+		String externalForm2 = fileURL.toExternalForm();
+		File fl1 = new File(toURI(externalForm2)).getParentFile()
 				.getParentFile().getParentFile().getParentFile();
 		String[] classPath = null;
 		try {
@@ -183,9 +188,23 @@ public class JavaScriptInterpreterRunner extends AbstractInterpreterRunner
 		return newClassPath;
 	}
 
+	private static URI toURI(String externalForm) throws MalformedURLException {
+		URL url = new URL(replaceSpaces(externalForm));
+		try {
+			return new URI(url.toString());
+		} catch (URISyntaxException e) {
+			throw new MalformedURLException(e.getMessage());
+		}
+	}
+
+	private static String replaceSpaces(String text) {
+		return text.replaceAll(" ", "%20");
+	}
+
 	protected static String[] computeBaseClassPath(IJavaProject myJavaProject)
 			throws CoreException {
-		if (!myJavaProject.exists())return new String[0];
+		if (!myJavaProject.exists())
+			return new String[0];
 		return JavaRuntime.computeDefaultRuntimeClassPath(myJavaProject);
 	}
 
