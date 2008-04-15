@@ -24,6 +24,10 @@ public abstract class Literal extends Expression {
 
 	
 	public static Literal createNumericLiteral(DLTKToken token){
+		String text = token.getText();
+		if(text.endsWith("l") || text.endsWith("L")){
+			return new BigNumericLiteral(token);
+		}
 		try{
 			return new NumericLiteral(token);
 		}catch(NumberFormatException exc) {

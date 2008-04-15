@@ -30,7 +30,7 @@ public class BigNumericLiteral extends Literal {
 
 	public BigNumericLiteral(DLTKToken token) {
 		super(token);
-		if (fLiteralValue.equals("0")) 
+		if (fLiteralValue.equalsIgnoreCase("0l")) 
 			this.bigValue = BigInteger.ZERO;
 		else if (fLiteralValue.startsWith("0x") || fLiteralValue.startsWith("0X"))
 			this.bigValue = new BigInteger(fLiteralValue.substring(2), 16);
@@ -58,6 +58,10 @@ public class BigNumericLiteral extends Literal {
 
 	public void printNode(CorePrinter output) {
 		output.formatPrintLn(this.getValue());
+	}
+
+	public BigInteger getLongValue() {
+		return bigValue;
 	}
 
 }

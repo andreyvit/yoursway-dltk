@@ -34,7 +34,7 @@ public class NumericLiteral extends Literal {
 		super(number);
 		if (fLiteralValue.equals("0")) 
 			this.intValue = 0;
-		if(fLiteralValue.startsWith("0x") || fLiteralValue.startsWith("0X"))
+		else if(fLiteralValue.startsWith("0x") || fLiteralValue.startsWith("0X"))
 			this.intValue = Long.parseLong(fLiteralValue.substring(2), 16);
 		else if(fLiteralValue.startsWith("0"))
 			this.intValue = Long.parseLong(fLiteralValue.substring(1), 8);

@@ -24,10 +24,12 @@ public class ComplexNumericLiteral extends Literal
 	public ComplexNumericLiteral( DLTKToken number ) {
 		super( number );
 		String value = number.getText();
+		assert(value.endsWith("j") || value.endsWith("J"));
+		String doubleNumber = value.substring(0, value.length()-1);
 		try{
-			this.doubleValue = Double.parseDouble(value);
+			this.doubleValue = Double.parseDouble(doubleNumber);
 		}catch(NumberFormatException e){
-			BigDecimal decimal = new BigDecimal(value);
+			BigDecimal decimal = new BigDecimal(doubleNumber);
 			this.doubleValue = decimal.doubleValue();
 		}
 	}
