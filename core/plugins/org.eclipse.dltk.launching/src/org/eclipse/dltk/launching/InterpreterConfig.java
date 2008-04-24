@@ -360,7 +360,7 @@ public class InterpreterConfig implements Cloneable {
 			items.addAll(Arrays.asList(interpreterOwnArgs));
 		}
 
-		items.add(scriptFile.toPortableString());
+		items.add(scriptFile.toOSString());
 		items.addAll(scriptArgs);
 
 		return (String[]) items.toArray(new String[items.size()]);
@@ -369,9 +369,9 @@ public class InterpreterConfig implements Cloneable {
 	protected String[] renderCommandLine(IPath interpreter) {
 		final List items = new ArrayList();
 
-		items.add(interpreter.toPortableString());
+		items.add(interpreter.toOSString());
 		items.addAll(interpreterArgs);
-		items.add(scriptFile.toPortableString());
+		items.add(scriptFile.toOSString());
 		items.addAll(scriptArgs);
 
 		return (String[]) items.toArray(new String[items.size()]);
